@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              style="@style/CodeFont"
+              android:layout_width="wrap_content"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:background="@drawable/backrepeat">
+
+
+	<ScrollView
+			android:id="@+id/scrollFull"
+			android:layout_width="wrap_content"
+			android:layout_height="322dp">
+
+
+		<TextView
+				android:id="@+id/editText1"
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent"
+				android:layout_marginLeft="22dp"
+				android:layout_marginRight="22dp"
+				android:inputType="none"
+				android:text="@string/disclaimerText">
+
+			<requestFocus />
+		</TextView>
+	</ScrollView>
+	<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center|bottom"
+			android:orientation="horizontal">
+		<Button
+				android:id="@+id/cancelBtn"
+				android:layout_width="120dp"
+				android:layout_gravity="left|bottom"
+				android:layout_height="wrap_content"
+				android:text="Cancel"
+				style="@style/ButtonText"
+				android:background="@drawable/btn_blue"/>
+		<Button
+				android:id="@+id/acceptButton"
+				android:layout_width="120dp"
+				android:layout_gravity="right|bottom"
+				android:layout_height="wrap_content"
+				android:text="@string/Signature"
+				android:background="@drawable/btn_yellow"
+				android:enabled="true"
+				style="@style/ButtonText"/>
+	</LinearLayout>
+
+
+</LinearLayout>

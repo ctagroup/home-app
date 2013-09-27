@@ -1,0 +1,38 @@
+# Files to ignore
+.DS_Store
+# built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+target/
+classes/
+
+# Local configuration file (sdk path, etc)
+local.properties
+*.launch
+*.tmproj
+
+#Eclipse files
+.settings
+project.properties
+.project
+.metadata
+.classpath
+*/.settings
+*/.metadata
+
+#Intellij
+.idea
+*.ipr
+*.iws
+*.iml
+out/

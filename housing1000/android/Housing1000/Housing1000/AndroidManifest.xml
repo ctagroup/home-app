@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="edu.weber.housing1000" android:versionCode="1" android:versionName="0.0.1">
+
+    <uses-feature android:name="android.hardware.camera"/>
+
+    <uses-sdk android:minSdkVersion="8"
+              android:targetSdkVersion="8"
+              android:maxSdkVersion="17"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application android:icon="@drawable/icon" android:label="@string/app_name" android:theme="@style/CodeFont">
+        <activity android:name=".LoginActivity"
+                  android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".MainMenuActivity"
+                  android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".SignatureActivity"
+                  android:screenOrientation="landscape"
+                  android:configChanges="keyboardHidden|orientation"/>
+        <activity android:name=".ClientInfoActivity"
+                  android:label="@string/title_activity_clnt_info"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".InterviewerInfoActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".LegalDisclaimerActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".SelectPageActivity"/>
+        <activity android:name=".GeolocationActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".CensusActivity"
+                  android:screenOrientation="portrait"/>
+    </application>
+
+</manifest>
+

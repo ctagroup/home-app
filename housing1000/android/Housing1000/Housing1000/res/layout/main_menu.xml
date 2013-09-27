@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:background="@drawable/brushedmetal"
+              android:tileMode="repeat">
+
+    <Button
+            android:id="@+id/clientButton"
+            android:layout_height="wrap_content"
+            android:layout_width="110dip"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_gravity="center_vertical|center_horizontal|center"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="30dp"
+            android:clickable="true"
+            android:text="@string/Client"
+            android:background="@drawable/btn_yellow"
+            style="@style/ButtonText"/>
+
+    <Button
+            android:id="@+id/interviewButton"
+            android:layout_height="wrap_content"
+            android:layout_width="110dip"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_gravity="center_vertical|center_horizontal|center"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="30dp"
+            android:clickable="true"
+            android:text="@string/Interviewer"
+            android:background="@drawable/btn_yellow"
+            style="@style/ButtonText"
+            />
+
+    <Button
+            android:id="@+id/cameraButton"
+            android:layout_height="wrap_content"
+            android:layout_width="110dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_gravity="center_vertical|center_horizontal|center"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="30dp"
+            android:clickable="true"
+            android:text="@string/Photo"
+            android:background="@drawable/btn_yellow"
+            style="@style/ButtonText"
+            />
+
+    <Button
+            android:id="@+id/SubmitBtn"
+            android:layout_height="wrap_content"
+            android:layout_width="110dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_gravity="center_vertical|center_horizontal|center"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="90dp"
+            android:clickable="true"
+            android:text="@string/SubmitSurvey"
+            android:background="@drawable/btn_yellow" style="@style/ButtonText"
+            />
+
+
+</LinearLayout>

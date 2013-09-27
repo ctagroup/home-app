@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello Housing1000!</string>
+    <string name="app_name">Housing1000</string>
+    <string name="Client">Client</string>
+    <string name="Interviewer">Interviewer</string>
+    <string name="Photo">Photo</string>
+    <string name="Signature">Sign</string>
+    <string name="btn_ClientInformation">Client Information</string>
+    <string name="btn_ClientDemographics">Client Demographics</string> 
+    <string name="btn_MilitaryInformation">Military Information</string>
+    <string name="btn_LegalOtherInformation">Legal/Other Information</string>
+    <string name="btn_LivingSituation">Living Situation</string> 
+    <string name="btn_MoneyMatters">Money Matters</string>
+    <string name="btn_HealthMatters">Health Matters</string>
+    <string name="btn_Community">Community</string>
+    <string name="title_activity_clnt_info">Client Information</string>
+    <string name="txtYes">Yes</string>
+    <string name="txtNo">No</string>
+    <string name="txtRefused">Refused</string>
+    <string name="txtDK">Don\'t Know</string>
+    <string name="txtSubmit">Submit</string>
+    <string name="txtCancel">Cancel</string>
+    <string name="_12hasconsentedtopart">Has client consented to participate, initialed in 4 places and signed?</string>
+    <string name="txtTwo">HMIS # if known:</string>
+    <string name="first_name">First Name:</string>
+    <string name="last_name">Last Name:</string>
+    <string name="soc_sec_no">Social Security Number:</string>
+    <string name="alias">Nickname/Alias:</string>
+    <string name="svpprofdob">Date of Birth (MM/DD/YYYY):</string>
+    <string name="svpprofdobtype">Date of Birth Type:</string>
+    <string-array name="arrDOBType">
+        <item>-Select-</item>
+        <item>Full DOB Reported</item>
+        <item>Approximate or Partial</item>
+        <item>Don\'t Know</item>
+        <item>Refused</item>
+    </string-array>
+    <string name="phonemessage">Phone Number</string>
+    <string name="familysize">What is the size of your household? (If housed today)</string>
+    <string name="adultsinhousehold"># Adults</string>
+    <string name="childreninhousehold"># Children</string>
+    <string name="primarylanguage_1">Primary Language:</string>
+    <string-array name="arrPrimaryLanguage">
+        <item>-Select-</item>
+        <item>English</item>
+        <item>Spanish</item>
+        <item>Arabic</item>
+        <item>Chinese</item>
+        <item>Japanese</item>
+        <item>Russian</item>
+        <item>Tagalog</item>
+        <item>Vietnamese</item>
+        <item>Other</item>
+    </string-array>
+    <string name="svpprofgender">Gender:</string>
+    <string-array name="arrGender">
+        <item>-Select-</item>
+        <item>Male</item>
+        <item>Female</item>
+        <item>Transgendered Male to Female</item>
+        <item>Transgendered Female to Male</item>
+        <item>Other</item>
+        <item>Refused</item>
+        <item>Don\'t Know</item>
+    </string-array>
+    <string name="svpprofrace">Race: What best describes you?</string>
+    <string-array name="arrRace">
+        <item>-Select-</item>
+        <item>African American/Black</item>
+        <item>American Indian or Alaska Native</item>
+        <item>Asian</item>
+        <item>White</item>
+        <item>Native Hawaiian or other Pacific Islander</item>
+        <item>Don\'t Know</item>
+        <item>Refused</item>
+    </string-array>
+    <string name="svpprofeth">Ethnicity:Hispanic or Latino origin?</string>
+    <string-array name="arrEthnicity">
+        <item>-Select-</item>
+        <item>Hispanic/Latino</item>
+        <item>Non-Hispanic/Non-Latino</item>
+        <item>Don\'t Know</item>
+        <item>Refused</item>
+    </string-array>
+    <string name="highestlevelofeducati">Highest level of education</string>
+    <string-array name="arrEducation">
+        <item>-Select-</item>
+        <item>No schooling completed</item>
+        <item>K-8</item>
+        <item>Some high school</item>
+        <item>High School Diploma</item>
+        <item>GED</item>
+        <item>Some College</item>
+        <item>College Degree</item>
+        <item>Declined to state</item>
+        <item>Other</item>
+    </string-array>
+    <string name="veteran">U.S. Military Veteran?</string>
+    <string name="hud_militaryserviceera">Which war/war era did you serve in?</string>
+    <string name="txtEraKorean">Korean War (June 1950-January 1955)</string>
+    <string name="txtEraVietnam">Vietnam Era (August 1964-April 1975)</string>
+    <string name="txtEraPostVietnam">Post Vietnam (May 1975-July 1991)</string>
+    <string name="txtEraPersianGulf">PersianGulf (August 1991-September 10, 2001)</string>
+    <string name="txtEraAfghanistan">Afghanistan (2001-Present)</string>
+    <string name="txtEraIraq">Iraq (2003-Present)</string>
+    <string name="hud_dischargetype">What was the character of your discharge?</string>
+    <string-array name="arrDischarge">
+        <item>-Select-</item>
+        <item>Honorable</item>
+        <item>General</item>
+        <item>Medical</item>
+        <item>Bad Conduct</item>
+        <item>Dishonorable</item>
+        <item>Other</item>
+        <item>Don\'t Know</item>
+        <item>Refused</item>
+    </string-array>
+    <string name="incarceratedformerinc">Have you ever been incarcerated?</string>
+    <string name="incarceratedinstituti">What type of facility?</string>
+    <string name="incarceratedinstitutiNA">N/A</string>
+    <string name="incarceratedinstitutiCity">City</string>
+    <string name="incarceratedinstitutiCounty">County</string>
+    <string name="incarceratedinstitutiFederal">Federal</string>
+    <string name="incarceratedinstitutiState">State</string>
+    <string name="everinfostercare">Ever in foster care?</string>
+    <string name="uscitizen">U.S. Citizen?</string>
+    <string name="immigrationstatus">Immigration status:</string>
+    <string-array name="arrImmigration">
+        <item>-Select-</item>
+        <item>Asylee</item>
+        <item>Naturalized</item>
+        <item>Pending</item>
+        <item>Permanent Resident</item>
+        <item>Undocumented</item>
+    </string-array>
+    <string name="svp_hud_housingstatus">Housing Status:</string>
+    <string-array name="arrHousingStat">
+        <item>-Select-</item>
+        <item>Literally Homeless (HUD)</item>
+        <item>Imminently losing their housing (HUD)</item>
+        <item>Unstably housed and at-risk of losing their housing (HUD)</item>
+        <item>Stably housed (HUD)</item>
+        <item>Don\'t know (HUD)</item>
+        <item>Refused (HUD)</item>
+    </string-array>
+    <string name="txtTwentythree">The TOTAL time you lived on streets/shelter:</string>
+    <string name="txtYears"># of Years:</string>
+    <string-array name="arrHousingYears">
+        <item>-Select-</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21+</item>
+    </string-array>
+    <string name="txtMonths"># of Months:</string>
+    <string-array name="arrHousingMonths">
+        <item>-Select-</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+    </string-array>
+    <string name="in3yrsoftimeshomeless">In 3 years, number of times homeless and housed again:</string>
+    <string-array name="arrTimesHomelessER">
+        <item>-Select-</item>
+        <item>0</item>
+        <item>1&#8211;2</item>
+        <item>3&#8211;6</item>
+        <item>7+</item>
+    </string-array>
+    <string name="_15wheredoyousleepmos">Where do you sleep most frequently?</string>
+    <string-array name="arrSleepFrequently">
+        <item>-Select-</item>
+        <item>Shelters</item>
+        <item>Streets</item>
+        <item>Creek Encampment</item>
+        <item>Car/Van/RV</item>
+        <item>Subway/Bus</item>
+        <item>Beach/Riverbed</item>
+        <item>Other</item>
+    </string-array>
+    <string name="ifwecantfindyoutherew">If we can\'t find you there, where specifically can we usually find you?</string>
+    <string name="lpcity">Last Permanent Address City:</string>
+    <string name="lpstate">Last Permanent Address State:</string>
+    <string-array name="arrState">
+        <item>-Select-</item>
+        <item>Alabama</item>
+        <item>Alaska</item>
+        <item>Arizona</item>
+        <item>Arkansas</item>
+        <item>California</item>
+        <item>Colorado</item>
+        <item>Conneticut</item>
+        <item>Delaware</item>   
+        <item>Florida</item>
+        <item>Georgia</item>
+        <item>Hawaii</item>
+        <item>Idaho</item>
+        <item>Illinois</item>
+        <item>Indiana</item>
+        <item>Iowa</item>
+        <item>Kansas</item>
+        <item>Kentucky</item>
+        <item>Louisiana</item>
+        <item>Maine</item>
+        <item>Maryland</item>
+        <item>Massachusetts</item>
+        <item>Michigan</item>
+        <item>Minnesota</item>
+        <item>Mississippi</item>   
+        <item>Missouri</item>
+        <item>Montana</item>
+        <item>Nebraska</item>
+        <item>Nevada</item>
+        <item>New Hampshire</item>
+        <item>New Jersey</item>
+        <item>New Mexico</item>
+        <item>New York</item>
+        <item>North Carolina</item>
+        <item>North Dakota</item>
+        <item>Ohio</item>
+        <item>Oklahoma</item>
+        <item>Oregon</item>
+        <item>Pennsylvania</item>
+        <item>Rhode Island</item>
+        <item>South Carolina</item>   
+        <item>South Dakota</item>
+        <item>Tennessee</item>
+        <item>Texas</item>
+        <item>Utah</item>
+        <item>Vermont</item>
+        <item>Virginia</item>
+        <item>Washington</item>
+        <item>Washington D.C.</item>
+        <item>West Virginia</item>
+        <item>Wisconsin</item>
+        <item>Wyoming</item>
+        <item>Don\'t Know</item>
+        <item>Refused</item>
+        <item>Unknown</item>      
+    </string-array>
+    <string name="hud_zipcodelastpermaddr">Last Permanent Address LP Zip:</string>
+    <string name="hud_zipdataquality">Zip data quality:</string>
+    <string-array name="arrZipQuality">
+        <item>-Select-</item>
+        <item>Full or Partial Zip Code Reported</item>
+        <item>Don\'t Know</item>
+        <item>Refused</item>
+    </string-array>
+    <string name="sourceofincome">How do you make money? (choose all that apply)</string>
+    <string name="sourceofincomeWork">Work (Earned Income)</string>
+    <string name="sourceofincomeAlimony">Alimony/Spousal Support</string>
+    <string name="sourceofincomeChildSupport">Child Support</string>
+    <string name="sourceofincomeGeneral">General Assistance</string>
+    <string name="sourceofincomeDisability">Disability (SDI)</string>
+    <string name="sourceofincomeVDP">Veteran\'s Disability Payment</string>
+    <string name="sourceofincomePDI">Private Disability Insurance</string>
+    <string name="sourceofincomePensionFormer">Pension From a Former Job</string>
+    <string name="sourceofincomePensionVeteran">Veteran\'s Pension</string>
+    <string name="sourceofincomeRetirement">Retirement Income From Social Security</string>
+    <string name="sourceofincomeSSI">SSI</string>
+    <string name="sourceofincomeSSDI">SSDI/SSA</string>
+    <string name="sourceofincomeTANF">TANF</string>
+    <string name="sourceofincomeUnemployment">Unemployment Insurance</string>
+    <string name="sourceofincomeWorkComp">Worker\'s Compensation</string>
+    <string name="sourceofincomeNoResource">No Financial Resources</string>
+    <string name="sourceofincomeOther">Other</string>
+    <string name="sourceofincomeOtherDetail">If Other (specify here):</string>
+    <string name="svp_noncashbenefitssource">Are you receiving any non-cash benefits? (choose as many as apply)</string>
+    <string name="svp_noncashbenefitssourceFoodStamps">Food Stamps</string>
+    <string name="svp_noncashbenefitssourceMedicaid">Medicaid/Medi-Cal</string>
+    <string name="svp_noncashbenefitssourceMedicare">Medicare</string>
+    <string name="svp_noncashbenefitssourceWIC">WIC (Special Supplemental Nutrition Program)</string>
+    <string name="svp_noncashbenefitssourceVA">VA Medical Services</string>
+	<string name="svp_noncashbenefitssourceOther">Other</string>
+	<string name="svp_noncashbenefitssourceOtherDetail">If Other (specify here):</string>
+    <string name="_17wheredoyougoforhea">Where do you go for healthcare when not well?</string>
+    <string-array name="arrHealthLocation">
+        <item>-Select-</item>
+        <item>Clinic</item>
+        <item>VA</item>
+        <item>O\'Conner Hospital</item>
+        <item>Other</item>
+        <item>Valley Medical Center</item>
+        <item>Emergency Room</item>
+        <item>Mobile Van</item>
+        <item>Doctor Appointment</item>
+        <item>Other Hospital</item>
+    </string-array>
+    <string name="_18howmanytimestothee">How many times to the ER in last 3 months?</string>
+    <string name="_19howmanyxshospitali_1">How many times hospitalized/inpatient past year?</string>
+    <string-array name="arrHospital">
+        <item>-Select-</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5+</item>
+    </string-array>
+    <string name="txtHealthIssuesBegin">Do you have now, or ever been told you have any of the following medical conditions?</string>
+    <string name="kidneydiseaseendstage">Kidney Disease/End Stage Renal Disease/Dialysis?</string>
+    <string name="bhistoryoffrostbitehy">History of frostbite/Hypothermia/Immersion Foot?</string>
+    <string name="chistoryofheaatstroke">History of Heat Stroke/Heat Exhaustion?</string>
+    <string name="dliverdiseasecirrhosi">Liver disease/Cirrhosis/End-Stage Liver Disease?</string>
+    <string name="eheartdiseasearrhythm">Heart desease, Arrhythmia, Irregular Heartbeat?</string>
+    <string name="fhivaids">HIV+/AIDS?</string>
+    <string name="gemphysema">Emphysema?</string>
+    <string name="hdiabetes">Diabetes?</string>
+    <string name="iasthma">Asthma?</string>
+    <string name="jcancer">Cancer?</string>
+    <string name="khepatitisc">Hepatitis C?</string>
+    <string name="ltuberculosis">Tuberculosis?</string>
+    <string name="whydidyougototheemerg">If No\'s above, why did you go to the Emergency Room?</string>
+    <string name="neverabuseddrugalcoho">Ever abused drug/alcohol, or been told you do?</string>
+    <string name="oconsumedalcoholevery">Consumed alcohol everyday for last 25+ days?</string>
+    <string name="peverusedinjectiondru">Ever used injection drugs or alcohol abuse?</string>
+    <string name="everbeentreatedfordru">Ever been treated for drug or alcohol abuse?</string>
+    <string name="scurrentlyeverreceive">Currently/ever received treatment mental health?</string>
+    <string name="tbeentakentohospitala">Been taken to hospital against will for MH?</string>
+    <string name="vbeenavictimofviolent">Been a victim of violent attack since homeless?</string>
+    <string name="wpermanentphysicaldis">Permanent physical disability limits mobility?</string>
+    <string name="xseriousbraininjuryhe">Serious brain injury/head trauma, req\'d hospital?</string>
+    <string name="_33isthereapersonoutr">Is there a person/outreach worker you trust?</string>
+    <string name="txtFiftynine">What is their name and agency they work for?</string>
+    <string name="Census">Census</string>
+    <string name="udoyoudetectsignsorsy">Does the client show signs or symptoms of serious physical health conditions?</string>
+    <string name="InterviewerDrugQuestion">Did you observe signs of alcohol or drugs?</string>
+
+    <string name="mobservesignsorsympto">Did you detect signs/symptoms of severe mental health?</string>
+    <string name="interviewersname">Interviewer\'s Name</string>
+
+    <string name="InterviewerMentalHealth">Did you detect signs/symptoms of severe mental health?</string>
+    <string name="IndividualsText">Individuals</string>
+    <string name="InterviewerName">Interviewer\'s Name</string>
+
+    <string name="CityInterview">City of interview </string>
+    <string-array name="arrCities">
+        <item>-Select-</item>
+        <item>Alviso</item>
+        <item>Campbell</item>
+        <item>Cupertino</item>
+        <item>East Palo Alto</item>
+        <item>Gilroy</item>
+        <item>Los Altos</item>
+        <item>Los Altos Hills</item>
+        <item>Los Gatos</item>
+        <item>Menlo Park</item>
+	    <item>Milpitas</item>
+	    <item>Monte Sereno</item>
+	    <item>Morgan Hill</item>
+	    <item>Mountain View</item>
+	    <item>Palo Alto</item>
+	    <item>San Jose</item>
+	    <item>San Martin</item>
+	    <item>Santa Clara</item>
+	    <item>Saratoga</item>
+	    <item>Stanford</item>
+	    <item>Sunnyvale</item>
+    </string-array>
+
+    <string name="InterviewerTimeQuestion">Click to add date and time:</string>
+    <string name="_4timeofinterview"></string>
+    <string name="censustrack">Census Tract/Team Number</string>
+    <string name="LocationQuestion">Location of Interview</string>
+    <string name="_5awasthissurveycompl">Was this survey completed in a shelter?</string>
+    <string name="SubmitSurvey">Submit</string>
+    <string name="submit_survey_message">Sumbit Survey</string>
+    <string name="survey_title">Uploading Files</string>
+	<string name="disclaimerText"><b>PLEASE READ THIS DOCUMENT CAREFULLY. YOUR SIGNATURE IS REQUIRED FOR PARTICIPATION. YOU MUST BE AT LEAST 18 YEARS OF AGE TO GIVE YOUR CONSENT TO PARTICIPATE IN RESEARCH. IF YOU DESIRE A COPY OF THIS CONSENT FORM, YOU MAY REQUEST ONE AND WE WILL PROVIDE IT.</b> \nConfidentiality: You will be assigned a code number which will protect your identity. All data will be kept in secured files, in accord with the standards of the University, Federal regulations, and the American Psychological Association. All identifying information will be removed from questionnaires as soon as your participation is complete. No one will be able to know which are your questionnaire responses. Finally, remember that it is no individual person\'s responses that interest us; we are studying the usefulness of the tests in question for people in general.</string>
+
+    <style name="ButtonText">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
+
+
+
+
+
+
+
+
+</resources>

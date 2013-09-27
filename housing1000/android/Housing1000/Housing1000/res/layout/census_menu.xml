@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:gravity="center_horizontal"
+              android:background="@drawable/backrepeat"
+        >
+
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.11">
+
+        <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:text="Census"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+        <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/textView1"
+                android:layout_below="@+id/textView1"
+                android:layout_marginTop="34dp"
+                android:text="Location"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+        <Button
+                android:id="@+id/button1"
+                style="@style/ButtonText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView2"
+                android:layout_centerHorizontal="true"
+                android:text="Get location from GPS"
+                android:background="@drawable/btn_blue"/>
+
+    </RelativeLayout>
+    <!--***********************************************This is individuals section **********************************************************-->
+    <ScrollView
+            android:id="@+id/scrollFull"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+        <LinearLayout
+                android:id="@+id/layoutFull"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <Button
+                    android:id="@+id/btnIndividualsText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/IndividualsText"/>
+
+            <LinearLayout
+                    android:id="@+id/IndividualView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="vertical">
+
+
+                <!--***********************************************This is male section **********************************************************-->
+                <TextView
+                        android:id="@+id/textViewMales"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/button1"
+                        android:layout_centerHorizontal="true"
+                        android:text="Number of Males"
+                        android:textStyle="bold"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+                <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/button1"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="34dp"
+                        android:text="Under 18"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                <LinearLayout
+                        android:id="@+id/IndividuaMalelView"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:orientation="horizontal">
+
+
+                    <Button
+                            android:id="@+id/Male18Minus"
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/minus_btn"
+                            android:background="@drawable/transparent_background"/>
+
+
+                    <TextView
+                            android:id="@+id/Male18Label"
+                            android:layout_width="72dp"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:layout_weight="0.12"
+                            android:gravity="center"/>
+
+
+                    <Button
+                            android:id="@+id/Male18Plus"
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:drawableRight="@drawable/plus_btn"
+                            android:background="@drawable/transparent_background"/>
+
+                </LinearLayout>
+
+                <TextView
+                        android:id="@+id/textViewMaleMiddle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/button1"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="34dp"
+                        android:text="18-24"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                <LinearLayout
+                        android:id="@+id/IndividuaMalelViewMiddle"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:orientation="horizontal">
+
+
+                    <Button
+                            android:id="@+id/malePlusButtonMiddle"
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/minus_btn"
+                            android:background="@drawable/transparent_background"/>
+
+
+                    <TextView
+                            android:id="@+id/maleMiddleCounterText"
+                            android:layout_width="72dp"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:layout_weight="0.12"
+                            android:gravity="center"/>
+
+
+                    <Button
+                            android:id="@+id/maleMiddleMinusButton"
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:drawableRight="@drawable/plus_btn"
+                            android:background="@drawable/transparent_background"/>
+
+                </LinearLayout>
+                <TextView
+                        android:id="@+id/textViewMaleBottom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/button1"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="34dp"
+                        android:text="25 or older"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                <LinearLayout
+                        android:id="@+id/IndividuaMalelViewBottom"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:orientation="horizontal">
+
+
+                    <Button
+                            android:id="@+id/malePlusButtonBottom"
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/minus_btn"
+                            android:background="@drawable/transparent_background"/>
+
+
+                    <TextView
+                            android:id="@+id/maleBottomCounterText"
+                            android:layout_width="72dp"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:layout_weight="0.12"
+                            android:gravity="center"/>
+
+
+                    <Button
+                            android:id="@+id/maleBottmMinusButton"
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:drawableRight="@drawable/plus_btn"
+                            android:background="@drawable/transparent_background"/>
+
+                </LinearLayout>
+                <!--***********************************************This is female section **********************************************************-->
+
+                <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/Male18Minus"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="44dp"
+                        android:text="Number of Females?"
+                        android:textStyle="bold"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                <TextView
+                        android:id="@+id/textViewfemales"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/Male18Minus"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="44dp"
+                        android:text="Under 18?"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                <LinearLayout
+                        android:id="@+id/IndividualView"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:orientation="horizontal">
+                    <Button
+                            android:id="@+id/FemaleUnder18minus"
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/minus_btn"
+                            android:background="@drawable/transparent_background"/>
+
+
+                    <TextView
+                            android:id="@+id/FemaleUnder18text"
+                            android:layout_width="72dp"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:layout_weight="0.12"
+                            android:gravity="center"/>
+
+                    <Button
+                            android:id="@+id/FemaleUnder18Plus"
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:drawableRight="@drawable/plus_btn"
+                            android:background="@drawable/transparent_background"/>
+                </LinearLayout>
+
+                <TextView
+                        android:id="@+id/textViewMiddlefemales"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/Male18Minus"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="44dp"
+                        android:text="18-24?"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                <LinearLayout
+                        android:id="@+id/IndividualView"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:orientation="horizontal">
+                    <Button
+                            android:id="@+id/FemaleMiddleminus"
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/minus_btn"
+                            android:background="@drawable/transparent_background"/>
+
+
+                    <TextView
+                            android:id="@+id/FemaleMiddleText"
+                            android:layout_width="72dp"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:layout_weight="0.12"
+                            android:gravity="center"/>
+
+                    <Button
+                            android:id="@+id/FemaleMiddlePlus"
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:drawableRight="@drawable/plus_btn"
+                            android:background="@drawable/transparent_background"/>
+                </LinearLayout>
+                <TextView
+                        android:id="@+id/textView25andOlderfemales"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/Male18Minus"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="44dp"
+                        android:text="25 and older?"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                <LinearLayout
+                        android:id="@+id/IndividualView"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:orientation="horizontal">
+                    <Button
+                            android:id="@+id/Female25minus"
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/minus_btn"
+                            android:background="@drawable/transparent_background"/>
+
+
+                    <TextView
+                            android:id="@+id/Female25text"
+                            android:layout_width="72dp"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:layout_weight="0.12"
+                            android:gravity="center"/>
+                    <Button
+                            android:id="@+id/Female25Plus"
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:drawableRight="@drawable/plus_btn"
+                            android:background="@drawable/transparent_background"/>
+
+
+                </LinearLayout>
+
+
+
+
+            </LinearLayout>
+
+            <!--***********************************************This is Miscellaneous section **********************************************************-->
+
+            <Button
+                    android:id="@+id/btnMiscellaneous"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Miscellaneous"/>
+
+            <LinearLayout
+                    android:id="@+id/MiscellaneousView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:id="@+id/textViewMisc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/Male18Minus"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="44dp"
+                        android:text="Number of Cars?"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                <LinearLayout
+                        android:id="@+id/CarView"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:orientation="horizontal">
+                    <Button
+                            android:id="@+id/Carsminus"
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/minus_btn"
+                            android:background="@drawable/transparent_background"/>
+
+
+                    <TextView
+                            android:id="@+id/CarsText"
+                            android:layout_width="72dp"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:layout_weight="0.12"
+                            android:gravity="center"/>
+
+                    <Button
+                            android:id="@+id/CarsPlus"
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:drawableRight="@drawable/plus_btn"
+                            android:background="@drawable/transparent_background"/>
+                </LinearLayout>
+
+
+
+                <!--***********************************************This is Van section **********************************************************-->
+
+
+
+                <TextView
+                        android:id="@+id/textViewVan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/Male18Minus"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="44dp"
+                        android:text="Number of Vans/RVs?"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                <LinearLayout
+                        android:id="@+id/VanView"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:orientation="horizontal">
+                    <Button
+                            android:id="@+id/Vanminus"
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/minus_btn"
+                            android:background="@drawable/transparent_background"/>
+
+
+                    <TextView
+                            android:id="@+id/VanText"
+                            android:layout_width="72dp"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:layout_weight="0.12"
+                            android:gravity="center"/>
+
+                    <Button
+                            android:id="@+id/VanPlus"
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:drawableRight="@drawable/plus_btn"
+                            android:background="@drawable/transparent_background"/>
+                </LinearLayout>
+
+                <!--***********************************************This is Tents section **********************************************************-->
+
+
+
+                <TextView
+                        android:id="@+id/textViewTent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/Male18Minus"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="44dp"
+                        android:text="Number of tents?"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                <LinearLayout
+                        android:id="@+id/tentView"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:orientation="horizontal">
+                    <Button
+                            android:id="@+id/TentMinus"
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/minus_btn"
+                            android:background="@drawable/transparent_background"/>
+
+
+                    <TextView
+                            android:id="@+id/tentText"
+                            android:layout_width="72dp"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:layout_weight="0.12"
+                            android:gravity="center"/>
+
+                    <Button
+                            android:id="@+id/tentPlus"
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:drawableRight="@drawable/plus_btn"
+                            android:background="@drawable/transparent_background"/>
+                </LinearLayout>
+
+
+
+
+                <!--***********************************************This is Buildings section **********************************************************-->
+
+
+
+                <TextView
+                        android:id="@+id/textViewBuildings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/Male18Minus"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="44dp"
+                        android:text="Number of Abandoned/Forclosed Buildings?"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                <LinearLayout
+                        android:id="@+id/BuildingsView"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:orientation="horizontal">
+                    <Button
+                            android:id="@+id/BuildingsMinus"
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/minus_btn"
+                            android:background="@drawable/transparent_background"/>
+
+
+                    <TextView
+                            android:id="@+id/BuildingsText"
+                            android:layout_width="72dp"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:layout_weight="0.12"
+                            android:gravity="center"/>
+
+                    <Button
+                            android:id="@+id/BuildingsPlus"
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:drawableRight="@drawable/plus_btn"
+                            android:background="@drawable/transparent_background"/>
+                </LinearLayout>
+
+                <!--***********************************************This is Buildings section **********************************************************-->
+
+
+
+                <TextView
+                        android:id="@+id/textViewRanger"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/Male18Minus"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="44dp"
+                        android:text="Numbers of People in Parks Reported by Ranger?"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                <LinearLayout
+                        android:id="@+id/rangerView"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:orientation="horizontal">
+                    <Button
+                            android:id="@+id/rangerMinus"
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/minus_btn"
+                            android:background="@drawable/transparent_background"/>
+
+
+                    <TextView
+                            android:id="@+id/rangerText"
+                            android:layout_width="72dp"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:layout_weight="0.12"
+                            android:gravity="center"/>
+
+                    <Button
+                            android:id="@+id/rangerPlus"
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:drawableRight="@drawable/plus_btn"
+                            android:background="@drawable/transparent_background"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <Button
+                    android:id="@+id/saveAllButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="34dp"
+                    android:text="Save Census Information"
+                    android:background="@drawable/btn_yellow"
+                    style="@style/ButtonText"/>
+
+        </LinearLayout>
+
+
+
+    </ScrollView>
+
+
+</LinearLayout>

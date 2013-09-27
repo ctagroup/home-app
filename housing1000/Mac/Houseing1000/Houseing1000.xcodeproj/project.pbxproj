@@ -1,0 +1,508 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+<<<<<<< HEAD
+		94DACB1C16EF5679006C24A9 /* brushedMetal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 94DACB1B16EF5679006C24A9 /* brushedMetal.jpg */; };
+=======
+		948A53EE16F2A8F600C012D9 /* brushedMetal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 948A53ED16F2A8F600C012D9 /* brushedMetal.jpg */; };
+>>>>>>> Login Page Layed out
+		94DACB1E16EF5719006C24A9 /* housing1000logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 94DACB1D16EF5719006C24A9 /* housing1000logo.png */; };
+		B540005516E054C9001F289D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B540005416E054C9001F289D /* UIKit.framework */; };
+		B540005716E054C9001F289D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B540005616E054C9001F289D /* Foundation.framework */; };
+		B540005916E054C9001F289D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B540005816E054C9001F289D /* CoreGraphics.framework */; };
+		B540005F16E054C9001F289D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B540005D16E054C9001F289D /* InfoPlist.strings */; };
+		B540006116E054C9001F289D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B540006016E054C9001F289D /* main.m */; };
+		B540006516E054CA001F289D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B540006416E054CA001F289D /* AppDelegate.m */; };
+		B540006716E054CA001F289D /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = B540006616E054CA001F289D /* Default.png */; };
+		B540006916E054CA001F289D /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B540006816E054CA001F289D /* Default@2x.png */; };
+		B540006B16E054CA001F289D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B540006A16E054CA001F289D /* Default-568h@2x.png */; };
+		B540006E16E054CA001F289D /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B540006D16E054CA001F289D /* RootViewController.m */; };
+		B540007116E054CA001F289D /* DataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B540007016E054CA001F289D /* DataViewController.m */; };
+		B540007416E054CA001F289D /* ModelController.m in Sources */ = {isa = PBXBuildFile; fileRef = B540007316E054CA001F289D /* ModelController.m */; };
+		B540007716E054CA001F289D /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B540007516E054CA001F289D /* MainStoryboard.storyboard */; };
+		B540007F16E054CA001F289D /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B540007E16E054CA001F289D /* SenTestingKit.framework */; };
+		B540008016E054CA001F289D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B540005416E054C9001F289D /* UIKit.framework */; };
+		B540008116E054CA001F289D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B540005616E054C9001F289D /* Foundation.framework */; };
+		B540008916E054CA001F289D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B540008716E054CA001F289D /* InfoPlist.strings */; };
+		B540008C16E054CB001F289D /* Houseing1000Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = B540008B16E054CB001F289D /* Houseing1000Tests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B540008216E054CA001F289D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B540004916E054C8001F289D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B540005016E054C8001F289D;
+			remoteInfo = Houseing1000;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+<<<<<<< HEAD
+		94DACB1B16EF5679006C24A9 /* brushedMetal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = brushedMetal.jpg; path = ../../../../../../Images/brushedMetal.jpg; sourceTree = "<group>"; };
+=======
+		948A53ED16F2A8F600C012D9 /* brushedMetal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brushedMetal.jpg; sourceTree = "<group>"; };
+>>>>>>> Login Page Layed out
+		94DACB1D16EF5719006C24A9 /* housing1000logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = housing1000logo.png; sourceTree = "<group>"; };
+		B540005116E054C9001F289D /* Houseing1000.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Houseing1000.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B540005416E054C9001F289D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		B540005616E054C9001F289D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		B540005816E054C9001F289D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		B540005C16E054C9001F289D /* Houseing1000-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Houseing1000-Info.plist"; sourceTree = "<group>"; };
+		B540005E16E054C9001F289D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B540006016E054C9001F289D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		B540006216E054CA001F289D /* Houseing1000-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Houseing1000-Prefix.pch"; sourceTree = "<group>"; };
+		B540006316E054CA001F289D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		B540006416E054CA001F289D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		B540006616E054CA001F289D /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		B540006816E054CA001F289D /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		B540006A16E054CA001F289D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		B540006C16E054CA001F289D /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		B540006D16E054CA001F289D /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		B540006F16E054CA001F289D /* DataViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataViewController.h; sourceTree = "<group>"; };
+		B540007016E054CA001F289D /* DataViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataViewController.m; sourceTree = "<group>"; };
+		B540007216E054CA001F289D /* ModelController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModelController.h; sourceTree = "<group>"; };
+		B540007316E054CA001F289D /* ModelController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModelController.m; sourceTree = "<group>"; };
+		B540007616E054CA001F289D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
+		B540007D16E054CA001F289D /* Houseing1000Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Houseing1000Tests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B540007E16E054CA001F289D /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		B540008616E054CA001F289D /* Houseing1000Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Houseing1000Tests-Info.plist"; sourceTree = "<group>"; };
+		B540008816E054CA001F289D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B540008A16E054CA001F289D /* Houseing1000Tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Houseing1000Tests.h; sourceTree = "<group>"; };
+		B540008B16E054CB001F289D /* Houseing1000Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Houseing1000Tests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B540004E16E054C8001F289D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B540005516E054C9001F289D /* UIKit.framework in Frameworks */,
+				B540005716E054C9001F289D /* Foundation.framework in Frameworks */,
+				B540005916E054C9001F289D /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B540007916E054CA001F289D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B540007F16E054CA001F289D /* SenTestingKit.framework in Frameworks */,
+				B540008016E054CA001F289D /* UIKit.framework in Frameworks */,
+				B540008116E054CA001F289D /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B540004816E054C8001F289D = {
+			isa = PBXGroup;
+			children = (
+				B540005A16E054C9001F289D /* Houseing1000 */,
+				B540008416E054CA001F289D /* Houseing1000Tests */,
+				B540005316E054C9001F289D /* Frameworks */,
+				B540005216E054C9001F289D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B540005216E054C9001F289D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B540005116E054C9001F289D /* Houseing1000.app */,
+				B540007D16E054CA001F289D /* Houseing1000Tests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B540005316E054C9001F289D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B540005416E054C9001F289D /* UIKit.framework */,
+				B540005616E054C9001F289D /* Foundation.framework */,
+				B540005816E054C9001F289D /* CoreGraphics.framework */,
+				B540007E16E054CA001F289D /* SenTestingKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B540005A16E054C9001F289D /* Houseing1000 */ = {
+			isa = PBXGroup;
+			children = (
+<<<<<<< HEAD
+				94DACB1D16EF5719006C24A9 /* housing1000logo.png */,
+				94DACB1B16EF5679006C24A9 /* brushedMetal.jpg */,
+=======
+				948A53ED16F2A8F600C012D9 /* brushedMetal.jpg */,
+				94DACB1D16EF5719006C24A9 /* housing1000logo.png */,
+>>>>>>> Login Page Layed out
+				B540006316E054CA001F289D /* AppDelegate.h */,
+				B540006416E054CA001F289D /* AppDelegate.m */,
+				B540006C16E054CA001F289D /* RootViewController.h */,
+				B540006D16E054CA001F289D /* RootViewController.m */,
+				B540006F16E054CA001F289D /* DataViewController.h */,
+				B540007016E054CA001F289D /* DataViewController.m */,
+				B540007216E054CA001F289D /* ModelController.h */,
+				B540007316E054CA001F289D /* ModelController.m */,
+				B540007516E054CA001F289D /* MainStoryboard.storyboard */,
+				B540005B16E054C9001F289D /* Supporting Files */,
+			);
+			path = Houseing1000;
+			sourceTree = "<group>";
+		};
+		B540005B16E054C9001F289D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B540005C16E054C9001F289D /* Houseing1000-Info.plist */,
+				B540005D16E054C9001F289D /* InfoPlist.strings */,
+				B540006016E054C9001F289D /* main.m */,
+				B540006216E054CA001F289D /* Houseing1000-Prefix.pch */,
+				B540006616E054CA001F289D /* Default.png */,
+				B540006816E054CA001F289D /* Default@2x.png */,
+				B540006A16E054CA001F289D /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B540008416E054CA001F289D /* Houseing1000Tests */ = {
+			isa = PBXGroup;
+			children = (
+				B540008A16E054CA001F289D /* Houseing1000Tests.h */,
+				B540008B16E054CB001F289D /* Houseing1000Tests.m */,
+				B540008516E054CA001F289D /* Supporting Files */,
+			);
+			path = Houseing1000Tests;
+			sourceTree = "<group>";
+		};
+		B540008516E054CA001F289D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B540008616E054CA001F289D /* Houseing1000Tests-Info.plist */,
+				B540008716E054CA001F289D /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B540005016E054C8001F289D /* Houseing1000 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B540008F16E054CB001F289D /* Build configuration list for PBXNativeTarget "Houseing1000" */;
+			buildPhases = (
+				B540004D16E054C8001F289D /* Sources */,
+				B540004E16E054C8001F289D /* Frameworks */,
+				B540004F16E054C8001F289D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Houseing1000;
+			productName = Houseing1000;
+			productReference = B540005116E054C9001F289D /* Houseing1000.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B540007C16E054CA001F289D /* Houseing1000Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B540009216E054CB001F289D /* Build configuration list for PBXNativeTarget "Houseing1000Tests" */;
+			buildPhases = (
+				B540007816E054CA001F289D /* Sources */,
+				B540007916E054CA001F289D /* Frameworks */,
+				B540007A16E054CA001F289D /* Resources */,
+				B540007B16E054CA001F289D /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B540008316E054CA001F289D /* PBXTargetDependency */,
+			);
+			name = Houseing1000Tests;
+			productName = Houseing1000Tests;
+			productReference = B540007D16E054CA001F289D /* Houseing1000Tests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B540004916E054C8001F289D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = Ben;
+			};
+			buildConfigurationList = B540004C16E054C8001F289D /* Build configuration list for PBXProject "Houseing1000" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = B540004816E054C8001F289D;
+			productRefGroup = B540005216E054C9001F289D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B540005016E054C8001F289D /* Houseing1000 */,
+				B540007C16E054CA001F289D /* Houseing1000Tests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B540004F16E054C8001F289D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B540005F16E054C9001F289D /* InfoPlist.strings in Resources */,
+				B540006716E054CA001F289D /* Default.png in Resources */,
+				B540006916E054CA001F289D /* Default@2x.png in Resources */,
+				B540006B16E054CA001F289D /* Default-568h@2x.png in Resources */,
+				B540007716E054CA001F289D /* MainStoryboard.storyboard in Resources */,
+<<<<<<< HEAD
+				94DACB1C16EF5679006C24A9 /* brushedMetal.jpg in Resources */,
+				94DACB1E16EF5719006C24A9 /* housing1000logo.png in Resources */,
+=======
+				94DACB1E16EF5719006C24A9 /* housing1000logo.png in Resources */,
+				948A53EE16F2A8F600C012D9 /* brushedMetal.jpg in Resources */,
+>>>>>>> Login Page Layed out
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B540007A16E054CA001F289D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B540008916E054CA001F289D /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B540007B16E054CA001F289D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B540004D16E054C8001F289D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B540006116E054C9001F289D /* main.m in Sources */,
+				B540006516E054CA001F289D /* AppDelegate.m in Sources */,
+				B540006E16E054CA001F289D /* RootViewController.m in Sources */,
+				B540007116E054CA001F289D /* DataViewController.m in Sources */,
+				B540007416E054CA001F289D /* ModelController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B540007816E054CA001F289D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B540008C16E054CB001F289D /* Houseing1000Tests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B540008316E054CA001F289D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B540005016E054C8001F289D /* Houseing1000 */;
+			targetProxy = B540008216E054CA001F289D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		B540005D16E054C9001F289D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B540005E16E054C9001F289D /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		B540007516E054CA001F289D /* MainStoryboard.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B540007616E054CA001F289D /* en */,
+			);
+			name = MainStoryboard.storyboard;
+			sourceTree = "<group>";
+		};
+		B540008716E054CA001F289D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B540008816E054CA001F289D /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		B540008D16E054CB001F289D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		B540008E16E054CB001F289D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B540009016E054CB001F289D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Houseing1000/Houseing1000-Prefix.pch";
+				INFOPLIST_FILE = "Houseing1000/Houseing1000-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		B540009116E054CB001F289D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Houseing1000/Houseing1000-Prefix.pch";
+				INFOPLIST_FILE = "Houseing1000/Houseing1000-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		B540009316E054CB001F289D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Houseing1000.app/Houseing1000";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Houseing1000/Houseing1000-Prefix.pch";
+				INFOPLIST_FILE = "Houseing1000Tests/Houseing1000Tests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		B540009416E054CB001F289D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Houseing1000.app/Houseing1000";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Houseing1000/Houseing1000-Prefix.pch";
+				INFOPLIST_FILE = "Houseing1000Tests/Houseing1000Tests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B540004C16E054C8001F289D /* Build configuration list for PBXProject "Houseing1000" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B540008D16E054CB001F289D /* Debug */,
+				B540008E16E054CB001F289D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B540008F16E054CB001F289D /* Build configuration list for PBXNativeTarget "Houseing1000" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B540009016E054CB001F289D /* Debug */,
+				B540009116E054CB001F289D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B540009216E054CB001F289D /* Build configuration list for PBXNativeTarget "Houseing1000Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B540009316E054CB001F289D /* Debug */,
+				B540009416E054CB001F289D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B540004916E054C8001F289D /* Project object */;
+}
