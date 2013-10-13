@@ -1,6 +1,8 @@
 package edu.weber.housing1000.rest;
 
 import android.content.Context;
+import android.os.AsyncTask;
+
 import org.apache.commons.codec.binary.Base64;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -30,7 +32,7 @@ public class RestHelper {
 
             int numCharsRead;
             char[] charArray = new char[1024];
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             while ((numCharsRead = isr.read(charArray)) > 0) {
                 sb.append(charArray, 0, numCharsRead);
             }
@@ -76,7 +78,7 @@ public class RestHelper {
 
             int numCharsRead;
             char[] charArray = new char[1024];
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             while ((numCharsRead = isr.read(charArray)) > 0) {
                 sb.append(charArray, 0, numCharsRead);
             }
@@ -87,6 +89,34 @@ public class RestHelper {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         return retval;
+    }
+
+    /***
+     *
+     */
+    class RetreiveHmsIdTask extends AsyncTask<Void, Void, Integer> {
+
+        private Exception exception;
+
+        protected Integer doInBackground(Void... params) {
+            int retval = -1;
+            try {
+                String result = null;
+
+                // TODO: Implement HMS ID retrieval
+
+            } catch (Exception e) {
+                this.exception = e;
+                return -1;
+            }
+
+            return retval;
+        }
+
+        protected void onPostExecute(Integer Id) {
+            // TODO: check this.exception
+            // TODO: do something with the feed
+        }
     }
 
 }

@@ -4,13 +4,13 @@
               android:orientation="vertical"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
-              android:background="@drawable/brushedmetal"
-              android:tileMode="repeat">
+              android:tileMode="repeat"
+    android:gravity="center">
 
     <Button
             android:id="@+id/clientButton"
             android:layout_height="wrap_content"
-            android:layout_width="110dip"
+            android:layout_width="180dp"
             android:gravity="center_vertical|center_horizontal"
             android:layout_gravity="center_vertical|center_horizontal|center"
             android:layout_marginBottom="30dp"
@@ -18,12 +18,13 @@
             android:clickable="true"
             android:text="@string/Client"
             android:background="@drawable/btn_yellow"
-            style="@style/ButtonText"/>
+            style="@style/ButtonText"
+        android:textSize="22sp" />
 
     <Button
             android:id="@+id/interviewButton"
             android:layout_height="wrap_content"
-            android:layout_width="110dip"
+            android:layout_width="180dip"
             android:gravity="center_vertical|center_horizontal"
             android:layout_gravity="center_vertical|center_horizontal|center"
             android:layout_marginBottom="30dp"
@@ -32,12 +33,12 @@
             android:text="@string/Interviewer"
             android:background="@drawable/btn_yellow"
             style="@style/ButtonText"
-            />
+        android:textSize="22sp" />
 
     <Button
             android:id="@+id/cameraButton"
             android:layout_height="wrap_content"
-            android:layout_width="110dp"
+            android:layout_width="180dp"
             android:gravity="center_vertical|center_horizontal"
             android:layout_gravity="center_vertical|center_horizontal|center"
             android:layout_marginBottom="30dp"
@@ -46,12 +47,12 @@
             android:text="@string/Photo"
             android:background="@drawable/btn_yellow"
             style="@style/ButtonText"
-            />
+        android:textSize="22sp" />
 
     <Button
             android:id="@+id/SubmitBtn"
             android:layout_height="wrap_content"
-            android:layout_width="110dp"
+            android:layout_width="180dp"
             android:gravity="center_vertical|center_horizontal"
             android:layout_gravity="center_vertical|center_horizontal|center"
             android:layout_marginBottom="30dp"
@@ -59,7 +60,7 @@
             android:clickable="true"
             android:text="@string/SubmitSurvey"
             android:background="@drawable/btn_yellow" style="@style/ButtonText"
-            />
+        android:textSize="22sp" />
 
 
 </LinearLayout>

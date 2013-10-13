@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import edu.weber.housing1000.data.Survey;
 import edu.weber.housing1000.db.SurveyDbAdapter;
-import edu.weber.housing1000.rest.RestHelper;
 
 import java.io.FileOutputStream;
 
@@ -37,17 +36,20 @@ public class SignatureActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.signature);
 
-        hmsId = RestHelper.getHmsId();
+        // Setting this to -1 until the RestHelper is taken off of the main thread
+        // Side note: any IO/slow operations need to be done on a separate thread
+        hmsId = -1;
+        //hmsId = RestHelper.getHmsId();
         SurveyDbAdapter db = new SurveyDbAdapter(getApplicationContext());
         db.open();
         final long surveyId = db.insertSurvey(new Survey(hmsId, Survey.Status.CREATED));
         db.close();
 
         mGetSign = (Button) findViewById(R.id.getsign);
-        mContent = (LinearLayout) findViewById(R.id.linearLayout);
+        mContent = (LinearLayout) findViewById(R.id.signatureLinearLayout);
         mSignature = new signature(this, null);
         mSignature.setBackgroundColor(Color.WHITE);
-        mContent.addView(mSignature, LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+        mContent.addView(mSignature, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         mClear = (Button) findViewById(R.id.clear);
         mGetSign = (Button) findViewById(R.id.getsign);
         mGetSign.setEnabled(false);

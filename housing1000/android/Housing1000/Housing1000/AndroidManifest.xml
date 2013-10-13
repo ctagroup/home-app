@@ -4,16 +4,15 @@
 
     <uses-feature android:name="android.hardware.camera"/>
 
-    <uses-sdk android:minSdkVersion="8"
-              android:targetSdkVersion="8"
-              android:maxSdkVersion="17"/>
+    <uses-sdk android:minSdkVersion="10"
+              android:targetSdkVersion="18"/>
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <application android:icon="@drawable/icon" android:label="@string/app_name" android:theme="@style/CodeFont">
+    <application android:icon="@drawable/icon" android:label="@string/app_name" android:theme="@android:style/Theme.Holo.Light">
         <activity android:name=".LoginActivity"
                   android:screenOrientation="portrait">
             <intent-filter>

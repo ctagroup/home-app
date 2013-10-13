@@ -3,19 +3,19 @@
               android:id="@+id/root_layout"
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
-              android:orientation="vertical"
-              android:background="@drawable/backrepeat">
+              android:orientation="vertical">
 
 	<RelativeLayout
 			android:id="@+id/btnSubmit"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent">
+			android:layout_height="match_parent"
+        android:gravity="center">
 
 		<Button
 				android:id="@+id/Cancel"
 				android:layout_width="150dp"
 				android:layout_height="wrap_content"
-				android:layout_alignParentLeft="true"
+				android:layout_alignParentLeft="false"
 				android:text="@string/txtCancel"
 				style="@style/ButtonText"
 				android:background="@drawable/btn_blue">
@@ -25,10 +25,11 @@
 				android:id="@+id/Submit"
 				android:layout_width="150dp"
 				android:layout_height="wrap_content"
-				android:layout_alignParentRight="true"
+				android:layout_alignParentRight="false"
 				android:text="@string/txtSubmit"
 				android:background="@drawable/btn_yellow"
-				style="@style/ButtonText">
+				style="@style/ButtonText"
+            android:layout_toRightOf="@+id/Cancel">
 		</Button>
 	</RelativeLayout>
 

@@ -4,7 +4,7 @@
               android:layout_width="wrap_content"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              android:background="@drawable/backrepeat">
+    android:gravity="center">
 
 
 	<ScrollView
@@ -29,7 +29,8 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center|bottom"
-			android:orientation="horizontal">
+			android:orientation="horizontal"
+        android:gravity="center">
 		<Button
 				android:id="@+id/cancelBtn"
 				android:layout_width="120dp"
