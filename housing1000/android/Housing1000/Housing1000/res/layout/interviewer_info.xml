@@ -1,194 +1,191 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-	<RelativeLayout
-			android:id="@+id/btnSubmitCancel"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-        android:gravity="center">
+    <ScrollView
+        android:id="@+id/scrollFull"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentTop="false"
+        android:layout_above="@+id/btnSubmitCancel">
 
-		<Button
-				android:id="@+id/Cancel"
-				android:layout_width="150dp"
-				android:layout_height="wrap_content"
-				android:layout_alignParentLeft="false"
-				android:text="@string/txtCancel"
-				style="@style/ButtonText"
-				android:background="@drawable/btn_blue">
-		</Button>
+        <LinearLayout
+            android:id="@+id/layoutFull"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-		<Button
-				android:id="@+id/Submit"
-				android:layout_width="150dp"
-				android:layout_height="wrap_content"
-				android:layout_alignParentRight="false"
-				android:text="@string/txtSubmit"
-				android:background="@drawable/btn_yellow"
-				style="@style/ButtonText"
-            android:layout_toRightOf="@+id/Cancel">
-		</Button>
-	</RelativeLayout>
+            <TextView
+                android:id="@+id/question_udoyoudetectsignsorsy"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:text="@string/udoyoudetectsignsorsy"></TextView>
 
-	<ScrollView
-			android:id="@+id/scrollFull"
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent">
+            <RadioGroup
+                android:id="@+id/udoyoudetectsignsorsy"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
 
-		<LinearLayout
-				android:id="@+id/layoutFull"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:orientation="vertical">
+                <RadioButton
+                    android:id="@+id/udoyoudetectsignsorsyYes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txtYes" />
 
-			<TextView
-					android:id="@+id/question_udoyoudetectsignsorsy"
-					android:layout_width="fill_parent"
-					android:layout_height="match_parent"
-					android:layout_marginLeft="5dp"
-					android:text="@string/udoyoudetectsignsorsy">
-			</TextView>
+                <RadioButton
+                    android:id="@+id/udoyoudetectsignsorsyNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txtNo" />
+            </RadioGroup>
 
-			<RadioGroup
-					android:id="@+id/udoyoudetectsignsorsy"
-					android:layout_width="fill_parent"
-					android:layout_height="40dp"
-					android:orientation="horizontal">
+            <TextView
+                android:id="@+id/InterviewerDrugs"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:text="@string/InterviewerDrugQuestion"></TextView>
 
-				<RadioButton
-						android:id="@+id/udoyoudetectsignsorsyYes"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/txtYes"/>
+            <RadioGroup
+                android:id="@+id/ansrInterviewerDrugs"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
 
-				<RadioButton
-						android:id="@+id/udoyoudetectsignsorsyNo"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/txtNo"/>
-			</RadioGroup>
+                <RadioButton
+                    android:id="@+id/InterviewerDrugsYes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txtYes" />
 
-			<TextView
-					android:id="@+id/InterviewerDrugs"
-					android:layout_width="fill_parent"
-					android:layout_height="match_parent"
-					android:layout_marginLeft="5dp"
-					android:text="@string/InterviewerDrugQuestion">
-			</TextView>
+                <RadioButton
+                    android:id="@+id/InterviewerDrugsNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txtNo" />
+            </RadioGroup>
 
-			<RadioGroup
-					android:id="@+id/ansrInterviewerDrugs"
-					android:layout_width="fill_parent"
-					android:layout_height="40dp"
-					android:orientation="horizontal">
+            <TextView
+                android:id="@+id/question_mobservesignsorsympto"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:text="@string/mobservesignsorsympto"></TextView>
 
-				<RadioButton
-						android:id="@+id/InterviewerDrugsYes"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/txtYes"/>
+            <RadioGroup
+                android:id="@+id/mobservesignsorsympto"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
 
-				<RadioButton
-						android:id="@+id/InterviewerDrugsNo"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/txtNo"/>
-			</RadioGroup>
+                <RadioButton
+                    android:id="@+id/mobservesignsorsymptoYes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txtYes" />
 
-			<TextView
-					android:id="@+id/question_mobservesignsorsympto"
-					android:layout_width="fill_parent"
-					android:layout_height="match_parent"
-					android:layout_marginLeft="5dp"
-					android:text="@string/mobservesignsorsympto">
-			</TextView>
+                <RadioButton
+                    android:id="@+id/mobservesignsorsymptoNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txtNo" />
+            </RadioGroup>
 
-			<RadioGroup
-					android:id="@+id/mobservesignsorsympto"
-					android:layout_width="fill_parent"
-					android:layout_height="40dp"
-					android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal">
 
-				<RadioButton
-						android:id="@+id/mobservesignsorsymptoYes"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/txtYes"/>
+                <TextView
+                    android:id="@+id/question_interviewersname"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/interviewersname"></TextView>
 
-				<RadioButton
-						android:id="@+id/mobservesignsorsymptoNo"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/txtNo"/>
-			</RadioGroup>
+                <EditText
+                    android:id="@+id/interviewersname"
+                    android:layout_width="200dp"
+                    android:layout_height="fill_parent"
+                    android:inputType="textPersonName|textCapWords" />
+            </LinearLayout>
 
-			<LinearLayout
-					android:layout_width="fill_parent"
-					android:layout_height="fill_parent"
-					android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal">
 
-				<TextView
-						android:id="@+id/question_interviewersname"
-						android:layout_width="100dp"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/interviewersname">
-				</TextView>
+                <TextView
+                    android:id="@+id/InterviewerCity"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/CityInterview"></TextView>
 
-				<EditText
-						android:id="@+id/interviewersname"
-						android:layout_width="200dp"
-						android:layout_height="fill_parent"
-						android:inputType="textPersonName|textCapWords"/>
-			</LinearLayout>
+                <Spinner
+                    android:id="@+id/ansrInterviewerCity"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:entries="@array/arrCities"
+                    android:prompt="@string/CityInterview"></Spinner>
+            </LinearLayout>
 
-			<LinearLayout
-					android:layout_width="fill_parent"
-					android:layout_height="fill_parent"
-					android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal">
 
-				<TextView
-						android:id="@+id/InterviewerCity"
-						android:layout_width="100dp"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/CityInterview">
-				</TextView>
+                <TextView
+                    android:id="@+id/question_censustrack"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/censustrack"></TextView>
 
-				<Spinner
-						android:id="@+id/ansrInterviewerCity"
-						android:layout_width="200dp"
-						android:layout_height="40dp"
-						android:entries="@array/arrCities"
-						android:prompt="@string/CityInterview">
-				</Spinner>
-			</LinearLayout>
+                <EditText
+                    android:id="@+id/censustrack"
+                    android:layout_width="200dp"
+                    android:layout_height="fill_parent"
+                    android:inputType="text" />
+            </LinearLayout>
 
-			<LinearLayout
-					android:layout_width="fill_parent"
-					android:layout_height="fill_parent"
-					android:orientation="horizontal">
+        </LinearLayout>
 
-				<TextView
-						android:id="@+id/question_censustrack"
-						android:layout_width="100dp"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/censustrack">
-				</TextView>
+    </ScrollView>
 
-				<EditText
-						android:id="@+id/censustrack"
-						android:layout_width="200dp"
-						android:layout_height="fill_parent"
-						android:inputType="text"/>
-			</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/btnSubmitCancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentBottom="true">
 
-		</LinearLayout>
+        <Button
+            android:id="@+id/Cancel"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="false"
+            android:text="@string/txtCancel"
+            style="@style/ButtonText"
+            android:background="@drawable/btn_blue"></Button>
 
-	</ScrollView>
+        <Button
+            android:id="@+id/Submit"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="false"
+            android:text="@string/txtSubmit"
+            android:background="@drawable/btn_yellow"
+            style="@style/ButtonText"
+            android:layout_toRightOf="@+id/Cancel"></Button>
+    </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

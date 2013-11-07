@@ -4,7 +4,6 @@ package edu.weber.housing1000.data;
 import android.database.Cursor;
 import de.akquinet.android.androlog.Log;
 import edu.weber.housing1000.db.SurveyDbAdapter;
-import edu.weber.housing1000.db.SurveyDbHelper;
 
 import java.util.*;
 

@@ -6,18 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import de.akquinet.android.androlog.Log;
 import edu.weber.housing1000.db.SurveyDbAdapter;
 import edu.weber.housing1000.rest.RestHelper;
 import edu.weber.housing1000.rest.XmlSurvey;
 
-import java.io.File;
 import java.io.FileOutputStream;
 
 public class MainMenuActivity extends Activity{
@@ -118,9 +114,6 @@ public class MainMenuActivity extends Activity{
                 android.util.Log.v("log_tag", "url: " + url);
             } catch (Exception e) {
                 e.printStackTrace();
-            }
-            finally {
-
             }
         }
     }

@@ -7,10 +7,10 @@
     <string name="Photo">Photo</string>
     <string name="Signature">Sign</string>
     <string name="btn_ClientInformation">Client Information</string>
-    <string name="btn_ClientDemographics">Client Demographics</string> 
+    <string name="btn_ClientDemographics">Client Demographics</string>
     <string name="btn_MilitaryInformation">Military Information</string>
     <string name="btn_LegalOtherInformation">Legal/Other Information</string>
-    <string name="btn_LivingSituation">Living Situation</string> 
+    <string name="btn_LivingSituation">Living Situation</string>
     <string name="btn_MoneyMatters">Money Matters</string>
     <string name="btn_HealthMatters">Health Matters</string>
     <string name="btn_Community">Community</string>
@@ -218,7 +218,7 @@
         <item>California</item>
         <item>Colorado</item>
         <item>Conneticut</item>
-        <item>Delaware</item>   
+        <item>Delaware</item>
         <item>Florida</item>
         <item>Georgia</item>
         <item>Hawaii</item>
@@ -234,7 +234,7 @@
         <item>Massachusetts</item>
         <item>Michigan</item>
         <item>Minnesota</item>
-        <item>Mississippi</item>   
+        <item>Mississippi</item>
         <item>Missouri</item>
         <item>Montana</item>
         <item>Nebraska</item>
@@ -250,7 +250,7 @@
         <item>Oregon</item>
         <item>Pennsylvania</item>
         <item>Rhode Island</item>
-        <item>South Carolina</item>   
+        <item>South Carolina</item>
         <item>South Dakota</item>
         <item>Tennessee</item>
         <item>Texas</item>
@@ -264,7 +264,7 @@
         <item>Wyoming</item>
         <item>Don\'t Know</item>
         <item>Refused</item>
-        <item>Unknown</item>      
+        <item>Unknown</item>
     </string-array>
     <string name="hud_zipcodelastpermaddr">Last Permanent Address LP Zip:</string>
     <string name="hud_zipdataquality">Zip data quality:</string>
@@ -299,8 +299,8 @@
     <string name="svp_noncashbenefitssourceMedicare">Medicare</string>
     <string name="svp_noncashbenefitssourceWIC">WIC (Special Supplemental Nutrition Program)</string>
     <string name="svp_noncashbenefitssourceVA">VA Medical Services</string>
-	<string name="svp_noncashbenefitssourceOther">Other</string>
-	<string name="svp_noncashbenefitssourceOtherDetail">If Other (specify here):</string>
+    <string name="svp_noncashbenefitssourceOther">Other</string>
+    <string name="svp_noncashbenefitssourceOtherDetail">If Other (specify here):</string>
     <string name="_17wheredoyougoforhea">Where do you go for healthcare when not well?</string>
     <string-array name="arrHealthLocation">
         <item>-Select-</item>
@@ -373,17 +373,17 @@
         <item>Los Altos Hills</item>
         <item>Los Gatos</item>
         <item>Menlo Park</item>
-	    <item>Milpitas</item>
-	    <item>Monte Sereno</item>
-	    <item>Morgan Hill</item>
-	    <item>Mountain View</item>
-	    <item>Palo Alto</item>
-	    <item>San Jose</item>
-	    <item>San Martin</item>
-	    <item>Santa Clara</item>
-	    <item>Saratoga</item>
-	    <item>Stanford</item>
-	    <item>Sunnyvale</item>
+        <item>Milpitas</item>
+        <item>Monte Sereno</item>
+        <item>Morgan Hill</item>
+        <item>Mountain View</item>
+        <item>Palo Alto</item>
+        <item>San Jose</item>
+        <item>San Martin</item>
+        <item>Santa Clara</item>
+        <item>Saratoga</item>
+        <item>Stanford</item>
+        <item>Sunnyvale</item>
     </string-array>
 
     <string name="InterviewerTimeQuestion">Click to add date and time:</string>
@@ -394,27 +394,7 @@
     <string name="SubmitSurvey">Submit</string>
     <string name="submit_survey_message">Sumbit Survey</string>
     <string name="survey_title">Uploading Files</string>
-	<string name="disclaimerText"><b>PLEASE READ THIS DOCUMENT CAREFULLY. YOUR SIGNATURE IS REQUIRED FOR PARTICIPATION. YOU MUST BE AT LEAST 18 YEARS OF AGE TO GIVE YOUR CONSENT TO PARTICIPATE IN RESEARCH. IF YOU DESIRE A COPY OF THIS CONSENT FORM, YOU MAY REQUEST ONE AND WE WILL PROVIDE IT.</b> \nConfidentiality: You will be assigned a code number which will protect your identity. All data will be kept in secured files, in accord with the standards of the University, Federal regulations, and the American Psychological Association. All identifying information will be removed from questionnaires as soon as your participation is complete. No one will be able to know which are your questionnaire responses. Finally, remember that it is no individual person\'s responses that interest us; we are studying the usefulness of the tests in question for people in general.</string>
-
-    <style name="ButtonText">
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">#ffffff</item>
-        <item name="android:gravity">center</item>
-        <item name="android:layout_margin">3dp</item>
-        <item name="android:textSize">14dp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:shadowColor">#000000</item>
-        <item name="android:shadowDx">1</item>
-        <item name="android:shadowDy">1</item>
-        <item name="android:shadowRadius">2</item>
-    </style>
-
-
-
-
-
-
-
+    <string name="disclaimerText"><b>PLEASE READ THIS DOCUMENT CAREFULLY. YOUR SIGNATURE IS REQUIRED FOR PARTICIPATION. YOU MUST BE AT LEAST 18 YEARS OF AGE TO GIVE YOUR CONSENT TO PARTICIPATE IN RESEARCH. IF YOU DESIRE A COPY OF THIS CONSENT FORM, YOU MAY REQUEST ONE AND WE WILL PROVIDE IT.</b> \nConfidentiality: You will be assigned a code number which will protect your identity. All data will be kept in secured files, in accord with the standards of the University, Federal regulations, and the American Psychological Association. All identifying information will be removed from questionnaires as soon as your participation is complete. No one will be able to know which are your questionnaire responses. Finally, remember that it is no individual person\'s responses that interest us; we are studying the usefulness of the tests in question for people in general.</string>
+    <string name="description_housing_1000_logo">Housing 1000 Logo</string>
 
 </resources>

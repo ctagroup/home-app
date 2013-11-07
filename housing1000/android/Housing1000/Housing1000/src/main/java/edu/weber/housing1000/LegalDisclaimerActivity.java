@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import edu.weber.housing1000.db.SurveyDbAdapter;
-import edu.weber.housing1000.db.SurveyDbHelper;
 
 import java.util.Random;
 

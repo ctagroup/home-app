@@ -14,7 +14,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.Criteria;
-import org.apache.http.impl.io.ContentLengthInputStream;
 
 /**
  * Created with IntelliJ IDEA.
@@ -111,8 +110,8 @@ public class CensusActivity extends Activity implements LocationListener
 
         View individualView = findViewById(R.id.IndividualView);
         individualView.setVisibility(View.GONE);
-        View familylView = findViewById(R.id.MiscellaneousView);
-        familylView.setVisibility(View.GONE);
+        View familyView = findViewById(R.id.MiscellaneousView);
+        familyView.setVisibility(View.GONE);
 
 
        // TextView carsLabel   = (TextView) findViewById(R.id.carsCounterLabel);
