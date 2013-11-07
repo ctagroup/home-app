@@ -1,1913 +1,1934 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/root_layout"
               android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
-
-	<RelativeLayout
-			android:id="@+id/btnSubmit"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-        android:gravity="center">
-
-		<Button
-				android:id="@+id/Cancel"
-				android:layout_width="150dp"
-				android:layout_height="wrap_content"
-				android:layout_alignParentLeft="false"
-				android:text="@string/txtCancel"
-				style="@style/ButtonText"
-				android:background="@drawable/btn_blue">
-		</Button>
-
-		<Button
-				android:id="@+id/Submit"
-				android:layout_width="150dp"
-				android:layout_height="wrap_content"
-				android:layout_alignParentRight="false"
-				android:text="@string/txtSubmit"
-				android:background="@drawable/btn_yellow"
-				style="@style/ButtonText"
-            android:layout_toRightOf="@+id/Cancel">
-		</Button>
-	</RelativeLayout>
-
-	<ScrollView
-			android:id="@+id/scrollFull"
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent">
-
-		<LinearLayout
-				android:id="@+id/layoutFull"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:orientation="vertical">
-
-			<Button
-					android:id="@+id/btnClientInformation"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:text="@string/btn_ClientInformation"/>
-
-			<LinearLayout
-					android:id="@+id/panelClientInformation"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="5dp"
-					android:layout_marginRight="5dp"
-					android:orientation="vertical">
-
-				<!--<TextView
-						android:id="@+id/question_12hasconsentedtopart"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/_12hasconsentedtopart">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/_12hasconsentedtopart"
-						android:layout_width="fill_parent"
-						android:layout_height="40dp"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/_12hasconsentedtopartYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/_12hasconsentedtopartNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-				</RadioGroup>   -->
-
-				<!--<LinearLayout
-						android:layout_width="fill_parent"
-						android:layout_height="fill_parent"
-						android:orientation="horizontal">
-
-					<TextView
-							android:id="@+id/questionTwo"
-							android:layout_width="100dp"
-							android:layout_height="match_parent"
-							android:layout_marginLeft="5dp"
-							android:text="@string/txtTwo">
-
-					</TextView>
-
-					<EditText
-							android:id="@+id/ansrTwo"
-							android:layout_width="200dp"
-							android:layout_height="fill_parent"
-							android:inputType="number"/>
-				</LinearLayout> -->
-
-				<LinearLayout
-						android:layout_width="fill_parent"
-						android:layout_height="fill_parent"
-						android:orientation="horizontal">
-
-					<TextView
-							android:id="@+id/question_first_name"
-							android:layout_width="100dp"
-							android:layout_height="match_parent"
-							android:layout_marginLeft="5dp"
-							android:text="@string/first_name">
-					</TextView>
-
-					<EditText
-							android:id="@+id/first_name"
-							android:layout_width="200dp"
-							android:layout_height="fill_parent"
-							android:inputType="text|textPersonName|textCapWords"/>
-				</LinearLayout>
-
-				<LinearLayout
-						android:layout_width="fill_parent"
-						android:layout_height="fill_parent"
-						android:orientation="horizontal">
-
-					<TextView
-							android:id="@+id/question_last_name"
-							android:layout_width="100dp"
-							android:layout_height="match_parent"
-							android:layout_marginLeft="5dp"
-							android:text="@string/last_name">
-					</TextView>
-
-					<EditText
-							android:id="@+id/last_name"
-							android:layout_width="200dp"
-							android:layout_height="fill_parent"
-							android:inputType="textPersonName|textCapWords"/>
-				</LinearLayout>
-
-				<LinearLayout
-						android:layout_width="fill_parent"
-						android:layout_height="fill_parent"
-						android:orientation="horizontal">
-
-					<TextView
-							android:id="@+id/question_soc_sec_no"
-							android:layout_width="100dp"
-							android:layout_height="match_parent"
-							android:layout_marginLeft="5dp"
-							android:text="@string/soc_sec_no">
-					</TextView>
-
-					<EditText
-							android:id="@+id/soc_sec_no"
-							android:layout_width="200dp"
-							android:layout_height="fill_parent"
-							android:inputType="number"
-							android:maxLength="9"/>
-				</LinearLayout>
-
-				<LinearLayout
-						android:layout_width="fill_parent"
-						android:layout_height="fill_parent"
-						android:orientation="horizontal">
-
-					<TextView
-							android:id="@+id/question_alias"
-							android:layout_width="100dp"
-							android:layout_height="match_parent"
-							android:layout_marginLeft="5dp"
-							android:text="@string/alias">
-					</TextView>
-
-					<EditText
-							android:id="@+id/alias"
-							android:layout_width="200dp"
-							android:layout_height="fill_parent"
-							android:inputType="textPersonName"/>
-				</LinearLayout>
-
-				<LinearLayout
-						android:layout_width="fill_parent"
-						android:layout_height="fill_parent"
-						android:orientation="horizontal">
-
-					<TextView
-							android:id="@+id/question_svpprofdob"
-							android:layout_width="100dp"
-							android:layout_height="match_parent"
-							android:layout_marginLeft="5dp"
-							android:text="@string/svpprofdob">
-					</TextView>
-
-					<EditText
-							android:id="@+id/svpprofdob"
-							android:layout_width="200dp"
-							android:layout_height="fill_parent"
-							android:inputType="date"/>
-				</LinearLayout>
-
-				<LinearLayout
-						android:layout_width="fill_parent"
-						android:layout_height="fill_parent"
-						android:orientation="horizontal">
-
-					<TextView
-							android:id="@+id/question_svpprofdobtype"
-							android:layout_width="100dp"
-							android:layout_height="match_parent"
-							android:layout_marginLeft="5dp"
-							android:text="@string/svpprofdobtype">
-					</TextView>
-
-					<Spinner
-							android:id="@+id/svpprofdobtype"
-							android:layout_width="200dp"
-							android:layout_height="40dp"
-							android:entries="@array/arrDOBType"
-							android:prompt="@string/svpprofdobtype">
-					</Spinner>
-				</LinearLayout>
-
-				<LinearLayout
-						android:layout_width="fill_parent"
-						android:layout_height="fill_parent"
-						android:orientation="horizontal">
-
-					<TextView
-							android:id="@+id/question_phonemessage"
-							android:layout_width="100dp"
-							android:layout_height="match_parent"
-							android:layout_marginLeft="5dp"
-							android:text="@string/phonemessage">
-					</TextView>
-
-					<EditText
-							android:id="@+id/phonemessage"
-							android:layout_width="200dp"
-							android:layout_height="fill_parent"
-							android:inputType="number|phone"/>
-				</LinearLayout>
-
-				<LinearLayout
-						android:layout_width="fill_parent"
-						android:layout_height="fill_parent"
-						android:orientation="horizontal">
-
-					<TextView
-							android:id="@+id/questionTen"
-							android:layout_width="fill_parent"
-							android:layout_height="match_parent"
-							android:layout_marginLeft="5dp"
-							android:text="@string/familysize">
-					</TextView>
-				</LinearLayout>
-
-				<LinearLayout
-						android:layout_width="fill_parent"
-						android:layout_height="fill_parent"
-						android:orientation="horizontal">
-
-					<TextView
-							android:id="@+id/question_adultsinhousehold"
-							android:layout_width="75dp"
-							android:layout_height="match_parent"
-							android:layout_marginLeft="5dp"
-							android:text="@string/adultsinhousehold">
-					</TextView>
-
-					<EditText
-							android:id="@+id/adultsinhousehold"
-							android:layout_width="50dp"
-							android:layout_height="fill_parent"
-							android:inputType="number"/>
-
-					<TextView
-							android:id="@+id/question_childreninhousehold"
-							android:layout_width="75dp"
-							android:layout_height="match_parent"
-							android:layout_marginLeft="5dp"
-							android:text="@string/childreninhousehold">
-					</TextView>
-
-					<EditText
-							android:id="@+id/childreninhousehold"
-							android:layout_width="50dp"
-							android:layout_height="fill_parent"
-							android:inputType="number"/>
-				</LinearLayout>
-
-				<LinearLayout
-						android:layout_width="fill_parent"
-						android:layout_height="fill_parent"
-						android:orientation="horizontal">
-
-					<TextView
-							android:id="@+id/question_primarylanguage_1"
-							android:layout_width="100dp"
-							android:layout_height="match_parent"
-							android:layout_marginLeft="5dp"
-							android:text="@string/primarylanguage_1">
-					</TextView>
-
-					<Spinner
-							android:id="@+id/primarylanguage_1"
-							android:layout_width="200dp"
-							android:layout_height="40dp"
-							android:entries="@array/arrPrimaryLanguage"
-							android:prompt="@string/primarylanguage_1">
-					</Spinner>
-				</LinearLayout>
-			</LinearLayout>
-
-			<Button
-					android:id="@+id/btnClientDemographics"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:text="@string/btn_ClientDemographics"/>
-
-			<LinearLayout
-					android:id="@+id/panelClientDemographics"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="5dp"
-					android:layout_marginRight="5dp"
-					android:orientation="vertical">
-
-				<TextView
-						android:id="@+id/question_svpprofgender"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/svpprofgender">
-				</TextView>
-
-				<Spinner
-						android:id="@+id/svpprofgender"
-						android:layout_width="wrap_content"
-						android:layout_height="40dp"
-						android:entries="@array/arrGender"
-						android:prompt="@string/svpprofgender">
-				</Spinner>
-
-				<TextView
-						android:id="@+id/question_svpprofrace"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/svpprofrace">
-				</TextView>
-
-				<Spinner
-						android:id="@+id/svpprofrace"
-						android:layout_width="wrap_content"
-						android:layout_height="40dp"
-						android:entries="@array/arrRace"
-						android:prompt="@string/svpprofrace">
-				</Spinner>
-
-				<TextView
-						android:id="@+id/question_svpprofeth"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/svpprofeth">
-				</TextView>
-
-				<Spinner
-						android:id="@+id/svpprofeth"
-						android:layout_width="wrap_content"
-						android:layout_height="40dp"
-						android:entries="@array/arrEthnicity"
-						android:prompt="@string/svpprofeth">
-				</Spinner>
-
-				<TextView
-						android:id="@+id/question_highestlevelofeducati"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/highestlevelofeducati">
-				</TextView>
-
-				<Spinner
-						android:id="@+id/highestlevelofeducati"
-						android:layout_width="wrap_content"
-						android:layout_height="40dp"
-						android:entries="@array/arrEducation"
-						android:prompt="@string/highestlevelofeducati">
-				</Spinner>
-			</LinearLayout>
-
-			<Button
-					android:id="@+id/btnMilitaryInformation"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:text="@string/btn_MilitaryInformation"/>
-
-			<LinearLayout
-					android:id="@+id/panelMilitaryInformation"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="5dp"
-					android:layout_marginRight="5dp"
-					android:orientation="vertical">
-
-				<TextView
-						android:id="@+id/question_veteran"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/veteran">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/veteran"
-						android:layout_width="fill_parent"
-						android:layout_height="wrap_content"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/veteranYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/veteranNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-
-					<RadioButton
-							android:id="@+id/veteranRefused"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtRefused"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/question_hud_militaryserviceera"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/hud_militaryserviceera">
-				</TextView>
-
-				<CheckBox
-						android:id="@+id/hud_militaryserviceeraKorean"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/txtEraKorean"/>
-
-				<CheckBox
-						android:id="@+id/hud_militaryserviceeraVietnam"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/txtEraVietnam"/>
-
-				<CheckBox
-						android:id="@+id/hud_militaryserviceeraPostVietnam"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/txtEraPostVietnam"/>
-
-				<CheckBox
-						android:id="@+id/hud_militaryserviceeraPersianGulf"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/txtEraPersianGulf"/>
-
-				<CheckBox
-						android:id="@+id/hud_militaryserviceeraAfghanistan"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/txtEraAfghanistan"/>
-
-				<CheckBox
-						android:id="@+id/hud_militaryserviceeraIraq"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/txtEraIraq"/>
-
-				<CheckBox
-						android:id="@+id/hud_militaryserviceeraDontKnow"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/txtDK"/>
-
-				<CheckBox
-						android:id="@+id/hud_militaryserviceeraRefused"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/txtRefused"/>
-
-				<TextView
-						android:id="@+id/question_hud_dischargetype"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/hud_dischargetype">
-				</TextView>
-
-				<Spinner
-						android:id="@+id/hud_dischargetype"
-						android:layout_width="wrap_content"
-						android:layout_height="40dp"
-						android:entries="@array/arrDischarge"
-						android:prompt="@string/hud_dischargetype">
-				</Spinner>
-			</LinearLayout>
-
-			<Button
-					android:id="@+id/btnLegalOtherInformation"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:text="@string/btn_LegalOtherInformation"/>
-
-			<LinearLayout
-					android:id="@+id/panelLegalOtherInformation"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="5dp"
-					android:layout_marginRight="5dp"
-					android:orientation="vertical">
-
-				<TextView
-						android:id="@+id/question_incarceratedformerinc"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/incarceratedformerinc">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/incarceratedformerinc"
-						android:layout_width="fill_parent"
-						android:layout_height="wrap_content"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/incarceratedYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/incarceratedNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/question_incarceratedinstituti"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/incarceratedinstituti">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/incarceratedinstituti"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:orientation="vertical">
-
-					<RadioButton
-							android:id="@+id/facilityNA"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/incarceratedinstitutiNA"/>
-
-					<RadioButton
-							android:id="@+id/facilityCity"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/incarceratedinstitutiCity"/>
-
-					<RadioButton
-							android:id="@+id/facilityCounty"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/incarceratedinstitutiCounty"/>
-
-					<RadioButton
-							android:id="@+id/facilityFederal"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/incarceratedinstitutiFederal"/>
-
-					<RadioButton
-							android:id="@+id/facilityState"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/incarceratedinstitutiState"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/question_everinfostercare"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/everinfostercare">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/everinfostercare"
-						android:layout_width="fill_parent"
-						android:layout_height="wrap_content"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/everinfostercareYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/everinfostercareNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/question_uscitizen"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/uscitizen">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/uscitizen"
-						android:layout_width="fill_parent"
-						android:layout_height="wrap_content"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/uscitizenYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/uscitizenNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/question_immigrationstatus"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/immigrationstatus">
-				</TextView>
-
-				<Spinner
-						android:id="@+id/immigrationstatus"
-						android:layout_width="wrap_content"
-						android:layout_height="40dp"
-						android:entries="@array/arrImmigration"
-						android:prompt="@string/immigrationstatus">
-				</Spinner>
-			</LinearLayout>
-
-			<Button
-					android:id="@+id/btnLivingSituation"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:text="@string/btn_LivingSituation"/>
-
-			<LinearLayout
-					android:id="@+id/panelLivingSituation"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="5dp"
-					android:layout_marginRight="5dp"
-					android:orientation="vertical">
-
-				<TextView
-						android:id="@+id/question_svp_hud_housingstatus"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/svp_hud_housingstatus">
-				</TextView>
-
-				<Spinner
-						android:id="@+id/ansrTwentytwo"
-						android:layout_width="wrap_content"
-						android:layout_height="40dp"
-						android:entries="@array/arrHousingStat"
-						android:prompt="@string/svp_hud_housingstatus">
-				</Spinner>
-
-				<TextView
-						android:id="@+id/questionTwentythree"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/txtTwentythree">
-				</TextView>
-
-				<LinearLayout
-						android:layout_width="fill_parent"
-						android:layout_height="fill_parent"
-						android:orientation="horizontal">
-
-					<TextView
-							android:id="@+id/twentythreeYears"
-							android:layout_width="100dp"
-							android:layout_height="match_parent"
-							android:layout_marginLeft="5dp"
-							android:text="@string/txtYears">
-					</TextView>
-
-					<Spinner
-							android:id="@+id/ansrTwentythreeYears"
-							android:layout_width="wrap_content"
-							android:layout_height="40dp"
-							android:entries="@array/arrHousingYears"
-							android:prompt="@string/txtYears">
-					</Spinner>
-				</LinearLayout>
-
-				<LinearLayout
-						android:layout_width="fill_parent"
-						android:layout_height="fill_parent"
-						android:orientation="horizontal">
-
-					<TextView
-							android:id="@+id/twentythreeMonths"
-							android:layout_width="100dp"
-							android:layout_height="match_parent"
-							android:layout_marginLeft="5dp"
-							android:text="@string/txtMonths">
-					</TextView>
-
-					<Spinner
-							android:id="@+id/ansrTwentythreeMonths"
-							android:layout_width="wrap_content"
-							android:layout_height="40dp"
-							android:entries="@array/arrHousingMonths"
-							android:prompt="@string/txtMonths">
-					</Spinner>
-				</LinearLayout>
-
-				<TextView
-						android:id="@+id/question_in3yrsoftimeshomeless"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/in3yrsoftimeshomeless">
-				</TextView>
-
-				<Spinner
-						android:id="@+id/in3yrsoftimeshomeless"
-						android:layout_width="wrap_content"
-						android:layout_height="40dp"
-						android:entries="@array/arrTimesHomelessER"
-						android:prompt="@string/in3yrsoftimeshomeless">
-				</Spinner>
-
-				<TextView
-						android:id="@+id/question_15wheredoyousleepmos"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/_15wheredoyousleepmos">
-				</TextView>
-
-				<Spinner
-						android:id="@+id/_15wheredoyousleepmos"
-						android:layout_width="wrap_content"
-						android:layout_height="40dp"
-						android:entries="@array/arrSleepFrequently"
-						android:prompt="@string/_15wheredoyousleepmos">
-				</Spinner>
-
-				<TextView
-						android:id="@+id/question_ifwecantfindyoutherew"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/ifwecantfindyoutherew">
-				</TextView>
-
-				<EditText
-						android:id="@+id/ifwecantfindyoutherew"
-						android:layout_width="match_parent"
-						android:layout_height="fill_parent"
-						android:layout_marginLeft="5dp"
-						android:inputType="text"/>
-
-				<TextView
-						android:id="@+id/question_lpcity"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/lpcity">
-				</TextView>
-
-				<EditText
-						android:id="@+id/lpcity"
-						android:layout_width="match_parent"
-						android:layout_height="fill_parent"
-						android:layout_marginLeft="5dp"
-						android:inputType="text"/>
-
-				<TextView
-						android:id="@+id/question_lpstate"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/lpstate">
-				</TextView>
-
-				<Spinner
-						android:id="@+id/lpstate"
-						android:layout_width="wrap_content"
-						android:layout_height="40dp"
-						android:entries="@array/arrState"
-						android:prompt="@string/lpstate">
-				</Spinner>
-
-				<TextView
-						android:id="@+id/question_hud_zipcodelastpermaddr"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/hud_zipcodelastpermaddr">
-				</TextView>
-
-				<EditText
-						android:id="@+id/hud_zipcodelastpermaddr"
-						android:layout_width="match_parent"
-						android:layout_height="fill_parent"
-						android:layout_marginLeft="5dp"
-						android:inputType="number"/>
-
-				<TextView
-						android:id="@+id/question_hud_zipdataquality"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/hud_zipdataquality">
-				</TextView>
-
-				<Spinner
-						android:id="@+id/hud_zipdataquality"
-						android:layout_width="wrap_content"
-						android:layout_height="40dp"
-						android:entries="@array/arrZipQuality"
-						android:prompt="@string/hud_zipdataquality">
-				</Spinner>
-			</LinearLayout>
-
-			<Button
-					android:id="@+id/btnMoneyMatters"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:text="@string/btn_MoneyMatters"/>
-
-			<LinearLayout
-					android:id="@+id/panelMoneyMatters"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="5dp"
-					android:layout_marginRight="5dp"
-					android:orientation="vertical">
-
-				<TextView
-						android:id="@+id/question_sourceofincome"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/sourceofincome">
-				</TextView>
-
-				<CheckBox
-						android:id="@+id/sourceofincomeWork"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/sourceofincomeWork"/>
-
-				<CheckBox
-						android:id="@+id/sourceofincomeAlimony"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/sourceofincomeAlimony"/>
-
-				<CheckBox
-						android:id="@+id/sourceofincomeChildSupport"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/sourceofincomeChildSupport"/>
-
-				<CheckBox
-						android:id="@+id/sourceofincomeGeneral"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/sourceofincomeGeneral"/>
-
-				<CheckBox
-						android:id="@+id/sourceofincomeDisability"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/sourceofincomeDisability"/>
-
-				<CheckBox
-						android:id="@+id/sourceofincomeVDP"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/sourceofincomeVDP"/>
-
-				<CheckBox
-						android:id="@+id/sourceofincomePDI"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/sourceofincomePDI"/>
-
-				<CheckBox
-						android:id="@+id/sourceofincomePensionFormer"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/sourceofincomePensionFormer"/>
-
-				<CheckBox
-						android:id="@+id/sourceofincomePensionVeteran"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/sourceofincomePensionVeteran"/>
-
-				<CheckBox
-						android:id="@+id/sourceofincomeRetirement"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/sourceofincomeRetirement"/>
-
-				<CheckBox
-						android:id="@+id/sourceofincomeSSI"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/sourceofincomeSSI"/>
-
-				<CheckBox
-						android:id="@+id/sourceofincomeSSDI"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/sourceofincomeSSDI"/>
-
-				<CheckBox
-						android:id="@+id/sourceofincomeTANF"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/sourceofincomeTANF"/>
-
-				<CheckBox
-						android:id="@+id/sourceofincomeUnemployment"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/sourceofincomeUnemployment"/>
-
-				<CheckBox
-						android:id="@+id/sourceofincomeWorkComp"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/sourceofincomeWorkComp"/>
-
-				<CheckBox
-						android:id="@+id/sourceofincomeNoResource"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/sourceofincomeNoResource"/>
-
-				<CheckBox
-						android:id="@+id/sourceofincomeOther"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/sourceofincomeOther"/>
-
-				<TextView
-						android:id="@+id/question_sourceofincomeDetail"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/sourceofincomeOtherDetail">
-				</TextView>
-
-				<EditText
-						android:id="@+id/sourceofincomeOtherDetail"
-						android:layout_width="match_parent"
-						android:layout_height="fill_parent"
-						android:layout_marginLeft="5dp"
-						android:inputType="text"/>
-
-				<TextView
-						android:id="@+id/question_svp_noncashbenefitssource"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/svp_noncashbenefitssource">
-				</TextView>
-
-				<CheckBox
-						android:id="@+id/svp_noncashbenefitssourceFoodStamps"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/svp_noncashbenefitssourceFoodStamps"/>
-
-				<CheckBox
-						android:id="@+id/svp_noncashbenefitssourceMedicaid"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/svp_noncashbenefitssourceMedicaid"/>
-
-				<CheckBox
-						android:id="@+id/svp_noncashbenefitssourceMedicare"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/svp_noncashbenefitssourceMedicare"/>
-
-				<CheckBox
-						android:id="@+id/svp_noncashbenefitssourceWIC"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/svp_noncashbenefitssourceWIC"/>
-
-				<CheckBox
-						android:id="@+id/svp_noncashbenefitssourceVA"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/svp_noncashbenefitssourceVA"/>
-
-				<CheckBox
-						android:id="@+id/svp_noncashbenefitssourceOtherHealth"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/svp_noncashbenefitssourceOther"/>
-
-				<TextView
-						android:id="@+id/question_svp_noncashbenefitssourceDetail"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/svp_noncashbenefitssourceOtherDetail">
-				</TextView>
-
-				<EditText
-						android:id="@+id/svp_noncashbenefitssourceOtherDetail"
-						android:layout_width="match_parent"
-						android:layout_height="fill_parent"
-						android:layout_marginLeft="5dp"
-						android:inputType="text"/>
-			</LinearLayout>
-
-			<Button
-					android:id="@+id/btnHealthMatters"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:text="@string/btn_HealthMatters"/>
-
-			<LinearLayout
-					android:id="@+id/panelHealthMatters"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="5dp"
-					android:layout_marginRight="5dp"
-					android:orientation="vertical">
-
-				<TextView
-						android:id="@+id/question_17wheredoyougoforhea"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/_17wheredoyougoforhea">
-				</TextView>
-
-				<Spinner
-						android:id="@+id/_17wheredoyougoforhea"
-						android:layout_width="wrap_content"
-						android:layout_height="40dp"
-						android:entries="@array/arrHealthLocation"
-						android:prompt="@string/_17wheredoyougoforhea">
-				</Spinner>
-
-				<TextView
-						android:id="@+id/question_18howmanytimestothee"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/_18howmanytimestothee">
-				</TextView>
-
-				<Spinner
-						android:id="@+id/_18howmanytimestothee"
-						android:layout_width="wrap_content"
-						android:layout_height="40dp"
-						android:entries="@array/arrTimesHomelessER"
-						android:prompt="@string/_18howmanytimestothee">
-				</Spinner>
-
-				<TextView
-						android:id="@+id/question_19howmanyxshospitali_1"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/_19howmanyxshospitali_1">
-				</TextView>
-
-				<Spinner
-						android:id="@+id/_19howmanyxshospitali_1"
-						android:layout_width="wrap_content"
-						android:layout_height="40dp"
-						android:entries="@array/arrHospital"
-						android:prompt="@string/_19howmanyxshospitali_1">
-				</Spinner>
-
-				<TextView
-						android:id="@+id/healthIssuesBegin"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/txtHealthIssuesBegin">
-				</TextView>
-
-				<TextView
-						android:id="@+id/question_kidneydiseaseendstage"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/kidneydiseaseendstage">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/kidneydiseaseendstage"
-						android:layout_width="fill_parent"
-						android:layout_height="40dp"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/kidneydiseaseendstageYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/kidneydiseaseendstageNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-
-					<RadioButton
-							android:id="@+id/kidneydiseaseendstageRefused"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtRefused"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/question_bhistoryoffrostbitehy"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/bhistoryoffrostbitehy">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/bhistoryoffrostbitehy"
-						android:layout_width="fill_parent"
-						android:layout_height="40dp"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/bhistoryoffrostbitehyYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/bhistoryoffrostbitehyNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-
-					<RadioButton
-							android:id="@+id/bhistoryoffrostbitehyRefused"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtRefused"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/question_chistoryofheaatstroke"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/chistoryofheaatstroke">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/chistoryofheaatstroke"
-						android:layout_width="fill_parent"
-						android:layout_height="40dp"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/chistoryofheaatstrokeYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/chistoryofheaatstrokeNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-
-					<RadioButton
-							android:id="@+id/chistoryofheaatstrokeRefused"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtRefused"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/question_dliverdiseasecirrhosi"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/dliverdiseasecirrhosi">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/dliverdiseasecirrhosi"
-						android:layout_width="fill_parent"
-						android:layout_height="40dp"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/dliverdiseasecirrhosiYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/dliverdiseasecirrhosiNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-
-					<RadioButton
-							android:id="@+id/dliverdiseasecirrhosiRefused"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtRefused"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/question_eheartdiseasearrhythm"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/eheartdiseasearrhythm">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/eheartdiseasearrhythm"
-						android:layout_width="fill_parent"
-						android:layout_height="40dp"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/eheartdiseasearrhythmYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/eheartdiseasearrhythmNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-
-					<RadioButton
-							android:id="@+id/eheartdiseasearrhythmRefused"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtRefused"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/question_fhivaids"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/fhivaids">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/fhivaids"
-						android:layout_width="fill_parent"
-						android:layout_height="40dp"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/fhivaidsYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/fhivaidsNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-
-					<RadioButton
-							android:id="@+id/fhivaidsRefused"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtRefused"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/question_gemphysema"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/gemphysema">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/gemphysema"
-						android:layout_width="fill_parent"
-						android:layout_height="40dp"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/gemphysemaYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/gemphysemaNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-
-					<RadioButton
-							android:id="@+id/gemphysemaRefused"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtRefused"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/question_hdiabetes"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/hdiabetes">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/hdiabetes"
-						android:layout_width="fill_parent"
-						android:layout_height="40dp"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/hdiabetesYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/hdiabetesNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-
-					<RadioButton
-							android:id="@+id/hdiabetesRefused"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtRefused"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/question_iasthma"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/iasthma">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/iasthma"
-						android:layout_width="fill_parent"
-						android:layout_height="40dp"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/iasthmaYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/iasthmaNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-
-					<RadioButton
-							android:id="@+id/iasthmaRefused"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtRefused"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/question_jcancer"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/jcancer">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/jcancer"
-						android:layout_width="fill_parent"
-						android:layout_height="40dp"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/jcancerYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/jcancerNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-
-					<RadioButton
-							android:id="@+id/jcancerRefused"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtRefused"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/question_khepatitisc"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/khepatitisc">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/khepatitisc"
-						android:layout_width="fill_parent"
-						android:layout_height="40dp"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/khepatitiscYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/khepatitiscNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-
-					<RadioButton
-							android:id="@+id/khepatitiscRefused"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtRefused"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/question_ltuberculosis"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/ltuberculosis">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/ltuberculosis"
-						android:layout_width="fill_parent"
-						android:layout_height="40dp"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/ltuberculosisYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/ltuberculosisNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-
-					<RadioButton
-							android:id="@+id/ltuberculosisRefused"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtRefused"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/question_whydidyougototheemerg"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/whydidyougototheemerg">
-				</TextView>
-
-				<EditText
-						android:id="@+id/whydidyougototheemerg"
-						android:layout_width="match_parent"
-						android:layout_height="fill_parent"
-						android:layout_marginLeft="5dp"
-						android:inputType="text"/>
-
-				<TextView
-						android:id="@+id/question_neverabuseddrugalcoho"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/neverabuseddrugalcoho">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/neverabuseddrugalcoho"
-						android:layout_width="fill_parent"
-						android:layout_height="40dp"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/neverabuseddrugalcohoYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/neverabuseddrugalcohoNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-
-					<RadioButton
-							android:id="@+id/neverabuseddrugalcohoRefused"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtRefused"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/question_oconsumedalcoholevery"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/oconsumedalcoholevery">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/oconsumedalcoholevery"
-						android:layout_width="fill_parent"
-						android:layout_height="40dp"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/oconsumedalcoholeveryYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/oconsumedalcoholeveryyNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-
-					<RadioButton
-							android:id="@+id/oconsumedalcoholeveryRefused"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtRefused"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/question_peverusedinjectiondru"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/peverusedinjectiondru">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/peverusedinjectiondru"
-						android:layout_width="fill_parent"
-						android:layout_height="40dp"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/peverusedinjectiondruYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/peverusedinjectiondruNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-
-					<RadioButton
-							android:id="@+id/peverusedinjectiondruRefused"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtRefused"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/question_everbeentreatedfordru"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/everbeentreatedfordru">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/everbeentreatedfordru"
-						android:layout_width="fill_parent"
-						android:layout_height="40dp"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/everbeentreatedfordruYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/everbeentreatedfordruNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-
-					<RadioButton
-							android:id="@+id/everbeentreatedfordruRefused"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtRefused"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/question_scurrentlyeverreceive"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/scurrentlyeverreceive">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/scurrentlyeverreceive"
-						android:layout_width="fill_parent"
-						android:layout_height="40dp"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/scurrentlyeverreceiveYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/scurrentlyeverreceiveNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-
-					<RadioButton
-							android:id="@+id/scurrentlyeverreceiveRefused"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtRefused"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/question_tbeentakentohospitala"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/tbeentakentohospitala">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/tbeentakentohospitala"
-						android:layout_width="fill_parent"
-						android:layout_height="40dp"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/tbeentakentohospitalaYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/tbeentakentohospitalaNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-
-					<RadioButton
-							android:id="@+id/tbeentakentohospitalaRefused"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtRefused"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/question_vbeenavictimofviolent"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/vbeenavictimofviolent">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/vbeenavictimofviolent"
-						android:layout_width="fill_parent"
-						android:layout_height="40dp"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/vbeenavictimofviolentYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/vbeenavictimofviolentNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-
-					<RadioButton
-							android:id="@+id/vbeenavictimofviolentRefused"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtRefused"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/question_wpermanentphysicaldis"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/wpermanentphysicaldis">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/wpermanentphysicaldis"
-						android:layout_width="fill_parent"
-						android:layout_height="40dp"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/wpermanentphysicaldisYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/wpermanentphysicaldisNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-
-					<RadioButton
-							android:id="@+id/wpermanentphysicaldisRefused"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtRefused"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/question_xseriousbraininjuryhe"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/xseriousbraininjuryhe">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/xseriousbraininjuryhe"
-						android:layout_width="fill_parent"
-						android:layout_height="40dp"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/xseriousbraininjuryheYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/xseriousbraininjuryheNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-
-					<RadioButton
-							android:id="@+id/xseriousbraininjuryheRefused"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtRefused"/>
-				</RadioGroup>
-			</LinearLayout>
-
-			<Button
-					android:id="@+id/btnCommunity"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:text="@string/btn_Community"/>
-
-			<LinearLayout
-					android:id="@+id/panelCommunity"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="5dp"
-					android:layout_marginRight="5dp"
-					android:orientation="vertical">
-
-				<TextView
-						android:id="@+id/question_33isthereapersonoutr"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/_33isthereapersonoutr">
-				</TextView>
-
-				<RadioGroup
-						android:id="@+id/_33isthereapersonoutr"
-						android:layout_width="fill_parent"
-						android:layout_height="40dp"
-						android:orientation="horizontal">
-
-					<RadioButton
-							android:id="@+id/_33isthereapersonoutrYes"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtYes"/>
-
-					<RadioButton
-							android:id="@+id/_33isthereapersonoutrNo"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtNo"/>
-
-					<RadioButton
-							android:id="@+id/_33isthereapersonoutrRefused"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="@string/txtRefused"/>
-				</RadioGroup>
-
-				<TextView
-						android:id="@+id/questionFiftynine"
-						android:layout_width="fill_parent"
-						android:layout_height="match_parent"
-						android:layout_marginLeft="5dp"
-						android:text="@string/txtFiftynine">
-				</TextView>
-
-				<EditText
-						android:id="@+id/ansrFiftynine"
-						android:layout_width="match_parent"
-						android:layout_height="fill_parent"
-						android:layout_marginLeft="5dp"
-						android:inputType="text"/>
-			</LinearLayout>
-		</LinearLayout>
-	</ScrollView>
-</LinearLayout>
+              android:layout_height="wrap_content">
+
+
+    <ScrollView
+            android:id="@+id/scrollFull"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+        android:layout_above="@+id/buttonsLinearLayout">
+
+        <LinearLayout
+                android:id="@+id/layoutFull"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <Button
+                    android:id="@+id/btnClientInformation"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_ClientInformation"/>
+
+            <LinearLayout
+                    android:id="@+id/panelClientInformation"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="vertical"
+android:visibility="visible">
+
+                <!--<TextView
+                        android:id="@+id/question_12hasconsentedtopart"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/_12hasconsentedtopart">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/_12hasconsentedtopart"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/_12hasconsentedtopartYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/_12hasconsentedtopartNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+                </RadioGroup>   -->
+
+                <!--<LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:id="@+id/questionTwo"
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:text="@string/txtTwo">
+
+                    </TextView>
+
+                    <EditText
+                            android:id="@+id/ansrTwo"
+                            android:layout_width="200dp"
+                            android:layout_height="fill_parent"
+                            android:inputType="number"/>
+                </LinearLayout> -->
+
+                <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:id="@+id/question_first_name"
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:text="@string/first_name">
+                    </TextView>
+
+                    <EditText
+                            android:id="@+id/first_name"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:inputType="text|textPersonName|textCapWords"/>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:id="@+id/question_last_name"
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:text="@string/last_name">
+                    </TextView>
+
+                    <EditText
+                            android:id="@+id/last_name"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:inputType="textPersonName|textCapWords"/>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:id="@+id/question_soc_sec_no"
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:text="@string/soc_sec_no">
+                    </TextView>
+
+                    <EditText
+                            android:id="@+id/soc_sec_no"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:inputType="number"
+                            android:maxLength="9"/>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:id="@+id/question_alias"
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:text="@string/alias">
+                    </TextView>
+
+                    <EditText
+                            android:id="@+id/alias"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:inputType="textPersonName"/>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:id="@+id/question_svpprofdob"
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:text="@string/svpprofdob">
+                    </TextView>
+
+                    <EditText
+                            android:id="@+id/svpprofdob"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:inputType="date"/>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:id="@+id/question_svpprofdobtype"
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:text="@string/svpprofdobtype">
+                    </TextView>
+
+                    <Spinner
+                            android:id="@+id/svpprofdobtype"
+                            android:layout_width="fill_parent"
+                            android:layout_height="40dp"
+                            android:entries="@array/arrDOBType"
+                            android:prompt="@string/svpprofdobtype">
+                    </Spinner>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:id="@+id/question_phonemessage"
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:text="@string/phonemessage">
+                    </TextView>
+
+                    <EditText
+                            android:id="@+id/phonemessage"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:inputType="number|phone"/>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:id="@+id/questionTen"
+                            android:layout_width="fill_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:text="@string/familysize">
+                    </TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:id="@+id/question_adultsinhousehold"
+                            android:layout_width="75dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:text="@string/adultsinhousehold">
+                    </TextView>
+
+                    <EditText
+                            android:id="@+id/adultsinhousehold"
+                            android:layout_width="50dp"
+                            android:layout_height="fill_parent"
+                            android:inputType="number"/>
+
+                    <TextView
+                            android:id="@+id/question_childreninhousehold"
+                            android:layout_width="75dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:text="@string/childreninhousehold">
+                    </TextView>
+
+                    <EditText
+                            android:id="@+id/childreninhousehold"
+                            android:layout_width="50dp"
+                            android:layout_height="fill_parent"
+                            android:inputType="number"/>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:id="@+id/question_primarylanguage_1"
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:text="@string/primarylanguage_1">
+                    </TextView>
+
+                    <Spinner
+                            android:id="@+id/primarylanguage_1"
+                            android:layout_width="fill_parent"
+                            android:layout_height="40dp"
+                            android:entries="@array/arrPrimaryLanguage"
+                            android:prompt="@string/primarylanguage_1">
+                    </Spinner>
+                </LinearLayout>
+            </LinearLayout>
+
+            <Button
+                    android:id="@+id/btnClientDemographics"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_ClientDemographics"/>
+
+            <LinearLayout
+                    android:id="@+id/panelClientDemographics"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="vertical"
+android:visibility="visible">
+
+                <TextView
+                        android:id="@+id/question_svpprofgender"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/svpprofgender">
+                </TextView>
+
+                <Spinner
+                        android:id="@+id/svpprofgender"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:entries="@array/arrGender"
+                        android:prompt="@string/svpprofgender">
+                </Spinner>
+
+                <TextView
+                        android:id="@+id/question_svpprofrace"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/svpprofrace">
+                </TextView>
+
+                <Spinner
+                        android:id="@+id/svpprofrace"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:entries="@array/arrRace"
+                        android:prompt="@string/svpprofrace">
+                </Spinner>
+
+                <TextView
+                        android:id="@+id/question_svpprofeth"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/svpprofeth">
+                </TextView>
+
+                <Spinner
+                        android:id="@+id/svpprofeth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:entries="@array/arrEthnicity"
+                        android:prompt="@string/svpprofeth">
+                </Spinner>
+
+                <TextView
+                        android:id="@+id/question_highestlevelofeducati"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/highestlevelofeducati">
+                </TextView>
+
+                <Spinner
+                        android:id="@+id/highestlevelofeducati"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:entries="@array/arrEducation"
+                        android:prompt="@string/highestlevelofeducati">
+                </Spinner>
+            </LinearLayout>
+
+            <Button
+                    android:id="@+id/btnMilitaryInformation"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_MilitaryInformation"/>
+
+            <LinearLayout
+                    android:id="@+id/panelMilitaryInformation"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="vertical"
+android:visibility="visible">
+
+                <TextView
+                        android:id="@+id/question_veteran"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/veteran">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/veteran"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/veteranYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/veteranNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+
+                    <RadioButton
+                            android:id="@+id/veteranRefused"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtRefused"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/question_hud_militaryserviceera"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/hud_militaryserviceera">
+                </TextView>
+
+                <CheckBox
+                        android:id="@+id/hud_militaryserviceeraKorean"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txtEraKorean"/>
+
+                <CheckBox
+                        android:id="@+id/hud_militaryserviceeraVietnam"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txtEraVietnam"/>
+
+                <CheckBox
+                        android:id="@+id/hud_militaryserviceeraPostVietnam"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txtEraPostVietnam"/>
+
+                <CheckBox
+                        android:id="@+id/hud_militaryserviceeraPersianGulf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txtEraPersianGulf"/>
+
+                <CheckBox
+                        android:id="@+id/hud_militaryserviceeraAfghanistan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txtEraAfghanistan"/>
+
+                <CheckBox
+                        android:id="@+id/hud_militaryserviceeraIraq"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txtEraIraq"/>
+
+                <CheckBox
+                        android:id="@+id/hud_militaryserviceeraDontKnow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txtDK"/>
+
+                <CheckBox
+                        android:id="@+id/hud_militaryserviceeraRefused"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txtRefused"/>
+
+                <TextView
+                        android:id="@+id/question_hud_dischargetype"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/hud_dischargetype">
+                </TextView>
+
+                <Spinner
+                        android:id="@+id/hud_dischargetype"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:entries="@array/arrDischarge"
+                        android:prompt="@string/hud_dischargetype">
+                </Spinner>
+            </LinearLayout>
+
+            <Button
+                    android:id="@+id/btnLegalOtherInformation"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_LegalOtherInformation"/>
+
+            <LinearLayout
+                    android:id="@+id/panelLegalOtherInformation"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="vertical"
+android:visibility="visible">
+
+                <TextView
+                        android:id="@+id/question_incarceratedformerinc"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/incarceratedformerinc">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/incarceratedformerinc"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/incarceratedYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/incarceratedNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/question_incarceratedinstituti"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/incarceratedinstituti">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/incarceratedinstituti"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                    <RadioButton
+                            android:id="@+id/facilityNA"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/incarceratedinstitutiNA"/>
+
+                    <RadioButton
+                            android:id="@+id/facilityCity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/incarceratedinstitutiCity"/>
+
+                    <RadioButton
+                            android:id="@+id/facilityCounty"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/incarceratedinstitutiCounty"/>
+
+                    <RadioButton
+                            android:id="@+id/facilityFederal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/incarceratedinstitutiFederal"/>
+
+                    <RadioButton
+                            android:id="@+id/facilityState"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/incarceratedinstitutiState"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/question_everinfostercare"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/everinfostercare">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/everinfostercare"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/everinfostercareYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/everinfostercareNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/question_uscitizen"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/uscitizen">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/uscitizen"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/uscitizenYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/uscitizenNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/question_immigrationstatus"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/immigrationstatus">
+                </TextView>
+
+                <Spinner
+                        android:id="@+id/immigrationstatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:entries="@array/arrImmigration"
+                        android:prompt="@string/immigrationstatus">
+                </Spinner>
+            </LinearLayout>
+
+            <Button
+                    android:id="@+id/btnLivingSituation"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_LivingSituation"/>
+
+            <LinearLayout
+                    android:id="@+id/panelLivingSituation"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="vertical"
+android:visibility="visible">
+
+                <TextView
+                        android:id="@+id/question_svp_hud_housingstatus"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/svp_hud_housingstatus">
+                </TextView>
+
+                <Spinner
+                        android:id="@+id/ansrTwentytwo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:entries="@array/arrHousingStat"
+                        android:prompt="@string/svp_hud_housingstatus">
+                </Spinner>
+
+                <TextView
+                        android:id="@+id/questionTwentythree"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/txtTwentythree">
+                </TextView>
+
+                <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:id="@+id/twentythreeYears"
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:text="@string/txtYears">
+                    </TextView>
+
+                    <Spinner
+                            android:id="@+id/ansrTwentythreeYears"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:entries="@array/arrHousingYears"
+                            android:prompt="@string/txtYears">
+                    </Spinner>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:id="@+id/twentythreeMonths"
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:text="@string/txtMonths">
+                    </TextView>
+
+                    <Spinner
+                            android:id="@+id/ansrTwentythreeMonths"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:entries="@array/arrHousingMonths"
+                            android:prompt="@string/txtMonths">
+                    </Spinner>
+                </LinearLayout>
+
+                <TextView
+                        android:id="@+id/question_in3yrsoftimeshomeless"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/in3yrsoftimeshomeless">
+                </TextView>
+
+                <Spinner
+                        android:id="@+id/in3yrsoftimeshomeless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:entries="@array/arrTimesHomelessER"
+                        android:prompt="@string/in3yrsoftimeshomeless">
+                </Spinner>
+
+                <TextView
+                        android:id="@+id/question_15wheredoyousleepmos"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/_15wheredoyousleepmos">
+                </TextView>
+
+                <Spinner
+                        android:id="@+id/_15wheredoyousleepmos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:entries="@array/arrSleepFrequently"
+                        android:prompt="@string/_15wheredoyousleepmos">
+                </Spinner>
+
+                <TextView
+                        android:id="@+id/question_ifwecantfindyoutherew"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/ifwecantfindyoutherew">
+                </TextView>
+
+                <EditText
+                        android:id="@+id/ifwecantfindyoutherew"
+                        android:layout_width="match_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginLeft="5dp"
+                        android:inputType="text"/>
+
+                <TextView
+                        android:id="@+id/question_lpcity"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/lpcity">
+                </TextView>
+
+                <EditText
+                        android:id="@+id/lpcity"
+                        android:layout_width="match_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginLeft="5dp"
+                        android:inputType="text"/>
+
+                <TextView
+                        android:id="@+id/question_lpstate"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/lpstate">
+                </TextView>
+
+                <Spinner
+                        android:id="@+id/lpstate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:entries="@array/arrState"
+                        android:prompt="@string/lpstate">
+                </Spinner>
+
+                <TextView
+                        android:id="@+id/question_hud_zipcodelastpermaddr"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/hud_zipcodelastpermaddr">
+                </TextView>
+
+                <EditText
+                        android:id="@+id/hud_zipcodelastpermaddr"
+                        android:layout_width="match_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginLeft="5dp"
+                        android:inputType="number"/>
+
+                <TextView
+                        android:id="@+id/question_hud_zipdataquality"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/hud_zipdataquality">
+                </TextView>
+
+                <Spinner
+                        android:id="@+id/hud_zipdataquality"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:entries="@array/arrZipQuality"
+                        android:prompt="@string/hud_zipdataquality">
+                </Spinner>
+            </LinearLayout>
+
+            <Button
+                    android:id="@+id/btnMoneyMatters"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_MoneyMatters"/>
+
+            <LinearLayout
+                    android:id="@+id/panelMoneyMatters"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="vertical"
+android:visibility="visible">
+
+                <TextView
+                        android:id="@+id/question_sourceofincome"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/sourceofincome">
+                </TextView>
+
+                <CheckBox
+                        android:id="@+id/sourceofincomeWork"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sourceofincomeWork"/>
+
+                <CheckBox
+                        android:id="@+id/sourceofincomeAlimony"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sourceofincomeAlimony"/>
+
+                <CheckBox
+                        android:id="@+id/sourceofincomeChildSupport"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sourceofincomeChildSupport"/>
+
+                <CheckBox
+                        android:id="@+id/sourceofincomeGeneral"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sourceofincomeGeneral"/>
+
+                <CheckBox
+                        android:id="@+id/sourceofincomeDisability"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sourceofincomeDisability"/>
+
+                <CheckBox
+                        android:id="@+id/sourceofincomeVDP"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sourceofincomeVDP"/>
+
+                <CheckBox
+                        android:id="@+id/sourceofincomePDI"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sourceofincomePDI"/>
+
+                <CheckBox
+                        android:id="@+id/sourceofincomePensionFormer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sourceofincomePensionFormer"/>
+
+                <CheckBox
+                        android:id="@+id/sourceofincomePensionVeteran"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sourceofincomePensionVeteran"/>
+
+                <CheckBox
+                        android:id="@+id/sourceofincomeRetirement"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sourceofincomeRetirement"/>
+
+                <CheckBox
+                        android:id="@+id/sourceofincomeSSI"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sourceofincomeSSI"/>
+
+                <CheckBox
+                        android:id="@+id/sourceofincomeSSDI"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sourceofincomeSSDI"/>
+
+                <CheckBox
+                        android:id="@+id/sourceofincomeTANF"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sourceofincomeTANF"/>
+
+                <CheckBox
+                        android:id="@+id/sourceofincomeUnemployment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sourceofincomeUnemployment"/>
+
+                <CheckBox
+                        android:id="@+id/sourceofincomeWorkComp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sourceofincomeWorkComp"/>
+
+                <CheckBox
+                        android:id="@+id/sourceofincomeNoResource"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sourceofincomeNoResource"/>
+
+                <CheckBox
+                        android:id="@+id/sourceofincomeOther"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sourceofincomeOther"/>
+
+                <TextView
+                        android:id="@+id/question_sourceofincomeDetail"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/sourceofincomeOtherDetail">
+                </TextView>
+
+                <EditText
+                        android:id="@+id/sourceofincomeOtherDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginLeft="5dp"
+                        android:inputType="text"/>
+
+                <TextView
+                        android:id="@+id/question_svp_noncashbenefitssource"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/svp_noncashbenefitssource">
+                </TextView>
+
+                <CheckBox
+                        android:id="@+id/svp_noncashbenefitssourceFoodStamps"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/svp_noncashbenefitssourceFoodStamps"/>
+
+                <CheckBox
+                        android:id="@+id/svp_noncashbenefitssourceMedicaid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/svp_noncashbenefitssourceMedicaid"/>
+
+                <CheckBox
+                        android:id="@+id/svp_noncashbenefitssourceMedicare"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/svp_noncashbenefitssourceMedicare"/>
+
+                <CheckBox
+                        android:id="@+id/svp_noncashbenefitssourceWIC"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/svp_noncashbenefitssourceWIC"/>
+
+                <CheckBox
+                        android:id="@+id/svp_noncashbenefitssourceVA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/svp_noncashbenefitssourceVA"/>
+
+                <CheckBox
+                        android:id="@+id/svp_noncashbenefitssourceOtherHealth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/svp_noncashbenefitssourceOther"/>
+
+                <TextView
+                        android:id="@+id/question_svp_noncashbenefitssourceDetail"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/svp_noncashbenefitssourceOtherDetail">
+                </TextView>
+
+                <EditText
+                        android:id="@+id/svp_noncashbenefitssourceOtherDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginLeft="5dp"
+                        android:inputType="text"/>
+            </LinearLayout>
+
+            <Button
+                    android:id="@+id/btnHealthMatters"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_HealthMatters"/>
+
+            <LinearLayout
+                    android:id="@+id/panelHealthMatters"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="vertical"
+android:visibility="visible">
+
+                <TextView
+                        android:id="@+id/question_17wheredoyougoforhea"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/_17wheredoyougoforhea">
+                </TextView>
+
+                <Spinner
+                        android:id="@+id/_17wheredoyougoforhea"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:entries="@array/arrHealthLocation"
+                        android:prompt="@string/_17wheredoyougoforhea">
+                </Spinner>
+
+                <TextView
+                        android:id="@+id/question_18howmanytimestothee"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/_18howmanytimestothee">
+                </TextView>
+
+                <Spinner
+                        android:id="@+id/_18howmanytimestothee"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:entries="@array/arrTimesHomelessER"
+                        android:prompt="@string/_18howmanytimestothee">
+                </Spinner>
+
+                <TextView
+                        android:id="@+id/question_19howmanyxshospitali_1"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/_19howmanyxshospitali_1">
+                </TextView>
+
+                <Spinner
+                        android:id="@+id/_19howmanyxshospitali_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:entries="@array/arrHospital"
+                        android:prompt="@string/_19howmanyxshospitali_1">
+                </Spinner>
+
+                <TextView
+                        android:id="@+id/healthIssuesBegin"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/txtHealthIssuesBegin">
+                </TextView>
+
+                <TextView
+                        android:id="@+id/question_kidneydiseaseendstage"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/kidneydiseaseendstage">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/kidneydiseaseendstage"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/kidneydiseaseendstageYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/kidneydiseaseendstageNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+
+                    <RadioButton
+                            android:id="@+id/kidneydiseaseendstageRefused"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtRefused"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/question_bhistoryoffrostbitehy"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/bhistoryoffrostbitehy">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/bhistoryoffrostbitehy"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/bhistoryoffrostbitehyYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/bhistoryoffrostbitehyNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+
+                    <RadioButton
+                            android:id="@+id/bhistoryoffrostbitehyRefused"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtRefused"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/question_chistoryofheaatstroke"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/chistoryofheaatstroke">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/chistoryofheaatstroke"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/chistoryofheaatstrokeYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/chistoryofheaatstrokeNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+
+                    <RadioButton
+                            android:id="@+id/chistoryofheaatstrokeRefused"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtRefused"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/question_dliverdiseasecirrhosi"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/dliverdiseasecirrhosi">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/dliverdiseasecirrhosi"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/dliverdiseasecirrhosiYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/dliverdiseasecirrhosiNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+
+                    <RadioButton
+                            android:id="@+id/dliverdiseasecirrhosiRefused"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtRefused"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/question_eheartdiseasearrhythm"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/eheartdiseasearrhythm">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/eheartdiseasearrhythm"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/eheartdiseasearrhythmYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/eheartdiseasearrhythmNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+
+                    <RadioButton
+                            android:id="@+id/eheartdiseasearrhythmRefused"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtRefused"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/question_fhivaids"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/fhivaids">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/fhivaids"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/fhivaidsYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/fhivaidsNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+
+                    <RadioButton
+                            android:id="@+id/fhivaidsRefused"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtRefused"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/question_gemphysema"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/gemphysema">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/gemphysema"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/gemphysemaYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/gemphysemaNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+
+                    <RadioButton
+                            android:id="@+id/gemphysemaRefused"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtRefused"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/question_hdiabetes"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/hdiabetes">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/hdiabetes"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/hdiabetesYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/hdiabetesNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+
+                    <RadioButton
+                            android:id="@+id/hdiabetesRefused"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtRefused"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/question_iasthma"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/iasthma">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/iasthma"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/iasthmaYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/iasthmaNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+
+                    <RadioButton
+                            android:id="@+id/iasthmaRefused"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtRefused"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/question_jcancer"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/jcancer">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/jcancer"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/jcancerYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/jcancerNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+
+                    <RadioButton
+                            android:id="@+id/jcancerRefused"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtRefused"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/question_khepatitisc"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/khepatitisc">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/khepatitisc"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/khepatitiscYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/khepatitiscNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+
+                    <RadioButton
+                            android:id="@+id/khepatitiscRefused"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtRefused"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/question_ltuberculosis"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/ltuberculosis">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/ltuberculosis"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/ltuberculosisYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/ltuberculosisNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+
+                    <RadioButton
+                            android:id="@+id/ltuberculosisRefused"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtRefused"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/question_whydidyougototheemerg"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/whydidyougototheemerg">
+                </TextView>
+
+                <EditText
+                        android:id="@+id/whydidyougototheemerg"
+                        android:layout_width="match_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginLeft="5dp"
+                        android:inputType="text"/>
+
+                <TextView
+                        android:id="@+id/question_neverabuseddrugalcoho"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/neverabuseddrugalcoho">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/neverabuseddrugalcoho"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/neverabuseddrugalcohoYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/neverabuseddrugalcohoNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+
+                    <RadioButton
+                            android:id="@+id/neverabuseddrugalcohoRefused"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtRefused"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/question_oconsumedalcoholevery"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/oconsumedalcoholevery">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/oconsumedalcoholevery"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/oconsumedalcoholeveryYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/oconsumedalcoholeveryyNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+
+                    <RadioButton
+                            android:id="@+id/oconsumedalcoholeveryRefused"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtRefused"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/question_peverusedinjectiondru"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/peverusedinjectiondru">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/peverusedinjectiondru"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/peverusedinjectiondruYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/peverusedinjectiondruNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+
+                    <RadioButton
+                            android:id="@+id/peverusedinjectiondruRefused"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtRefused"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/question_everbeentreatedfordru"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/everbeentreatedfordru">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/everbeentreatedfordru"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/everbeentreatedfordruYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/everbeentreatedfordruNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+
+                    <RadioButton
+                            android:id="@+id/everbeentreatedfordruRefused"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtRefused"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/question_scurrentlyeverreceive"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/scurrentlyeverreceive">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/scurrentlyeverreceive"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/scurrentlyeverreceiveYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/scurrentlyeverreceiveNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+
+                    <RadioButton
+                            android:id="@+id/scurrentlyeverreceiveRefused"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtRefused"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/question_tbeentakentohospitala"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/tbeentakentohospitala">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/tbeentakentohospitala"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/tbeentakentohospitalaYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/tbeentakentohospitalaNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+
+                    <RadioButton
+                            android:id="@+id/tbeentakentohospitalaRefused"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtRefused"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/question_vbeenavictimofviolent"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/vbeenavictimofviolent">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/vbeenavictimofviolent"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/vbeenavictimofviolentYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/vbeenavictimofviolentNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+
+                    <RadioButton
+                            android:id="@+id/vbeenavictimofviolentRefused"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtRefused"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/question_wpermanentphysicaldis"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/wpermanentphysicaldis">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/wpermanentphysicaldis"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/wpermanentphysicaldisYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/wpermanentphysicaldisNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+
+                    <RadioButton
+                            android:id="@+id/wpermanentphysicaldisRefused"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtRefused"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/question_xseriousbraininjuryhe"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/xseriousbraininjuryhe">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/xseriousbraininjuryhe"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/xseriousbraininjuryheYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/xseriousbraininjuryheNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+
+                    <RadioButton
+                            android:id="@+id/xseriousbraininjuryheRefused"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtRefused"/>
+                </RadioGroup>
+            </LinearLayout>
+
+            <Button
+                    android:id="@+id/btnCommunity"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_Community"/>
+
+            <LinearLayout
+                    android:id="@+id/panelCommunity"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="vertical"
+android:visibility="visible">
+
+                <TextView
+                        android:id="@+id/question_33isthereapersonoutr"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/_33isthereapersonoutr">
+                </TextView>
+
+                <RadioGroup
+                        android:id="@+id/_33isthereapersonoutr"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                    <RadioButton
+                            android:id="@+id/_33isthereapersonoutrYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtYes"/>
+
+                    <RadioButton
+                            android:id="@+id/_33isthereapersonoutrNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtNo"/>
+
+                    <RadioButton
+                            android:id="@+id/_33isthereapersonoutrRefused"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtRefused"/>
+                </RadioGroup>
+
+                <TextView
+                        android:id="@+id/questionFiftynine"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/txtFiftynine">
+                </TextView>
+
+                <EditText
+                        android:id="@+id/ansrFiftynine"
+                        android:layout_width="match_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginLeft="5dp"
+                        android:inputType="text"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/buttonsLinearLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentBottom="true">
+
+        <RelativeLayout
+            android:id="@+id/btnSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/Cancel"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="false"
+                android:text="@string/txtCancel"
+                style="@style/ButtonText"
+                android:background="@drawable/btn_blue">
+            </Button>
+
+            <Button
+                android:id="@+id/Submit"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="false"
+                android:text="@string/txtSubmit"
+                android:background="@drawable/btn_yellow"
+                style="@style/ButtonText"
+                android:layout_toRightOf="@+id/Cancel">
+            </Button>
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

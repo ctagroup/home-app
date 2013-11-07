@@ -85,7 +85,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/button1"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="34dp"
+                        android:layout_marginTop="14dp"
                         android:text="Under 18"
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
@@ -134,7 +134,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/button1"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="34dp"
+                        android:layout_marginTop="14dp"
                         android:text="18-24"
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
@@ -182,7 +182,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/button1"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="34dp"
+                        android:layout_marginTop="14dp"
                         android:text="25 or older"
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
@@ -232,7 +232,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/Male18Minus"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="44dp"
+                        android:layout_marginTop="24dp"
                         android:text="Number of Females?"
                         android:textStyle="bold"
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
@@ -243,7 +243,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/Male18Minus"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="44dp"
+                        android:layout_marginTop="14dp"
                         android:text="Under 18?"
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
@@ -288,7 +288,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/Male18Minus"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="44dp"
+                        android:layout_marginTop="14dp"
                         android:text="18-24?"
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
@@ -332,7 +332,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/Male18Minus"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="44dp"
+                        android:layout_marginTop="14dp"
                         android:text="25 and older?"
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
@@ -399,7 +399,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/Male18Minus"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="44dp"
+                        android:layout_marginTop="14dp"
                         android:text="Number of Cars?"
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
@@ -450,7 +450,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/Male18Minus"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="44dp"
+                        android:layout_marginTop="14dp"
                         android:text="Number of Vans/RVs?"
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
@@ -499,7 +499,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/Male18Minus"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="44dp"
+                        android:layout_marginTop="14dp"
                         android:text="Number of tents?"
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
@@ -551,7 +551,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/Male18Minus"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="44dp"
+                        android:layout_marginTop="14dp"
                         android:text="Number of Abandoned/Forclosed Buildings?"
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
@@ -600,7 +600,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/Male18Minus"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="44dp"
+                        android:layout_marginTop="14dp"
                         android:text="Numbers of People in Parks Reported by Ranger?"
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
@@ -651,7 +651,8 @@
                     android:layout_marginBottom="34dp"
                     android:text="Save Census Information"
                     android:background="@drawable/btn_yellow"
-                    style="@style/ButtonText"/>
+                    style="@style/ButtonText"
+                android:layout_gravity="center_horizontal" />
 
         </LinearLayout>
 

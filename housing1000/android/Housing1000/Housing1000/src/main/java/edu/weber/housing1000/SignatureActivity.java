@@ -89,7 +89,7 @@ public class SignatureActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        Log.w("GetSignature", "onDestory");
+        Log.w("GetSignature", "onDestroy");
         super.onDestroy();
     }
 
