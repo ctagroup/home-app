@@ -63,9 +63,7 @@ public class ClientInfoActivity extends Activity
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ClientInfoActivity.this, MainMenuActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
+                finish();
             }
         });
 
@@ -544,12 +542,6 @@ public class ClientInfoActivity extends Activity
     public String getCheckBoxText(CheckBox checkBox){
         if (checkBox.isChecked()) return checkBox.getText().toString();
         else return null;
-    }
-
-    @Override
-    public void onBackPressed(){
-        Intent intent = new Intent(ClientInfoActivity.this, MainMenuActivity.class);
-        startActivity(intent);
     }
 
 }

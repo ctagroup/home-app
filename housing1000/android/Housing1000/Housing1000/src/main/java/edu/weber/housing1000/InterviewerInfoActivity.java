@@ -40,9 +40,7 @@ public class InterviewerInfoActivity extends Activity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(InterviewerInfoActivity.this, MainMenuActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
+                finish();
             }
         });
 
@@ -92,9 +90,4 @@ public class InterviewerInfoActivity extends Activity {
         return retVal;
     }
 
-    @Override
-    public void onBackPressed(){
-        Intent intent = new Intent(InterviewerInfoActivity.this, MainMenuActivity.class);
-        startActivity(intent);
-    }
 }
