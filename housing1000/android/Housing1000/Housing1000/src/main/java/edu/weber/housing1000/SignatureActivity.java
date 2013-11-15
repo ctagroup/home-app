@@ -121,20 +121,28 @@ public class SignatureActivity extends Activity {
             }
             Canvas canvas = new Canvas(mBitmap);
             try {
-                /*ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
-                mBitmap.compress(Bitmap.CompressFormat.PNG,100,byteArray);
+                FileOutputStream mFileOutStream = openFileOutput(filename, Context.MODE_PRIVATE);
+                v.draw(canvas);
+                ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+                mBitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArray);
                 byte[] byteImage = byteArray.toByteArray();
                 byte[] key = EncryptionHelper.keyGen();
-                byte[] encryptedImage = EncryptionHelper.encrypt(key, byteImage);*/
+                byte[] encryptedImage = EncryptionHelper.encrypt(key, byteImage);
+                byte[] decryptedImage = EncryptionHelper.decrypt(key, encryptedImage);
 
-                FileOutputStream mFileOutStream = openFileOutput(filename, Context.MODE_PRIVATE);
+                Bitmap test = BitmapFactory.decodeByteArray(decryptedImage,0,decryptedImage.length);
+                test.compress(Bitmap.CompressFormat.JPEG, 100, mFileOutStream);
+                mFileOutStream.flush();
+                mFileOutStream.close();
+                String url = Images.Media.insertImage(getContentResolver(), test, "title", null);
+                Log.v("log_tag", "url: " + url);
 
-                v.draw(canvas);
+                /*
                 mBitmap.compress(Bitmap.CompressFormat.JPEG, 90, mFileOutStream);
                 mFileOutStream.flush();
                 mFileOutStream.close();
                 String url = Images.Media.insertImage(getContentResolver(), mBitmap, "title", null);
-                Log.v("log_tag", "url: " + url);
+                Log.v("log_tag", "url: " + url);*/
 
             } catch (Exception e) {
                 Log.v("log_tag", e.toString());

@@ -14,7 +14,8 @@ public class EncryptionHelper {
     public static byte[] keyGen() throws Exception{
         byte[] keyStart = "housingApp".getBytes();
         KeyGenerator kgen = KeyGenerator.getInstance("AES");
-        SecureRandom sr = SecureRandom.getInstance("SHA1PRING");
+        //SecureRandom sr = SecureRandom.getInstance("");
+        SecureRandom sr = new SecureRandom();
         sr.setSeed(keyStart);
         kgen.init(128, sr);
         SecretKey skey = kgen.generateKey();
