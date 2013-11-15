@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import edu.weber.housing1000.data.Survey;
 import edu.weber.housing1000.db.SurveyDbAdapter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 
 public class SignatureActivity extends Activity {
@@ -120,6 +121,12 @@ public class SignatureActivity extends Activity {
             }
             Canvas canvas = new Canvas(mBitmap);
             try {
+                /*ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+                mBitmap.compress(Bitmap.CompressFormat.PNG,100,byteArray);
+                byte[] byteImage = byteArray.toByteArray();
+                byte[] key = EncryptionHelper.keyGen();
+                byte[] encryptedImage = EncryptionHelper.encrypt(key, byteImage);*/
+
                 FileOutputStream mFileOutStream = openFileOutput(filename, Context.MODE_PRIVATE);
 
                 v.draw(canvas);
