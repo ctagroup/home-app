@@ -128,20 +128,13 @@ public class SignatureActivity extends Activity {
                 byte[] byteImage = byteArray.toByteArray();
                 byte[] key = EncryptionHelper.keyGen();
                 byte[] encryptedImage = EncryptionHelper.encrypt(key, byteImage);
-                byte[] decryptedImage = EncryptionHelper.decrypt(key, encryptedImage);
 
+                /*byte[] decryptedImage = EncryptionHelper.decrypt(key, encryptedImage);
                 Bitmap test = BitmapFactory.decodeByteArray(decryptedImage,0,decryptedImage.length);
                 test.compress(Bitmap.CompressFormat.JPEG, 100, mFileOutStream);
                 mFileOutStream.flush();
                 mFileOutStream.close();
                 String url = Images.Media.insertImage(getContentResolver(), test, "title", null);
-                Log.v("log_tag", "url: " + url);
-
-                /*
-                mBitmap.compress(Bitmap.CompressFormat.JPEG, 90, mFileOutStream);
-                mFileOutStream.flush();
-                mFileOutStream.close();
-                String url = Images.Media.insertImage(getContentResolver(), mBitmap, "title", null);
                 Log.v("log_tag", "url: " + url);*/
 
             } catch (Exception e) {
