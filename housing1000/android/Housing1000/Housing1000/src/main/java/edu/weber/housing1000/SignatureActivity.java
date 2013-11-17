@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.*;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -19,7 +21,9 @@ import edu.weber.housing1000.data.Survey;
 import edu.weber.housing1000.db.SurveyDbAdapter;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 
 public class SignatureActivity extends Activity {
 
@@ -52,7 +56,6 @@ public class SignatureActivity extends Activity {
         mSignature.setBackgroundColor(Color.WHITE);
         mContent.addView(mSignature, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         mClear = (Button) findViewById(R.id.clear);
-        mGetSign = (Button) findViewById(R.id.getsign);
         mGetSign.setEnabled(false);
         mCancel = (Button) findViewById(R.id.cancel);
         mView = mContent;
@@ -121,13 +124,65 @@ public class SignatureActivity extends Activity {
             }
             Canvas canvas = new Canvas(mBitmap);
             try {
-                FileOutputStream mFileOutStream = openFileOutput(filename, Context.MODE_PRIVATE);
                 v.draw(canvas);
                 ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
-                mBitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArray);
+                mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArray);
                 byte[] byteImage = byteArray.toByteArray();
                 byte[] key = EncryptionHelper.keyGen();
                 byte[] encryptedImage = EncryptionHelper.encrypt(key, byteImage);
+
+                // Check to see if we can write to external storage
+                if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()))
+                {
+                    try {
+
+                        // Get the external storage directory
+                        File sdCard = Environment.getExternalStorageDirectory();
+                        // Set up the directory that we are saving to
+                        File dir = new File (sdCard.getAbsolutePath() + "/.housing1000");
+                        File nomedia = new File (sdCard.getAbsolutePath() + "/.housing1000/.nomedia");
+                        nomedia.mkdirs();
+                        File file = new File(dir, filename);
+
+                        Log.d("HOUSING 1000", "Saving encrypted file to " + file.getAbsolutePath() );
+
+                        // Write the file
+                        FileOutputStream f = new FileOutputStream(file);
+                        ObjectOutputStream oos = new ObjectOutputStream(f);
+                        oos.writeObject(encryptedImage);
+                        oos.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                // Decrypt the image, write it to disk -- for testing
+                byte[] decryptedImage = EncryptionHelper.decrypt(key, encryptedImage);
+
+                // Check to see if we can write to external storage
+                if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()))
+                {
+                    try {
+
+                        // Get the external storage directory
+                        File sdCard = Environment.getExternalStorageDirectory();
+                        // Set up the directory that we are saving to
+                        File dir = new File (sdCard.getAbsolutePath() + "/.housing1000");
+                        File nomedia = new File (sdCard.getAbsolutePath() + "/.housing1000/.nomedia");
+                        nomedia.mkdirs();
+                        File file = new File(dir, "decrypted.jpg");
+
+                        Log.d("HOUSING 1000", "Saving decrypted file to " + file.getAbsolutePath() );
+
+                        Bitmap bMap = BitmapFactory.decodeByteArray(decryptedImage, 0, decryptedImage.length);
+
+                        // Write the file
+                        FileOutputStream f = new FileOutputStream(file);
+                        bMap.compress(Bitmap.CompressFormat.PNG, 100, f);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
 
                 /*byte[] decryptedImage = EncryptionHelper.decrypt(key, encryptedImage);
                 Bitmap test = BitmapFactory.decodeByteArray(decryptedImage,0,decryptedImage.length);

@@ -49,7 +49,7 @@ public class LoginActivity extends Activity
             	//this code will grab the fields from email and password
                 String emailIs, passwordIs;
 
-                //declate the text boxes
+                //declare the text boxes
                 EditText emailField = (EditText) findViewById(R.id.usernameTextBox);
                 EditText passwordField = (EditText) findViewById(R.id.passwordLoginTextBox);
 
@@ -58,7 +58,7 @@ public class LoginActivity extends Activity
                 passwordIs = passwordField.getText().toString();
                 boolean proceed = true;
 
-                //the followin will color the background on failed login and will set the proceed flag
+                //the following will color the background on failed login and will set the proceed flag
                 if (emailIs.equals(""))
                 {
                     emailField.requestFocus();
