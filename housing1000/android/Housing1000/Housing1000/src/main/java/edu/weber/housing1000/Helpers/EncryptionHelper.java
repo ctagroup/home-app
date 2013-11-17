@@ -1,4 +1,6 @@
-package edu.weber.housing1000;
+package edu.weber.housing1000.Helpers;
+
+import org.apache.commons.codec.binary.Base64;
 
 import java.security.SecureRandom;
 
@@ -32,6 +34,7 @@ public class EncryptionHelper {
     }
 
     public static byte[] decrypt(byte[] key, byte[] encrypted) throws Exception{
+        //byte[] bytesToDecrypt = Base64.decodeBase64(encrypted);
         SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.DECRYPT_MODE, skeySpec);

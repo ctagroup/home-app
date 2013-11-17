@@ -5,12 +5,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+
+import edu.weber.housing1000.Helpers.EncryptionHelper;
 import edu.weber.housing1000.db.SurveyDbAdapter;
 import edu.weber.housing1000.rest.RestHelper;
 import edu.weber.housing1000.rest.XmlSurvey;
