@@ -33,15 +33,18 @@ public class JSONParser {
         return null;
     }
 
-    public static ArrayList<String> parseSurvey(String survey)
-    {
+    public static JSONArray parseSurvey(String survey) {
+        JSONArray questions = null;
+
         try {
             JSONObject surveyJSON = new JSONObject(survey);
 
-            JSONArray questions = surveyJSON.getJSONArray("SurveyQuestions");
+            questions = surveyJSON.getJSONArray("SurveyQuestions");
 
-            for (int i = 0; i < questions.length(); i++){
+            for (int i = 0; i < questions.length(); i++) {
                 Log.d("JSON", questions.getJSONObject(i).get("text").toString());
+
+
             }
 
             //JSONArray surveysJSON = new JSONArray(survey);
@@ -56,7 +59,8 @@ public class JSONParser {
             e.printStackTrace();
         }
 
-        return null;
+        return questions;
+
     }
 
 }

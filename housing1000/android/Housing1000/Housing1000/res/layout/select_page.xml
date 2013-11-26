@@ -37,4 +37,18 @@
         android:background="@drawable/btn_yellow"
         android:layout_alignRight="@+id/censusBtn"
         android:layout_alignLeft="@+id/imageView1" />
+
+    <Button
+        android:id="@+id/dynamic_button"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/surveyBtn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp"
+        android:text="Dynamic Layout"
+        style="@style/ButtonText"
+        android:background="@drawable/btn_yellow"
+        android:layout_alignRight="@+id/censusBtn"
+        android:layout_alignLeft="@+id/imageView1" />
+
 </RelativeLayout>
