@@ -21,13 +21,15 @@
 
         <ImageView
             android:id="@+id/housing_logo"
-            android:layout_width="fill_parent"
-            android:layout_height="103dip"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dip"
             android:src="@drawable/housing1000logo"
-            android:contentDescription="@string/description_housing_1000_logo" />
+            android:contentDescription="@string/description_housing_1000_logo"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:paddingBottom="20dp" />
 
 
         <TextView
