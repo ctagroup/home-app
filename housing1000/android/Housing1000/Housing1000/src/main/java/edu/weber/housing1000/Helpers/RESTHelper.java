@@ -96,7 +96,7 @@ public class RESTHelper {
 
         } catch (Exception e)
         {
-            Log.e("ERROR", e.getMessage());
+            e.printStackTrace();
             return "ERROR: " + e.getMessage();
         } finally {
             if (is != null) {

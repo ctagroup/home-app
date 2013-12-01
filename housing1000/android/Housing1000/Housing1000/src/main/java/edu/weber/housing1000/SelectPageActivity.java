@@ -25,9 +25,9 @@ import edu.weber.housing1000.data.SurveyListing;
 import edu.weber.housing1000.db.DatabaseConnector;
 
 public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTaskCompleted {
-    public static final int TASK_GET_SURVEY_LIST = 1;
-    public static final int TASK_GET_SURVEY = 2;
-    public static final String SURVEY = "survey";
+    private static final int TASK_GET_SURVEY_LIST = 1;
+    private static final int TASK_GET_SURVEY = 2;
+    private static final String SURVEY = "survey";
 
     private ProgressDialog progressDialog;
 
@@ -84,6 +84,7 @@ public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTask
 
     }
 
+    @SuppressWarnings("unchecked")
     private void getSurveyList()
     {
         // Start the loading dialog
@@ -188,10 +189,14 @@ public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTask
      */
     private void displaySurveyList()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Select Survey");
-        builder.setView(surveyList);
-        surveyDialog = builder.create();
+        if (surveyDialog == null)
+        {
+            AlertDialog.Builder surveyBuilder = new AlertDialog.Builder(this);
+            surveyBuilder.setTitle("Select Survey");
+            surveyBuilder.setView(surveyList);
+
+            surveyDialog = surveyBuilder.create();
+        }
 
         surveyDialog.show();
     }
@@ -200,14 +205,18 @@ public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTask
      * Performs a database query outside of the GUI thread
      */
     private class GetAllSurveysTask extends AsyncTask<Object, Object, Cursor> {
-        DatabaseConnector databaseConnector = new DatabaseConnector(
+        final DatabaseConnector databaseConnector = new DatabaseConnector(
                 SelectPageActivity.this);
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            databaseConnector.open();
+        }
 
         // perform the database access
         @Override
         protected Cursor doInBackground(Object... params) {
-            databaseConnector.open();
-
             // get a cursor containing all surveys
             return databaseConnector.getAllSurveys();
         } // end method doInBackground
@@ -215,19 +224,19 @@ public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTask
         // use the Cursor returned from the doInBackground method
         @Override
         protected void onPostExecute(Cursor result) {
-            surveyAdapter.changeCursor(result); // set the adapter's Cursor
-            databaseConnector.close();
-
             progressDialog.dismiss();
-
             displaySurveyList();
+
+            surveyAdapter.changeCursor(result); // set the adapter's Cursor
+
+            //databaseConnector.close();
         } // end method onPostExecute
     } // end class GetContactsTask
 
     /**
      * Handles the survey click events
      */
-    AdapterView.OnItemClickListener surveyClickListener = new AdapterView.OnItemClickListener() {
+    private final AdapterView.OnItemClickListener surveyClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
                                 long arg3) {
@@ -241,6 +250,7 @@ public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTask
         } // end method onItemClick
     }; // end viewContactListener
 
+    @SuppressWarnings("unchecked")
     private void loadSurvey(long rowId)
     {
         // Start the loading dialog
@@ -274,7 +284,7 @@ public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTask
         Intent launchSurvey = new Intent(SelectPageActivity.this,
                 ClientInfoActivity_Dynamic.class);
 
-        // Pass the selected survey's row ID as an extra with the Intent
+        // Pass the selected survey row ID as an extra with the Intent
         launchSurvey.putExtra(SURVEY, survey);
         startActivity(launchSurvey); // start the ViewContact Activity
     }
