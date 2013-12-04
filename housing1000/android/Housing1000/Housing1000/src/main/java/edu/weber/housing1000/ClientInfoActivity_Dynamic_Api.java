@@ -148,6 +148,8 @@ public class ClientInfoActivity_Dynamic_Api extends Activity
 
                     EditText et = new EditText(this);
                     et.setId(lstQuestions.get(i).getQuestionId());
+                    LinearLayout.LayoutParams etParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    et.setLayoutParams(etParams);
                     ll_sub.addView(et);
 
                 } else if(lstQuestions.get(i).getQuestionType().equals("SingleSelect") == true)

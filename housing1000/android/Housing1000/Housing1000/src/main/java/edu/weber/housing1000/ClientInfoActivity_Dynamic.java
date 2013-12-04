@@ -125,6 +125,8 @@ public class ClientInfoActivity_Dynamic extends Activity
 
                     EditText et = new EditText(this);
                     et.setId(Integer.parseInt(lstQuestions.getJSONObject(i).get("QuestionId").toString()));
+                    LinearLayout.LayoutParams etParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    et.setLayoutParams(etParams);
                     ll_sub.addView(et);
 
                 } else if((lstQuestions.getJSONObject(i).get("QuestionType").toString()).equals("SingleSelect") == true)
