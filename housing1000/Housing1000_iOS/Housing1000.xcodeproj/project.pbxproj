@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F5BBA6D184EF87900156CAD /* SurveyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5BBA6C184EF87900156CAD /* SurveyViewController.m */; };
 		940CA4EE1702894400FA5C87 /* blue_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 940CA4ED1702894400FA5C87 /* blue_button.png */; };
 		940CA4F01702895000FA5C87 /* orange_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 940CA4EF1702895000FA5C87 /* orange_button.png */; };
 		948CBC3516FC8BA000DD4E2B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 948CBC3416FC8BA000DD4E2B /* UIKit.framework */; };
@@ -20,12 +21,13 @@
 		948CBC4B16FC8BA000DD4E2B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 948CBC4A16FC8BA000DD4E2B /* Default-568h@2x.png */; };
 		948CBC4E16FC8BA000DD4E2B /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 948CBC4C16FC8BA000DD4E2B /* MainStoryboard.storyboard */; };
 		948CBC5116FC8BA000DD4E2B /* HousingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 948CBC5016FC8BA000DD4E2B /* HousingViewController.m */; };
-		948CBC5B16FC939000DD4E2B /* brushedmetal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 948CBC5A16FC939000DD4E2B /* brushedmetal.jpg */; };
 		948CBC5D16FC939F00DD4E2B /* housing1000logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 948CBC5C16FC939F00DD4E2B /* housing1000logo.png */; };
 		94922FEC17027A3000670EB7 /* Fields.txt in Resources */ = {isa = PBXBuildFile; fileRef = 94922FEB17027A3000670EB7 /* Fields.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3F5BBA6B184EF87900156CAD /* SurveyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyViewController.h; sourceTree = "<group>"; };
+		3F5BBA6C184EF87900156CAD /* SurveyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyViewController.m; sourceTree = "<group>"; };
 		940CA4ED1702894400FA5C87 /* blue_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_button.png; sourceTree = "<group>"; };
 		940CA4EF1702895000FA5C87 /* orange_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = orange_button.png; sourceTree = "<group>"; };
 		948CBC3116FC8BA000DD4E2B /* Housing1000.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Housing1000.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -44,7 +46,6 @@
 		948CBC4D16FC8BA000DD4E2B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		948CBC4F16FC8BA000DD4E2B /* HousingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HousingViewController.h; sourceTree = "<group>"; };
 		948CBC5016FC8BA000DD4E2B /* HousingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HousingViewController.m; sourceTree = "<group>"; };
-		948CBC5A16FC939000DD4E2B /* brushedmetal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brushedmetal.jpg; sourceTree = "<group>"; };
 		948CBC5C16FC939F00DD4E2B /* housing1000logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = housing1000logo.png; sourceTree = "<group>"; };
 		94922FEB17027A3000670EB7 /* Fields.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Fields.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -93,6 +94,8 @@
 		948CBC3A16FC8BA000DD4E2B /* Housing1000 */ = {
 			isa = PBXGroup;
 			children = (
+				3F5BBA6B184EF87900156CAD /* SurveyViewController.h */,
+				3F5BBA6C184EF87900156CAD /* SurveyViewController.m */,
 				948CBC5916FC932500DD4E2B /* Images */,
 				948CBC4316FC8BA000DD4E2B /* HousingAppDelegate.h */,
 				948CBC4416FC8BA000DD4E2B /* HousingAppDelegate.m */,
@@ -125,7 +128,6 @@
 				940CA4EF1702895000FA5C87 /* orange_button.png */,
 				940CA4ED1702894400FA5C87 /* blue_button.png */,
 				948CBC5C16FC939F00DD4E2B /* housing1000logo.png */,
-				948CBC5A16FC939000DD4E2B /* brushedmetal.jpg */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -187,7 +189,6 @@
 				948CBC4916FC8BA000DD4E2B /* Default@2x.png in Resources */,
 				948CBC4B16FC8BA000DD4E2B /* Default-568h@2x.png in Resources */,
 				948CBC4E16FC8BA000DD4E2B /* MainStoryboard.storyboard in Resources */,
-				948CBC5B16FC939000DD4E2B /* brushedmetal.jpg in Resources */,
 				948CBC5D16FC939F00DD4E2B /* housing1000logo.png in Resources */,
 				94922FEC17027A3000670EB7 /* Fields.txt in Resources */,
 				940CA4EE1702894400FA5C87 /* blue_button.png in Resources */,
@@ -204,6 +205,7 @@
 			files = (
 				948CBC4116FC8BA000DD4E2B /* main.m in Sources */,
 				948CBC4516FC8BA000DD4E2B /* HousingAppDelegate.m in Sources */,
+				3F5BBA6D184EF87900156CAD /* SurveyViewController.m in Sources */,
 				948CBC5116FC8BA000DD4E2B /* HousingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
