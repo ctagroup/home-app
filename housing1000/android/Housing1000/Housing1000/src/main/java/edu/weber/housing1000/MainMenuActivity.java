@@ -10,10 +10,13 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+
+import edu.weber.housing1000.Helpers.EncryptionHelper;
 import edu.weber.housing1000.db.SurveyDbAdapter;
 import edu.weber.housing1000.rest.RestHelper;
 import edu.weber.housing1000.rest.XmlSurvey;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 
 public class MainMenuActivity extends Activity{
@@ -107,11 +110,20 @@ public class MainMenuActivity extends Activity{
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             try {
                 FileOutputStream out = openFileOutput("picture_"+hmsId+".jpg", Context.MODE_PRIVATE);
-                photo.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+                photo.compress(Bitmap.CompressFormat.JPEG, 100, byteArray);
+                byte[] byteImage = byteArray.toByteArray();
+                byte[] key = EncryptionHelper.keyGen();
+                byte[] encryptedImage = EncryptionHelper.encrypt(key, byteImage);
+
+                /*byte[] decryptedImage = EncryptionHelper.decrypt(key, encryptedImage);
+                Bitmap test = BitmapFactory.decodeByteArray(decryptedImage, 0, decryptedImage.length);
+                test.compress(Bitmap.CompressFormat.JPEG, 100, out);
                 out.flush();
                 out.close();
-                String url = MediaStore.Images.Media.insertImage(getContentResolver(), photo, "title", null);
-                android.util.Log.v("log_tag", "url: " + url);
+                String url = MediaStore.Images.Media.insertImage(getContentResolver(), test, "title", null);
+                android.util.Log.v("log_tag", "url: " + url);*/
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

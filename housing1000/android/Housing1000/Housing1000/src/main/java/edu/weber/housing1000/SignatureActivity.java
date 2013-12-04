@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.*;
 import android.os.Bundle;
-import android.provider.MediaStore.Images;
 import android.util.AttributeSet;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,15 +15,18 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
+
+import edu.weber.housing1000.Helpers.EncryptionHelper;
+import edu.weber.housing1000.Helpers.FileHelper;
 import edu.weber.housing1000.data.Survey;
 import edu.weber.housing1000.db.SurveyDbAdapter;
 
-import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 
 public class SignatureActivity extends Activity {
 
     LinearLayout mContent;
-    signature mSignature;
+    Signature mSignature;
     Button mClear, mGetSign, mCancel;
     private Bitmap mBitmap;
     View mView;
@@ -47,15 +50,14 @@ public class SignatureActivity extends Activity {
 
         mGetSign = (Button) findViewById(R.id.getsign);
         mContent = (LinearLayout) findViewById(R.id.signatureLinearLayout);
-        mSignature = new signature(this, null);
+        mSignature = new Signature(this, null);
         mSignature.setBackgroundColor(Color.WHITE);
         mContent.addView(mSignature, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         mClear = (Button) findViewById(R.id.clear);
-        mGetSign = (Button) findViewById(R.id.getsign);
         mGetSign.setEnabled(false);
         mCancel = (Button) findViewById(R.id.cancel);
         mView = mContent;
-        filename = "signature_"+hmsId+".jpg";
+        filename = "signature_"+hmsId;
 
         mClear.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
@@ -93,7 +95,7 @@ public class SignatureActivity extends Activity {
         super.onDestroy();
     }
 
-    public class signature extends View {
+    public class Signature extends View {
         private static final float STROKE_WIDTH = 5f;
         private static final float HALF_STROKE_WIDTH = STROKE_WIDTH / 2;
         private Paint paint = new Paint();
@@ -103,7 +105,7 @@ public class SignatureActivity extends Activity {
         private float lastTouchY;
         private final RectF dirtyRect = new RectF();
 
-        public signature(Context context, AttributeSet attrs) {
+        public Signature(Context context, AttributeSet attrs) {
             super(context, attrs);
             paint.setAntiAlias(true);
             paint.setColor(Color.BLACK);
@@ -120,14 +122,20 @@ public class SignatureActivity extends Activity {
             }
             Canvas canvas = new Canvas(mBitmap);
             try {
-                FileOutputStream mFileOutStream = openFileOutput(filename, Context.MODE_PRIVATE);
-
                 v.draw(canvas);
-                mBitmap.compress(Bitmap.CompressFormat.JPEG, 90, mFileOutStream);
-                mFileOutStream.flush();
-                mFileOutStream.close();
-                String url = Images.Media.insertImage(getContentResolver(), mBitmap, "title", null);
-                Log.v("log_tag", "url: " + url);
+                ByteArrayOutputStream baOutputStream = new ByteArrayOutputStream();
+                mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baOutputStream);
+                byte[] byteImage = baOutputStream.toByteArray();
+                byte[] key = EncryptionHelper.keyGen();
+                byte[] encryptedImage = EncryptionHelper.encrypt(key, byteImage);
+
+                // Write the encrypted signature to storage
+                FileHelper.writeFileToExternalStorage(encryptedImage, filename);
+
+                // Open the encrypted file, decrypt the image, write it to disk -- for testing
+                byte[] encryptedFileBytes = FileHelper.readFileFromExternalStorage(filename);
+                byte[] decryptedImageBytes = EncryptionHelper.decrypt(key, encryptedFileBytes);
+                FileHelper.writeFileToExternalStorage(decryptedImageBytes, "decrypted.jpg");
 
             } catch (Exception e) {
                 Log.v("log_tag", e.toString());
