@@ -88,9 +88,7 @@ public class LoginActivity extends Activity
                 //if both fields have text in them then proceed, at this time, the email check is disabled
                 if (proceed)
                 {
-                    //go to the next activity(screen)
-                    //Intent intent = new Intent(LoginActivity.this, ClientInfoActivity.class);
-                    //startActivityForResult(intent, 1);
+                    //TODO: Add authentication check
 
                     Intent intent = new Intent(LoginActivity.this, SelectPageActivity.class);
                     startActivityForResult(intent, 1);
@@ -105,7 +103,7 @@ public class LoginActivity extends Activity
         {
             public void onClick(View v)
             {
-                //declate the text fields
+                //declare the text fields
                 EditText emailField = (EditText) findViewById(R.id.usernameTextBox);
                 EditText passwordField = (EditText) findViewById(R.id.passwordLoginTextBox);
 

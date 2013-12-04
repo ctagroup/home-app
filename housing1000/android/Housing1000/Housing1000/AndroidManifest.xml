@@ -60,6 +60,9 @@
         <activity
             android:name=".ClientInfoActivity_Dynamic"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ClientInfoActivity_Dynamic_Api"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
