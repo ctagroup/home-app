@@ -49,4 +49,15 @@
         style="@style/ButtonText"
         android:background="@drawable/btn_yellow" />
 
+    <Button
+        style="@style/ButtonText"
+        android:id="@+id/dynamicWithApiButton"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp"
+        android:text="Dynamic w/ API"
+        android:background="@drawable/btn_yellow"
+        android:layout_below="@+id/dynamic_button" />
+
 </RelativeLayout>

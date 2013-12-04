@@ -27,7 +27,6 @@ import edu.weber.housing1000.db.DatabaseConnector;
 public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTaskCompleted {
     private static final int TASK_GET_SURVEY_LIST = 1;
     private static final int TASK_GET_SURVEY = 2;
-    private static final String SURVEY = "survey";
 
     private ProgressDialog progressDialog;
 
@@ -58,13 +57,12 @@ public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTask
         Button clientButton = (Button) findViewById(R.id.censusBtn);
         Button interviewButton = (Button) findViewById(R.id.surveyBtn);
         Button dynamicButton = (Button) findViewById(R.id.dynamic_button);
+        Button dynamicWithApiButton = (Button) findViewById(R.id.dynamicWithApiButton);
 
         dynamicButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                getSurveyList();
-
-                //Intent intent = new Intent(SelectPageActivity.this, SelectPageActivity.class);
-                //startActivity(intent);
+                Intent intent = new Intent(SelectPageActivity.this, ClientInfoActivity_Dynamic.class);
+                startActivity(intent);
             }
         });
 
@@ -79,6 +77,12 @@ public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTask
             public void onClick(View view) {
                 Intent intent = new Intent(SelectPageActivity.this, LegalDisclaimerActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        dynamicWithApiButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                getSurveyList();
             }
         });
 
@@ -282,10 +286,10 @@ public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTask
     private void launchSurveyActivity(SurveyListing survey)
     {
         Intent launchSurvey = new Intent(SelectPageActivity.this,
-                ClientInfoActivity_Dynamic.class);
+                ClientInfoActivity_Dynamic_Api.class);
 
         // Pass the selected survey row ID as an extra with the Intent
-        launchSurvey.putExtra(SURVEY, survey);
+        launchSurvey.putExtra(ClientInfoActivity_Dynamic_Api.EXTRA_SURVEY, survey);
         startActivity(launchSurvey); // start the ViewContact Activity
     }
 

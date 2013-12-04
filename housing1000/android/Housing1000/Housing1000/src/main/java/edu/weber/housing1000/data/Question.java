@@ -5,7 +5,7 @@ package edu.weber.housing1000.data;
  */
 public class Question {
     private int questionId;
-    private String group;
+    private String group = "Questions";
     private String text;
     private String questionType;
     private String options;
