@@ -145,6 +145,9 @@ public class ClientInfoActivity_Dynamic_Api extends Activity
                     TextView tv = new TextView(this);
                     tv.setText(lstQuestions.get(i).getText());
                     ll_sub.addView(tv);
+                    // TODO: Have the ctagroup people add a minimum character length for the SinglelineTextBox so we can wrap to the next line if it isn't big enough
+                    if (tv.getText().length() >= 16)
+                        ll_sub.setOrientation(LinearLayout.VERTICAL);
 
                     EditText et = new EditText(this);
                     et.setId(lstQuestions.get(i).getQuestionId());

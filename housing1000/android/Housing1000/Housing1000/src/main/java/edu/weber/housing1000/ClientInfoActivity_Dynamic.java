@@ -122,6 +122,9 @@ public class ClientInfoActivity_Dynamic extends Activity
                     TextView tv = new TextView(this);
                     tv.setText(lstQuestions.getJSONObject(i).get("text").toString());
                     ll_sub.addView(tv);
+                    // TODO: Have the ctagroup people add a minimum character length for the SinglelineTextBox so we can wrap to the next line if it isn't big enough
+                    if (tv.getText().length() >= 16)
+                        ll_sub.setOrientation(LinearLayout.VERTICAL);
 
                     EditText et = new EditText(this);
                     et.setId(Integer.parseInt(lstQuestions.getJSONObject(i).get("QuestionId").toString()));
@@ -145,6 +148,7 @@ public class ClientInfoActivity_Dynamic extends Activity
                     TextView tv = new TextView(this);
                     tv.setText(lstQuestions.getJSONObject(i).get("text").toString());
                     ll_sub.addView(tv);
+
 
                     //Add potential answers
                     List<String> lstAnswers = new ArrayList<String>();
