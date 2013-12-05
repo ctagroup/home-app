@@ -32,7 +32,6 @@ public class SignatureActivity extends Activity {
     private Bitmap mBitmap;
     private Bitmap sBitmap;
     View mView;
-    String filename;
     int hmsId = -1;
 
     @Override
@@ -59,7 +58,6 @@ public class SignatureActivity extends Activity {
         mGetSign.setEnabled(false);
         mCancel = (Button) findViewById(R.id.cancel);
         mView = mContent;
-        filename = "signature_"+hmsId;
 
         mClear.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
@@ -133,12 +131,12 @@ public class SignatureActivity extends Activity {
                 byte[] encryptedImage = EncryptionHelper.encrypt(key, byteImage);
 
                 // Write the encrypted signature to storage
-                FileHelper.writeFileToExternalStorage(encryptedImage, filename);
+                FileHelper.writeFileToExternalStorage(encryptedImage, "encryptedSignature");
 
                 // Open the encrypted file, decrypt the image, write it to disk -- for testing
-                byte[] encryptedFileBytes = FileHelper.readFileFromExternalStorage(filename);
+                byte[] encryptedFileBytes = FileHelper.readFileFromExternalStorage("encryptedSignature");
                 byte[] decryptedImageBytes = EncryptionHelper.decrypt(key, encryptedFileBytes);
-                FileHelper.writeFileToExternalStorage(decryptedImageBytes, "decrypted.jpg");
+                FileHelper.writeFileToExternalStorage(decryptedImageBytes, "decryptedSignature.jpg");
 
             } catch (Exception e) {
                 Log.v("log_tag", e.toString());
