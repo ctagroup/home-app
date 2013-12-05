@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HousingViewController : UIViewController
+@interface HousingViewController : UIViewController <UITextFieldDelegate>
+
+@property (weak, nonatomic) IBOutlet UITextField *usernameTextField;
+@property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 
 @end

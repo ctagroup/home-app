@@ -14,9 +14,14 @@
 
 @implementation HousingViewController
 
-- (void)clearTextFields
-{
-    
+- (IBAction)clearTextFields:(id)sender {
+    self.usernameTextField.text = nil;
+    self.passwordTextField.text = nil;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -24,6 +29,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        
     }
     return self;
 }
@@ -32,6 +38,10 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    _usernameTextField.returnKeyType = UIReturnKeyDone;
+    [_usernameTextField setDelegate:self];
+    _passwordTextField.returnKeyType = UIReturnKeyDone;
+    [_passwordTextField setDelegate:self];
 }
 
 - (void)didReceiveMemoryWarning

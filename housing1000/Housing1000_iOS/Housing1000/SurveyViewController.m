@@ -21,7 +21,7 @@
     NSLog(@"viewdidload");
     self.responseData = [NSMutableData data];
     NSURLRequest *request = [NSURLRequest requestWithURL:
-                             [NSURL URLWithString:@"http://staging.ctagroup.org/survey/api/survey"]];
+                             [NSURL URLWithString:@"http://staging.ctagroup.org/survey/api/survey/1"]];
     [[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
 
@@ -59,13 +59,14 @@
         NSLog(@"value: %@", valueAsString);
     }
     
+    /*
     // extract specific value...
     NSArray *results = [res objectForKey:@"results"];
     
     for (NSDictionary *result in results) {
         NSString *icon = [result objectForKey:@"icon"];
         NSLog(@"icon: %@", icon);
-    }
+    }*/
     
 }
 
