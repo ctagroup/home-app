@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 
 import edu.weber.housing1000.Helpers.EncryptionHelper;
 import edu.weber.housing1000.Helpers.FileHelper;
+import edu.weber.housing1000.Helpers.ImageHelper;
 import edu.weber.housing1000.data.Survey;
 import edu.weber.housing1000.db.SurveyDbAdapter;
 
@@ -29,6 +30,7 @@ public class SignatureActivity extends Activity {
     Signature mSignature;
     Button mClear, mGetSign, mCancel;
     private Bitmap mBitmap;
+    private Bitmap sBitmap;
     View mView;
     String filename;
     int hmsId = -1;
@@ -124,7 +126,8 @@ public class SignatureActivity extends Activity {
             try {
                 v.draw(canvas);
                 ByteArrayOutputStream baOutputStream = new ByteArrayOutputStream();
-                mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baOutputStream);
+                sBitmap = ImageHelper.ScaleImage(mBitmap);
+                sBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baOutputStream);
                 byte[] byteImage = baOutputStream.toByteArray();
                 byte[] key = EncryptionHelper.keyGen();
                 byte[] encryptedImage = EncryptionHelper.encrypt(key, byteImage);
