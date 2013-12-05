@@ -49,7 +49,9 @@
             android:layout_below="@+id/usernameLabel"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:inputType="textPassword">
+            android:inputType="textPassword"
+            android:imeOptions="actionNext"
+            android:imeActionLabel="Next">
 
             <requestFocus />
         </EditText>
@@ -73,7 +75,9 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:ems="10"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:imeOptions="actionGo"
+            android:imeActionLabel="Login"/>
 
         <LinearLayout
             android:layout_below="@+id/passwordLoginTextBox"

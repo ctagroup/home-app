@@ -53,7 +53,7 @@ public class ClientInfoActivity_Dynamic_Api extends Activity
     {
         try
         {
-            ScrollView sv = new ScrollView(this);
+            final ScrollView sv = new ScrollView(this);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
             layoutParams.addRule(RelativeLayout.ABOVE, R.id.buttonsLinearLayout);
             sv.setLayoutParams(layoutParams);
@@ -97,7 +97,8 @@ public class ClientInfoActivity_Dynamic_Api extends Activity
                 panelView.setOrientation(LinearLayout.VERTICAL);
                 panelViews[k] = panelView;
                 ll.addView(panelView);
-                panelView.setVisibility(View.GONE);
+                if (k > 1)
+                    panelView.setVisibility(View.GONE);
             }
 
             //Set Click Events

@@ -7,13 +7,18 @@ import android.os.Bundle;
 import de.akquinet.android.androlog.Log;
 
 //imports added by James
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.view.View;
+import android.widget.TextView;
 
 
 public class LoginActivity extends Activity
 {
+    EditText emailField;
+    EditText passwordField;
 
     /**
      * Called when the activity is first created.
@@ -36,6 +41,29 @@ public class LoginActivity extends Activity
         
         //declare the login button
         Button loginButton = (Button) findViewById(R.id.loginButton);
+        emailField = (EditText) findViewById(R.id.usernameTextBox);
+        passwordField = (EditText) findViewById(R.id.passwordLoginTextBox);
+
+        passwordField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if(i == EditorInfo.IME_ACTION_GO)
+                {
+                    loginValidation();
+                }
+
+                return true;
+            }
+        });
+
+        passwordField.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_DOWN)
+                    loginValidation();
+                return false;
+            }
+        });
 
         //this code is to the focus is on the email field on application start up
         EditText emailFocus = (EditText) findViewById(R.id.usernameTextBox);
@@ -46,53 +74,7 @@ public class LoginActivity extends Activity
         {
             public void onClick(View v) 
             {
-            	//this code will grab the fields from email and password
-                String emailIs, passwordIs;
-
-                //declare the text boxes
-                EditText emailField = (EditText) findViewById(R.id.usernameTextBox);
-                EditText passwordField = (EditText) findViewById(R.id.passwordLoginTextBox);
-
-                //get the text from the boxes
-                emailIs = emailField.getText().toString();
-                passwordIs = passwordField.getText().toString();
-                boolean proceed = true;
-
-                //the following will color the background on failed login and will set the proceed flag
-                if (emailIs.equals(""))
-                {
-                    emailField.requestFocus();
-                    emailField.setBackgroundColor(Color.rgb(255,102,51));
-                    proceed = false;
-                }
-                else
-                {
-                    emailField.setBackgroundColor(Color.WHITE);
-                }
-
-                if (passwordIs.equals(""))
-                {
-                    passwordField.setBackgroundColor(Color.rgb(255,102,51));
-                    proceed = false;
-
-                    if (!emailIs.equals(""))
-                    {
-                        passwordField.requestFocus();
-                    }
-                }
-                else
-                {
-                    passwordField.setBackgroundColor(Color.WHITE);
-                }
-
-                //if both fields have text in them then proceed, at this time, the email check is disabled
-                if (proceed)
-                {
-                    //TODO: Add authentication check
-
-                    Intent intent = new Intent(LoginActivity.this, SelectPageActivity.class);
-                    startActivityForResult(intent, 1);
-                }
+                loginValidation();
             }
         });
 
@@ -120,5 +102,54 @@ public class LoginActivity extends Activity
 
     }//close public void
 
+    public void loginValidation()
+    {
+        //this code will grab the fields from email and password
+        String emailIs, passwordIs;
+
+        //declare the text boxes
+
+
+        //get the text from the boxes
+        emailIs = emailField.getText().toString();
+        passwordIs = passwordField.getText().toString();
+        boolean proceed = true;
+
+        //the following will color the background on failed login and will set the proceed flag
+        if (emailIs.equals(""))
+        {
+            emailField.requestFocus();
+            emailField.setBackgroundColor(Color.rgb(255,102,51));
+            proceed = false;
+        }
+        else
+        {
+            emailField.setBackgroundColor(Color.WHITE);
+        }
+
+        if (passwordIs.equals(""))
+        {
+            passwordField.setBackgroundColor(Color.rgb(255,102,51));
+            proceed = false;
+
+            if (!emailIs.equals(""))
+            {
+                passwordField.requestFocus();
+            }
+        }
+        else
+        {
+            passwordField.setBackgroundColor(Color.WHITE);
+        }
+
+        //if both fields have text in them then proceed, at this time, the email check is disabled
+        if (proceed)
+        {
+            //TODO: Add authentication check
+
+            Intent intent = new Intent(LoginActivity.this, SelectPageActivity.class);
+            startActivityForResult(intent, 1);
+        }
+    }
 }
 

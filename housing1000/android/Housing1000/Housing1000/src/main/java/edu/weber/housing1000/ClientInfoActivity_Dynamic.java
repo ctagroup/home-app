@@ -35,7 +35,7 @@ public class ClientInfoActivity_Dynamic extends Activity
         try
         {
             //Create linear layout and add it to a scroll view
-            ScrollView sv = new ScrollView(this);
+            final ScrollView sv = new ScrollView(this);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
             layoutParams.addRule(RelativeLayout.ABOVE, R.id.buttonsLinearLayout);
             sv.setLayoutParams(layoutParams);
