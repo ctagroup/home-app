@@ -1,24 +1,37 @@
 package edu.weber.housing1000;
 
 import android.app.Activity;
-import android.graphics.Point;
 import android.os.Bundle;
-import android.view.Display;
+import android.util.Log;
 import android.view.View;
-import android.widget.*;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
+import edu.weber.housing1000.data.Question;
+import edu.weber.housing1000.data.SurveyListing;
 import edu.weber.housing1000.db.SurveyDbAdapter;
 
-public class ClientInfoActivity_Dynamic extends Activity
+public class ClientInfoActivity_Dynamic_Api extends Activity
 {
+    public static final String EXTRA_SURVEY = "survey";
 
-    /* Called when the activity is first created. */
     long surveyId = -1;
+    SurveyListing survey;
 
     RelativeLayout rootLayout;
 
@@ -31,10 +44,15 @@ public class ClientInfoActivity_Dynamic extends Activity
         rootLayout = (RelativeLayout) findViewById(R.id.root_layout);
 
         surveyId = getIntent().getLongExtra(SurveyDbAdapter.SURVEYS_FIELD_ID, -1);
+        survey = (SurveyListing) getIntent().getSerializableExtra(EXTRA_SURVEY);
 
+        generateQuestionUi();
+    }
+
+    private void generateQuestionUi()
+    {
         try
         {
-            //Create linear layout and add it to a scroll view
             final ScrollView sv = new ScrollView(this);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
             layoutParams.addRule(RelativeLayout.ABOVE, R.id.buttonsLinearLayout);
@@ -44,17 +62,22 @@ public class ClientInfoActivity_Dynamic extends Activity
             ll.setOrientation(LinearLayout.VERTICAL);
             sv.addView(ll);
 
-            //Parse survey information
-            JSONArray lstQuestions = JSONParser.parseSurvey(JSONParser.testSurvey);
+            ArrayList<Question> lstQuestions = JSONParser.parseSurveyQuestions(survey.getQuestions());
+
+            // Sort the questions by orderId
+            Collections.sort(lstQuestions, new Comparator<Question>() {
+                public int compare(Question q1, Question q2) {
+                    return q1.getOrderId() - q2.getOrderId();
+                }
+            });
+
             List<String> lstPanels = new ArrayList<String>();
 
             //Get panel types
-            for (int j = 0; j < lstQuestions.length(); j++)
+            for (Question q : lstQuestions)
             {
-                if (!lstPanels.contains(lstQuestions.getJSONObject(j).get("Panel").toString()))
-                {
-                    lstPanels.add(lstQuestions.getJSONObject(j).get("Panel").toString());
-                }
+                if (!lstPanels.contains(q.getGroup()))
+                    lstPanels.add(q.getGroup());
             }
 
             LinearLayout[] panelViews = new LinearLayout[lstPanels.size()];
@@ -74,7 +97,8 @@ public class ClientInfoActivity_Dynamic extends Activity
                 panelView.setOrientation(LinearLayout.VERTICAL);
                 panelViews[k] = panelView;
                 ll.addView(panelView);
-                panelView.setVisibility(View.GONE);
+                if (k > 1)
+                    panelView.setVisibility(View.GONE);
             }
 
             //Set Click Events
@@ -105,55 +129,54 @@ public class ClientInfoActivity_Dynamic extends Activity
             }
 
             //Add questions
-            for (int i = 0; i < lstQuestions.length(); i++)
+            for (int i = 0; i < lstQuestions.size(); i++)
             {
-                if((lstQuestions.getJSONObject(i).get("QuestionType").toString()).equals("SinglelineTextBox") == true)
+                if(lstQuestions.get(i).getQuestionType().equals("SinglelineTextBox") == true)
                 {
                     //Add a text box
                     LinearLayout ll_sub = new LinearLayout(this);
                     for(int k =0; k < panelViews.length; k++)
                     {
-                        if ((lstQuestions.getJSONObject(i).get("Panel").toString()).equals(lstPanels.get(k)))
+                        if (lstQuestions.get(i).getGroup().equals(lstPanels.get(k)))
                         {
                             panelViews[k].addView(ll_sub);
                         }
                     }
 
                     TextView tv = new TextView(this);
-                    tv.setText(lstQuestions.getJSONObject(i).get("text").toString());
+                    tv.setText(lstQuestions.get(i).getText());
                     ll_sub.addView(tv);
                     // TODO: Have the ctagroup people add a minimum character length for the SinglelineTextBox so we can wrap to the next line if it isn't big enough
                     if (tv.getText().length() >= 16)
                         ll_sub.setOrientation(LinearLayout.VERTICAL);
 
                     EditText et = new EditText(this);
-                    et.setId(Integer.parseInt(lstQuestions.getJSONObject(i).get("QuestionId").toString()));
+                    et.setId(lstQuestions.get(i).getQuestionId());
                     LinearLayout.LayoutParams etParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     et.setLayoutParams(etParams);
                     ll_sub.addView(et);
 
-                } else if((lstQuestions.getJSONObject(i).get("QuestionType").toString()).equals("SingleSelect") == true)
+                } else if(lstQuestions.get(i).getQuestionType().equals("SingleSelect") == true)
                 {
                     //Add question with selections
                     LinearLayout ll_sub = new LinearLayout(this);
                     ll_sub.setOrientation(LinearLayout.VERTICAL);
                     for(int k =0; k < panelViews.length; k++)
                     {
-                        if ((lstQuestions.getJSONObject(i).get("Panel").toString()).equals(lstPanels.get(k)))
+                        if (lstQuestions.get(i).getGroup().equals(lstPanels.get(k)))
                         {
                             panelViews[k].addView(ll_sub);
                         }
                     }
 
                     TextView tv = new TextView(this);
-                    tv.setText(lstQuestions.getJSONObject(i).get("text").toString());
+                    tv.setText(lstQuestions.get(i).getText());
                     ll_sub.addView(tv);
-
 
                     //Add potential answers
                     List<String> lstAnswers = new ArrayList<String>();
                     lstAnswers.add("-SELECT-");
-                    String[] arrAnswers = (lstQuestions.getJSONObject(i).get("Options").toString()).split("\\|");
+                    String[] arrAnswers = lstQuestions.get(i).getOptions().split("\\|");
                     for (int j = 0; j < arrAnswers.length; j++) {
                         lstAnswers.add(arrAnswers[j]);
                     }
@@ -162,28 +185,28 @@ public class ClientInfoActivity_Dynamic extends Activity
                     ArrayAdapter spArr = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item,
                             lstAnswers);
                     sp.setAdapter(spArr);
-                    sp.setId(Integer.parseInt(lstQuestions.getJSONObject(i).get("QuestionId").toString()));
+                    sp.setId(lstQuestions.get(i).getQuestionId());
                     ll_sub.addView(sp);
-                } else if((lstQuestions.getJSONObject(i).get("QuestionType").toString()).equals("MultiSelect") == true)
+                } else if(lstQuestions.get(i).getQuestionType().equals("MultiSelect") == true)
                 {
                     //Add question with selections
                     LinearLayout ll_sub = new LinearLayout(this);
                     ll_sub.setOrientation(LinearLayout.VERTICAL);
-                    ll_sub.setId(Integer.parseInt(lstQuestions.getJSONObject(i).get("QuestionId").toString()));
+                    ll_sub.setId(lstQuestions.get(i).getQuestionId());
                     for(int k =0; k < panelViews.length; k++)
                     {
-                        if ((lstQuestions.getJSONObject(i).get("Panel").toString()).equals(lstPanels.get(k)))
+                        if (lstQuestions.get(i).getGroup().equals(lstPanels.get(k)))
                         {
                             panelViews[k].addView(ll_sub);
                         }
                     }
 
                     TextView tv = new TextView(this);
-                    tv.setText(lstQuestions.getJSONObject(i).get("text").toString());
+                    tv.setText(lstQuestions.get(i).getText());
                     ll_sub.addView(tv);
 
                     //Add potential answers
-                    String[] arrAnswers = (lstQuestions.getJSONObject(i).get("Options").toString()).split("\\|");
+                    String[] arrAnswers = lstQuestions.get(i).getOptions().split("\\|");
                     for (int j = 0; j < arrAnswers.length; j++) {
                         CheckBox cb = new CheckBox(this);
                         cb.setText(arrAnswers[j]);
@@ -194,9 +217,11 @@ public class ClientInfoActivity_Dynamic extends Activity
 
             rootLayout.addView(sv);
         }
-        catch(JSONException e) {
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
+
     }
 
     public void cancelButton(View view)
