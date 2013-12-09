@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 
 import edu.weber.housing1000.Helpers.EncryptionHelper;
 import edu.weber.housing1000.Helpers.FileHelper;
-import edu.weber.housing1000.Helpers.ImageHelper;
 import edu.weber.housing1000.data.Survey;
 import edu.weber.housing1000.db.SurveyDbAdapter;
 
@@ -30,8 +29,8 @@ public class SignatureActivity extends Activity {
     Signature mSignature;
     Button mClear, mGetSign, mCancel;
     private Bitmap mBitmap;
-    private Bitmap sBitmap;
     View mView;
+    String filename;
     int hmsId = -1;
 
     @Override
@@ -58,6 +57,7 @@ public class SignatureActivity extends Activity {
         mGetSign.setEnabled(false);
         mCancel = (Button) findViewById(R.id.cancel);
         mView = mContent;
+        filename = "signature_"+hmsId;
 
         mClear.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
@@ -124,19 +124,18 @@ public class SignatureActivity extends Activity {
             try {
                 v.draw(canvas);
                 ByteArrayOutputStream baOutputStream = new ByteArrayOutputStream();
-                sBitmap = ImageHelper.ScaleImage(mBitmap);
-                sBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baOutputStream);
+                mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baOutputStream);
                 byte[] byteImage = baOutputStream.toByteArray();
                 byte[] key = EncryptionHelper.keyGen();
                 byte[] encryptedImage = EncryptionHelper.encrypt(key, byteImage);
 
                 // Write the encrypted signature to storage
-                FileHelper.writeFileToExternalStorage(encryptedImage, "encryptedSignature");
+                FileHelper.writeFileToExternalStorage(encryptedImage, filename);
 
                 // Open the encrypted file, decrypt the image, write it to disk -- for testing
-                byte[] encryptedFileBytes = FileHelper.readFileFromExternalStorage("encryptedSignature");
+                byte[] encryptedFileBytes = FileHelper.readFileFromExternalStorage(filename);
                 byte[] decryptedImageBytes = EncryptionHelper.decrypt(key, encryptedFileBytes);
-                FileHelper.writeFileToExternalStorage(decryptedImageBytes, "decryptedSignature.jpg");
+                FileHelper.writeFileToExternalStorage(decryptedImageBytes, "decrypted.jpg");
 
             } catch (Exception e) {
                 Log.v("log_tag", e.toString());

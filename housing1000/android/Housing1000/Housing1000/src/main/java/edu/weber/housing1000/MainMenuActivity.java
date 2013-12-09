@@ -12,8 +12,6 @@ import android.view.View;
 import android.widget.Button;
 
 import edu.weber.housing1000.Helpers.EncryptionHelper;
-import edu.weber.housing1000.Helpers.FileHelper;
-import edu.weber.housing1000.Helpers.ImageHelper;
 import edu.weber.housing1000.db.SurveyDbAdapter;
 import edu.weber.housing1000.rest.RestHelper;
 import edu.weber.housing1000.rest.XmlSurvey;
@@ -110,20 +108,13 @@ public class MainMenuActivity extends Activity{
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == TAKE_PICTURE) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
-            Bitmap sPhoto = ImageHelper.ScaleImage(photo);
             try {
                 FileOutputStream out = openFileOutput("picture_"+hmsId+".jpg", Context.MODE_PRIVATE);
                 ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
-                sPhoto.compress(Bitmap.CompressFormat.JPEG, 100, byteArray);
+                photo.compress(Bitmap.CompressFormat.JPEG, 100, byteArray);
                 byte[] byteImage = byteArray.toByteArray();
                 byte[] key = EncryptionHelper.keyGen();
                 byte[] encryptedImage = EncryptionHelper.encrypt(key, byteImage);
-
-                FileHelper.writeFileToExternalStorage(encryptedImage,"encryptedPhoto");
-
-                byte[] encryptedFileBytes = FileHelper.readFileFromExternalStorage("encryptedPhoto");
-                byte[] decryptedImageBytes = EncryptionHelper.decrypt(key,encryptedFileBytes);
-                FileHelper.writeFileToExternalStorage(decryptedImageBytes, "decryptedPhoto.jpg");
 
                 /*byte[] decryptedImage = EncryptionHelper.decrypt(key, encryptedImage);
                 Bitmap test = BitmapFactory.decodeByteArray(decryptedImage, 0, decryptedImage.length);

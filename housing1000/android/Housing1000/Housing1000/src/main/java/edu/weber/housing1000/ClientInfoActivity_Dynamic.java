@@ -20,26 +20,18 @@ public class ClientInfoActivity_Dynamic extends Activity
     /* Called when the activity is first created. */
     long surveyId = -1;
 
-    RelativeLayout rootLayout;
-
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clnt_info_dynamic);
 
-        rootLayout = (RelativeLayout) findViewById(R.id.root_layout);
-
         surveyId = getIntent().getLongExtra(SurveyDbAdapter.SURVEYS_FIELD_ID, -1);
 
         try
         {
             //Create linear layout and add it to a scroll view
-            final ScrollView sv = new ScrollView(this);
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-            layoutParams.addRule(RelativeLayout.ABOVE, R.id.buttonsLinearLayout);
-            sv.setLayoutParams(layoutParams);
-
+            ScrollView sv = new ScrollView(this);
             LinearLayout ll = new LinearLayout(this);
             ll.setOrientation(LinearLayout.VERTICAL);
             sv.addView(ll);
@@ -122,14 +114,9 @@ public class ClientInfoActivity_Dynamic extends Activity
                     TextView tv = new TextView(this);
                     tv.setText(lstQuestions.getJSONObject(i).get("text").toString());
                     ll_sub.addView(tv);
-                    // TODO: Have the ctagroup people add a minimum character length for the SinglelineTextBox so we can wrap to the next line if it isn't big enough
-                    if (tv.getText().length() >= 16)
-                        ll_sub.setOrientation(LinearLayout.VERTICAL);
 
                     EditText et = new EditText(this);
                     et.setId(Integer.parseInt(lstQuestions.getJSONObject(i).get("QuestionId").toString()));
-                    LinearLayout.LayoutParams etParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    et.setLayoutParams(etParams);
                     ll_sub.addView(et);
 
                 } else if((lstQuestions.getJSONObject(i).get("QuestionType").toString()).equals("SingleSelect") == true)
@@ -148,7 +135,6 @@ public class ClientInfoActivity_Dynamic extends Activity
                     TextView tv = new TextView(this);
                     tv.setText(lstQuestions.getJSONObject(i).get("text").toString());
                     ll_sub.addView(tv);
-
 
                     //Add potential answers
                     List<String> lstAnswers = new ArrayList<String>();
@@ -192,21 +178,11 @@ public class ClientInfoActivity_Dynamic extends Activity
                 }
             }
 
-            rootLayout.addView(sv);
+            this.setContentView(sv);
         }
         catch(JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    public void cancelButton(View view)
-    {
-        finish();
-    }
-
-    public void submitButton(View view)
-    {
-        finish();
     }
 
 }

@@ -21,15 +21,13 @@
 
         <ImageView
             android:id="@+id/housing_logo"
-            android:layout_width="220dp"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="103dip"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dip"
             android:src="@drawable/housing1000logo"
-            android:contentDescription="@string/description_housing_1000_logo"
-            android:cropToPadding="false"
-            android:adjustViewBounds="true"
-            android:paddingBottom="20dp" />
+            android:contentDescription="@string/description_housing_1000_logo" />
 
 
         <TextView
@@ -49,9 +47,7 @@
             android:layout_below="@+id/usernameLabel"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:inputType="textPassword"
-            android:imeOptions="actionNext"
-            android:imeActionLabel="Next">
+            android:inputType="textPassword">
 
             <requestFocus />
         </EditText>
@@ -75,9 +71,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:ems="10"
-            android:inputType="textPassword"
-            android:imeOptions="actionGo"
-            android:imeActionLabel="Login"/>
+            android:inputType="textPassword" />
 
         <LinearLayout
             android:layout_below="@+id/passwordLoginTextBox"

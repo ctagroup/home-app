@@ -2,45 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root_layout"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/horizontal_page_margin"
-    android:layout_marginRight="@dimen/horizontal_page_margin"
-    android:layout_marginBottom="@dimen/vertical_page_margin"
-    android:layout_marginTop="@dimen/vertical_page_margin">
+    android:layout_height="wrap_content">
 
-
-    <LinearLayout
-        android:id="@+id/buttonsLinearLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentTop="false"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:baselineAligned="false">
-
-        <Button
-            android:id="@+id/Cancel"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="false"
-            android:text="@string/txtCancel"
-            style="@style/ButtonText"
-            android:background="@drawable/btn_blue"
-            android:layout_weight="1"
-            android:onClick="cancelButton" />
-
-        <Button
-            android:id="@+id/Submit"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="false"
-            android:text="@string/txtSubmit"
-            android:background="@drawable/btn_yellow"
-            style="@style/ButtonText"
-            android:layout_toRightOf="@+id/Cancel"
-            android:layout_weight="1"
-            android:onClick="submitButton" />
-    </LinearLayout>
 
 </RelativeLayout>

@@ -8,9 +8,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import edu.weber.housing1000.data.Question;
-import edu.weber.housing1000.data.SurveyListing;
-
 /**
  * Created by Blake on 11/12/13.
  */
@@ -73,26 +70,21 @@ public class JSONParser {
                     "{\"$id\":\"51\",\"QuestionId\":50,\"text\":\"Is there a person/outreach worker you trust?\",\"QuestionType\":\"SingleSelect\",\"Options\":\"Yes|No|Refused\",\"OrderId\":51,\"Panel\":\"Community\"}," +
                     "{\"$id\":\"52\",\"QuestionId\":51,\"text\":\"What is their name and agency they work for?\",\"QuestionType\":\"SinglelineTextBox\",\"Options\":null,\"OrderId\":52,\"Panel\":\"Community\"}]}";
 
-    public static ArrayList<SurveyListing> parseSurveyList(String surveys)
+    public static ArrayList<String> parseSurveyList(String surveys)
     {
-        ArrayList<SurveyListing> surveyListings = new ArrayList<SurveyListing>();
-
         try {
             JSONArray surveysJSON = new JSONArray(surveys);
 
             for (int i = 0; i < surveysJSON.length(); i++)
             {
                 JSONObject single = surveysJSON.getJSONObject(i);
-
-                SurveyListing surveyListing = new SurveyListing(single.getInt("SurveyId"), 1, single.getString("Title"));
-                surveyListings.add(surveyListing);
-                Log.d("SURVEY FOUND", surveyListing.getTitle());
+                Log.d("JSON", single.get("Title").toString());
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        return surveyListings;
+        return null;
     }
 
     public static JSONArray parseSurvey(String survey) {
@@ -115,32 +107,6 @@ public class JSONParser {
 
         return questions;
 
-    }
-
-    public static ArrayList<Question> parseSurveyQuestions(String survey) {
-        ArrayList<Question> questionsList = new ArrayList<Question>();
-
-        try {
-            JSONObject surveyJSON = new JSONObject(survey);
-
-            JSONArray questions = surveyJSON.getJSONArray("SurveyQuestions");
-
-            for (int i = 0; i < questions.length(); i++) {
-                Question question = new Question();
-
-                question.setQuestionId(questions.getJSONObject(i).getInt("QuestionId"));
-                question.setText(questions.getJSONObject(i).getString("text"));
-                question.setQuestionType(questions.getJSONObject(i).getString("QuestionType"));
-                question.setOptions(questions.getJSONObject(i).getString("Options"));
-                question.setOrderId(questions.getJSONObject(i).getInt("OrderId"));
-
-                questionsList.add(question);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return questionsList;
     }
 
 }
