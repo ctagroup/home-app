@@ -8,22 +8,24 @@
     <ImageView
         android:id="@+id/imageView1"
         android:contentDescription="@string/description_housing_1000_logo"
-        android:layout_width="wrap_content"
+        android:layout_width="260dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:src="@drawable/housing1000logo" />
+        android:src="@drawable/housing1000logo"
+        android:adjustViewBounds="true"
+        android:paddingBottom="40dp" />
 
     <Button
         android:id="@+id/censusBtn"
-        android:layout_width="225dp"
+        android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:text="Record Census Information"
         style="@style/ButtonText"
-        android:layout_alignLeft="@+id/imageView1"
-        android:layout_centerVertical="true"
-        android:background="@drawable/btn_yellow" />
+        android:background="@drawable/btn_yellow"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/imageView1" />
 
     <Button
         android:id="@+id/surveyBtn"
@@ -34,9 +36,7 @@
         android:layout_marginTop="75dp"
         android:text="Proceed with Survey"
         style="@style/ButtonText"
-        android:background="@drawable/btn_yellow"
-        android:layout_alignRight="@+id/censusBtn"
-        android:layout_alignLeft="@+id/imageView1" />
+        android:background="@drawable/btn_yellow" />
 
     <Button
         android:id="@+id/dynamic_button"
@@ -47,8 +47,17 @@
         android:layout_marginTop="75dp"
         android:text="Dynamic Layout"
         style="@style/ButtonText"
+        android:background="@drawable/btn_yellow" />
+
+    <Button
+        style="@style/ButtonText"
+        android:id="@+id/dynamicWithApiButton"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp"
+        android:text="Dynamic w/ API"
         android:background="@drawable/btn_yellow"
-        android:layout_alignRight="@+id/censusBtn"
-        android:layout_alignLeft="@+id/imageView1" />
+        android:layout_below="@+id/dynamic_button" />
 
 </RelativeLayout>
