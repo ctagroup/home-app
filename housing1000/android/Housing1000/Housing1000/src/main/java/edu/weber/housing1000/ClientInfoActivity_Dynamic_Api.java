@@ -24,8 +24,7 @@ import edu.weber.housing1000.data.Question;
 import edu.weber.housing1000.data.SurveyListing;
 import edu.weber.housing1000.db.SurveyDbAdapter;
 
-public class ClientInfoActivity_Dynamic_Api extends Activity
-{
+public class ClientInfoActivity_Dynamic_Api extends Activity {
     public static final String EXTRA_SURVEY = "survey";
 
     private long surveyId = -1;
@@ -36,8 +35,7 @@ public class ClientInfoActivity_Dynamic_Api extends Activity
     private List<View> answerViews;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clnt_info_dynamic);
 
@@ -49,10 +47,8 @@ public class ClientInfoActivity_Dynamic_Api extends Activity
         generateQuestionUi();
     }
 
-    private void generateQuestionUi()
-    {
-        try
-        {
+    private void generateQuestionUi() {
+        try {
             final ScrollView mainScrollView = new ScrollView(this);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
             layoutParams.addRule(RelativeLayout.ABOVE, R.id.buttonsLinearLayout);
@@ -75,8 +71,7 @@ public class ClientInfoActivity_Dynamic_Api extends Activity
             List<String> lstPanels = new ArrayList<String>();
 
             //Get panel types
-            for (Question q : lstQuestions)
-            {
+            for (Question q : lstQuestions) {
                 if (!lstPanels.contains(q.getGroup()))
                     lstPanels.add(q.getGroup());
             }
@@ -85,8 +80,7 @@ public class ClientInfoActivity_Dynamic_Api extends Activity
             Button[] buttons = new Button[lstPanels.size()];
 
             //Create buttons and panels
-            for (int k = 0; k < lstPanels.size(); k++)
-            {
+            for (int k = 0; k < lstPanels.size(); k++) {
                 Button btn = new Button(this);
                 btn.setId(k);
                 btn.setText(lstPanels.get(k));
@@ -103,25 +97,20 @@ public class ClientInfoActivity_Dynamic_Api extends Activity
             }
 
             //Set Click Events
-            for (int k = 0; k < lstPanels.size(); k++)
-            {
+            for (int k = 0; k < lstPanels.size(); k++) {
                 final int localK = k;
                 final LinearLayout[] localPanelViews = panelViews;
                 final List<String> localLstPanels = lstPanels;
                 buttons[k].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (localPanelViews[localK].getVisibility() == View.VISIBLE)
-                        {
+                        if (localPanelViews[localK].getVisibility() == View.VISIBLE) {
                             localPanelViews[localK].setVisibility(View.GONE);
-                        } else
-                        {
+                        } else {
                             localPanelViews[localK].setVisibility(View.VISIBLE);
                         }
-                        for (int l = 0; l < localLstPanels.size(); l++)
-                        {
-                            if (l != localK)
-                            {
+                        for (int l = 0; l < localLstPanels.size(); l++) {
+                            if (l != localK) {
                                 localPanelViews[l].setVisibility(View.GONE);
                             }
                         }
@@ -130,16 +119,12 @@ public class ClientInfoActivity_Dynamic_Api extends Activity
             }
 
             //Add questions
-            for (Question question : lstQuestions)
-            {
-                if(question.getQuestionType().equals("SinglelineTextBox"))
-                {
+            for (Question question : lstQuestions) {
+                if (question.getQuestionType().equals("SinglelineTextBox")) {
                     //Add a text box
                     LinearLayout ll_sub = new LinearLayout(this);
-                    for(int k =0; k < panelViews.length; k++)
-                    {
-                        if (question.getGroup().equals(lstPanels.get(k)))
-                        {
+                    for (int k = 0; k < panelViews.length; k++) {
+                        if (question.getGroup().equals(lstPanels.get(k))) {
                             panelViews[k].addView(ll_sub);
                         }
                     }
@@ -159,15 +144,12 @@ public class ClientInfoActivity_Dynamic_Api extends Activity
                     et.setTag(question.getQuestionType());
                     ll_sub.addView(et);
                     answerViews.add(et);
-                } else if(question.getQuestionType().equals("SingleSelect"))
-                {
+                } else if (question.getQuestionType().equals("SingleSelect")) {
                     //Add question with selections
                     LinearLayout ll_sub = new LinearLayout(this);
                     ll_sub.setOrientation(LinearLayout.VERTICAL);
-                    for(int k =0; k < panelViews.length; k++)
-                    {
-                        if (question.getGroup().equals(lstPanels.get(k)))
-                        {
+                    for (int k = 0; k < panelViews.length; k++) {
+                        if (question.getGroup().equals(lstPanels.get(k))) {
                             panelViews[k].addView(ll_sub);
                         }
                     }
@@ -190,15 +172,12 @@ public class ClientInfoActivity_Dynamic_Api extends Activity
                     spinner.setTag(question.getQuestionType());
                     ll_sub.addView(spinner);
                     answerViews.add(spinner);
-                } else if(question.getQuestionType().equals("MultiSelect"))
-                {
+                } else if (question.getQuestionType().equals("MultiSelect")) {
                     //Add question with selections
                     LinearLayout ll_sub = new LinearLayout(this);
                     ll_sub.setOrientation(LinearLayout.VERTICAL);
-                    for(int k =0; k < panelViews.length; k++)
-                    {
-                        if (question.getGroup().equals(lstPanels.get(k)))
-                        {
+                    for (int k = 0; k < panelViews.length; k++) {
+                        if (question.getGroup().equals(lstPanels.get(k))) {
                             panelViews[k].addView(ll_sub);
                         }
                     }
@@ -218,17 +197,14 @@ public class ClientInfoActivity_Dynamic_Api extends Activity
                     ll_sub.setId(question.getQuestionId());
                     ll_sub.setTag(question.getQuestionType());
                     answerViews.add(ll_sub);
-                } else if(question.getQuestionType().equals("SingleSelectRadio"))
-                {
+                } else if (question.getQuestionType().equals("SingleSelectRadio")) {
                     //Add question with selections
                     LinearLayout ll_sub = new LinearLayout(this);
                     ll_sub.setOrientation(LinearLayout.VERTICAL);
                     ll_sub.setId(question.getQuestionId());
                     ll_sub.setTag(question.getQuestionType());
-                    for(int k =0; k < panelViews.length; k++)
-                    {
-                        if (question.getGroup().equals(lstPanels.get(k)))
-                        {
+                    for (int k = 0; k < panelViews.length; k++) {
+                        if (question.getGroup().equals(lstPanels.get(k))) {
                             panelViews[k].addView(ll_sub);
                             answerViews.add(ll_sub);
                             break;
@@ -249,7 +225,7 @@ public class ClientInfoActivity_Dynamic_Api extends Activity
                         ll_sub.addView(RadioButtons[j]);
                     }
 
-                    for (int j = 0; j < arrAnswers.length;j++) {
+                    for (int j = 0; j < arrAnswers.length; j++) {
                         final int localJ = j;
                         final int maxJ = arrAnswers.length;
                         final RadioButton[] localRadioButtons = RadioButtons;
@@ -257,10 +233,8 @@ public class ClientInfoActivity_Dynamic_Api extends Activity
                         RadioButtons[j].setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                for (int l = 0; l < maxJ; l++)
-                                {
-                                    if (l != localJ)
-                                    {
+                                for (int l = 0; l < maxJ; l++) {
+                                    if (l != localJ) {
                                         localRadioButtons[l].setChecked(false);
                                     }
                                 }
@@ -271,43 +245,33 @@ public class ClientInfoActivity_Dynamic_Api extends Activity
             }
 
             rootLayout.addView(mainScrollView);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    public void cancelButton(View view)
-    {
+    public void cancelButton(View view) {
         finish();
     }
 
-    public void submitButton(View view)
-    {
+    public void submitButton(View view) {
         saveAnswers();
         finish();
     }
 
-    public void saveAnswers()
-    {
-        for (View view : answerViews)
-        {
+    public void saveAnswers() {
+        for (View view : answerViews) {
             Log.d("Answer View ID", String.valueOf(view.getId()));
             Log.d("Answer Type", view.getTag().toString());
 
-            if (view.getTag().toString().equals("SinglelineTextBox"))
-            {
+            if (view.getTag().toString().equals("SinglelineTextBox")) {
 
-            } else if (view.getTag().toString().equals("SingleSelect"))
-            {
+            } else if (view.getTag().toString().equals("SingleSelect")) {
 
-            } else if (view.getTag().toString().equals("MultiSelect"))
-            {
+            } else if (view.getTag().toString().equals("MultiSelect")) {
 
-            } else if (view.getTag().toString().equals("SingleSelectRadio"))
-            {
+            } else if (view.getTag().toString().equals("SingleSelectRadio")) {
 
             }
 
