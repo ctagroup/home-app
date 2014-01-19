@@ -1,25 +1,35 @@
 package edu.weber.housing1000.Helpers;
 
+import android.content.Context;
+import android.os.AsyncTask;
+import android.os.Environment;
+import android.util.Log;
+
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.KeyStore;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
 
-import android.os.AsyncTask;
-import android.util.Log;
+import edu.weber.housing1000.R;
+
 
 /**
- * This is a generic helper class I created to help perform
- * HTTP connection tasks.  I designed it to be generic so I
- * can pop it into future projects without having to adapt the
- * code.
- *
+ * This is a generic helper class to help perform
+ * HTTP connection tasks.
  * @author Blake
  */
 public class RESTHelper {
@@ -38,7 +48,7 @@ public class RESTHelper {
      * @return Server response
      * @throws IOException
      */
-    public static String urlAction(String targetUrl, HashMap<String, String> properties)
+    public static String urlAction(Context context, String targetUrl, HashMap<String, String> properties)
             throws IOException {
         InputStream is = null;
         String actionType = properties.remove(ACTION_TYPE);
@@ -48,7 +58,14 @@ public class RESTHelper {
 
             // HTTPS
             if (targetUrl.contains("https://")) {
+                SSLContext sslContext = getSSLContext(context);
+
                 HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+
+                if (sslContext != null)
+                {
+                    conn.setSSLSocketFactory(sslContext.getSocketFactory());
+                }
 
                 conn.setReadTimeout(10000);
                 conn.setConnectTimeout(20000);
@@ -94,8 +111,7 @@ public class RESTHelper {
 
             return responseString;
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             return "ERROR: " + e.getMessage();
         } finally {
@@ -103,6 +119,49 @@ public class RESTHelper {
                 is.close();
             }
         }
+    }
+
+    public static SSLContext getSSLContext(Context context) {
+        try {
+
+
+            // Load CAs from an InputStream
+            // (could be from a resource or ByteArrayInputStream or ...)
+            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+            // From https://www.washington.edu/itconnect/security/ca/load-der.crt
+            Certificate ca;
+            InputStream caInput = context.getResources().openRawResource(R.raw.certificate);
+            try {
+                ca = cf.generateCertificate(caInput);
+                System.out.println("ca=" + ((X509Certificate) ca).getSubjectDN());
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            } finally {
+                caInput.close();
+            }
+
+            // Create a KeyStore containing our trusted CAs
+            String keyStoreType = KeyStore.getDefaultType();
+            KeyStore keyStore = KeyStore.getInstance(keyStoreType);
+            keyStore.load(null, null);
+            keyStore.setCertificateEntry("ca", ca);
+
+            // Create a TrustManager that trusts the CAs in our KeyStore
+            String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+            TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+            tmf.init(keyStore);
+
+            // Create an SSLContext that uses our TrustManager
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, tmf.getTrustManagers(), null);
+
+            return sslContext;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     /**
@@ -150,12 +209,14 @@ public class RESTHelper {
     public static class UrlTask extends
             AsyncTask<HashMap<String, String>, Void, HashMap<String, String>> {
         String URL = "";
+        Context context;
         OnUrlTaskCompleted listener;
         int taskCode = 0;
 
-        public UrlTask(OnUrlTaskCompleted listener, int taskCode) {
+        public UrlTask(Context context, OnUrlTaskCompleted listener, int taskCode) {
             this.listener = listener;
             this.taskCode = taskCode;
+            this.context = context;
         }
 
         @Override
@@ -169,7 +230,7 @@ public class RESTHelper {
 
             try {
                 if (!URL.isEmpty())
-                    result = urlAction(URL, params[0]);
+                    result = urlAction(context, URL, params[0]);
             } catch (IOException e) {
                 e.printStackTrace();
             }

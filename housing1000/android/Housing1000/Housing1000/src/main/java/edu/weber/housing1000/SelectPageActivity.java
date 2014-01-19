@@ -101,11 +101,11 @@ public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTask
         progressDialog.show();
 
         // Set up the UrlTask
-        final RESTHelper.UrlTask urlTask = new RESTHelper.UrlTask(this, TASK_GET_SURVEY_LIST);
+        final RESTHelper.UrlTask urlTask = new RESTHelper.UrlTask(this, this, TASK_GET_SURVEY_LIST);
 
         HashMap<String, String> properties = new HashMap<String, String>();
         properties.put(RESTHelper.ACTION_TYPE, RESTHelper.GET);
-        properties.put(RESTHelper.URL, "http://staging.ctagroup.org/survey/api/survey/");
+        properties.put(RESTHelper.URL, "https://staging.ctagroup.org/Survey/api/survey/");
 
         urlTask.execute(properties);
 
@@ -267,11 +267,11 @@ public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTask
         progressDialog.show();
 
         // Set up the UrlTask
-        final RESTHelper.UrlTask urlTask = new RESTHelper.UrlTask(this, TASK_GET_SURVEY);
+        final RESTHelper.UrlTask urlTask = new RESTHelper.UrlTask(this, this, TASK_GET_SURVEY);
 
         HashMap<String, String> properties = new HashMap<String, String>();
         properties.put(RESTHelper.ACTION_TYPE, RESTHelper.GET);
-        properties.put(RESTHelper.URL, "http://staging.ctagroup.org/survey/api/survey/" + String.valueOf(rowId));
+        properties.put(RESTHelper.URL, "https://staging.ctagroup.org/Survey/api/survey/" + String.valueOf(rowId));
 
         urlTask.execute(properties);
 
