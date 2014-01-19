@@ -1,7 +1,8 @@
 package edu.weber.housing1000.data;
 
 import android.database.Cursor;
-import de.akquinet.android.androlog.Log;
+import android.util.Log;
+
 import edu.weber.housing1000.db.SurveyDbAdapter;
 
 import java.util.*;
@@ -78,7 +79,7 @@ public class SurveyResponse {
                     c.moveToNext();
 
                 } catch (IllegalArgumentException e) {
-                    Log.e(e, "failed to deserialize Survey");
+                    Log.e("ERROR", "failed to deserialize Survey");
                 }
             }
         }

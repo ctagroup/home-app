@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import de.akquinet.android.androlog.Log;
-
-//imports added by James
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -30,12 +27,6 @@ public class LoginActivity extends Activity
     public void onCreate(Bundle savedInstanceState) 
     {
         super.onCreate(savedInstanceState);
-
-        // Initializes the logging
-        Log.init();
-
-        // Log a message (only on dev platform)
-        Log.i(this, "onCreate");
 
         setContentView(R.layout.main);
         

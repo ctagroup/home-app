@@ -2,8 +2,8 @@ package edu.weber.housing1000.rest;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Base64;
 
-import org.apache.commons.codec.binary.Base64;
 import org.xmlpull.v1.XmlPullParserException;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -21,7 +21,7 @@ public class RestHelper {
         String result = null;
         try {
             String authString = username + ":" + password;
-            byte[] authEncBytes = Base64.encodeBase64(authString.getBytes());
+            byte[] authEncBytes = Base64.encode(authString.getBytes(), Base64.DEFAULT);
             String authStringEnc = new String(authEncBytes);
 
             URL url = new URL(apiUrl + "/genID");
@@ -54,7 +54,7 @@ public class RestHelper {
         int retval = -1;
         try {
             String authString = username + ":" + password;
-            byte[] authEncBytes = Base64.encodeBase64(authString.getBytes());
+            byte[] authEncBytes = Base64.encode(authString.getBytes(), Base64.DEFAULT);
             String authStringEnc = new String(authEncBytes);
 
             FileInputStream fis = context.openFileInput(file_name);

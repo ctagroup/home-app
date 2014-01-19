@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
-import de.akquinet.android.androlog.Log;
 import edu.weber.housing1000.data.SurveyResponse;
 import edu.weber.housing1000.db.SurveyDbAdapter;
 
@@ -25,12 +24,6 @@ public class InterviewerInfoActivity extends Activity {
         super.onCreate(savedInstanceState);
         //Set the hmsId
         surveyId = getIntent().getLongExtra(SurveyDbAdapter.SURVEYS_FIELD_ID, -1);
-
-        // Initializes the logging
-        Log.init();
-
-        // Log a message (only on dev platform)
-        Log.i(this, "onCreate");
 
         setContentView(R.layout.interviewer_info);
 

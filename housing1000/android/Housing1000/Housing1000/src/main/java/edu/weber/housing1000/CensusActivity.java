@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import de.akquinet.android.androlog.Log;
 import android.view.View.OnClickListener;
 
 //=== GEOLOCATION IMPORTS ===//
@@ -48,13 +47,6 @@ public class CensusActivity extends Activity implements LocationListener
     public void onCreate(Bundle savedInstanceState)
     {//onCreate
         super.onCreate(savedInstanceState);
-
-
-        // Initializes the logging
-        Log.init();
-
-        // Log a message (only on dev platform)
-        Log.i(this, "onCreate");
 
         setContentView(R.layout.census_menu);
 
