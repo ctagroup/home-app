@@ -135,7 +135,7 @@ public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTask
                     {
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setTitle("No Surveys...");
-                        builder.setMessage("It appears that there are no surveys yet.");
+                        builder.setMessage("It appears that there are no surveys.");
                         builder.show();
                     }
                     else
@@ -159,27 +159,38 @@ public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTask
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle("Uh oh...");
-                    builder.setMessage("There was a problem downloading the surveys.\n\nMessage:\n" + taskResult);
+                    builder.setMessage("There was a problem downloading the surveys. Message:\n\n" + taskResult);
                     builder.show();
                 }
                 break;
             case TASK_GET_SURVEY:
-
-                for (SurveyListing survey : surveyListings)
+                if (taskResult.length() > 0 && !taskResult.startsWith("ERROR: "))
                 {
-                    if (survey.getId() == chosenSurveyId)
+                    for (SurveyListing survey : surveyListings)
                     {
-                        DatabaseConnector dbConnector = new DatabaseConnector(this);
+                        if (survey.getId() == chosenSurveyId)
+                        {
+                            DatabaseConnector dbConnector = new DatabaseConnector(this);
 
-                        survey.setQuestions(taskResult);
-                        dbConnector.updateSurvey(survey);
+                            survey.setQuestions(taskResult);
+                            dbConnector.updateSurvey(survey);
 
-                        progressDialog.dismiss();
+                            progressDialog.dismiss();
 
-                        launchSurveyActivity(survey);
+                            launchSurveyActivity(survey);
 
-                        break;
+                            break;
+                        }
                     }
+                }
+                else
+                {
+                    progressDialog.dismiss();
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Uh oh...");
+                    builder.setMessage("There was a problem downloading the survey. Message:\n\n" + taskResult);
+                    builder.show();
                 }
 
                 break;

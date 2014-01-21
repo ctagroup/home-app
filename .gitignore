@@ -34,5 +34,5 @@ project.properties
 .idea
 *.ipr
 *.iws
-#*.iml
+*.iml
 out/
