@@ -135,7 +135,7 @@ public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTask
                     {
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setTitle("No Surveys...");
-                        builder.setMessage("It appears that there are no surveys yet.");
+                        builder.setMessage("It appears that there are no surveys.");
                         builder.show();
                     }
                     else

@@ -1,6 +1,8 @@
 package edu.weber.housing1000.Helpers;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -47,75 +49,86 @@ public class RESTHelper {
      */
     public static String urlAction(Context context, String targetUrl, HashMap<String, String> properties)
             throws IOException {
+
+        String output = "";
+
         InputStream is = null;
         String actionType = properties.remove(ACTION_TYPE);
 
-        try {
-            URL url = new URL(targetUrl);
+        ConnectivityManager connMgr = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
-            // HTTPS
-            if (targetUrl.contains("https://")) {
-                SSLContext sslContext = getSSLContext(context);
+        if (networkInfo != null && networkInfo.isConnected()) {
+            try {
+                URL url = new URL(targetUrl);
 
-                HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+                // HTTPS
+                if (targetUrl.contains("https://")) {
+                    SSLContext sslContext = getSSLContext(context);
 
-                if (sslContext != null)
-                {
-                    conn.setSSLSocketFactory(sslContext.getSocketFactory());
+                    HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+
+                    if (sslContext != null)
+                    {
+                        conn.setSSLSocketFactory(sslContext.getSocketFactory());
+                    }
+
+                    conn.setReadTimeout(10000);
+                    conn.setConnectTimeout(20000);
+                    conn.setRequestMethod(actionType);
+                    conn.setDoInput(true);
+
+                    // Loop through the provided properties and add them to the connection
+                    for (Entry<String, String> entry : properties.entrySet()) {
+                        conn.setRequestProperty(entry.getKey(), entry.getValue());
+                    }
+
+                    // Make the connection
+                    conn.connect();
+                    int response = conn.getResponseCode();
+                    Log.d("REST HELPER", "Response Code: " + response);
+                    Log.d("REST HELPER", "Response Message: " + conn.getResponseMessage());
+                    is = conn.getInputStream();
+                }
+                // HTTP
+                else {
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                    conn.setReadTimeout(5000);
+                    conn.setConnectTimeout(10000);
+                    conn.setRequestMethod(actionType);
+                    conn.setDoInput(true);
+
+                    // Loop through the provided properties and add them to the connection
+                    for (Entry<String, String> entry : properties.entrySet()) {
+                        conn.setRequestProperty(entry.getKey(), entry.getValue());
+                    }
+
+                    // Make the connection
+                    conn.connect();
+                    int response = conn.getResponseCode();
+                    Log.d("REST HELPER", "Response Code: " + response);
+                    Log.d("REST HELPER", "Response Message: " + conn.getResponseMessage());
+                    is = conn.getInputStream();
                 }
 
-                conn.setReadTimeout(10000);
-                conn.setConnectTimeout(20000);
-                conn.setRequestMethod(actionType);
-                conn.setDoInput(true);
+                // Convert the InputStream into a string
+                output = convertStreamToString(is);
 
-                // Loop through the provided properties and add them to the connection
-                for (Entry<String, String> entry : properties.entrySet()) {
-                    conn.setRequestProperty(entry.getKey(), entry.getValue());
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "ERROR: " + e.getMessage();
+            } finally {
+                if (is != null) {
+                    is.close();
                 }
-
-                // Make the connection
-                conn.connect();
-                int response = conn.getResponseCode();
-                Log.d("REST HELPER", "Response Code: " + response);
-                Log.d("REST HELPER", "Response Message: " + conn.getResponseMessage());
-                is = conn.getInputStream();
             }
-            // HTTP
-            else {
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-                conn.setReadTimeout(5000);
-                conn.setConnectTimeout(10000);
-                conn.setRequestMethod(actionType);
-                conn.setDoInput(true);
-
-                // Loop through the provided properties and add them to the connection
-                for (Entry<String, String> entry : properties.entrySet()) {
-                    conn.setRequestProperty(entry.getKey(), entry.getValue());
-                }
-
-                // Make the connection
-                conn.connect();
-                int response = conn.getResponseCode();
-                Log.d("REST HELPER", "Response Code: " + response);
-                Log.d("REST HELPER", "Response Message: " + conn.getResponseMessage());
-                is = conn.getInputStream();
-            }
-
-            // Convert the InputStream into a string
-            String responseString = convertStreamToString(is);
-
-            return responseString;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "ERROR: " + e.getMessage();
-        } finally {
-            if (is != null) {
-                is.close();
-            }
+        } else {
+            return "ERROR: There is no network connection.";
         }
+
+        return output;
     }
 
     public static SSLContext getSSLContext(Context context) {
