@@ -1,16 +1,21 @@
-package edu.weber.housing1000.data;
+package edu.weber.housing1000.Questions;
+
+import android.content.Context;
+import android.view.View;
 
 /**
  * Created by Blake on 11/29/13.
  */
-public class Question {
+public abstract class Question {
     private int questionId;
     private String group = "Questions";
     private String text;
     private String questionType;
     private String options;
     private int orderId;
+    protected View myView;
 
+    // Getters and Setters
     public int getQuestionId() {
         return questionId;
     }
@@ -59,6 +64,16 @@ public class Question {
         this.orderId = orderId;
     }
 
+    public View getView()
+    {
+        return myView;
+    }
+
+    public void setView(View v)
+    {
+        myView = v;
+    }
+
     public Question(int questionId, String group, String text, String questionType, String options, int orderId)
     {
         this.questionId = questionId;
@@ -69,8 +84,10 @@ public class Question {
         this.orderId = orderId;
     }
 
-    public Question()
-    {
+    // Default constructor
+    public Question() { }
 
-    }
+    // Abstract methods
+    public abstract View createView(Context context);
+    public abstract String getAnswer();
 }

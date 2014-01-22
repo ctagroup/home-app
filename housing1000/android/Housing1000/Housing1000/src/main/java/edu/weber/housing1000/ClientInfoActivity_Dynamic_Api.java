@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import edu.weber.housing1000.data.Question;
+import edu.weber.housing1000.Questions.Question;
 import edu.weber.housing1000.data.SurveyListing;
 import edu.weber.housing1000.db.SurveyDbAdapter;
 
@@ -32,7 +32,7 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
 
     private RelativeLayout rootLayout;
 
-    private List<View> answerViews;
+    ArrayList<Question> lstQuestions;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,8 +58,7 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
             mainLinearLayout.setOrientation(LinearLayout.VERTICAL);
             mainScrollView.addView(mainLinearLayout);
 
-            ArrayList<Question> lstQuestions = JSONParser.parseSurveyQuestions(survey.getQuestions());
-            answerViews = new ArrayList<View>();
+            lstQuestions = JSONParser.parseSurveyQuestions(survey.getQuestions());
 
             // Sort the questions by orderId
             Collections.sort(lstQuestions, new Comparator<Question>() {
@@ -120,126 +119,14 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
 
             //Add questions
             for (Question question : lstQuestions) {
-                if (question.getQuestionType().equals("SinglelineTextBox")) {
-                    //Add a text box
-                    LinearLayout ll_sub = new LinearLayout(this);
+                View questionView = question.createView(this);
+
+                if (questionView != null)
+                {
                     for (int k = 0; k < panelViews.length; k++) {
                         if (question.getGroup().equals(lstPanels.get(k))) {
-                            panelViews[k].addView(ll_sub);
+                            panelViews[k].addView(questionView);
                         }
-                    }
-
-                    TextView tv = new TextView(this);
-                    tv.setText(question.getText());
-                    ll_sub.addView(tv);
-                    // TODO: Have the ctagroup people add a minimum character length for the SinglelineTextBox so we can wrap to the next line if it isn't big enough
-                    if (tv.getText().length() >= 16)
-                        ll_sub.setOrientation(LinearLayout.VERTICAL);
-
-                    EditText et = new EditText(this);
-                    LinearLayout.LayoutParams etParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    et.setLayoutParams(etParams);
-
-                    et.setId(question.getQuestionId());
-                    et.setTag(question.getQuestionType());
-                    ll_sub.addView(et);
-                    answerViews.add(et);
-                } else if (question.getQuestionType().equals("SingleSelect")) {
-                    //Add question with selections
-                    LinearLayout ll_sub = new LinearLayout(this);
-                    ll_sub.setOrientation(LinearLayout.VERTICAL);
-                    for (int k = 0; k < panelViews.length; k++) {
-                        if (question.getGroup().equals(lstPanels.get(k))) {
-                            panelViews[k].addView(ll_sub);
-                        }
-                    }
-
-                    TextView tv = new TextView(this);
-                    tv.setText(question.getText());
-                    ll_sub.addView(tv);
-
-                    //Add potential answers
-                    List<String> lstAnswers = new ArrayList<String>();
-                    lstAnswers.add("-SELECT-");
-                    String[] arrAnswers = question.getOptions().split("\\|");
-                    Collections.addAll(lstAnswers, arrAnswers);
-
-                    Spinner spinner = new Spinner(this);
-                    spinner.setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item,
-                            lstAnswers));
-
-                    spinner.setId(question.getQuestionId());
-                    spinner.setTag(question.getQuestionType());
-                    ll_sub.addView(spinner);
-                    answerViews.add(spinner);
-                } else if (question.getQuestionType().equals("MultiSelect")) {
-                    //Add question with selections
-                    LinearLayout ll_sub = new LinearLayout(this);
-                    ll_sub.setOrientation(LinearLayout.VERTICAL);
-                    for (int k = 0; k < panelViews.length; k++) {
-                        if (question.getGroup().equals(lstPanels.get(k))) {
-                            panelViews[k].addView(ll_sub);
-                        }
-                    }
-
-                    TextView tv = new TextView(this);
-                    tv.setText(question.getText());
-                    ll_sub.addView(tv);
-
-                    //Add potential answers
-                    String[] arrAnswers = question.getOptions().split("\\|");
-                    for (String answer : arrAnswers) {
-                        CheckBox cb = new CheckBox(this);
-                        cb.setText(answer);
-                        ll_sub.addView(cb);
-                    }
-
-                    ll_sub.setId(question.getQuestionId());
-                    ll_sub.setTag(question.getQuestionType());
-                    answerViews.add(ll_sub);
-                } else if (question.getQuestionType().equals("SingleSelectRadio")) {
-                    //Add question with selections
-                    LinearLayout ll_sub = new LinearLayout(this);
-                    ll_sub.setOrientation(LinearLayout.VERTICAL);
-                    ll_sub.setId(question.getQuestionId());
-                    ll_sub.setTag(question.getQuestionType());
-                    for (int k = 0; k < panelViews.length; k++) {
-                        if (question.getGroup().equals(lstPanels.get(k))) {
-                            panelViews[k].addView(ll_sub);
-                            answerViews.add(ll_sub);
-                            break;
-                        }
-                    }
-
-                    TextView tv = new TextView(this);
-                    tv.setText(question.getText());
-                    ll_sub.addView(tv);
-
-                    //Add potential answers
-                    String[] arrAnswers = question.getOptions().split("\\|");
-                    RadioButton[] RadioButtons = new RadioButton[arrAnswers.length];
-
-                    for (int j = 0; j < arrAnswers.length; j++) {
-                        RadioButtons[j] = new RadioButton(this);
-                        RadioButtons[j].setText(arrAnswers[j]);
-                        ll_sub.addView(RadioButtons[j]);
-                    }
-
-                    for (int j = 0; j < arrAnswers.length; j++) {
-                        final int localJ = j;
-                        final int maxJ = arrAnswers.length;
-                        final RadioButton[] localRadioButtons = RadioButtons;
-
-                        RadioButtons[j].setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                for (int l = 0; l < maxJ; l++) {
-                                    if (l != localJ) {
-                                        localRadioButtons[l].setChecked(false);
-                                    }
-                                }
-                            }
-                        });
                     }
                 }
             }
@@ -261,32 +148,11 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
     }
 
     public void saveAnswers() {
-        for (View view : answerViews) {
-            Log.d("Answer View ID", String.valueOf(view.getId()));
-            Log.d("Answer Type", view.getTag().toString());
+        for (Question question : lstQuestions) {
 
-            if (view.getTag().toString().equals("SinglelineTextBox")) {
+            // TODO: Implement answer grabbing code here
 
-            } else if (view.getTag().toString().equals("SingleSelect")) {
-
-            } else if (view.getTag().toString().equals("MultiSelect")) {
-
-            } else if (view.getTag().toString().equals("SingleSelectRadio")) {
-
-            }
-
-//            switch (view.getTag().toString())
-//            {
-//                case "SinglelineTextBox":
-//                    break;
-//                case "SingleSelect":
-//                    break;
-//                case "MultiSelect":
-//                    break;
-//                default:
-//                    break;
-//            }
-
+            Log.d("Answer: ", (question.getAnswer() != null) ? question.getAnswer() : "None");
         }
     }
 

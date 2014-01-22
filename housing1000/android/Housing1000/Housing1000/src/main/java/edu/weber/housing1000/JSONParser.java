@@ -8,7 +8,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import edu.weber.housing1000.data.Question;
+import edu.weber.housing1000.Questions.MultiSelect;
+import edu.weber.housing1000.Questions.Question;
+import edu.weber.housing1000.Questions.SingleSelect;
+import edu.weber.housing1000.Questions.SingleSelectRadio;
+import edu.weber.housing1000.Questions.SinglelineTextBox;
 import edu.weber.housing1000.data.SurveyListing;
 
 /**
@@ -126,15 +130,38 @@ public class JSONParser {
             JSONArray questions = surveyJSON.getJSONArray("SurveyQuestions");
 
             for (int i = 0; i < questions.length(); i++) {
-                Question question = new Question();
+                String questionType = questions.getJSONObject(i).getString("QuestionType");
 
-                question.setQuestionId(questions.getJSONObject(i).getInt("QuestionId"));
-                question.setText(questions.getJSONObject(i).getString("text"));
-                question.setQuestionType(questions.getJSONObject(i).getString("QuestionType"));
-                question.setOptions(questions.getJSONObject(i).getString("Options"));
-                question.setOrderId(questions.getJSONObject(i).getInt("OrderId"));
+                Question question;
 
-                questionsList.add(question);
+                switch (questionType)
+                {
+                    case "MultiSelect":
+                        question = new MultiSelect();
+                        break;
+                    case "SingleLineTextBox":
+                        question = new SinglelineTextBox();
+                        break;
+                    case "SingleSelect":
+                        question = new SingleSelect();
+                        break;
+                    case "SingleSelectRadio":
+                        question = new SingleSelectRadio();
+                        break;
+                    default:
+                        question = null;
+                }
+
+                if (question != null)
+                {
+                    question.setQuestionId(questions.getJSONObject(i).getInt("QuestionId"));
+                    question.setText(questions.getJSONObject(i).getString("text"));
+                    question.setQuestionType(questions.getJSONObject(i).getString("QuestionType"));
+                    question.setOptions(questions.getJSONObject(i).getString("Options"));
+                    question.setOrderId(questions.getJSONObject(i).getInt("OrderId"));
+
+                    questionsList.add(question);
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
