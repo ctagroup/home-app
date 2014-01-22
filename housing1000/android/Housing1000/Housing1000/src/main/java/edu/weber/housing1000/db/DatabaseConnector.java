@@ -1,4 +1,4 @@
-package edu.weber.housing1000.db;
+package edu.weber.housing1000.DB;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import edu.weber.housing1000.data.SurveyListing;
+import edu.weber.housing1000.Data.SurveyListing;
 
 public class DatabaseConnector {
     private static final String DATABASE_NAME = "surveys.db";

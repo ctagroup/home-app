@@ -1,4 +1,4 @@
-package edu.weber.housing1000.db;
+package edu.weber.housing1000.DB;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,10 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import edu.weber.housing1000.data.Survey;
-import edu.weber.housing1000.data.SurveyResponse;
-
 import java.util.List;
+
+import edu.weber.housing1000.Data.Survey;
+import edu.weber.housing1000.Data.SurveyResponse;
 
 public class SurveyDbAdapter {
 

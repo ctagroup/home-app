@@ -20,9 +20,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import edu.weber.housing1000.DB.DatabaseConnector;
+import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Helpers.RESTHelper;
-import edu.weber.housing1000.data.SurveyListing;
-import edu.weber.housing1000.db.DatabaseConnector;
 
 public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTaskCompleted {
     private static final int TASK_GET_SURVEY_LIST = 1;

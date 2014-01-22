@@ -1,4 +1,4 @@
-package edu.weber.housing1000.db;
+package edu.weber.housing1000.DB;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

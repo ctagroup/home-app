@@ -1,12 +1,12 @@
-package edu.weber.housing1000.data;
+package edu.weber.housing1000.Data;
 
 
 import android.database.Cursor;
 import android.util.Log;
 
-import edu.weber.housing1000.db.SurveyDbAdapter;
-
 import java.util.*;
+
+import edu.weber.housing1000.DB.SurveyDbAdapter;
 
 public class Survey {
     public enum Status {

@@ -1,4 +1,4 @@
-package edu.weber.housing1000.data;
+package edu.weber.housing1000.Data;
 
 import java.io.Serializable;
 import java.util.ArrayList;

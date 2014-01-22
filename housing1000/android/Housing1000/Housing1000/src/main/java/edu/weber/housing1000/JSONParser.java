@@ -8,12 +8,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Questions.MultiSelect;
 import edu.weber.housing1000.Questions.Question;
 import edu.weber.housing1000.Questions.SingleSelect;
 import edu.weber.housing1000.Questions.SingleSelectRadio;
 import edu.weber.housing1000.Questions.SinglelineTextBox;
-import edu.weber.housing1000.data.SurveyListing;
 
 /**
  * Created by Blake on 11/12/13.

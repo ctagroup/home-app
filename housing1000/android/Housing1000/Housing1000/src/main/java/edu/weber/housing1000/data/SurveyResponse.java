@@ -1,9 +1,8 @@
-package edu.weber.housing1000.data;
+package edu.weber.housing1000.Data;
 
 import android.database.Cursor;
 import android.util.Log;
-
-import edu.weber.housing1000.db.SurveyDbAdapter;
+import edu.weber.housing1000.DB.*;
 
 import java.util.*;
 
