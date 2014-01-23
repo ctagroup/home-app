@@ -21,10 +21,13 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.weber.housing1000.DB.SurveyDbAdapter;
 import edu.weber.housing1000.Data.Client;
+import edu.weber.housing1000.Data.Response;
 import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Data.SurveyResponse;
 import edu.weber.housing1000.Data.SurveyToSend;
@@ -155,20 +158,27 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
 
     public void saveAnswers() {
         Client client = new Client("2/14/1977", "37.336704, -121.919087", "1234", 14);
-        SurveyToSend surveyToSend = new SurveyToSend(survey, client, lstQuestions);
+        ArrayList<Response> responses = generateResponses(lstQuestions);
+        SurveyToSend surveyToSend = new SurveyToSend(survey, client, responses);
 
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         String jsonData = gson.toJson(surveyToSend);
 
         Log.d("JSON DATA", jsonData);
+    }
 
+    private  ArrayList<Response> generateResponses(ArrayList<Question> questions)
+    {
+        ArrayList<Response> responses = new ArrayList<Response>();
 
-//        for (Question question : lstQuestions) {
-//
-//            // TODO: Implement answer grabbing code here
-//
-//            Log.d("Answer: ", (question.getAnswer() != null) ? question.getAnswer() : "None");
-//        }
+        for (Question question : questions)
+        {
+            Response response = new Response(question.getQuestionId(), question.getAnswer());
+
+            responses.add(response);
+        }
+
+        return responses;
     }
 
 }

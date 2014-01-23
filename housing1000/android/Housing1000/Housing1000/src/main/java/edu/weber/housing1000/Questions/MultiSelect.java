@@ -3,7 +3,10 @@ package edu.weber.housing1000.Questions;
 import android.content.Context;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 /**
@@ -34,6 +37,22 @@ public class MultiSelect extends Question {
 
     @Override
     public String getAnswer() {
-        return null;
+        String answer = "";
+        LinearLayout layout = (LinearLayout)myView;
+
+        for (int i = 0; i < layout.getChildCount(); i++)
+        {
+            View childView = layout.getChildAt(i);
+            if (childView instanceof CheckBox)
+            {
+                CheckBox checkbox = (CheckBox) childView;
+                if (checkbox.isChecked())
+                {
+                    answer = answer.isEmpty() ? checkbox.getText().toString() : answer + checkbox.getText().toString();
+                }
+            }
+        }
+
+        return answer;
     }
 }

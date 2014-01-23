@@ -33,6 +33,20 @@ public class SinglelineTextBox extends Question {
 
     @Override
     public String getAnswer() {
-        return null;
+        String answer = "";
+        LinearLayout layout = (LinearLayout)myView;
+
+        for (int i = 0; i < layout.getChildCount(); i++)
+        {
+            View childView = layout.getChildAt(i);
+            if (childView instanceof EditText)
+            {
+                EditText editText = (EditText) childView;
+
+                answer = editText.getText().toString();
+            }
+        }
+
+        return answer;
     }
 }

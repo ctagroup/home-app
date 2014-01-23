@@ -53,6 +53,22 @@ public class SingleSelectRadio extends Question {
 
     @Override
     public String getAnswer() {
-        return null;
+        String answer = "";
+        LinearLayout layout = (LinearLayout)myView;
+
+        for (int i = 0; i < layout.getChildCount(); i++)
+        {
+            View childView = layout.getChildAt(i);
+            if (childView instanceof RadioButton)
+            {
+                RadioButton radioButton = (RadioButton) childView;
+                if (radioButton.isChecked())
+                {
+                    answer = radioButton.getText().toString();
+                }
+            }
+        }
+
+        return answer;
     }
 }

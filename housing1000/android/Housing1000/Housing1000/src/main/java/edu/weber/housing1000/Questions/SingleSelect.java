@@ -43,6 +43,20 @@ public class SingleSelect extends Question {
 
     @Override
     public String getAnswer() {
-        return null;
+        String answer = "";
+        LinearLayout layout = (LinearLayout)myView;
+
+        for (int i = 0; i < layout.getChildCount(); i++)
+        {
+            View childView = layout.getChildAt(i);
+            if (childView instanceof Spinner)
+            {
+                Spinner spinner = (Spinner) childView;
+
+                answer = spinner.getSelectedItem().toString();
+            }
+        }
+
+        return answer;
     }
 }

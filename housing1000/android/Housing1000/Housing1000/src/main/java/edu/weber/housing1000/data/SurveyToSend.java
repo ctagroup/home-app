@@ -27,14 +27,14 @@ public class SurveyToSend {
 
     @Expose
     @SerializedName("Responses")
-    private ArrayList<Map<String,String>> responses;
+    private ArrayList<Response> responses;
 
-    public SurveyToSend(SurveyListing surveyListing, Client client, ArrayList<Question> questions) {
+    public SurveyToSend(SurveyListing surveyListing, Client client, ArrayList<Response> responses) {
         surveyId = surveyListing.getId();
         surveyBy = 1;
         this.client = client;
 
-        responses = new ArrayList<Map<String,String>>();
+        this.responses = responses;
     }
 
 }
