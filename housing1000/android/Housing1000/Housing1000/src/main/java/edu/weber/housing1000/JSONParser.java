@@ -160,6 +160,16 @@ public class JSONParser {
                     question.setOptions(questions.getJSONObject(i).getString("Options"));
                     question.setOrderId(questions.getJSONObject(i).getInt("OrderId"));
 
+                    try
+                    {
+                        String group = questions.getJSONObject(i).getString("Panel");
+                        question.setGroup(group);
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+
                     questionsList.add(question);
                 }
             }

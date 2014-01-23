@@ -100,7 +100,7 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
                 panelView.setOrientation(LinearLayout.VERTICAL);
                 panelViews[k] = panelView;
                 mainLinearLayout.addView(panelView);
-                if (k > 1)
+                if (k > 0)
                     panelView.setVisibility(View.GONE);
             }
 

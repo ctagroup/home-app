@@ -48,7 +48,7 @@ public class MultiSelect extends Question {
                 CheckBox checkbox = (CheckBox) childView;
                 if (checkbox.isChecked())
                 {
-                    answer = answer.isEmpty() ? checkbox.getText().toString() : answer + checkbox.getText().toString();
+                    answer = answer.isEmpty() ? checkbox.getText().toString() : answer + "," + checkbox.getText().toString();
                 }
             }
         }
