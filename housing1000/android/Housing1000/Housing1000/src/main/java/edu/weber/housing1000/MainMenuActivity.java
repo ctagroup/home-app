@@ -11,12 +11,12 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 
+import edu.weber.housing1000.DB.SurveyDbAdapter;
 import edu.weber.housing1000.Helpers.EncryptionHelper;
 import edu.weber.housing1000.Helpers.FileHelper;
 import edu.weber.housing1000.Helpers.ImageHelper;
-import edu.weber.housing1000.db.SurveyDbAdapter;
-import edu.weber.housing1000.rest.RestHelper;
-import edu.weber.housing1000.rest.XmlSurvey;
+import edu.weber.housing1000.REST.RestHelper;
+import edu.weber.housing1000.REST.XmlSurvey;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;

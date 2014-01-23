@@ -5,8 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
-import edu.weber.housing1000.data.SurveyResponse;
-import edu.weber.housing1000.db.SurveyDbAdapter;
+
+import edu.weber.housing1000.DB.SurveyDbAdapter;
+import edu.weber.housing1000.Data.SurveyResponse;
 
 public class InterviewerInfoActivity extends Activity {
 

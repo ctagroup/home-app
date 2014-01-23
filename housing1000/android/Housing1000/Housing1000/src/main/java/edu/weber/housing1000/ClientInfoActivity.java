@@ -7,8 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
-import edu.weber.housing1000.data.SurveyResponse;
-import edu.weber.housing1000.db.SurveyDbAdapter;
+
+import edu.weber.housing1000.DB.SurveyDbAdapter;
+import edu.weber.housing1000.Data.SurveyResponse;
 
 public class ClientInfoActivity extends Activity
 {

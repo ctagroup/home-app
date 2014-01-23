@@ -12,7 +12,7 @@ import org.json.JSONException;
 
 import java.util.*;
 
-import edu.weber.housing1000.db.SurveyDbAdapter;
+import edu.weber.housing1000.DB.SurveyDbAdapter;
 
 public class ClientInfoActivity_Dynamic extends Activity
 {

@@ -1,10 +1,7 @@
-package edu.weber.housing1000.rest;
+package edu.weber.housing1000.REST;
 
 import android.content.Context;
 import android.util.Xml;
-import edu.weber.housing1000.data.Survey;
-import edu.weber.housing1000.data.SurveyResponse;
-import edu.weber.housing1000.db.SurveyDbAdapter;
 import org.xmlpull.v1.XmlSerializer;
 
 import java.io.FileOutputStream;
@@ -14,6 +11,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
+import edu.weber.housing1000.DB.SurveyDbAdapter;
+import edu.weber.housing1000.Data.Survey;
+import edu.weber.housing1000.Data.SurveyResponse;
 
 /**
  * Created with IntelliJ IDEA.

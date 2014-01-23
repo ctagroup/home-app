@@ -15,14 +15,20 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import edu.weber.housing1000.DB.SurveyDbAdapter;
+import edu.weber.housing1000.Data.Client;
+import edu.weber.housing1000.Data.SurveyListing;
+import edu.weber.housing1000.Data.SurveyResponse;
+import edu.weber.housing1000.Data.SurveyToSend;
 import edu.weber.housing1000.Questions.Question;
-import edu.weber.housing1000.data.SurveyListing;
-import edu.weber.housing1000.db.SurveyDbAdapter;
 
 public class ClientInfoActivity_Dynamic_Api extends Activity {
     public static final String EXTRA_SURVEY = "survey";
@@ -148,12 +154,21 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
     }
 
     public void saveAnswers() {
-        for (Question question : lstQuestions) {
+        Client client = new Client("2/14/1977", "37.336704, -121.919087", "1234", 14);
+        SurveyToSend surveyToSend = new SurveyToSend(survey, client, lstQuestions);
 
-            // TODO: Implement answer grabbing code here
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        String jsonData = gson.toJson(surveyToSend);
 
-            Log.d("Answer: ", (question.getAnswer() != null) ? question.getAnswer() : "None");
-        }
+        Log.d("JSON DATA", jsonData);
+
+
+//        for (Question question : lstQuestions) {
+//
+//            // TODO: Implement answer grabbing code here
+//
+//            Log.d("Answer: ", (question.getAnswer() != null) ? question.getAnswer() : "None");
+//        }
     }
 
 }

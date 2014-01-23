@@ -1,4 +1,4 @@
-package edu.weber.housing1000.rest;
+package edu.weber.housing1000.REST;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;

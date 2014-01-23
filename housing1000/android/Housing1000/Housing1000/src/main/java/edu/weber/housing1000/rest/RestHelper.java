@@ -1,4 +1,4 @@
-package edu.weber.housing1000.rest;
+package edu.weber.housing1000.REST;
 
 import android.content.Context;
 import android.os.AsyncTask;

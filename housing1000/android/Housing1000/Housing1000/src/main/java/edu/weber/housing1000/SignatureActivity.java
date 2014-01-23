@@ -16,11 +16,11 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import edu.weber.housing1000.DB.SurveyDbAdapter;
+import edu.weber.housing1000.Data.Survey;
 import edu.weber.housing1000.Helpers.EncryptionHelper;
 import edu.weber.housing1000.Helpers.FileHelper;
 import edu.weber.housing1000.Helpers.ImageHelper;
-import edu.weber.housing1000.data.Survey;
-import edu.weber.housing1000.db.SurveyDbAdapter;
 
 import java.io.ByteArrayOutputStream;
 
