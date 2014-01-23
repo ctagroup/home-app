@@ -27,7 +27,7 @@ public class SingleSelect extends Question {
 
         //Add potential answers
         List<String> lstAnswers = new ArrayList<String>();
-        lstAnswers.add("-SELECT-");
+        lstAnswers.add("");
         String[] arrAnswers = getOptions().split("\\|");
         Collections.addAll(lstAnswers, arrAnswers);
 
