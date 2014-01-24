@@ -2,14 +2,10 @@ package edu.weber.housing1000;
 
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
-
-import edu.weber.housing1000.DB.SurveyDbAdapter;
-import edu.weber.housing1000.Data.SurveyResponse;
 
 public class ClientInfoActivity extends Activity
 {
@@ -23,7 +19,7 @@ public class ClientInfoActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clnt_info);
 
-        surveyId = getIntent().getLongExtra(SurveyDbAdapter.SURVEYS_FIELD_ID, -1);
+        surveyId = -1;
 
 
         Button btnClientInformation = (Button) findViewById(R.id.btnClientInformation);
@@ -407,116 +403,9 @@ public class ClientInfoActivity extends Activity
         btnSubmit.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                SurveyDbAdapter db = new SurveyDbAdapter(getApplicationContext());
-                db.open();
-                saveSurveyResponseAnswer("first_name", findViewById(R.id.first_name), db);
-                saveSurveyResponseAnswer( "last_name", (findViewById(R.id.last_name)), db);
-                saveSurveyResponseAnswer( "soc_sec_no", (findViewById(R.id.soc_sec_no)), db);
-                saveSurveyResponseAnswer( "alias", findViewById(R.id.alias), db);
-                saveSurveyResponseAnswer( "svpprofdob", findViewById(R.id.svpprofdob), db);
-                saveSurveyResponseAnswer( "svpprofdobtype", findViewById(R.id.svpprofdobtype), db);
-                saveSurveyResponseAnswer( "phonemessage", findViewById(R.id.phonemessage), db);
-                saveSurveyResponseAnswer( "adultsinhousehold", findViewById(R.id.adultsinhousehold), db);
-                saveSurveyResponseAnswer( "childreninhousehold", findViewById(R.id.childreninhousehold), db);
-                saveSurveyResponseAnswer( "primarylanguage_1", findViewById(R.id.primarylanguage_1), db);
-                saveSurveyResponseAnswer( "svpprofgender", findViewById(R.id.svpprofgender), db);
-                saveSurveyResponseAnswer( "svpprofrace", findViewById(R.id.svpprofrace), db);
-                saveSurveyResponseAnswer( "svpprofeth", findViewById(R.id.svpprofeth), db);
-                saveSurveyResponseAnswer( "highestlevelofeducati", findViewById(R.id.highestlevelofeducati), db);
-                saveSurveyResponseAnswer( "veteran", findViewById(R.id.veteran), db);
-                saveSurveyResponseAnswer( "hud_militaryserviceeraKorean", findViewById(R.id.hud_militaryserviceeraKorean), db);
-                saveSurveyResponseAnswer( "hud_militaryserviceeraVietnam", findViewById(R.id.hud_militaryserviceeraVietnam), db);
-                saveSurveyResponseAnswer( "hud_militaryserviceeraPostVietnam", findViewById(R.id.hud_militaryserviceeraPostVietnam), db);
-                saveSurveyResponseAnswer( "hud_militaryserviceeraPersianGulf", findViewById(R.id.hud_militaryserviceeraPersianGulf), db);
-                saveSurveyResponseAnswer( "hud_militaryserviceeraAfghanistan", findViewById(R.id.hud_militaryserviceeraAfghanistan), db);
-                saveSurveyResponseAnswer( "hud_militaryserviceeraIraq", findViewById(R.id.hud_militaryserviceeraIraq), db);
-                saveSurveyResponseAnswer( "hud_militaryserviceeraDontKnow", findViewById(R.id.hud_militaryserviceeraDontKnow), db);
-                //saveSurveyResponseAnswer( "hud_militaryserviceeraRefused", findViewById(R.id.hud_militaryserviceeraRefused), db);
-                saveSurveyResponseAnswer( "hud_dischargetype", findViewById(R.id.hud_dischargetype), db);
-                saveSurveyResponseAnswer( "incarceratedformerinc", findViewById(R.id.incarceratedformerinc), db);
-                saveSurveyResponseAnswer( "incarceratedinstituti", findViewById(R.id.incarceratedinstituti), db);
-                saveSurveyResponseAnswer( "everinfostercare", findViewById(R.id.everinfostercare), db);
-                saveSurveyResponseAnswer( "uscitizen", findViewById(R.id.uscitizen), db);
-                saveSurveyResponseAnswer( "immigrationstatus", findViewById(R.id.immigrationstatus), db);
-                saveSurveyResponseAnswer( "ansrTwentytwo", findViewById(R.id.ansrTwentytwo), db);
-                saveSurveyResponseAnswer( "ansrTwentythreeYears", findViewById(R.id.ansrTwentythreeYears), db);
-                saveSurveyResponseAnswer( "ansrTwentythreeMonths", findViewById(R.id.ansrTwentythreeMonths), db);
-                saveSurveyResponseAnswer( "in3yrsoftimeshomeless", findViewById(R.id.in3yrsoftimeshomeless), db);
-                saveSurveyResponseAnswer( "_15wheredoyousleepmos", findViewById(R.id._15wheredoyousleepmos), db);
-                saveSurveyResponseAnswer( "ifwecantfindyoutherew", findViewById(R.id.ifwecantfindyoutherew), db);
-                saveSurveyResponseAnswer( "lpcity", findViewById(R.id.lpcity), db);
-                saveSurveyResponseAnswer( "lpstate", findViewById(R.id.lpstate), db);
-                saveSurveyResponseAnswer( "hud_zipcodelastpermaddr", findViewById(R.id.hud_zipcodelastpermaddr), db);
-                saveSurveyResponseAnswer( "hud_zipdataquality", findViewById(R.id.hud_zipdataquality), db);
-                saveSurveyResponseAnswer( "sourceofincomeWork", findViewById(R.id.sourceofincomeWork), db);
-                saveSurveyResponseAnswer( "sourceofincomeAlimony", findViewById(R.id.sourceofincomeAlimony), db);
-                saveSurveyResponseAnswer( "sourceofincomeChildSupport", findViewById(R.id.sourceofincomeChildSupport), db);
-                saveSurveyResponseAnswer( "sourceofincomeGeneral", findViewById(R.id.sourceofincomeGeneral), db);
-                saveSurveyResponseAnswer( "sourceofincomeDisability", findViewById(R.id.sourceofincomeDisability), db);
-                saveSurveyResponseAnswer( "sourceofincomeVDP", findViewById(R.id.sourceofincomeVDP), db);
-                saveSurveyResponseAnswer( "sourceofincomePDI", findViewById(R.id.sourceofincomePDI), db);
-                saveSurveyResponseAnswer( "sourceofincomePensionFormer", findViewById(R.id.sourceofincomePensionFormer), db);
-                saveSurveyResponseAnswer( "sourceofincomePensionVeteran", findViewById(R.id.sourceofincomePensionVeteran), db);
-                saveSurveyResponseAnswer( "sourceofincomeRetirement", findViewById(R.id.sourceofincomeRetirement), db);
-                saveSurveyResponseAnswer( "sourceofincomeSSI", findViewById(R.id.sourceofincomeSSI), db);
-                saveSurveyResponseAnswer( "sourceofincomeSSDI", findViewById(R.id.sourceofincomeSSDI), db);
-                saveSurveyResponseAnswer( "sourceofincomeTANF", findViewById(R.id.sourceofincomeTANF), db);
-                saveSurveyResponseAnswer( "sourceofincomeUnemployment", findViewById(R.id.sourceofincomeUnemployment), db);
-                saveSurveyResponseAnswer( "sourceofincomeWorkComp", findViewById(R.id.sourceofincomeWorkComp), db);
-                saveSurveyResponseAnswer( "sourceofincomeNoResource", findViewById(R.id.sourceofincomeNoResource), db);
-                saveSurveyResponseAnswer( "sourceofincomeOther", findViewById(R.id.sourceofincomeOther), db);
-                saveSurveyResponseAnswer( "sourceofincomeOtherDetail", findViewById(R.id.sourceofincomeOtherDetail), db);
-                saveSurveyResponseAnswer( "svp_noncashbenefitssourceFoodStamps", findViewById(R.id.svp_noncashbenefitssourceFoodStamps), db);
-                saveSurveyResponseAnswer( "svp_noncashbenefitssourceMedicaid", findViewById(R.id.svp_noncashbenefitssourceMedicaid), db);
-                saveSurveyResponseAnswer( "svp_noncashbenefitssourceMedicare", findViewById(R.id.svp_noncashbenefitssourceMedicare), db);
-                saveSurveyResponseAnswer( "svp_noncashbenefitssourceWIC", findViewById(R.id.svp_noncashbenefitssourceWIC), db);
-                saveSurveyResponseAnswer( "svp_noncashbenefitssourceVA", findViewById(R.id.svp_noncashbenefitssourceVA), db);
-                saveSurveyResponseAnswer( "svp_noncashbenefitssourceOtherHealth", findViewById(R.id.svp_noncashbenefitssourceOtherHealth), db);
-                saveSurveyResponseAnswer( "svp_noncashbenefitssourceOtherDetail", findViewById(R.id.svp_noncashbenefitssourceOtherDetail), db);
-                saveSurveyResponseAnswer( "_17wheredoyougoforhea", findViewById(R.id._17wheredoyougoforhea), db);
-                saveSurveyResponseAnswer( "_17wheredoyougoforhea", findViewById(R.id._17wheredoyougoforhea), db);
-                saveSurveyResponseAnswer( "_19howmanyxshospitali_1", findViewById(R.id._19howmanyxshospitali_1), db);
-                saveSurveyResponseAnswer( "kidneydiseaseendstage", findViewById(R.id.kidneydiseaseendstage), db);
-                saveSurveyResponseAnswer( "bhistoryoffrostbitehy", findViewById(R.id.bhistoryoffrostbitehy), db);
-                saveSurveyResponseAnswer( "chistoryofheaatstroke", findViewById(R.id.chistoryofheaatstroke), db);
-                saveSurveyResponseAnswer( "dliverdiseasecirrhosi", findViewById(R.id.dliverdiseasecirrhosi), db);
-                saveSurveyResponseAnswer( "eheartdiseasearrhythm", findViewById(R.id.eheartdiseasearrhythm), db);
-                saveSurveyResponseAnswer( "fhivaids", findViewById(R.id.fhivaids), db);
-                saveSurveyResponseAnswer( "gemphysema", findViewById(R.id.gemphysema), db);
-                saveSurveyResponseAnswer( "hdiabetes", findViewById(R.id.hdiabetes), db);
-                saveSurveyResponseAnswer( "iasthma", findViewById(R.id.iasthma), db);
-                saveSurveyResponseAnswer( "jcancer", findViewById(R.id.jcancer), db);
-                saveSurveyResponseAnswer( "khepatitisc", findViewById(R.id.khepatitisc), db);
-                saveSurveyResponseAnswer( "ltuberculosis", findViewById(R.id.ltuberculosis), db);
-                saveSurveyResponseAnswer( "neverabuseddrugalcoho", findViewById(R.id.neverabuseddrugalcoho), db);
-                saveSurveyResponseAnswer( "oconsumedalcoholevery", findViewById(R.id.oconsumedalcoholevery), db);
-                saveSurveyResponseAnswer( "peverusedinjectiondru", findViewById(R.id.peverusedinjectiondru), db);
-                saveSurveyResponseAnswer( "everbeentreatedfordru", findViewById(R.id.everbeentreatedfordru), db);
-                saveSurveyResponseAnswer( "scurrentlyeverreceive", findViewById(R.id.scurrentlyeverreceive), db);
-                saveSurveyResponseAnswer( "tbeentakentohospitala", findViewById(R.id.tbeentakentohospitala), db);
-                saveSurveyResponseAnswer( "vbeenavictimofviolent", findViewById(R.id.vbeenavictimofviolent), db);
-                saveSurveyResponseAnswer( "wpermanentphysicaldis", findViewById(R.id.wpermanentphysicaldis), db);
-                saveSurveyResponseAnswer( "wpermanentphysicaldis", findViewById(R.id.wpermanentphysicaldis), db);
-                saveSurveyResponseAnswer( "xseriousbraininjuryhe", findViewById(R.id.xseriousbraininjuryhe), db);
-                saveSurveyResponseAnswer( "_33isthereapersonoutr", findViewById(R.id._33isthereapersonoutr), db);
-                saveSurveyResponseAnswer( "ansrFiftynine", findViewById(R.id.ansrFiftynine), db);
-                db.close();
-                Intent intent = new Intent(ClientInfoActivity.this, MainMenuActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
+                finish();
             }
         });
-    }
-
-    private void saveSurveyResponseAnswer(String question, View view, SurveyDbAdapter db){
-        String response = getEditableViewText(view);
-        SurveyResponse savedResponse = db.getResponseByIdAndQuestion(surveyId, question);
-        if (savedResponse != null){
-            savedResponse.setResponse(response);
-            db.updateResponse(savedResponse);
-        }else if (response != null && !response.isEmpty()){
-            db.insertResponse(new SurveyResponse(surveyId, question, response));
-        }
     }
 
     private String getEditableViewText(View view){

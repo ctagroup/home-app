@@ -1,129 +1,54 @@
 package edu.weber.housing1000.Data;
 
 
-import android.database.Cursor;
-import android.util.Log;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.*;
 
-import edu.weber.housing1000.DB.SurveyDbAdapter;
+import edu.weber.housing1000.Questions.Question;
 
 public class Survey {
-    public enum Status {
-        CREATED(0),
-        COMPLETED(1),
-        SUBMITTED(2),
-        SUBMIT_RETRY(3),
-        FAILED(4),
-        DELETED(5);
 
-        private final int id;
+    @Expose
+    @SerializedName("$id")
+    private String id;
 
-        private static Map<Integer, Status> lookupMap = new HashMap<Integer, Status>();
+    @Expose
+    @SerializedName("SurveyId")
+    private long surveyId;
 
-        static {
-            for (Status s : Status.values()) {
-                lookupMap.put(s.getId(), s);
-            }
-        }
+    @Expose
+    @SerializedName("Title")
+    private String title;
 
-        Status(int id) {
-            this.id = id;
-        }
+    @Expose
+    @SerializedName("Client")
+    private ArrayList<Question> clientQuestions;
 
-        public int getId() {
-            return this.id;
-        }
+    @Expose
+    @SerializedName("SurveyQuestions")
+    private ArrayList<Question> surveyQuestions;
 
-        public static Status getStatus(int id) {
-            return lookupMap.get(id);
-        }
-
-    }
-
-    private int id;
-    private int hmsId;
-    private Status status;
-    private Date created;
-    private Date updated;
-
-    private Survey() {
-    }
-
-    public Survey(int hmsId, Status status) {
-        this();
-        this.status = status;
-        this.hmsId = hmsId;
-    }
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public long getSurveyId() {
+        return surveyId;
     }
 
-    public int getHmsId() {
-        return hmsId;
+    public String getTitle() {
+        return title;
     }
 
-    public void setHmsId(int hmsId) {
-        this.hmsId = hmsId;
-    }
+    public ArrayList<Question> getClientQuestions() { return clientQuestions; }
 
-    public Status getStatus() {
-        return status;
-    }
+    public ArrayList<Question> getSurveyQuestions() { return surveyQuestions; }
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
+    public Survey()
+    {
 
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    public Date getUpdated() {
-        return updated;
-    }
-
-    public void setUpdated(Date updated) {
-        this.updated = updated;
-    }
-
-    public static List<Survey> getSurveys(Cursor c) {
-        List<Survey> surveys = new ArrayList<Survey>();
-        if (c != null) {
-            c.moveToFirst();
-            for (int i = 0; i < c.getCount(); i++){
-                try {
-                    Map<String, Integer> locMap = new HashMap<String, Integer>();
-                    int idLoc = c.getColumnIndexOrThrow(SurveyDbAdapter.SURVEYS_FIELD_ID);
-                    int hmsIdLoc = c.getColumnIndexOrThrow(SurveyDbAdapter.SURVEYS_FIELD_HMS_ID);
-                    int statusLoc = c.getColumnIndexOrThrow(SurveyDbAdapter.SURVEYS_FIELD_STATUS);
-                    int createdLoc = c.getColumnIndexOrThrow(SurveyDbAdapter.SURVEYS_FIELD_CREATED);
-                    int updatedLoc = c.getColumnIndexOrThrow(SurveyDbAdapter.SURVEYS_FIELD_UPDATED);
-
-                    Survey s = new Survey();
-                    s.setHmsId(c.getInt(hmsIdLoc));
-                    s.setId(c.getInt(idLoc));
-                    s.setStatus(Status.getStatus(c.getInt(statusLoc)));
-                    s.setCreated(new Date(c.getInt(createdLoc)));
-                    s.setUpdated(new Date(c.getInt(updatedLoc)));
-                    surveys.add(s);
-                    c.moveToNext();
-
-                } catch (IllegalArgumentException e) {
-                    Log.e("ERROR", "failed to deserialize Survey");
-                }
-            }
-        }
-        return surveys;
     }
 
 }

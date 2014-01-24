@@ -36,10 +36,8 @@ public class RestHelper {
             while ((numCharsRead = isr.read(charArray)) > 0) {
                 sb.append(charArray, 0, numCharsRead);
             }
-            result = XmlParseHelper.parseGenID(sb.toString());
+
         } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (XmlPullParserException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();

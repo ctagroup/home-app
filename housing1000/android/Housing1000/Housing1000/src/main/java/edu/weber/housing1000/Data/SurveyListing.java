@@ -1,5 +1,8 @@
 package edu.weber.housing1000.Data;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -7,53 +10,43 @@ import java.util.ArrayList;
  * Created by Blake on 11/29/13.
  */
 public class SurveyListing implements Serializable {
-    private long id;
-    private long version;
+
+    @Expose
+    @SerializedName("SurveyId")
+    private long surveyId;
+
+    @Expose
+    @SerializedName("Title")
     private String title;
-    private String questions;
 
-    public long getId() {
-        return id;
-    }
+    private String json;
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getVersion() {
-        return version;
-    }
-
-    public void setVersion(long version) {
-        this.version = version;
+    public long getSurveyId() {
+        return surveyId;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public String getJson() { return json; }
 
-    public String getQuestions() {
-        return questions;
-    }
+    public void setJson(String json) { this.json = json; }
 
-    public void setQuestions(String questions) {
-        this.questions = questions;
-    }
-
-    public SurveyListing(long id, long version, String title)
+    public SurveyListing()
     {
-        this.id = id;
-        this.version = version;
-        this.title = title;
+
     }
 
-    public SurveyListing(long id, long version, String title, String questions)
+    public SurveyListing(long id, String title, String json)
     {
-        this(id, version, title);
-        this.questions = questions;
+        this.surveyId = id;
+        this.title = title;
+        this.json = json;
+    }
+
+    @Override
+    public String toString() {
+        return getTitle();
     }
 }

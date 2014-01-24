@@ -4,16 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -21,23 +15,19 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import edu.weber.housing1000.DB.SurveyDbAdapter;
 import edu.weber.housing1000.Data.Client;
 import edu.weber.housing1000.Data.Response;
+import edu.weber.housing1000.Data.Survey;
 import edu.weber.housing1000.Data.SurveyListing;
-import edu.weber.housing1000.Data.SurveyResponse;
 import edu.weber.housing1000.Data.SurveyToSend;
 import edu.weber.housing1000.Questions.Question;
 
 public class ClientInfoActivity_Dynamic_Api extends Activity {
     public static final String EXTRA_SURVEY = "survey";
 
-    private long surveyId = -1;
-    private SurveyListing survey;
+    private SurveyListing surveyListing;
 
     private RelativeLayout rootLayout;
 
@@ -50,8 +40,7 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
 
         rootLayout = (RelativeLayout) findViewById(R.id.root_layout);
 
-        surveyId = getIntent().getLongExtra(SurveyDbAdapter.SURVEYS_FIELD_ID, -1);
-        survey = (SurveyListing) getIntent().getSerializableExtra(EXTRA_SURVEY);
+        surveyListing = (SurveyListing) getIntent().getSerializableExtra(EXTRA_SURVEY);
 
         generateQuestionUi();
     }
@@ -67,7 +56,8 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
             mainLinearLayout.setOrientation(LinearLayout.VERTICAL);
             mainScrollView.addView(mainLinearLayout);
 
-            lstQuestions = JSONParser.parseSurveyQuestions(survey.getQuestions());
+            Survey survey = JSONParser.getSurveyFromListing(surveyListing);
+            lstQuestions = JSONParser.getQuestions(survey);
 
             // Sort the questions by orderId
             Collections.sort(lstQuestions, new Comparator<Question>() {
@@ -159,12 +149,12 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
     public void saveAnswers() {
         Client client = new Client("2/14/1977", "37.336704, -121.919087", "1234", 14);
         ArrayList<Response> responses = generateResponses(lstQuestions);
-        SurveyToSend surveyToSend = new SurveyToSend(survey, client, responses);
+        SurveyToSend surveyToSend = new SurveyToSend(surveyListing, client, responses);
 
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         String jsonData = gson.toJson(surveyToSend);
 
-        Log.d("JSON DATA", jsonData);
+        Log.d("json", jsonData);
     }
 
     private  ArrayList<Response> generateResponses(ArrayList<Question> questions)

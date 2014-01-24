@@ -8,8 +8,6 @@ import android.widget.Button;
 
 import java.util.Random;
 
-import edu.weber.housing1000.DB.SurveyDbAdapter;
-
 public class LegalDisclaimerActivity extends Activity {
     /**Called when the activity is first created. **/
 	
@@ -28,7 +26,6 @@ public class LegalDisclaimerActivity extends Activity {
                 int hms_id = randInt.nextInt();
                 //End test code
                 Intent intent = new Intent(LegalDisclaimerActivity.this, SignatureActivity.class);
-                intent.putExtra(SurveyDbAdapter.SURVEYS_FIELD_HMS_ID, hms_id);
                 startActivity(intent);
             }
         });

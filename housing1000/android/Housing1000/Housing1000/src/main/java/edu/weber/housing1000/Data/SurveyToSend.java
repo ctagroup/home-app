@@ -1,12 +1,5 @@
 package edu.weber.housing1000.Data;
 
-import android.database.Cursor;
-import android.util.Log;
-import edu.weber.housing1000.DB.*;
-import edu.weber.housing1000.Questions.Question;
-
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.*;
 
 import com.google.gson.annotations.Expose;
@@ -30,7 +23,7 @@ public class SurveyToSend {
     private ArrayList<Response> responses;
 
     public SurveyToSend(SurveyListing surveyListing, Client client, ArrayList<Response> responses) {
-        surveyId = surveyListing.getId();
+        surveyId = surveyListing.getSurveyId();
         surveyBy = 1;
         this.client = client;
 

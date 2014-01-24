@@ -3,16 +3,43 @@ package edu.weber.housing1000.Questions;
 import android.content.Context;
 import android.view.View;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by Blake on 11/29/13.
  */
 public abstract class Question {
+
+    @Expose
+    @SerializedName("QuestionId")
     private int questionId;
-    private String group = "Questions";
+
+    @Expose
+    @SerializedName("text")
     private String text;
+
+    @Expose
+    @SerializedName("QuestionType")
     private String questionType;
+
+    @Expose
+    @SerializedName("Options")
     private String options;
+
+    @Expose
+    @SerializedName("OrderId")
     private int orderId;
+
+    @Expose
+    @SerializedName("ParentQuestionId")
+    private int parentQuestionId;
+
+    @Expose
+    @SerializedName("ParentRequiredAnswer")
+    private String parentRequiredAnswer;
+
+    private String group = "Questions";
     protected View myView;
 
     // Getters and Setters
@@ -72,16 +99,6 @@ public abstract class Question {
     public void setView(View v)
     {
         myView = v;
-    }
-
-    public Question(int questionId, String group, String text, String questionType, String options, int orderId)
-    {
-        this.questionId = questionId;
-        this.group = group;
-        this.text = text;
-        this.questionType = questionType;
-        this.options = options;
-        this.orderId = orderId;
     }
 
     // Default constructor

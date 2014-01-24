@@ -11,12 +11,10 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 
-import edu.weber.housing1000.DB.SurveyDbAdapter;
 import edu.weber.housing1000.Helpers.EncryptionHelper;
 import edu.weber.housing1000.Helpers.FileHelper;
 import edu.weber.housing1000.Helpers.ImageHelper;
 import edu.weber.housing1000.REST.RestHelper;
-import edu.weber.housing1000.REST.XmlSurvey;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
@@ -33,8 +31,8 @@ public class MainMenuActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu);
 
-        hmsId = getIntent().getIntExtra(SurveyDbAdapter.SURVEYS_FIELD_HMS_ID, -1);
-        surveyId = getIntent().getLongExtra(SurveyDbAdapter.SURVEYS_FIELD_ID, -1);
+        hmsId = -1;
+        surveyId = -1;
 
         Button clientButton = (Button) findViewById(R.id.clientButton);
         Button interviewButton = (Button) findViewById(R.id.interviewButton);
@@ -77,8 +75,6 @@ public class MainMenuActivity extends Activity{
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        XmlSurvey survey = new XmlSurvey(surveyId, getApplicationContext());
-                        survey.createXMLSurvey();
                         String[] fileList = context.fileList();
                         for ( String filename : fileList){
                             if(filename.contains(Integer.toString(hmsId))){
