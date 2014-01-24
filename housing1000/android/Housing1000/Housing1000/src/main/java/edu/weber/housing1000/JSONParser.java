@@ -15,6 +15,8 @@ import edu.weber.housing1000.Data.Survey;
 import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Questions.MultiSelect;
 import edu.weber.housing1000.Questions.Question;
+import edu.weber.housing1000.Questions.QuestionJSON;
+import edu.weber.housing1000.Questions.QuestionJSONDeserializer;
 import edu.weber.housing1000.Questions.SingleSelect;
 import edu.weber.housing1000.Questions.SingleSelectRadio;
 import edu.weber.housing1000.Questions.SinglelineTextBox;
@@ -88,56 +90,44 @@ public class JSONParser {
     }
 
     public static Survey getSurveyFromListing(SurveyListing surveyListing) {
-        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().registerTypeAdapter(QuestionJSON.class, new QuestionJSONDeserializer()).create();
 
         Survey survey = gson.fromJson(surveyListing.getJson(), Survey.class);
 
-        for (Question question : survey.getClientQuestions())
+        for (QuestionJSON qJson : survey.getClientQuestionsJson())
         {
+            Question question = createQuestion(qJson);
             question.setGroup("Client");
-            question = createQuestion(question);
+            survey.getQuestions().add(question);
         }
 
-        for (Question question : survey.getSurveyQuestions())
+        for (QuestionJSON qJson : survey.getSurveyQuestionsJson())
         {
+            Question question = createQuestion(qJson);
             question.setGroup("Survey");
-            question = createQuestion(question);
+            survey.getQuestions().add(question);
         }
 
         return survey;
     }
 
-    public static ArrayList<Question> getQuestions(Survey survey)
+    public static Question createQuestion(QuestionJSON qJson)
     {
-        ArrayList<Question> questions = new ArrayList<Question>();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
-        questions.addAll(survey.getClientQuestions());
-        questions.addAll(survey.getSurveyQuestions());
-
-        return questions;
-    }
-
-    public static Question createQuestion(Question question)
-    {
-        switch (question.getQuestionType())
+        switch (qJson.questionType)
         {
             case "MultiSelect":
-                question = new MultiSelect();
-                break;
+                return gson.fromJson(qJson.json, MultiSelect.class);
             case "SinglelineTextBox":
-                question = new SinglelineTextBox();
-                break;
+                return gson.fromJson(qJson.json, SinglelineTextBox.class);
             case "SingleSelect":
-                question = new SingleSelect();
-                break;
+                return gson.fromJson(qJson.json, SingleSelect.class);
             case "SingleSelectRadio":
-                question = new SingleSelectRadio();
-                break;
+                return gson.fromJson(qJson.json, SingleSelectRadio.class);
             default:
-                question = null;
+                return null;
         }
-
-        return question;
     }
 
 

@@ -57,7 +57,7 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
             mainScrollView.addView(mainLinearLayout);
 
             Survey survey = JSONParser.getSurveyFromListing(surveyListing);
-            lstQuestions = JSONParser.getQuestions(survey);
+            lstQuestions = survey.getQuestions();
 
             // Sort the questions by orderId
             Collections.sort(lstQuestions, new Comparator<Question>() {

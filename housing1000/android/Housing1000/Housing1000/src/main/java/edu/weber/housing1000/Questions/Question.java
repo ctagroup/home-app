@@ -104,7 +104,8 @@ public abstract class Question {
     // Default constructor
     public Question() { }
 
-    // Abstract methods
+    // Abstract classes
     public abstract View createView(Context context);
     public abstract String getAnswer();
+
 }

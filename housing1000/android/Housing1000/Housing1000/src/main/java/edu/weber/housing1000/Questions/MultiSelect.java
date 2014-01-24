@@ -12,7 +12,7 @@ import android.widget.TextView;
 /**
  * Created by Blake on 1/21/14.
  */
-public class MultiSelect extends Question {
+public class MultiSelect extends Question{
     @Override
     public View createView(Context context) {
         //Add question with selections

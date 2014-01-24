@@ -31,7 +31,7 @@ public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTask
 
     private ProgressDialog progressDialog;
     private ArrayList<SurveyListing> surveyListings;
-    private int chosenSurveyId;
+    private long chosenSurveyId;
 
     private ArrayAdapter<SurveyListing> surveyAdapter;
     private ListView surveyList;
@@ -130,6 +130,8 @@ public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTask
         switch(Integer.parseInt(result.get(RESTHelper.TASK_CODE)))
         {
             case TASK_GET_SURVEY_LIST:
+                progressDialog.dismiss();
+
                 if (taskResult.length() > 0 && !taskResult.startsWith("ERROR: "))
                 {
                     surveyListings = JSONParser.parseSurveyList(taskResult);
@@ -221,11 +223,11 @@ public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTask
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
 
-            chosenSurveyId = (int) id;
+            chosenSurveyId = surveyListings.get((int) id).getSurveyId();
 
             surveyDialog.dismiss();
 
-            loadSurvey(surveyListings.get(chosenSurveyId).getSurveyId());
+            loadSurvey(chosenSurveyId);
 
         } // end method onItemClick
     }; // end viewContactListener

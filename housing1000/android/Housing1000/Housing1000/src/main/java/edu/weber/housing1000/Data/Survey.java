@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.*;
 
 import edu.weber.housing1000.Questions.Question;
+import edu.weber.housing1000.Questions.QuestionJSON;
 
 public class Survey {
 
@@ -24,11 +25,13 @@ public class Survey {
 
     @Expose
     @SerializedName("Client")
-    private ArrayList<Question> clientQuestions;
+    private ArrayList<QuestionJSON> clientQuestionsJson;
 
     @Expose
     @SerializedName("SurveyQuestions")
-    private ArrayList<Question> surveyQuestions;
+    private ArrayList<QuestionJSON> surveyQuestionsJson;
+
+    private ArrayList<Question> questions;
 
     public String getId() {
         return id;
@@ -42,13 +45,15 @@ public class Survey {
         return title;
     }
 
-    public ArrayList<Question> getClientQuestions() { return clientQuestions; }
+    public ArrayList<QuestionJSON> getClientQuestionsJson() { return clientQuestionsJson; }
 
-    public ArrayList<Question> getSurveyQuestions() { return surveyQuestions; }
+    public ArrayList<QuestionJSON> getSurveyQuestionsJson() { return surveyQuestionsJson; }
+
+    public ArrayList<Question> getQuestions() { return questions; }
 
     public Survey()
     {
-
+        questions = new ArrayList<Question>();
     }
 
 }
