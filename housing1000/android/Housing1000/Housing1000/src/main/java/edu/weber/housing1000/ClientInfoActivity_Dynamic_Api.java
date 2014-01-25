@@ -21,7 +21,7 @@ import edu.weber.housing1000.Data.Client;
 import edu.weber.housing1000.Data.Response;
 import edu.weber.housing1000.Data.Survey;
 import edu.weber.housing1000.Data.SurveyListing;
-import edu.weber.housing1000.Data.SurveyToSend;
+import edu.weber.housing1000.Data.SurveyResponse;
 import edu.weber.housing1000.Questions.Question;
 
 public class ClientInfoActivity_Dynamic_Api extends Activity {
@@ -40,6 +40,7 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
 
         rootLayout = (RelativeLayout) findViewById(R.id.root_layout);
 
+        // Grab the survey listing from the extras
         surveyListing = (SurveyListing) getIntent().getSerializableExtra(EXTRA_SURVEY);
 
         generateQuestionUi();
@@ -56,8 +57,11 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
             mainLinearLayout.setOrientation(LinearLayout.VERTICAL);
             mainScrollView.addView(mainLinearLayout);
 
+            lstQuestions = new ArrayList<Question>();
+
             Survey survey = JSONParser.getSurveyFromListing(surveyListing);
-            lstQuestions = survey.getQuestions();
+            lstQuestions.addAll(survey.getClientQuestions());
+            lstQuestions.addAll(survey.getSurveyQuestions());
 
             // Sort the questions by orderId
             Collections.sort(lstQuestions, new Comparator<Question>() {
@@ -94,7 +98,7 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
                     panelView.setVisibility(View.GONE);
             }
 
-            //Set Click Events
+            //Set Click Events for the buttons
             for (int k = 0; k < lstPanels.size(); k++) {
                 final int localK = k;
                 final LinearLayout[] localPanelViews = panelViews;
@@ -116,7 +120,7 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
                 });
             }
 
-            //Add questions
+            // Create question views and add them
             for (Question question : lstQuestions) {
                 View questionView = question.createView(this);
 
@@ -147,16 +151,24 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
     }
 
     public void saveAnswers() {
+        // Right now, fake client data is created
         Client client = new Client("2/14/1977", "37.336704, -121.919087", "1234", 14);
         ArrayList<Response> responses = generateResponses(lstQuestions);
-        SurveyToSend surveyToSend = new SurveyToSend(surveyListing, client, responses);
+        SurveyResponse surveyResponse = new SurveyResponse(surveyListing, client, responses);
 
+        // Output the survey responses to JSON
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        String jsonData = gson.toJson(surveyToSend);
+        String jsonData = gson.toJson(surveyResponse);
 
+        // TODO: Send the JSON off to the API
         Log.d("json", jsonData);
     }
 
+    /**
+     * This compiles the responses from each question
+     * @param questions Questions from which to get the answers
+     * @return List of Responses
+     */
     private  ArrayList<Response> generateResponses(ArrayList<Question> questions)
     {
         ArrayList<Response> responses = new ArrayList<Response>();

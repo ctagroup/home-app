@@ -14,7 +14,7 @@ import java.util.*;
 import edu.weber.housing1000.Data.Client;
 import edu.weber.housing1000.Data.Response;
 import edu.weber.housing1000.Data.SurveyListing;
-import edu.weber.housing1000.Data.SurveyToSend;
+import edu.weber.housing1000.Data.SurveyResponse;
 import edu.weber.housing1000.Questions.Question;
 
 public class ClientInfoActivity_Dynamic extends Activity
@@ -155,10 +155,10 @@ public class ClientInfoActivity_Dynamic extends Activity
 
         SurveyListing survey = new SurveyListing(0, "Test Survey", JSONParser.testSurvey);
 
-        SurveyToSend surveyToSend = new SurveyToSend(survey, client, responses);
+        SurveyResponse surveyResponse = new SurveyResponse(survey, client, responses);
 
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        String jsonData = gson.toJson(surveyToSend);
+        String jsonData = gson.toJson(surveyResponse);
 
         Log.d("json", jsonData);
     }

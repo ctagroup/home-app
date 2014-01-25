@@ -18,12 +18,12 @@ public class SingleSelect extends Question {
     @Override
     public View createView(Context context) {
         //Add question with selections
-        LinearLayout ll_sub = new LinearLayout(context);
-        ll_sub.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout qLayout = new LinearLayout(context);
+        qLayout.setOrientation(LinearLayout.VERTICAL);
 
-        TextView tv = new TextView(context);
-        tv.setText(getText());
-        ll_sub.addView(tv);
+        TextView textView = new TextView(context);
+        textView.setText(getText());
+        qLayout.addView(textView);
 
         //Add potential answers
         List<String> lstAnswers = new ArrayList<String>();
@@ -35,9 +35,9 @@ public class SingleSelect extends Question {
         spinner.setAdapter(new ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item,
                 lstAnswers));
 
-        ll_sub.addView(spinner);
+        qLayout.addView(spinner);
 
-        setView(ll_sub);
+        setView(qLayout);
         return getView();
     }
 

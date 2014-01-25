@@ -14,7 +14,6 @@ import android.widget.Button;
 import edu.weber.housing1000.Helpers.EncryptionHelper;
 import edu.weber.housing1000.Helpers.FileHelper;
 import edu.weber.housing1000.Helpers.ImageHelper;
-import edu.weber.housing1000.REST.RestHelper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
@@ -67,29 +66,7 @@ public class MainMenuActivity extends Activity{
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainMenuActivity.this);
-                builder.setMessage(R.string.submit_survey_message).setTitle(R.string.survey_title);
-                final AlertDialog dialog = builder.create();
-                dialog.show();
-                Handler handler = new Handler();
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        String[] fileList = context.fileList();
-                        for ( String filename : fileList){
-                            if(filename.contains(Integer.toString(hmsId))){
-                                int result = RestHelper.postFile(filename, context);
-                                if (result == 200){
-                                    context.deleteFile(filename);
-                                }
-                            }
-                        }
-                        dialog.dismiss();
-                        Intent intent = new Intent(MainMenuActivity.this, SelectPageActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                    }
-                });
+                // This was broken, so it is removed
             }
         });
     }

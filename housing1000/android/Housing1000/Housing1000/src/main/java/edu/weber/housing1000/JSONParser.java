@@ -15,7 +15,6 @@ import edu.weber.housing1000.Data.Survey;
 import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Questions.MultiSelect;
 import edu.weber.housing1000.Questions.Question;
-import edu.weber.housing1000.Questions.QuestionJSON;
 import edu.weber.housing1000.Questions.QuestionJSONDeserializer;
 import edu.weber.housing1000.Questions.SingleSelect;
 import edu.weber.housing1000.Questions.SingleSelectRadio;
@@ -80,8 +79,14 @@ public class JSONParser {
                     "{\"$id\":\"51\",\"QuestionId\":50,\"text\":\"Is there a person/outreach worker you trust?\",\"QuestionType\":\"SingleSelectRadio\",\"Options\":\"Yes|No|Refused\",\"OrderId\":51,\"Panel\":\"Community\"}," +
                     "{\"$id\":\"52\",\"QuestionId\":51,\"text\":\"What is their name and agency they work for?\",\"QuestionType\":\"SinglelineTextBox\",\"Options\":null,\"OrderId\":52,\"Panel\":\"Community\"}]}";
 
+    /**
+     * Creates a list of SurveyListings from the given surveys JSON data
+     * @param surveysJson Surveys in JSON form
+     * @return List of SurveyListings
+     */
     public static ArrayList<SurveyListing> parseSurveyList(String surveysJson)
     {
+        // This is needed to tell the gson that it will be creating a list of SurveyListings
         Type listType = new TypeToken<ArrayList<SurveyListing>>() {}.getType();
 
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
@@ -89,48 +94,37 @@ public class JSONParser {
         return gson.fromJson(surveysJson, listType);
     }
 
+    /**
+     * Creates a survey from the given SurveyListing
+     * @param surveyListing SurveyListing to use for creating the survey
+     * @return New Survey
+     */
     public static Survey getSurveyFromListing(SurveyListing surveyListing) {
-        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().registerTypeAdapter(QuestionJSON.class, new QuestionJSONDeserializer()).create();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().registerTypeAdapter(Question.class, new QuestionJSONDeserializer()).create();
 
         Survey survey = gson.fromJson(surveyListing.getJson(), Survey.class);
 
-        for (QuestionJSON qJson : survey.getClientQuestionsJson())
+        // Set the group for the client questions
+        for (Question question : survey.getClientQuestions())
         {
-            Question question = createQuestion(qJson);
             question.setGroup("Client");
-            survey.getQuestions().add(question);
         }
 
-        for (QuestionJSON qJson : survey.getSurveyQuestionsJson())
+        // Set the group for the survey questions
+        for (Question question : survey.getSurveyQuestions())
         {
-            Question question = createQuestion(qJson);
             question.setGroup("Survey");
-            survey.getQuestions().add(question);
         }
 
         return survey;
     }
 
-    public static Question createQuestion(QuestionJSON qJson)
-    {
-        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-
-        switch (qJson.questionType)
-        {
-            case "MultiSelect":
-                return gson.fromJson(qJson.json, MultiSelect.class);
-            case "SinglelineTextBox":
-                return gson.fromJson(qJson.json, SinglelineTextBox.class);
-            case "SingleSelect":
-                return gson.fromJson(qJson.json, SingleSelect.class);
-            case "SingleSelectRadio":
-                return gson.fromJson(qJson.json, SingleSelectRadio.class);
-            default:
-                return null;
-        }
-    }
-
-
+    /**
+     * This is the old way of doing it - Use the QuestionJSONDeserializer instead
+     * @param survey
+     * @return
+     */
+    @Deprecated
     public static ArrayList<Question> parseSurveyQuestionsOld(String survey) {
         ArrayList<Question> questionsList = new ArrayList<Question>();
 

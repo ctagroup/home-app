@@ -13,12 +13,12 @@ public class SingleSelectRadio extends Question {
     @Override
     public View createView(Context context) {
         //Add question with selections
-        LinearLayout ll_sub = new LinearLayout(context);
-        ll_sub.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout qLayout = new LinearLayout(context);
+        qLayout.setOrientation(LinearLayout.VERTICAL);
 
-        TextView tv = new TextView(context);
-        tv.setText(getText());
-        ll_sub.addView(tv);
+        TextView textView = new TextView(context);
+        textView.setText(getText());
+        qLayout.addView(textView);
 
         //Add potential answers
         String[] arrAnswers = getOptions().split("\\|");
@@ -27,7 +27,7 @@ public class SingleSelectRadio extends Question {
         for (int j = 0; j < arrAnswers.length; j++) {
             RadioButtons[j] = new RadioButton(context);
             RadioButtons[j].setText(arrAnswers[j]);
-            ll_sub.addView(RadioButtons[j]);
+            qLayout.addView(RadioButtons[j]);
         }
 
         for (int j = 0; j < arrAnswers.length; j++) {
@@ -47,15 +47,16 @@ public class SingleSelectRadio extends Question {
             });
         }
 
-        setView(ll_sub);
+        setView(qLayout);
         return getView();
     }
 
     @Override
     public String getAnswer() {
         String answer = "";
-        LinearLayout layout = (LinearLayout)myView;
+        LinearLayout layout = (LinearLayout) myView;
 
+        // Loop through each child view (radio buttons)
         for (int i = 0; i < layout.getChildCount(); i++)
         {
             View childView = layout.getChildAt(i);
