@@ -28,6 +28,7 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
     public static final String EXTRA_SURVEY = "survey";
 
     private SurveyListing surveyListing;
+    private Survey survey;
 
     private RelativeLayout rootLayout;
 
@@ -59,7 +60,7 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
 
             lstQuestions = new ArrayList<Question>();
 
-            Survey survey = JSONParser.getSurveyFromListing(surveyListing);
+            survey = JSONParser.getSurveyFromListing(surveyListing);
             lstQuestions.addAll(survey.getClientQuestions());
             lstQuestions.addAll(survey.getSurveyQuestions());
 
@@ -153,7 +154,7 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
     public void saveAnswers() {
         // Right now, fake client data is created
         Client client = new Client("2/14/1977", "37.336704, -121.919087", "1234", 14);
-        ArrayList<Response> responses = generateResponses(lstQuestions);
+        ArrayList<Response> responses = generateResponses(survey.getSurveyQuestions());
         SurveyResponse surveyResponse = new SurveyResponse(surveyListing, client, responses);
 
         // Output the survey responses to JSON

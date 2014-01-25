@@ -101,6 +101,16 @@ public abstract class Question {
         myView = v;
     }
 
+    public int getParentQuestionId()
+    {
+        return parentQuestionId;
+    }
+
+    public String getParentRequiredAnswer()
+    {
+        return parentRequiredAnswer;
+    }
+
     // Default constructor
     public Question() { }
 
