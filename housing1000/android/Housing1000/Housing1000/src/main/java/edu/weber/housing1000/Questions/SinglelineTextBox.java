@@ -12,22 +12,22 @@ import android.widget.TextView;
 public class SinglelineTextBox extends Question {
     @Override
     public View createView(Context context) {
-        LinearLayout ll_sub = new LinearLayout(context);
+        LinearLayout qLayout = new LinearLayout(context);
 
-        TextView tv = new TextView(context);
-        tv.setText(getText());
-        ll_sub.addView(tv);
+        TextView textView = new TextView(context);
+        textView.setText(getText());
+        qLayout.addView(textView);
         // TODO: Have the ctagroup people add a minimum character length for the SinglelineTextBox so we can wrap to the next line if it isn't big enough
-        if (tv.getText().length() >= 16)
-            ll_sub.setOrientation(LinearLayout.VERTICAL);
+        if (textView.getText().length() >= 16)
+            qLayout.setOrientation(LinearLayout.VERTICAL);
 
-        EditText et = new EditText(context);
-        LinearLayout.LayoutParams etParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        et.setLayoutParams(etParams);
+        EditText editText = new EditText(context);
+        LinearLayout.LayoutParams editTextParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        editText.setLayoutParams(editTextParams);
 
-        ll_sub.addView(et);
+        qLayout.addView(editText);
 
-        setView(ll_sub);
+        setView(qLayout);
         return getView();
     }
 

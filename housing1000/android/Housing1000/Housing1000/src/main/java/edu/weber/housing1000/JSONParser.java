@@ -1,16 +1,21 @@
 package edu.weber.housing1000;
 
-import android.util.Log;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import edu.weber.housing1000.Data.Survey;
 import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Questions.MultiSelect;
 import edu.weber.housing1000.Questions.Question;
+import edu.weber.housing1000.Questions.QuestionJSONDeserializer;
 import edu.weber.housing1000.Questions.SingleSelect;
 import edu.weber.housing1000.Questions.SingleSelectRadio;
 import edu.weber.housing1000.Questions.SinglelineTextBox;
@@ -20,9 +25,6 @@ import edu.weber.housing1000.Questions.SinglelineTextBox;
  */
 public class JSONParser {
 
-    public static final String surveys = "[{\"$id\":\"1\",\"SurveyId\":1,\"Title\":\"Santa Clara Survey\",\"Description\":\"This is Santa Clara Survey\",\"CreatedBy\":1,\"CreatedDate\":\"2013-11-05T12:04:23\",\"UpdatedBy\":null,\"UpdatedDate\":null,\"ExpireOn\":null,\"Active\":true},{\"$id\":\"2\",\"SurveyId\":2,\"Title\":\"Santa Cruz Survey\",\"Description\":\"This is Santa Cruz Survey\",\"CreatedBy\":1,\"CreatedDate\":\"2013-11-05T12:04:23\",\"UpdatedBy\":null,\"UpdatedDate\":null,\"ExpireOn\":null,\"Active\":true}]";
-    //public static final String testSurvey = "{\"$id\":\"1\",\"SurveyId\":1,\"Title\":\"Santa Clara Survey\",\"SurveyQuestions\":[{\"$id\":\"2\",\"QuestionId\":1,\"text\":\"What is your birthday?\",\"QuestionType\":\"SinglelineTextBox\",\"Options\":null,\"OrderId\":1},{\"$id\":\"3\",\"QuestionId\":2,\"text\":\"How do you identify yourself?\",\"QuestionType\":\"SingleSelect\",\"Options\":\"Male|Female|Transgender|Other\",\"OrderId\":2},{\"$id\":\"4\",\"QuestionId\":3,\"text\":\"Which racial/ethinic group do you identify yourself with the most?\",\"QuestionType\":\"SingleSelect\",\"Options\":\"White/Caucasian|Black/African American|Hispanic/Latino|American Indian/Alaskan Native|Vietnamese|Other Asian|Pacific Islander|Other/Multi-ethnic\",\"OrderId\":3}]}";
-    //public static final String testSurvey = "{\"$id\":\"1\",\"SurveyId\":2,\"Title\":\"Santa Cruz Survey\",\"SurveyQuestions\":[{\"$id\":\"2\",\"QuestionId\":1,\"text\":\"What is your birthday?\",\"QuestionType\":\"SinglelineTextBox\",\"Options\":null,\"OrderId\":1,\"Panel\":\"ClientInformation\"},{\"$id\":\"3\",\"QuestionId\":2,\"text\":\"How do you identify yourself?\",\"QuestionType\":\"SingleSelect\",\"Options\":\"Male|Female|Transgender|Other\",\"OrderId\":3,\"Panel\":\"ClientDemographics\"},{\"$id\":\"4\",\"QuestionId\":3,\"text\":\"Which racial/ethinic group do you identify yourself with the most?\",\"QuestionType\":\"SingleSelect\",\"Options\":\"White/Caucasian|Black/African American|Hispanic/Latino|American Indian/Alaskan Native|Vietnamese|Other Asian|Pacific Islander|Other/Multi-ethnic\",\"OrderId\":2,\"Panel\":\"ClientInformation\"},{\"$id\":\"5\",\"QuestionId\":4,\"text\":\"Have you ever served in the U.S. Armed Forces?\",\"QuestionType\":\"MultiSelect\",\"Options\":\"Yes|No|Don't know|Decline to state\",\"OrderId\":4,\"Panel\":\"MilitaryInformation\"}]}";
     public static final String testSurvey =
             "{\"$id\":\"1\",\"SurveyId\":2,\"Title\":\"Santa Cruz Survey\",\"SurveyQuestions\":" +
                     "[{\"$id\":\"2\",\"QuestionId\":1,\"text\":\"First Name:\",\"QuestionType\":\"SinglelineTextBox\",\"Options\":null,\"OrderId\":1,\"Panel\":\"Client Information\"}," +
@@ -77,51 +79,53 @@ public class JSONParser {
                     "{\"$id\":\"51\",\"QuestionId\":50,\"text\":\"Is there a person/outreach worker you trust?\",\"QuestionType\":\"SingleSelectRadio\",\"Options\":\"Yes|No|Refused\",\"OrderId\":51,\"Panel\":\"Community\"}," +
                     "{\"$id\":\"52\",\"QuestionId\":51,\"text\":\"What is their name and agency they work for?\",\"QuestionType\":\"SinglelineTextBox\",\"Options\":null,\"OrderId\":52,\"Panel\":\"Community\"}]}";
 
-    public static ArrayList<SurveyListing> parseSurveyList(String surveys)
+    /**
+     * Creates a list of SurveyListings from the given surveys JSON data
+     * @param surveysJson Surveys in JSON form
+     * @return List of SurveyListings
+     */
+    public static ArrayList<SurveyListing> parseSurveyList(String surveysJson)
     {
-        ArrayList<SurveyListing> surveyListings = new ArrayList<SurveyListing>();
+        // This is needed to tell the gson that it will be creating a list of SurveyListings
+        Type listType = new TypeToken<ArrayList<SurveyListing>>() {}.getType();
 
-        try {
-            JSONArray surveysJSON = new JSONArray(surveys);
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
-            for (int i = 0; i < surveysJSON.length(); i++)
-            {
-                JSONObject single = surveysJSON.getJSONObject(i);
-
-                SurveyListing surveyListing = new SurveyListing(single.getInt("SurveyId"), 1, single.getString("Title"));
-                surveyListings.add(surveyListing);
-                Log.d("SURVEY FOUND", surveyListing.getTitle());
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return surveyListings;
+        return gson.fromJson(surveysJson, listType);
     }
 
-    public static JSONArray parseSurvey(String survey) {
-        JSONArray questions = null;
+    /**
+     * Creates a survey from the given SurveyListing
+     * @param surveyListing SurveyListing to use for creating the survey
+     * @return New Survey
+     */
+    public static Survey getSurveyFromListing(SurveyListing surveyListing) {
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().registerTypeAdapter(Question.class, new QuestionJSONDeserializer()).create();
 
-        try {
-            JSONObject surveyJSON = new JSONObject(survey);
+        Survey survey = gson.fromJson(surveyListing.getJson(), Survey.class);
 
-            questions = surveyJSON.getJSONArray("SurveyQuestions");
-
-            for (int i = 0; i < questions.length(); i++) {
-                Log.d("JSON", questions.getJSONObject(i).get("text").toString());
-
-
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
+        // Set the group for the client questions
+        for (Question question : survey.getClientQuestions())
+        {
+            question.setGroup("Client");
         }
 
-        return questions;
+        // Set the group for the survey questions
+        for (Question question : survey.getSurveyQuestions())
+        {
+            question.setGroup("Survey");
+        }
 
+        return survey;
     }
 
-    public static ArrayList<Question> parseSurveyQuestions(String survey) {
+    /**
+     * This is the old way of doing it - Use the QuestionJSONDeserializer instead
+     * @param survey
+     * @return
+     */
+    @Deprecated
+    public static ArrayList<Question> parseSurveyQuestionsOld(String survey) {
         ArrayList<Question> questionsList = new ArrayList<Question>();
 
         try {
@@ -139,7 +143,7 @@ public class JSONParser {
                     case "MultiSelect":
                         question = new MultiSelect();
                         break;
-                    case "SingleLineTextBox":
+                    case "SinglelineTextBox":
                         question = new SinglelineTextBox();
                         break;
                     case "SingleSelect":

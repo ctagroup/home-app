@@ -1,26 +1,20 @@
 package edu.weber.housing1000;
 
 import android.app.Activity;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.widget.*;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.util.*;
 
-import edu.weber.housing1000.DB.SurveyDbAdapter;
 import edu.weber.housing1000.Data.Client;
 import edu.weber.housing1000.Data.Response;
 import edu.weber.housing1000.Data.SurveyListing;
-import edu.weber.housing1000.Data.SurveyToSend;
+import edu.weber.housing1000.Data.SurveyResponse;
 import edu.weber.housing1000.Questions.Question;
 
 public class ClientInfoActivity_Dynamic extends Activity
@@ -37,13 +31,9 @@ public class ClientInfoActivity_Dynamic extends Activity
     /*  4. SingleSelectRadio -> Radio Buttons  */
     /* *************************************** */
 
-    /* Called when the activity is first created. */
-    long surveyId = -1;
-    int iNumQuestions;
     ArrayList<Question>  lstQuestions;
 
     RelativeLayout rootLayout;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -52,8 +42,6 @@ public class ClientInfoActivity_Dynamic extends Activity
         setContentView(R.layout.activity_clnt_info_dynamic);
 
         rootLayout = (RelativeLayout) findViewById(R.id.root_layout);
-
-        surveyId = getIntent().getLongExtra(SurveyDbAdapter.SURVEYS_FIELD_ID, -1);
 
         generateQuestionUi();
     }
@@ -69,7 +57,7 @@ public class ClientInfoActivity_Dynamic extends Activity
             mainLinearLayout.setOrientation(LinearLayout.VERTICAL);
             mainScrollView.addView(mainLinearLayout);
 
-            lstQuestions = JSONParser.parseSurveyQuestions(JSONParser.testSurvey);
+            lstQuestions = JSONParser.parseSurveyQuestionsOld(JSONParser.testSurvey);
 
             // Sort the questions by orderId
             Collections.sort(lstQuestions, new Comparator<Question>() {
@@ -165,14 +153,14 @@ public class ClientInfoActivity_Dynamic extends Activity
         Client client = new Client("2/14/1977", "37.336704, -121.919087", "1234", 14);
         ArrayList<Response> responses = generateResponses(lstQuestions);
 
-        SurveyListing survey = new SurveyListing(0, 1, "Test Survey", JSONParser.testSurvey);
+        SurveyListing survey = new SurveyListing(0, "Test Survey", JSONParser.testSurvey);
 
-        SurveyToSend surveyToSend = new SurveyToSend(survey, client, responses);
+        SurveyResponse surveyResponse = new SurveyResponse(survey, client, responses);
 
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        String jsonData = gson.toJson(surveyToSend);
+        String jsonData = gson.toJson(surveyResponse);
 
-        Log.d("JSON DATA", jsonData);
+        Log.d("json", jsonData);
     }
 
     private  ArrayList<Response> generateResponses(ArrayList<Question> questions)
