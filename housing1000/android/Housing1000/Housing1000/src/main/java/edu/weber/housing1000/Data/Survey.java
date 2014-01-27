@@ -30,8 +30,6 @@ public class Survey {
     @SerializedName("SurveyQuestions")
     private ArrayList<Question> surveyQuestions;
 
-    private ArrayList<Question> questions;
-
     public String getId() {
         return id;
     }
@@ -48,11 +46,6 @@ public class Survey {
 
     public ArrayList<Question> getSurveyQuestions() { return surveyQuestions; }
 
-    public ArrayList<Question> getQuestions() { return questions; }
-
-    public Survey()
-    {
-        questions = new ArrayList<Question>();
-    }
+    public Survey() { }
 
 }
