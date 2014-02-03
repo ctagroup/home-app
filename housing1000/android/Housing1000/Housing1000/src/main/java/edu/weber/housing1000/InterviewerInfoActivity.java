@@ -1,12 +1,9 @@
 package edu.weber.housing1000;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
-import edu.weber.housing1000.data.SurveyResponse;
-import edu.weber.housing1000.db.SurveyDbAdapter;
 
 public class InterviewerInfoActivity extends Activity {
 
@@ -23,7 +20,7 @@ public class InterviewerInfoActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Set the hmsId
-        surveyId = getIntent().getLongExtra(SurveyDbAdapter.SURVEYS_FIELD_ID, -1);
+        surveyId = -1;
 
         setContentView(R.layout.interviewer_info);
 
@@ -40,27 +37,9 @@ public class InterviewerInfoActivity extends Activity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SurveyDbAdapter db = new SurveyDbAdapter(getApplicationContext());
-                db.open();
-                saveSurveyResponseAnswer("udoyoudetectsignsorsy", findViewById(R.id.udoyoudetectsignsorsy), db);
-                saveSurveyResponseAnswer("ansrInterviewerDrugs", findViewById(R.id.ansrInterviewerDrugs), db);
-                saveSurveyResponseAnswer("mobservesignsorsympto", findViewById(R.id.mobservesignsorsympto), db);
-                saveSurveyResponseAnswer("ansrInterviewerCity", findViewById(R.id.ansrInterviewerCity), db);
-                saveSurveyResponseAnswer("censustrack", findViewById(R.id.censustrack), db);
-                saveSurveyResponseAnswer("interviewersname", findViewById(R.id.interviewersname), db);
-                db.close();
-                Intent intent = new Intent(InterviewerInfoActivity.this, MainMenuActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
+               finish();
             }
         });
-    }
-
-    private void saveSurveyResponseAnswer(String question, View view, SurveyDbAdapter db){
-        String response = getEditableViewText(view);
-        if (response != null){
-            db.insertResponse(new SurveyResponse(surveyId, question, response));
-        }
     }
 
     private String getEditableViewText(View view){

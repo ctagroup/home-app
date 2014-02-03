@@ -11,8 +11,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CursorAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
@@ -20,20 +22,18 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Helpers.RESTHelper;
-import edu.weber.housing1000.data.SurveyListing;
-import edu.weber.housing1000.db.DatabaseConnector;
 
 public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTaskCompleted {
     private static final int TASK_GET_SURVEY_LIST = 1;
     private static final int TASK_GET_SURVEY = 2;
 
     private ProgressDialog progressDialog;
-
     private ArrayList<SurveyListing> surveyListings;
     private long chosenSurveyId;
 
-    private CursorAdapter surveyAdapter;
+    private ArrayAdapter<SurveyListing> surveyAdapter;
     private ListView surveyList;
     private Dialog surveyDialog;
 	
@@ -46,9 +46,11 @@ public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTask
         //String[] from = new String[] { "_id", "title" };
         String[] from = new String[] { "title" };
         int[] to = new int[] { R.id.surveyTextView };
-        surveyAdapter = new SimpleCursorAdapter(SelectPageActivity.this,
-                R.layout.survey_list_item, null, from, to,
-                CursorAdapter.NO_SELECTION);
+        surveyListings = new ArrayList<SurveyListing>();
+        surveyAdapter = new ArrayAdapter<SurveyListing>(
+                SelectPageActivity.this,
+                android.R.layout.simple_list_item_1,
+                surveyListings );
         surveyList = new ListView(this);
         surveyList.setAdapter(surveyAdapter);
         surveyList.setOnItemClickListener(surveyClickListener);
@@ -128,6 +130,8 @@ public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTask
         switch(Integer.parseInt(result.get(RESTHelper.TASK_CODE)))
         {
             case TASK_GET_SURVEY_LIST:
+                progressDialog.dismiss();
+
                 if (taskResult.length() > 0 && !taskResult.startsWith("ERROR: "))
                 {
                     surveyListings = JSONParser.parseSurveyList(taskResult);
@@ -142,15 +146,7 @@ public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTask
                     {
                         Toast.makeText(SelectPageActivity.this, surveyListings.size() + " surveys found.", Toast.LENGTH_SHORT).show();
 
-                        DatabaseConnector dbConnector = new DatabaseConnector(this);
-                        dbConnector.clearSurveys();
-
-                        for (SurveyListing survey : surveyListings)
-                        {
-                            dbConnector.insertSurvey(survey);
-                        }
-
-                        new GetAllSurveysTask().execute((Object[]) null);
+                        displaySurveyList();
                     }
                 }
                 else
@@ -166,18 +162,15 @@ public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTask
             case TASK_GET_SURVEY:
                 if (taskResult.length() > 0 && !taskResult.startsWith("ERROR: "))
                 {
-                    for (SurveyListing survey : surveyListings)
+                    for (SurveyListing surveyListing : surveyListings)
                     {
-                        if (survey.getId() == chosenSurveyId)
+                        if (surveyListing.getSurveyId() == chosenSurveyId)
                         {
-                            DatabaseConnector dbConnector = new DatabaseConnector(this);
-
-                            survey.setQuestions(taskResult);
-                            dbConnector.updateSurvey(survey);
+                            surveyListing.setJson(taskResult);
 
                             progressDialog.dismiss();
 
-                            launchSurveyActivity(survey);
+                            launchSurveyActivity(surveyListing);
 
                             break;
                         }
@@ -204,6 +197,12 @@ public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTask
      */
     private void displaySurveyList()
     {
+        surveyAdapter = new ArrayAdapter<SurveyListing>(
+                SelectPageActivity.this,
+                android.R.layout.simple_list_item_1,
+                surveyListings );
+        surveyList.setAdapter(surveyAdapter);
+
         if (surveyDialog == null)
         {
             AlertDialog.Builder surveyBuilder = new AlertDialog.Builder(this);
@@ -217,46 +216,14 @@ public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTask
     }
 
     /**
-     * Performs a database query outside of the GUI thread
-     */
-    private class GetAllSurveysTask extends AsyncTask<Object, Object, Cursor> {
-        final DatabaseConnector databaseConnector = new DatabaseConnector(
-                SelectPageActivity.this);
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            databaseConnector.open();
-        }
-
-        // perform the database access
-        @Override
-        protected Cursor doInBackground(Object... params) {
-            // get a cursor containing all surveys
-            return databaseConnector.getAllSurveys();
-        } // end method doInBackground
-
-        // use the Cursor returned from the doInBackground method
-        @Override
-        protected void onPostExecute(Cursor result) {
-            progressDialog.dismiss();
-            displaySurveyList();
-
-            surveyAdapter.changeCursor(result); // set the adapter's Cursor
-
-            //databaseConnector.close();
-        } // end method onPostExecute
-    } // end class GetContactsTask
-
-    /**
      * Handles the survey click events
      */
     private final AdapterView.OnItemClickListener surveyClickListener = new AdapterView.OnItemClickListener() {
         @Override
-        public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                long arg3) {
+        public void onItemClick(AdapterView<?> parent, View view, int position,
+                                long id) {
 
-            chosenSurveyId = arg3;
+            chosenSurveyId = surveyListings.get((int) id).getSurveyId();
 
             surveyDialog.dismiss();
 
@@ -294,13 +261,13 @@ public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTask
         });
     }
 
-    private void launchSurveyActivity(SurveyListing survey)
+    private void launchSurveyActivity(SurveyListing surveyListing)
     {
         Intent launchSurvey = new Intent(SelectPageActivity.this,
                 ClientInfoActivity_Dynamic_Api.class);
 
         // Pass the selected survey row ID as an extra with the Intent
-        launchSurvey.putExtra(ClientInfoActivity_Dynamic_Api.EXTRA_SURVEY, survey);
+        launchSurvey.putExtra(ClientInfoActivity_Dynamic_Api.EXTRA_SURVEY, surveyListing);
         startActivity(launchSurvey); // start the ViewContact Activity
     }
 

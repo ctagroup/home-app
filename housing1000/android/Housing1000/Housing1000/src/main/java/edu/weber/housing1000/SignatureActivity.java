@@ -16,11 +16,10 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import edu.weber.housing1000.Data.Survey;
 import edu.weber.housing1000.Helpers.EncryptionHelper;
 import edu.weber.housing1000.Helpers.FileHelper;
 import edu.weber.housing1000.Helpers.ImageHelper;
-import edu.weber.housing1000.data.Survey;
-import edu.weber.housing1000.db.SurveyDbAdapter;
 
 import java.io.ByteArrayOutputStream;
 
@@ -43,11 +42,6 @@ public class SignatureActivity extends Activity {
         // Setting this to -1 until the RestHelper is taken off of the main thread
         // Side note: any IO/slow operations need to be done on a separate thread
         hmsId = -1;
-        //hmsId = RestHelper.getHmsId();
-        SurveyDbAdapter db = new SurveyDbAdapter(getApplicationContext());
-        db.open();
-        final long surveyId = db.insertSurvey(new Survey(hmsId, Survey.Status.CREATED));
-        db.close();
 
         mGetSign = (Button) findViewById(R.id.getsign);
         mContent = (LinearLayout) findViewById(R.id.signatureLinearLayout);
@@ -70,8 +64,6 @@ public class SignatureActivity extends Activity {
         mGetSign.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(SignatureActivity.this, MainMenuActivity.class);
-                intent.putExtra(SurveyDbAdapter.SURVEYS_FIELD_HMS_ID, hmsId);
-                intent.putExtra(SurveyDbAdapter.SURVEYS_FIELD_ID, surveyId);
                 startActivity(intent);
                 Log.v("log_tag", "Panel Saved");
                 mView.setDrawingCacheEnabled(true);
