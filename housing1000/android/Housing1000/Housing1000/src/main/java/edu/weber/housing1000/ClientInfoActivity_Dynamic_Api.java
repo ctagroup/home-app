@@ -1,6 +1,9 @@
 package edu.weber.housing1000;
 
 import android.app.Activity;
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -153,7 +156,8 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
 
     public void saveAnswers() {
         // Right now, fake client data is created
-        Client client = new Client("2/14/1977", "37.336704, -121.919087", "1234", 14);
+        //Client client = new Client("2/14/1977", "37.336704, -121.919087", "1234", 14);
+        Client client = new Client(survey.getClientQuestions(), getLocation());
         ArrayList<Response> responses = generateResponses(survey.getSurveyQuestions());
         SurveyResponse surveyResponse = new SurveyResponse(surveyListing, client, responses);
 
@@ -183,5 +187,20 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
 
         return responses;
     }
+
+    private Location getLocation()
+    {
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+            return locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        else if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
+            return locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        else if (locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER))
+            return locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+        else
+            return null;
+    }
+
 
 }

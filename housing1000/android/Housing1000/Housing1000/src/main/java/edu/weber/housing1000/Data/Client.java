@@ -3,10 +3,13 @@ package edu.weber.housing1000.Data;
 import android.location.Location;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import edu.weber.housing1000.Questions.Question;
 
 /**
  * Created by Blake on 1/22/14.
@@ -35,6 +38,29 @@ public class Client implements Serializable {
         this.geoLocation = geoLocation;
         this.last4Ssn = last4Ssn;
         this.servicePointId = servicePointId;
+    }
+
+    public Client (ArrayList<Question> questions, Location location)
+    {
+        for (Question q : questions)
+        {
+            switch (q.getParentRequiredAnswer())
+            {
+                case "Birthday":
+                    birthday = q.getAnswer();
+                    break;
+                case "Last4SSN":
+                    last4Ssn = q.getAnswer();
+                    break;
+                case "ServicePointId":
+                    servicePointId = Integer.parseInt(q.getAnswer());
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        geoLocation = location != null ? location.toString() : "0, 0";
     }
 
 }
