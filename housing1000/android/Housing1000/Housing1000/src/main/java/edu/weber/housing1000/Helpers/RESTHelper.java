@@ -253,7 +253,7 @@ public class RESTHelper {
         }
 
         @Override
-        protected void onPostExecute(HashMap<String, String> result) {
+            protected void onPostExecute(HashMap<String, String> result) {
             // Log.d("getURLTask", "Result: \n" + result);
             listener.onUrlTaskCompleted(result);
             super.onPostExecute(result);

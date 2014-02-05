@@ -14,6 +14,11 @@ import android.widget.ScrollView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+
+import org.apache.http.client.methods.HttpPost;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,6 +30,7 @@ import edu.weber.housing1000.Data.Response;
 import edu.weber.housing1000.Data.Survey;
 import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Data.SurveyResponse;
+import edu.weber.housing1000.Helpers.RESTHelper;
 import edu.weber.housing1000.Questions.Question;
 
 public class ClientInfoActivity_Dynamic_Api extends Activity {
@@ -165,7 +171,18 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         String jsonData = gson.toJson(surveyResponse);
 
-        // TODO: Send the JSON off to the API
+        // TODO: TEST - Send the JSON off to the API
+        Ion.with(this, "https://staging.ctagroup.org/Survey/api/survey/")
+                .setJsonObjectBody(jsonData)
+                .asJsonObject()
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject jsonObject) {
+                        // handle result
+                    }
+               });
+        ////////////////////////////
+
         Log.d("json", jsonData);
     }
 
