@@ -3,10 +3,14 @@ package edu.weber.housing1000.Questions;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.opengl.Visibility;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
@@ -117,9 +121,24 @@ public abstract class Question {
         return parentQuestionId;
     }
 
+    public void setParentQuestionId(int parentQuestionId)
+    {
+        this.parentQuestionId = parentQuestionId;
+    }
+
     public String getParentRequiredAnswer()
     {
         return parentRequiredAnswer;
+    }
+
+    public void setParentRequiredAnswer(String parentRequiredAnswer)
+    {
+        this.parentRequiredAnswer = parentRequiredAnswer;
+    }
+
+    public ArrayList<Question> getDependents()
+    {
+        return dependents;
     }
 
     // Default constructor
@@ -143,7 +162,7 @@ public abstract class Question {
                 @Override
                 public void onClick(View v) {
                     Log.d("TOUCHED", "TOUCHED");
-                    toggleVisibility(question);
+                    toggleVisibility(question, null);
                 }
             };
 
@@ -162,15 +181,35 @@ public abstract class Question {
                         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                toggleVisibility(question);
+                                toggleVisibility(question, null);
                             }
 
                             @Override
                             public void onNothingSelected(AdapterView<?> parent) {
-                                toggleVisibility(question);
+                                toggleVisibility(question, null);
                             }
                         });
 
+                    }
+                    else if (child instanceof EditText)
+                    {
+                        EditText editText = (EditText) child;
+                        editText.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                toggleVisibility(question, null);
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable s) {
+
+                            }
+                        });
                     }
                     else
                     {
@@ -178,20 +217,31 @@ public abstract class Question {
                     }
                 }
             }
+
+            toggleVisibility(question, null);
         }
     }
 
-    private void toggleVisibility(Question child)
+    private void toggleVisibility(Question question, Question parent)
     {
-        final LinearLayout questionLayout = (LinearLayout) child.getView();
+        final LinearLayout questionLayout = (LinearLayout) question.getView();
+        if (parent == null)
+        {
+            parent = this;
+        }
 
-        if (child.getParentRequiredAnswer().toLowerCase().equals(Question.this.getAnswer().toLowerCase()))
+        if (question.getParentRequiredAnswer().toLowerCase().equals(parent.getAnswer().toLowerCase()))
         {
             questionLayout.setVisibility(View.VISIBLE);
         }
         else
         {
-            questionLayout.setVisibility(View.INVISIBLE);
+            questionLayout.setVisibility(View.GONE);
+        }
+
+        for (Question childQuestion : question.getDependents())
+        {
+            toggleVisibility(childQuestion, question);
         }
     }
 

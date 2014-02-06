@@ -1,5 +1,6 @@
 package edu.weber.housing1000;
 
+import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
@@ -65,12 +66,21 @@ public class ClientInfoActivity_Dynamic_Api extends Activity implements PostResp
 
             LinearLayout mainLinearLayout = new LinearLayout(this);
             mainLinearLayout.setOrientation(LinearLayout.VERTICAL);
+            LayoutTransition layoutTransition = new LayoutTransition();
+            mainLinearLayout.setLayoutTransition(layoutTransition);
             mainScrollView.addView(mainLinearLayout);
 
             lstQuestions = new ArrayList<Question>();
 
             survey = JSONParser.getSurveyFromListing(surveyListing);
             lstQuestions.addAll(survey.getClientQuestions());
+
+            // This is needed because we are displaying the client and survey questions on the same
+            // page and some of the orderIds overlap
+            for (Question q : survey.getSurveyQuestions())
+            {
+                q.setOrderId(q.getOrderId() + survey.getClientQuestions().size());
+            }
             lstQuestions.addAll(survey.getSurveyQuestions());
 
             // Sort the questions by orderId
@@ -148,6 +158,26 @@ public class ClientInfoActivity_Dynamic_Api extends Activity implements PostResp
                     {
                         mainLinearLayout.addView(questionView);
                     }
+                }
+            }
+
+            // Temporary for testing
+            // TODO REMOVE THIS
+            if (survey.getSurveyId() == 1)
+            {
+                for (Question q : lstQuestions)
+                {
+                    if (q.getQuestionId() == 2)
+                    {
+                        q.setParentQuestionId(3);
+                        q.setParentRequiredAnswer("1234");
+                    }
+                    else if (q.getQuestionId() == 3)
+                    {
+                        q.setParentQuestionId(1);
+                        q.setParentRequiredAnswer("1234");
+                    }
+
                 }
             }
 
