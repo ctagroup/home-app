@@ -10,6 +10,9 @@
 
 @implementation HousingAppDelegate
 
+@synthesize tempSig = _tempSig;
+@synthesize signature = _signature;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.

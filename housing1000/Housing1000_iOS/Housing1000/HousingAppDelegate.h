@@ -11,5 +11,7 @@
 @interface HousingAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (strong, nonatomic) UIImage *tempSig;
+@property (strong, nonatomic) UIImage *signature;
 
 @end

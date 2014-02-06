@@ -7,8 +7,13 @@
 //
 
 #import "SignatureViewController.h"
+#import "HousingAppDelegate.h"
 
 @implementation SignatureViewController
+
+@synthesize clearButton;
+@synthesize tempDrawImage;
+@synthesize tempSaveImage;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -26,7 +31,7 @@
     blue = 0.0/255.0;
     brush = 5.0;
     opacity = 1.0;
-    
+    [self.tempDrawImage setImage:[UIImage imageNamed:@"bg-signature-portrait.png"]];
     [super viewDidLoad];
 }
 
@@ -61,9 +66,18 @@
     CGContextStrokePath(UIGraphicsGetCurrentContext());
     self.tempDrawImage.image = UIGraphicsGetImageFromCurrentImageContext();
     [self.tempDrawImage setAlpha:opacity];
+        
     UIGraphicsEndImageContext();
     
     lastPoint = currentPoint;
+    
+    HousingAppDelegate *appDelegate = [[UIApplication sharedApplication]delegate];
+    appDelegate.tempSig = self.tempDrawImage.image;
+}
+
+- (IBAction)clearSig:(id)sender {
+    [self.tempDrawImage setImage:[UIImage imageNamed:@"bg-signature-portrait.png"]];
+    return;
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -81,6 +95,10 @@
         self.tempDrawImage.image = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
     }
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [self.tempDrawImage setImage:[UIImage imageNamed:@"bg-signature-portrait.png"]];
 }
 
 @end

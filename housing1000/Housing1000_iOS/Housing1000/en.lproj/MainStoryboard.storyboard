@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="bgm-YS-kHp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="bgm-YS-kHp">
     <dependencies>
         <deployment defaultVersion="1552" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
@@ -174,7 +174,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="97v-6k-8tL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3271" y="949"/>
+            <point key="canvasLocation" x="3467" y="949"/>
         </scene>
         <!--View Controller - Interviewer -->
         <scene sceneID="9hK-Eb-6G8">
@@ -195,7 +195,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ux0-xu-vwL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3271" y="1782"/>
+            <point key="canvasLocation" x="3467" y="1728"/>
         </scene>
         <!--View Controller - Disclaimer-->
         <scene sceneID="PMI-vG-Yc4">
@@ -304,7 +304,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ude-Am-RTq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3271" y="2627"/>
+            <point key="canvasLocation" x="3467" y="2613"/>
         </scene>
         <!--Signature View Controller - Signature-->
         <scene sceneID="6Fe-mS-bmc">
@@ -322,6 +322,24 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FdA-S2-rmU">
+                                <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem style="plain" id="vY4-Uu-Gkj">
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="1eh-lt-59O">
+                                            <rect key="frame" x="16" y="6" width="287" height="33"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <state key="normal" title="Clear">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="clearSig:" destination="Mq7-43-H8c" eventType="touchUpInside" id="GAj-g7-bnU"/>
+                                            </connections>
+                                        </button>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -329,17 +347,61 @@
                         <barButtonItem key="backBarButtonItem" title="Signature" id="oyI-hC-bfN"/>
                         <barButtonItem key="rightBarButtonItem" title="Save" id="UpX-q6-tSb">
                             <connections>
-                                <segue destination="D1v-NU-X5r" kind="push" id="q9A-mS-1Pl"/>
+                                <segue destination="EQv-LT-Bzv" kind="push" id="F2c-HV-mcH"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="clearButton" destination="FdA-S2-rmU" id="lL7-oJ-c8O"/>
                         <outlet property="tempDrawImage" destination="Y4J-zM-cOX" id="1Y6-Fk-RcB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c2K-14-YJr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2119" y="949"/>
+            <point key="canvasLocation" x="1967" y="949"/>
+        </scene>
+        <!--Sig Confrim View Controller - Confirmation-->
+        <scene sceneID="0g7-VI-7m5">
+            <objects>
+                <viewController id="EQv-LT-Bzv" customClass="SigConfrimViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="9j0-ba-NfA"/>
+                        <viewControllerLayoutGuide type="bottom" id="GEC-r8-U7s"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="uAx-ie-pxO">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hV4-NQ-sIo">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Confirmation" id="pec-OF-0ju">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="eby-px-nsk">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="9K8-Lq-mge">
+                                <rect key="frame" x="233" y="5" width="71" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <state key="normal" title="Confirm">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="D1v-NU-X5r" kind="push" id="ZNo-8U-dVa"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="confirm" destination="eby-px-nsk" id="8sb-9E-wQN"/>
+                        <outlet property="sigToSave" destination="hV4-NQ-sIo" id="4Ah-H7-aqR"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ysQ-AI-DGV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2425" y="949"/>
         </scene>
         <!--View Controller - Survey Menu-->
         <scene sceneID="Itp-Fk-oaj">
@@ -408,7 +470,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gDU-q4-HLX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2683" y="949"/>
+            <point key="canvasLocation" x="2915" y="949"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="jkW-aU-3a0">

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "HousingAppDelegate.h"
 
 @interface SignatureViewController : UIViewController {
     
@@ -19,6 +20,8 @@
     BOOL mouseSwiped;
 }
 @property (weak, nonatomic) IBOutlet UIImageView *tempDrawImage;
-
+@property (weak, nonatomic) IBOutlet UIImageView *tempSaveImage;
+@property (weak, nonatomic) IBOutlet UIToolbar *clearButton;
+- (IBAction)clearSig:(id)sender;
 
 @end
