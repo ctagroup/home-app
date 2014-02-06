@@ -1,10 +1,14 @@
-package edu.weber.housing1000.Helpers;
+package edu.weber.housing1000.Helpers.REST;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.squareup.okhttp.OkHttpClient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,14 +20,23 @@ import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 
+import edu.weber.housing1000.Data.SurveyListing;
+import edu.weber.housing1000.Data.SurveyResponse;
+import edu.weber.housing1000.Helpers.SurveyService;
 import edu.weber.housing1000.R;
+import retrofit.RestAdapter;
+import retrofit.client.OkClient;
+import retrofit.client.Response;
+import retrofit.converter.GsonConverter;
 
 
 /**
@@ -181,7 +194,7 @@ public class RESTHelper {
      * @return - String response
      * @author Blake
      */
-    private static String convertStreamToString(InputStream is) {
+    public static String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
 

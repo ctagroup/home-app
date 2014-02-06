@@ -6,24 +6,19 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CursorAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import edu.weber.housing1000.Data.SurveyListing;
-import edu.weber.housing1000.Helpers.RESTHelper;
+import edu.weber.housing1000.Helpers.REST.RESTHelper;
 
 public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTaskCompleted {
     private static final int TASK_GET_SURVEY_LIST = 1;
@@ -110,6 +105,10 @@ public class SelectPageActivity extends Activity implements RESTHelper.OnUrlTask
         properties.put(RESTHelper.URL, "https://staging.ctagroup.org/Survey/api/survey/");
 
         urlTask.execute(properties);
+
+        // To get the survey listings using retrofit
+        //RESTHelper.GetSurveyListingsTask task = new RESTHelper.GetSurveyListingsTask(this, this, "GET_SURVEYS");
+        //task.execute("https://staging.ctagroup.org/Survey/api");
 
         progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override

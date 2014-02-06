@@ -14,11 +14,6 @@ import android.widget.ScrollView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
-
-import org.apache.http.client.methods.HttpPost;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,10 +25,11 @@ import edu.weber.housing1000.Data.Response;
 import edu.weber.housing1000.Data.Survey;
 import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Data.SurveyResponse;
-import edu.weber.housing1000.Helpers.RESTHelper;
+import edu.weber.housing1000.Helpers.REST.PostResponses;
+import edu.weber.housing1000.Helpers.REST.RESTHelper;
 import edu.weber.housing1000.Questions.Question;
 
-public class ClientInfoActivity_Dynamic_Api extends Activity {
+public class ClientInfoActivity_Dynamic_Api extends Activity implements PostResponses.OnPostSurveyResponsesTaskCompleted {
     public static final String EXTRA_SURVEY = "survey";
 
     private SurveyListing surveyListing;
@@ -54,6 +50,8 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
         surveyListing = (SurveyListing) getIntent().getSerializableExtra(EXTRA_SURVEY);
 
         generateQuestionUi();
+
+        //getSSLContext();
     }
 
     private void generateQuestionUi() {
@@ -161,8 +159,6 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
     }
 
     public void saveAnswers() {
-        // Right now, fake client data is created
-        //Client client = new Client("2/14/1977", "37.336704, -121.919087", "1234", 14);
         Client client = new Client(survey.getClientQuestions(), getLocation());
         ArrayList<Response> responses = generateResponses(survey.getSurveyQuestions());
         SurveyResponse surveyResponse = new SurveyResponse(surveyListing, client, responses);
@@ -171,19 +167,10 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         String jsonData = gson.toJson(surveyResponse);
 
-        // TODO: TEST - Send the JSON off to the API
-        Ion.with(this, "https://staging.ctagroup.org/Survey/api/survey/")
-                .setJsonObjectBody(jsonData)
-                .asJsonObject()
-                .setCallback(new FutureCallback<JsonObject>() {
-                    @Override
-                    public void onCompleted(Exception e, JsonObject jsonObject) {
-                        // handle result
-                    }
-               });
-        ////////////////////////////
-
         Log.d("json", jsonData);
+
+        PostResponses.PostSurveyResponsesTask task = new PostResponses.PostSurveyResponsesTask(this, this, surveyResponse);
+        task.execute("https://staging.ctagroup.org/Survey/api");
     }
 
     /**
@@ -220,4 +207,8 @@ public class ClientInfoActivity_Dynamic_Api extends Activity {
     }
 
 
+    @Override
+    public void onPostSurveyResponsesTaskCompleted(String result) {
+        Log.d("SERVER RESPONSE", result);
+    }
 }

@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 public class SurveyResponse {
     @Expose
     @SerializedName("SurveyId")
-    private long surveyId = -1;
+    public long surveyId = -1;
 
     @Expose
     @SerializedName("SurveyBy")
@@ -26,7 +26,6 @@ public class SurveyResponse {
         surveyId = surveyListing.getSurveyId();
         surveyBy = 1;
         this.client = client;
-
         this.responses = responses;
     }
 
