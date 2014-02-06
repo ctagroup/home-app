@@ -18,7 +18,9 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import edu.weber.housing1000.Data.Client;
 import edu.weber.housing1000.Data.Response;
@@ -82,7 +84,7 @@ public class ClientInfoActivity_Dynamic_Api extends Activity implements PostResp
 
             //Get panel types
             for (Question q : lstQuestions) {
-                if (!lstPanels.contains(q.getGroup()))
+                if (!q.getGroup().isEmpty() && !lstPanels.contains(q.getGroup()))
                     lstPanels.add(q.getGroup());
             }
 
@@ -134,12 +136,43 @@ public class ClientInfoActivity_Dynamic_Api extends Activity implements PostResp
 
                 if (questionView != null)
                 {
-                    for (int k = 0; k < panelViews.length; k++) {
-                        if (question.getGroup().equals(lstPanels.get(k))) {
-                            panelViews[k].addView(questionView);
+                    if (lstPanels.size() > 0)
+                    {
+                        for (int k = 0; k < panelViews.length; k++) {
+                            if (question.getGroup().equals(lstPanels.get(k))) {
+                                panelViews[k].addView(questionView);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        mainLinearLayout.addView(questionView);
+                    }
+                }
+            }
+
+            // Set up question dependencies
+            Set<Question> dependencies = new HashSet<Question>();
+
+            for (Question question : lstQuestions) {
+                if (question.getParentQuestionId() > 0)
+                {
+                    for (Question q : lstQuestions)
+                    {
+                        if (q.getQuestionId() == question.getParentQuestionId())
+                        {
+                            q.addDependent(question);
+                            dependencies.add(q);
+                            break;
                         }
                     }
                 }
+            }
+
+            // Set click listeners on the parent questions so the answers will be compared
+            for (Question question : dependencies)
+            {
+                question.hookUpDependents();
             }
 
             rootLayout.addView(mainScrollView);

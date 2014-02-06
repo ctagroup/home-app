@@ -104,17 +104,17 @@ public class JSONParser {
 
         Survey survey = gson.fromJson(surveyListing.getJson(), Survey.class);
 
-        // Set the group for the client questions
-        for (Question question : survey.getClientQuestions())
-        {
-            question.setGroup("Client");
-        }
-
-        // Set the group for the survey questions
-        for (Question question : survey.getSurveyQuestions())
-        {
-            question.setGroup("Survey");
-        }
+//        // Set the group for the client questions
+//        for (Question question : survey.getClientQuestions())
+//        {
+//            question.setGroup("Client");
+//        }
+//
+//        // Set the group for the survey questions
+//        for (Question question : survey.getSurveyQuestions())
+//        {
+//            question.setGroup("Survey");
+//        }
 
         return survey;
     }
