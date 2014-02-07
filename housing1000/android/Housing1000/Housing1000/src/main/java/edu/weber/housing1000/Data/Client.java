@@ -53,7 +53,8 @@ public class Client implements Serializable {
                     last4Ssn = q.getAnswer();
                     break;
                 case "ServicePointId":
-                    servicePointId = Integer.parseInt(q.getAnswer());
+                    if (!q.getAnswer().isEmpty())
+                        servicePointId = Integer.parseInt(q.getAnswer());
                     break;
                 default:
                     break;

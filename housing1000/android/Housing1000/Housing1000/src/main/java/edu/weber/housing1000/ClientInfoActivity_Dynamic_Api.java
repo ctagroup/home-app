@@ -6,6 +6,8 @@ import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,7 +34,7 @@ import edu.weber.housing1000.Helpers.REST.PostResponses;
 import edu.weber.housing1000.Helpers.REST.RESTHelper;
 import edu.weber.housing1000.Questions.Question;
 
-public class ClientInfoActivity_Dynamic_Api extends Activity implements PostResponses.OnPostSurveyResponsesTaskCompleted {
+public class ClientInfoActivity_Dynamic_Api extends ActionBarActivity implements PostResponses.OnPostSurveyResponsesTaskCompleted {
     public static final String EXTRA_SURVEY = "survey";
 
     private SurveyListing surveyListing;
@@ -54,7 +56,8 @@ public class ClientInfoActivity_Dynamic_Api extends Activity implements PostResp
 
         generateQuestionUi();
 
-        //getSSLContext();
+        ActionBar ab = getSupportActionBar();
+        ab.setTitle(surveyListing.getTitle());
     }
 
     private void generateQuestionUi() {
@@ -161,25 +164,25 @@ public class ClientInfoActivity_Dynamic_Api extends Activity implements PostResp
                 }
             }
 
-            // Temporary for testing
-            // TODO REMOVE THIS
-            if (survey.getSurveyId() == 1)
-            {
-                for (Question q : lstQuestions)
-                {
-                    if (q.getQuestionId() == 2)
-                    {
-                        q.setParentQuestionId(3);
-                        q.setParentRequiredAnswer("1234");
-                    }
-                    else if (q.getQuestionId() == 3)
-                    {
-                        q.setParentQuestionId(1);
-                        q.setParentRequiredAnswer("1234");
-                    }
-
-                }
-            }
+//            // Temporary for testing
+//            // TODO REMOVE THIS
+//            if (survey.getSurveyId() == 1)
+//            {
+//                for (Question q : lstQuestions)
+//                {
+//                    if (q.getQuestionId() == 2)
+//                    {
+//                        q.setParentQuestionId(3);
+//                        q.setParentRequiredAnswer("1234");
+//                    }
+//                    else if (q.getQuestionId() == 3)
+//                    {
+//                        q.setParentQuestionId(1);
+//                        q.setParentRequiredAnswer("1234");
+//                    }
+//
+//                }
+//            }
 
             // Set up question dependencies
             Set<Question> dependencies = new HashSet<Question>();
@@ -255,6 +258,7 @@ public class ClientInfoActivity_Dynamic_Api extends Activity implements PostResp
         return responses;
     }
 
+    // TODO: FINISH THIS
     private Location getLocation()
     {
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -273,5 +277,10 @@ public class ClientInfoActivity_Dynamic_Api extends Activity implements PostResp
     @Override
     public void onPostSurveyResponsesTaskCompleted(String result) {
         Log.d("SERVER RESPONSE", result);
+
+        String[] split = result.split("=");
+        String clientSurveyId = split[split.length - 1];
+
+        Log.d("clientSurveyId", clientSurveyId);
     }
 }

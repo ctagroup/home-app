@@ -10,7 +10,6 @@ import com.squareup.okhttp.OkHttpClient;
 import javax.net.ssl.SSLContext;
 
 import edu.weber.housing1000.Data.SurveyResponse;
-import edu.weber.housing1000.Helpers.SurveyService;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import retrofit.client.Response;

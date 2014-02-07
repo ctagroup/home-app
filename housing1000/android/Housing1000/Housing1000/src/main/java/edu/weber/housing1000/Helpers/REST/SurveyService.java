@@ -1,4 +1,4 @@
-package edu.weber.housing1000.Helpers;
+package edu.weber.housing1000.Helpers.REST;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface SurveyService {
     @GET("/survey")
     List<SurveyListing> listSurveys();
     @GET("/survey/{id}")
-    Survey getSurvey(@Path("id") String id);
+    Response getSurvey(@Path("id") String id);
 
     @POST("/survey/{id}")
     Response postResponse(@Path("id") String id, @Body SurveyResponse surveyResponse);

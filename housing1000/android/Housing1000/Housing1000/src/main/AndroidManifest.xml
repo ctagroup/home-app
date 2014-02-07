@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="edu.weber.housing1000">
+    package="edu.weber.housing1000" >
 
     <uses-feature android:name="android.hardware.camera" />
 
@@ -11,52 +11,55 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:allowBackup="true"
-        android:theme="@style/Housing1000Theme">
+        android:theme="@style/AppTheme" >
         <activity
-            android:name=".LoginActivity"
-            android:screenOrientation="portrait">
-        </activity>
-
-        <activity
-            android:name=".MainMenuActivity"
-            android:screenOrientation="portrait">
+            android:name="edu.weber.housing1000.LoginActivity"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".SignatureActivity"
-            android:screenOrientation="landscape"
-            android:configChanges="keyboardHidden|orientation" />
+            android:name="edu.weber.housing1000.MainMenuActivity"
+            android:screenOrientation="portrait" >
+        </activity>
         <activity
-            android:name=".ClientInfoActivity"
+            android:name="edu.weber.housing1000.SignatureActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name="edu.weber.housing1000.ClientInfoActivity"
             android:label="@string/title_activity_clnt_info"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".InterviewerInfoActivity"
+            android:name="edu.weber.housing1000.InterviewerInfoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LegalDisclaimerActivity"
+            android:name="edu.weber.housing1000.LegalDisclaimerActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".SelectPageActivity">
+        <activity android:name="edu.weber.housing1000.SelectPageActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".GeolocationActivity"
+            android:name="edu.weber.housing1000.GeolocationActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".CensusActivity"
+            android:name="edu.weber.housing1000.CensusActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ClientInfoActivity_Dynamic"
+            android:name="edu.weber.housing1000.ClientInfoActivity_Dynamic"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ClientInfoActivity_Dynamic_Api"
+            android:name="edu.weber.housing1000.ClientInfoActivity_Dynamic_Api"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="edu.weber.housing1000.SurveyListActivity"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>
-
