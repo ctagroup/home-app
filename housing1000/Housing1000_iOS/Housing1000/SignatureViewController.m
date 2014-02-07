@@ -66,7 +66,6 @@
     CGContextStrokePath(UIGraphicsGetCurrentContext());
     self.tempDrawImage.image = UIGraphicsGetImageFromCurrentImageContext();
     [self.tempDrawImage setAlpha:opacity];
-        
     UIGraphicsEndImageContext();
     
     lastPoint = currentPoint;
