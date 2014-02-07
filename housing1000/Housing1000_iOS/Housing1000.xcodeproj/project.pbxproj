@@ -15,6 +15,10 @@
 		3F5BBA6D184EF87900156CAD /* SurveyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5BBA6C184EF87900156CAD /* SurveyViewController.m */; };
 		3F5BBA7618501AFD00156CAD /* SignatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5BBA7518501AFD00156CAD /* SignatureViewController.m */; };
 		3FFE309B188E08DC004A737D /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE309A188E08DC004A737D /* PhotoViewController.m */; };
+		3FFE30AE18A487A5004A737D /* Survey.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30A918A487A5004A737D /* Survey.m */; };
+		3FFE30AF18A487A5004A737D /* SurveyInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30AB18A487A5004A737D /* SurveyInfo.m */; };
+		3FFE30B018A487A5004A737D /* SurveyQuestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30AD18A487A5004A737D /* SurveyQuestion.m */; };
+		3FFE30B318A487B5004A737D /* ClientSurveyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30B218A487B5004A737D /* ClientSurveyViewController.m */; };
 		940CA4EE1702894400FA5C87 /* blue_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 940CA4ED1702894400FA5C87 /* blue_button.png */; };
 		940CA4F01702895000FA5C87 /* orange_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 940CA4EF1702895000FA5C87 /* orange_button.png */; };
 		948CBC3516FC8BA000DD4E2B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 948CBC3416FC8BA000DD4E2B /* UIKit.framework */; };
@@ -45,6 +49,14 @@
 		3F5BBA7518501AFD00156CAD /* SignatureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignatureViewController.m; sourceTree = "<group>"; };
 		3FFE3099188E08DC004A737D /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
 		3FFE309A188E08DC004A737D /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
+		3FFE30A818A487A5004A737D /* Survey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Survey.h; sourceTree = "<group>"; };
+		3FFE30A918A487A5004A737D /* Survey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Survey.m; sourceTree = "<group>"; };
+		3FFE30AA18A487A5004A737D /* SurveyInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyInfo.h; sourceTree = "<group>"; };
+		3FFE30AB18A487A5004A737D /* SurveyInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyInfo.m; sourceTree = "<group>"; };
+		3FFE30AC18A487A5004A737D /* SurveyQuestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyQuestion.h; sourceTree = "<group>"; };
+		3FFE30AD18A487A5004A737D /* SurveyQuestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyQuestion.m; sourceTree = "<group>"; };
+		3FFE30B118A487B5004A737D /* ClientSurveyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientSurveyViewController.h; sourceTree = "<group>"; };
+		3FFE30B218A487B5004A737D /* ClientSurveyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientSurveyViewController.m; sourceTree = "<group>"; };
 		940CA4ED1702894400FA5C87 /* blue_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_button.png; sourceTree = "<group>"; };
 		940CA4EF1702895000FA5C87 /* orange_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = orange_button.png; sourceTree = "<group>"; };
 		948CBC3116FC8BA000DD4E2B /* Housing1000.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Housing1000.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,6 +123,14 @@
 		948CBC3A16FC8BA000DD4E2B /* Housing1000 */ = {
 			isa = PBXGroup;
 			children = (
+				3FFE30B118A487B5004A737D /* ClientSurveyViewController.h */,
+				3FFE30B218A487B5004A737D /* ClientSurveyViewController.m */,
+				3FFE30A818A487A5004A737D /* Survey.h */,
+				3FFE30A918A487A5004A737D /* Survey.m */,
+				3FFE30AA18A487A5004A737D /* SurveyInfo.h */,
+				3FFE30AB18A487A5004A737D /* SurveyInfo.m */,
+				3FFE30AC18A487A5004A737D /* SurveyQuestion.h */,
+				3FFE30AD18A487A5004A737D /* SurveyQuestion.m */,
 				3F5BBA6B184EF87900156CAD /* SurveyViewController.h */,
 				3F5BBA6C184EF87900156CAD /* SurveyViewController.m */,
 				948CBC5916FC932500DD4E2B /* Images */,
@@ -234,8 +254,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FFE30B318A487B5004A737D /* ClientSurveyViewController.m in Sources */,
 				27642FEB18A351C900277F24 /* SigConfrimViewController.m in Sources */,
+				3FFE30B018A487A5004A737D /* SurveyQuestion.m in Sources */,
+				3FFE30AE18A487A5004A737D /* Survey.m in Sources */,
 				948CBC4116FC8BA000DD4E2B /* main.m in Sources */,
+				3FFE30AF18A487A5004A737D /* SurveyInfo.m in Sources */,
 				948CBC4516FC8BA000DD4E2B /* HousingAppDelegate.m in Sources */,
 				3F5BBA7618501AFD00156CAD /* SignatureViewController.m in Sources */,
 				3FFE309B188E08DC004A737D /* PhotoViewController.m in Sources */,

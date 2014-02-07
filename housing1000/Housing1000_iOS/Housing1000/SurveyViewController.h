@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SurveyViewController : UIViewController
+@interface SurveyViewController : UITableViewController
 
 @end
