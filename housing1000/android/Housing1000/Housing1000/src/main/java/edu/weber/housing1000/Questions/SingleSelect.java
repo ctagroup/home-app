@@ -59,4 +59,19 @@ public class SingleSelect extends Question {
 
         return answer;
     }
+
+    @Override
+    public void clearAnswer() {
+        LinearLayout layout = (LinearLayout)myView;
+
+        for (int i = 0; i < layout.getChildCount(); i++)
+        {
+            View childView = layout.getChildAt(i);
+            if (childView instanceof Spinner)
+            {
+                Spinner spinner = (Spinner) childView;
+                spinner.setSelection(0);
+            }
+        }
+    }
 }
