@@ -72,4 +72,20 @@ public class SingleSelectRadio extends Question {
 
         return answer;
     }
+
+    @Override
+    public void clearAnswer() {
+        LinearLayout layout = (LinearLayout) myView;
+
+        // Loop through each child view (radio buttons)
+        for (int i = 0; i < layout.getChildCount(); i++)
+        {
+            View childView = layout.getChildAt(i);
+            if (childView instanceof RadioButton)
+            {
+                RadioButton radioButton = (RadioButton) childView;
+                radioButton.setChecked(false);
+            }
+        }
+    }
 }

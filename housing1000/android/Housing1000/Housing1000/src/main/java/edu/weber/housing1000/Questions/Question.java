@@ -248,5 +248,6 @@ public abstract class Question {
     // Abstract classes
     public abstract View createView(Context context);
     public abstract String getAnswer();
+    public abstract void clearAnswer();
 
 }

@@ -20,6 +20,17 @@
         android:baselineAligned="false">
 
         <Button
+            android:id="@+id/Clear"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="false"
+            android:text="@string/txtClear"
+            style="@style/ButtonText"
+            android:background="@drawable/btn_blue"
+            android:layout_weight="1"
+            android:onClick="clearButton" />
+
+        <Button
             android:id="@+id/Cancel"
             android:layout_width="150dp"
             android:layout_height="wrap_content"

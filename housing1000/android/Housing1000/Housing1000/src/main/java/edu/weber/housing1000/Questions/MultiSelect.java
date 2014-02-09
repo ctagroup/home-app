@@ -55,4 +55,19 @@ public class MultiSelect extends Question {
 
         return answer;
     }
+
+    @Override
+    public void clearAnswer() {
+        LinearLayout layout = (LinearLayout)myView;
+
+        for (int i = 0; i < layout.getChildCount(); i++)
+        {
+            View childView = layout.getChildAt(i);
+            if (childView instanceof CheckBox)
+            {
+                CheckBox checkbox = (CheckBox) childView;
+                checkbox.setChecked(false);
+            }
+        }
+    }
 }
