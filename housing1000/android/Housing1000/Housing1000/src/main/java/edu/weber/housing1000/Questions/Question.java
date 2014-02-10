@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.opengl.Visibility;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -53,9 +54,9 @@ public abstract class Question {
     private String parentRequiredAnswer;
 
     private String group = "";
-    protected View myView;
-
     private ArrayList<Question> dependents;
+
+    protected View myView;
 
     // Getters and Setters
     public int getQuestionId() {

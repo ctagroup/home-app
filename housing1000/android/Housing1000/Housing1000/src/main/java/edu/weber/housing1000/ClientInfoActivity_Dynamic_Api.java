@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -69,6 +71,31 @@ public class ClientInfoActivity_Dynamic_Api extends ActionBarActivity implements
 
         ActionBar ab = getSupportActionBar();
         ab.setTitle(surveyListing.getTitle());
+
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.survey, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.action_clear:
+                clearAnswers();
+                return true;
+            case R.id.action_submit:
+                submitButton(null);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void generateQuestionUi() {
@@ -246,19 +273,29 @@ public class ClientInfoActivity_Dynamic_Api extends ActionBarActivity implements
         }
     }
 
+    public boolean validateForm()
+    {
+        // TODO: Validate the form
+
+        return true;
+    }
+
     public void saveAnswers() {
-        Client client = new Client(survey.getClientQuestions(), getLocation());
-        ArrayList<Response> responses = generateResponses(survey.getSurveyQuestions());
-        SurveyResponse surveyResponse = new SurveyResponse(surveyListing, client, responses);
+        if (validateForm())
+        {
+            Client client = new Client(survey.getClientQuestions(), getLocation());
+            ArrayList<Response> responses = generateResponses(survey.getSurveyQuestions());
+            SurveyResponse surveyResponse = new SurveyResponse(surveyListing, client, responses);
 
-        // Output the survey responses to JSON
-        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        String jsonData = gson.toJson(surveyResponse);
+            // Output the survey responses to JSON
+            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+            String jsonData = gson.toJson(surveyResponse);
 
-        Log.d("json", jsonData);
+            Log.d("json", jsonData);
 
-        PostResponses.PostSurveyResponsesTask task = new PostResponses.PostSurveyResponsesTask(this, this, surveyResponse);
-        task.execute("https://staging.ctagroup.org/Survey/api");
+            PostResponses.PostSurveyResponsesTask task = new PostResponses.PostSurveyResponsesTask(this, this, surveyResponse);
+            task.execute("https://staging.ctagroup.org/Survey/api");
+        }
     }
 
     /**

@@ -1,6 +1,7 @@
 package edu.weber.housing1000.Questions;
 
 import android.content.Context;
+import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -24,6 +25,22 @@ public class SinglelineTextBox extends Question {
         EditText editText = new EditText(context);
         LinearLayout.LayoutParams editTextParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         editText.setLayoutParams(editTextParams);
+
+        // Set up the text type, for validation reasons
+        // For now, the ParentRequiredAnswer is used because the API doesn't provide any info for
+        // validation.  Hopefully they will add a property
+        switch (getParentRequiredAnswer())
+        {
+            case "ServicePointId":
+            case "Last4SSN":
+                editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                break;
+            case "Birthday":
+                editText.setInputType(InputType.TYPE_CLASS_DATETIME);
+                break;
+            default:
+                break;
+        }
 
         qLayout.addView(editText);
 
@@ -64,4 +81,5 @@ public class SinglelineTextBox extends Question {
             }
         }
     }
+
 }
