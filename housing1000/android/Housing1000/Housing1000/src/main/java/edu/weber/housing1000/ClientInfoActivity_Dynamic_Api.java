@@ -2,7 +2,9 @@ package edu.weber.housing1000;
 
 import android.animation.LayoutTransition;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -88,10 +90,10 @@ public class ClientInfoActivity_Dynamic_Api extends ActionBarActivity implements
         switch (item.getItemId())
         {
             case R.id.action_clear:
-                clearAnswers();
+                clearButton();
                 return true;
             case R.id.action_submit:
-                submitButton(null);
+                submitButton();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -253,17 +255,41 @@ public class ClientInfoActivity_Dynamic_Api extends ActionBarActivity implements
 
     }
 
-    public void cancelButton(View view) {
-        finish();
+    public void submitButton() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Submit the survey response?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                saveAnswers();
+                finish();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).show();
     }
 
-    public void submitButton(View view) {
-        saveAnswers();
-        finish();
-    }
-
-    public void clearButton(View view) {
-        clearAnswers();
+    public void clearButton() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Clear the form?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                clearAnswers();
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).show();
     }
 
     public void clearAnswers() {
@@ -341,5 +367,25 @@ public class ClientInfoActivity_Dynamic_Api extends ActionBarActivity implements
         String clientSurveyId = split[split.length - 1];
 
         Log.d("clientSurveyId", clientSurveyId);
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Cancel this survey?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).show();
     }
 }
