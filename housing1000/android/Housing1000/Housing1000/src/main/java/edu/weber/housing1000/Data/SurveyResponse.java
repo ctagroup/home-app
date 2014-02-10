@@ -22,6 +22,16 @@ public class SurveyResponse {
     @SerializedName("Responses")
     private ArrayList<Response> responses;
 
+    public Client getClient()
+    {
+        return client;
+    }
+
+    public ArrayList<Response> getResponses()
+    {
+        return responses;
+    }
+
     public SurveyResponse(SurveyListing surveyListing, Client client, ArrayList<Response> responses) {
         surveyId = surveyListing.getSurveyId();
         surveyBy = 1;
