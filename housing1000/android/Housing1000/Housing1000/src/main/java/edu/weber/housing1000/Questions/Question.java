@@ -10,8 +10,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 
 import com.google.gson.annotations.Expose;
@@ -230,13 +232,61 @@ public abstract class Question {
             parent = this;
         }
 
-        if (question.getParentRequiredAnswer().toLowerCase().equals(parent.getAnswer().toLowerCase()))
+        if (parent.getQuestionType().equals("SinglelineTextBox"))
         {
-            questionLayout.setVisibility(View.VISIBLE);
-        }
-        else
+            //Make dependent questions visible if EditText is not blank
+            if (!parent.getAnswer().equals(""))
+            {
+                questionLayout.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                questionLayout.setVisibility(View.GONE);
+                question.clearAnswer();
+            }
+        } else if (parent.getQuestionType().equals("MultiSelect"))
         {
-            questionLayout.setVisibility(View.GONE);
+            LinearLayout parentLayout = (LinearLayout) parent.getView();
+            for (int k = 0; k < parentLayout.getChildCount(); k++)
+            {
+                View child = parentLayout.getChildAt(k);
+                //Make dependent questions visible if the required parent answer is checked
+                if (child instanceof CheckBox)
+                {
+                    if (((CheckBox) child).isChecked() && ((CheckBox) child).getText().toString().toLowerCase().equals(question.getParentRequiredAnswer().toLowerCase()))
+                    {
+                        questionLayout.setVisibility(View.VISIBLE);
+                        return;
+                    } else
+                    {
+                        questionLayout.setVisibility(View.GONE);
+                        question.clearAnswer();
+                    }
+                }
+
+            }
+            /*
+            //Make dependent questions visible if question answer contains the required answer
+            if (!parent.getAnswer().toLowerCase().equals("") && question.getParentRequiredAnswer().toLowerCase().contains(parent.getAnswer().toLowerCase()))
+            {
+                questionLayout.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                questionLayout.setVisibility(View.GONE);
+                question.clearAnswer();
+            }*/
+        } else
+        {
+            if (question.getParentRequiredAnswer().toLowerCase().equals(parent.getAnswer().toLowerCase()))
+            {
+                questionLayout.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                questionLayout.setVisibility(View.GONE);
+                question.clearAnswer();
+            }
         }
 
         for (Question childQuestion : question.getDependents())

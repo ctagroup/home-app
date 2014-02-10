@@ -55,15 +55,15 @@ public class ClientInfoActivity_Dynamic_Api extends ActionBarActivity implements
         surveyListing = (SurveyListing) getIntent().getSerializableExtra(EXTRA_SURVEY);
 
         //TODO: For testing, remove after tested
-        /*surveyListing.setJson("{\"$id\":\"1\",\"SurveyId\":1,\"Title\":\"Santa Clara Survey\"," +
+        surveyListing.setJson("{\"$id\":\"1\",\"SurveyId\":1,\"Title\":\"Santa Clara Survey\"," +
                 "\"Client\":[{\"$id\":\"2\",\"QuestionId\":1,\"text\":\"What is your birthday?\",\"QuestionType\":\"SinglelineTextBox\",\"Options\":null,\"OrderId\":1,\"ParentQuestionId\":0,\"ParentRequiredAnswer\":\"White/Caucasian\"}," +
                 "{\"$id\":\"3\",\"QuestionId\":2,\"text\":\"What is your last 4 digits Social Security?\",\"QuestionType\":\"SinglelineTextBox\",\"Options\":null,\"OrderId\":3,\"ParentQuestionId\":1,\"ParentRequiredAnswer\":1234}," +
                 "{\"$id\":\"4\",\"QuestionId\":3,\"text\":\"What is your Service Point Id?\",\"QuestionType\":\"SinglelineTextBox\",\"Options\":null,\"OrderId\":2,\"ParentQuestionId\":0,\"ParentRequiredAnswer\":\"ServicePointId\"}]," +
-                "\"SurveyQuestions\":[{\"$id\":\"5\",\"QuestionId\":4,\"text\":\"How do you identify yourself?\",\"QuestionType\":\"SingleSelectRadio\",\"Options\":\"Male|Female|Transgender|Other\",\"OrderId\":1,\"ParentQuestionId\":0,\"ParentRequiredAnswer\":null}," +
+                "\"SurveyQuestions\":[{\"$id\":\"5\",\"QuestionId\":4,\"text\":\"How do you identify yourself?\",\"QuestionType\":\"SingleSelectRadio\",\"Options\":\"Male|Female|Transgender|Other\",\"OrderId\":1,\"ParentQuestionId\":2,\"ParentRequiredAnswer\":\"anything\"}," +
                 "{\"$id\":\"6\",\"QuestionId\":5,\"text\":\"Which racial/ethinic group do you identify yourself with the most?\",\"QuestionType\":\"SingleSelect\",\"Options\":\"White/Caucasian|Black/African American|Hispanic/Latino|American Indian/Alaskan Native|Vietnamese|Other Asian|Pacific Islander|Other/Multi-ethnic\",\"OrderId\":2,\"ParentQuestionId\":0,\"ParentRequiredAnswer\":null}," +
                 "{\"$id\":\"7\",\"QuestionId\":6,\"text\":\"Have you ever served in the U.S. Armed Forces?\",\"QuestionType\":\"MultiSelect\",\"Options\":\"Yes|No|Don't know|Decline to state\",\"OrderId\":3,\"ParentQuestionId\":0,\"ParentRequiredAnswer\":null}," +
                 "{\"$id\":\"8\",\"QuestionId\":7,\"text\":\"Were you activated, into active duty, as a member of the National Guard or as a reservist?\",\"QuestionType\":\"SingleSelect\",\"Options\":\"Yes|No|Don't know|Decline to state\",\"OrderId\":3,\"ParentQuestionId\":6,\"ParentRequiredAnswer\":\"Yes\"}]}");
-        */
+
 
         generateQuestionUi();
 
