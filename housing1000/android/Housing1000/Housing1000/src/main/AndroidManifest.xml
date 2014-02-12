@@ -60,6 +60,10 @@
             android:name="edu.weber.housing1000.SurveyListActivity"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name="edu.weber.housing1000.SurveyFlowActivity"
+            android:label="@string/title_activity_survey_flow" >
+        </activity>
     </application>
 
 </manifest>
