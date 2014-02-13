@@ -14,6 +14,8 @@ public class PhotosFragment extends SurveyAppFragment {
 
     public PhotosFragment(String name) {
         super(name);
+
+        setActionBarTitle("Client Photo(s)");
     }
 
     @Override

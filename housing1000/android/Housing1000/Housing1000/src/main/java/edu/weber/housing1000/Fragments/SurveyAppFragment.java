@@ -8,10 +8,21 @@ import android.support.v4.app.Fragment;
  */
 public class SurveyAppFragment extends Fragment {
     private String _name;
+    private String _actionBarTitle;
 
     public String getName()
     {
         return _name;
+    }
+
+    public String getActionBarTitle()
+    {
+        return _actionBarTitle;
+    }
+
+    public void setActionBarTitle(String value)
+    {
+        _actionBarTitle = value;
     }
 
     public SurveyAppFragment(String name) {

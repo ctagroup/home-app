@@ -14,6 +14,8 @@ public class SignatureFragment extends SurveyAppFragment {
 
     public SignatureFragment(String name) {
         super(name);
+
+        setActionBarTitle("Please Sign...");
     }
 
     @Override

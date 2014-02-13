@@ -31,7 +31,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
     public static final String EXTRA_SURVEY = "survey";
 
     private SurveyListing surveyListing;
-    private ViewPager.SimpleOnPageChangeListener mPageChangeListener;
+    private ViewPager.OnPageChangeListener mPageChangeListener;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -53,8 +53,8 @@ public class SurveyFlowActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey_flow);
 
-        ActionBar ab = getSupportActionBar();
-        ab.setTitle("Housing 1000");
+        final ActionBar ab = getSupportActionBar();
+        //ab.setTitle(getResources().getString(R.string.app_name));
 
         // Grab the survey listing from the extras
         surveyListing = (SurveyListing) getIntent().getSerializableExtra(EXTRA_SURVEY);
@@ -74,14 +74,35 @@ public class SurveyFlowActivity extends ActionBarActivity {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+        mPageChangeListener = new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i2) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                String actionBarTitle = ((SurveyAppFragment)mSectionsPagerAdapter.getItem(i)).getActionBarTitle();
+
+                ab.setTitle(actionBarTitle != null ? actionBarTitle : getResources().getString(R.string.app_name));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        };
         // Set the page change listener
-        //mViewPager.setOnPageChangeListener(mPageChangeListener);
+        mViewPager.setOnPageChangeListener(mPageChangeListener);
 
         // Bind the tabs to the ViewPager
         PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabs.setShouldExpand(true);
         tabs.setViewPager(mViewPager);
 
-        //tabs.setOnPageChangeListener(mPageChangeListener);
+        tabs.setOnPageChangeListener(mPageChangeListener);
+
+        mPageChangeListener.onPageSelected(mViewPager.getCurrentItem());
 
 //        // For each of the sections in the app, add a tab to the action bar.
 //        for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
@@ -96,15 +117,6 @@ public class SurveyFlowActivity extends ActionBarActivity {
 //        }
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.survey_flow, menu);
-        return true;
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -115,6 +127,16 @@ public class SurveyFlowActivity extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public SurveyListing getSurveyListing()
+    {
+        return surveyListing;
+    }
+
+    public void submitSurvey()
+    {
+
     }
 
     /**
