@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,8 +29,9 @@ import edu.weber.housing1000.Fragments.PhotosFragment;
 import edu.weber.housing1000.Fragments.SignatureFragment;
 import edu.weber.housing1000.Fragments.SurveyAppFragment;
 import edu.weber.housing1000.Fragments.SurveyFragment;
+import edu.weber.housing1000.Helpers.REST.PostResponses;
 
-public class SurveyFlowActivity extends ActionBarActivity {
+public class SurveyFlowActivity extends ActionBarActivity implements PostResponses.OnPostSurveyResponsesTaskCompleted {
     public static final String EXTRA_SURVEY = "survey";
 
     private SurveyListing surveyListing;
@@ -136,9 +138,16 @@ public class SurveyFlowActivity extends ActionBarActivity {
         return surveyListing;
     }
 
-    public void submitSurvey()
-    {
+    @Override
+    public void onPostSurveyResponsesTaskCompleted(String result) {
+        Log.d("SERVER RESPONSE", result);
 
+        String[] split = result.split("=");
+        String clientSurveyId = split[split.length - 1];
+
+        Log.d("clientSurveyId", clientSurveyId);
+
+        mViewPager.setCurrentItem(0);
     }
 
     @Override

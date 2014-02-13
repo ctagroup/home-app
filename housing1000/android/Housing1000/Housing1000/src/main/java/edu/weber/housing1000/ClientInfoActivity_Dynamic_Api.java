@@ -344,7 +344,7 @@ public class ClientInfoActivity_Dynamic_Api extends ActionBarActivity implements
     }
 
     // TODO: FINISH THIS
-    private Location getLocation()
+    public Location getLocation()
     {
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 

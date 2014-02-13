@@ -2,8 +2,12 @@ package edu.weber.housing1000.Fragments;
 
 import android.animation.LayoutTransition;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,6 +19,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -22,8 +29,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import edu.weber.housing1000.Data.Client;
+import edu.weber.housing1000.Data.Response;
 import edu.weber.housing1000.Data.Survey;
 import edu.weber.housing1000.Data.SurveyListing;
+import edu.weber.housing1000.Data.SurveyResponse;
+import edu.weber.housing1000.Helpers.REST.PostResponses;
 import edu.weber.housing1000.JSONParser;
 import edu.weber.housing1000.Questions.Question;
 import edu.weber.housing1000.R;
@@ -254,7 +265,7 @@ public class SurveyFragment extends SurveyAppFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                myActivity.submitSurvey();
+                saveAnswers();
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -288,6 +299,65 @@ public class SurveyFragment extends SurveyAppFragment {
         {
             question.clearAnswer();
         }
+    }
+
+    public boolean validateForm()
+    {
+        // TODO: Validate the form
+
+        return true;
+    }
+
+    public void saveAnswers() {
+        if (validateForm())
+        {
+            Client client = new Client(survey.getClientQuestions(), getLocation());
+            ArrayList<Response> responses = generateResponses(survey.getSurveyQuestions());
+            SurveyResponse surveyResponse = new SurveyResponse(surveyListing, client, responses);
+
+            // Output the survey responses to JSON
+            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+            String jsonData = gson.toJson(surveyResponse);
+
+            Log.d("json", jsonData);
+
+            PostResponses.PostSurveyResponsesTask task = new PostResponses.PostSurveyResponsesTask(myActivity, myActivity, surveyResponse);
+            task.execute("https://staging.ctagroup.org/Survey/api");
+        }
+    }
+
+    /**
+     * This compiles the responses from each question
+     * @param questions Questions from which to get the answers
+     * @return List of Responses
+     */
+    private  ArrayList<Response> generateResponses(ArrayList<Question> questions)
+    {
+        ArrayList<Response> responses = new ArrayList<Response>();
+
+        for (Question question : questions)
+        {
+            Response response = new Response(question.getQuestionId(), question.getAnswer());
+
+            responses.add(response);
+        }
+
+        return responses;
+    }
+
+    // TODO: FINISH THIS
+    public Location getLocation()
+    {
+        LocationManager locationManager = (LocationManager) myActivity.getSystemService(Context.LOCATION_SERVICE);
+
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+            return locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        else if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
+            return locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        else if (locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER))
+            return locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+        else
+            return null;
     }
 
 }
