@@ -2,6 +2,7 @@ package edu.weber.housing1000.Fragments;
 
 import android.animation.LayoutTransition;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.location.Location;
@@ -34,6 +35,7 @@ import edu.weber.housing1000.Data.Response;
 import edu.weber.housing1000.Data.Survey;
 import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Data.SurveyResponse;
+import edu.weber.housing1000.Helpers.REST.GetSurveys;
 import edu.weber.housing1000.Helpers.REST.PostResponses;
 import edu.weber.housing1000.JSONParser;
 import edu.weber.housing1000.Questions.Question;
@@ -320,6 +322,18 @@ public class SurveyFragment extends SurveyAppFragment {
             String jsonData = gson.toJson(surveyResponse);
 
             Log.d("json", jsonData);
+
+            // Start the survey submission dialog
+            ProgressDialog progressDialog = new ProgressDialog(myActivity);
+            progressDialog = new ProgressDialog(myActivity);
+            progressDialog.setTitle("Please Wait");
+            progressDialog.setMessage("Submitting survey responses...");
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+
+            myActivity.setProgressDialog(progressDialog);
+            myActivity.getProgressDialog().show();
 
             PostResponses.PostSurveyResponsesTask task = new PostResponses.PostSurveyResponsesTask(myActivity, myActivity, surveyResponse);
             task.execute("https://staging.ctagroup.org/Survey/api");

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -37,6 +38,8 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
     private SurveyListing surveyListing;
     private ViewPager.OnPageChangeListener mPageChangeListener;
 
+    private ProgressDialog progressDialog;
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -51,6 +54,16 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
      * The {@link ViewPager} that will host the section contents.
      */
     ViewPager mViewPager;
+
+    public ProgressDialog getProgressDialog()
+    {
+        return progressDialog;
+    }
+
+    public void setProgressDialog(ProgressDialog value)
+    {
+        progressDialog = value;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +153,8 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
 
     @Override
     public void onPostSurveyResponsesTaskCompleted(String result) {
+        progressDialog.dismiss();
+
         Log.d("SERVER RESPONSE", result);
 
         String[] split = result.split("=");

@@ -205,7 +205,7 @@ public class ClientInfoActivity_Dynamic_Api extends ActionBarActivity implements
             }
 
 //            // Temporary for testing
-//            // TODO REMOVE THIS
+//            // TODO REMOVE THIS LATER
 //            if (survey.getSurveyId() == 1)
 //            {
 //                for (Question q : lstQuestions)
