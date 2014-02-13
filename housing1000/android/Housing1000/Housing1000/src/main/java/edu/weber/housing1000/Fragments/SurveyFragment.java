@@ -325,7 +325,6 @@ public class SurveyFragment extends SurveyAppFragment {
 
             // Start the survey submission dialog
             ProgressDialog progressDialog = new ProgressDialog(myActivity);
-            progressDialog = new ProgressDialog(myActivity);
             progressDialog.setTitle("Please Wait");
             progressDialog.setMessage("Submitting survey responses...");
             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
