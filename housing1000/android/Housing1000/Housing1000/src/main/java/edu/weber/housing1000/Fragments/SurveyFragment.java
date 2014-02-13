@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -74,6 +75,21 @@ public class SurveyFragment extends SurveyAppFragment {
         inflater.inflate(R.menu.survey, menu);
 
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.action_clear:
+                clearButton();
+                return true;
+            case R.id.action_submit:
+                submitButton();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void generateQuestionUi() {
