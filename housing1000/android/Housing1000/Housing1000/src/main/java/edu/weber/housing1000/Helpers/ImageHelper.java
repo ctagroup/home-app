@@ -10,8 +10,8 @@ public class ImageHelper {
     {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
-        int newWidth = 200;
-        int newHeight = 120;
+        int newWidth = 600;
+        int newHeight = 360;
 
         float scaleWidth = ((float) newWidth) / width;
         float scaleHeight = ((float) newHeight) / height;

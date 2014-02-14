@@ -105,6 +105,12 @@ public class SurveyFragment extends SurveyAppFragment {
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+    }
+
     private void generateQuestionUi() {
         try {
             final ScrollView mainScrollView = new ScrollView(myActivity);

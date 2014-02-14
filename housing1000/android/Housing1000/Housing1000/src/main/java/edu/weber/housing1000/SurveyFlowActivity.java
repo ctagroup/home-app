@@ -6,6 +6,7 @@ import java.util.Locale;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -37,6 +38,8 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
 
     private SurveyListing surveyListing;
     private ViewPager.OnPageChangeListener mPageChangeListener;
+
+    private Bitmap signatureImage;
 
     private ProgressDialog progressDialog;
 
@@ -135,6 +138,11 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -149,6 +157,11 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
     public SurveyListing getSurveyListing()
     {
         return surveyListing;
+    }
+
+    public void setSignatureImage(Bitmap value)
+    {
+        signatureImage = value;
     }
 
     @Override

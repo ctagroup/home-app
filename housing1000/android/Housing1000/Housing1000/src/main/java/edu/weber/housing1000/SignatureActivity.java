@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import edu.weber.housing1000.Data.Survey;
+import edu.weber.housing1000.Fragments.SignatureFragment;
 import edu.weber.housing1000.Helpers.EncryptionHelper;
 import edu.weber.housing1000.Helpers.FileHelper;
 import edu.weber.housing1000.Helpers.ImageHelper;
@@ -63,9 +64,6 @@ public class SignatureActivity extends Activity {
 
         mGetSign.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(SignatureActivity.this, MainMenuActivity.class);
-                startActivity(intent);
-                Log.v("log_tag", "Panel Saved");
                 mView.setDrawingCacheEnabled(true);
                 mSignature.save(mView);
                 finish();
@@ -74,7 +72,6 @@ public class SignatureActivity extends Activity {
 
         mCancel.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                Log.v("log_tag", "Panel Canceled");
                 finish();
             }
         });
@@ -126,9 +123,11 @@ public class SignatureActivity extends Activity {
                 FileHelper.writeFileToExternalStorage(encryptedImage, "encryptedSignature");
 
                 // Open the encrypted file, decrypt the image, write it to disk -- for testing
-                byte[] encryptedFileBytes = FileHelper.readFileFromExternalStorage("encryptedSignature");
-                byte[] decryptedImageBytes = EncryptionHelper.decrypt(key, encryptedFileBytes);
-                FileHelper.writeFileToExternalStorage(decryptedImageBytes, "decryptedSignature.jpg");
+                //byte[] encryptedFileBytes = FileHelper.readFileFromExternalStorage("encryptedSignature");
+                //byte[] decryptedImageBytes = EncryptionHelper.decrypt(key, encryptedFileBytes);
+                //FileHelper.writeFileToExternalStorage(decryptedImageBytes, "decryptedSignature.jpg");
+
+                setResult(SignatureFragment.RESULT_SIGNATURE_SAVED, new Intent().putExtra("bitmap", byteImage));
 
             } catch (Exception e) {
                 Log.v("log_tag", e.toString());
