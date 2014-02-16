@@ -37,9 +37,6 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
     public static final String EXTRA_SURVEY = "survey";
 
     private SurveyListing surveyListing;
-    private ViewPager.OnPageChangeListener mPageChangeListener;
-
-    private Bitmap signatureImage;
 
     private ProgressDialog progressDialog;
 
@@ -94,7 +91,7 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        mPageChangeListener = new ViewPager.OnPageChangeListener() {
+        ViewPager.OnPageChangeListener mPageChangeListener = new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i2) {
 
@@ -102,7 +99,7 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
 
             @Override
             public void onPageSelected(int i) {
-                String actionBarTitle = ((SurveyAppFragment)mSectionsPagerAdapter.getItem(i)).getActionBarTitle();
+                String actionBarTitle = ((SurveyAppFragment) mSectionsPagerAdapter.getItem(i)).getActionBarTitle();
 
                 ab.setTitle(actionBarTitle != null ? actionBarTitle : getResources().getString(R.string.app_name));
             }
@@ -157,11 +154,6 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
     public SurveyListing getSurveyListing()
     {
         return surveyListing;
-    }
-
-    public void setSignatureImage(Bitmap value)
-    {
-        signatureImage = value;
     }
 
     @Override

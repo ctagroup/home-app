@@ -40,10 +40,10 @@ public class MainMenuActivity extends Activity{
 
         clientButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent intent = new Intent(MainMenuActivity.this, ClientInfoActivity.class);
+                //Intent intent = new Intent(MainMenuActivity.this, ClientInfoActivity.class);
                 //intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                intent.putExtras(getIntent());
-                startActivity(intent);
+                //intent.putExtras(getIntent());
+                //startActivity(intent);
             }
         });
 

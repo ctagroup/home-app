@@ -1,47 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/margin_medium">
 
-    <ScrollView
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="300dp"
         android:id="@+id/disclaimerScrollView" >
+
+    <RelativeLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/margin_medium">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/disclaimerText"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentLeft="false"
             android:layout_alignParentStart="true"
             android:id="@+id/disclaimerTextView"
             android:textSize="18sp"
             android:typeface="normal"
-            android:gravity="center_horizontal" />
+            android:gravity="center_horizontal"
+            android:layout_alignParentEnd="false"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/signatureImageView"
+            android:layout_below="@+id/disclaimerTextView"
+            android:scaleType="fitCenter"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:contentDescription="Signature Image"
+            android:minHeight="60dp" />
+
+        <ImageButton
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentStart="true"
+            android:id="@+id/signHereImageButton"
+            android:scaleType="fitCenter"
+            android:layout_alignParentBottom="false"
+            android:src="@drawable/tap_here_to_sign"
+            android:background="@drawable/transparent_background"
+            android:adjustViewBounds="true"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="Tap Here to Sign"
+            android:layout_alignBottom="@+id/signatureImageView" />
+
+    </RelativeLayout>
+
     </ScrollView>
-
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/signatureImageView"
-        android:layout_below="@+id/disclaimerScrollView"
-        android:scaleType="fitCenter"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp" />
-
-    <ImageButton
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentStart="true"
-        android:id="@+id/signHereImageButton"
-        android:scaleType="fitCenter"
-        android:layout_alignParentBottom="true"
-        android:src="@drawable/tap_here_to_sign"
-        android:background="@drawable/transparent_background"
-        android:adjustViewBounds="true"
-        android:layout_centerHorizontal="true" />
-
-</RelativeLayout>

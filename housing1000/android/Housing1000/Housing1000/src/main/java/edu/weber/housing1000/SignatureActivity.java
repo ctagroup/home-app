@@ -30,7 +30,6 @@ public class SignatureActivity extends Activity {
     Signature mSignature;
     Button mClear, mGetSign, mCancel;
     private Bitmap mBitmap;
-    private Bitmap sBitmap;
     View mView;
     int hmsId = -1;
 
@@ -113,7 +112,7 @@ public class SignatureActivity extends Activity {
             try {
                 v.draw(canvas);
                 ByteArrayOutputStream baOutputStream = new ByteArrayOutputStream();
-                sBitmap = ImageHelper.ScaleImage(mBitmap);
+                Bitmap sBitmap = ImageHelper.ScaleImage(mBitmap);
                 sBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baOutputStream);
                 byte[] byteImage = baOutputStream.toByteArray();
                 byte[] key = EncryptionHelper.keyGen();

@@ -57,8 +57,7 @@ public class LoginActivity extends Activity
         });
 
         //this code is to the focus is on the email field on application start up
-        EditText emailFocus = (EditText) findViewById(R.id.usernameTextBox);
-        emailFocus.requestFocus();
+        emailField.requestFocus();
 
         //on click action to the login button
         loginButton.setOnClickListener(new View.OnClickListener() 
