@@ -61,6 +61,34 @@ public class SingleSelect extends Question {
     }
 
     @Override
+    public void setAnswer(String answer) {
+        clearAnswer();
+
+        if (answer != null)
+        {
+            LinearLayout layout = (LinearLayout)myView;
+
+            for (int i = 0; i < layout.getChildCount(); i++)
+            {
+                View childView = layout.getChildAt(i);
+                if (childView instanceof Spinner)
+                {
+                    Spinner spinner = (Spinner) childView;
+                    for (int j = 0; j < spinner.getCount(); j++)
+                    {
+                        if (answer.equals(spinner.getItemAtPosition(j).toString()))
+                        {
+                            spinner.setSelection(j);
+                            break;
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
+    @Override
     public void clearAnswer() {
         LinearLayout layout = (LinearLayout)myView;
 

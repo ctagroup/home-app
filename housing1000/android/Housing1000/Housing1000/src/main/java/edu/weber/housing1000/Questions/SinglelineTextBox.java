@@ -68,6 +68,26 @@ public class SinglelineTextBox extends Question {
     }
 
     @Override
+    public void setAnswer(String answer) {
+        clearAnswer();
+
+        if (answer != null)
+        {
+            LinearLayout layout = (LinearLayout)myView;
+
+            for (int i = 0; i < layout.getChildCount(); i++)
+            {
+                View childView = layout.getChildAt(i);
+                if (childView instanceof EditText)
+                {
+                    EditText editText = (EditText) childView;
+                    editText.setText(answer);
+                }
+            }
+        }
+    }
+
+    @Override
     public void clearAnswer() {
         LinearLayout layout = (LinearLayout)myView;
 

@@ -54,6 +54,7 @@ public class SurveyFragment extends SurveyAppFragment {
     SurveyFlowActivity myActivity;
 
     private SurveyListing surveyListing;
+    private SurveyResponse surveyResponse;
 
     public SurveyFragment(String name) {
         super(name);
@@ -70,6 +71,21 @@ public class SurveyFragment extends SurveyAppFragment {
         setActionBarTitle(surveyListing.getTitle());
 
         setHasOptionsMenu(true);
+
+        if (savedInstanceState != null)
+        {
+            String surveyResponseJson = savedInstanceState.getString("surveyResponse");
+
+            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+            surveyResponse = gson.fromJson(surveyResponseJson, SurveyResponse.class);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        saveSurveyResponse();
     }
 
     @Override
@@ -79,6 +95,8 @@ public class SurveyFragment extends SurveyAppFragment {
         rootLayout = (RelativeLayout) mainView.findViewById(R.id.root_layout);
 
         generateQuestionUi();
+
+        populateAnswers();
 
         return mainView;
     }
@@ -109,6 +127,9 @@ public class SurveyFragment extends SurveyAppFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
+        String jsonData = saveSurveyResponse();
+
+        outState.putString("surveyResponse", jsonData);
     }
 
     private void generateQuestionUi() {
@@ -319,15 +340,7 @@ public class SurveyFragment extends SurveyAppFragment {
     public void saveAnswers() {
         if (validateForm())
         {
-            Client client = new Client(survey.getClientQuestions(), getLocation());
-            ArrayList<Response> responses = generateResponses(survey.getSurveyQuestions());
-            SurveyResponse surveyResponse = new SurveyResponse(surveyListing, client, responses);
-
-            // Output the survey responses to JSON
-            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-            String jsonData = gson.toJson(surveyResponse);
-
-            Log.d("json", jsonData);
+            saveSurveyResponse();
 
             // Start the survey submission dialog
             ProgressDialog progressDialog = new ProgressDialog(myActivity);
@@ -377,6 +390,58 @@ public class SurveyFragment extends SurveyAppFragment {
             return locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
         else
             return null;
+    }
+
+    private String saveSurveyResponse()
+    {
+        Client client = new Client(survey.getClientQuestions(), getLocation());
+        ArrayList<Response> responses = generateResponses(survey.getSurveyQuestions());
+        surveyResponse = new SurveyResponse(surveyListing, client, responses);
+
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        String jsonData = gson.toJson(surveyResponse);
+
+        Log.d("json", jsonData);
+
+        return jsonData;
+    }
+
+    private void populateAnswers()
+    {
+        if (surveyResponse != null)
+        {
+            Client client = surveyResponse.getClient();
+
+            for (Question question : survey.getClientQuestions())
+            {
+                switch (question.getParentRequiredAnswer())
+                {
+                    case "ServicePointId":
+                        question.setAnswer(String.valueOf(client.servicePointId));
+                        break;
+                    case "Last4SSN":
+                        question.setAnswer(client.last4Ssn);
+                        break;
+                    case "Birthday":
+                        question.setAnswer(client.birthday);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            for (Response response : surveyResponse.getResponses())
+            {
+                for (Question question : survey.getSurveyQuestions())
+                {
+                    if (question.getQuestionId() == response.getQuestionId())
+                    {
+                        question.setAnswer(response.getAnswer());
+                        break;
+                    }
+                }
+            }
+        }
     }
 
 }

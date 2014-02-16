@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -40,6 +41,14 @@ public class SignatureFragment extends SurveyAppFragment {
         {
             signatureImageBytes = savedInstanceState.getByteArray("signatureImageBytes");
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
 
     @Override
