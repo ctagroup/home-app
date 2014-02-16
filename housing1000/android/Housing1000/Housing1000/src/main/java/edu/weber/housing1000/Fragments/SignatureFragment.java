@@ -29,6 +29,11 @@ public class SignatureFragment extends SurveyAppFragment {
 
     public SignatureFragment(String name) {
         super(name);
+    }
+
+    public SignatureFragment()
+    {
+        this("Signature");
 
         setActionBarTitle("Disclaimer...");
     }
@@ -49,6 +54,12 @@ public class SignatureFragment extends SurveyAppFragment {
 
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
     }
 
     @Override

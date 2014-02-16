@@ -20,6 +20,11 @@ public class PhotosFragment extends SurveyAppFragment {
 
     public PhotosFragment(String name) {
         super(name);
+    }
+
+    public PhotosFragment()
+    {
+        this("Photos");
 
         setActionBarTitle("Client Photo(s)");
     }
@@ -30,6 +35,12 @@ public class PhotosFragment extends SurveyAppFragment {
 
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
     }
 
     @Override

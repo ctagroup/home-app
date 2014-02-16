@@ -19,16 +19,14 @@ public class EncryptionHelper {
         sr.setSeed(keyStart);
         kgen.init(128, sr);
         SecretKey skey = kgen.generateKey();
-        byte[] key = skey.getEncoded();
-        return key;
+        return skey.getEncoded();
     }
 
     public static byte[] encrypt(byte[] key, byte[] file) throws Exception{
         SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
-        byte[] encrypted = cipher.doFinal(file);
-        return encrypted;
+        return cipher.doFinal(file);
     }
 
     public static byte[] decrypt(byte[] key, byte[] encrypted) throws Exception{
@@ -36,7 +34,6 @@ public class EncryptionHelper {
         SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.DECRYPT_MODE, skeySpec);
-        byte[] decrypted = cipher.doFinal(encrypted);
-        return decrypted;
+        return cipher.doFinal(encrypted);
     }
 }

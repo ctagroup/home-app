@@ -1,6 +1,7 @@
 package edu.weber.housing1000.Fragments;
 
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 /**
@@ -29,4 +30,5 @@ public class SurveyAppFragment extends Fragment {
         _name = name;
     }
 
+    public SurveyAppFragment() {}
 }

@@ -47,12 +47,6 @@
             android:name="edu.weber.housing1000.CensusActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="edu.weber.housing1000.ClientInfoActivity_Dynamic"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="edu.weber.housing1000.ClientInfoActivity_Dynamic_Api"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="edu.weber.housing1000.SurveyListActivity"
             android:screenOrientation="portrait" >
         </activity>

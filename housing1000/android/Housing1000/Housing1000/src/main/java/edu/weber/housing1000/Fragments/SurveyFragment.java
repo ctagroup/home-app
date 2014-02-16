@@ -46,6 +46,7 @@ import edu.weber.housing1000.SurveyFlowActivity;
  * Created by Blake on 2/11/14.
  */
 public class SurveyFragment extends SurveyAppFragment {
+    public static final String EXTRA_SURVEY = "survey";
 
     private Survey survey;
     private RelativeLayout rootLayout;
@@ -60,15 +61,14 @@ public class SurveyFragment extends SurveyAppFragment {
         super(name);
     }
 
+    public SurveyFragment()
+    {
+        this("Survey");
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        myActivity = ((SurveyFlowActivity)getActivity());
-
-        surveyListing = myActivity.getSurveyListing();
-
-        setActionBarTitle(surveyListing.getTitle());
 
         setHasOptionsMenu(true);
 
@@ -79,6 +79,20 @@ public class SurveyFragment extends SurveyAppFragment {
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
             surveyResponse = gson.fromJson(surveyResponseJson, SurveyResponse.class);
         }
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        myActivity = ((SurveyFlowActivity)getActivity());
+
+        surveyListing = myActivity.getSurveyListing();
+        setActionBarTitle(surveyListing.getTitle());
+
+        generateQuestionUi();
+
+        populateAnswers();
     }
 
     @Override
@@ -93,10 +107,6 @@ public class SurveyFragment extends SurveyAppFragment {
         View mainView = inflater.inflate(R.layout.fragment_survey, container, false);
 
         rootLayout = (RelativeLayout) mainView.findViewById(R.id.root_layout);
-
-        generateQuestionUi();
-
-        populateAnswers();
 
         return mainView;
     }

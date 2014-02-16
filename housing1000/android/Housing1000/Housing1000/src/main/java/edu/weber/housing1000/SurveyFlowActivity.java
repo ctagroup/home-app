@@ -49,6 +49,7 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     SectionsPagerAdapter mSectionsPagerAdapter;
+    ViewPager.OnPageChangeListener mPageChangeListener;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -70,28 +71,29 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey_flow);
 
-        final ActionBar ab = getSupportActionBar();
-        //ab.setTitle(getResources().getString(R.string.app_name));
-
-        // Grab the survey listing from the extras
-        surveyListing = (SurveyListing) getIntent().getSerializableExtra(EXTRA_SURVEY);
-
-        // Set up the action bar.
-        final ActionBar actionBar = getSupportActionBar();
+        if (savedInstanceState != null)
+        {
+            surveyListing = (SurveyListing) savedInstanceState.getSerializable("surveyListing");
+        }
+        else
+        {
+            // Grab the survey listing from the extras
+            surveyListing = (SurveyListing) getIntent().getSerializableExtra(EXTRA_SURVEY);
+        }
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        mSectionsPagerAdapter.addFragment(new SignatureFragment("Signature"));
-        mSectionsPagerAdapter.addFragment(new PhotosFragment("Photos"));
-        mSectionsPagerAdapter.addFragment(new SurveyFragment("Survey"));
+        mSectionsPagerAdapter.addFragment(new SignatureFragment());
+        mSectionsPagerAdapter.addFragment(new PhotosFragment());
+        mSectionsPagerAdapter.addFragment(new SurveyFragment());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        ViewPager.OnPageChangeListener mPageChangeListener = new ViewPager.OnPageChangeListener() {
+        mPageChangeListener = new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i2) {
 
@@ -99,9 +101,11 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
 
             @Override
             public void onPageSelected(int i) {
+                final ActionBar actionBar = getSupportActionBar();
+
                 String actionBarTitle = ((SurveyAppFragment) mSectionsPagerAdapter.getItem(i)).getActionBarTitle();
 
-                ab.setTitle(actionBarTitle != null ? actionBarTitle : getResources().getString(R.string.app_name));
+                actionBar.setTitle(actionBarTitle != null ? actionBarTitle : getResources().getString(R.string.app_name));
             }
 
             @Override
@@ -119,24 +123,13 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
 
         tabs.setOnPageChangeListener(mPageChangeListener);
 
-        mPageChangeListener.onPageSelected(mViewPager.getCurrentItem());
-
-//        // For each of the sections in the app, add a tab to the action bar.
-//        for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-//            // Create a tab with text corresponding to the page title defined by
-//            // the adapter. Also specify this Activity object, which implements
-//            // the TabListener interface, as the callback (listener) for when
-//            // this tab is selected.
-//            actionBar.addTab(
-//                    actionBar.newTab()
-//                            .setText(mSectionsPagerAdapter.getPageTitle(i))
-//                            .setTabListener(this));
-//        }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+
+        outState.putSerializable("surveyListing", surveyListing);
     }
 
     @Override

@@ -107,21 +107,7 @@ public class JSONParser {
     public static Survey getSurveyFromListing(SurveyListing surveyListing) {
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().registerTypeAdapter(Question.class, new QuestionJSONDeserializer()).create();
 
-        Survey survey = gson.fromJson(surveyListing.getJson(), Survey.class);
-
-//        // Set the group for the client questions
-//        for (Question question : survey.getClientQuestions())
-//        {
-//            question.setGroup("Client");
-//        }
-//
-//        // Set the group for the survey questions
-//        for (Question question : survey.getSurveyQuestions())
-//        {
-//            question.setGroup("Survey");
-//        }
-
-        return survey;
+        return gson.fromJson(surveyListing.getJson(), Survey.class);
     }
 
     /**

@@ -16,15 +16,7 @@ public class SelectPageActivity extends Activity {
         //Get the Buttons
         Button clientButton = (Button) findViewById(R.id.censusBtn);
         Button interviewButton = (Button) findViewById(R.id.surveyBtn);
-        Button dynamicButton = (Button) findViewById(R.id.dynamic_button);
         Button dynamicWithApiButton = (Button) findViewById(R.id.dynamicWithApiButton);
-
-        dynamicButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent intent = new Intent(SelectPageActivity.this, ClientInfoActivity_Dynamic.class);
-                startActivity(intent);
-            }
-        });
 
         clientButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
