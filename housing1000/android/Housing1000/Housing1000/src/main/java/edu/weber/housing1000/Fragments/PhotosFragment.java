@@ -9,6 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import edu.weber.housing1000.R;
+import edu.weber.housing1000.SurveyFlowActivity;
 
 /**
  * Created by Blake on 2/11/14.
@@ -18,15 +19,10 @@ public class PhotosFragment extends SurveyAppFragment {
     ListView photoListView;
     TextView noPhotosTextView;
 
-    public PhotosFragment(String name) {
-        super(name);
-    }
+    public PhotosFragment() {}
 
-    public PhotosFragment()
-    {
-        this("Photos");
-
-        setActionBarTitle("Client Photo(s)");
+    public PhotosFragment(String name, String actionBarTitle) {
+        super(name, actionBarTitle);
     }
 
     @Override

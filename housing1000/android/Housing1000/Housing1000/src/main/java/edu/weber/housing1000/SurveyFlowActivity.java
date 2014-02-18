@@ -85,10 +85,6 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        mSectionsPagerAdapter.addFragment(new SignatureFragment());
-        mSectionsPagerAdapter.addFragment(new PhotosFragment());
-        mSectionsPagerAdapter.addFragment(new SurveyFragment());
-
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -123,6 +119,8 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
 
         tabs.setOnPageChangeListener(mPageChangeListener);
 
+        mViewPager.setCurrentItem(1);
+        mViewPager.setCurrentItem(0);
     }
 
     @Override
@@ -189,38 +187,44 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        private ArrayList<SurveyAppFragment> fragmentsList;
-
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
-
-            fragmentsList = new ArrayList<SurveyAppFragment>();
         }
 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
-            return fragmentsList.get(position);
+            switch (position)
+            {
+                case 0:
+                    return new SignatureFragment("Signature", "Disclaimer");
+                case 1:
+                    return new PhotosFragment("Photos", "Client Photo(s)");
+                case 2:
+                    return new SurveyFragment("Survey", SurveyFlowActivity.this.surveyListing.getTitle());
+                default:
+                    return null;
+            }
         }
 
         @Override
         public int getCount() {
-            return fragmentsList.size();
+            return 3;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return fragmentsList.get(position).getName();
-        }
-
-        public void addFragment(SurveyAppFragment fragment)
-        {
-            fragmentsList.add(fragment);
-        }
-
-        public void removeFragment(SurveyAppFragment fragment)
-        {
-            fragmentsList.remove(fragment);
+            switch (position)
+            {
+                case 0:
+                    return "Signature";
+                case 1:
+                    return "Photos";
+                case 2:
+                    return "Survey";
+                default:
+                    return "";
+            }
         }
     }
 

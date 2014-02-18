@@ -21,13 +21,9 @@ public class SurveyAppFragment extends Fragment {
         return _actionBarTitle;
     }
 
-    public void setActionBarTitle(String value)
-    {
-        _actionBarTitle = value;
-    }
-
-    public SurveyAppFragment(String name) {
+    public SurveyAppFragment(String name, String actionBarTitle) {
         _name = name;
+        _actionBarTitle = actionBarTitle;
     }
 
     public SurveyAppFragment() {}

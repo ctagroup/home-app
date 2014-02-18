@@ -1,6 +1,7 @@
 package edu.weber.housing1000.Fragments;
 
 import android.animation.LayoutTransition;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -57,13 +58,10 @@ public class SurveyFragment extends SurveyAppFragment {
     private SurveyListing surveyListing;
     private SurveyResponse surveyResponse;
 
-    public SurveyFragment(String name) {
-        super(name);
-    }
+    public SurveyFragment() {}
 
-    public SurveyFragment()
-    {
-        this("Survey");
+    public SurveyFragment(String name, String actionBarTitle) {
+        super(name, actionBarTitle);
     }
 
     @Override
@@ -85,11 +83,6 @@ public class SurveyFragment extends SurveyAppFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        myActivity = ((SurveyFlowActivity)getActivity());
-
-        surveyListing = myActivity.getSurveyListing();
-        setActionBarTitle(surveyListing.getTitle());
-
         generateQuestionUi();
 
         populateAnswers();
@@ -103,10 +96,19 @@ public class SurveyFragment extends SurveyAppFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mainView = inflater.inflate(R.layout.fragment_survey, container, false);
 
         rootLayout = (RelativeLayout) mainView.findViewById(R.id.root_layout);
+
+        myActivity = ((SurveyFlowActivity)getActivity());
+        surveyListing = myActivity.getSurveyListing();
 
         return mainView;
     }

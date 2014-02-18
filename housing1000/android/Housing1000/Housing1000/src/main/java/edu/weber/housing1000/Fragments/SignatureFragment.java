@@ -15,6 +15,7 @@ import android.widget.ImageView;
 
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.SignatureActivity;
+import edu.weber.housing1000.SurveyFlowActivity;
 
 /**
  * Created by Blake on 2/11/14.
@@ -27,15 +28,10 @@ public class SignatureFragment extends SurveyAppFragment {
 
     byte[] signatureImageBytes;
 
-    public SignatureFragment(String name) {
-        super(name);
-    }
+    public SignatureFragment() {}
 
-    public SignatureFragment()
-    {
-        this("Signature");
-
-        setActionBarTitle("Disclaimer...");
+    public SignatureFragment(String name, String actionBarTitle) {
+        super(name, actionBarTitle);
     }
 
     @Override
