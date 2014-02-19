@@ -10,16 +10,15 @@
 
 @interface SurveyQuestion : NSObject
 
+@property NSString *jsonId;
+@property int questionId;
+@property NSString *questionText;
 @property NSString *questionType;
+@property NSArray *options;
+@property int orderId;
+@property int parentQuestionId;
+@property NSString *parentRequiredAnswer;
 
-/*typedef enum questionTypes{
-    SINGLE_SELECT, SINGLE_LINE_TEXT_BOX
-} QuestionType;
-
--(NSString*)getAnswer;
-
--(id)initWithType:(QuestionType)type;
-*/
-
+-(void)setOptionsArray:(NSString*)stringOptions;
 
 @end

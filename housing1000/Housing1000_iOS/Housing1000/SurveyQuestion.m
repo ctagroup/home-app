@@ -11,4 +11,11 @@
 @implementation SurveyQuestion
 
 
+- (void)setOptionsArray:(NSString *)stringOptions {
+    
+    if(stringOptions != (id)[NSNull null]) {
+        self.options = [stringOptions componentsSeparatedByString:@"|"];
+    }
+}
+
 @end

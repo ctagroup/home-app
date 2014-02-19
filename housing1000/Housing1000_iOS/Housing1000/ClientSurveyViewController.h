@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ClientSurveyViewController : UIViewController
+@interface ClientSurveyViewController : UITableViewController
 
 @end

@@ -95,12 +95,22 @@ NSArray* trustedHosts;  //This is declared to simply hold the staging.ctagroup.o
         
         NSMutableArray *surveyQuestions = [[NSMutableArray alloc] init];
         
+        //Loop through the client section
         NSArray *clientSection = [json objectForKey:@"Client"];
         for(int i = 0; i < [clientSection count]; i++) {
-            SurveyQuestion *question = [[SurveyQuestion alloc] init];
             NSDictionary *currentQuestionInJSON = [clientSection objectAtIndex:i];
-            question.questionType = (NSString*)[currentQuestionInJSON objectForKey:@"QuestionType"];
-            [surveyQuestions addObject:question];
+            
+            //Create survey object and add it to survey questions array
+            [surveyQuestions addObject:[self createSurveyObject:currentQuestionInJSON]];
+        }
+        
+        //Loop through the other section
+        NSArray *surveySection = [json objectForKey:@"SurveyQuestions"];
+        for(int i = 0; i < [surveySection count]; i++) {
+            NSDictionary *currentQuestionInJSON = [surveySection objectAtIndex:i];
+            
+            //Create survey object and add it to survey questions array
+            [surveyQuestions addObject:[self createSurveyObject:currentQuestionInJSON]];
         }
         
         [Survey setSurveyQuestions:surveyQuestions];
@@ -110,7 +120,7 @@ NSArray* trustedHosts;  //This is declared to simply hold the staging.ctagroup.o
 //==============================================
 
 
-//TableView functions (for displaying surveys
+//TableView functions (for displaying surveys)
 //==============================================
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -151,6 +161,21 @@ NSArray* trustedHosts;  //This is declared to simply hold the staging.ctagroup.o
 
 //Private Util functions
 //==============================================
+
+-(SurveyQuestion*)createSurveyObject:(NSDictionary*)currentQuestionInJSON {
+    SurveyQuestion *question = [[SurveyQuestion alloc] init];
+    question.jsonId = (NSString*)[currentQuestionInJSON objectForKey:@"$id"];
+    question.questionId = (int)[currentQuestionInJSON objectForKey:@"QuestionId"];
+    question.questionText = (NSString*)[currentQuestionInJSON objectForKey:@"text"];
+    question.questionType = (NSString*)[currentQuestionInJSON objectForKey:@"QuestionType"];
+    [question setOptionsArray:(NSString*)[currentQuestionInJSON objectForKey:@"Options"]]; //This is one is set in a special way because it converts the String to an array
+    //question.options = (NSString*)[currentQuestionInJSON objectForKey:@"Options"];
+    question.orderId = (int)[currentQuestionInJSON objectForKey:@"OrderId"];
+    question.parentQuestionId = (int)[currentQuestionInJSON objectForKey:@"ParentQuestionId"];
+    question.parentRequiredAnswer = (NSString*)[currentQuestionInJSON objectForKey:@"ParentRequiredAnswer"];
+    
+    return question;
+}
 
 //==============================================
 
