@@ -17,7 +17,6 @@
         android:text="There are currently no photos.\nTap above to take a photo."
         android:id="@+id/noPhotosTextView"
         android:gravity="center"
-        android:textAlignment="center"
-        android:visibility="gone" />
+        android:textAlignment="center" />
 
 </RelativeLayout>

@@ -89,6 +89,9 @@ public class PhotosFragment extends SurveyAppFragment {
             imageAdapter = new ImageAdapter(myActivity);
         photosGridView.setAdapter(imageAdapter);
 
+        if (imageAdapter.getCount() > 0)
+            noPhotosTextView.setVisibility(View.GONE);
+
         photosGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Toast.makeText(myActivity, "" + position, Toast.LENGTH_SHORT).show();
@@ -161,6 +164,8 @@ public class PhotosFragment extends SurveyAppFragment {
                 Log.d("PHOTO COUNT", String.valueOf(imageAdapter.getCount()));
 
                 imageAdapter.notifyDataSetChanged();
+                if (imageAdapter.getCount() > 0)
+                    noPhotosTextView.setVisibility(View.GONE);
             } catch (Exception e) {
                 e.printStackTrace();
             }
