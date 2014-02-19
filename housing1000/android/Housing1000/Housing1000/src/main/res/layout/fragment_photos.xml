@@ -8,10 +8,7 @@
     <GridView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/photosGridView"
-        android:columnWidth="120dp"
-        android:numColumns="auto_fit"
-        android:stretchMode="spacingWidthUniform" />
+        android:id="@+id/photosGridView" />
 
     <TextView
         android:layout_width="fill_parent"

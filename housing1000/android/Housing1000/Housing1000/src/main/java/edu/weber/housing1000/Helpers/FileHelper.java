@@ -78,4 +78,17 @@ public class FileHelper {
         return null;
     }
 
+    public static String getAbsoluteFilePath(String subDirectory, String filename)
+    {
+        // Get the external storage directory
+        File sdCard = Environment.getExternalStorageDirectory();
+        String dirPath = sdCard.getAbsolutePath() + appDirectory + "/" + subDirectory;
+
+        // Set up the directory that we are reading from
+        File dir = new File (dirPath);
+        File file = new File(dir, filename);
+
+        return file.getAbsolutePath();
+    }
+
 }

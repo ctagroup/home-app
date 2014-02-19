@@ -1,32 +1,57 @@
 package edu.weber.housing1000;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 /**
  * Created by Blake on 2/18/14.
  */
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
+    ArrayList<String> images;
 
     public ImageAdapter(Context c) {
         mContext = c;
+        images = new ArrayList<String>();
+    }
+
+    public ImageAdapter(Context c, ArrayList<String> images)
+    {
+        mContext = c;
+        this.images = images;
+    }
+
+    public void addImagePath(String path) {
+        images.add(path);
     }
 
     public int getCount() {
-        return 0; //mThumbIds.length;
+        return images.size();
     }
 
     public Object getItem(int position) {
-        return null;
+        return images.get(position);
     }
 
     public long getItemId(int position) {
         return 0;
+    }
+
+    public ArrayList<String> getImages()
+    {
+        return images;
     }
 
     // create a new ImageView for each item referenced by the Adapter
@@ -34,29 +59,37 @@ public class ImageAdapter extends BaseAdapter {
         ImageView imageView;
         if (convertView == null) {  // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            //imageView.setLayoutParams(new GridView.LayoutParams(120, 120));
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             imageView.setPadding(8, 8, 8, 8);
         } else {
             imageView = (ImageView) convertView;
         }
 
-        //imageView.setImageResource(mThumbIds[position]);
+        Bitmap image = null;
+
+        try
+        {
+            File imageFile = new File(images.get(position));
+
+            Log.d("LOADING IMAGE", imageFile.getAbsolutePath());
+            if (imageFile.exists())
+            {
+                FileInputStream fStream = new FileInputStream(imageFile);
+
+                image = BitmapFactory.decodeStream(fStream);
+
+                fStream.close();
+            }
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+
+        if (image != null)
+            imageView.setImageBitmap(image);
         return imageView;
     }
 
-//    // references to our images
-//    private Integer[] mThumbIds = {
-//            R.drawable.sample_2, R.drawable.sample_3,
-//            R.drawable.sample_4, R.drawable.sample_5,
-//            R.drawable.sample_6, R.drawable.sample_7,
-//            R.drawable.sample_0, R.drawable.sample_1,
-//            R.drawable.sample_2, R.drawable.sample_3,
-//            R.drawable.sample_4, R.drawable.sample_5,
-//            R.drawable.sample_6, R.drawable.sample_7,
-//            R.drawable.sample_0, R.drawable.sample_1,
-//            R.drawable.sample_2, R.drawable.sample_3,
-//            R.drawable.sample_4, R.drawable.sample_5,
-//            R.drawable.sample_6, R.drawable.sample_7
-//    };
 }

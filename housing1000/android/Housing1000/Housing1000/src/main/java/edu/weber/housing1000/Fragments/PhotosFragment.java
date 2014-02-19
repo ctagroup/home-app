@@ -1,7 +1,6 @@
 package edu.weber.housing1000.Fragments;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -14,17 +13,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
 
 import edu.weber.housing1000.Helpers.EncryptionHelper;
 import edu.weber.housing1000.Helpers.FileHelper;
 import edu.weber.housing1000.Helpers.ImageHelper;
+import edu.weber.housing1000.ImageAdapter;
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.SurveyFlowActivity;
 import edu.weber.housing1000.Utils;
@@ -40,14 +39,13 @@ public class PhotosFragment extends SurveyAppFragment {
     GridView photosGridView;
     TextView noPhotosTextView;
 
-    ArrayList<String> photos;
+    ImageAdapter imageAdapter;
 
     public PhotosFragment() {}
 
     public PhotosFragment(String name, String actionBarTitle) {
         super(name, actionBarTitle);
 
-        photos = new ArrayList<String>();
     }
 
     @Override
@@ -85,6 +83,18 @@ public class PhotosFragment extends SurveyAppFragment {
         photosGridView = (GridView) rootView.findViewById(R.id.photosGridView);
         noPhotosTextView = (TextView) rootView.findViewById(R.id.noPhotosTextView);
 
+        if (savedInstanceState != null)
+            imageAdapter = new ImageAdapter(myActivity, savedInstanceState.getStringArrayList("images"));
+        else
+            imageAdapter = new ImageAdapter(myActivity);
+        photosGridView.setAdapter(imageAdapter);
+
+        photosGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                Toast.makeText(myActivity, "" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+
         return rootView;
     }
 
@@ -109,6 +119,13 @@ public class PhotosFragment extends SurveyAppFragment {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putStringArrayList("images", imageAdapter.getImages());
+    }
+
     private void dispatchTakePictureIntent(int actionCode) {
         if(Utils.isIntentAvailable(getActivity().getApplicationContext(), MediaStore.ACTION_IMAGE_CAPTURE)){
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -121,8 +138,8 @@ public class PhotosFragment extends SurveyAppFragment {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             Bitmap sPhoto = ImageHelper.ScaleImage(photo);
             try {
-                String imageName = "photo_" + String.valueOf(photos.size()) + ".jpg";
-                String encryptedName = "photo_" + String.valueOf(photos.size()) + ".secure";
+                String imageName = "photo_" + String.valueOf(imageAdapter.getCount()) + ".jpg";
+                String encryptedName = "photo_" + String.valueOf(imageAdapter.getCount()) + ".secure";
 
                 ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
                 sPhoto.compress(Bitmap.CompressFormat.JPEG, 100, byteArray);
@@ -138,11 +155,12 @@ public class PhotosFragment extends SurveyAppFragment {
                 byte[] decryptedImageBytes = EncryptionHelper.decrypt(key, encryptedFileBytes);
                 FileHelper.writeFileToExternalStorage(decryptedImageBytes, myActivity.getFolderHash(), imageName);
 
-                photos.add(encryptedName);
+                imageAdapter.addImagePath(FileHelper.getAbsoluteFilePath(myActivity.getFolderHash(), imageName));
 
-                Log.d("PHOTO ADDED", encryptedName);
-                Log.d("PHOTO COUNT", String.valueOf(photos.size()));
+                Log.d("PHOTO ADDED", (String)imageAdapter.getItem(imageAdapter.getCount() - 1));
+                Log.d("PHOTO COUNT", String.valueOf(imageAdapter.getCount()));
 
+                imageAdapter.notifyDataSetChanged();
             } catch (Exception e) {
                 e.printStackTrace();
             }
