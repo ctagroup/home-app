@@ -120,8 +120,7 @@ public class SignatureActivity extends Activity {
                 Bitmap sBitmap = ImageHelper.ScaleImage(mBitmap);
                 sBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baOutputStream);
                 byte[] byteImage = baOutputStream.toByteArray();
-                byte[] key = EncryptionHelper.keyGen();
-                byte[] encryptedImage = EncryptionHelper.encrypt(key, byteImage);
+                byte[] encryptedImage = EncryptionHelper.encrypt(byteImage);
 
                 // Write the encrypted signature to storage
                 FileHelper.writeFileToExternalStorage(encryptedImage, folderHash, encryptedName);

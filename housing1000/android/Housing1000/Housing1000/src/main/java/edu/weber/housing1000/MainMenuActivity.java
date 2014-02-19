@@ -89,13 +89,12 @@ public class MainMenuActivity extends Activity{
                 ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
                 sPhoto.compress(Bitmap.CompressFormat.JPEG, 100, byteArray);
                 byte[] byteImage = byteArray.toByteArray();
-                byte[] key = EncryptionHelper.keyGen();
-                byte[] encryptedImage = EncryptionHelper.encrypt(key, byteImage);
+                byte[] encryptedImage = EncryptionHelper.encrypt(byteImage);
 
                 FileHelper.writeFileToExternalStorage(encryptedImage, "", "encryptedPhoto");
 
                 byte[] encryptedFileBytes = FileHelper.readFileFromExternalStorage("", "encryptedPhoto");
-                byte[] decryptedImageBytes = EncryptionHelper.decrypt(key,encryptedFileBytes);
+                byte[] decryptedImageBytes = EncryptionHelper.decrypt(encryptedFileBytes);
                 FileHelper.writeFileToExternalStorage(decryptedImageBytes, "", "decryptedPhoto.jpg");
 
                 /*byte[] decryptedImage = EncryptionHelper.decrypt(key, encryptedImage);

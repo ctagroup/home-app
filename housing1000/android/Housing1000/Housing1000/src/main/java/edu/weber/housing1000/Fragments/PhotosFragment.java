@@ -147,18 +147,18 @@ public class PhotosFragment extends SurveyAppFragment {
                 ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
                 sPhoto.compress(Bitmap.CompressFormat.JPEG, 100, byteArray);
                 byte[] byteImage = byteArray.toByteArray();
-                byte[] key = EncryptionHelper.keyGen();
-                byte[] encryptedImage = EncryptionHelper.encrypt(key, byteImage);
+
+                byte[] encryptedImage = EncryptionHelper.encrypt(byteImage);
 
                 FileHelper.writeFileToExternalStorage(encryptedImage, myActivity.getFolderHash(), encryptedName);
 
                 byte[] encryptedFileBytes = FileHelper.readFileFromExternalStorage(myActivity.getFolderHash(), encryptedName);
 
                 // Decrypt the photo - for testing
-                byte[] decryptedImageBytes = EncryptionHelper.decrypt(key, encryptedFileBytes);
-                FileHelper.writeFileToExternalStorage(decryptedImageBytes, myActivity.getFolderHash(), imageName);
+                //byte[] decryptedImageBytes = EncryptionHelper.decrypt(encryptedFileBytes);
+                //FileHelper.writeFileToExternalStorage(decryptedImageBytes, myActivity.getFolderHash(), imageName);
 
-                imageAdapter.addImagePath(FileHelper.getAbsoluteFilePath(myActivity.getFolderHash(), imageName));
+                imageAdapter.addImagePath(FileHelper.getAbsoluteFilePath(myActivity.getFolderHash(), encryptedName));
 
                 Log.d("PHOTO ADDED", (String)imageAdapter.getItem(imageAdapter.getCount() - 1));
                 Log.d("PHOTO COUNT", String.valueOf(imageAdapter.getCount()));

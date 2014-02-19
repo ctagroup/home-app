@@ -15,6 +15,9 @@ import java.io.FileInputStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import edu.weber.housing1000.Helpers.EncryptionHelper;
+import edu.weber.housing1000.Helpers.FileHelper;
+
 /**
  * Created by Blake on 2/18/14.
  */
@@ -76,8 +79,10 @@ public class ImageAdapter extends BaseAdapter {
             if (imageFile.exists())
             {
                 FileInputStream fStream = new FileInputStream(imageFile);
+                byte[] imageBytes = FileHelper.readFile(imageFile);
+                byte[] decryptedBytes = EncryptionHelper.decrypt(imageBytes);
 
-                image = BitmapFactory.decodeStream(fStream);
+                image = BitmapFactory.decodeByteArray(decryptedBytes, 0, decryptedBytes.length);
 
                 fStream.close();
             }

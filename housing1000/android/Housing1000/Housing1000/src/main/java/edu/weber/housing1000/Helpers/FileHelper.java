@@ -78,6 +78,31 @@ public class FileHelper {
         return null;
     }
 
+    public static byte[] readFile(File file)
+    {
+        // Check to see if we can write to external storage
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()))
+        {
+            try {
+                Log.d("HOUSING 1000", "Reading file from " + file.getAbsolutePath());
+
+                // Write the file
+                FileInputStream f = new FileInputStream(file);
+
+                byte[] fileBytes = new byte[(int)file.length()];
+
+                f.read(fileBytes);
+                f.close();
+
+                return fileBytes;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
     public static String getAbsoluteFilePath(String subDirectory, String filename)
     {
         // Get the external storage directory
