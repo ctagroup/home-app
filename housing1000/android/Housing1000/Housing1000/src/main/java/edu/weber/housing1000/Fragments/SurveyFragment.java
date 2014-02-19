@@ -1,7 +1,6 @@
 package edu.weber.housing1000.Fragments;
 
 import android.animation.LayoutTransition;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -36,7 +35,6 @@ import edu.weber.housing1000.Data.Response;
 import edu.weber.housing1000.Data.Survey;
 import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Data.SurveyResponse;
-import edu.weber.housing1000.Helpers.REST.GetSurveys;
 import edu.weber.housing1000.Helpers.REST.PostResponses;
 import edu.weber.housing1000.JSONParser;
 import edu.weber.housing1000.Questions.Question;
@@ -115,7 +113,7 @@ public class SurveyFragment extends SurveyAppFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.survey, menu);
+        inflater.inflate(R.menu.menu_fragment_survey, menu);
 
         super.onCreateOptionsMenu(menu, inflater);
     }

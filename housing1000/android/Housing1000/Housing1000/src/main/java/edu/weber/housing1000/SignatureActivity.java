@@ -32,12 +32,15 @@ public class SignatureActivity extends Activity {
     private Bitmap mBitmap;
     View mView;
     int hmsId = -1;
+    String folderHash;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.signature);
+
+        folderHash = getIntent().getStringExtra("folderHash");
 
         // Setting this to -1 until the RestHelper is taken off of the main thread
         // Side note: any IO/slow operations need to be done on a separate thread
@@ -110,6 +113,8 @@ public class SignatureActivity extends Activity {
             }
             Canvas canvas = new Canvas(mBitmap);
             try {
+                String encryptedName = "signature.secure";
+
                 v.draw(canvas);
                 ByteArrayOutputStream baOutputStream = new ByteArrayOutputStream();
                 Bitmap sBitmap = ImageHelper.ScaleImage(mBitmap);
@@ -119,14 +124,14 @@ public class SignatureActivity extends Activity {
                 byte[] encryptedImage = EncryptionHelper.encrypt(key, byteImage);
 
                 // Write the encrypted signature to storage
-                FileHelper.writeFileToExternalStorage(encryptedImage, "encryptedSignature");
+                FileHelper.writeFileToExternalStorage(encryptedImage, folderHash, encryptedName);
 
                 // Open the encrypted file, decrypt the image, write it to disk -- for testing
                 //byte[] encryptedFileBytes = FileHelper.readFileFromExternalStorage("encryptedSignature");
                 //byte[] decryptedImageBytes = EncryptionHelper.decrypt(key, encryptedFileBytes);
                 //FileHelper.writeFileToExternalStorage(decryptedImageBytes, "decryptedSignature.jpg");
 
-                setResult(SignatureFragment.RESULT_SIGNATURE_SAVED, new Intent().putExtra("bitmap", byteImage));
+                setResult(SignatureFragment.RESULT_SIGNATURE_SAVED, new Intent().putExtra("bitmap", byteImage).putExtra("signaturePath", encryptedName));
 
             } catch (Exception e) {
                 Log.v("log_tag", e.toString());

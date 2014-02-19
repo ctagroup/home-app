@@ -2,6 +2,7 @@ package edu.weber.housing1000.Fragments;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,10 +24,13 @@ import edu.weber.housing1000.SurveyFlowActivity;
 public class SignatureFragment extends SurveyAppFragment {
     public static final int RESULT_SIGNATURE_SAVED = 1;
 
+    SurveyFlowActivity myActivity;
+
     ImageView signatureImageView;
     ImageButton signHereImageButton;
 
     byte[] signatureImageBytes;
+    String signaturePath;
 
     public SignatureFragment() {}
 
@@ -41,7 +45,15 @@ public class SignatureFragment extends SurveyAppFragment {
         if (savedInstanceState != null)
         {
             signatureImageBytes = savedInstanceState.getByteArray("signatureImageBytes");
+            signaturePath = savedInstanceState.getString("signaturePath");
         }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        myActivity = (SurveyFlowActivity) activity;
     }
 
     @Override
@@ -68,8 +80,8 @@ public class SignatureFragment extends SurveyAppFragment {
         signHereImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), SignatureActivity.class);
-
+                Intent intent = new Intent(myActivity, SignatureActivity.class);
+                intent.putExtra("folderHash", myActivity.getFolderHash());
                 startActivityForResult(intent, RESULT_SIGNATURE_SAVED);
             }
         });
@@ -86,6 +98,7 @@ public class SignatureFragment extends SurveyAppFragment {
         if (resultCode == RESULT_SIGNATURE_SAVED)
         {
             signatureImageBytes = data.getByteArrayExtra("bitmap");
+            signaturePath = data.getStringExtra("signaturePath");
             loadImage();
         }
 
@@ -97,6 +110,8 @@ public class SignatureFragment extends SurveyAppFragment {
 
         if (signatureImageBytes != null)
             outState.putByteArray("signatureImageBytes", signatureImageBytes);
+        if (signaturePath != null)
+            outState.putString("signaturePath", signaturePath);
     }
 
     public void loadImage()

@@ -5,10 +5,13 @@
     android:layout_height="match_parent"
     android:padding="@dimen/margin_medium">
 
-    <ListView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/photoListView" />
+    <GridView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/photosGridView"
+        android:columnWidth="120dp"
+        android:numColumns="auto_fit"
+        android:stretchMode="spacingWidthUniform" />
 
     <TextView
         android:layout_width="fill_parent"
@@ -17,6 +20,7 @@
         android:text="There are currently no photos.\nTap above to take a photo."
         android:id="@+id/noPhotosTextView"
         android:gravity="center"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:visibility="gone" />
 
 </RelativeLayout>

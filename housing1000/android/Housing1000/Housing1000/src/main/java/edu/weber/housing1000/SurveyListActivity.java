@@ -49,7 +49,7 @@ public class SurveyListActivity extends ActionBarActivity implements OnGetSurvey
     public boolean onCreateOptionsMenu(Menu menu) {
         
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.survey_list, menu);
+        getMenuInflater().inflate(R.menu.menu_survey_list, menu);
         return true;
     }
 

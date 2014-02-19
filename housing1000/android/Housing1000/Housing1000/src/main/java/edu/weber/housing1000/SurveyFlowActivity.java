@@ -1,30 +1,22 @@
 package edu.weber.housing1000;
 
-import java.util.ArrayList;
-import java.util.Locale;
-
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.google.common.hash.HashCode;
+import com.google.common.hash.HashFunction;
+import com.google.common.hash.Hashing;
 
 import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Fragments.PhotosFragment;
@@ -39,6 +31,8 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
     private SurveyListing surveyListing;
 
     private ProgressDialog progressDialog;
+
+    private String folderHash;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -66,6 +60,11 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
         progressDialog = value;
     }
 
+    public String getFolderHash()
+    {
+        return folderHash;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,11 +73,13 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
         if (savedInstanceState != null)
         {
             surveyListing = (SurveyListing) savedInstanceState.getSerializable("surveyListing");
+            folderHash = savedInstanceState.getString("folderHash");
         }
         else
         {
             // Grab the survey listing from the extras
             surveyListing = (SurveyListing) getIntent().getSerializableExtra(EXTRA_SURVEY);
+            generateFolderHash();
         }
 
         // Create the adapter that will return a fragment for each of the three
@@ -128,6 +129,7 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
         super.onSaveInstanceState(outState);
 
         outState.putSerializable("surveyListing", surveyListing);
+        outState.putString("folderHash", folderHash);
     }
 
     @Override
@@ -179,6 +181,16 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
                 dialog.dismiss();
             }
         }).show();
+    }
+
+    public void generateFolderHash()
+    {
+        HashFunction hf = Hashing.md5();
+        HashCode hc = hf.newHasher().putLong(System.currentTimeMillis()).hash();
+
+        folderHash = hc.toString();
+
+        Log.d("FOLDER HASH", folderHash);
     }
 
     /**

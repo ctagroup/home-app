@@ -92,11 +92,11 @@ public class MainMenuActivity extends Activity{
                 byte[] key = EncryptionHelper.keyGen();
                 byte[] encryptedImage = EncryptionHelper.encrypt(key, byteImage);
 
-                FileHelper.writeFileToExternalStorage(encryptedImage,"encryptedPhoto");
+                FileHelper.writeFileToExternalStorage(encryptedImage, "", "encryptedPhoto");
 
-                byte[] encryptedFileBytes = FileHelper.readFileFromExternalStorage("encryptedPhoto");
+                byte[] encryptedFileBytes = FileHelper.readFileFromExternalStorage("", "encryptedPhoto");
                 byte[] decryptedImageBytes = EncryptionHelper.decrypt(key,encryptedFileBytes);
-                FileHelper.writeFileToExternalStorage(decryptedImageBytes, "decryptedPhoto.jpg");
+                FileHelper.writeFileToExternalStorage(decryptedImageBytes, "", "decryptedPhoto.jpg");
 
                 /*byte[] decryptedImage = EncryptionHelper.decrypt(key, encryptedImage);
                 Bitmap test = BitmapFactory.decodeByteArray(decryptedImage, 0, decryptedImage.length);

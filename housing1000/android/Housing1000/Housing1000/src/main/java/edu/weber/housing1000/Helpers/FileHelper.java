@@ -15,18 +15,19 @@ import java.io.ObjectOutputStream;
 public class FileHelper {
     private static final String appDirectory = "/.housing1000";
 
-    public static void writeFileToExternalStorage(byte[] fileBytes, String filename)
+    public static void writeFileToExternalStorage(byte[] fileBytes, String subDirectory, String filename)
     {
         // Check to see if we can write to external storage
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()))
         {
             try {
-
                 // Get the external storage directory
                 File sdCard = Environment.getExternalStorageDirectory();
+                String dirPath = sdCard.getAbsolutePath() + appDirectory + "/" + subDirectory;
+
                 // Set up the directory that we are saving to
-                File dir = new File (sdCard.getAbsolutePath() + appDirectory);
-                File nomedia = new File (sdCard.getAbsolutePath() + appDirectory + "/.nomedia");
+                File dir = new File (dirPath);
+                File nomedia = new File (dirPath + "/.nomedia");
                 nomedia.mkdirs();
                 File file = new File(dir, filename);
 
@@ -35,9 +36,6 @@ public class FileHelper {
                 // Write the file
                 FileOutputStream f = new FileOutputStream(file);
                 f.write(fileBytes);
-//                ObjectOutputStream oos = new ObjectOutputStream(f);
-//                oos.writeObject(fileBytes);
-//                oos.close();
                 f.close();
 
             } catch (Exception e) {
@@ -46,7 +44,7 @@ public class FileHelper {
         }
     }
 
-    public static byte[] readFileFromExternalStorage(String filename)
+    public static byte[] readFileFromExternalStorage(String subDirectory, String filename)
     {
         // Check to see if we can write to external storage
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()))
@@ -55,8 +53,10 @@ public class FileHelper {
 
                 // Get the external storage directory
                 File sdCard = Environment.getExternalStorageDirectory();
+                String dirPath = sdCard.getAbsolutePath() + appDirectory + "/" + subDirectory;
+
                 // Set up the directory that we are reading from
-                File dir = new File (sdCard.getAbsolutePath() + appDirectory);
+                File dir = new File (dirPath);
                 File file = new File(dir, filename);
 
                 Log.d("HOUSING 1000", "Reading file from " + file.getAbsolutePath());
