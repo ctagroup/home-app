@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import edu.weber.housing1000.Data.Survey;
+import edu.weber.housing1000.Fragments.SignatureFragment;
 import edu.weber.housing1000.Helpers.EncryptionHelper;
 import edu.weber.housing1000.Helpers.FileHelper;
 import edu.weber.housing1000.Helpers.ImageHelper;
@@ -29,15 +30,17 @@ public class SignatureActivity extends Activity {
     Signature mSignature;
     Button mClear, mGetSign, mCancel;
     private Bitmap mBitmap;
-    private Bitmap sBitmap;
     View mView;
     int hmsId = -1;
+    String folderHash;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.signature);
+
+        folderHash = getIntent().getStringExtra("folderHash");
 
         // Setting this to -1 until the RestHelper is taken off of the main thread
         // Side note: any IO/slow operations need to be done on a separate thread
@@ -63,9 +66,6 @@ public class SignatureActivity extends Activity {
 
         mGetSign.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(SignatureActivity.this, MainMenuActivity.class);
-                startActivity(intent);
-                Log.v("log_tag", "Panel Saved");
                 mView.setDrawingCacheEnabled(true);
                 mSignature.save(mView);
                 finish();
@@ -74,7 +74,6 @@ public class SignatureActivity extends Activity {
 
         mCancel.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                Log.v("log_tag", "Panel Canceled");
                 finish();
             }
         });
@@ -114,21 +113,24 @@ public class SignatureActivity extends Activity {
             }
             Canvas canvas = new Canvas(mBitmap);
             try {
+                String encryptedName = "signature.secure";
+
                 v.draw(canvas);
                 ByteArrayOutputStream baOutputStream = new ByteArrayOutputStream();
-                sBitmap = ImageHelper.ScaleImage(mBitmap);
+                Bitmap sBitmap = ImageHelper.ScaleImage(mBitmap);
                 sBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baOutputStream);
                 byte[] byteImage = baOutputStream.toByteArray();
-                byte[] key = EncryptionHelper.keyGen();
-                byte[] encryptedImage = EncryptionHelper.encrypt(key, byteImage);
+                byte[] encryptedImage = EncryptionHelper.encrypt(byteImage);
 
                 // Write the encrypted signature to storage
-                FileHelper.writeFileToExternalStorage(encryptedImage, "encryptedSignature");
+                FileHelper.writeFileToExternalStorage(encryptedImage, folderHash, encryptedName);
 
                 // Open the encrypted file, decrypt the image, write it to disk -- for testing
-                byte[] encryptedFileBytes = FileHelper.readFileFromExternalStorage("encryptedSignature");
-                byte[] decryptedImageBytes = EncryptionHelper.decrypt(key, encryptedFileBytes);
-                FileHelper.writeFileToExternalStorage(decryptedImageBytes, "decryptedSignature.jpg");
+                //byte[] encryptedFileBytes = FileHelper.readFileFromExternalStorage("encryptedSignature");
+                //byte[] decryptedImageBytes = EncryptionHelper.decrypt(key, encryptedFileBytes);
+                //FileHelper.writeFileToExternalStorage(decryptedImageBytes, "decryptedSignature.jpg");
+
+                setResult(SignatureFragment.RESULT_SIGNATURE_SAVED, new Intent().putExtra("bitmap", byteImage).putExtra("signaturePath", encryptedName));
 
             } catch (Exception e) {
                 Log.v("log_tag", e.toString());

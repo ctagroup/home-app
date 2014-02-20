@@ -1,19 +1,20 @@
-package edu.weber.housing1000;
+package edu.weber.housing1000.Fragments;
 
 import android.animation.LayoutTransition;
-import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -35,60 +36,89 @@ import edu.weber.housing1000.Data.Survey;
 import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Data.SurveyResponse;
 import edu.weber.housing1000.Helpers.REST.PostResponses;
-import edu.weber.housing1000.Helpers.REST.RESTHelper;
+import edu.weber.housing1000.JSONParser;
 import edu.weber.housing1000.Questions.Question;
+import edu.weber.housing1000.R;
+import edu.weber.housing1000.SurveyFlowActivity;
 
-public class ClientInfoActivity_Dynamic_Api extends ActionBarActivity implements PostResponses.OnPostSurveyResponsesTaskCompleted {
+/**
+ * Created by Blake on 2/11/14.
+ */
+public class SurveyFragment extends SurveyAppFragment {
     public static final String EXTRA_SURVEY = "survey";
-
+    ArrayList<Question> lstQuestions;   // List of all questions
+    SurveyFlowActivity myActivity;      // Parent activity
+    private Survey survey;              // Current survey, questions and all
+    private RelativeLayout rootLayout;  // Root layout of the fragment
     private SurveyListing surveyListing;
-    private Survey survey;
+    private SurveyResponse surveyResponse;
 
-    private RelativeLayout rootLayout;
+    public SurveyFragment() {
+    }
 
-    ArrayList<Question> lstQuestions;
+    public SurveyFragment(String name, String actionBarTitle) {
+        super(name, actionBarTitle);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_clnt_info_dynamic);
 
-        rootLayout = (RelativeLayout) findViewById(R.id.root_layout);
+        setHasOptionsMenu(true);
 
-        // Grab the survey listing from the extras
-        surveyListing = (SurveyListing) getIntent().getSerializableExtra(EXTRA_SURVEY);
+        // Restore the state after recreation
+        if (savedInstanceState != null) {
+            String surveyResponseJson = savedInstanceState.getString("surveyResponse");
 
-        //TODO: For testing, remove after tested
-        surveyListing.setJson("{\"$id\":\"1\",\"SurveyId\":1,\"Title\":\"Santa Clara Survey\"," +
-                "\"Client\":[{\"$id\":\"2\",\"QuestionId\":1,\"text\":\"What is your birthday?\",\"QuestionType\":\"SinglelineTextBox\",\"Options\":null,\"OrderId\":1,\"ParentQuestionId\":0,\"ParentRequiredAnswer\":\"White/Caucasian\"}," +
-                "{\"$id\":\"3\",\"QuestionId\":2,\"text\":\"What is your last 4 digits Social Security?\",\"QuestionType\":\"SinglelineTextBox\",\"Options\":null,\"OrderId\":3,\"ParentQuestionId\":1,\"ParentRequiredAnswer\":1234}," +
-                "{\"$id\":\"4\",\"QuestionId\":3,\"text\":\"What is your Service Point Id?\",\"QuestionType\":\"SinglelineTextBox\",\"Options\":null,\"OrderId\":2,\"ParentQuestionId\":0,\"ParentRequiredAnswer\":\"ServicePointId\"}]," +
-                "\"SurveyQuestions\":[{\"$id\":\"5\",\"QuestionId\":4,\"text\":\"How do you identify yourself?\",\"QuestionType\":\"SingleSelectRadio\",\"Options\":\"Male|Female|Transgender|Other\",\"OrderId\":1,\"ParentQuestionId\":2,\"ParentRequiredAnswer\":\"anything\"}," +
-                "{\"$id\":\"6\",\"QuestionId\":5,\"text\":\"Which racial/ethinic group do you identify yourself with the most?\",\"QuestionType\":\"SingleSelect\",\"Options\":\"White/Caucasian|Black/African American|Hispanic/Latino|American Indian/Alaskan Native|Vietnamese|Other Asian|Pacific Islander|Other/Multi-ethnic\",\"OrderId\":2,\"ParentQuestionId\":0,\"ParentRequiredAnswer\":null}," +
-                "{\"$id\":\"7\",\"QuestionId\":6,\"text\":\"Have you ever served in the U.S. Armed Forces?\",\"QuestionType\":\"MultiSelect\",\"Options\":\"Yes|No|Don't know|Decline to state\",\"OrderId\":3,\"ParentQuestionId\":0,\"ParentRequiredAnswer\":null}," +
-                "{\"$id\":\"8\",\"QuestionId\":7,\"text\":\"Were you activated, into active duty, as a member of the National Guard or as a reservist?\",\"QuestionType\":\"SingleSelect\",\"Options\":\"Yes|No|Don't know|Decline to state\",\"OrderId\":3,\"ParentQuestionId\":6,\"ParentRequiredAnswer\":\"Yes\"}]}");
+            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+            surveyResponse = gson.fromJson(surveyResponseJson, SurveyResponse.class);
+        }
+    }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         generateQuestionUi();
 
-        ActionBar ab = getSupportActionBar();
-        ab.setTitle(surveyListing.getTitle());
+        populateAnswers();
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        saveSurveyResponse();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.survey, menu);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View mainView = inflater.inflate(R.layout.fragment_survey, container, false);
 
-        return super.onCreateOptionsMenu(menu);
+        rootLayout = (RelativeLayout) mainView.findViewById(R.id.root_layout);
+
+        myActivity = ((SurveyFlowActivity) getActivity());
+        surveyListing = myActivity.getSurveyListing();
+
+        return mainView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_fragment_survey, menu);
+
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId())
-        {
+        switch (item.getItemId()) {
             case R.id.action_clear:
                 clearButton();
                 return true;
@@ -100,14 +130,26 @@ public class ClientInfoActivity_Dynamic_Api extends ActionBarActivity implements
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        String jsonData = saveSurveyResponse();
+
+        outState.putString("surveyResponse", jsonData);
+    }
+
+    /**
+     * Sets up the UI elements for the survey form
+     */
     private void generateQuestionUi() {
         try {
-            final ScrollView mainScrollView = new ScrollView(this);
+            final ScrollView mainScrollView = new ScrollView(myActivity);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
             layoutParams.addRule(RelativeLayout.ABOVE, R.id.buttonsLinearLayout);
             mainScrollView.setLayoutParams(layoutParams);
 
-            LinearLayout mainLinearLayout = new LinearLayout(this);
+            LinearLayout mainLinearLayout = new LinearLayout(myActivity);
             mainLinearLayout.setOrientation(LinearLayout.VERTICAL);
             LayoutTransition layoutTransition = new LayoutTransition();
             mainLinearLayout.setLayoutTransition(layoutTransition);
@@ -120,8 +162,7 @@ public class ClientInfoActivity_Dynamic_Api extends ActionBarActivity implements
 
             // This is needed because we are displaying the client and survey questions on the same
             // page and some of the orderIds overlap
-            for (Question q : survey.getSurveyQuestions())
-            {
+            for (Question q : survey.getSurveyQuestions()) {
                 q.setOrderId(q.getOrderId() + survey.getClientQuestions().size());
             }
             lstQuestions.addAll(survey.getSurveyQuestions());
@@ -146,13 +187,13 @@ public class ClientInfoActivity_Dynamic_Api extends ActionBarActivity implements
 
             //Create buttons and panels
             for (int k = 0; k < lstPanels.size(); k++) {
-                Button btn = new Button(this);
+                Button btn = new Button(myActivity);
                 btn.setId(k);
                 btn.setText(lstPanels.get(k));
                 buttons[k] = btn;
                 mainLinearLayout.addView(btn);
 
-                LinearLayout panelView = new LinearLayout(this);
+                LinearLayout panelView = new LinearLayout(myActivity);
                 panelView.setId(k);
                 panelView.setOrientation(LinearLayout.VERTICAL);
                 panelViews[k] = panelView;
@@ -185,27 +226,23 @@ public class ClientInfoActivity_Dynamic_Api extends ActionBarActivity implements
 
             // Create question views and add them
             for (Question question : lstQuestions) {
-                View questionView = question.createView(this);
+                View questionView = question.createView(myActivity);
 
-                if (questionView != null)
-                {
-                    if (lstPanels.size() > 0)
-                    {
+                if (questionView != null) {
+                    if (lstPanels.size() > 0) {
                         for (int k = 0; k < panelViews.length; k++) {
                             if (question.getGroup().equals(lstPanels.get(k))) {
                                 panelViews[k].addView(questionView);
                             }
                         }
-                    }
-                    else
-                    {
+                    } else {
                         mainLinearLayout.addView(questionView);
                     }
                 }
             }
 
 //            // Temporary for testing
-//            // TODO REMOVE THIS
+//            // TODO REMOVE THIS - DEPENDENCY TESTING
 //            if (survey.getSurveyId() == 1)
 //            {
 //                for (Question q : lstQuestions)
@@ -228,12 +265,9 @@ public class ClientInfoActivity_Dynamic_Api extends ActionBarActivity implements
             Set<Question> dependencies = new HashSet<Question>();
 
             for (Question question : lstQuestions) {
-                if (question.getParentQuestionId() > 0)
-                {
-                    for (Question q : lstQuestions)
-                    {
-                        if (q.getQuestionId() == question.getParentQuestionId())
-                        {
+                if (question.getParentQuestionId() > 0) {
+                    for (Question q : lstQuestions) {
+                        if (q.getQuestionId() == question.getParentQuestionId()) {
                             q.addDependent(question);
                             dependencies.add(q);
                             break;
@@ -243,8 +277,7 @@ public class ClientInfoActivity_Dynamic_Api extends ActionBarActivity implements
             }
 
             // Set click listeners on the parent questions so the answers will be compared
-            for (Question question : dependencies)
-            {
+            for (Question question : dependencies) {
                 question.hookUpDependents();
             }
 
@@ -255,15 +288,17 @@ public class ClientInfoActivity_Dynamic_Api extends ActionBarActivity implements
 
     }
 
+    /**
+     * Handles the submit button click
+     */
     public void submitButton() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(myActivity);
         builder.setMessage("Submit the survey response?");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 saveAnswers();
-                finish();
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -274,8 +309,11 @@ public class ClientInfoActivity_Dynamic_Api extends ActionBarActivity implements
         }).show();
     }
 
+    /**
+     * Handles the clear button click
+     */
     public void clearButton() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(myActivity);
         builder.setMessage("Clear the form?");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
@@ -292,49 +330,60 @@ public class ClientInfoActivity_Dynamic_Api extends ActionBarActivity implements
         }).show();
     }
 
+    /**
+     * Clears all answers in the form
+     */
     public void clearAnswers() {
-        for (Question question : lstQuestions)
-        {
+        for (Question question : lstQuestions) {
             question.clearAnswer();
         }
     }
 
-    public boolean validateForm()
-    {
+    /**
+     * Performs any form validation
+     *
+     * @return True if valid
+     */
+    public boolean validateForm() {
         // TODO: Validate the form
 
         return true;
     }
 
+    /**
+     * Saves the answers and starts the submission task
+     */
     public void saveAnswers() {
-        if (validateForm())
-        {
-            Client client = new Client(survey.getClientQuestions(), getLocation());
-            ArrayList<Response> responses = generateResponses(survey.getSurveyQuestions());
-            SurveyResponse surveyResponse = new SurveyResponse(surveyListing, client, responses);
+        if (validateForm()) {
+            myActivity.setSubmittingSurvey(true);
+            saveSurveyResponse();
 
-            // Output the survey responses to JSON
-            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-            String jsonData = gson.toJson(surveyResponse);
+            // Start the survey submission dialog
+            ProgressDialog progressDialog = new ProgressDialog(myActivity);
+            progressDialog.setTitle("Please Wait");
+            progressDialog.setMessage("Submitting survey responses...");
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
 
-            Log.d("json", jsonData);
+            myActivity.setProgressDialog(progressDialog);
+            myActivity.getProgressDialog().show();
 
-            PostResponses.PostSurveyResponsesTask task = new PostResponses.PostSurveyResponsesTask(this, this, surveyResponse);
+            PostResponses.PostSurveyResponsesTask task = new PostResponses.PostSurveyResponsesTask(myActivity, myActivity, surveyResponse);
             task.execute("https://staging.ctagroup.org/Survey/api");
         }
     }
 
     /**
      * This compiles the responses from each question
+     *
      * @param questions Questions from which to get the answers
      * @return List of Responses
      */
-    private  ArrayList<Response> generateResponses(ArrayList<Question> questions)
-    {
+    private ArrayList<Response> generateResponses(ArrayList<Question> questions) {
         ArrayList<Response> responses = new ArrayList<Response>();
 
-        for (Question question : questions)
-        {
+        for (Question question : questions) {
             Response response = new Response(question.getQuestionId(), question.getAnswer());
 
             responses.add(response);
@@ -344,9 +393,8 @@ public class ClientInfoActivity_Dynamic_Api extends ActionBarActivity implements
     }
 
     // TODO: FINISH THIS
-    private Location getLocation()
-    {
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+    public Location getLocation() {
+        LocationManager locationManager = (LocationManager) myActivity.getSystemService(Context.LOCATION_SERVICE);
 
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
             return locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -358,34 +406,57 @@ public class ClientInfoActivity_Dynamic_Api extends ActionBarActivity implements
             return null;
     }
 
+    /**
+     * Serializes the surveyResponse to JSON
+     *
+     * @return Survey response in JSON form
+     */
+    private String saveSurveyResponse() {
+        Client client = new Client(survey.getClientQuestions(), getLocation());
+        ArrayList<Response> responses = generateResponses(survey.getSurveyQuestions());
+        surveyResponse = new SurveyResponse(surveyListing, client, responses);
 
-    @Override
-    public void onPostSurveyResponsesTaskCompleted(String result) {
-        Log.d("SERVER RESPONSE", result);
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        String jsonData = gson.toJson(surveyResponse);
 
-        String[] split = result.split("=");
-        String clientSurveyId = split[split.length - 1];
+        Log.d("json", jsonData);
 
-        Log.d("clientSurveyId", clientSurveyId);
+        return jsonData;
     }
 
-    @Override
-    public void onBackPressed()
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Cancel this survey?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                finish();
+    /**
+     * Populates the answers in the form, for restoring state
+     */
+    private void populateAnswers() {
+        if (surveyResponse != null) {
+            Client client = surveyResponse.getClient();
+
+            for (Question question : survey.getClientQuestions()) {
+                switch (question.getParentRequiredAnswer()) {
+                    case "ServicePointId":
+                        if (client.servicePointId != 0)
+                            question.setAnswer(String.valueOf(client.servicePointId));
+                        break;
+                    case "Last4SSN":
+                        question.setAnswer(client.last4Ssn);
+                        break;
+                    case "Birthday":
+                        question.setAnswer(client.birthday);
+                        break;
+                    default:
+                        break;
+                }
             }
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+
+            for (Response response : surveyResponse.getResponses()) {
+                for (Question question : survey.getSurveyQuestions()) {
+                    if (question.getQuestionId() == response.getQuestionId()) {
+                        question.setAnswer(response.getAnswer());
+                        break;
+                    }
+                }
             }
-        }).show();
+        }
     }
+
 }

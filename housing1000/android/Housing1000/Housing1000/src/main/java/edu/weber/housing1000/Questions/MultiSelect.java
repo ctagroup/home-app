@@ -57,6 +57,35 @@ public class MultiSelect extends Question {
     }
 
     @Override
+    public void setAnswer(String answer) {
+        clearAnswer();
+
+        if (answer != null)
+        {
+            LinearLayout layout = (LinearLayout)myView;
+
+            String[] answers = answer.split("|");
+
+            for (String single : answers)
+            {
+                for (int i = 0; i < layout.getChildCount(); i++)
+                {
+                    View childView = layout.getChildAt(i);
+                    if (childView instanceof CheckBox)
+                    {
+                        CheckBox checkbox = (CheckBox) childView;
+                        if (checkbox.getText().equals(single))
+                        {
+                            checkbox.setChecked(true);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
     public void clearAnswer() {
         LinearLayout layout = (LinearLayout)myView;
 
@@ -70,5 +99,6 @@ public class MultiSelect extends Question {
             }
         }
     }
+
 
 }

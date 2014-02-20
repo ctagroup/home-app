@@ -28,10 +28,6 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="landscape" />
         <activity
-            android:name="edu.weber.housing1000.ClientInfoActivity"
-            android:label="@string/title_activity_clnt_info"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="edu.weber.housing1000.InterviewerInfoActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -51,14 +47,12 @@
             android:name="edu.weber.housing1000.CensusActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="edu.weber.housing1000.ClientInfoActivity_Dynamic"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="edu.weber.housing1000.ClientInfoActivity_Dynamic_Api"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="edu.weber.housing1000.SurveyListActivity"
             android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="edu.weber.housing1000.SurveyFlowActivity"
+            android:label="@string/title_activity_survey_flow" >
         </activity>
     </application>
 

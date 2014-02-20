@@ -64,6 +64,9 @@ public class GetSurveys {
         }
     }
 
+    /**
+     * Callback that will be implemented by an activity/fragment
+     */
     public interface OnGetSingleSurveyTaskCompleted {
         void onGetSingleSurveyTaskCompleted(String surveyJson);
     }

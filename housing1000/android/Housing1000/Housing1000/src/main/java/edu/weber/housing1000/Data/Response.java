@@ -12,11 +12,27 @@ import java.util.Map;
 public class Response {
     @Expose
     @SerializedName("QuestionId")
-    public int questionId;
+    private int questionId;
 
     @Expose
     @SerializedName("Answer")
-    public String answer;
+    private String answer;
+
+    public int getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(int questionId) {
+        this.questionId = questionId;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
 
     public Response()
     {

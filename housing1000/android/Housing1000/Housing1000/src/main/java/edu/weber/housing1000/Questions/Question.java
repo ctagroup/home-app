@@ -299,6 +299,7 @@ public abstract class Question {
     // Abstract classes
     public abstract View createView(Context context);
     public abstract String getAnswer();
+    public abstract void setAnswer(String answer);
     public abstract void clearAnswer();
 
 }
