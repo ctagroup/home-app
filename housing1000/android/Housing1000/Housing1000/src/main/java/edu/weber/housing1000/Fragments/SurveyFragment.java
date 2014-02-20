@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -35,6 +36,7 @@ import edu.weber.housing1000.Data.Response;
 import edu.weber.housing1000.Data.Survey;
 import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Data.SurveyResponse;
+import edu.weber.housing1000.Helpers.GPSTracker;
 import edu.weber.housing1000.Helpers.REST.PostResponses;
 import edu.weber.housing1000.JSONParser;
 import edu.weber.housing1000.Questions.Question;
@@ -52,6 +54,7 @@ public class SurveyFragment extends SurveyAppFragment {
     private RelativeLayout rootLayout;  // Root layout of the fragment
     private SurveyListing surveyListing;
     private SurveyResponse surveyResponse;
+    GPSTracker gps;
 
     public SurveyFragment() {
     }
@@ -298,7 +301,8 @@ public class SurveyFragment extends SurveyAppFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                saveAnswers();
+                //saveAnswers();
+                getLocation();
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -394,16 +398,21 @@ public class SurveyFragment extends SurveyAppFragment {
 
     // TODO: FINISH THIS
     public Location getLocation() {
-        LocationManager locationManager = (LocationManager) myActivity.getSystemService(Context.LOCATION_SERVICE);
+        gps = new GPSTracker(SurveyFragment.super.getActivity());
 
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-            return locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        else if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
-            return locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        else if (locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER))
-            return locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-        else
-            return null;
+        if(gps.canGetLocation()) {
+            double latitude = gps.getLatitude();
+            double longitude = gps.getLongitude();
+
+            Toast.makeText(getActivity(),
+                    "Your Location is - \nLat: " + latitude + "\nLon: " + longitude,
+                    Toast.LENGTH_LONG).show();
+            gps.stopUsingGPS();
+        } else {
+            gps.showSettingsAlert();
+        }
+
+        return gps.getLocation();
     }
 
     /**
