@@ -46,17 +46,15 @@ import edu.weber.housing1000.SurveyFlowActivity;
  */
 public class SurveyFragment extends SurveyAppFragment {
     public static final String EXTRA_SURVEY = "survey";
-
-    private Survey survey;
-    private RelativeLayout rootLayout;
-
-    ArrayList<Question> lstQuestions;
-    SurveyFlowActivity myActivity;
-
+    ArrayList<Question> lstQuestions;   // List of all questions
+    SurveyFlowActivity myActivity;      // Parent activity
+    private Survey survey;              // Current survey, questions and all
+    private RelativeLayout rootLayout;  // Root layout of the fragment
     private SurveyListing surveyListing;
     private SurveyResponse surveyResponse;
 
-    public SurveyFragment() {}
+    public SurveyFragment() {
+    }
 
     public SurveyFragment(String name, String actionBarTitle) {
         super(name, actionBarTitle);
@@ -68,8 +66,8 @@ public class SurveyFragment extends SurveyAppFragment {
 
         setHasOptionsMenu(true);
 
-        if (savedInstanceState != null)
-        {
+        // Restore the state after recreation
+        if (savedInstanceState != null) {
             String surveyResponseJson = savedInstanceState.getString("surveyResponse");
 
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
@@ -105,7 +103,7 @@ public class SurveyFragment extends SurveyAppFragment {
 
         rootLayout = (RelativeLayout) mainView.findViewById(R.id.root_layout);
 
-        myActivity = ((SurveyFlowActivity)getActivity());
+        myActivity = ((SurveyFlowActivity) getActivity());
         surveyListing = myActivity.getSurveyListing();
 
         return mainView;
@@ -120,8 +118,7 @@ public class SurveyFragment extends SurveyAppFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId())
-        {
+        switch (item.getItemId()) {
             case R.id.action_clear:
                 clearButton();
                 return true;
@@ -142,6 +139,9 @@ public class SurveyFragment extends SurveyAppFragment {
         outState.putString("surveyResponse", jsonData);
     }
 
+    /**
+     * Sets up the UI elements for the survey form
+     */
     private void generateQuestionUi() {
         try {
             final ScrollView mainScrollView = new ScrollView(myActivity);
@@ -162,8 +162,7 @@ public class SurveyFragment extends SurveyAppFragment {
 
             // This is needed because we are displaying the client and survey questions on the same
             // page and some of the orderIds overlap
-            for (Question q : survey.getSurveyQuestions())
-            {
+            for (Question q : survey.getSurveyQuestions()) {
                 q.setOrderId(q.getOrderId() + survey.getClientQuestions().size());
             }
             lstQuestions.addAll(survey.getSurveyQuestions());
@@ -229,25 +228,21 @@ public class SurveyFragment extends SurveyAppFragment {
             for (Question question : lstQuestions) {
                 View questionView = question.createView(myActivity);
 
-                if (questionView != null)
-                {
-                    if (lstPanels.size() > 0)
-                    {
+                if (questionView != null) {
+                    if (lstPanels.size() > 0) {
                         for (int k = 0; k < panelViews.length; k++) {
                             if (question.getGroup().equals(lstPanels.get(k))) {
                                 panelViews[k].addView(questionView);
                             }
                         }
-                    }
-                    else
-                    {
+                    } else {
                         mainLinearLayout.addView(questionView);
                     }
                 }
             }
 
 //            // Temporary for testing
-//            // TODO REMOVE THIS
+//            // TODO REMOVE THIS - DEPENDENCY TESTING
 //            if (survey.getSurveyId() == 1)
 //            {
 //                for (Question q : lstQuestions)
@@ -270,12 +265,9 @@ public class SurveyFragment extends SurveyAppFragment {
             Set<Question> dependencies = new HashSet<Question>();
 
             for (Question question : lstQuestions) {
-                if (question.getParentQuestionId() > 0)
-                {
-                    for (Question q : lstQuestions)
-                    {
-                        if (q.getQuestionId() == question.getParentQuestionId())
-                        {
+                if (question.getParentQuestionId() > 0) {
+                    for (Question q : lstQuestions) {
+                        if (q.getQuestionId() == question.getParentQuestionId()) {
                             q.addDependent(question);
                             dependencies.add(q);
                             break;
@@ -285,8 +277,7 @@ public class SurveyFragment extends SurveyAppFragment {
             }
 
             // Set click listeners on the parent questions so the answers will be compared
-            for (Question question : dependencies)
-            {
+            for (Question question : dependencies) {
                 question.hookUpDependents();
             }
 
@@ -297,6 +288,9 @@ public class SurveyFragment extends SurveyAppFragment {
 
     }
 
+    /**
+     * Handles the submit button click
+     */
     public void submitButton() {
         AlertDialog.Builder builder = new AlertDialog.Builder(myActivity);
         builder.setMessage("Submit the survey response?");
@@ -315,6 +309,9 @@ public class SurveyFragment extends SurveyAppFragment {
         }).show();
     }
 
+    /**
+     * Handles the clear button click
+     */
     public void clearButton() {
         AlertDialog.Builder builder = new AlertDialog.Builder(myActivity);
         builder.setMessage("Clear the form?");
@@ -333,23 +330,32 @@ public class SurveyFragment extends SurveyAppFragment {
         }).show();
     }
 
+    /**
+     * Clears all answers in the form
+     */
     public void clearAnswers() {
-        for (Question question : lstQuestions)
-        {
+        for (Question question : lstQuestions) {
             question.clearAnswer();
         }
     }
 
-    public boolean validateForm()
-    {
+    /**
+     * Performs any form validation
+     *
+     * @return True if valid
+     */
+    public boolean validateForm() {
         // TODO: Validate the form
 
         return true;
     }
 
+    /**
+     * Saves the answers and starts the submission task
+     */
     public void saveAnswers() {
-        if (validateForm())
-        {
+        if (validateForm()) {
+            myActivity.setSubmittingSurvey(true);
             saveSurveyResponse();
 
             // Start the survey submission dialog
@@ -370,15 +376,14 @@ public class SurveyFragment extends SurveyAppFragment {
 
     /**
      * This compiles the responses from each question
+     *
      * @param questions Questions from which to get the answers
      * @return List of Responses
      */
-    private  ArrayList<Response> generateResponses(ArrayList<Question> questions)
-    {
+    private ArrayList<Response> generateResponses(ArrayList<Question> questions) {
         ArrayList<Response> responses = new ArrayList<Response>();
 
-        for (Question question : questions)
-        {
+        for (Question question : questions) {
             Response response = new Response(question.getQuestionId(), question.getAnswer());
 
             responses.add(response);
@@ -388,8 +393,7 @@ public class SurveyFragment extends SurveyAppFragment {
     }
 
     // TODO: FINISH THIS
-    public Location getLocation()
-    {
+    public Location getLocation() {
         LocationManager locationManager = (LocationManager) myActivity.getSystemService(Context.LOCATION_SERVICE);
 
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
@@ -402,8 +406,12 @@ public class SurveyFragment extends SurveyAppFragment {
             return null;
     }
 
-    private String saveSurveyResponse()
-    {
+    /**
+     * Serializes the surveyResponse to JSON
+     *
+     * @return Survey response in JSON form
+     */
+    private String saveSurveyResponse() {
         Client client = new Client(survey.getClientQuestions(), getLocation());
         ArrayList<Response> responses = generateResponses(survey.getSurveyQuestions());
         surveyResponse = new SurveyResponse(surveyListing, client, responses);
@@ -416,18 +424,18 @@ public class SurveyFragment extends SurveyAppFragment {
         return jsonData;
     }
 
-    private void populateAnswers()
-    {
-        if (surveyResponse != null)
-        {
+    /**
+     * Populates the answers in the form, for restoring state
+     */
+    private void populateAnswers() {
+        if (surveyResponse != null) {
             Client client = surveyResponse.getClient();
 
-            for (Question question : survey.getClientQuestions())
-            {
-                switch (question.getParentRequiredAnswer())
-                {
+            for (Question question : survey.getClientQuestions()) {
+                switch (question.getParentRequiredAnswer()) {
                     case "ServicePointId":
-                        question.setAnswer(String.valueOf(client.servicePointId));
+                        if (client.servicePointId != 0)
+                            question.setAnswer(String.valueOf(client.servicePointId));
                         break;
                     case "Last4SSN":
                         question.setAnswer(client.last4Ssn);
@@ -440,12 +448,9 @@ public class SurveyFragment extends SurveyAppFragment {
                 }
             }
 
-            for (Response response : surveyResponse.getResponses())
-            {
-                for (Question question : survey.getSurveyQuestions())
-                {
-                    if (question.getQuestionId() == response.getQuestionId())
-                    {
+            for (Response response : surveyResponse.getResponses()) {
+                for (Question question : survey.getSurveyQuestions()) {
+                    if (question.getQuestionId() == response.getQuestionId()) {
                         question.setAnswer(response.getAnswer());
                         break;
                     }

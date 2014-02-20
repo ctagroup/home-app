@@ -7,12 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import edu.weber.housing1000.Helpers.EncryptionHelper;
@@ -20,18 +18,20 @@ import edu.weber.housing1000.Helpers.FileHelper;
 
 /**
  * Created by Blake on 2/18/14.
+ * This is an adapter for the GridView in the PhotosFragment
+ * It keeps track of the file names of the saved photos so they can be dynamically loaded
+ * as the GridView requests them
  */
 public class ImageAdapter extends BaseAdapter {
-    private Context mContext;
     ArrayList<String> images;
+    private Context mContext;
 
     public ImageAdapter(Context c) {
         mContext = c;
         images = new ArrayList<String>();
     }
 
-    public ImageAdapter(Context c, ArrayList<String> images)
-    {
+    public ImageAdapter(Context c, ArrayList<String> images) {
         mContext = c;
         this.images = images;
     }
@@ -52,17 +52,17 @@ public class ImageAdapter extends BaseAdapter {
         return 0;
     }
 
-    public ArrayList<String> getImages()
-    {
+    public ArrayList<String> getImages() {
         return images;
     }
 
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imageView;
-        if (convertView == null) {  // if it's not recycled, initialize some attributes
+
+        // If it's not recycled, initialize some attributes
+        if (convertView == null) {
             imageView = new ImageView(mContext);
-            //imageView.setLayoutParams(new GridView.LayoutParams(120, 120));
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             imageView.setPadding(8, 8, 8, 8);
         } else {
@@ -71,13 +71,12 @@ public class ImageAdapter extends BaseAdapter {
 
         Bitmap image = null;
 
-        try
-        {
+        try {
             File imageFile = new File(images.get(position));
 
             Log.d("LOADING IMAGE", imageFile.getAbsolutePath());
-            if (imageFile.exists())
-            {
+            if (imageFile.exists()) {
+                // Set up the stream, read the file, decrypt it
                 FileInputStream fStream = new FileInputStream(imageFile);
                 byte[] imageBytes = FileHelper.readFile(imageFile);
                 byte[] decryptedBytes = EncryptionHelper.decrypt(imageBytes);
@@ -86,9 +85,7 @@ public class ImageAdapter extends BaseAdapter {
 
                 fStream.close();
             }
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 

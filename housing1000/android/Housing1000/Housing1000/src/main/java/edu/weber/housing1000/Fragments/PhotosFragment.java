@@ -32,16 +32,16 @@ import edu.weber.housing1000.Utils;
  * Created by Blake on 2/11/14.
  */
 public class PhotosFragment extends SurveyAppFragment {
-    private static final int TAKE_PICTURE = 1111;
+    private static final int TAKE_PICTURE = 1111;   // Activity result for taking a picture
 
-    SurveyFlowActivity myActivity;
+    SurveyFlowActivity myActivity;  // Parent activity
 
-    GridView photosGridView;
-    TextView noPhotosTextView;
+    GridView photosGridView;    // Holds the photos
+    TextView noPhotosTextView; // Text that is shown when no photos are present
 
-    ImageAdapter imageAdapter;
+    ImageAdapter imageAdapter; // Adapter that keeps track of saved photos
 
-    public PhotosFragment() {}
+    public PhotosFragment() {} // Default constructor - Needed to restore state
 
     public PhotosFragment(String name, String actionBarTitle) {
         super(name, actionBarTitle);
@@ -83,6 +83,7 @@ public class PhotosFragment extends SurveyAppFragment {
         photosGridView = (GridView) rootView.findViewById(R.id.photosGridView);
         noPhotosTextView = (TextView) rootView.findViewById(R.id.noPhotosTextView);
 
+        // Pull the images list from the saved state
         if (savedInstanceState != null)
             imageAdapter = new ImageAdapter(myActivity, savedInstanceState.getStringArrayList("images"));
         else
@@ -129,6 +130,10 @@ public class PhotosFragment extends SurveyAppFragment {
         outState.putStringArrayList("images", imageAdapter.getImages());
     }
 
+    /**
+     * Opens up the camera to take a picture
+     * @param actionCode Activity result to return
+     */
     private void dispatchTakePictureIntent(int actionCode) {
         if(Utils.isIntentAvailable(getActivity().getApplicationContext(), MediaStore.ACTION_IMAGE_CAPTURE)){
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -141,6 +146,7 @@ public class PhotosFragment extends SurveyAppFragment {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             Bitmap sPhoto = ImageHelper.ScaleImage(photo);
             try {
+                // Set up the file names
                 String imageName = "photo_" + String.valueOf(imageAdapter.getCount()) + ".jpg";
                 String encryptedName = "photo_" + String.valueOf(imageAdapter.getCount()) + ".secure";
 
@@ -158,6 +164,7 @@ public class PhotosFragment extends SurveyAppFragment {
                 //byte[] decryptedImageBytes = EncryptionHelper.decrypt(encryptedFileBytes);
                 //FileHelper.writeFileToExternalStorage(decryptedImageBytes, myActivity.getFolderHash(), imageName);
 
+                // Add the file path to the imageAdapter
                 imageAdapter.addImagePath(FileHelper.getAbsoluteFilePath(myActivity.getFolderHash(), encryptedName));
 
                 Log.d("PHOTO ADDED", (String)imageAdapter.getItem(imageAdapter.getCount() - 1));

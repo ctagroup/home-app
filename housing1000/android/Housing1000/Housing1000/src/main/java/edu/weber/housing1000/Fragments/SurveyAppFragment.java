@@ -1,7 +1,6 @@
 package edu.weber.housing1000.Fragments;
 
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 /**

@@ -3,13 +3,13 @@ package edu.weber.housing1000;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -23,46 +23,49 @@ import edu.weber.housing1000.Fragments.PhotosFragment;
 import edu.weber.housing1000.Fragments.SignatureFragment;
 import edu.weber.housing1000.Fragments.SurveyAppFragment;
 import edu.weber.housing1000.Fragments.SurveyFragment;
+import edu.weber.housing1000.Helpers.REST.PostImage;
 import edu.weber.housing1000.Helpers.REST.PostResponses;
 
-public class SurveyFlowActivity extends ActionBarActivity implements PostResponses.OnPostSurveyResponsesTaskCompleted {
+public class SurveyFlowActivity extends ActionBarActivity implements PostResponses.OnPostSurveyResponsesTaskCompleted, PostImage.OnPostImageTaskCompleted {
     public static final String EXTRA_SURVEY = "survey";
 
+    //These are used to keep track of the submission state
+    boolean submittingSurvey;
+    boolean isSurveySubmitted;
+    boolean isSignatureSubmitted;
+    boolean isPhotoSubmitted;
+
+    SectionsPagerAdapter mSectionsPagerAdapter;         //Keeps track of the fragments
+    ViewPager.OnPageChangeListener mPageChangeListener; //Listens for page changes
+    ViewPager mViewPager;                               //View object that holds the fragments
+
     private SurveyListing surveyListing;
-
     private ProgressDialog progressDialog;
+    private String folderHash;                          //The name of the survey folder (for files)
+    private String clientSurveyId;                      //Client survey id for image submission
 
-    private String folderHash;
-
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    SectionsPagerAdapter mSectionsPagerAdapter;
-    ViewPager.OnPageChangeListener mPageChangeListener;
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    ViewPager mViewPager;
-
-    public ProgressDialog getProgressDialog()
-    {
+    public ProgressDialog getProgressDialog() {
         return progressDialog;
     }
 
-    public void setProgressDialog(ProgressDialog value)
-    {
+    public void setProgressDialog(ProgressDialog value) {
         progressDialog = value;
     }
 
-    public String getFolderHash()
-    {
+    public String getFolderHash() {
         return folderHash;
+    }
+
+    public String getClientSurveyId() {
+        return clientSurveyId;
+    }
+
+    public void setSubmittingSurvey(boolean value) {
+        submittingSurvey = value;
+    }
+
+    public SurveyListing getSurveyListing() {
+        return surveyListing;
     }
 
     @Override
@@ -70,13 +73,11 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey_flow);
 
-        if (savedInstanceState != null)
-        {
+        // Restore state after being recreated
+        if (savedInstanceState != null) {
             surveyListing = (SurveyListing) savedInstanceState.getSerializable("surveyListing");
             folderHash = savedInstanceState.getString("folderHash");
-        }
-        else
-        {
+        } else {
             // Grab the survey listing from the extras
             surveyListing = (SurveyListing) getIntent().getSerializableExtra(EXTRA_SURVEY);
             generateFolderHash();
@@ -118,8 +119,10 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
         tabs.setShouldExpand(true);
         tabs.setViewPager(mViewPager);
 
+        // Set the page change listener for the tabs
         tabs.setOnPageChangeListener(mPageChangeListener);
 
+        // Force a page change update
         mViewPager.setCurrentItem(1);
         mViewPager.setCurrentItem(0);
     }
@@ -128,6 +131,7 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
+        // Store the survey listing and folder hash
         outState.putSerializable("surveyListing", surveyListing);
         outState.putString("folderHash", folderHash);
     }
@@ -144,28 +148,40 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
         return super.onOptionsItemSelected(item);
     }
 
-    public SurveyListing getSurveyListing()
-    {
-        return surveyListing;
-    }
-
     @Override
     public void onPostSurveyResponsesTaskCompleted(String result) {
         progressDialog.dismiss();
 
-        Log.d("SERVER RESPONSE", result);
+        isSurveySubmitted = true;
+
+        Log.d("SURVEY RESPONSE", result);
 
         String[] split = result.split("=");
-        String clientSurveyId = split[split.length - 1];
+        clientSurveyId = split[split.length - 1];
 
         Log.d("clientSurveyId", clientSurveyId);
 
         mViewPager.setCurrentItem(0);
+
+        SignatureFragment signatureFragment = (SignatureFragment) mSectionsPagerAdapter.getItem(0);
+        signatureFragment.submitSignature();
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onPostImageTaskCompleted(String result) {
+        progressDialog.dismiss();
+
+        isSignatureSubmitted = true;
+
+        Log.d("SIGNATURE RESPONSE", result);
+
+        mViewPager.setCurrentItem(1);
+
+        // Submit photos here
+    }
+
+    @Override
+    public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Cancel this survey?");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -183,8 +199,7 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
         }).show();
     }
 
-    public void generateFolderHash()
-    {
+    public void generateFolderHash() {
         HashFunction hf = Hashing.md5();
         HashCode hc = hf.newHasher().putLong(System.currentTimeMillis()).hash();
 
@@ -206,8 +221,7 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
-            switch (position)
-            {
+            switch (position) {
                 case 0:
                     return new SignatureFragment("Signature", "Disclaimer");
                 case 1:
@@ -226,8 +240,7 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position)
-            {
+            switch (position) {
                 case 0:
                     return "Signature";
                 case 1:

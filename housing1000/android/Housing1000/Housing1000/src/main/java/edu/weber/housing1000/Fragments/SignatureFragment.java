@@ -1,8 +1,7 @@
 package edu.weber.housing1000.Fragments;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import edu.weber.housing1000.Helpers.REST.PostResponses;
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.SignatureActivity;
 import edu.weber.housing1000.SurveyFlowActivity;
@@ -32,7 +32,8 @@ public class SignatureFragment extends SurveyAppFragment {
     byte[] signatureImageBytes;
     String signaturePath;
 
-    public SignatureFragment() {}
+    public SignatureFragment() {
+    }
 
     public SignatureFragment(String name, String actionBarTitle) {
         super(name, actionBarTitle);
@@ -42,8 +43,7 @@ public class SignatureFragment extends SurveyAppFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (savedInstanceState != null)
-        {
+        if (savedInstanceState != null) {
             signatureImageBytes = savedInstanceState.getByteArray("signatureImageBytes");
             signaturePath = savedInstanceState.getString("signaturePath");
         }
@@ -95,8 +95,7 @@ public class SignatureFragment extends SurveyAppFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (resultCode == RESULT_SIGNATURE_SAVED)
-        {
+        if (resultCode == RESULT_SIGNATURE_SAVED) {
             signatureImageBytes = data.getByteArrayExtra("bitmap");
             signaturePath = data.getStringExtra("signaturePath");
             loadImage();
@@ -114,11 +113,33 @@ public class SignatureFragment extends SurveyAppFragment {
             outState.putString("signaturePath", signaturePath);
     }
 
-    public void loadImage()
-    {
+    /**
+     * Loads the signature image from the byte array that is in memory
+     */
+    public void loadImage() {
         Bitmap signature = BitmapFactory.decodeByteArray(signatureImageBytes, 0, signatureImageBytes.length);
 
         signatureImageView.setImageBitmap(signature);
         signHereImageButton.setImageResource(R.drawable.signature_line);
+    }
+
+    public void submitSignature() {
+
+        //TODO: Use a DialogFragment instead of a ProgressDialog.  This is needed because the app
+        // will crash if you show a ProgressDialog from a listener
+
+        // Start the survey submission dialog
+//        ProgressDialog progressDialog = new ProgressDialog(myActivity);
+//        progressDialog.setTitle("Please Wait");
+//        progressDialog.setMessage("Submitting signature...");
+//        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//        progressDialog.setIndeterminate(true);
+//        progressDialog.setCancelable(false);
+//
+//        myActivity.setProgressDialog(progressDialog);
+//        myActivity.getProgressDialog().show();
+
+        //PostResponses.PostSurveyResponsesTask task = new PostResponses.PostSurveyResponsesTask(myActivity, myActivity, surveyResponse);
+        //task.execute("https://staging.ctagroup.org/Survey/api");
     }
 }
