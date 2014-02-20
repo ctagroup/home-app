@@ -8,6 +8,7 @@
 
 #import "SigConfrimViewController.h"
 #import "HousingAppDelegate.h"
+#import <RNCryptor/RNEncryptor.h>
 
 @interface SigConfrimViewController ()
 
@@ -34,6 +35,19 @@
     
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+}
+
+- (IBAction)confirmSelected:(id)sender {
+    HousingAppDelegate *appDelegate = [[UIApplication sharedApplication]delegate];
+    appDelegate.tempSig = nil;  //clearing unencrypted version in delegate
+    NSData *imageToEncrypt = UIImagePNGRepresentation(self.sigToSave.image);
+    NSError *error;
+    //encrypting current image and saving in app delegate
+    appDelegate.encryptedSignature = [RNEncryptor encryptData:imageToEncrypt
+                                                 withSettings:kRNCryptorAES256Settings
+                                                     password:@"UberSecretPassword"
+                                                        error:&error];
+    self.sigToSave.image = nil;  //clearing unencrypted version in view
 }
 
 - (void)didReceiveMemoryWarning

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		272AA48518B5C6950068E023 /* SurveyMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 272AA48418B5C6950068E023 /* SurveyMenuViewController.m */; };
+		272AA48818B5C6B30068E023 /* TestEncryptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 272AA48718B5C6B30068E023 /* TestEncryptionViewController.m */; };
+		272AA48A18B5CDFE0068E023 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272AA48918B5CDFE0068E023 /* Security.framework */; };
 		27642FEB18A351C900277F24 /* SigConfrimViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27642FEA18A351C900277F24 /* SigConfrimViewController.m */; };
 		27642FF018A47E6500277F24 /* bg-signature-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 27642FEC18A47E6500277F24 /* bg-signature-landscape.png */; };
 		27642FF118A47E6500277F24 /* bg-signature-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27642FED18A47E6500277F24 /* bg-signature-landscape@2x.png */; };
@@ -35,9 +38,16 @@
 		948CBC5116FC8BA000DD4E2B /* HousingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 948CBC5016FC8BA000DD4E2B /* HousingViewController.m */; };
 		948CBC5D16FC939F00DD4E2B /* housing1000logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 948CBC5C16FC939F00DD4E2B /* housing1000logo.png */; };
 		94922FEC17027A3000670EB7 /* Fields.txt in Resources */ = {isa = PBXBuildFile; fileRef = 94922FEB17027A3000670EB7 /* Fields.txt */; };
+		A413376FD63940399D7507BB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 259724FD44CA438283C7C306 /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		259724FD44CA438283C7C306 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		272AA48318B5C6950068E023 /* SurveyMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyMenuViewController.h; sourceTree = "<group>"; };
+		272AA48418B5C6950068E023 /* SurveyMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyMenuViewController.m; sourceTree = "<group>"; };
+		272AA48618B5C6B30068E023 /* TestEncryptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestEncryptionViewController.h; sourceTree = "<group>"; };
+		272AA48718B5C6B30068E023 /* TestEncryptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestEncryptionViewController.m; sourceTree = "<group>"; };
+		272AA48918B5CDFE0068E023 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		27642FE918A351C900277F24 /* SigConfrimViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SigConfrimViewController.h; sourceTree = "<group>"; };
 		27642FEA18A351C900277F24 /* SigConfrimViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SigConfrimViewController.m; sourceTree = "<group>"; };
 		27642FEC18A47E6500277F24 /* bg-signature-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-signature-landscape.png"; sourceTree = "<group>"; };
@@ -60,6 +70,7 @@
 		3FFE30B218A487B5004A737D /* ClientSurveyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientSurveyViewController.m; sourceTree = "<group>"; };
 		3FFE30B418B091B8004A737D /* SurveyQuestionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyQuestionTableViewCell.h; sourceTree = "<group>"; };
 		3FFE30B518B091B8004A737D /* SurveyQuestionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyQuestionTableViewCell.m; sourceTree = "<group>"; };
+		4488740D6DDB403186C171EA /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		940CA4ED1702894400FA5C87 /* blue_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_button.png; sourceTree = "<group>"; };
 		940CA4EF1702895000FA5C87 /* orange_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = orange_button.png; sourceTree = "<group>"; };
 		948CBC3116FC8BA000DD4E2B /* Housing1000.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Housing1000.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -87,9 +98,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				272AA48A18B5CDFE0068E023 /* Security.framework in Frameworks */,
 				948CBC3516FC8BA000DD4E2B /* UIKit.framework in Frameworks */,
 				948CBC3716FC8BA000DD4E2B /* Foundation.framework in Frameworks */,
 				948CBC3916FC8BA000DD4E2B /* CoreGraphics.framework in Frameworks */,
+				A413376FD63940399D7507BB /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,6 +115,7 @@
 				948CBC3A16FC8BA000DD4E2B /* Housing1000 */,
 				948CBC3316FC8BA000DD4E2B /* Frameworks */,
 				948CBC3216FC8BA000DD4E2B /* Products */,
+				4488740D6DDB403186C171EA /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -116,9 +130,11 @@
 		948CBC3316FC8BA000DD4E2B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				272AA48918B5CDFE0068E023 /* Security.framework */,
 				948CBC3416FC8BA000DD4E2B /* UIKit.framework */,
 				948CBC3616FC8BA000DD4E2B /* Foundation.framework */,
 				948CBC3816FC8BA000DD4E2B /* CoreGraphics.framework */,
+				259724FD44CA438283C7C306 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -152,6 +168,10 @@
 				94922FEB17027A3000670EB7 /* Fields.txt */,
 				3FFE3099188E08DC004A737D /* PhotoViewController.h */,
 				3FFE309A188E08DC004A737D /* PhotoViewController.m */,
+				272AA48318B5C6950068E023 /* SurveyMenuViewController.h */,
+				272AA48418B5C6950068E023 /* SurveyMenuViewController.m */,
+				272AA48618B5C6B30068E023 /* TestEncryptionViewController.h */,
+				272AA48718B5C6B30068E023 /* TestEncryptionViewController.m */,
 			);
 			path = Housing1000;
 			sourceTree = "<group>";
@@ -191,9 +211,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 948CBC5416FC8BA000DD4E2B /* Build configuration list for PBXNativeTarget "Housing1000" */;
 			buildPhases = (
+				8E9B03369BE74D9099543A3F /* Check Pods Manifest.lock */,
 				948CBC2D16FC8BA000DD4E2B /* Sources */,
 				948CBC2E16FC8BA000DD4E2B /* Frameworks */,
 				948CBC2F16FC8BA000DD4E2B /* Resources */,
+				0B9FC29D85624C9CB0919CDF /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -254,6 +276,39 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		0B9FC29D85624C9CB0919CDF /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8E9B03369BE74D9099543A3F /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		948CBC2D16FC8BA000DD4E2B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -268,6 +323,8 @@
 				3FFE30AF18A487A5004A737D /* SurveyInfo.m in Sources */,
 				948CBC4516FC8BA000DD4E2B /* HousingAppDelegate.m in Sources */,
 				3F5BBA7618501AFD00156CAD /* SignatureViewController.m in Sources */,
+				272AA48818B5C6B30068E023 /* TestEncryptionViewController.m in Sources */,
+				272AA48518B5C6950068E023 /* SurveyMenuViewController.m in Sources */,
 				3FFE309B188E08DC004A737D /* PhotoViewController.m in Sources */,
 				3F5BBA6D184EF87900156CAD /* SurveyViewController.m in Sources */,
 				948CBC5116FC8BA000DD4E2B /* HousingViewController.m in Sources */,
@@ -354,6 +411,7 @@
 		};
 		948CBC5516FC8BA000DD4E2B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4488740D6DDB403186C171EA /* Pods.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Housing1000/Housing1000-Prefix.pch";
@@ -365,6 +423,7 @@
 		};
 		948CBC5616FC8BA000DD4E2B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4488740D6DDB403186C171EA /* Pods.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Housing1000/Housing1000-Prefix.pch";

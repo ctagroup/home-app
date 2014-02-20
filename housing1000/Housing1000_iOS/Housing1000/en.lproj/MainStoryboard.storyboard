@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="bgm-YS-kHp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="bgm-YS-kHp">
     <dependencies>
         <deployment defaultVersion="1552" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
@@ -229,7 +229,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1uu-zk-1V3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3987" y="941"/>
+            <point key="canvasLocation" x="4002" y="190"/>
         </scene>
         <!--Survey View Controller-->
         <scene sceneID="YMC-SC-RNx">
@@ -322,6 +322,49 @@
             </objects>
             <point key="canvasLocation" x="2039" y="941"/>
         </scene>
+        <!--Test Encryption View Controller-->
+        <scene sceneID="RUj-d8-3tz">
+            <objects>
+                <viewController id="JrR-fa-hdL" customClass="TestEncryptionViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="dAE-SK-ImN"/>
+                        <viewControllerLayoutGuide type="bottom" id="cCt-e5-CzB"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="tRF-WD-r32">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="51u-UY-zz0">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="etI-zQ-0v0">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="e3L-wW-tXJ">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="MBk-ka-wGU">
+                                <rect key="frame" x="233" y="5" width="71" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <state key="normal" title="Decrypt">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="decryptImage:" destination="JrR-fa-hdL" eventType="touchUpInside" id="i3V-Iz-jNo"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="decryptButton" destination="e3L-wW-tXJ" id="59O-DS-yuw"/>
+                        <outlet property="unencryptedImage" destination="51u-UY-zz0" id="PWL-Lh-MkU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gZD-7p-sAz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4002" y="1684"/>
+        </scene>
         <!--Photo View Controller - Photo-->
         <scene sceneID="u2c-e8-yBS">
             <objects>
@@ -370,7 +413,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ude-Am-RTq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3987" y="1705"/>
+            <point key="canvasLocation" x="4002" y="941"/>
         </scene>
         <!--Signature View Controller - Signature-->
         <scene sceneID="6Fe-mS-bmc">
@@ -455,7 +498,8 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="D1v-NU-X5r" kind="push" id="ZNo-8U-dVa"/>
+                                    <action selector="confirmSelected:" destination="EQv-LT-Bzv" eventType="touchUpInside" id="ueb-jA-Mc8"/>
+                                    <segue destination="D1v-NU-X5r" kind="push" id="iUM-gh-e8i"/>
                                 </connections>
                             </button>
                         </barButtonItem>
@@ -469,10 +513,10 @@
             </objects>
             <point key="canvasLocation" x="2945" y="941"/>
         </scene>
-        <!--View Controller - Survey Menu-->
+        <!--Survey Menu View Controller - Survey Menu-->
         <scene sceneID="Itp-Fk-oaj">
             <objects>
-                <viewController id="D1v-NU-X5r" sceneMemberID="viewController">
+                <viewController id="D1v-NU-X5r" customClass="SurveyMenuViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="o3E-f9-M4t"/>
                         <viewControllerLayoutGuide type="bottom" id="ZCT-1X-W1a"/>
@@ -513,14 +557,36 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <segue destination="JrR-fa-hdL" kind="push" id="Zan-Tw-fhY"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Survey Menu" id="XLz-de-RaS">
                         <barButtonItem key="backBarButtonItem" title="Menu" id="RR7-1k-Rbj"/>
+                        <barButtonItem key="leftBarButtonItem" style="plain" id="B0H-96-sPl">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Wda-fD-9dc">
+                                <rect key="frame" x="16" y="5" width="71" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <state key="normal" title="Signature">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="goBack:" destination="D1v-NU-X5r" eventType="touchUpInside" id="TPC-uM-akz"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+                    <connections>
+                        <outlet property="back" destination="B0H-96-sPl" id="4Wg-Ji-49g"/>
+                        <outlet property="photoButton" destination="jvx-qW-a8N" id="1R6-g5-9A8"/>
+                        <outlet property="submitButton" destination="Ds9-08-09E" id="w3U-S1-2hZ"/>
+                        <outlet property="surveyButton" destination="3oi-p1-VkZ" id="PQx-on-5Fu"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gDU-q4-HLX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
