@@ -49,7 +49,7 @@ public class SurveyListActivity extends ActionBarActivity implements OnGetSurvey
     public boolean onCreateOptionsMenu(Menu menu) {
         
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.survey_list, menu);
+        getMenuInflater().inflate(R.menu.menu_survey_list, menu);
         return true;
     }
 
@@ -163,9 +163,9 @@ public class SurveyListActivity extends ActionBarActivity implements OnGetSurvey
             chosenSurveyListing.setJson(surveyJson);
 
             Intent launchSurvey = new Intent(SurveyListActivity.this,
-                    ClientInfoActivity_Dynamic_Api.class);
+                    SurveyFlowActivity.class);
 
-            launchSurvey.putExtra(ClientInfoActivity_Dynamic_Api.EXTRA_SURVEY, chosenSurveyListing);
+            launchSurvey.putExtra(SurveyFlowActivity.EXTRA_SURVEY, chosenSurveyListing);
             startActivity(launchSurvey);
         }
         else

@@ -10,8 +10,8 @@ public class ImageHelper {
     {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
-        int newWidth = 200;
-        int newHeight = 120;
+        int newWidth = 600;
+        int newHeight = 360;
 
         float scaleWidth = ((float) newWidth) / width;
         float scaleHeight = ((float) newHeight) / height;
@@ -25,7 +25,6 @@ public class ImageHelper {
         else
             matrix.postScale(scaleWidth, scaleHeight);
 
-        Bitmap resizedBitmap = Bitmap.createBitmap(bitmap,0,0,width,height,matrix,true);
-        return resizedBitmap;
+        return Bitmap.createBitmap(bitmap,0,0,width,height,matrix,true);
     }
 }
