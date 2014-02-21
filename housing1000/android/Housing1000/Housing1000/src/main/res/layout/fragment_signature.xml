@@ -31,7 +31,8 @@
             android:id="@+id/signatureLayout"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/disclaimerTextView">
+            android:layout_below="@+id/disclaimerTextView"
+            android:gravity="center_horizontal">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -41,16 +42,18 @@
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
                 android:contentDescription="Signature Image"
-                android:minHeight="60dp" />
+                android:minHeight="60dp"
+                android:layout_centerHorizontal="true" />
 
-            <View android:layout_width="match_parent"
+            <View android:layout_width="fill_parent"
                 android:layout_height="5dp"
                 android:id="@+id/signatureLine"
                 android:background="@color/Black"
                 android:visibility="visible"
                 android:layout_alignParentBottom="false"
                 android:layout_toRightOf="@+id/signatureXTextView"
-                android:layout_alignBottom="@+id/signatureImageView" />
+                android:layout_alignBottom="@+id/signatureImageView"
+                android:layout_alignParentEnd="false" />
 
             <TextView
                 android:layout_width="wrap_content"

@@ -12,4 +12,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/surveysListView" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="It appears that there are no surveys. :(\nPlease try again."
+        android:id="@+id/noSurveysTextView"
+        android:gravity="center"
+        android:textAlignment="center" />
 </RelativeLayout>

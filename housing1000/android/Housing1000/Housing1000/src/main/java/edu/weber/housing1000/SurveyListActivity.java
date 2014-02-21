@@ -24,7 +24,7 @@ public class SurveyListActivity extends ActionBarActivity implements OnGetSurvey
 
     private ProgressDialog progressDialog;
 
-    private ListView fragmentListView;
+    private ListView surveysListView;
     private List<SurveyListing> surveyListings;
     public ArrayAdapter<SurveyListing> surveyAdapter;
 
@@ -44,29 +44,32 @@ public class SurveyListActivity extends ActionBarActivity implements OnGetSurvey
         getSurveyList();
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_survey_list, menu);
-        return true;
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId())
+        {
+            case R.id.action_refresh:
+                getSurveyList();
+                return true;
+            default:
+                break;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
-    private void getSurveyList()
+    public void getSurveyList()
     {
+        if (surveysListView != null)
+            surveysListView.setAdapter(null);
+
         // Start the loading dialog
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please Wait");
@@ -92,6 +95,8 @@ public class SurveyListActivity extends ActionBarActivity implements OnGetSurvey
     public void onGetSurveyListingsTaskCompleted(List<SurveyListing> surveyListings) {
         progressDialog.dismiss();
 
+        SurveyListFragment fragment = (SurveyListFragment) getSupportFragmentManager().getFragments().get(0);
+
         this.surveyListings = surveyListings;
 
         if (surveyListings.size() > 0)
@@ -101,22 +106,20 @@ public class SurveyListActivity extends ActionBarActivity implements OnGetSurvey
                     android.R.layout.simple_list_item_1,
                     surveyListings );
 
-            fragmentListView.setAdapter(surveyAdapter);
+            surveysListView.setAdapter(surveyAdapter);
+            fragment.showNoSurveys(false);
         }
         else
         {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("No Surveys...");
-            builder.setMessage("It appears that there are no surveys.");
-            builder.show();
+            fragment.showNoSurveys(true);
         }
     }
 
     @Override
     public void setListView(ListView listView) {
-        fragmentListView = listView;
+        surveysListView = listView;
 
-        fragmentListView.setOnItemClickListener(surveyClickListener);
+        surveysListView.setOnItemClickListener(surveyClickListener);
     }
 
     /**

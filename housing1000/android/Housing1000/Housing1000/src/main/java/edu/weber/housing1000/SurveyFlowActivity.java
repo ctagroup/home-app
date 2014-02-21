@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -21,11 +22,14 @@ import com.google.common.hash.HashCode;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 
+import java.io.File;
+
 import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Fragments.PhotosFragment;
 import edu.weber.housing1000.Fragments.SignatureFragment;
 import edu.weber.housing1000.Fragments.SurveyAppFragment;
 import edu.weber.housing1000.Fragments.SurveyFragment;
+import edu.weber.housing1000.Helpers.FileHelper;
 import edu.weber.housing1000.Helpers.GPSTracker;
 import edu.weber.housing1000.Helpers.REST.PostImage;
 import edu.weber.housing1000.Helpers.REST.PostResponses;
@@ -39,9 +43,12 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
     boolean isSignatureSubmitted;
     boolean isPhotoSubmitted;
 
+    boolean isSignatureCaptured;
+
+    PagerSlidingTabStrip mTabs;                         //Tabs of the view
     SectionsPagerAdapter mSectionsPagerAdapter;         //Keeps track of the fragments
     ViewPager.OnPageChangeListener mPageChangeListener; //Listens for page changes
-    ViewPager mViewPager;                               //View object that holds the fragments
+    CustomViewPager mViewPager;                         //View object that holds the fragments
 
     private SurveyListing surveyListing;
     private ProgressDialog progressDialog;
@@ -69,6 +76,24 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
         submittingSurvey = value;
     }
 
+    public boolean getIsSignatureCaptured() {
+        return isSignatureCaptured;
+    }
+
+    public void setIsSignatureCaptured(boolean value) {
+        isSignatureCaptured = value;
+        if (value && mTabs.getVisibility() != View.VISIBLE)
+        {
+            mTabs.setVisibility(View.VISIBLE);
+            mViewPager.setCurrentItem(1);
+        }
+        else if (!value)
+        {
+            mTabs.setVisibility(View.GONE);
+            mViewPager.setCurrentItem(0);
+        }
+    }
+
     public SurveyListing getSurveyListing() {
         return surveyListing;
     }
@@ -94,7 +119,7 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager = (CustomViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         mPageChangeListener = new ViewPager.OnPageChangeListener() {
@@ -121,12 +146,13 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
         mViewPager.setOnPageChangeListener(mPageChangeListener);
 
         // Bind the tabs to the ViewPager
-        PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        tabs.setShouldExpand(true);
-        tabs.setViewPager(mViewPager);
+        mTabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        mTabs.setShouldExpand(true);
+        mTabs.setViewPager(mViewPager);
+        mTabs.setVisibility(View.GONE);
 
         // Set the page change listener for the tabs
-        tabs.setOnPageChangeListener(mPageChangeListener);
+        mTabs.setOnPageChangeListener(mPageChangeListener);
 
         // Force a page change update
         mViewPager.setCurrentItem(1);
@@ -196,6 +222,15 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+
+                // Delete the folder containing any related files
+                File surveyDir = new File(FileHelper.getAbsoluteFilePath(getFolderHash(), ""));
+                if (surveyDir.exists())
+                {
+                    Log.d("DELETING SURVEY DIR", surveyDir.getAbsolutePath());
+                    FileHelper.deleteAllFiles(surveyDir);
+                }
+
                 finish();
             }
         });

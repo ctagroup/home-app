@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.view.ActionMode;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -89,15 +90,19 @@ public class PhotosFragment extends SurveyAppFragment {
         else
             imageAdapter = new ImageAdapter(myActivity);
         photosGridView.setAdapter(imageAdapter);
+        photosGridView.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
+        photosGridView.setMultiChoiceModeListener(new MultiChoiceListener());
 
         if (imageAdapter.getCount() > 0)
             noPhotosTextView.setVisibility(View.GONE);
 
-        photosGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Toast.makeText(myActivity, "" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
+//        photosGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+////                v.setSelected(!v.isSelected());
+////                v.setPressed(!v.isPressed());
+//                //Toast.makeText(myActivity, "" + position, Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         return rootView;
     }
@@ -137,6 +142,7 @@ public class PhotosFragment extends SurveyAppFragment {
     private void dispatchTakePictureIntent(int actionCode) {
         if(Utils.isIntentAvailable(getActivity().getApplicationContext(), MediaStore.ACTION_IMAGE_CAPTURE)){
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
             startActivityForResult(takePictureIntent, actionCode);
         }
     }
@@ -176,6 +182,43 @@ public class PhotosFragment extends SurveyAppFragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public class MultiChoiceListener implements GridView.MultiChoiceModeListener {
+        @Override
+        public void onItemCheckedStateChanged(android.view.ActionMode mode, int position, long id, boolean checked) {
+            int selectCount = photosGridView.getCheckedItemCount();
+            switch (selectCount) {
+                case 1:
+                    mode.setSubtitle("One item selected");
+                    break;
+                default:
+                    mode.setSubtitle("" + selectCount + " items selected");
+                    break;
+            }
+        }
+
+        @Override
+        public boolean onCreateActionMode(android.view.ActionMode mode, Menu menu) {
+            mode.setTitle("Select Items");
+            mode.setSubtitle("One item selected");
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(android.view.ActionMode mode, Menu menu) {
+            return true;
+        }
+
+        @Override
+        public boolean onActionItemClicked(android.view.ActionMode mode, MenuItem item) {
+            return true;
+        }
+
+        @Override
+        public void onDestroyActionMode(android.view.ActionMode mode) {
+
         }
     }
 
