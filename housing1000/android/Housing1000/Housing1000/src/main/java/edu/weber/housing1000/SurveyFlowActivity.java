@@ -3,7 +3,9 @@ package edu.weber.housing1000;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -12,6 +14,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.google.common.hash.HashCode;
@@ -23,6 +26,7 @@ import edu.weber.housing1000.Fragments.PhotosFragment;
 import edu.weber.housing1000.Fragments.SignatureFragment;
 import edu.weber.housing1000.Fragments.SurveyAppFragment;
 import edu.weber.housing1000.Fragments.SurveyFragment;
+import edu.weber.housing1000.Helpers.GPSTracker;
 import edu.weber.housing1000.Helpers.REST.PostImage;
 import edu.weber.housing1000.Helpers.REST.PostResponses;
 
@@ -43,6 +47,7 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
     private ProgressDialog progressDialog;
     private String folderHash;                          //The name of the survey folder (for files)
     private String clientSurveyId;                      //Client survey id for image submission
+    private Location currentLocation;
 
     public ProgressDialog getProgressDialog() {
         return progressDialog;
@@ -77,6 +82,7 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
         if (savedInstanceState != null) {
             surveyListing = (SurveyListing) savedInstanceState.getSerializable("surveyListing");
             folderHash = savedInstanceState.getString("folderHash");
+            currentLocation = savedInstanceState.getParcelable("currentLocation");
         } else {
             // Grab the survey listing from the extras
             surveyListing = (SurveyListing) getIntent().getSerializableExtra(EXTRA_SURVEY);
@@ -134,6 +140,8 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
         // Store the survey listing and folder hash
         outState.putSerializable("surveyListing", surveyListing);
         outState.putString("folderHash", folderHash);
+        if (currentLocation != null)
+            outState.putParcelable("currentLocation", currentLocation);
     }
 
     @Override
@@ -206,6 +214,29 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
         folderHash = hc.toString();
 
         Log.d("FOLDER HASH", folderHash);
+    }
+
+    public Location getLocation() {
+        if (currentLocation == null)
+        {
+            GPSTracker gps = new GPSTracker(this);
+
+            if(gps.canGetLocation()) {
+                double latitude = gps.getLatitude();
+                double longitude = gps.getLongitude();
+
+                Toast.makeText(this,
+                        "Your Location is - \nLat: " + latitude + "\nLon: " + longitude,
+                        Toast.LENGTH_LONG).show();
+                gps.stopUsingGPS();
+            } else {
+                gps.showSettingsAlert();
+            }
+
+            return gps.getLocation();
+        }
+
+        return currentLocation;
     }
 
     /**

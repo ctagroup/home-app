@@ -54,7 +54,6 @@ public class SurveyFragment extends SurveyAppFragment {
     private RelativeLayout rootLayout;  // Root layout of the fragment
     private SurveyListing surveyListing;
     private SurveyResponse surveyResponse;
-    GPSTracker gps;
 
     public SurveyFragment() {
     }
@@ -301,8 +300,7 @@ public class SurveyFragment extends SurveyAppFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                //saveAnswers();
-                getLocation();
+                saveAnswers();
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -396,32 +394,13 @@ public class SurveyFragment extends SurveyAppFragment {
         return responses;
     }
 
-    // TODO: FINISH THIS
-    public Location getLocation() {
-        gps = new GPSTracker(SurveyFragment.super.getActivity());
-
-        if(gps.canGetLocation()) {
-            double latitude = gps.getLatitude();
-            double longitude = gps.getLongitude();
-
-            Toast.makeText(getActivity(),
-                    "Your Location is - \nLat: " + latitude + "\nLon: " + longitude,
-                    Toast.LENGTH_LONG).show();
-            gps.stopUsingGPS();
-        } else {
-            gps.showSettingsAlert();
-        }
-
-        return gps.getLocation();
-    }
-
     /**
      * Serializes the surveyResponse to JSON
      *
      * @return Survey response in JSON form
      */
     private String saveSurveyResponse() {
-        Client client = new Client(survey.getClientQuestions(), getLocation());
+        Client client = new Client(survey.getClientQuestions(), myActivity.getLocation());
         ArrayList<Response> responses = generateResponses(survey.getSurveyQuestions());
         surveyResponse = new SurveyResponse(surveyListing, client, responses);
 
