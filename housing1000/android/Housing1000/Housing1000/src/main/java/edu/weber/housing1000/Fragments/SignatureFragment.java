@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import edu.weber.housing1000.Helpers.REST.PostResponses;
 import edu.weber.housing1000.R;
@@ -27,7 +29,8 @@ public class SignatureFragment extends SurveyAppFragment {
     SurveyFlowActivity myActivity;
 
     ImageView signatureImageView;
-    ImageButton signHereImageButton;
+    RelativeLayout signatureLayout;
+    TextView tapHereToSignTextView;
 
     byte[] signatureImageBytes;
     String signaturePath;
@@ -75,9 +78,10 @@ public class SignatureFragment extends SurveyAppFragment {
         View rootView = inflater.inflate(R.layout.fragment_signature, container, false);
 
         signatureImageView = (ImageView) rootView.findViewById(R.id.signatureImageView);
-        signHereImageButton = (ImageButton) rootView.findViewById(R.id.signHereImageButton);
+        signatureLayout = (RelativeLayout) rootView.findViewById(R.id.signatureLayout);
+        tapHereToSignTextView = (TextView) rootView.findViewById(R.id.tapHereToSignTextView);
 
-        signHereImageButton.setOnClickListener(new View.OnClickListener() {
+        signatureLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(myActivity, SignatureActivity.class);
@@ -120,7 +124,7 @@ public class SignatureFragment extends SurveyAppFragment {
         Bitmap signature = BitmapFactory.decodeByteArray(signatureImageBytes, 0, signatureImageBytes.length);
 
         signatureImageView.setImageBitmap(signature);
-        signHereImageButton.setImageResource(R.drawable.signature_line);
+        tapHereToSignTextView.setVisibility(View.GONE);
     }
 
     public void submitSignature() {

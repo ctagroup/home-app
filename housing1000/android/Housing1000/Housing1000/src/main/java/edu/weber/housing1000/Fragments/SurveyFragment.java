@@ -3,9 +3,7 @@ package edu.weber.housing1000.Fragments;
 import android.animation.LayoutTransition;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,7 +34,6 @@ import edu.weber.housing1000.Data.Response;
 import edu.weber.housing1000.Data.Survey;
 import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Data.SurveyResponse;
-import edu.weber.housing1000.Helpers.GPSTracker;
 import edu.weber.housing1000.Helpers.REST.PostResponses;
 import edu.weber.housing1000.JSONParser;
 import edu.weber.housing1000.Questions.Question;
@@ -300,6 +297,12 @@ public class SurveyFragment extends SurveyAppFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+
+                //TODO: REMOVE GPS TOAST
+                Toast.makeText(myActivity,
+                        "Your Location is - \nLat: " + myActivity.getLocation().getLongitude() + "\nLon: " + myActivity.getLocation().getLatitude(),
+                        Toast.LENGTH_LONG).show();
+
                 saveAnswers();
             }
         });

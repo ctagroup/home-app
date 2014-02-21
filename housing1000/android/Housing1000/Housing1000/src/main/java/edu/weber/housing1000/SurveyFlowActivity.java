@@ -222,12 +222,6 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
             GPSTracker gps = new GPSTracker(this);
 
             if(gps.canGetLocation()) {
-                double latitude = gps.getLatitude();
-                double longitude = gps.getLongitude();
-
-                Toast.makeText(this,
-                        "Your Location is - \nLat: " + latitude + "\nLon: " + longitude,
-                        Toast.LENGTH_LONG).show();
                 gps.stopUsingGPS();
             } else {
                 gps.showSettingsAlert();
