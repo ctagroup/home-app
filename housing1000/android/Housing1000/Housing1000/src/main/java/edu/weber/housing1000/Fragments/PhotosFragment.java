@@ -203,6 +203,7 @@ public class PhotosFragment extends SurveyAppFragment {
         public boolean onCreateActionMode(android.view.ActionMode mode, Menu menu) {
             mode.setTitle("Select Items");
             mode.setSubtitle("One item selected");
+            mode.getMenuInflater().inflate(R.menu.menu_actionmode_photo, menu);
             return true;
         }
 
@@ -213,6 +214,20 @@ public class PhotosFragment extends SurveyAppFragment {
 
         @Override
         public boolean onActionItemClicked(android.view.ActionMode mode, MenuItem item) {
+            switch (item.getItemId())
+            {
+                case R.id.action_delete_photo:
+                    long[] selected = photosGridView.getCheckedItemIds();
+                    Log.d("SELECTED IMAGE COUNT", String.valueOf(photosGridView.getCheckedItemCount()));
+                    for (long id : selected)
+                    {
+                        Log.d("REMOVING IMAGE", String.valueOf(id));
+                        imageAdapter.removeImagePath(id);
+                    }
+                    mode.finish();
+                    imageAdapter.notifyDataSetChanged();
+                    break;
+            }
             return true;
         }
 

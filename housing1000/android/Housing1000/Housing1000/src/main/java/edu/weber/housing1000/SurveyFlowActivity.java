@@ -77,21 +77,23 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
     }
 
     public boolean getIsSignatureCaptured() {
+        if (isSignatureCaptured && mTabs.getVisibility() != View.VISIBLE)
+        {
+            mTabs.setVisibility(View.VISIBLE);
+        }
+        else if (!isSignatureCaptured)
+        {
+            mTabs.setVisibility(View.GONE);
+            mViewPager.setCurrentItem(0);
+        }
+
         return isSignatureCaptured;
     }
 
     public void setIsSignatureCaptured(boolean value) {
         isSignatureCaptured = value;
-        if (value && mTabs.getVisibility() != View.VISIBLE)
-        {
-            mTabs.setVisibility(View.VISIBLE);
-            mViewPager.setCurrentItem(1);
-        }
-        else if (!value)
-        {
-            mTabs.setVisibility(View.GONE);
-            mViewPager.setCurrentItem(0);
-        }
+
+        getIsSignatureCaptured();
     }
 
     public SurveyListing getSurveyListing() {
@@ -108,6 +110,7 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
             surveyListing = (SurveyListing) savedInstanceState.getSerializable("surveyListing");
             folderHash = savedInstanceState.getString("folderHash");
             currentLocation = savedInstanceState.getParcelable("currentLocation");
+            isSignatureCaptured = savedInstanceState.getBoolean("isSignatureCaptured");
         } else {
             // Grab the survey listing from the extras
             surveyListing = (SurveyListing) getIntent().getSerializableExtra(EXTRA_SURVEY);
@@ -149,7 +152,6 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
         mTabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         mTabs.setShouldExpand(true);
         mTabs.setViewPager(mViewPager);
-        mTabs.setVisibility(View.GONE);
 
         // Set the page change listener for the tabs
         mTabs.setOnPageChangeListener(mPageChangeListener);
@@ -157,6 +159,8 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
         // Force a page change update
         mViewPager.setCurrentItem(1);
         mViewPager.setCurrentItem(0);
+
+        getIsSignatureCaptured();
     }
 
     @Override
@@ -168,6 +172,7 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
         outState.putString("folderHash", folderHash);
         if (currentLocation != null)
             outState.putParcelable("currentLocation", currentLocation);
+        outState.putBoolean("isSignatureCaptured", isSignatureCaptured);
     }
 
     @Override
@@ -273,6 +278,11 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
+        // Storing these in the adapter instead of just newing them up in getItem so we can call
+        // any methods we might need down the road.
+        SignatureFragment signatureFragment;
+        PhotosFragment photosFragment;
+        SurveyFragment surveyFragment;
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -283,11 +293,20 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
             // getItem is called to instantiate the fragment for the given page.
             switch (position) {
                 case 0:
-                    return new SignatureFragment("Signature", "Disclaimer");
+                    if (signatureFragment == null)
+                        signatureFragment = new SignatureFragment("Signature", "Disclaimer");
+
+                    return signatureFragment;
                 case 1:
-                    return new PhotosFragment("Photos", "Client Photo(s)");
+                    if (photosFragment == null)
+                        photosFragment = new PhotosFragment("Photos", "Client Photo(s)");
+
+                    return photosFragment;
                 case 2:
-                    return new SurveyFragment("Survey", SurveyFlowActivity.this.surveyListing.getTitle());
+                    if (surveyFragment == null)
+                        surveyFragment = new SurveyFragment("Survey", SurveyFlowActivity.this.surveyListing.getTitle());
+
+                    return surveyFragment;
                 default:
                     return null;
             }

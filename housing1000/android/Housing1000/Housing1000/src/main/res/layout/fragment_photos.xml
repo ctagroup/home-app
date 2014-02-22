@@ -6,12 +6,12 @@
     android:padding="@dimen/margin_medium">
 
     <GridView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:id="@+id/photosGridView"
         android:choiceMode="multipleChoiceModal"
         android:numColumns="1"
-        android:stackFromBottom="true"
+        android:stackFromBottom="false"
         android:drawSelectorOnTop="true"
         android:focusable="true" />
 

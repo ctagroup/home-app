@@ -40,6 +40,14 @@ public class ImageAdapter extends BaseAdapter {
         images.add(path);
     }
 
+    public void removeImagePath(String path) {
+        images.remove(path);
+    }
+
+    public void removeImagePath(long index) {
+        images.remove(index);
+    }
+
     public int getCount() {
         return images.size();
     }
