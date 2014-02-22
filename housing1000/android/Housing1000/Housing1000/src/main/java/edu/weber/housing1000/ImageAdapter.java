@@ -40,11 +40,12 @@ public class ImageAdapter extends BaseAdapter {
         images.add(path);
     }
 
-    public void removeImagePath(String path) {
+    public void removeImage(String path) {
         images.remove(path);
     }
 
-    public void removeImagePath(long index) {
+    public void removeImage(int index) {
+        FileHelper.deleteAllFiles(new File(images.get(index)));
         images.remove(index);
     }
 

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.view.ActionMode;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -217,15 +218,22 @@ public class PhotosFragment extends SurveyAppFragment {
             switch (item.getItemId())
             {
                 case R.id.action_delete_photo:
-                    long[] selected = photosGridView.getCheckedItemIds();
+                    SparseBooleanArray selected = photosGridView.getCheckedItemPositions();
                     Log.d("SELECTED IMAGE COUNT", String.valueOf(photosGridView.getCheckedItemCount()));
-                    for (long id : selected)
+                    for (int i = 0; i < selected.size(); i++)
                     {
-                        Log.d("REMOVING IMAGE", String.valueOf(id));
-                        imageAdapter.removeImagePath(id);
+                        if (selected.get(i))
+                        {
+                            Log.d("REMOVING IMAGE", String.valueOf(i));
+                            imageAdapter.removeImage(i);
+                        }
                     }
                     mode.finish();
                     imageAdapter.notifyDataSetChanged();
+                    if (imageAdapter.getCount() == 0)
+                    {
+                        noPhotosTextView.setVisibility(View.VISIBLE);
+                    }
                     break;
             }
             return true;
