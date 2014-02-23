@@ -3,6 +3,7 @@ package edu.weber.housing1000.Fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.view.ActionMode;
@@ -150,9 +151,10 @@ public class PhotosFragment extends SurveyAppFragment {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == TAKE_PICTURE) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            Bitmap sPhoto = ImageHelper.ScaleImage(photo);
             try {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                Bitmap sPhoto = ImageHelper.ScaleImage(photo);
+
                 // Set up the file names
                 String imageName = "photo_" + String.valueOf(imageAdapter.getCount()) + ".jpg";
                 String encryptedName = "photo_" + String.valueOf(imageAdapter.getCount()) + ".secure";
@@ -222,10 +224,10 @@ public class PhotosFragment extends SurveyAppFragment {
                     Log.d("SELECTED IMAGE COUNT", String.valueOf(photosGridView.getCheckedItemCount()));
                     for (int i = 0; i < selected.size(); i++)
                     {
-                        if (selected.get(i))
+                        if (selected.get(selected.keyAt(i)))
                         {
-                            Log.d("REMOVING IMAGE", String.valueOf(i));
-                            imageAdapter.removeImage(i);
+                            Log.d("REMOVING IMAGE", String.valueOf(selected.keyAt(i)));
+                            imageAdapter.removeImage(selected.keyAt(i));
                         }
                     }
                     mode.finish();

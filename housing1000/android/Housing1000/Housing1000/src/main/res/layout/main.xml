@@ -21,11 +21,11 @@
 
         <ImageView
             android:id="@+id/housing_logo"
-            android:layout_width="220dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/housing1000logo"
+            android:src="@drawable/icon_large"
             android:contentDescription="@string/description_housing_1000_logo"
             android:cropToPadding="false"
             android:adjustViewBounds="true"
