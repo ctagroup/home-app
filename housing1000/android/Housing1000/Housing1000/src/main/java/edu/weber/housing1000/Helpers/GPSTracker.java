@@ -34,10 +34,10 @@ public class GPSTracker extends Service implements LocationListener {
     double longitude; // longitude
 
     // The minimum distance to change Updates in meters
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1; // 1 meter
 
     // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
+    private static final long MIN_TIME_BW_UPDATES = 1000; // 1 second
 
     // Declaring a Location Manager
     protected LocationManager locationManager;
@@ -82,7 +82,7 @@ public class GPSTracker extends Service implements LocationListener {
                 }*/
                 // if GPS Enabled get lat/long using GPS Services
                 if (isGPSEnabled) {
-                    //if (location == null) {
+                    if (location == null) {
                         locationManager.requestLocationUpdates(
                                 LocationManager.GPS_PROVIDER,
                                 MIN_TIME_BW_UPDATES,
@@ -91,12 +91,12 @@ public class GPSTracker extends Service implements LocationListener {
                         if (locationManager != null) {
                             location = locationManager
                                     .getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                            //if (location != null) {
+                            if (location != null) {
                                 latitude = location.getLatitude();
                                 longitude = location.getLongitude();
-                            //}
+                            }
                         }
-                   // }
+                    }
                 }
             }
 
@@ -201,5 +201,4 @@ public class GPSTracker extends Service implements LocationListener {
     public IBinder onBind(Intent arg0) {
         return null;
     }
-
 }
