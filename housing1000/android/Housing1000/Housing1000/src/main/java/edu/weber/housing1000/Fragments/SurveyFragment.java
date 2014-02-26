@@ -297,12 +297,6 @@ public class SurveyFragment extends SurveyAppFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-
-                //TODO: REMOVE GPS TOAST
-                Toast.makeText(myActivity,
-                        "Your Location is - \nLat: " + myActivity.getLocation().getLongitude() + "\nLon: " + myActivity.getLocation().getLatitude(),
-                        Toast.LENGTH_LONG).show();
-
                 saveAnswers();
             }
         });
