@@ -3,7 +3,6 @@ package edu.weber.housing1000;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -35,7 +34,6 @@ import edu.weber.housing1000.Fragments.SignatureFragment;
 import edu.weber.housing1000.Fragments.SurveyAppFragment;
 import edu.weber.housing1000.Fragments.SurveyFragment;
 import edu.weber.housing1000.Helpers.FileHelper;
-import edu.weber.housing1000.Helpers.GPSTracker;
 import edu.weber.housing1000.Helpers.REST.PostImage;
 import edu.weber.housing1000.Helpers.REST.PostResponses;
 
@@ -112,9 +110,6 @@ public class SurveyFlowActivity extends ActionBarActivity implements LocationLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey_flow);
-
-        Intent intent = new Intent(SurveyFlowActivity.this, GeolocationActivity.class);
-        startActivityForResult(intent,1);
 
         latitudeField  = (TextView) findViewById(R.id.latitudeCords);
         longitudeField = (TextView) findViewById(R.id.longitudeCords);
@@ -284,6 +279,12 @@ public class SurveyFlowActivity extends ActionBarActivity implements LocationLis
     }
 
     public Location getLocation() {
+        String lat = currentLocation.getLatitude() + "";
+        String lon = currentLocation.getLongitude() + "";
+        String msg = "Location Details: \nLatitude: " + lat + "\nLongitude: " + lon;
+
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+
         return currentLocation;
     }
 
