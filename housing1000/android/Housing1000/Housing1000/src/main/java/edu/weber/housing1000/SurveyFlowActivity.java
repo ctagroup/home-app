@@ -279,12 +279,19 @@ public class SurveyFlowActivity extends ActionBarActivity implements LocationLis
     }
 
     public Location getLocation() {
+        if(currentLocation == null)
+        {
+            Location falseLocation = new Location(LocationManager.GPS_PROVIDER);
+            falseLocation.setLatitude(0);
+            falseLocation.setLongitude(0);
+            currentLocation = falseLocation;
+        }
+
         String lat = currentLocation.getLatitude() + "";
         String lon = currentLocation.getLongitude() + "";
         String msg = "Location Details: \nLatitude: " + lat + "\nLongitude: " + lon;
 
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
-
         return currentLocation;
     }
 
