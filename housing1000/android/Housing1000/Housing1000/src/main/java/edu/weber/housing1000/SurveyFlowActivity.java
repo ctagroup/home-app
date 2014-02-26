@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -21,11 +22,14 @@ import com.google.common.hash.HashCode;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 
+import java.io.File;
+
 import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Fragments.PhotosFragment;
 import edu.weber.housing1000.Fragments.SignatureFragment;
 import edu.weber.housing1000.Fragments.SurveyAppFragment;
 import edu.weber.housing1000.Fragments.SurveyFragment;
+import edu.weber.housing1000.Helpers.FileHelper;
 import edu.weber.housing1000.Helpers.GPSTracker;
 import edu.weber.housing1000.Helpers.REST.PostImage;
 import edu.weber.housing1000.Helpers.REST.PostResponses;
@@ -39,9 +43,12 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
     boolean isSignatureSubmitted;
     boolean isPhotoSubmitted;
 
+    boolean isSignatureCaptured;
+
+    PagerSlidingTabStrip mTabs;                         //Tabs of the view
     SectionsPagerAdapter mSectionsPagerAdapter;         //Keeps track of the fragments
     ViewPager.OnPageChangeListener mPageChangeListener; //Listens for page changes
-    ViewPager mViewPager;                               //View object that holds the fragments
+    CustomViewPager mViewPager;                         //View object that holds the fragments
 
     private SurveyListing surveyListing;
     private ProgressDialog progressDialog;
@@ -69,6 +76,26 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
         submittingSurvey = value;
     }
 
+    public boolean getIsSignatureCaptured() {
+        if (isSignatureCaptured && mTabs.getVisibility() != View.VISIBLE)
+        {
+            mTabs.setVisibility(View.VISIBLE);
+        }
+        else if (!isSignatureCaptured)
+        {
+            mTabs.setVisibility(View.GONE);
+            mViewPager.setCurrentItem(0);
+        }
+
+        return isSignatureCaptured;
+    }
+
+    public void setIsSignatureCaptured(boolean value) {
+        isSignatureCaptured = value;
+
+        getIsSignatureCaptured();
+    }
+
     public SurveyListing getSurveyListing() {
         return surveyListing;
     }
@@ -83,6 +110,7 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
             surveyListing = (SurveyListing) savedInstanceState.getSerializable("surveyListing");
             folderHash = savedInstanceState.getString("folderHash");
             currentLocation = savedInstanceState.getParcelable("currentLocation");
+            isSignatureCaptured = savedInstanceState.getBoolean("isSignatureCaptured");
         } else {
             // Grab the survey listing from the extras
             surveyListing = (SurveyListing) getIntent().getSerializableExtra(EXTRA_SURVEY);
@@ -94,7 +122,7 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager = (CustomViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         mPageChangeListener = new ViewPager.OnPageChangeListener() {
@@ -121,16 +149,18 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
         mViewPager.setOnPageChangeListener(mPageChangeListener);
 
         // Bind the tabs to the ViewPager
-        PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        tabs.setShouldExpand(true);
-        tabs.setViewPager(mViewPager);
+        mTabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        mTabs.setShouldExpand(true);
+        mTabs.setViewPager(mViewPager);
 
         // Set the page change listener for the tabs
-        tabs.setOnPageChangeListener(mPageChangeListener);
+        mTabs.setOnPageChangeListener(mPageChangeListener);
 
         // Force a page change update
         mViewPager.setCurrentItem(1);
         mViewPager.setCurrentItem(0);
+
+        getIsSignatureCaptured();
     }
 
     @Override
@@ -142,6 +172,7 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
         outState.putString("folderHash", folderHash);
         if (currentLocation != null)
             outState.putParcelable("currentLocation", currentLocation);
+        outState.putBoolean("isSignatureCaptured", isSignatureCaptured);
     }
 
     @Override
@@ -196,6 +227,15 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+
+                // Delete the folder containing any related files
+                File surveyDir = new File(FileHelper.getAbsoluteFilePath(getFolderHash(), ""));
+                if (surveyDir.exists())
+                {
+                    Log.d("DELETING SURVEY DIR", surveyDir.getAbsolutePath());
+                    FileHelper.deleteAllFiles(surveyDir);
+                }
+
                 finish();
             }
         });
@@ -238,6 +278,11 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
+        // Storing these in the adapter instead of just newing them up in getItem so we can call
+        // any methods we might need down the road.
+        SignatureFragment signatureFragment;
+        PhotosFragment photosFragment;
+        SurveyFragment surveyFragment;
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -248,11 +293,20 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
             // getItem is called to instantiate the fragment for the given page.
             switch (position) {
                 case 0:
-                    return new SignatureFragment("Signature", "Disclaimer");
+                    if (signatureFragment == null)
+                        signatureFragment = new SignatureFragment("Signature", "Disclaimer");
+
+                    return signatureFragment;
                 case 1:
-                    return new PhotosFragment("Photos", "Client Photo(s)");
+                    if (photosFragment == null)
+                        photosFragment = new PhotosFragment("Photos", "Client Photo(s)");
+
+                    return photosFragment;
                 case 2:
-                    return new SurveyFragment("Survey", SurveyFlowActivity.this.surveyListing.getTitle());
+                    if (surveyFragment == null)
+                        surveyFragment = new SurveyFragment("Survey", SurveyFlowActivity.this.surveyListing.getTitle());
+
+                    return surveyFragment;
                 default:
                     return null;
             }

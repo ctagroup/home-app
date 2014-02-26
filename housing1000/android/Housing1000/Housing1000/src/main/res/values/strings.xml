@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="action_refresh">Refresh</string>
     <string name="action_camera">Take Picture</string>
     <string name="action_clear">Clear</string>
     <string name="hello">Hello Housing1000!</string>
@@ -439,5 +440,6 @@
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
+    <string name="txtDelete">Delete</string>
 
 </resources>

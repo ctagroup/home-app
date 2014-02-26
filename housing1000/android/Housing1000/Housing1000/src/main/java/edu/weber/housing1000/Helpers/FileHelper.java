@@ -149,13 +149,20 @@ public class FileHelper {
         // Check to see if we can write to external storage
         if (Environment.MEDIA_MOUNTED.equals(Environment
                 .getExternalStorageState())) {
-            for (File f : fileOrDirectory.listFiles()) {
-                if (!f.isDirectory())
+            if (fileOrDirectory.isDirectory())
+            {
+                for (File f : fileOrDirectory.listFiles()) {
+                    if (!f.isDirectory())
+                        f.delete();
+                    else {
+                        deleteAllFiles(f);
+                    }
                     f.delete();
-                else {
-                    deleteAllFiles(f);
                 }
-                f.delete();
+            }
+            else
+            {
+                fileOrDirectory.delete();
             }
         }
     }

@@ -40,6 +40,15 @@ public class ImageAdapter extends BaseAdapter {
         images.add(path);
     }
 
+    public void removeImage(String path) {
+        images.remove(path);
+    }
+
+    public void removeImage(int index) {
+        FileHelper.deleteAllFiles(new File(images.get(index)));
+        images.remove(index);
+    }
+
     public int getCount() {
         return images.size();
     }
@@ -58,15 +67,15 @@ public class ImageAdapter extends BaseAdapter {
 
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imageView;
+        CheckableImageView imageView;
 
         // If it's not recycled, initialize some attributes
         if (convertView == null) {
-            imageView = new ImageView(mContext);
-            //imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            //imageView.setPadding(8, 8, 8, 8);
+            imageView = new CheckableImageView(mContext);
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            imageView.setPadding(8, 8, 8, 8);
         } else {
-            imageView = (ImageView) convertView;
+            imageView = (CheckableImageView) convertView;
         }
 
         Bitmap image = null;

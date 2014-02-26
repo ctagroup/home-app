@@ -125,6 +125,7 @@ public class SignatureFragment extends SurveyAppFragment {
 
         signatureImageView.setImageBitmap(signature);
         tapHereToSignTextView.setVisibility(View.GONE);
+        myActivity.setIsSignatureCaptured(true);
     }
 
     public void submitSignature() {
