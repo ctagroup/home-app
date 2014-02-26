@@ -4,8 +4,10 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.support.v4.app.Fragment;
@@ -17,6 +19,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -57,6 +60,9 @@ public class SurveyFlowActivity extends ActionBarActivity implements LocationLis
     private String folderHash;                          //The name of the survey folder (for files)
     private String clientSurveyId;                      //Client survey id for image submission
     private Location currentLocation;
+    private TextView latitudeField;
+    private TextView longitudeField;
+    private LocationManager locationManager;
 
     public ProgressDialog getProgressDialog() {
         return progressDialog;
@@ -109,6 +115,22 @@ public class SurveyFlowActivity extends ActionBarActivity implements LocationLis
 
         Intent intent = new Intent(SurveyFlowActivity.this, GeolocationActivity.class);
         startActivityForResult(intent,1);
+
+        latitudeField  = (TextView) findViewById(R.id.latitudeCords);
+        longitudeField = (TextView) findViewById(R.id.longitudeCords);
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        criteria.setPowerRequirement(Criteria.POWER_LOW);
+
+        String locationProvider = locationManager.getBestProvider(criteria, true);
+        locationManager.requestLocationUpdates(locationProvider, 5000, (float) 2.0, this);
+
+        if (currentLocation != null)
+            onLocationChanged(currentLocation);
 
         // Restore state after being recreated
         if (savedInstanceState != null) {
@@ -262,19 +284,6 @@ public class SurveyFlowActivity extends ActionBarActivity implements LocationLis
     }
 
     public Location getLocation() {
-        if (currentLocation == null)
-        {
-            GPSTracker gps = new GPSTracker(this);
-
-            if(gps.canGetLocation()) {
-                gps.stopUsingGPS();
-            } else {
-                gps.showSettingsAlert();
-            }
-
-            return gps.getLocation();
-        }
-
         return currentLocation;
     }
 
@@ -340,8 +349,26 @@ public class SurveyFlowActivity extends ActionBarActivity implements LocationLis
 
     //Required LocationListener methods
     @Override
-    public void onLocationChanged(Location location) {
+    protected void onResume()
+    {
+        super.onRestart();
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000,10, this);
+    }
 
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        locationManager.removeUpdates(this);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        String latString = Double.toString(location.getLatitude());
+        String lonString = Double.toString(location.getLongitude());
+
+        if (latitudeField != null) latitudeField.setText(latString);
+        if (longitudeField != null) longitudeField.setText(lonString);
     }
 
     @Override
