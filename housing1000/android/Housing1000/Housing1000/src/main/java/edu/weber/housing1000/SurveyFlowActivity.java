@@ -3,7 +3,9 @@ package edu.weber.housing1000;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Location;
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.support.v4.app.Fragment;
@@ -34,7 +36,7 @@ import edu.weber.housing1000.Helpers.GPSTracker;
 import edu.weber.housing1000.Helpers.REST.PostImage;
 import edu.weber.housing1000.Helpers.REST.PostResponses;
 
-public class SurveyFlowActivity extends ActionBarActivity implements PostResponses.OnPostSurveyResponsesTaskCompleted, PostImage.OnPostImageTaskCompleted {
+public class SurveyFlowActivity extends ActionBarActivity implements LocationListener, PostResponses.OnPostSurveyResponsesTaskCompleted, PostImage.OnPostImageTaskCompleted {
     public static final String EXTRA_SURVEY = "survey";
 
     //These are used to keep track of the submission state
@@ -104,6 +106,9 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey_flow);
+
+        Intent intent = new Intent(SurveyFlowActivity.this, GeolocationActivity.class);
+        startActivityForResult(intent,1);
 
         // Restore state after being recreated
         if (savedInstanceState != null) {
@@ -330,6 +335,28 @@ public class SurveyFlowActivity extends ActionBarActivity implements PostRespons
                     return "";
             }
         }
+    }
+
+
+    //Required LocationListener methods
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 
 }
