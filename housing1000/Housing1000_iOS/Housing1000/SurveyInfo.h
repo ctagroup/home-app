@@ -10,7 +10,7 @@
 
 @interface SurveyInfo : NSObject
 
-@property NSString *surveyTitle;
-@property int surveyID;
+@property (strong, nonatomic) NSString *surveyTitle;
+@property (strong, nonatomic) NSNumber *surveyID;
 
 @end

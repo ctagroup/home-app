@@ -7,17 +7,46 @@
 //
 
 #import "Survey.h"
+#import "SurveyQuestions.h"
+#import "ClientQuestions.h"
 
 @implementation Survey
 
-static NSMutableArray* surveyQuestions;
+static SurveyQuestions* surveyQuestions;
+static ClientQuestions* clientQuestions;
+static int surveyId;
+static int surveyBy = 1;
 
-+(NSMutableArray*)getSurveyQuestions {
++(SurveyQuestions*)getSurveyQuestions {
     return surveyQuestions;
 }
 
-+(void)setSurveyQuestions:(NSMutableArray*)questions {
-    surveyQuestions = questions;
++(void)setSurveyQuestions:(SurveyQuestions*)tempSurveyQuestions {
+    surveyQuestions = tempSurveyQuestions;
+}
+
++(ClientQuestions*)getClientQuestions {
+    return clientQuestions;
+}
+
++(void)setClientQuestions:(ClientQuestions*)tempClientQuestions {
+    clientQuestions = tempClientQuestions;
+}
+
++(int)getSurveyId {
+    return surveyId;
+}
+
++(void)setSurveyId:(int)tempSurveyId {
+    surveyId = tempSurveyId;
+}
+
++(int)getSurveyBy {
+    return surveyBy;
+}
+
++(void)setSurveyBy:(int)tempSurveyBy {
+    surveyBy = tempSurveyBy;
 }
 
 @end

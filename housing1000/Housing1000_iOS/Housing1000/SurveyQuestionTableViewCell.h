@@ -7,13 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SurveyQuestion.h"
+#import "Question.h"
 
 @interface SurveyQuestionTableViewCell : UITableViewCell <UIPickerViewDataSource,UIPickerViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UILabel *questionText;
 @property (strong, nonatomic) IBOutlet UITextField *questionTextAnswer;
 @property (strong, nonatomic) IBOutlet UIPickerView *questionSingleAnswer;
-@property (strong, nonatomic) SurveyQuestion *questionData;
+@property (strong, nonatomic) Question *questionData;
 
 @end

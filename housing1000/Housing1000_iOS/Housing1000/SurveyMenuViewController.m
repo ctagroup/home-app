@@ -7,6 +7,7 @@
 //
 
 #import "SurveyMenuViewController.h"
+#import "SurveySubmitter.h"
 
 @interface SurveyMenuViewController ()
 
@@ -46,6 +47,18 @@
         //going back a second page (skips the confirm view)
         [self.navigationController popViewControllerAnimated:true];
     }
+}
+
+
+- (IBAction)submitSurvey:(id)sender {
+    BOOL successful = [SurveySubmitter submitSurvey];
+    
+    if(successful) {
+        NSLog(@"Submitted successfully.");
+    } else {
+        NSLog(@"There was a problem submitting the survey...");
+    }
+    
 }
 
 

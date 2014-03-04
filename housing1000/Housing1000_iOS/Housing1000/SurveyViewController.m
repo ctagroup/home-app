@@ -8,8 +8,10 @@
 
 #import "SurveyViewController.h"
 #import "SurveyInfo.h"
-#import "SurveyQuestion.h"
+#import "Question.h"
 #import "Survey.h"
+#import "SurveyQuestions.h"
+#import "ClientQuestions.h"
 
 @interface SurveyViewController()
 @property (nonatomic, strong) NSMutableData *responseData;
@@ -81,7 +83,7 @@ NSArray* trustedHosts;  //This is declared to simply hold the staging.ctagroup.o
         for(int i = 0; i < [json count]; i++) {
             SurveyInfo *survey = [[SurveyInfo alloc] init];
             NSDictionary *currentSurveyInJSON = [json objectAtIndex:i];
-            survey.surveyID = (int)[currentSurveyInJSON objectForKey:@"SurveyId"];
+            survey.surveyID = [NSNumber numberWithInteger:[[currentSurveyInJSON objectForKey:@"SurveyId"] integerValue]];
             survey.surveyTitle = [currentSurveyInJSON objectForKey:@"Title"];
             
             [surveys addObject:survey];
@@ -94,6 +96,7 @@ NSArray* trustedHosts;  //This is declared to simply hold the staging.ctagroup.o
         NSLog(@"JSON Data: %@", json);
         
         NSMutableArray *surveyQuestions = [[NSMutableArray alloc] init];
+        NSMutableArray *clientQuestions = [[NSMutableArray alloc] init];
         
         //Loop through the client section
         NSArray *clientSection = [json objectForKey:@"Client"];
@@ -101,7 +104,7 @@ NSArray* trustedHosts;  //This is declared to simply hold the staging.ctagroup.o
             NSDictionary *currentQuestionInJSON = [clientSection objectAtIndex:i];
             
             //Create survey object and add it to survey questions array
-            [surveyQuestions addObject:[self createSurveyObject:currentQuestionInJSON]];
+            [clientQuestions addObject:[self createSurveyObject:currentQuestionInJSON :YES]];
         }
         
         //Loop through the other section
@@ -110,10 +113,18 @@ NSArray* trustedHosts;  //This is declared to simply hold the staging.ctagroup.o
             NSDictionary *currentQuestionInJSON = [surveySection objectAtIndex:i];
             
             //Create survey object and add it to survey questions array
-            [surveyQuestions addObject:[self createSurveyObject:currentQuestionInJSON]];
+            [surveyQuestions addObject:[self createSurveyObject:currentQuestionInJSON :NO]];
         }
         
-        [Survey setSurveyQuestions:surveyQuestions];
+        SurveyQuestions *sq = [[SurveyQuestions alloc] init];
+        [sq setSurveyQuestions:surveyQuestions];
+        ClientQuestions *cq = [[ClientQuestions alloc] init];
+        [cq setClientQuestions:clientQuestions];
+        
+        [Survey setSurveyQuestions:sq];
+        [Survey setClientQuestions:cq];
+        [Survey setSurveyId:(int)[[json objectForKey:@"SurveyId"] integerValue]];
+        
     }
     
 }
@@ -162,16 +173,15 @@ NSArray* trustedHosts;  //This is declared to simply hold the staging.ctagroup.o
 //Private Util functions
 //==============================================
 
--(SurveyQuestion*)createSurveyObject:(NSDictionary*)currentQuestionInJSON {
-    SurveyQuestion *question = [[SurveyQuestion alloc] init];
-    question.jsonId = (NSString*)[currentQuestionInJSON objectForKey:@"$id"];
-    question.questionId = (int)[currentQuestionInJSON objectForKey:@"QuestionId"];
+-(Question*)createSurveyObject:(NSDictionary*)currentQuestionInJSON :(BOOL)isClientQuestion {
+    Question *question = [[Question alloc] init];
+    question.jsonId = [NSNumber numberWithInteger:[[currentQuestionInJSON objectForKey:@"$id"] integerValue]];
+    question.questionId = [NSNumber numberWithInteger:[[currentQuestionInJSON objectForKey:@"QuestionId"] integerValue]];
     question.questionText = (NSString*)[currentQuestionInJSON objectForKey:@"text"];
     question.questionType = (NSString*)[currentQuestionInJSON objectForKey:@"QuestionType"];
     [question setOptionsArray:(NSString*)[currentQuestionInJSON objectForKey:@"Options"]]; //This is one is set in a special way because it converts the String to an array
-    //question.options = (NSString*)[currentQuestionInJSON objectForKey:@"Options"];
-    question.orderId = (int)[currentQuestionInJSON objectForKey:@"OrderId"];
-    question.parentQuestionId = (int)[currentQuestionInJSON objectForKey:@"ParentQuestionId"];
+    question.orderId = [NSNumber numberWithInteger:[[currentQuestionInJSON objectForKey:@"OrderId"] integerValue]];
+    question.parentQuestionId = [NSNumber numberWithInteger:[[currentQuestionInJSON objectForKey:@"ParentQuestionId"] integerValue]];
     question.parentRequiredAnswer = (NSString*)[currentQuestionInJSON objectForKey:@"ParentRequiredAnswer"];
     
     return question;

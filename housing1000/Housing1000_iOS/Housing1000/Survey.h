@@ -7,10 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SurveyQuestions.h"
+#import "ClientQuestions.h"
 
 @interface Survey : NSObject
 
-+(NSMutableArray*)getSurveyQuestions;
-+(void)setSurveyQuestions:(NSMutableArray*)questions;
++(SurveyQuestions*)getSurveyQuestions;
++(void)setSurveyQuestions:(SurveyQuestions*)tempSurveyQuestions;
++(ClientQuestions*)getClientQuestions;
++(void)setClientQuestions:(ClientQuestions*)tempClientQuestions;
++(int)getSurveyId;
++(void)setSurveyId:(int)tempSurveyId;
++(int)getSurveyBy;
++(void)setSurveyBy:(int)tempSurveyBy;
 
 @end
