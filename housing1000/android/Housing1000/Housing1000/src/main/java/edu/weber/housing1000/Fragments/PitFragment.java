@@ -1,6 +1,5 @@
 package edu.weber.housing1000.Fragments;
 
-import android.animation.LayoutTransition;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -11,8 +10,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
@@ -22,9 +19,6 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import edu.weber.housing1000.Data.Client;
 import edu.weber.housing1000.Data.Response;
@@ -34,6 +28,7 @@ import edu.weber.housing1000.Data.SurveyResponse;
 import edu.weber.housing1000.Helpers.REST.RESTHelper;
 import edu.weber.housing1000.Helpers.REST.SurveyService;
 import edu.weber.housing1000.JSONParser;
+import edu.weber.housing1000.PitActivity;
 import edu.weber.housing1000.Questions.Question;
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.SurveyFlowActivity;
@@ -45,19 +40,19 @@ import retrofit.RetrofitError;
 /**
  * Created by Blake on 2/11/14.
  */
-public class SurveyFragment extends SurveyAppFragment {
+public class PitFragment extends SurveyAppFragment {
     public static final String EXTRA_SURVEY = "survey";
     ArrayList<Question> lstQuestions;   // List of all questions
-    SurveyFlowActivity myActivity;      // Parent activity
+    PitActivity myActivity;      // Parent activity
     private Survey survey;              // Current survey, questions and all
     private RelativeLayout rootLayout;  // Root layout of the fragment
     private SurveyListing surveyListing;
     private SurveyResponse surveyResponse;
 
-    public SurveyFragment() {
+    public PitFragment() {
     }
 
-    public SurveyFragment(String name, String actionBarTitle) {
+    public PitFragment(String name, String actionBarTitle) {
         super(name, actionBarTitle);
     }
 
@@ -80,15 +75,28 @@ public class SurveyFragment extends SurveyAppFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        loadUI();
+    }
+
+    public void loadUI() {
+        if (surveyListing == null) {
+            if (myActivity.getSurveyListing() == null)
+                return;
+            else
+                surveyListing = myActivity.getSurveyListing();
+        }
+
         lstQuestions = new ArrayList<Question>();
 
         survey = JSONParser.getSurveyFromListing(surveyListing);
-        lstQuestions.addAll(survey.getClientQuestions());
+        if (survey.getClientQuestions() != null) {
+            lstQuestions.addAll(survey.getClientQuestions());
 
-        // This is needed because we are displaying the client and survey questions on the same
-        // page and some of the orderIds overlap
-        for (Question q : survey.getSurveyQuestions()) {
-            q.setOrderId(q.getOrderId() + survey.getClientQuestions().size());
+            // This is needed because we are displaying the client and survey questions on the same
+            // page and some of the orderIds overlap
+            for (Question q : survey.getSurveyQuestions()) {
+                q.setOrderId(q.getOrderId() + survey.getClientQuestions().size());
+            }
         }
         lstQuestions.addAll(survey.getSurveyQuestions());
 
@@ -101,12 +109,9 @@ public class SurveyFragment extends SurveyAppFragment {
 
         ScrollView view = UIGenerator.generateQuestionUi(myActivity, surveyListing, lstQuestions, survey);
 
-        if (view != null)
-        {
+        if (view != null) {
             rootLayout.addView(view);
-        }
-        else
-        {
+        } else {
             new AlertDialog.Builder(myActivity).setTitle("Uh oh...").setMessage("Could not generate survey.\nPlease try again").create().show();
         }
 
@@ -132,7 +137,7 @@ public class SurveyFragment extends SurveyAppFragment {
 
         rootLayout = (RelativeLayout) mainView.findViewById(R.id.root_layout);
 
-        myActivity = ((SurveyFlowActivity) getActivity());
+        myActivity = ((PitActivity) getActivity());
         surveyListing = myActivity.getSurveyListing();
 
         return mainView;
@@ -236,7 +241,7 @@ public class SurveyFragment extends SurveyAppFragment {
      */
     public void saveAnswers() {
         if (validateForm()) {
-            myActivity.showProgressDialog("Please Wait", "Submitting survey responses...", "SurveySubmit");
+            myActivity.showProgressDialog("Please Wait", "Submitting PIT responses...", "SurveySubmit");
             myActivity.setSubmittingSurvey(true);
 
             saveSurveyResponse();
@@ -245,42 +250,37 @@ public class SurveyFragment extends SurveyAppFragment {
 
             RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoDeserialize(getActivity(), gson);
 
-            SurveyService service = restAdapter.create(SurveyService.class);
-
-            service.postResponse(survey.getId(), surveyResponse, new Callback<String>() {
-                @Override
-                public void success(String s, retrofit.client.Response response) {
-                    if (s != null)
-                    {
-                        Log.d("SUCCESS", s);
-                        myActivity.onPostSurveyResponsesTaskCompleted(s);
-                    }
-                    else
-                    {
-                        myActivity.onPostSurveyResponsesTaskCompleted("SUCCESS");
-                    }
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-                    String errorBody = (String) error.getBodyAs(String.class);
-
-                    if (errorBody != null)
-                    {
-                        Log.e("FAILURE", errorBody.toString());
-                        myActivity.onPostSurveyResponsesTaskCompleted(errorBody);
-                    }
-                    else
-                    {
-                        myActivity.onPostSurveyResponsesTaskCompleted("ERROR");
-                    }
-                }
-            });
+//            SurveyService service = restAdapter.create(SurveyService.class);
+//
+//            service.postResponse(survey.getId(), surveyResponse, new Callback<String>() {
+//                @Override
+//                public void success(String s, retrofit.client.Response response) {
+//                    if (s != null) {
+//                        Log.d("SUCCESS", s);
+//                        myActivity.onPostSurveyResponsesTaskCompleted(s);
+//                    } else {
+//                        myActivity.onPostSurveyResponsesTaskCompleted("SUCCESS");
+//                    }
+//                }
+//
+//                @Override
+//                public void failure(RetrofitError error) {
+//                    String errorBody = (String) error.getBodyAs(String.class);
+//
+//                    if (errorBody != null) {
+//                        Log.e("FAILURE", errorBody.toString());
+//                        myActivity.onPostSurveyResponsesTaskCompleted(errorBody);
+//                    } else {
+//                        myActivity.onPostSurveyResponsesTaskCompleted("ERROR");
+//                    }
+//                }
+//            });
         }
     }
 
     /**
      * This compiles the responses from each question
+     *
      * @param questions Questions from which to get the answers
      * @return List of Responses
      */
@@ -302,7 +302,7 @@ public class SurveyFragment extends SurveyAppFragment {
      * @return Survey response in JSON form
      */
     private String saveSurveyResponse() {
-        Client client = new Client(survey.getClientQuestions(), myActivity.getLocation());
+        Client client = new Client(survey.getClientQuestions(), null);
         ArrayList<Response> responses = generateResponses(survey.getSurveyQuestions());
         surveyResponse = new SurveyResponse(surveyListing, client, responses);
 
@@ -321,21 +321,24 @@ public class SurveyFragment extends SurveyAppFragment {
         if (surveyResponse != null) {
             Client client = surveyResponse.getClient();
 
-            for (Question question : survey.getClientQuestions()) {
-                switch (question.getParentRequiredAnswer()) {
-                    case "ServicePointId":
-                        if (client.servicePointId != 0)
-                            question.setAnswer(String.valueOf(client.servicePointId));
-                        break;
-                    case "Last4SSN":
-                        question.setAnswer(client.last4Ssn);
-                        break;
-                    case "Birthday":
-                        question.setAnswer(client.birthday);
-                        break;
-                    default:
-                        break;
+            if (survey.getClientQuestions() != null) {
+                for (Question question : survey.getClientQuestions()) {
+                    switch (question.getParentRequiredAnswer()) {
+                        case "ServicePointId":
+                            if (client.servicePointId != 0)
+                                question.setAnswer(String.valueOf(client.servicePointId));
+                            break;
+                        case "Last4SSN":
+                            question.setAnswer(client.last4Ssn);
+                            break;
+                        case "Birthday":
+                            question.setAnswer(client.birthday);
+                            break;
+                        default:
+                            break;
+                    }
                 }
+
             }
 
             for (Response response : surveyResponse.getResponses()) {
@@ -346,6 +349,7 @@ public class SurveyFragment extends SurveyAppFragment {
                     }
                 }
             }
+
         }
     }
 

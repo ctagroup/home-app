@@ -144,6 +144,7 @@ public class SignatureFragment extends SurveyAppFragment {
     }
 
     public void submitSignature() {
+        Log.d("Signature path:", signaturePath);
         File signatureFile = new File(signaturePath);
 
         if (signatureFile.exists())
@@ -154,7 +155,7 @@ public class SignatureFragment extends SurveyAppFragment {
 
             FileHelper.writeFileToExternalStorage(signatureBytes, myActivity.getFolderHash(), myActivity.getClientSurveyId() + "_signature.jpg" );
 
-            RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoJsonResponse(getActivity(), null);
+            RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoDeserialize(getActivity(), null);
 
             TypedOutput typedOutput = new TypedOutput() {
                 @Override
@@ -180,7 +181,7 @@ public class SignatureFragment extends SurveyAppFragment {
 
             SurveyService service = restAdapter.create(SurveyService.class);
             MultipartTypedOutput multipartTypedOutput = new MultipartTypedOutput();
-            multipartTypedOutput.addPart(myActivity.getClientSurveyId() + "_signature.jpg", typedOutput);
+            multipartTypedOutput.addPart(myActivity.getClientSurveyId() + "_signature.jpg\r\n", typedOutput);
 
             //TypedByteArray typedByteArray = new TypedByteArray("image/jpeg", signatureBytes);
             service.postImage(multipartTypedOutput, new Callback<String>() {
