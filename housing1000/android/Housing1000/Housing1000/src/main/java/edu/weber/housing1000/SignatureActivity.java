@@ -130,7 +130,7 @@ public class SignatureActivity extends Activity {
                 //byte[] decryptedImageBytes = EncryptionHelper.decrypt(key, encryptedFileBytes);
                 //FileHelper.writeFileToExternalStorage(decryptedImageBytes, "decryptedSignature.jpg");
 
-                setResult(SignatureFragment.RESULT_SIGNATURE_SAVED, new Intent().putExtra("bitmap", byteImage).putExtra("signaturePath", encryptedName));
+                setResult(SignatureFragment.RESULT_SIGNATURE_SAVED, new Intent().putExtra("bitmap", byteImage).putExtra("signaturePath", FileHelper.getAbsoluteFilePath(folderHash, encryptedName)));
 
             } catch (Exception e) {
                 Log.v("log_tag", e.toString());

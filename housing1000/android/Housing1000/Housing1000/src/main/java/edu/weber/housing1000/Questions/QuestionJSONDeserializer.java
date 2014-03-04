@@ -43,6 +43,9 @@ public class QuestionJSONDeserializer implements JsonDeserializer<Question> {
             case "SingleSelectRadio":
                 question = gson.fromJson(questionJson, SingleSelectRadio.class);
                 break;
+            case "SinglelineTextBoxForEachOption":
+                question = gson.fromJson(questionJson, SinglelineTextBoxForEachOption.class);
+                break;
             default:
                 question = null;
         }

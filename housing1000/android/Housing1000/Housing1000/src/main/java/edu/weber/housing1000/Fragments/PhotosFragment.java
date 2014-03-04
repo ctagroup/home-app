@@ -188,6 +188,11 @@ public class PhotosFragment extends SurveyAppFragment {
         }
     }
 
+    public void submitPhotos()
+    {
+        //TODO
+    }
+
     public class MultiChoiceListener implements GridView.MultiChoiceModeListener {
         @Override
         public void onItemCheckedStateChanged(android.view.ActionMode mode, int position, long id, boolean checked) {

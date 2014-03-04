@@ -5,14 +5,19 @@ import java.util.List;
 import edu.weber.housing1000.Data.Survey;
 import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Data.SurveyResponse;
+import retrofit.Callback;
 import retrofit.client.Response;
 import retrofit.http.Body;
 import retrofit.http.GET;
+import retrofit.http.Headers;
 import retrofit.http.Multipart;
 import retrofit.http.POST;
 import retrofit.http.Part;
 import retrofit.http.Path;
+import retrofit.mime.MultipartTypedOutput;
+import retrofit.mime.TypedByteArray;
 import retrofit.mime.TypedFile;
+import retrofit.mime.TypedOutput;
 import retrofit.mime.TypedString;
 
 /**
@@ -21,14 +26,14 @@ import retrofit.mime.TypedString;
  */
 public interface SurveyService {
     @GET("/survey")
-    List<SurveyListing> listSurveys();
+    void listSurveys(Callback<List<SurveyListing>> cb);
     @GET("/survey/{id}")
-    Response getSurvey(@Path("id") String id);
+    void getSurvey(@Path("id") String id, Callback<String> cb);
 
     @POST("/survey/{id}")
-    Response postResponse(@Path("id") String id, @Body SurveyResponse surveyResponse);
+    void postResponse(@Path("id") String id, @Body SurveyResponse surveyResponse, Callback<String> cb);
 
     @Multipart
     @POST("/upload")
-    Response postImage(@Part("image") TypedFile image, @Part("description") TypedString description);
+    void postImage(@Part("images") MultipartTypedOutput images, Callback<String> cb);
 }

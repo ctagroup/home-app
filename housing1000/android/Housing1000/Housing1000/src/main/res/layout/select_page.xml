@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:src="@drawable/icon_large"
+        android:src="@drawable/icon_xlarge"
         android:adjustViewBounds="true"
         android:paddingBottom="40dp" />
 

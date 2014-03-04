@@ -27,17 +27,19 @@ import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 
 import java.io.File;
+import java.io.IOException;
 
 import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Fragments.PhotosFragment;
+import edu.weber.housing1000.Fragments.ProgressDialogFragment;
 import edu.weber.housing1000.Fragments.SignatureFragment;
 import edu.weber.housing1000.Fragments.SurveyAppFragment;
 import edu.weber.housing1000.Fragments.SurveyFragment;
 import edu.weber.housing1000.Helpers.FileHelper;
-import edu.weber.housing1000.Helpers.REST.PostImage;
-import edu.weber.housing1000.Helpers.REST.PostResponses;
+import edu.weber.housing1000.Helpers.REST.RESTHelper;
+import retrofit.client.Response;
 
-public class SurveyFlowActivity extends ActionBarActivity implements LocationListener, PostResponses.OnPostSurveyResponsesTaskCompleted, PostImage.OnPostImageTaskCompleted {
+public class SurveyFlowActivity extends ActionBarActivity implements LocationListener {
     public static final String EXTRA_SURVEY = "survey";
 
     //These are used to keep track of the submission state
@@ -54,7 +56,6 @@ public class SurveyFlowActivity extends ActionBarActivity implements LocationLis
     CustomViewPager mViewPager;                         //View object that holds the fragments
 
     private SurveyListing surveyListing;
-    private ProgressDialog progressDialog;
     private String folderHash;                          //The name of the survey folder (for files)
     private String clientSurveyId;                      //Client survey id for image submission
     private Location currentLocation;
@@ -62,13 +63,7 @@ public class SurveyFlowActivity extends ActionBarActivity implements LocationLis
     private TextView longitudeField;
     private LocationManager locationManager;
 
-    public ProgressDialog getProgressDialog() {
-        return progressDialog;
-    }
-
-    public void setProgressDialog(ProgressDialog value) {
-        progressDialog = value;
-    }
+    private ProgressDialogFragment progressDialogFragment;
 
     public String getFolderHash() {
         return folderHash;
@@ -209,9 +204,8 @@ public class SurveyFlowActivity extends ActionBarActivity implements LocationLis
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
     public void onPostSurveyResponsesTaskCompleted(String result) {
-        progressDialog.dismiss();
+        dismissDialog();
 
         isSurveySubmitted = true;
 
@@ -219,26 +213,46 @@ public class SurveyFlowActivity extends ActionBarActivity implements LocationLis
 
         String[] split = result.split("=");
         clientSurveyId = split[split.length - 1];
+        clientSurveyId = clientSurveyId.replace("\n", "");
 
         Log.d("clientSurveyId", clientSurveyId);
 
+        // Submit signature
         mViewPager.setCurrentItem(0);
 
         SignatureFragment signatureFragment = (SignatureFragment) mSectionsPagerAdapter.getItem(0);
         signatureFragment.submitSignature();
     }
 
-    @Override
-    public void onPostImageTaskCompleted(String result) {
-        progressDialog.dismiss();
+    public void onPostSignatureTaskCompleted(Response response) {
+        //Check the result here
+
+        dismissDialog();
 
         isSignatureSubmitted = true;
+        try {
+            Log.d("SIGNATURE RESPONSE", RESTHelper.convertStreamToString(response.getBody().in()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        Log.d("SIGNATURE RESPONSE", result);
-
+        // Submit the photos
         mViewPager.setCurrentItem(1);
 
-        // Submit photos here
+        PhotosFragment photosFragment = (PhotosFragment) mSectionsPagerAdapter.getItem(1);
+        photosFragment.submitPhotos();
+    }
+
+    public void onPostImageTaskCompleted(Response response) {
+        //Check the result here
+
+        dismissDialog();
+
+        try {
+            Log.d("PHOTOS RESPONSE", RESTHelper.convertStreamToString(response.getBody().in()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -252,8 +266,7 @@ public class SurveyFlowActivity extends ActionBarActivity implements LocationLis
 
                 // Delete the folder containing any related files
                 File surveyDir = new File(FileHelper.getAbsoluteFilePath(getFolderHash(), ""));
-                if (surveyDir.exists())
-                {
+                if (surveyDir.exists()) {
                     Log.d("DELETING SURVEY DIR", surveyDir.getAbsolutePath());
                     FileHelper.deleteAllFiles(surveyDir);
                 }
@@ -293,6 +306,18 @@ public class SurveyFlowActivity extends ActionBarActivity implements LocationLis
 
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
         return currentLocation;
+    }
+
+    public void showProgressDialog(String title, String message, String tag)
+    {
+        progressDialogFragment = ProgressDialogFragment.newInstance(title, message);
+        progressDialogFragment.show(getSupportFragmentManager(), tag);
+    }
+
+    public void dismissDialog(){
+        if (progressDialogFragment != null) {
+            progressDialogFragment.dismiss();
+        }
     }
 
     /**
@@ -377,6 +402,8 @@ public class SurveyFlowActivity extends ActionBarActivity implements LocationLis
 
         if (latitudeField != null) latitudeField.setText(latString);
         if (longitudeField != null) longitudeField.setText(lonString);
+
+        locationManager.removeUpdates(this);
     }
 
     @Override
