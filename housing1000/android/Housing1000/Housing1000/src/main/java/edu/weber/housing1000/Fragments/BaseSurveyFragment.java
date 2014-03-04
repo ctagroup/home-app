@@ -36,7 +36,6 @@ import edu.weber.housing1000.R;
  * Created by Blake on 2/11/14.
  */
 public abstract class BaseSurveyFragment extends SurveyAppFragment {
-    public static final String EXTRA_SURVEY = "survey";
     private ArrayList<Question> lstQuestions;   // List of all questions
     protected Survey survey;              // Current survey, questions and all
     protected RelativeLayout rootLayout;  // Root layout of the fragment
