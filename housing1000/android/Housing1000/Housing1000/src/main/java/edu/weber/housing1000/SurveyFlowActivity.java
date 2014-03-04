@@ -1,14 +1,12 @@
 package edu.weber.housing1000;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -247,6 +245,8 @@ public class SurveyFlowActivity extends ActionBarActivity implements LocationLis
         //Check the result here
 
         dismissDialog();
+
+        isPhotoSubmitted = true;
 
         try {
             Log.d("PHOTOS RESPONSE", RESTHelper.convertStreamToString(response.getBody().in()));
