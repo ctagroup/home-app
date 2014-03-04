@@ -6,10 +6,15 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.squareup.okhttp.OkHttpClient;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.KeyStore;
@@ -19,11 +24,20 @@ import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManagerFactory;
 
 import edu.weber.housing1000.R;
+import retrofit.RestAdapter;
+import retrofit.client.OkClient;
+import retrofit.converter.ConversionException;
+import retrofit.converter.Converter;
+import retrofit.converter.GsonConverter;
+import retrofit.mime.TypedInput;
+import retrofit.mime.TypedOutput;
 
 
 /**
@@ -33,6 +47,11 @@ import edu.weber.housing1000.R;
  */
 public class RESTHelper {
 
+    /**
+     * Sets up the SSL context by importing the SSL certificate, etc.
+     * @param context
+     * @return
+     */
     public static SSLContext getSSLContext(Context context) {
         try {
             // Load CAs from an InputStream
@@ -76,7 +95,6 @@ public class RESTHelper {
 
     /**
      * Converts an InputStream to a String
-     *
      * @param is - InputStream
      * @return - String response
      * @author Blake
@@ -101,5 +119,120 @@ public class RESTHelper {
         }
         return sb.toString();
     }
+
+    /**
+     * Sets up the RestAdapter Builder
+     * @param context
+     * @return
+     */
+    public static RestAdapter.Builder setUpRestAdapterBuilder(Context context)
+    {
+        // Set up SSL
+        SSLContext sslContext = RESTHelper.getSSLContext(context);
+        OkHttpClient client = new OkHttpClient();
+
+        // This setHostnameVerifier line removes hostname verification!
+        // Remove when in the production environment!
+        client.setHostnameVerifier(new HostnameVerifier() {
+            @Override
+            public boolean verify(String hostname, SSLSession session) {
+                return true;
+            }
+        });
+
+        client.setSslSocketFactory(sslContext.getSocketFactory());
+        OkClient okClient = new OkClient(client);
+
+        RestAdapter.Builder builder = new RestAdapter.Builder()
+                .setClient(okClient)
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setEndpoint("https://staging.ctagroup.org/Survey/api");
+
+        return builder;
+    }
+
+    /**
+     * Sets up the RestAdapter, with a JSON response
+     * @param context
+     * @param gson GSON that will be used to convert the data of the request to JSON
+     * @return
+     */
+    public static RestAdapter setUpRestAdapter(Context context, Gson gson)
+    {
+        RestAdapter.Builder builder = setUpRestAdapterBuilder(context);
+
+        if (gson != null)
+            builder.setConverter(new GsonConverter(gson));
+
+        return builder.build();
+    }
+
+    /**
+     * Sets up the RestAdapter, WITHOUT a JSON response
+     * @param context
+     * @param gson GSON that will be used to convert the data of the request to JSON
+     * @return
+     */
+    public static RestAdapter setUpRestAdapterNoJsonResponse(Context context, Gson gson)
+    {
+        RestAdapter.Builder builder = setUpRestAdapterBuilder(context);
+
+        if (gson != null)
+        {
+            // Disable deserializing the server response from JSON
+            GsonConverter converter = new GsonConverter(gson){
+                @Override
+                public Object fromBody(TypedInput body, Type type) throws ConversionException {
+                    try {
+                        return RESTHelper.convertStreamToString(body.in());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    return "COULDN'T PARSE SERVER RESPONSE.";
+                }
+            };
+
+            builder.setConverter(converter);
+        }
+        else
+        {
+            builder.setConverter(new Converter() {
+                @Override
+                public String fromBody(TypedInput body, Type type) throws ConversionException {
+                    return body.toString();
+                }
+
+                @Override
+                public TypedOutput toBody(final Object object) {
+                    return new TypedOutput() {
+                        @Override
+                        public String fileName() {
+                            return null;
+                        }
+
+                        @Override
+                        public String mimeType() {
+                            return "text/plain";
+                        }
+
+                        @Override
+                        public long length() {
+                            return object.toString().length();
+                        }
+
+                        @Override
+                        public void writeTo(OutputStream out) throws IOException {
+                            out.write(object.toString().getBytes());
+                        }
+                    };
+                }
+            });
+        }
+
+        return builder.build();
+    }
+
+
 
 }

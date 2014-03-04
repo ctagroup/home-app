@@ -2,7 +2,6 @@ package edu.weber.housing1000;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -13,14 +12,20 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.io.IOException;
 import java.util.List;
 
 import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Fragments.SurveyListFragment;
 import edu.weber.housing1000.Fragments.SurveyListFragment.*;
-import edu.weber.housing1000.Helpers.REST.GetSurveys.*;
+import edu.weber.housing1000.Helpers.REST.RESTHelper;
+import edu.weber.housing1000.Helpers.REST.SurveyService;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
-public class SurveyListActivity extends ActionBarActivity implements OnGetSurveyListingsTaskCompleted, OnGetSingleSurveyTaskCompleted, ISurveyListFragment {
+public class SurveyListActivity extends ActionBarActivity implements ISurveyListFragment {
 
     private ProgressDialog progressDialog;
 
@@ -79,19 +84,23 @@ public class SurveyListActivity extends ActionBarActivity implements OnGetSurvey
         progressDialog.setCancelable(true);
         progressDialog.show();
 
-        // Set up the task
-        final GetSurveyListingsTask getSurveysTask = new GetSurveyListingsTask(this, this);
-        getSurveysTask.execute(getResources().getString(R.string.api_url));
+        RestAdapter restAdapter = RESTHelper.setUpRestAdapter(this, null);
 
-        progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        SurveyService service = restAdapter.create(SurveyService.class);
+
+        service.listSurveys(new Callback<List<SurveyListing>>() {
             @Override
-            public void onCancel(DialogInterface dialog) {
-                getSurveysTask.cancel(true);
+            public void success(List<SurveyListing> surveyListings, Response response) {
+                onGetSurveyListingsTaskCompleted(surveyListings);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                onGetSurveyListingsTaskCompleted(null);
             }
         });
     }
 
-    @Override
     public void onGetSurveyListingsTaskCompleted(List<SurveyListing> surveyListings) {
         progressDialog.dismiss();
 
@@ -99,7 +108,7 @@ public class SurveyListActivity extends ActionBarActivity implements OnGetSurvey
 
         this.surveyListings = surveyListings;
 
-        if (surveyListings.size() > 0)
+        if (surveyListings != null && surveyListings.size() > 0)
         {
             surveyAdapter = new ArrayAdapter<SurveyListing>(
                     SurveyListActivity.this,
@@ -146,18 +155,30 @@ public class SurveyListActivity extends ActionBarActivity implements OnGetSurvey
         progressDialog.setCancelable(true);
         progressDialog.show();
 
-        final GetSingleSurveyTask getSurveyTask = new GetSingleSurveyTask(this, this, String.valueOf(rowId));
-        getSurveyTask.execute(getResources().getString(R.string.api_url));
+        RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoJsonResponse(this, null);
 
-        progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        SurveyService service = restAdapter.create(SurveyService.class);
+
+        service.getSurvey(String.valueOf(rowId), new Callback<String>() {
             @Override
-            public void onCancel(DialogInterface dialog) {
-                getSurveyTask.cancel(true);
+            public void success(String result, Response response) {
+                try {
+                    String json = RESTHelper.convertStreamToString(response.getBody().in());
+                    onGetSingleSurveyTaskCompleted(json);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    onGetSingleSurveyTaskCompleted("");
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                onGetSingleSurveyTaskCompleted("");
             }
         });
+
     }
 
-    @Override
     public void onGetSingleSurveyTaskCompleted(String surveyJson) {
         progressDialog.dismiss();
 

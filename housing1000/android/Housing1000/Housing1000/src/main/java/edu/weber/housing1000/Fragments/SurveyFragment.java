@@ -34,11 +34,17 @@ import edu.weber.housing1000.Data.Response;
 import edu.weber.housing1000.Data.Survey;
 import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Data.SurveyResponse;
-import edu.weber.housing1000.Helpers.REST.PostResponses;
+import edu.weber.housing1000.Helpers.FileHelper;
+import edu.weber.housing1000.Helpers.REST.RESTHelper;
+import edu.weber.housing1000.Helpers.REST.SurveyService;
 import edu.weber.housing1000.JSONParser;
 import edu.weber.housing1000.Questions.Question;
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.SurveyFlowActivity;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.mime.TypedByteArray;
 
 /**
  * Created by Blake on 2/11/14.
@@ -297,6 +303,7 @@ public class SurveyFragment extends SurveyAppFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+
                 saveAnswers();
             }
         });
@@ -313,7 +320,7 @@ public class SurveyFragment extends SurveyAppFragment {
      */
     public void clearButton() {
         AlertDialog.Builder builder = new AlertDialog.Builder(myActivity);
-        builder.setMessage("Clear the form?");
+        builder.setMessage("Clear the survey answers?");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -354,28 +361,51 @@ public class SurveyFragment extends SurveyAppFragment {
      */
     public void saveAnswers() {
         if (validateForm()) {
+            myActivity.showProgressDialog("Please Wait", "Submitting survey responses...", "SurveySubmit");
             myActivity.setSubmittingSurvey(true);
+
             saveSurveyResponse();
 
-            // Start the survey submission dialog
-            ProgressDialog progressDialog = new ProgressDialog(myActivity);
-            progressDialog.setTitle("Please Wait");
-            progressDialog.setMessage("Submitting survey responses...");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            progressDialog.setIndeterminate(true);
-            progressDialog.setCancelable(false);
+            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
-            myActivity.setProgressDialog(progressDialog);
-            myActivity.getProgressDialog().show();
+            RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoJsonResponse(getActivity(), gson);
 
-            PostResponses.PostSurveyResponsesTask task = new PostResponses.PostSurveyResponsesTask(myActivity, myActivity, surveyResponse);
-            task.execute("https://staging.ctagroup.org/Survey/api");
+            SurveyService service = restAdapter.create(SurveyService.class);
+
+            service.postResponse(survey.getId(), surveyResponse, new Callback<String>() {
+                @Override
+                public void success(String s, retrofit.client.Response response) {
+                    if (s != null)
+                    {
+                        Log.d("SUCCESS", s);
+                        myActivity.onPostSurveyResponsesTaskCompleted(s);
+                    }
+                    else
+                    {
+                        myActivity.onPostSurveyResponsesTaskCompleted("SUCCESS");
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    String errorBody = (String) error.getBodyAs(String.class);
+
+                    if (errorBody != null)
+                    {
+                        Log.e("FAILURE", errorBody.toString());
+                        myActivity.onPostSurveyResponsesTaskCompleted(errorBody);
+                    }
+                    else
+                    {
+                        myActivity.onPostSurveyResponsesTaskCompleted("ERROR");
+                    }
+                }
+            });
         }
     }
 
     /**
      * This compiles the responses from each question
-     *
      * @param questions Questions from which to get the answers
      * @return List of Responses
      */
@@ -404,7 +434,7 @@ public class SurveyFragment extends SurveyAppFragment {
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         String jsonData = gson.toJson(surveyResponse);
 
-        Log.d("json", jsonData);
+        //Log.d("json", jsonData);
 
         return jsonData;
     }

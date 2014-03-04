@@ -61,7 +61,7 @@ public class Client implements Serializable {
             }
         }
 
-        geoLocation = location != null ? location.toString() : "0, 0";
+        geoLocation = location != null ? location.getLongitude() + "," + location.getLatitude() : "0, 0";
     }
 
 }

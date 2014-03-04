@@ -1,5 +1,6 @@
 package edu.weber.housing1000.Helpers;
 
+import java.io.File;
 import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
@@ -35,20 +36,45 @@ public class EncryptionHelper {
         if (key == null)
             keyGen();
 
-        SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
-        Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
-        return cipher.doFinal(file);
+        try
+        {
+            SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
+            Cipher cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
+            return cipher.doFinal(file);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
-    public static byte[] decrypt(byte[] encrypted) throws Exception{
+    public static byte[] decrypt(byte[] encrypted){
         if (key == null)
             keyGen();
 
-        //byte[] bytesToDecrypt = Base64.decodeBase64(encrypted);
-        SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
-        Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.DECRYPT_MODE, skeySpec);
-        return cipher.doFinal(encrypted);
+        try
+        {
+            //byte[] bytesToDecrypt = Base64.decodeBase64(encrypted);
+            SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
+            Cipher cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.DECRYPT_MODE, skeySpec);
+            return cipher.doFinal(encrypted);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static byte[] decryptImage(File file)
+    {
+        // Open the encrypted file, decrypt the image, write it to disk -- for testing
+        byte[] encryptedFileBytes = FileHelper.readFile(file);
+        return EncryptionHelper.decrypt(encryptedFileBytes);
     }
 }

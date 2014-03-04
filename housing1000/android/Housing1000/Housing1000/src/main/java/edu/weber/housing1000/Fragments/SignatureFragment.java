@@ -1,24 +1,37 @@
 package edu.weber.housing1000.Fragments;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import edu.weber.housing1000.Helpers.REST.PostResponses;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+
+import edu.weber.housing1000.Helpers.EncryptionHelper;
+import edu.weber.housing1000.Helpers.FileHelper;
+import edu.weber.housing1000.Helpers.REST.RESTHelper;
+import edu.weber.housing1000.Helpers.REST.SurveyService;
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.SignatureActivity;
 import edu.weber.housing1000.SurveyFlowActivity;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.MultipartTypedOutput;
+import retrofit.mime.TypedOutput;
 
 /**
  * Created by Blake on 2/11/14.
@@ -35,8 +48,10 @@ public class SignatureFragment extends SurveyAppFragment {
     byte[] signatureImageBytes;
     String signaturePath;
 
-    public SignatureFragment() {
-    }
+    ProgressDialogFragment progressDialogFragment;
+
+    // Needs a default constructor to be recreated
+    public SignatureFragment() { }
 
     public SignatureFragment(String name, String actionBarTitle) {
         super(name, actionBarTitle);
@@ -129,22 +144,82 @@ public class SignatureFragment extends SurveyAppFragment {
     }
 
     public void submitSignature() {
+        File signatureFile = new File(signaturePath);
 
-        //TODO: Use a DialogFragment instead of a ProgressDialog.  This is needed because the app
-        // will crash if you show a ProgressDialog from a listener
+        if (signatureFile.exists())
+        {
+            myActivity.showProgressDialog("Please Wait", "Submitting signature...", "SignatureSubmit");
 
-        // Start the survey submission dialog
-//        ProgressDialog progressDialog = new ProgressDialog(myActivity);
-//        progressDialog.setTitle("Please Wait");
-//        progressDialog.setMessage("Submitting signature...");
-//        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-//        progressDialog.setIndeterminate(true);
-//        progressDialog.setCancelable(false);
-//
-//        myActivity.setProgressDialog(progressDialog);
-//        myActivity.getProgressDialog().show();
+            final byte[] signatureBytes = EncryptionHelper.decryptImage(signatureFile);
 
-        //PostResponses.PostSurveyResponsesTask task = new PostResponses.PostSurveyResponsesTask(myActivity, myActivity, surveyResponse);
-        //task.execute("https://staging.ctagroup.org/Survey/api");
+            FileHelper.writeFileToExternalStorage(signatureBytes, myActivity.getFolderHash(), myActivity.getClientSurveyId() + "_signature.jpg" );
+
+            RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoJsonResponse(getActivity(), null);
+
+            TypedOutput typedOutput = new TypedOutput() {
+                @Override
+                public String fileName() {
+                    return myActivity.getClientSurveyId() + "_signature.jpg";
+                }
+
+                @Override
+                public String mimeType() {
+                    return "image/jpeg";
+                }
+
+                @Override
+                public long length() {
+                    return signatureBytes.length;
+                }
+
+                @Override
+                public void writeTo(OutputStream out) throws IOException {
+                    out.write(signatureBytes);
+                }
+            };
+
+            SurveyService service = restAdapter.create(SurveyService.class);
+            MultipartTypedOutput multipartTypedOutput = new MultipartTypedOutput();
+            multipartTypedOutput.addPart(myActivity.getClientSurveyId() + "_signature.jpg", typedOutput);
+
+            //TypedByteArray typedByteArray = new TypedByteArray("image/jpeg", signatureBytes);
+            service.postImage(multipartTypedOutput, new Callback<String>() {
+                @Override
+                public void success(String s, Response response) {
+                    if (s != null)
+                    {
+                        Log.d("SUCCESS", s);
+                    }
+
+                    myActivity.onPostSignatureTaskCompleted(response);
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    String errorBody = (String) error.getBodyAs(String.class);
+
+                    if (errorBody != null)
+                    {
+                        Log.e("FAILURE", errorBody);
+                        myActivity.onPostSignatureTaskCompleted(error.getResponse());
+                    }
+                    else
+                    {
+                        myActivity.onPostSignatureTaskCompleted(error.getResponse());
+                    }
+                }
+            });
+
+        }
+        else
+        {
+            new AlertDialog.Builder(getActivity()).setTitle("No Signature").setMessage("The signature seems to be missing!\nPlease sign the survey and resubmit.").show();
+        }
+    }
+
+    public void dismissSubmissionDialog()
+    {
+        if (progressDialogFragment != null)
+            progressDialogFragment.dismiss();
     }
 }
