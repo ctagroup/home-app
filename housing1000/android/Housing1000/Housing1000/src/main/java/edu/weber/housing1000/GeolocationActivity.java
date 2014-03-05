@@ -1,13 +1,12 @@
 package edu.weber.housing1000;
 
 import android.app.Activity;
-import android.os.Bundle;
-import android.widget.TextView;
-
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.Criteria;
+import android.os.Bundle;
+import android.widget.TextView;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,6 +21,7 @@ public class GeolocationActivity extends Activity implements LocationListener
 
     private TextView latitudeField;
     private TextView longitudeField;
+    private TextView timeField;
 
     private LocationManager locationManager;
 
@@ -33,6 +33,7 @@ public class GeolocationActivity extends Activity implements LocationListener
 
         latitudeField  = (TextView) findViewById(R.id.latitudeCords);
         longitudeField = (TextView) findViewById(R.id.longitudeCords);
+        timeField = (TextView) findViewById(R.id.timeValue);
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -43,7 +44,7 @@ public class GeolocationActivity extends Activity implements LocationListener
 
         //this below will force an update for last location
         String locationProvider = locationManager.getBestProvider(criteria, true);
-        locationManager.requestLocationUpdates(locationProvider, 5000, (float) 2.0, this);
+        locationManager.requestLocationUpdates(locationProvider, 0, 0, this);
 
         if (lastLocation != null)
             onLocationChanged(lastLocation);
@@ -56,7 +57,7 @@ public class GeolocationActivity extends Activity implements LocationListener
     protected void onResume()
     {//onResume
         super.onRestart();
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000,10, this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,0, this);
     }//onResume
 
     @Override
@@ -70,10 +71,11 @@ public class GeolocationActivity extends Activity implements LocationListener
     {//onLocationChanged
         String latString = Double.toString(location.getLatitude());
         String lonString = Double.toString(location.getLongitude());
+        String timeString = Long.toString(location.getTime()/1000);
 
         latitudeField.setText(latString);
         longitudeField.setText(lonString);
-
+        timeField.setText(timeString);
     }//onLocation Changed
 
     //=== Methods required by LocationListener (these really do nothing, they NEED to be here) ===//
