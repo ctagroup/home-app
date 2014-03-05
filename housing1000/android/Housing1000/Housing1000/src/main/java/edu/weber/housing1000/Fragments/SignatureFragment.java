@@ -150,7 +150,7 @@ public class SignatureFragment extends SurveyAppFragment {
 
         if (signatureFile.exists())
         {
-            final String signatureFileName = myActivity.getClientSurveyId() + "_signature.jpg";
+            final String signatureFileName = myActivity.getClientSurveyId() + "_signature.png";
 
             myActivity.showProgressDialog("Please Wait", "Submitting signature...", "SignatureSubmit");
 
@@ -159,28 +159,6 @@ public class SignatureFragment extends SurveyAppFragment {
             FileHelper.writeFileToExternalStorage(signatureBytes, myActivity.getFolderHash(), signatureFileName );
 
             RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoDeserialize(getActivity(), null);
-
-            TypedOutput typedOutput = new TypedOutput() {
-                @Override
-                public String fileName() {
-                    return signatureFileName;
-                }
-
-                @Override
-                public String mimeType() {
-                    return "image/png";
-                }
-
-                @Override
-                public long length() {
-                    return signatureBytes.length;
-                }
-
-                @Override
-                public void writeTo(OutputStream out) throws IOException {
-                    out.write(signatureBytes);
-                }
-            };
 
             SurveyService service = restAdapter.create(SurveyService.class);
             TypedFile signatureTyped = new TypedFile("image/png", new File(FileHelper.getAbsoluteFilePath(myActivity.getFolderHash(), signatureFileName)));
