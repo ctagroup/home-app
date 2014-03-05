@@ -181,7 +181,7 @@ public class SignatureFragment extends SurveyAppFragment {
 
             SurveyService service = restAdapter.create(SurveyService.class);
             MultipartTypedOutput multipartTypedOutput = new MultipartTypedOutput();
-            multipartTypedOutput.addPart(myActivity.getClientSurveyId() + "_signature.jpg\r\n", typedOutput);
+            multipartTypedOutput.addPart(myActivity.getClientSurveyId() + "_signature.jpg", typedOutput);
 
             //TypedByteArray typedByteArray = new TypedByteArray("image/jpeg", signatureBytes);
             service.postImage(multipartTypedOutput, new Callback<String>() {
