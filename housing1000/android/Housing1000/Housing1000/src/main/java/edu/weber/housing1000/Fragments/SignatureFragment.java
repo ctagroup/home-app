@@ -150,18 +150,20 @@ public class SignatureFragment extends SurveyAppFragment {
 
         if (signatureFile.exists())
         {
+            final String signatureFileName = myActivity.getClientSurveyId() + "_signature.jpg";
+
             myActivity.showProgressDialog("Please Wait", "Submitting signature...", "SignatureSubmit");
 
             final byte[] signatureBytes = EncryptionHelper.decryptImage(signatureFile);
 
-            FileHelper.writeFileToExternalStorage(signatureBytes, myActivity.getFolderHash(), myActivity.getClientSurveyId() + "_signature.png" );
-            File decryptedSignature = new File(FileHelper.getAbsoluteFilePath(myActivity.getFolderHash(),myActivity.getClientSurveyId() + "_signature.png"));
+            FileHelper.writeFileToExternalStorage(signatureBytes, myActivity.getFolderHash(), signatureFileName );
+
             RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoDeserialize(getActivity(), null);
 
             TypedOutput typedOutput = new TypedOutput() {
                 @Override
                 public String fileName() {
-                    return myActivity.getClientSurveyId() + "_signature.png";
+                    return signatureFileName;
                 }
 
                 @Override
@@ -181,19 +183,12 @@ public class SignatureFragment extends SurveyAppFragment {
             };
 
             SurveyService service = restAdapter.create(SurveyService.class);
-            File file = new File(signatureFile, "MySignatureFile");
-            TypedFile typedFile = new TypedFile("image/png",decryptedSignature);
+            TypedFile signatureTyped = new TypedFile("image/png", new File(FileHelper.getAbsoluteFilePath(myActivity.getFolderHash(), signatureFileName)));
 
-            //MultipartTypedOutput multipartTypedOutput = new MultipartTypedOutput();
-            //multipartTypedOutput.addPart("MySignature", typedOutput);
-            //multipartTypedOutput.addPart(myActivity.getClientSurveyId() + "_signature.jpg\r\n", typedOutput);
-
-            //TypedByteArray typedByteArray = new TypedByteArray("image/jpeg", signatureBytes);
-            service.postImage(typedFile, new Callback<String>() {
+            service.postImage(signatureTyped, new Callback<String>() {
                 @Override
                 public void success(String s, Response response) {
-                    if (s != null)
-                    {
+                    if (s != null) {
                         Log.d("SUCCESS", s);
                     }
 
@@ -204,13 +199,10 @@ public class SignatureFragment extends SurveyAppFragment {
                 public void failure(RetrofitError error) {
                     String errorBody = (String) error.getBodyAs(String.class);
 
-                    if (errorBody != null)
-                    {
+                    if (errorBody != null) {
                         Log.e("FAILURE", errorBody);
                         myActivity.onPostSignatureTaskCompleted(error.getResponse());
-                    }
-                    else
-                    {
+                    } else {
                         myActivity.onPostSignatureTaskCompleted(error.getResponse());
                     }
                 }

@@ -47,7 +47,7 @@ public class PitActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_survey_list);
+        setContentView(R.layout.activity_pit);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
