@@ -52,7 +52,8 @@ public class SignatureFragment extends SurveyAppFragment {
     ProgressDialogFragment progressDialogFragment;
 
     // Needs a default constructor to be recreated
-    public SignatureFragment() { }
+    public SignatureFragment() {
+    }
 
     public SignatureFragment(String name, String actionBarTitle) {
         super(name, actionBarTitle);
@@ -148,22 +149,45 @@ public class SignatureFragment extends SurveyAppFragment {
         Log.d("Signature path:", signaturePath);
         File signatureFile = new File(signaturePath);
 
-        if (signatureFile.exists())
-        {
+        if (signatureFile.exists()) {
             final String signatureFileName = myActivity.getClientSurveyId() + "_signature.png";
 
             myActivity.showProgressDialog("Please Wait", "Submitting signature...", "SignatureSubmit");
 
             final byte[] signatureBytes = EncryptionHelper.decryptImage(signatureFile);
 
-            FileHelper.writeFileToExternalStorage(signatureBytes, myActivity.getFolderHash(), signatureFileName );
+            FileHelper.writeFileToExternalStorage(signatureBytes, myActivity.getFolderHash(), signatureFileName);
 
             RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoDeserialize(getActivity(), null);
 
-            SurveyService service = restAdapter.create(SurveyService.class);
-            TypedFile signatureTyped = new TypedFile("image/png", new File(FileHelper.getAbsoluteFilePath(myActivity.getFolderHash(), signatureFileName)));
+            TypedOutput typedOutput = new TypedOutput() {
+                @Override
+                public String fileName() {
+                    return signatureFileName;
+                }
 
-            service.postImage(signatureTyped, new Callback<String>() {
+                @Override
+                public String mimeType() {
+                    return "image/*";
+                }
+
+                @Override
+                public long length() {
+                    return signatureBytes.length;
+                }
+
+                @Override
+                public void writeTo(OutputStream out) throws IOException {
+                    out.write(signatureBytes);
+                }
+            };
+
+            SurveyService service = restAdapter.create(SurveyService.class);
+
+            MultipartTypedOutput multipartTypedOutput = new MultipartTypedOutput();
+            multipartTypedOutput.addPart(signatureFileName, typedOutput);
+
+            service.postImage(multipartTypedOutput, new Callback<String>() {
                 @Override
                 public void success(String s, Response response) {
                     if (s != null) {
@@ -186,15 +210,12 @@ public class SignatureFragment extends SurveyAppFragment {
                 }
             });
 
-        }
-        else
-        {
+        } else {
             new AlertDialog.Builder(getActivity()).setTitle("No Signature").setMessage("The signature seems to be missing!\nPlease sign the survey and resubmit.").show();
         }
     }
 
-    public void dismissSubmissionDialog()
-    {
+    public void dismissSubmissionDialog() {
         if (progressDialogFragment != null)
             progressDialogFragment.dismiss();
     }
