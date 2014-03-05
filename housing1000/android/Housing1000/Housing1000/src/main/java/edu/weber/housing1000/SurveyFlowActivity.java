@@ -231,7 +231,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
         photosFragment.submitPhotos();
     }
 
-    public void onPostImageTaskCompleted(Response response) {
+    public void onPostPhotoTaskCompleted(Response response) {
         //Check the result here
 
         dismissDialog();
