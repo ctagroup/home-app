@@ -31,6 +31,7 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.MultipartTypedOutput;
+import retrofit.mime.TypedFile;
 import retrofit.mime.TypedOutput;
 
 /**
@@ -153,19 +154,19 @@ public class SignatureFragment extends SurveyAppFragment {
 
             final byte[] signatureBytes = EncryptionHelper.decryptImage(signatureFile);
 
-            FileHelper.writeFileToExternalStorage(signatureBytes, myActivity.getFolderHash(), myActivity.getClientSurveyId() + "_signature.jpg" );
-
+            FileHelper.writeFileToExternalStorage(signatureBytes, myActivity.getFolderHash(), myActivity.getClientSurveyId() + "_signature.png" );
+            File decryptedSignature = new File(FileHelper.getAbsoluteFilePath(myActivity.getFolderHash(),myActivity.getClientSurveyId() + "_signature.png"));
             RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoDeserialize(getActivity(), null);
 
             TypedOutput typedOutput = new TypedOutput() {
                 @Override
                 public String fileName() {
-                    return myActivity.getClientSurveyId() + "_signature.jpg";
+                    return myActivity.getClientSurveyId() + "_signature.png";
                 }
 
                 @Override
                 public String mimeType() {
-                    return "image/jpeg";
+                    return "image/png";
                 }
 
                 @Override
@@ -180,11 +181,15 @@ public class SignatureFragment extends SurveyAppFragment {
             };
 
             SurveyService service = restAdapter.create(SurveyService.class);
-            MultipartTypedOutput multipartTypedOutput = new MultipartTypedOutput();
-            multipartTypedOutput.addPart(myActivity.getClientSurveyId() + "_signature.jpg\r\n", typedOutput);
+            File file = new File(signatureFile, "MySignatureFile");
+            TypedFile typedFile = new TypedFile("image/png",decryptedSignature);
+
+            //MultipartTypedOutput multipartTypedOutput = new MultipartTypedOutput();
+            //multipartTypedOutput.addPart("MySignature", typedOutput);
+            //multipartTypedOutput.addPart(myActivity.getClientSurveyId() + "_signature.jpg\r\n", typedOutput);
 
             //TypedByteArray typedByteArray = new TypedByteArray("image/jpeg", signatureBytes);
-            service.postImage(multipartTypedOutput, new Callback<String>() {
+            service.postImage(typedFile, new Callback<String>() {
                 @Override
                 public void success(String s, Response response) {
                     if (s != null)
