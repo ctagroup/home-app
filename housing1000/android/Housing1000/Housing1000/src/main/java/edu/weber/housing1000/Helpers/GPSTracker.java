@@ -85,13 +85,15 @@ public class GPSTracker extends Service implements LocationListener {
                 CRITERIA.setAccuracy(Criteria.ACCURACY_FINE);
                 CRITERIA.setPowerRequirement(Criteria.POWER_LOW);
                 PROVIDER = LOCATIONMANAGER.getBestProvider(CRITERIA, true);
-                LOCATION = LOCATIONMANAGER.getLastKnownLocation(PROVIDER);
-                Log.d("Provider: ", PROVIDER);
                 LOCATIONMANAGER.requestLocationUpdates(PROVIDER, MINTIME, MINDISTANCE, this);
-                if(LOCATION != null) {
-                    LATITUDE = LOCATION.getLatitude();
-                    LONGITUDE = LOCATION.getLongitude();
-                    LOCATIONTIME = LOCATION.getTime()/1000;
+                Log.d("Best Provider: ", PROVIDER);
+                if(LOCATIONMANAGER != null) {
+                    LOCATION = LOCATIONMANAGER.getLastKnownLocation(PROVIDER);
+                    if(LOCATION != null) {
+                        LATITUDE = LOCATION.getLatitude();
+                        LONGITUDE = LOCATION.getLongitude();
+                        LOCATIONTIME = LOCATION.getTime()/1000;
+                    }
                 }
             }
         } catch(Exception e) {
