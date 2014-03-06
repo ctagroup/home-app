@@ -18,6 +18,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 import edu.weber.housing1000.Helpers.EncryptionHelper;
 import edu.weber.housing1000.Helpers.FileHelper;
@@ -146,46 +147,27 @@ public class SignatureFragment extends SurveyAppFragment {
     }
 
     public void submitSignature() {
+        MultipartTypedOutput multipartTypedOutput = new MultipartTypedOutput();
+
         Log.d("Signature path:", signaturePath);
         File signatureFile = new File(signaturePath);
 
+        myActivity.showProgressDialog("Please Wait", "Submitting signature...", "SignatureSubmit");
+
+
         if (signatureFile.exists()) {
-            final String signatureFileName = myActivity.getClientSurveyId() + "_signature.png";
 
-            myActivity.showProgressDialog("Please Wait", "Submitting signature...", "SignatureSubmit");
+            ArrayList<String> files = new ArrayList<String>();
 
-            final byte[] signatureBytes = EncryptionHelper.decryptImage(signatureFile);
+            files.add(signaturePath);
 
-            FileHelper.writeFileToExternalStorage(signatureBytes, myActivity.getFolderHash(), signatureFileName);
+            for (TypedOutput image : RESTHelper.generateTypedOutputFromImages(files, myActivity.getClientSurveyId())) {
+                multipartTypedOutput.addPart(image.fileName(), image);
+            }
 
             RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoDeserialize(getActivity(), null);
 
-            TypedOutput typedOutput = new TypedOutput() {
-                @Override
-                public String fileName() {
-                    return signatureFileName;
-                }
-
-                @Override
-                public String mimeType() {
-                    return "image/*";
-                }
-
-                @Override
-                public long length() {
-                    return signatureBytes.length;
-                }
-
-                @Override
-                public void writeTo(OutputStream out) throws IOException {
-                    out.write(signatureBytes);
-                }
-            };
-
             SurveyService service = restAdapter.create(SurveyService.class);
-
-            MultipartTypedOutput multipartTypedOutput = new MultipartTypedOutput();
-            multipartTypedOutput.addPart(signatureFileName, typedOutput);
 
             service.postImage(multipartTypedOutput, new Callback<String>() {
                 @Override

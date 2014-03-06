@@ -71,13 +71,16 @@ public class PhotosFragment extends SurveyAppFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        myActivity = (SurveyFlowActivity) getActivity();
+
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        myActivity = (SurveyFlowActivity) activity;
+        if (myActivity == null)
+            myActivity = (SurveyFlowActivity) getActivity();
     }
 
     @Override
@@ -150,7 +153,7 @@ public class PhotosFragment extends SurveyAppFragment {
      * @param actionCode Activity result to return
      */
     private void dispatchTakePictureIntent(int actionCode) {
-        if (Utils.isIntentAvailable(getActivity().getApplicationContext(), MediaStore.ACTION_IMAGE_CAPTURE)) {
+        if (Utils.isIntentAvailable(myActivity.getApplicationContext(), MediaStore.ACTION_IMAGE_CAPTURE)) {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
             startActivityForResult(takePictureIntent, actionCode);
@@ -197,69 +200,46 @@ public class PhotosFragment extends SurveyAppFragment {
     }
 
     public void submitPhotos() {
-        MultipartTypedOutput multipartTypedOutput = new MultipartTypedOutput();
+        if (imageAdapter.getCount() > 0) {
+            MultipartTypedOutput multipartTypedOutput = new MultipartTypedOutput();
 
-        myActivity.showProgressDialog("Please Wait", "Submitting photo(s)...", "PhotoSubmit");
+            myActivity.showProgressDialog("Please Wait", "Submitting photo(s)...", "PhotoSubmit");
 
-        for (String path : imageAdapter.getImages()) {
-            Log.d("Photo path:", path);
-            File photoFile = new File(path);
+            for (TypedOutput image : RESTHelper.generateTypedOutputFromImages(imageAdapter.getImages(), myActivity.getClientSurveyId())) {
+                multipartTypedOutput.addPart(image.fileName(), image);
+            }
 
-            final String photoFileName = myActivity.getClientSurveyId() + "_" + photoFile.getName().replace(".secure", ".png");
+            RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoDeserialize(getActivity(), null);
 
-            final byte[] photoBytes = EncryptionHelper.decryptImage(photoFile);
+            SurveyService service = restAdapter.create(SurveyService.class);
 
-            TypedOutput typedOutput = new TypedOutput() {
+            service.postImage(multipartTypedOutput, new Callback<String>() {
                 @Override
-                public String fileName() {
-                    return photoFileName;
+                public void success(String s, Response response) {
+                    if (s != null) {
+                        Log.d("SUCCESS", s);
+                    }
+
+                    myActivity.onPostPhotoTaskCompleted(response);
                 }
 
                 @Override
-                public String mimeType() {
-                    return "image/*";
-                }
+                public void failure(RetrofitError error) {
+                    String errorBody = (String) error.getBodyAs(String.class);
 
-                @Override
-                public long length() {
-                    return photoBytes.length;
+                    if (errorBody != null) {
+                        Log.e("FAILURE", errorBody);
+                        myActivity.onPostPhotoTaskCompleted(error.getResponse());
+                    } else {
+                        myActivity.onPostPhotoTaskCompleted(error.getResponse());
+                    }
                 }
-
-                @Override
-                public void writeTo(OutputStream out) throws IOException {
-                    out.write(photoBytes);
-                }
-            };
-
-            multipartTypedOutput.addPart(photoFileName, typedOutput);
+            });
         }
-
-        RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoDeserialize(getActivity(), null);
-
-        SurveyService service = restAdapter.create(SurveyService.class);
-
-        service.postImage(multipartTypedOutput, new Callback<String>() {
-            @Override
-            public void success(String s, Response response) {
-                if (s != null) {
-                    Log.d("SUCCESS", s);
-                }
-
-                myActivity.onPostPhotoTaskCompleted(response);
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                String errorBody = (String) error.getBodyAs(String.class);
-
-                if (errorBody != null) {
-                    Log.e("FAILURE", errorBody);
-                    myActivity.onPostPhotoTaskCompleted(error.getResponse());
-                } else {
-                    myActivity.onPostPhotoTaskCompleted(error.getResponse());
-                }
-            }
-        });
+        else
+        {
+            myActivity.onPostPhotoTaskCompleted(null);
+        }
     }
 
     public class MultiChoiceListener implements GridView.MultiChoiceModeListener {

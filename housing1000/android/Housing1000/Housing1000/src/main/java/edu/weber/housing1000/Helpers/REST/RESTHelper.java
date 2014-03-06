@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -21,6 +22,7 @@ import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -30,12 +32,14 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManagerFactory;
 
+import edu.weber.housing1000.Helpers.EncryptionHelper;
 import edu.weber.housing1000.R;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import retrofit.converter.ConversionException;
 import retrofit.converter.Converter;
 import retrofit.converter.GsonConverter;
+import retrofit.mime.MultipartTypedOutput;
 import retrofit.mime.TypedInput;
 import retrofit.mime.TypedOutput;
 
@@ -235,6 +239,44 @@ public class RESTHelper {
         return builder.build();
     }
 
+    public static ArrayList<TypedOutput> generateTypedOutputFromImages(ArrayList<String> paths, String clientSurveyId )
+    {
+        ArrayList<TypedOutput> result = new ArrayList<TypedOutput>();
 
+        for (String path : paths) {
+            Log.d("Photo path:", path);
+            File photoFile = new File(path);
+
+            final String photoFileName = clientSurveyId + "_" + photoFile.getName().replace(".secure", ".png");
+
+            final byte[] photoBytes = EncryptionHelper.decryptImage(photoFile);
+
+            TypedOutput typedOutput = new TypedOutput() {
+                @Override
+                public String fileName() {
+                    return photoFileName;
+                }
+
+                @Override
+                public String mimeType() {
+                    return "image/*";
+                }
+
+                @Override
+                public long length() {
+                    return photoBytes.length;
+                }
+
+                @Override
+                public void writeTo(OutputStream out) throws IOException {
+                    out.write(photoBytes);
+                }
+            };
+
+            result.add(typedOutput);
+        }
+
+        return result;
+    }
 
 }
