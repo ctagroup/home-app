@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-PPSSignatureView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-RNCryptor.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -22,17 +27,22 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>A3EA8E8D68124987AB308AEF</key>
+		<key>4249E47024144058A0C77757</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B47B4ECC586C427C8057BF21</key>
+		<key>5214E0488ECD428AB580E404</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DAE83D3861F34DE3B4D29B20</key>
+		<key>8750F6C07D304054A67621AA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>AE3EA0FDB21F4A98A21767E1</key>
 		<dict>
 			<key>primary</key>
 			<true/>

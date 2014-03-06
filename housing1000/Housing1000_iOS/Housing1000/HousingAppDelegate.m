@@ -11,6 +11,7 @@
 @implementation HousingAppDelegate
 
 @synthesize tempSig = _tempSig;
+@synthesize trialSig = _trialSig;
 @synthesize encryptedSignature = _encryptedSignature;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
