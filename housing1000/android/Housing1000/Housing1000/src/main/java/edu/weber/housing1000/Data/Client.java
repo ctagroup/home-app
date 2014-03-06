@@ -42,22 +42,25 @@ public class Client implements Serializable {
 
     public Client (ArrayList<Question> questions, Location location)
     {
-        for (Question q : questions)
+        if (questions != null)
         {
-            switch (q.getParentRequiredAnswer())
+            for (Question q : questions)
             {
-                case "Birthday":
-                    birthday = q.getAnswer();
-                    break;
-                case "Last4SSN":
-                    last4Ssn = q.getAnswer();
-                    break;
-                case "ServicePointId":
-                    if (!q.getAnswer().isEmpty())
-                        servicePointId = Integer.parseInt(q.getAnswer());
-                    break;
-                default:
-                    break;
+                switch (q.getParentRequiredAnswer())
+                {
+                    case "Birthday":
+                        birthday = q.getAnswer();
+                        break;
+                    case "Last4SSN":
+                        last4Ssn = q.getAnswer();
+                        break;
+                    case "ServicePointId":
+                        if (!q.getAnswer().isEmpty())
+                            servicePointId = Integer.parseInt(q.getAnswer());
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 

@@ -118,7 +118,7 @@ public class SignatureActivity extends Activity {
                 v.draw(canvas);
                 ByteArrayOutputStream baOutputStream = new ByteArrayOutputStream();
                 Bitmap sBitmap = ImageHelper.ScaleImage(mBitmap);
-                sBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baOutputStream);
+                sBitmap.compress(Bitmap.CompressFormat.PNG, 100, baOutputStream);
                 byte[] byteImage = baOutputStream.toByteArray();
                 byte[] encryptedImage = EncryptionHelper.encrypt(byteImage);
 

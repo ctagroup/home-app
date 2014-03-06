@@ -14,20 +14,12 @@ public class SelectPageActivity extends Activity {
         setContentView(R.layout.select_page);
 
         //Get the Buttons
-        Button clientButton = (Button) findViewById(R.id.censusBtn);
-        Button interviewButton = (Button) findViewById(R.id.surveyBtn);
+        Button pitButton = (Button) findViewById(R.id.pitButton);
         Button dynamicWithApiButton = (Button) findViewById(R.id.dynamicWithApiButton);
 
-        clientButton.setOnClickListener(new View.OnClickListener() {
+        pitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent intent = new Intent(SelectPageActivity.this, CensusActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        interviewButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent intent = new Intent(SelectPageActivity.this, LegalDisclaimerActivity.class);
+                Intent intent = new Intent(SelectPageActivity.this, PitActivity.class);
                 startActivity(intent);
             }
         });

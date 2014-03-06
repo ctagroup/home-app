@@ -155,7 +155,7 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
         progressDialog.setCancelable(true);
         progressDialog.show();
 
-        RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoJsonResponse(this, null);
+        RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoDeserialize(this, null);
 
         SurveyService service = restAdapter.create(SurveyService.class);
 

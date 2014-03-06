@@ -3,10 +3,8 @@ package edu.weber.housing1000.Fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v7.view.ActionMode;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -16,20 +14,29 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 
 import edu.weber.housing1000.Helpers.EncryptionHelper;
 import edu.weber.housing1000.Helpers.FileHelper;
 import edu.weber.housing1000.Helpers.ImageHelper;
+import edu.weber.housing1000.Helpers.REST.RESTHelper;
+import edu.weber.housing1000.Helpers.REST.SurveyService;
 import edu.weber.housing1000.ImageAdapter;
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.SurveyFlowActivity;
 import edu.weber.housing1000.Utils;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.MultipartTypedOutput;
+import retrofit.mime.TypedOutput;
 
 /**
  * Created by Blake on 2/11/14.
@@ -44,7 +51,8 @@ public class PhotosFragment extends SurveyAppFragment {
 
     ImageAdapter imageAdapter; // Adapter that keeps track of saved photos
 
-    public PhotosFragment() {} // Default constructor - Needed to restore state
+    public PhotosFragment() {
+    } // Default constructor - Needed to restore state
 
     public PhotosFragment(String name, String actionBarTitle) {
         super(name, actionBarTitle);
@@ -118,8 +126,7 @@ public class PhotosFragment extends SurveyAppFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId())
-        {
+        switch (item.getItemId()) {
             case R.id.action_camera:
                 dispatchTakePictureIntent(TAKE_PICTURE);
                 return true;
@@ -139,10 +146,11 @@ public class PhotosFragment extends SurveyAppFragment {
 
     /**
      * Opens up the camera to take a picture
+     *
      * @param actionCode Activity result to return
      */
     private void dispatchTakePictureIntent(int actionCode) {
-        if(Utils.isIntentAvailable(getActivity().getApplicationContext(), MediaStore.ACTION_IMAGE_CAPTURE)){
+        if (Utils.isIntentAvailable(getActivity().getApplicationContext(), MediaStore.ACTION_IMAGE_CAPTURE)) {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
             startActivityForResult(takePictureIntent, actionCode);
@@ -176,7 +184,7 @@ public class PhotosFragment extends SurveyAppFragment {
                 // Add the file path to the imageAdapter
                 imageAdapter.addImagePath(FileHelper.getAbsoluteFilePath(myActivity.getFolderHash(), encryptedName));
 
-                Log.d("PHOTO ADDED", (String)imageAdapter.getItem(imageAdapter.getCount() - 1));
+                Log.d("PHOTO ADDED", (String) imageAdapter.getItem(imageAdapter.getCount() - 1));
                 Log.d("PHOTO COUNT", String.valueOf(imageAdapter.getCount()));
 
                 imageAdapter.notifyDataSetChanged();
@@ -188,9 +196,70 @@ public class PhotosFragment extends SurveyAppFragment {
         }
     }
 
-    public void submitPhotos()
-    {
-        //TODO
+    public void submitPhotos() {
+        MultipartTypedOutput multipartTypedOutput = new MultipartTypedOutput();
+
+        myActivity.showProgressDialog("Please Wait", "Submitting photo(s)...", "PhotoSubmit");
+
+        for (String path : imageAdapter.getImages()) {
+            Log.d("Photo path:", path);
+            File photoFile = new File(path);
+
+            final String photoFileName = myActivity.getClientSurveyId() + "_" + photoFile.getName().replace(".secure", ".png");
+
+            final byte[] photoBytes = EncryptionHelper.decryptImage(photoFile);
+
+            TypedOutput typedOutput = new TypedOutput() {
+                @Override
+                public String fileName() {
+                    return photoFileName;
+                }
+
+                @Override
+                public String mimeType() {
+                    return "image/*";
+                }
+
+                @Override
+                public long length() {
+                    return photoBytes.length;
+                }
+
+                @Override
+                public void writeTo(OutputStream out) throws IOException {
+                    out.write(photoBytes);
+                }
+            };
+
+            multipartTypedOutput.addPart(photoFileName, typedOutput);
+        }
+
+        RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoDeserialize(getActivity(), null);
+
+        SurveyService service = restAdapter.create(SurveyService.class);
+
+        service.postImage(multipartTypedOutput, new Callback<String>() {
+            @Override
+            public void success(String s, Response response) {
+                if (s != null) {
+                    Log.d("SUCCESS", s);
+                }
+
+                myActivity.onPostPhotoTaskCompleted(response);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                String errorBody = (String) error.getBodyAs(String.class);
+
+                if (errorBody != null) {
+                    Log.e("FAILURE", errorBody);
+                    myActivity.onPostPhotoTaskCompleted(error.getResponse());
+                } else {
+                    myActivity.onPostPhotoTaskCompleted(error.getResponse());
+                }
+            }
+        });
     }
 
     public class MultiChoiceListener implements GridView.MultiChoiceModeListener {
@@ -222,23 +291,19 @@ public class PhotosFragment extends SurveyAppFragment {
 
         @Override
         public boolean onActionItemClicked(android.view.ActionMode mode, MenuItem item) {
-            switch (item.getItemId())
-            {
+            switch (item.getItemId()) {
                 case R.id.action_delete_photo:
                     SparseBooleanArray selected = photosGridView.getCheckedItemPositions();
                     Log.d("SELECTED IMAGE COUNT", String.valueOf(photosGridView.getCheckedItemCount()));
-                    for (int i = 0; i < selected.size(); i++)
-                    {
-                        if (selected.get(selected.keyAt(i)))
-                        {
+                    for (int i = 0; i < selected.size(); i++) {
+                        if (selected.get(selected.keyAt(i))) {
                             Log.d("REMOVING IMAGE", String.valueOf(selected.keyAt(i)));
                             imageAdapter.removeImage(selected.keyAt(i));
                         }
                     }
                     mode.finish();
                     imageAdapter.notifyDataSetChanged();
-                    if (imageAdapter.getCount() == 0)
-                    {
+                    if (imageAdapter.getCount() == 0) {
                         noPhotosTextView.setVisibility(View.VISIBLE);
                     }
                     break;

@@ -31,6 +31,7 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.MultipartTypedOutput;
+import retrofit.mime.TypedFile;
 import retrofit.mime.TypedOutput;
 
 /**
@@ -51,7 +52,8 @@ public class SignatureFragment extends SurveyAppFragment {
     ProgressDialogFragment progressDialogFragment;
 
     // Needs a default constructor to be recreated
-    public SignatureFragment() { }
+    public SignatureFragment() {
+    }
 
     public SignatureFragment(String name, String actionBarTitle) {
         super(name, actionBarTitle);
@@ -144,27 +146,29 @@ public class SignatureFragment extends SurveyAppFragment {
     }
 
     public void submitSignature() {
+        Log.d("Signature path:", signaturePath);
         File signatureFile = new File(signaturePath);
 
-        if (signatureFile.exists())
-        {
+        if (signatureFile.exists()) {
+            final String signatureFileName = myActivity.getClientSurveyId() + "_signature.png";
+
             myActivity.showProgressDialog("Please Wait", "Submitting signature...", "SignatureSubmit");
 
             final byte[] signatureBytes = EncryptionHelper.decryptImage(signatureFile);
 
-            FileHelper.writeFileToExternalStorage(signatureBytes, myActivity.getFolderHash(), myActivity.getClientSurveyId() + "_signature.jpg" );
+            FileHelper.writeFileToExternalStorage(signatureBytes, myActivity.getFolderHash(), signatureFileName);
 
-            RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoJsonResponse(getActivity(), null);
+            RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoDeserialize(getActivity(), null);
 
             TypedOutput typedOutput = new TypedOutput() {
                 @Override
                 public String fileName() {
-                    return myActivity.getClientSurveyId() + "_signature.jpg";
+                    return signatureFileName;
                 }
 
                 @Override
                 public String mimeType() {
-                    return "image/jpeg";
+                    return "image/*";
                 }
 
                 @Override
@@ -179,15 +183,14 @@ public class SignatureFragment extends SurveyAppFragment {
             };
 
             SurveyService service = restAdapter.create(SurveyService.class);
-            MultipartTypedOutput multipartTypedOutput = new MultipartTypedOutput();
-            multipartTypedOutput.addPart(myActivity.getClientSurveyId() + "_signature.jpg", typedOutput);
 
-            //TypedByteArray typedByteArray = new TypedByteArray("image/jpeg", signatureBytes);
+            MultipartTypedOutput multipartTypedOutput = new MultipartTypedOutput();
+            multipartTypedOutput.addPart(signatureFileName, typedOutput);
+
             service.postImage(multipartTypedOutput, new Callback<String>() {
                 @Override
                 public void success(String s, Response response) {
-                    if (s != null)
-                    {
+                    if (s != null) {
                         Log.d("SUCCESS", s);
                     }
 
@@ -198,27 +201,21 @@ public class SignatureFragment extends SurveyAppFragment {
                 public void failure(RetrofitError error) {
                     String errorBody = (String) error.getBodyAs(String.class);
 
-                    if (errorBody != null)
-                    {
+                    if (errorBody != null) {
                         Log.e("FAILURE", errorBody);
                         myActivity.onPostSignatureTaskCompleted(error.getResponse());
-                    }
-                    else
-                    {
+                    } else {
                         myActivity.onPostSignatureTaskCompleted(error.getResponse());
                     }
                 }
             });
 
-        }
-        else
-        {
+        } else {
             new AlertDialog.Builder(getActivity()).setTitle("No Signature").setMessage("The signature seems to be missing!\nPlease sign the survey and resubmit.").show();
         }
     }
 
-    public void dismissSubmissionDialog()
-    {
+    public void dismissSubmissionDialog() {
         if (progressDialogFragment != null)
             progressDialogFragment.dismiss();
     }

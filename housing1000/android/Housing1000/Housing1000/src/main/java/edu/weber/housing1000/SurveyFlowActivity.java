@@ -1,14 +1,10 @@
 package edu.weber.housing1000;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -36,11 +32,14 @@ import edu.weber.housing1000.Fragments.SignatureFragment;
 import edu.weber.housing1000.Fragments.SurveyAppFragment;
 import edu.weber.housing1000.Fragments.SurveyFragment;
 import edu.weber.housing1000.Helpers.FileHelper;
+import edu.weber.housing1000.Helpers.GPSTracker;
 import edu.weber.housing1000.Helpers.REST.RESTHelper;
 import retrofit.client.Response;
 
-public class SurveyFlowActivity extends ActionBarActivity implements LocationListener {
+public class SurveyFlowActivity extends ActionBarActivity {
     public static final String EXTRA_SURVEY = "survey";
+
+    GPSTracker gps;
 
     //These are used to keep track of the submission state
     boolean submittingSurvey;
@@ -106,21 +105,10 @@ public class SurveyFlowActivity extends ActionBarActivity implements LocationLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey_flow);
 
-        latitudeField  = (TextView) findViewById(R.id.latitudeCords);
-        longitudeField = (TextView) findViewById(R.id.longitudeCords);
-
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        criteria.setPowerRequirement(Criteria.POWER_LOW);
-
-        String locationProvider = locationManager.getBestProvider(criteria, true);
-        locationManager.requestLocationUpdates(locationProvider, 5000, (float) 2.0, this);
-
-        if (currentLocation != null)
-            onLocationChanged(currentLocation);
+        //GPS TESTING
+        /*Intent intent = new Intent(this, GeolocationActivity.class);
+        startActivityForResult(intent, 1);*/
+        gps = new GPSTracker(this);
 
         // Restore state after being recreated
         if (savedInstanceState != null) {
@@ -243,10 +231,12 @@ public class SurveyFlowActivity extends ActionBarActivity implements LocationLis
         photosFragment.submitPhotos();
     }
 
-    public void onPostImageTaskCompleted(Response response) {
+    public void onPostPhotoTaskCompleted(Response response) {
         //Check the result here
 
         dismissDialog();
+
+        isPhotoSubmitted = true;
 
         try {
             Log.d("PHOTOS RESPONSE", RESTHelper.convertStreamToString(response.getBody().in()));
@@ -292,19 +282,16 @@ public class SurveyFlowActivity extends ActionBarActivity implements LocationLis
     }
 
     public Location getLocation() {
-        if(currentLocation == null)
-        {
-            Location falseLocation = new Location(LocationManager.GPS_PROVIDER);
-            falseLocation.setLatitude(0);
-            falseLocation.setLongitude(0);
-            currentLocation = falseLocation;
+        if(gps.canGetLocation()) {
+            currentLocation = gps.getLocation();
+
+            String message = "Location Details" +
+                    "\nLatitude: " + gps.getLatitude() +
+                    "\nLongitude: " + gps.getLongitude() +
+                    "\nTime: " + gps.getTime();
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         }
-
-        String lat = currentLocation.getLatitude() + "";
-        String lon = currentLocation.getLongitude() + "";
-        String msg = "Location Details: \nLatitude: " + lat + "\nLongitude: " + lon;
-
-        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+        gps.stopUsingGPS();
         return currentLocation;
     }
 
@@ -377,48 +364,6 @@ public class SurveyFlowActivity extends ActionBarActivity implements LocationLis
                     return "";
             }
         }
-    }
-
-
-    //Required LocationListener methods
-    @Override
-    protected void onResume()
-    {
-        super.onRestart();
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000,10, this);
-    }
-
-    @Override
-    protected void onPause()
-    {
-        super.onPause();
-        locationManager.removeUpdates(this);
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        String latString = Double.toString(location.getLatitude());
-        String lonString = Double.toString(location.getLongitude());
-
-        if (latitudeField != null) latitudeField.setText(latString);
-        if (longitudeField != null) longitudeField.setText(lonString);
-
-        locationManager.removeUpdates(this);
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
     }
 
 }

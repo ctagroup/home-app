@@ -168,18 +168,20 @@ public class RESTHelper {
     }
 
     /**
-     * Sets up the RestAdapter, WITHOUT a JSON response
+     * Sets up the RestAdapter, WITHOUT deserializing the response
      * @param context
      * @param gson GSON that will be used to convert the data of the request to JSON
      * @return
      */
-    public static RestAdapter setUpRestAdapterNoJsonResponse(Context context, Gson gson)
+    public static RestAdapter setUpRestAdapterNoDeserialize(Context context, Gson gson)
     {
         RestAdapter.Builder builder = setUpRestAdapterBuilder(context);
 
+        // GSON object is provided for serializing the data being sent
         if (gson != null)
         {
             // Disable deserializing the server response from JSON
+            // but still have the ability to serialize to JSON
             GsonConverter converter = new GsonConverter(gson){
                 @Override
                 public Object fromBody(TypedInput body, Type type) throws ConversionException {
@@ -195,7 +197,7 @@ public class RESTHelper {
 
             builder.setConverter(converter);
         }
-        else
+        else // No GSON object is provided
         {
             builder.setConverter(new Converter() {
                 @Override

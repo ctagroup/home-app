@@ -33,7 +33,9 @@ public interface SurveyService {
     @POST("/survey/{id}")
     void postResponse(@Path("id") String id, @Body SurveyResponse surveyResponse, Callback<String> cb);
 
-    @Multipart
     @POST("/upload")
-    void postImage(@Part("images") MultipartTypedOutput images, Callback<String> cb);
+    void postImage(@Body MultipartTypedOutput images, Callback<String> cb);
+
+    @GET("/pit")
+    void getPit(Callback<Survey> cb);
 }

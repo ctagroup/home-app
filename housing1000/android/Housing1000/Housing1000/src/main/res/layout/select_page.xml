@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:layout_gravity="center">
 
     <ImageView
         android:id="@+id/imageView1"
@@ -18,25 +22,14 @@
         android:paddingBottom="40dp" />
 
     <Button
-        android:id="@+id/censusBtn"
+        android:id="@+id/pitButton"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
-        android:text="Record Census Information"
+        android:text="Point in Time"
         style="@style/ButtonText"
         android:background="@drawable/btn_yellow"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/imageView1" />
-
-    <Button
-        android:id="@+id/surveyBtn"
-        android:layout_width="230dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/censusBtn"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="75dp"
-        android:text="Old Survey"
-        style="@style/ButtonText"
-        android:background="@drawable/btn_yellow" />
 
     <Button
         style="@style/ButtonText"
@@ -47,6 +40,7 @@
         android:layout_marginTop="75dp"
         android:text="Dynamic w/ API"
         android:background="@drawable/btn_yellow"
-        android:layout_below="@+id/surveyBtn" />
+        android:layout_below="@+id/pitButton" />
 
 </RelativeLayout>
+</ScrollView>
