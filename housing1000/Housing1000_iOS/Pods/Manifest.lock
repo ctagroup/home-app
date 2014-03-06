@@ -1,13 +1,16 @@
 PODS:
   - JSONModel (0.12.0)
+  - PPSSignatureView (0.1.0)
   - RNCryptor (2.2)
 
 DEPENDENCIES:
   - JSONModel
+  - PPSSignatureView
   - RNCryptor
 
 SPEC CHECKSUMS:
   JSONModel: f391da60a15e11f8fa8950fb980b8f799ae3453f
+  PPSSignatureView: 83ffa630306afc93ad595e5a6e98a0dba1c8a49b
   RNCryptor: 1420380792b33758d2414cf37af160ea2495e15c
 
 COCOAPODS: 0.29.0

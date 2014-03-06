@@ -13,5 +13,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *surveyButton;
 @property (weak, nonatomic) IBOutlet UIButton *photoButton;
 @property (weak, nonatomic) IBOutlet UIButton *submitButton;
+@property (weak, nonatomic) IBOutlet UIButton *otherSig;
 
 @end

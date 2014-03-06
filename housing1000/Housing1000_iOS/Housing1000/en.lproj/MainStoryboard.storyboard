@@ -300,7 +300,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="Mq7-43-H8c" kind="push" id="VIt-qR-ZXE"/>
+                                    <segue destination="djf-Ge-KTO" kind="push" id="u4G-RE-5yg"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OV0-bl-g7E">
@@ -330,6 +330,48 @@
             </objects>
             <point key="canvasLocation" x="2039" y="941"/>
         </scene>
+        <!--GLKit View Controller-->
+        <scene sceneID="UZb-F8-b6W">
+            <objects>
+                <glkViewController autoresizesArchivedViewToFullSize="NO" preferredFramesPerSecond="30" id="djf-Ge-KTO" customClass="SigGLKViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="yzk-5m-q7g"/>
+                        <viewControllerLayoutGuide type="bottom" id="UQ0-rh-fsG"/>
+                    </layoutGuides>
+                    <glkView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gCN-tX-iWX" customClass="PPSSignatureView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <connections>
+                            <outlet property="delegate" destination="djf-Ge-KTO" id="0YU-Un-p0c"/>
+                        </connections>
+                    </glkView>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="ZgU-LL-nVN">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="Y6T-SU-hl4">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="BkC-gB-OUx">
+                                <rect key="frame" x="233" y="5" width="71" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <state key="normal" title="Accept">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="saveSig:" destination="djf-Ge-KTO" eventType="touchUpInside" id="L0Y-jz-qBo"/>
+                                    <segue destination="EQv-LT-Bzv" kind="push" id="pyx-Q5-EqH"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="accept" destination="BkC-gB-OUx" id="Dbp-ji-pYV"/>
+                        <outlet property="signatureView" destination="gCN-tX-iWX" id="x5a-B7-dzh"/>
+                    </connections>
+                </glkViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hMo-EL-B8N" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2487" y="1684"/>
+        </scene>
         <!--Test Encryption View Controller-->
         <scene sceneID="RUj-d8-3tz">
             <objects>
@@ -343,7 +385,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="51u-UY-zz0">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="63" width="320" height="462"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
                         </subviews>
@@ -462,11 +504,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Signature" id="mOb-uT-bND">
                         <barButtonItem key="backBarButtonItem" title="Signature" id="oyI-hC-bfN"/>
-                        <barButtonItem key="rightBarButtonItem" title="Save" id="UpX-q6-tSb">
-                            <connections>
-                                <segue destination="EQv-LT-Bzv" kind="push" id="F2c-HV-mcH"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="UpX-q6-tSb"/>
                     </navigationItem>
                     <connections>
                         <outlet property="clearButton" destination="FdA-S2-rmU" id="lL7-oJ-c8O"/>
@@ -490,7 +528,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hV4-NQ-sIo">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="65" width="320" height="459"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
                         </subviews>

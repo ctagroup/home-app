@@ -12,6 +12,7 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) UIImage *tempSig;
-@property (strong, nonatomic) NSData *encryptedSignature;;
+@property (strong, nonatomic) NSData *encryptedSignature;
+@property (strong, nonatomic) UIImage *trialSig;
 
 @end

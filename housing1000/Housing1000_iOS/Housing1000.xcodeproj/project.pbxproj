@@ -13,6 +13,7 @@
 		272AA49318C6E77F0068E023 /* UINavigationController+Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 272AA49218C6E77F0068E023 /* UINavigationController+Orientation.m */; };
 		272AA49618C6EBCB0068E023 /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 272AA49518C6EBCB0068E023 /* MainMenuViewController.m */; };
 		272AA49918C6EBE80068E023 /* DisclaimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 272AA49818C6EBE80068E023 /* DisclaimerViewController.m */; };
+		272AA52B18C84E580068E023 /* SigGLKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 272AA52A18C84E580068E023 /* SigGLKViewController.m */; };
 		27642FEB18A351C900277F24 /* SigConfrimViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27642FEA18A351C900277F24 /* SigConfrimViewController.m */; };
 		27642FF018A47E6500277F24 /* bg-signature-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 27642FEC18A47E6500277F24 /* bg-signature-landscape.png */; };
 		27642FF118A47E6500277F24 /* bg-signature-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27642FED18A47E6500277F24 /* bg-signature-landscape@2x.png */; };
@@ -64,6 +65,8 @@
 		272AA49518C6EBCB0068E023 /* MainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuViewController.m; sourceTree = "<group>"; };
 		272AA49718C6EBE80068E023 /* DisclaimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisclaimerViewController.h; sourceTree = "<group>"; };
 		272AA49818C6EBE80068E023 /* DisclaimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisclaimerViewController.m; sourceTree = "<group>"; };
+		272AA52918C84E580068E023 /* SigGLKViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SigGLKViewController.h; sourceTree = "<group>"; };
+		272AA52A18C84E580068E023 /* SigGLKViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SigGLKViewController.m; sourceTree = "<group>"; };
 		27642FE918A351C900277F24 /* SigConfrimViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SigConfrimViewController.h; sourceTree = "<group>"; };
 		27642FEA18A351C900277F24 /* SigConfrimViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SigConfrimViewController.m; sourceTree = "<group>"; };
 		27642FEC18A47E6500277F24 /* bg-signature-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-signature-landscape.png"; sourceTree = "<group>"; };
@@ -253,6 +256,8 @@
 				948CBC3B16FC8BA000DD4E2B /* Supporting Files */,
 				272AA49118C6E77F0068E023 /* UINavigationController+Orientation.h */,
 				272AA49218C6E77F0068E023 /* UINavigationController+Orientation.m */,
+				272AA52918C84E580068E023 /* SigGLKViewController.h */,
+				272AA52A18C84E580068E023 /* SigGLKViewController.m */,
 			);
 			path = Housing1000;
 			sourceTree = "<group>";
@@ -409,6 +414,7 @@
 				3FFE30BC18C244F3004A737D /* SurveyQuestions.m in Sources */,
 				3FFE30BF18C2498A004A737D /* ClientQuestions.m in Sources */,
 				948CBC4116FC8BA000DD4E2B /* main.m in Sources */,
+				272AA52B18C84E580068E023 /* SigGLKViewController.m in Sources */,
 				3FFE30AF18A487A5004A737D /* SurveyInfo.m in Sources */,
 				272AA49618C6EBCB0068E023 /* MainMenuViewController.m in Sources */,
 				948CBC4516FC8BA000DD4E2B /* HousingAppDelegate.m in Sources */,
