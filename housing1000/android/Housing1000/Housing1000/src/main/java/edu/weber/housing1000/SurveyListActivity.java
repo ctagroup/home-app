@@ -1,8 +1,10 @@
 package edu.weber.housing1000;
 
 import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.weber.housing1000.Data.SurveyListing;
+import edu.weber.housing1000.Fragments.ProgressDialogFragment;
 import edu.weber.housing1000.Fragments.SurveyListFragment;
 import edu.weber.housing1000.Fragments.SurveyListFragment.*;
 import edu.weber.housing1000.Helpers.REST.RESTHelper;
@@ -29,7 +32,7 @@ import retrofit.client.Response;
 
 public class SurveyListActivity extends ActionBarActivity implements ISurveyListFragment {
 
-    private ProgressDialog progressDialog;
+    private ProgressDialogFragment progressDialogFragment;
 
     private ListView surveysListView;
     private ArrayList<SurveyListing> surveyListings;
@@ -44,12 +47,14 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new SurveyListFragment())
+                    .add(R.id.container, new SurveyListFragment(), "SurveyListFragment")
                     .commit();
         }
         else
         {
             surveyListings = savedInstanceState.getParcelableArrayList("surveyListings");
+
+            progressDialogFragment = (ProgressDialogFragment)getSupportFragmentManager().findFragmentByTag("Dialog");
         }
     }
 
@@ -87,13 +92,7 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
             surveysListView.setAdapter(null);
 
         // Start the loading dialog
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Please Wait");
-        progressDialog.setMessage("Downloading survey list...");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(true);
-        progressDialog.show();
+        showProgressDialog("Please Wait...", "Downloading surveys list...", "Dialog");
 
         RestAdapter restAdapter = RESTHelper.setUpRestAdapter(this, null);
 
@@ -113,10 +112,9 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
     }
 
     public void onGetSurveyListingsTaskCompleted(ArrayList<SurveyListing> surveyListings) {
-        if (progressDialog != null)
-            progressDialog.dismiss();
+        dismissDialog();
 
-        SurveyListFragment fragment = (SurveyListFragment) getSupportFragmentManager().getFragments().get(0);
+        SurveyListFragment fragment = (SurveyListFragment) this.getSupportFragmentManager().findFragmentByTag("SurveyListFragment");
 
         this.surveyListings = surveyListings;
 
@@ -128,11 +126,13 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
                     surveyListings );
 
             surveysListView.setAdapter(surveyAdapter);
-            fragment.showNoSurveys(false);
+            if (fragment != null)
+                fragment.showNoSurveys(false);
         }
         else
         {
-            fragment.showNoSurveys(true);
+            if (fragment != null)
+                fragment.showNoSurveys(true);
         }
     }
 
@@ -164,13 +164,7 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
     private void loadSurvey(long rowId)
     {
         // Start the loading dialog
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Please Wait");
-        progressDialog.setMessage("Downloading survey...");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(true);
-        progressDialog.show();
+        showProgressDialog("Please Wait...", "Downloading survey...", "Dialog");
 
         RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoDeserialize(this, null);
 
@@ -197,7 +191,7 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
     }
 
     public void onGetSingleSurveyTaskCompleted(String surveyJson) {
-        progressDialog.dismiss();
+        dismissDialog();
 
         if (!surveyJson.isEmpty())
         {
@@ -215,6 +209,19 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
             builder.setTitle("Uh oh...");
             builder.setMessage("There was a problem downloading the survey. Please try again.");
             builder.show();
+        }
+    }
+
+    public void showProgressDialog(String title, String message, String tag)
+    {
+        progressDialogFragment = ProgressDialogFragment.newInstance(title, message);
+        progressDialogFragment.show(getSupportFragmentManager(), tag);
+    }
+
+    public void dismissDialog(){
+        if (progressDialogFragment != null && progressDialogFragment.isAdded()) {
+            progressDialogFragment.dismiss();
+            progressDialogFragment = null;
         }
     }
 }
