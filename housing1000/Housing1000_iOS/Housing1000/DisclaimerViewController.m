@@ -1,32 +1,27 @@
 //
-//  SurveyMenuViewController.m
+//  DisclaimerViewController.m
 //  Housing1000
 //
-//  Created by Kyle Wilson on 2/19/14.
+//  Created by Kyle Wilson on 3/4/14.
 //  Copyright (c) 2014 Group 3. All rights reserved.
 //
 
-#import "SurveyMenuViewController.h"
-#import "SurveySubmitter.h"
+#import "DisclaimerViewController.h"
 
-@interface SurveyMenuViewController ()
+@interface DisclaimerViewController ()
+@property (weak, nonatomic) IBOutlet UIButton *cancel;
 
 @end
 
-@implementation SurveyMenuViewController
+@implementation DisclaimerViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        
+        // Custom initialization
     }
     return self;
-}
-
-- (IBAction)goBack:(id)sender {
-    //first back button is not animated then viewWillDisappear runs the animated version to go back two pages
-    [self.navigationController popViewControllerAnimated:false];
 }
 
 - (void)viewDidLoad
@@ -40,25 +35,19 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+- (IBAction)canceled:(id)sender {
+    //first back button is not animated then viewWillDisappear runs the animated version to go back two pages
+    //edit: setting this animation to true so cancel only goes back one page
+    [self.navigationController popViewControllerAnimated:true];
+}
 
 - (void)viewWillDisappear:(BOOL)animated {
     //if true, back was pressed
     if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) {
         //going back a second page (skips the confirm view)
-        [self.navigationController popViewControllerAnimated:true];
+        //commenting this out because it broke the back button
+        //[self.navigationController popViewControllerAnimated:true];
     }
-}
-
-
-- (IBAction)submitSurvey:(id)sender {
-    BOOL successful = [SurveySubmitter submitSurvey];
-    
-    if(successful) {
-        NSLog(@"Submitted successfully.");
-    } else {
-        NSLog(@"There was a problem submitting the survey...");
-    }
-    
 }
 
 -(BOOL)shouldAutorotate

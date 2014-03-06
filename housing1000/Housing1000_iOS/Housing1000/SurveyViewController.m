@@ -189,6 +189,15 @@ NSArray* trustedHosts;  //This is declared to simply hold the staging.ctagroup.o
 
 //==============================================
 
+-(BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
 
 
 @end

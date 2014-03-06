@@ -35,6 +35,20 @@
     [super viewDidLoad];
 }
 
+
+//not working
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self.tempDrawImage setImage:[UIImage imageNamed:@"bg-signature-landscape.png"]];
+    /*
+    if(fromInterfaceOrientation == UIInterfaceOrientationPortrait){
+        [self.tempDrawImage setImage:[UIImage imageNamed:@"bg-signature-landscape.png"]];
+    }else if(fromInterfaceOrientation == UIInterfaceOrientationLandscapeLeft || fromInterfaceOrientation == UIInterfaceOrientationLandscapeRight){
+        [self.tempDrawImage setImage:[UIImage imageNamed:@"bg-signature-portrait.png"]];
+    }
+     */
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -95,6 +109,7 @@
         UIGraphicsEndImageContext();
     }
 }
+
 
 - (void)viewDidDisappear:(BOOL)animated {
     [self.tempDrawImage setImage:[UIImage imageNamed:@"bg-signature-portrait.png"]];
