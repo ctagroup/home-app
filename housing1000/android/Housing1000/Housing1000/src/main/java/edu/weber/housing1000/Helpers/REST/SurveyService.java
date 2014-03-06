@@ -1,5 +1,6 @@
 package edu.weber.housing1000.Helpers.REST;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.weber.housing1000.Data.Survey;
@@ -26,7 +27,7 @@ import retrofit.mime.TypedString;
  */
 public interface SurveyService {
     @GET("/survey")
-    void listSurveys(Callback<List<SurveyListing>> cb);
+    void listSurveys(Callback<ArrayList<SurveyListing>> cb);
     @GET("/survey/{id}")
     void getSurvey(@Path("id") String id, Callback<String> cb);
 

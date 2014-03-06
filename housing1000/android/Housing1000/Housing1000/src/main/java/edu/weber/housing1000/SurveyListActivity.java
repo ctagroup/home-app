@@ -13,6 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.weber.housing1000.Data.SurveyListing;
@@ -30,7 +32,7 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
     private ProgressDialog progressDialog;
 
     private ListView surveysListView;
-    private List<SurveyListing> surveyListings;
+    private ArrayList<SurveyListing> surveyListings;
     public ArrayAdapter<SurveyListing> surveyAdapter;
 
     SurveyListing chosenSurveyListing;
@@ -45,8 +47,17 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
                     .add(R.id.container, new SurveyListFragment())
                     .commit();
         }
+        else
+        {
+            surveyListings = savedInstanceState.getParcelableArrayList("surveyListings");
+        }
+    }
 
-        getSurveyList();
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelableArrayList("surveyListings", surveyListings);
     }
 
     @Override
@@ -88,9 +99,9 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
 
         SurveyService service = restAdapter.create(SurveyService.class);
 
-        service.listSurveys(new Callback<List<SurveyListing>>() {
+        service.listSurveys(new Callback<ArrayList<SurveyListing>>() {
             @Override
-            public void success(List<SurveyListing> surveyListings, Response response) {
+            public void success(ArrayList<SurveyListing> surveyListings, Response response) {
                 onGetSurveyListingsTaskCompleted(surveyListings);
             }
 
@@ -101,8 +112,9 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
         });
     }
 
-    public void onGetSurveyListingsTaskCompleted(List<SurveyListing> surveyListings) {
-        progressDialog.dismiss();
+    public void onGetSurveyListingsTaskCompleted(ArrayList<SurveyListing> surveyListings) {
+        if (progressDialog != null)
+            progressDialog.dismiss();
 
         SurveyListFragment fragment = (SurveyListFragment) getSupportFragmentManager().getFragments().get(0);
 
@@ -129,6 +141,11 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
         surveysListView = listView;
 
         surveysListView.setOnItemClickListener(surveyClickListener);
+
+        if (surveyListings != null && !surveyListings.isEmpty())
+            onGetSurveyListingsTaskCompleted(surveyListings);
+        else
+            getSurveyList();
     }
 
     /**
@@ -189,7 +206,7 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
             Intent launchSurvey = new Intent(SurveyListActivity.this,
                     SurveyFlowActivity.class);
 
-            launchSurvey.putExtra(SurveyFlowActivity.EXTRA_SURVEY, chosenSurveyListing);
+            launchSurvey.putExtra(SurveyFlowActivity.EXTRA_SURVEY, (Serializable) chosenSurveyListing);
             startActivity(launchSurvey);
         }
         else

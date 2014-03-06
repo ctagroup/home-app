@@ -1,5 +1,8 @@
 package edu.weber.housing1000.Data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -9,7 +12,7 @@ import java.util.ArrayList;
 /**
  * Created by Blake on 11/29/13.
  */
-public class SurveyListing implements Serializable {
+public class SurveyListing implements Serializable, Parcelable {
 
     @Expose
     @SerializedName("SurveyId")
@@ -49,4 +52,39 @@ public class SurveyListing implements Serializable {
     public String toString() {
         return getTitle();
     }
+
+    // Parcelable methods
+
+    public SurveyListing(Parcel in)
+    {
+        surveyId = in.readLong();
+        String[] strings = new String[2];
+        in.readStringArray(strings);
+        title = strings[0];
+        json = strings[1];
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(surveyId);
+        dest.writeStringArray( new String[] {title, json} );
+    }
+
+    public static final Parcelable.Creator<SurveyListing> CREATOR
+            = new Parcelable.Creator<SurveyListing>() {
+        public SurveyListing createFromParcel(Parcel in) {
+            return new SurveyListing(in);
+        }
+
+        public SurveyListing[] newArray(int size) {
+            return new SurveyListing[size];
+        }
+    };
+
+    // End Parcelable methods
 }
