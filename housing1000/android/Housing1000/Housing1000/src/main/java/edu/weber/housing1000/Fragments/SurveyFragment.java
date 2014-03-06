@@ -1,5 +1,6 @@
 package edu.weber.housing1000.Fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,6 +49,13 @@ public class SurveyFragment extends BaseSurveyFragment {
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        myActivity = (SurveyFlowActivity) getActivity();
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -79,7 +87,6 @@ public class SurveyFragment extends BaseSurveyFragment {
 
         rootLayout = (RelativeLayout) mainView.findViewById(R.id.root_layout);
 
-        myActivity = ((SurveyFlowActivity) getActivity());
         surveyListing = myActivity.getSurveyListing();
 
         return mainView;

@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -129,6 +130,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (CustomViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setOffscreenPageLimit(3);
 
         mPageChangeListener = new ViewPager.OnPageChangeListener() {
             @Override
@@ -205,30 +207,11 @@ public class SurveyFlowActivity extends ActionBarActivity {
 
         Log.d("clientSurveyId", clientSurveyId);
 
-        // Submit signature
-        mViewPager.setCurrentItem(0);
-
-        SignatureFragment signatureFragment = (SignatureFragment) mSectionsPagerAdapter.getItem(0);
-        signatureFragment.submitSignature();
-    }
-
-    public void onPostSignatureTaskCompleted(Response response) {
-        //Check the result here
-
-        dismissDialog();
-
-        isSignatureSubmitted = true;
-        try {
-            Log.d("SIGNATURE RESPONSE", RESTHelper.convertStreamToString(response.getBody().in()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         // Submit the photos
-        mViewPager.setCurrentItem(1);
+        Fragment f = this.getSupportFragmentManager().findFragmentByTag(getFragmentTag(1));
+        mViewPager.setCurrentItem(1, true);
 
-        PhotosFragment photosFragment = (PhotosFragment) mSectionsPagerAdapter.getItem(1);
-        photosFragment.submitPhotos();
+        ((PhotosFragment) f).submitPhotos();
     }
 
     public void onPostPhotoTaskCompleted(Response response) {
@@ -238,11 +221,59 @@ public class SurveyFlowActivity extends ActionBarActivity {
 
         isPhotoSubmitted = true;
 
-        try {
-            Log.d("PHOTOS RESPONSE", RESTHelper.convertStreamToString(response.getBody().in()));
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (response != null)
+        {
+            try {
+                Log.d("PHOTOS RESPONSE", RESTHelper.convertStreamToString(response.getBody().in()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
+        // Submit signature
+        Fragment f = this.getSupportFragmentManager().findFragmentByTag(getFragmentTag(0));
+        mViewPager.setCurrentItem(0, true);
+
+        ((SignatureFragment) f).submitSignature();
+
+    }
+
+    public void onPostSignatureTaskCompleted(Response response) {
+        //Check the result here
+
+        dismissDialog();
+
+        isSignatureSubmitted = true;
+
+        if (response != null)
+        {
+            try {
+                Log.d("SIGNATURE RESPONSE", RESTHelper.convertStreamToString(response.getBody().in()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        showSendSuccessMessage();
+    }
+
+    private void showSendSuccessMessage()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Success!");
+        builder.setMessage("The survey response and image(s) have been successfully sent.");
+        builder.setNeutralButton("Okay", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+                // Delete the folder containing any related files
+                deleteAllFolderFiles();
+
+                finish();
+            }
+        });
+        builder.show();
     }
 
     @Override
@@ -255,11 +286,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
                 dialog.dismiss();
 
                 // Delete the folder containing any related files
-                File surveyDir = new File(FileHelper.getAbsoluteFilePath(getFolderHash(), ""));
-                if (surveyDir.exists()) {
-                    Log.d("DELETING SURVEY DIR", surveyDir.getAbsolutePath());
-                    FileHelper.deleteAllFiles(surveyDir);
-                }
+                deleteAllFolderFiles();
 
                 finish();
             }
@@ -270,6 +297,15 @@ public class SurveyFlowActivity extends ActionBarActivity {
                 dialog.dismiss();
             }
         }).show();
+    }
+
+    private void deleteAllFolderFiles()
+    {
+        File surveyDir = new File(FileHelper.getAbsoluteFilePath(getFolderHash(), ""));
+        if (surveyDir.exists()) {
+            Log.d("DELETING SURVEY DIR", surveyDir.getAbsolutePath());
+            FileHelper.deleteAllFiles(surveyDir);
+        }
     }
 
     public void generateFolderHash() {
@@ -307,13 +343,15 @@ public class SurveyFlowActivity extends ActionBarActivity {
         }
     }
 
+    private String getFragmentTag(int pos){
+        return "android:switcher:"+R.id.pager+":"+pos;
+    }
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
-        // Storing these in the adapter instead of just newing them up in getItem so we can call
-        // any methods we might need down the road.
         SignatureFragment signatureFragment;
         PhotosFragment photosFragment;
         SurveyFragment surveyFragment;
