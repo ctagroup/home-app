@@ -167,11 +167,11 @@ public class PhotosFragment extends SurveyAppFragment {
                 Bitmap sPhoto = ImageHelper.ScaleImage(photo);
 
                 // Set up the file names
-                String imageName = "photo_" + String.valueOf(imageAdapter.getCount()) + ".jpg";
+                String imageName = "photo_" + String.valueOf(imageAdapter.getCount()) + ".png";
                 String encryptedName = "photo_" + String.valueOf(imageAdapter.getCount()) + ".secure";
 
                 ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
-                sPhoto.compress(Bitmap.CompressFormat.JPEG, 100, byteArray);
+                sPhoto.compress(Bitmap.CompressFormat.PNG, 100, byteArray);
                 byte[] byteImage = byteArray.toByteArray();
 
                 byte[] encryptedImage = EncryptionHelper.encrypt(byteImage);
