@@ -1,5 +1,5 @@
 //
-//  POSTJsonHelper.h
+//  HttpJSONHelper.h
 //  Housing1000
 //
 //  Created by student on 3/1/14.

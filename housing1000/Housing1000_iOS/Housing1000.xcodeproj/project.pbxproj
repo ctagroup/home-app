@@ -23,6 +23,7 @@
 		3F5BBA7618501AFD00156CAD /* SignatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5BBA7518501AFD00156CAD /* SignatureViewController.m */; };
 		3FD109D918C2E66A005E4743 /* SurveyDataRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD109D818C2E66A005E4743 /* SurveyDataRow.m */; };
 		3FD109DC18C2F2D8005E4743 /* SurveyDataRowContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD109DB18C2F2D8005E4743 /* SurveyDataRowContainer.m */; };
+		3FD109E518C95E27005E4743 /* AlertViewDisplayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD109E418C95E27005E4743 /* AlertViewDisplayer.m */; };
 		3FFE309B188E08DC004A737D /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE309A188E08DC004A737D /* PhotoViewController.m */; };
 		3FFE30AE18A487A5004A737D /* Survey.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30A918A487A5004A737D /* Survey.m */; };
 		3FFE30AF18A487A5004A737D /* SurveyInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30AB18A487A5004A737D /* SurveyInfo.m */; };
@@ -81,6 +82,8 @@
 		3FD109D818C2E66A005E4743 /* SurveyDataRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyDataRow.m; sourceTree = "<group>"; };
 		3FD109DA18C2F2D8005E4743 /* SurveyDataRowContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyDataRowContainer.h; sourceTree = "<group>"; };
 		3FD109DB18C2F2D8005E4743 /* SurveyDataRowContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyDataRowContainer.m; sourceTree = "<group>"; };
+		3FD109E318C95E27005E4743 /* AlertViewDisplayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertViewDisplayer.h; sourceTree = "<group>"; };
+		3FD109E418C95E27005E4743 /* AlertViewDisplayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertViewDisplayer.m; sourceTree = "<group>"; };
 		3FFE3099188E08DC004A737D /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
 		3FFE309A188E08DC004A737D /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
 		3FFE30A818A487A5004A737D /* Survey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Survey.h; sourceTree = "<group>"; };
@@ -209,6 +212,8 @@
 				3FFE30CD18C26355004A737D /* SurveySubmitter.m */,
 				3FFE30D518C2A6DB004A737D /* HttpJSONHelper.h */,
 				3FFE30D618C2A6DB004A737D /* HttpJSONHelper.m */,
+				3FD109E318C95E27005E4743 /* AlertViewDisplayer.h */,
+				3FD109E418C95E27005E4743 /* AlertViewDisplayer.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -408,6 +413,7 @@
 				3FD109D918C2E66A005E4743 /* SurveyDataRow.m in Sources */,
 				27642FEB18A351C900277F24 /* SigConfrimViewController.m in Sources */,
 				272AA49318C6E77F0068E023 /* UINavigationController+Orientation.m in Sources */,
+				3FD109E518C95E27005E4743 /* AlertViewDisplayer.m in Sources */,
 				3FFE30B018A487A5004A737D /* Question.m in Sources */,
 				3FFE30AE18A487A5004A737D /* Survey.m in Sources */,
 				272AA49918C6EBE80068E023 /* DisclaimerViewController.m in Sources */,

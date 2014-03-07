@@ -8,6 +8,7 @@
 
 #import "SurveyMenuViewController.h"
 #import "SurveySubmitter.h"
+#import "AlertViewDisplayer.h"
 
 @interface SurveyMenuViewController ()
 
@@ -51,7 +52,11 @@
 
 
 - (IBAction)submitSurvey:(id)sender {
+    
     BOOL successful = [SurveySubmitter submitSurvey];
+    
+    AlertViewDisplayer *alertDisplayer = [[AlertViewDisplayer alloc] init];
+    [alertDisplayer showAlertViewWithMessage:@"Submitting survey..." andError:@"There was a problem submitting the survey." andSuccessMessage:@"Success!" withSeconds:3 operationSuccessful:successful];
     
     if(successful) {
         NSLog(@"Submitted successfully.");
@@ -70,5 +75,6 @@
 {
     return UIInterfaceOrientationMaskPortrait;
 }
+
 
 @end

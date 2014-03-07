@@ -21,7 +21,7 @@
     
     SurveyResponseJSON *response = [[SurveyResponseJSON alloc] init];
     
-    //Conver survey ID to JSON
+    //Convert survey ID to JSON
     response.SurveyId = [Survey getSurveyId];
     
     //Convert survey "By" value to JSON
@@ -44,7 +44,7 @@
         
         [clientAnswers setObject:currentQuestion.answer forKey:currentQuestion.parentRequiredAnswer];
     }
-    [clientAnswers setObject:@"12334 12345" forKey:@"GeoLoc"];
+    [clientAnswers setObject:@"37.336704, -121.919087" forKey:@"GeoLoc"];
     response.Client = clientAnswers;
     
     NSLog(@"Json submission: %@", [response toDictionary]);

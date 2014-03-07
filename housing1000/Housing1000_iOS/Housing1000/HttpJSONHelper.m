@@ -1,5 +1,5 @@
 //
-//  POSTJsonHelper.m
+//  HttpJSONHelper.m
 //  Housing1000
 //
 //  Created by student on 3/1/14.
@@ -16,11 +16,12 @@
     NSURL *url=[NSURL URLWithString:@"https://staging.ctagroup.org/survey/api/survey"];
     
     //This is just a temporary test JSON string so that it can successfully be submitted to their servers
-    NSString *jsonString = @"{\"SurveyId\":1,\"SurveyBy\":1,\"Client\":{\"Birthday\":\"2/14/1977\",\"GeoLoc\":\"37.336704, -121.919087\",\"Last4SSN\":\"1234\",\"ServicePointId\":14},\"Responses\":[{\"QuestionId\":4,null:\" Male\"},{\"QuestionId\":6,\"Answer\":\" White/Caucasian \"}]}";
+    //NSString *jsonString = @"{\"SurveyId\":1,\"SurveyBy\":1,\"Client\":{\"Birthday\":\"2/14/1977\",\"GeoLoc\":\"37.336704, -121.919087\",\"Last4SSN\":\"1234\",\"ServicePointId\":14},\"Responses\":[{\"QuestionId\":4,null:\" Male\"},{\"QuestionId\":6,\"Answer\":\" White/Caucasian \"}]}";
     
-    //NSString* jsonString = [self convertDictionaryToString:jsonData];
-    NSLog(@"JSON to be submitted %@", jsonString);
-    NSData *postData = [jsonString dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString* jsonString = [self convertDictionaryToString:jsonData];
+    NSString* jsonStrippedOfBackslash = [jsonString stringByReplacingOccurrencesOfString:@"\\" withString:@""];
+    NSLog(@"JSON to be submitted %@", jsonStrippedOfBackslash);
+    NSData *postData = [jsonStrippedOfBackslash dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];

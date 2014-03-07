@@ -40,14 +40,14 @@
     [textField resignFirstResponder];
     
     /*
-    //Get the index of the cell that the current text field is in. Could be useful
-    CGPoint center= textField.center;
-    CGPoint rootViewPoint = [textField.superview convertPoint:center toView:self.superview.superview];
-    NSIndexPath *indexPath = [(UITableView*)self.superview.superview indexPathForRowAtPoint:rootViewPoint];
-    NSLog(@"%d",indexPath.row);
-    */
+     //Get the index of the cell that the current text field is in. Could be useful
+     CGPoint center= textField.center;
+     CGPoint rootViewPoint = [textField.superview convertPoint:center toView:self.superview.superview];
+     NSIndexPath *indexPath = [(UITableView*)self.superview.superview indexPathForRowAtPoint:rootViewPoint];
+     NSLog(@"%d",indexPath.row);
+     */
     
-    //Immediately store what they select
+    //Immediately store what they enter
     questionData.answer = textField.text;
     
     [self changeChildQuestions:self.questionData.answer];
@@ -62,29 +62,40 @@
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
     
     //Initialize the answer to the first item in the picker view
-    self.questionData.answer = [self.questionData.options objectAtIndex:0];
+    //self.questionData.answer = [self.questionData.options objectAtIndex:0];   //Uncommented because it might make more sense to just leave it as null
     
     return 1;
 }
 
 // returns the # of rows in each component..
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    return [self.questionData.options count];
+    return [self.questionData.options count] + 1;
 }
 
 -(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    return [self.questionData.options objectAtIndex:row];
+    if(row == 0) {
+        return @"Select one";
+    } else {
+        return [self.questionData.options objectAtIndex:row - 1];
+    }
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     
     //Immediately store what they select
-    self.questionData.answer = [self.questionData.options objectAtIndex:row];
-    [self changeChildQuestions:self.questionData.answer];
+    if(row == 0) {
+        self.questionData.answer = nil;
+        [self changeChildQuestions:nil];
+    } else {
+        self.questionData.answer = [self.questionData.options objectAtIndex:row - 1];
+        [self changeChildQuestions:self.questionData.answer];
+    }
+    
 }
 
 //Private util functions
+//===================================================
 -(void)changeChildQuestions:(NSString*)answer {
     
     NSMutableArray *childQuestionIds = [[NSMutableArray alloc] init];
@@ -99,7 +110,7 @@
             [surveyDataRowIds addObject:currentQuestion.surveyDataRowIndex];
             //NSLog(@"Found child, row is %@", currentQuestion.surveyDataRowIndex);
             //NSLog(@"Required Answer: %@ and answer is: %@", currentQuestion.parentRequiredAnswer, answer);
-
+            
             if([currentQuestion.parentRequiredAnswer isEqualToString:answer]) {
                 [satisifiedChildQuestion addObject:[NSNumber numberWithInt:1]];
             } else {
@@ -138,5 +149,6 @@
 {
     return UIInterfaceOrientationMaskPortrait;
 }
+
 
 @end
