@@ -145,6 +145,17 @@ public class SurveyFlowActivity extends ActionBarActivity {
                 String actionBarTitle = ((SurveyAppFragment) mSectionsPagerAdapter.getItem(i)).getActionBarTitle();
 
                 actionBar.setTitle(actionBarTitle != null ? actionBarTitle : getResources().getString(R.string.app_name));
+
+                if (i == 0)
+                {
+                    getLocation();
+
+                    String message = "Location Details" +
+                            "\nLatitude: " + gps.getLatitude() +
+                            "\nLongitude: " + gps.getLongitude() +
+                            "\nTime: " + gps.getTime();
+                    Toast.makeText(SurveyFlowActivity.this, message, Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -163,9 +174,11 @@ public class SurveyFlowActivity extends ActionBarActivity {
         // Set the page change listener for the tabs
         mTabs.setOnPageChangeListener(mPageChangeListener);
 
-        // Force a page change update
-        mViewPager.setCurrentItem(1);
-        mViewPager.setCurrentItem(0);
+        if (savedInstanceState == null) {
+            // Force a page change update
+            mViewPager.setCurrentItem(1);
+            mViewPager.setCurrentItem(0);
+        }
 
         getIsSignatureCaptured();
     }
@@ -321,11 +334,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
         if(gps.canGetLocation()) {
             currentLocation = gps.getLocation();
 
-            String message = "Location Details" +
-                    "\nLatitude: " + gps.getLatitude() +
-                    "\nLongitude: " + gps.getLongitude() +
-                    "\nTime: " + gps.getTime();
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+
         }
         gps.stopUsingGPS();
         return currentLocation;
