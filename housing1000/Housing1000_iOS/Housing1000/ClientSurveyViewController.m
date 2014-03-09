@@ -12,6 +12,8 @@
 #import "SurveyQuestionTableViewCell.h"
 #import "SurveyDataRow.h"
 #import "SurveyDataRowContainer.h"
+#import "AlertViewDisplayer.h"
+#import "SurveySubmitter.h"
 
 @interface ClientSurveyViewController ()
 
@@ -22,6 +24,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    //Give it a top margin for the navigation bar
+    UIEdgeInsets inset = UIEdgeInsetsMake(19, 0, 0, 0);
+    self.tableView.contentInset = inset;
+    self.tableView.scrollIndicatorInsets = inset;
+    
     [self populateDataRows];
     [self.tableView reloadData];
 }
@@ -124,6 +132,20 @@
     else
         return 150;
 }
+- (IBAction)submitSurvey:(id)sender {
+    
+    BOOL successful = [SurveySubmitter submitSurvey];
+    
+    AlertViewDisplayer *alertDisplayer = [[AlertViewDisplayer alloc] init];
+    [alertDisplayer showAlertViewWithMessage:@"Submitting survey..." andError:@"There was a problem submitting the survey." andSuccessMessage:@"Success!" withSeconds:3 operationSuccessful:successful];
+    
+    if(successful) {
+        NSLog(@"Submitted successfully.");
+    } else {
+        NSLog(@"There was a problem submitting the survey...");
+    }
+}
+
 
 -(BOOL)shouldAutorotate
 {

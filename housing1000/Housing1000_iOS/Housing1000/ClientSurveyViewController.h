@@ -10,4 +10,6 @@
 
 @interface ClientSurveyViewController : UITableViewController
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *submit;
+
 @end

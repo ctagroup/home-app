@@ -19,6 +19,8 @@
 		27642FF118A47E6500277F24 /* bg-signature-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27642FED18A47E6500277F24 /* bg-signature-landscape@2x.png */; };
 		27642FF218A47E6500277F24 /* bg-signature-portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 27642FEE18A47E6500277F24 /* bg-signature-portrait.png */; };
 		27642FF318A47E6500277F24 /* bg-signature-portrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27642FEF18A47E6500277F24 /* bg-signature-portrait@2x.png */; };
+		3F558BA818CACB8A007D531F /* ScrollablePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BA718CACB8A007D531F /* ScrollablePageViewController.m */; };
+		3F558BAB18CBA1F5007D531F /* SurveyPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BAA18CBA1F5007D531F /* SurveyPageViewController.m */; };
 		3F5BBA6D184EF87900156CAD /* SurveyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5BBA6C184EF87900156CAD /* SurveyViewController.m */; };
 		3F5BBA7618501AFD00156CAD /* SignatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5BBA7518501AFD00156CAD /* SignatureViewController.m */; };
 		3FD109D918C2E66A005E4743 /* SurveyDataRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD109D818C2E66A005E4743 /* SurveyDataRow.m */; };
@@ -74,6 +76,10 @@
 		27642FED18A47E6500277F24 /* bg-signature-landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-signature-landscape@2x.png"; sourceTree = "<group>"; };
 		27642FEE18A47E6500277F24 /* bg-signature-portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-signature-portrait.png"; sourceTree = "<group>"; };
 		27642FEF18A47E6500277F24 /* bg-signature-portrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-signature-portrait@2x.png"; sourceTree = "<group>"; };
+		3F558BA618CACB8A007D531F /* ScrollablePageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollablePageViewController.h; sourceTree = "<group>"; };
+		3F558BA718CACB8A007D531F /* ScrollablePageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollablePageViewController.m; sourceTree = "<group>"; };
+		3F558BA918CBA1F5007D531F /* SurveyPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyPageViewController.h; sourceTree = "<group>"; };
+		3F558BAA18CBA1F5007D531F /* SurveyPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyPageViewController.m; sourceTree = "<group>"; };
 		3F5BBA6B184EF87900156CAD /* SurveyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyViewController.h; sourceTree = "<group>"; };
 		3F5BBA6C184EF87900156CAD /* SurveyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyViewController.m; sourceTree = "<group>"; };
 		3F5BBA7418501AFD00156CAD /* SignatureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignatureViewController.h; sourceTree = "<group>"; };
@@ -155,6 +161,8 @@
 		3FFE30B718C235D1004A737D /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				3F558BA918CBA1F5007D531F /* SurveyPageViewController.h */,
+				3F558BAA18CBA1F5007D531F /* SurveyPageViewController.m */,
 				3FFE30B118A487B5004A737D /* ClientSurveyViewController.h */,
 				3FFE30B218A487B5004A737D /* ClientSurveyViewController.m */,
 				3FFE30B418B091B8004A737D /* SurveyQuestionTableViewCell.h */,
@@ -178,6 +186,8 @@
 				272AA49518C6EBCB0068E023 /* MainMenuViewController.m */,
 				272AA49718C6EBE80068E023 /* DisclaimerViewController.h */,
 				272AA49818C6EBE80068E023 /* DisclaimerViewController.m */,
+				3F558BA618CACB8A007D531F /* ScrollablePageViewController.h */,
+				3F558BA718CACB8A007D531F /* ScrollablePageViewController.m */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -420,6 +430,7 @@
 				3FFE30BC18C244F3004A737D /* SurveyQuestions.m in Sources */,
 				3FFE30BF18C2498A004A737D /* ClientQuestions.m in Sources */,
 				948CBC4116FC8BA000DD4E2B /* main.m in Sources */,
+				3F558BAB18CBA1F5007D531F /* SurveyPageViewController.m in Sources */,
 				272AA52B18C84E580068E023 /* SigGLKViewController.m in Sources */,
 				3FFE30AF18A487A5004A737D /* SurveyInfo.m in Sources */,
 				272AA49618C6EBCB0068E023 /* MainMenuViewController.m in Sources */,
@@ -428,6 +439,7 @@
 				3FFE30CE18C26355004A737D /* SurveySubmitter.m in Sources */,
 				272AA48818B5C6B30068E023 /* TestEncryptionViewController.m in Sources */,
 				3FFE30D718C2A6DB004A737D /* HttpJSONHelper.m in Sources */,
+				3F558BA818CACB8A007D531F /* ScrollablePageViewController.m in Sources */,
 				272AA48518B5C6950068E023 /* SurveyMenuViewController.m in Sources */,
 				3FFE309B188E08DC004A737D /* PhotoViewController.m in Sources */,
 				3F5BBA6D184EF87900156CAD /* SurveyViewController.m in Sources */,
