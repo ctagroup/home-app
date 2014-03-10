@@ -16,7 +16,7 @@
    version="1.1"
    inkscape:version="0.48.4 r9939"
    sodipodi:docname="SurveyAppLogo.svg"
-   inkscape:export-filename="C:\Users\Blake\Pictures\Icon - Different Densities.png"
+   inkscape:export-filename="Icon_Exported\Icon - Different Densities.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -1186,7 +1186,7 @@
     <g
        id="g4234"
        transform="matrix(0.75,0,0,0.75,-101.7386,549.77454)"
-       inkscape:export-filename="C:\Users\Blake\AndroidStudioProjects\cs3750fall2013group3\housing1000\Graphics\Logo_Exported\Android\drawable-ldpi\icon.png"
+       inkscape:export-filename="Icon_Exported\Android\drawable-ldpi\icon.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90">
       <g
@@ -1370,7 +1370,7 @@
        transform="matrix(2,0,0,2,71.333334,-973.98715)"
        width="744.09448"
        height="1052.3622"
-       inkscape:export-filename="C:\Users\Blake\AndroidStudioProjects\cs3750fall2013group3\housing1000\Graphics\Logo_Exported\Android\drawable-hdpi\icon.png"
+       inkscape:export-filename="Icon_Exported\Android\drawable-hdpi\icon.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <use
@@ -1381,7 +1381,7 @@
        transform="matrix(2.6666667,0,0,2.6666667,124,-1623.312)"
        width="744.09448"
        height="1052.3622"
-       inkscape:export-filename="C:\Users\Blake\AndroidStudioProjects\cs3750fall2013group3\housing1000\Graphics\Logo_Exported\Android\drawable-xhdpi\icon.png"
+       inkscape:export-filename="Icon_Exported\Android\drawable-xhdpi\icon.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <use
@@ -1392,7 +1392,7 @@
        transform="matrix(4,0,0,4,148.66665,-2921.9614)"
        width="744.09448"
        height="1052.3622"
-       inkscape:export-filename="C:\Users\Blake\AndroidStudioProjects\cs3750fall2013group3\housing1000\Graphics\Logo_Exported\Android\drawable-xxhdpi\icon.png"
+       inkscape:export-filename="Icon_Exported\Android\drawable-xxhdpi\icon.png"
        inkscape:export-xdpi="89.999985"
        inkscape:export-ydpi="89.999985" />
     <use
@@ -1403,7 +1403,7 @@
        transform="matrix(1.3333333,0,0,1.3333333,42.666668,-323.91235)"
        width="744.09448"
        height="1052.3622"
-       inkscape:export-filename="C:\Users\Blake\AndroidStudioProjects\cs3750fall2013group3\housing1000\Graphics\Logo_Exported\Android\drawable-mdpi\icon.png"
+       inkscape:export-filename="Icon_Exported\Android\drawable-mdpi\icon.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <use
@@ -1414,7 +1414,7 @@
        transform="matrix(8,0,0,8,13.333316,-6817.91)"
        width="660"
        height="300"
-       inkscape:export-filename="C:\Users\Blake\AndroidStudioProjects\cs3750fall2013group3\housing1000\Graphics\Logo_Exported\icon_large.png"
+       inkscape:export-filename="Icon_Exported\icon_large.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <use
@@ -1425,7 +1425,7 @@
        transform="matrix(16,0,0,16,-290.00004,-14609.807)"
        width="604"
        height="574.75"
-       inkscape:export-filename="C:\Users\Blake\AndroidStudioProjects\cs3750fall2013group3\housing1000\Graphics\Logo_Exported\icon_xlarge.png"
+       inkscape:export-filename="Icon_Exported\icon_xlarge.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
   </g>

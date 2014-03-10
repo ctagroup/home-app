@@ -6,7 +6,7 @@
     <string name="action_clear">Clear</string>
     <string name="hello">Hello Housing1000!</string>
     <string name="action_settings">Settings</string>
-    <string name="app_name">Housing1000</string>
+    <string name="app_name">Survey App</string>
     <string name="api_url">https://staging.ctagroup.org/Survey/api</string>
     <string name="Client">Client</string>
     <string name="Interviewer">Interviewer</string>

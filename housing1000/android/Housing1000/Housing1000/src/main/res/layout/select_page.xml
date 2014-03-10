@@ -12,14 +12,14 @@
     <ImageView
         android:id="@+id/imageView1"
         android:contentDescription="@string/description_housing_1000_logo"
-        android:layout_width="200dp"
+        android:layout_width="260dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:src="@drawable/icon_xlarge"
+        android:src="@drawable/ctagroup_logo"
         android:adjustViewBounds="true"
-        android:paddingBottom="40dp" />
+        android:paddingBottom="80dp" />
 
     <Button
         android:id="@+id/pitButton"
