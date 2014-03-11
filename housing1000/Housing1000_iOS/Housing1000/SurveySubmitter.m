@@ -11,11 +11,11 @@
 #import "SurveySubmitter.h"
 #import "SurveyResponseJSON.h"
 #import "JSONHTTPClient.h"
-#import "HttpJSONHelper.h"
+#import "HttpPOSTJSONHelper.h"
 
 @implementation SurveySubmitter
 
-+(BOOL)submitSurvey {
++(void)submitSurvey {
     
     //TODO add some sort of try catch business so that it knows whether to return a true successful or not
     
@@ -48,10 +48,9 @@
     response.Client = clientAnswers;
     
     NSLog(@"Json submission: %@", [response toDictionary]);
-    HttpJSONHelper *poster = [[HttpJSONHelper alloc] init];
-    BOOL successful = [poster postJSON:[response toDictionary]];
+    HttpPOSTJSONHelper *poster = [[HttpPOSTJSONHelper alloc] init];
+    [poster postJSON:[response toDictionary]];
     
-    return successful;
 }
 
 

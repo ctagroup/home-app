@@ -21,6 +21,7 @@
 		27642FF318A47E6500277F24 /* bg-signature-portrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27642FEF18A47E6500277F24 /* bg-signature-portrait@2x.png */; };
 		3F558BA818CACB8A007D531F /* ScrollablePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BA718CACB8A007D531F /* ScrollablePageViewController.m */; };
 		3F558BAB18CBA1F5007D531F /* SurveyPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BAA18CBA1F5007D531F /* SurveyPageViewController.m */; };
+		3F558BB418CE9CC6007D531F /* ctagroup_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F558BB318CE9CC6007D531F /* ctagroup_logo.png */; };
 		3F5BBA6D184EF87900156CAD /* SurveyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5BBA6C184EF87900156CAD /* SurveyViewController.m */; };
 		3F5BBA7618501AFD00156CAD /* SignatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5BBA7518501AFD00156CAD /* SignatureViewController.m */; };
 		3FD109D918C2E66A005E4743 /* SurveyDataRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD109D818C2E66A005E4743 /* SurveyDataRow.m */; };
@@ -36,7 +37,7 @@
 		3FFE30BF18C2498A004A737D /* ClientQuestions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30BE18C2498A004A737D /* ClientQuestions.m */; };
 		3FFE30C518C25E73004A737D /* SurveyResponseJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30C418C25E73004A737D /* SurveyResponseJSON.m */; };
 		3FFE30CE18C26355004A737D /* SurveySubmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30CD18C26355004A737D /* SurveySubmitter.m */; };
-		3FFE30D718C2A6DB004A737D /* HttpJSONHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30D618C2A6DB004A737D /* HttpJSONHelper.m */; };
+		3FFE30D718C2A6DB004A737D /* HttpPOSTJSONHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30D618C2A6DB004A737D /* HttpPOSTJSONHelper.m */; };
 		940CA4EE1702894400FA5C87 /* blue_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 940CA4ED1702894400FA5C87 /* blue_button.png */; };
 		940CA4F01702895000FA5C87 /* orange_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 940CA4EF1702895000FA5C87 /* orange_button.png */; };
 		948CBC3516FC8BA000DD4E2B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 948CBC3416FC8BA000DD4E2B /* UIKit.framework */; };
@@ -80,6 +81,7 @@
 		3F558BA718CACB8A007D531F /* ScrollablePageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollablePageViewController.m; sourceTree = "<group>"; };
 		3F558BA918CBA1F5007D531F /* SurveyPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyPageViewController.h; sourceTree = "<group>"; };
 		3F558BAA18CBA1F5007D531F /* SurveyPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyPageViewController.m; sourceTree = "<group>"; };
+		3F558BB318CE9CC6007D531F /* ctagroup_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ctagroup_logo.png; sourceTree = "<group>"; };
 		3F5BBA6B184EF87900156CAD /* SurveyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyViewController.h; sourceTree = "<group>"; };
 		3F5BBA6C184EF87900156CAD /* SurveyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyViewController.m; sourceTree = "<group>"; };
 		3F5BBA7418501AFD00156CAD /* SignatureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignatureViewController.h; sourceTree = "<group>"; };
@@ -110,8 +112,8 @@
 		3FFE30C418C25E73004A737D /* SurveyResponseJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyResponseJSON.m; sourceTree = "<group>"; };
 		3FFE30CC18C26355004A737D /* SurveySubmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveySubmitter.h; sourceTree = "<group>"; };
 		3FFE30CD18C26355004A737D /* SurveySubmitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveySubmitter.m; sourceTree = "<group>"; };
-		3FFE30D518C2A6DB004A737D /* HttpJSONHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpJSONHelper.h; sourceTree = "<group>"; };
-		3FFE30D618C2A6DB004A737D /* HttpJSONHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpJSONHelper.m; sourceTree = "<group>"; };
+		3FFE30D518C2A6DB004A737D /* HttpPOSTJSONHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpPOSTJSONHelper.h; sourceTree = "<group>"; };
+		3FFE30D618C2A6DB004A737D /* HttpPOSTJSONHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpPOSTJSONHelper.m; sourceTree = "<group>"; };
 		4488740D6DDB403186C171EA /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		940CA4ED1702894400FA5C87 /* blue_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_button.png; sourceTree = "<group>"; };
 		940CA4EF1702895000FA5C87 /* orange_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = orange_button.png; sourceTree = "<group>"; };
@@ -220,8 +222,8 @@
 				3FFE30C418C25E73004A737D /* SurveyResponseJSON.m */,
 				3FFE30CC18C26355004A737D /* SurveySubmitter.h */,
 				3FFE30CD18C26355004A737D /* SurveySubmitter.m */,
-				3FFE30D518C2A6DB004A737D /* HttpJSONHelper.h */,
-				3FFE30D618C2A6DB004A737D /* HttpJSONHelper.m */,
+				3FFE30D518C2A6DB004A737D /* HttpPOSTJSONHelper.h */,
+				3FFE30D618C2A6DB004A737D /* HttpPOSTJSONHelper.m */,
 				3FD109E318C95E27005E4743 /* AlertViewDisplayer.h */,
 				3FD109E418C95E27005E4743 /* AlertViewDisplayer.m */,
 			);
@@ -295,6 +297,7 @@
 		948CBC5916FC932500DD4E2B /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				3F558BB318CE9CC6007D531F /* ctagroup_logo.png */,
 				27642FEC18A47E6500277F24 /* bg-signature-landscape.png */,
 				27642FED18A47E6500277F24 /* bg-signature-landscape@2x.png */,
 				27642FEE18A47E6500277F24 /* bg-signature-portrait.png */,
@@ -371,6 +374,7 @@
 				948CBC5D16FC939F00DD4E2B /* housing1000logo.png in Resources */,
 				94922FEC17027A3000670EB7 /* Fields.txt in Resources */,
 				940CA4EE1702894400FA5C87 /* blue_button.png in Resources */,
+				3F558BB418CE9CC6007D531F /* ctagroup_logo.png in Resources */,
 				27642FF218A47E6500277F24 /* bg-signature-portrait.png in Resources */,
 				940CA4F01702895000FA5C87 /* orange_button.png in Resources */,
 			);
@@ -438,7 +442,7 @@
 				3F5BBA7618501AFD00156CAD /* SignatureViewController.m in Sources */,
 				3FFE30CE18C26355004A737D /* SurveySubmitter.m in Sources */,
 				272AA48818B5C6B30068E023 /* TestEncryptionViewController.m in Sources */,
-				3FFE30D718C2A6DB004A737D /* HttpJSONHelper.m in Sources */,
+				3FFE30D718C2A6DB004A737D /* HttpPOSTJSONHelper.m in Sources */,
 				3F558BA818CACB8A007D531F /* ScrollablePageViewController.m in Sources */,
 				272AA48518B5C6950068E023 /* SurveyMenuViewController.m in Sources */,
 				3FFE309B188E08DC004A737D /* PhotoViewController.m in Sources */,
