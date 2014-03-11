@@ -12,6 +12,7 @@
 #import "Survey.h"
 #import "SurveyQuestions.h"
 #import "ClientQuestions.h"
+#import "AlertViewDisplayer.h"
 
 @interface SurveyViewController()
 @property (nonatomic, strong) NSMutableData *responseData;
@@ -24,15 +25,21 @@
 
 int responseFlag;
 NSArray* trustedHosts;  //This is declared to simply hold the staging.ctagroup.org domain
+AlertViewDisplayer *alertDisplayer;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.responseData = [NSMutableData data];
+    
+    alertDisplayer = [[AlertViewDisplayer alloc] init];
+    [alertDisplayer showSpinnerWithMessage:@"Retrieving surveys..."];
     trustedHosts =[NSArray arrayWithObjects:@"staging.ctagroup.org", nil];
     responseFlag = 0;
     
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"https://staging.ctagroup.org/survey/api/survey/"]];
-    [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    
+    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    NSLog(@"Connection: %@", conn.description);
 }
 
 - (void)viewDidUnload {
@@ -67,10 +74,12 @@ NSArray* trustedHosts;  //This is declared to simply hold the staging.ctagroup.o
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
     NSLog(@"Connection failed: %@", [error description]);
+    [alertDisplayer showMessageWithCloseButton:@"There was a problem loading surveys... Please try again." closeButtonText:@"Okay"];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     NSLog(@"Succeeded! Received %d bytes of data",[self.responseData length]);
+    [alertDisplayer dismissSpinner];
     
     // convert to JSON
     NSError *myError = nil;

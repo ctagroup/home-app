@@ -134,16 +134,7 @@
 }
 - (IBAction)submitSurvey:(id)sender {
     
-    BOOL successful = [SurveySubmitter submitSurvey];
-    
-    AlertViewDisplayer *alertDisplayer = [[AlertViewDisplayer alloc] init];
-    [alertDisplayer showAlertViewWithMessage:@"Submitting survey..." andError:@"There was a problem submitting the survey." andSuccessMessage:@"Success!" withSeconds:3 operationSuccessful:successful];
-    
-    if(successful) {
-        NSLog(@"Submitted successfully.");
-    } else {
-        NSLog(@"There was a problem submitting the survey...");
-    }
+    [SurveySubmitter submitSurvey];
 }
 
 

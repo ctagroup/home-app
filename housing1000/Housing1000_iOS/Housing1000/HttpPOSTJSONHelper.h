@@ -1,5 +1,5 @@
 //
-//  HttpJSONHelper.h
+//  HttpPOSTJSONHelper.h
 //  Housing1000
 //
 //  Created by student on 3/1/14.
@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@interface HttpJSONHelper : NSObject
+@interface HttpPOSTJSONHelper : NSObject
 
-- (BOOL)postJSON:(NSDictionary*)jsonData;
+-(void)postJSON:(NSDictionary*)jsonData;
 
 @end

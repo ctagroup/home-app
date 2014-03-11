@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" image="housing1000logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="LCo-2N-MIS">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" image="ctagroup_logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="LCo-2N-MIS">
                                 <rect key="frame" x="40" y="32" width="240" height="128"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" fixedFrame="YES" text="Username:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ccF-IH-Ntr">
@@ -122,7 +122,7 @@
                                     <segue destination="KH6-ei-P0S" kind="push" id="iA0-0u-1cF"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" image="housing1000logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="9Wy-mO-QtB">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" image="ctagroup_logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="9Wy-mO-QtB">
                                 <rect key="frame" x="40" y="99" width="240" height="128"/>
                             </imageView>
                         </subviews>
@@ -767,7 +767,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="housing1000logo.png" width="230" height="103"/>
+        <image name="ctagroup_logo.png" width="1456" height="705"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

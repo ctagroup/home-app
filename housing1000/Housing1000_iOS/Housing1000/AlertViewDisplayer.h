@@ -7,9 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "LMAlertView.h"
 
 @interface AlertViewDisplayer : NSObject
 
--(void)showAlertViewWithMessage:(NSString*)message andError:(NSString*)errorMessage andSuccessMessage:(NSString*)successMessage withSeconds:(float)seconds operationSuccessful:(BOOL)successful;
+@property (strong, nonatomic) LMAlertView *spinnerAlert;
+@property (strong, nonatomic) LMAlertView *messageAlert;
+@property (strong, nonatomic) LMAlertView *areYouSureAlert;
+
+-(void)showSpinnerWithMessage:(NSString*)message;
+-(void)dismissSpinner;
+-(void)showMessageWithCloseButton:(NSString*)message closeButtonText:(NSString*)buttonText;
 
 @end

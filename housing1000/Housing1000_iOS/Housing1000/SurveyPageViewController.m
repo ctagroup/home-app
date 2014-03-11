@@ -66,7 +66,6 @@
     
     NSUInteger index = [self.collectionOfViews indexOfObject:viewController];
 
-    NSLog(@"Doing after stuff... index is %d", index);
     index++;
     
     if (index == 3) {
