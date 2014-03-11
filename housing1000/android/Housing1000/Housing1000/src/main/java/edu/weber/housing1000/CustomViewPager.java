@@ -9,7 +9,7 @@ import android.view.MotionEvent;
  * Created by Blake on 2/20/14.
  */
 public class CustomViewPager extends ViewPager {
-    SurveyFlowActivity myActivity;
+    private SurveyFlowActivity myActivity;
 
     public CustomViewPager(Context context) {
         super(context);
@@ -25,10 +25,8 @@ public class CustomViewPager extends ViewPager {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent arg0) {
-        if (myActivity.getIsSignatureCaptured())
-            return super.onInterceptTouchEvent(arg0);
+        return myActivity.getIsSignatureCaptured() && super.onInterceptTouchEvent(arg0);
 
-        return false;
     }
 
     @Override

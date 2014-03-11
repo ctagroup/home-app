@@ -1,20 +1,14 @@
 package edu.weber.housing1000.Questions;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.opengl.Visibility;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.Spinner;
 
 import com.google.gson.annotations.Expose;
@@ -146,7 +140,7 @@ public abstract class Question {
 
     // Default constructor
     public Question() {
-        dependents = new ArrayList<Question>();
+        dependents = new ArrayList<>();
     }
 
     public void addDependent(Question dependent)

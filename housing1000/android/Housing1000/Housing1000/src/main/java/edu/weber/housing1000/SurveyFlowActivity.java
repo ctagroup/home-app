@@ -14,7 +14,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,20 +39,20 @@ import retrofit.client.Response;
 public class SurveyFlowActivity extends ActionBarActivity {
     public static final String EXTRA_SURVEY = "survey";
 
-    GPSTracker gps;
+    private GPSTracker gps;
 
     //These are used to keep track of the submission state
-    boolean submittingSurvey;
-    boolean isSurveySubmitted;
-    boolean isSignatureSubmitted;
-    boolean isPhotoSubmitted;
+    private boolean submittingSurvey;
+    private boolean isSurveySubmitted;
+    private boolean isSignatureSubmitted;
+    private boolean isPhotoSubmitted;
 
-    boolean isSignatureCaptured;
+    private boolean isSignatureCaptured;
 
-    PagerSlidingTabStrip mTabs;                         //Tabs of the view
-    SectionsPagerAdapter mSectionsPagerAdapter;         //Keeps track of the fragments
-    ViewPager.OnPageChangeListener mPageChangeListener; //Listens for page changes
-    CustomViewPager mViewPager;                         //View object that holds the fragments
+    private PagerSlidingTabStrip mTabs;                         //Tabs of the view
+    private SectionsPagerAdapter mSectionsPagerAdapter;         //Keeps track of the fragments
+    private ViewPager.OnPageChangeListener mPageChangeListener; //Listens for page changes
+    private CustomViewPager mViewPager;                         //View object that holds the fragments
 
     private SurveyListing surveyListing;
     private String folderHash;                          //The name of the survey folder (for files)
@@ -201,10 +200,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
     public void onPostSurveyResponsesTaskCompleted(String result) {
@@ -375,17 +371,17 @@ public class SurveyFlowActivity extends ActionBarActivity {
             switch (position) {
                 case 0:
                     if (signatureFragment == null)
-                        signatureFragment = new SignatureFragment("Signature", "Disclaimer");
+                        signatureFragment = new SignatureFragment();
 
                     return signatureFragment;
                 case 1:
                     if (photosFragment == null)
-                        photosFragment = new PhotosFragment("Photos", "Client Photo(s)");
+                        photosFragment = new PhotosFragment();
 
                     return photosFragment;
                 case 2:
                     if (surveyFragment == null)
-                        surveyFragment = new SurveyFragment("Survey", SurveyFlowActivity.this.surveyListing.getTitle());
+                        surveyFragment = new SurveyFragment(SurveyFlowActivity.this.surveyListing.getTitle());
 
                     return surveyFragment;
                 default:

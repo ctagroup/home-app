@@ -1,9 +1,6 @@
 package edu.weber.housing1000.Helpers.REST;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -16,18 +13,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map.Entry;
 
 import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManagerFactory;
@@ -39,7 +31,6 @@ import retrofit.client.OkClient;
 import retrofit.converter.ConversionException;
 import retrofit.converter.Converter;
 import retrofit.converter.GsonConverter;
-import retrofit.mime.MultipartTypedOutput;
 import retrofit.mime.TypedInput;
 import retrofit.mime.TypedOutput;
 
@@ -53,25 +44,22 @@ public class RESTHelper {
 
     /**
      * Sets up the SSL context by importing the SSL certificate, etc.
-     * @param context
-     * @return
+     * @param context Android context
+     * @return SSL Context
      */
-    public static SSLContext getSSLContext(Context context) {
+    private static SSLContext getSSLContext(Context context) {
         try {
             // Load CAs from an InputStream
             // (could be from a resource or ByteArrayInputStream or ...)
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
             // From https://www.washington.edu/itconnect/security/ca/load-der.crt
             Certificate ca;
-            InputStream caInput = context.getResources().openRawResource(R.raw.certificate);
-            try {
+            try (InputStream caInput = context.getResources().openRawResource(R.raw.certificate)) {
                 ca = cf.generateCertificate(caInput);
                 System.out.println("ca=" + ((X509Certificate) ca).getSubjectDN());
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
-            } finally {
-                caInput.close();
             }
 
             // Create a KeyStore containing our trusted CAs
@@ -101,7 +89,6 @@ public class RESTHelper {
      * Converts an InputStream to a String
      * @param is - InputStream
      * @return - String response
-     * @author Blake
      */
     public static String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
@@ -110,7 +97,8 @@ public class RESTHelper {
         String line = null;
         try {
             while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
+                sb.append(line);
+                sb.append("\n");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -126,10 +114,10 @@ public class RESTHelper {
 
     /**
      * Sets up the RestAdapter Builder
-     * @param context
-     * @return
+     * @param context Android Context
+     * @return RestAdapter Builder
      */
-    public static RestAdapter.Builder setUpRestAdapterBuilder(Context context)
+    private static RestAdapter.Builder setUpRestAdapterBuilder(Context context)
     {
         // Set up SSL
         SSLContext sslContext = RESTHelper.getSSLContext(context);
@@ -147,19 +135,17 @@ public class RESTHelper {
         client.setSslSocketFactory(sslContext.getSocketFactory());
         OkClient okClient = new OkClient(client);
 
-        RestAdapter.Builder builder = new RestAdapter.Builder()
+        return new RestAdapter.Builder()
                 .setClient(okClient)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setEndpoint("https://staging.ctagroup.org/Survey/api");
-
-        return builder;
     }
 
     /**
      * Sets up the RestAdapter, with a JSON response
-     * @param context
+     * @param context Android context
      * @param gson GSON that will be used to convert the data of the request to JSON
-     * @return
+     * @return RestAdapter
      */
     public static RestAdapter setUpRestAdapter(Context context, Gson gson)
     {
@@ -173,9 +159,9 @@ public class RESTHelper {
 
     /**
      * Sets up the RestAdapter, WITHOUT deserializing the response
-     * @param context
+     * @param context Android context
      * @param gson GSON that will be used to convert the data of the request to JSON
-     * @return
+     * @return RestAdapter
      */
     public static RestAdapter setUpRestAdapterNoDeserialize(Context context, Gson gson)
     {
@@ -241,7 +227,7 @@ public class RESTHelper {
 
     public static ArrayList<TypedOutput> generateTypedOutputFromImages(ArrayList<String> paths, String clientSurveyId )
     {
-        ArrayList<TypedOutput> result = new ArrayList<TypedOutput>();
+        ArrayList<TypedOutput> result = new ArrayList<>();
 
         for (String path : paths) {
             Log.d("Photo path:", path);

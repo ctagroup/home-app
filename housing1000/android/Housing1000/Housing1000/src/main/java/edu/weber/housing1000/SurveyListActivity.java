@@ -1,10 +1,7 @@
 package edu.weber.housing1000;
 
 import android.app.AlertDialog;
-import android.app.DialogFragment;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,7 +14,6 @@ import android.widget.ListView;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Fragments.ProgressDialogFragment;
@@ -36,9 +32,9 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
 
     private ListView surveysListView;
     private ArrayList<SurveyListing> surveyListings;
-    public ArrayAdapter<SurveyListing> surveyAdapter;
+    private ArrayAdapter<SurveyListing> surveyAdapter;
 
-    SurveyListing chosenSurveyListing;
+    private SurveyListing chosenSurveyListing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +116,7 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
 
         if (surveyListings != null && surveyListings.size() > 0)
         {
-            surveyAdapter = new ArrayAdapter<SurveyListing>(
+            surveyAdapter = new ArrayAdapter<>(
                     SurveyListActivity.this,
                     android.R.layout.simple_list_item_1,
                     surveyListings );

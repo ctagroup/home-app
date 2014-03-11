@@ -1,25 +1,16 @@
 package edu.weber.housing1000.Helpers.REST;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import edu.weber.housing1000.Data.Survey;
 import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Data.SurveyResponse;
 import retrofit.Callback;
-import retrofit.client.Response;
 import retrofit.http.Body;
 import retrofit.http.GET;
-import retrofit.http.Headers;
-import retrofit.http.Multipart;
 import retrofit.http.POST;
-import retrofit.http.Part;
 import retrofit.http.Path;
 import retrofit.mime.MultipartTypedOutput;
-import retrofit.mime.TypedByteArray;
-import retrofit.mime.TypedFile;
-import retrofit.mime.TypedOutput;
-import retrofit.mime.TypedString;
 
 /**
  * This is used to perform our REST API calls

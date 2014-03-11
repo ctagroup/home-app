@@ -14,7 +14,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class EncryptionHelper {
     private static byte[] key;
 
-    public static void keyGen() {
+    private static void keyGen() {
         try
         {
             byte[] keyStart = "housingApp".getBytes();
@@ -32,7 +32,7 @@ public class EncryptionHelper {
         }
     }
 
-    public static byte[] encrypt(byte[] file) throws Exception{
+    public static byte[] encrypt(byte[] file) {
         if (key == null)
             keyGen();
 

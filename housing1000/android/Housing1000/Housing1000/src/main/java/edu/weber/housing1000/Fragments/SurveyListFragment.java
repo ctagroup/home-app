@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -21,8 +18,8 @@ import edu.weber.housing1000.SurveyListActivity;
  */
 public class SurveyListFragment extends Fragment {
 
-    public ListView surveysListView;
-    public TextView noSurveysTextView;
+    private ListView surveysListView;
+    private TextView noSurveysTextView;
 
     private SurveyListActivity myActivity;
 
