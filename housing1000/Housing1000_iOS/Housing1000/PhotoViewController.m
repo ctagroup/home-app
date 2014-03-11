@@ -2,7 +2,7 @@
 //  PhotoViewController.m
 //  Housing1000
 //
-//  Created by student on 1/20/14.
+//  Created by David Horton on 1/20/14.
 //  Copyright (c) 2014 Group 3. All rights reserved.
 //
 

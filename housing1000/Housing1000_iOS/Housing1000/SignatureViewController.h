@@ -2,7 +2,7 @@
 //  DrawViewController.h
 //  Housing1000
 //
-//  Created by student on 12/4/13.
+//  Created by David Horton on 12/4/13.
 //  Copyright (c) 2013 Group 3. All rights reserved.
 //
 
