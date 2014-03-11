@@ -276,7 +276,6 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
 
             final ScrollView mainScrollView = new ScrollView(getActivity());
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-            layoutParams.addRule(RelativeLayout.ABOVE, R.id.buttonsLinearLayout);
             mainScrollView.setLayoutParams(layoutParams);
 
             LinearLayout mainLinearLayout = new LinearLayout(getActivity());

@@ -26,7 +26,6 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:src="@drawable/icon_large"
-            android:contentDescription="@string/description_housing_1000_logo"
             android:cropToPadding="false"
             android:adjustViewBounds="true"
             android:paddingBottom="20dp" />
