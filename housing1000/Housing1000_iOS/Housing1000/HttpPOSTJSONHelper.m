@@ -99,9 +99,11 @@ AlertViewDisplayer *alertDisplayer;
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    [alertDisplayer showMessageWithCloseButton:@"There was a problem submitting... Please try again." closeButtonText:@"Okay"];
     NSLog(@"Connection failed: %@", [error description]);
+    [alertDisplayer showMessageWithTwoButtons:@"There was a problem submitting... Please try again." cancelButtonText:@"Main Menu" otherButtonText:@"Return to Survey"];
 }
+
+
 
 //Private util function(s)
 //==============================================

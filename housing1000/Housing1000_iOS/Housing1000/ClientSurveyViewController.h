@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ClientSurveyViewController : UITableViewController
+@interface ClientSurveyViewController : UITableViewController 
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *submit;
 

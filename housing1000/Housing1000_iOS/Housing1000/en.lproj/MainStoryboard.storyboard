@@ -241,6 +241,7 @@
                     <navigationItem key="navigationItem" title="Survey" id="M0Z-jj-Avw"/>
                     <connections>
                         <outlet property="submit" destination="pnJ-Vm-gp8" id="GsE-zi-P5a"/>
+                        <segue destination="LNn-kp-7wM" kind="modal" identifier="segue.survey.finished" id="yIy-Gf-CgX"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1uu-zk-1V3" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -775,7 +776,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="qUS-hm-4ra"/>
+        <segue reference="yIy-Gf-CgX"/>
         <segue reference="62H-H5-PPI"/>
     </inferredMetricsTieBreakers>
 </document>

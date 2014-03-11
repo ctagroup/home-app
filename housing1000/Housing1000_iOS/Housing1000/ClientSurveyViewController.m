@@ -25,6 +25,12 @@
 {
     [super viewDidLoad];
     
+    //Add a listener for when an alert view's first button is pressed
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(performSubmittedSurveySegue:)
+                                                 name:@"performSurveyFinishedSegue"
+                                               object:nil];
+    
     //Give it a top margin for the navigation bar
     UIEdgeInsets inset = UIEdgeInsetsMake(19, 0, 0, 0);
     self.tableView.contentInset = inset;
@@ -32,6 +38,10 @@
     
     [self populateDataRows];
     [self.tableView reloadData];
+}
+
+-(void)viewDidUnload {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 //Private util functions
@@ -132,11 +142,21 @@
     else
         return 150;
 }
+
+//==============================================
+
 - (IBAction)submitSurvey:(id)sender {
     
     [SurveySubmitter submitSurvey];
 }
 
+//Called when the alert view's first button is pressed because of a listener
+-(void)performSubmittedSurveySegue:(NSNotification *) notif
+{
+    
+    [self performSegueWithIdentifier:@"segue.survey.finished" sender:self]; //@"segue.survey.finished" is specified in the storyboard
+    
+}
 
 -(BOOL)shouldAutorotate
 {

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "LMAlertView.h"
 
-@interface AlertViewDisplayer : NSObject
+@interface AlertViewDisplayer : NSObject <UIAlertViewDelegate>
 
 @property (strong, nonatomic) LMAlertView *spinnerAlert;
 @property (strong, nonatomic) LMAlertView *messageAlert;
@@ -18,5 +18,6 @@
 -(void)showSpinnerWithMessage:(NSString*)message;
 -(void)dismissSpinner;
 -(void)showMessageWithCloseButton:(NSString*)message closeButtonText:(NSString*)buttonText;
+-(void)showMessageWithTwoButtons:(NSString*)message cancelButtonText:(NSString*)buttonText otherButtonText:(NSString*)otherButtonText;
 
 @end
