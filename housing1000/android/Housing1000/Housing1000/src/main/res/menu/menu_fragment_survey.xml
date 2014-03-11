@@ -7,7 +7,7 @@
         android:icon="@drawable/ic_action_discard" />
 
     <item android:id="@+id/action_submit"
-        android:title="@string/txtSubmit"
+        android:title="@string/action_submit"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_action_accept"/>
 </menu>

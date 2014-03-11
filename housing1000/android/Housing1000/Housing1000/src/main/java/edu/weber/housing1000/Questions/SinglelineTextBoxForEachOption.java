@@ -59,12 +59,12 @@ public class SinglelineTextBoxForEachOption extends Question {
                 //Add image buttons
                 ImageButton imageButtonLeft = new ImageButton(context);
                 imageButtonLeft.setLayoutParams(imageButtonParams);
-                imageButtonLeft.setBackgroundResource(R.drawable.transparent_background);
+                imageButtonLeft.setBackgroundResource(R.color.transparent);
                 imageButtonLeft.setImageResource(R.drawable.minus_btn);
 
                 ImageButton imageButtonRight = new ImageButton(context);
                 imageButtonRight.setLayoutParams(imageButtonParams);
-                imageButtonRight.setBackgroundResource(R.drawable.transparent_background);
+                imageButtonRight.setBackgroundResource(R.color.transparent);
                 imageButtonRight.setImageResource(R.drawable.plus_btn);
 
                 //Add click listener to each minus button

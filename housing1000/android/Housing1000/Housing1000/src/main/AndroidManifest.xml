@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="edu.weber.housing1000" >
+    package="edu.weber.housing1000">
 
     <uses-feature android:name="android.hardware.camera" />
 
@@ -11,46 +11,30 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <meta-data android:name="com.google.android.gms.version"
-                    android:value="@integer/google_play_services_version" />
-        <activity
-            android:name="edu.weber.housing1000.LoginActivity" >
-        </activity>
-        <activity
-            android:name="edu.weber.housing1000.MainMenuActivity" >
-        </activity>
+        android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity android:name="edu.weber.housing1000.LoginActivity" />
         <activity
             android:name="edu.weber.housing1000.SignatureActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="landscape" />
-        <activity
-            android:name="edu.weber.housing1000.InterviewerInfoActivity" />
-        <activity
-            android:name="edu.weber.housing1000.LegalDisclaimerActivity" />
-        <activity android:name="edu.weber.housing1000.SelectPageActivity" >
+        <activity android:name="edu.weber.housing1000.SelectPageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="edu.weber.housing1000.GeolocationActivity" />
-        <activity
-            android:name="edu.weber.housing1000.CensusActivity" />
-        <activity
-            android:name="edu.weber.housing1000.SurveyListActivity" >
-        </activity>
-        <activity
-            android:name="edu.weber.housing1000.SurveyFlowActivity"
-            android:label="@string/title_activity_survey_flow" >
-        </activity>
-        <activity
-            android:name="edu.weber.housing1000.PitActivity" >
-        </activity>
+        <activity android:name="edu.weber.housing1000.GeolocationActivity" />
+        <activity android:name="edu.weber.housing1000.SurveyListActivity" />
+        <activity android:name="edu.weber.housing1000.SurveyFlowActivity" />
+        <activity android:name="edu.weber.housing1000.PitActivity" />
     </application>
 
 </manifest>
