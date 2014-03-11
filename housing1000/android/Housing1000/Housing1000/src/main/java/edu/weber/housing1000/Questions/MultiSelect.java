@@ -3,10 +3,7 @@ package edu.weber.housing1000.Questions;
 import android.content.Context;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 /**

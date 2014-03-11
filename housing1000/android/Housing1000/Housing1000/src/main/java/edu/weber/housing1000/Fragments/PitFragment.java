@@ -24,13 +24,10 @@ import retrofit.RestAdapter;
  * Created by Blake on 2/11/14.
  */
 public class PitFragment extends BaseSurveyFragment {
-    PitActivity myActivity;      // Parent activity
+    private PitActivity myActivity;      // Parent activity
 
     public PitFragment() {
-    }
-
-    public PitFragment(String name, String actionBarTitle) {
-        super(name, actionBarTitle);
+        super("PIT", "Point in Time");
     }
 
     @Override
@@ -135,11 +132,8 @@ public class PitFragment extends BaseSurveyFragment {
         surveyResponse = new SurveyResponse(surveyListing, client, responses);
 
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        String jsonData = gson.toJson(surveyResponse);
 
-        //Log.d("json", jsonData);
-
-        return jsonData;
+        return gson.toJson(surveyResponse);
     }
 
     public void loadUI()

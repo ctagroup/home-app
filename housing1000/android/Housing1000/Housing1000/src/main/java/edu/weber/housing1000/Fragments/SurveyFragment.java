@@ -29,13 +29,13 @@ import retrofit.RetrofitError;
  * Created by Blake on 2/11/14.
  */
 public class SurveyFragment extends BaseSurveyFragment {
-    SurveyFlowActivity myActivity;      // Parent activity
+    private SurveyFlowActivity myActivity;      // Parent activity
 
     public SurveyFragment() {
     }
 
-    public SurveyFragment(String name, String actionBarTitle) {
-        super(name, actionBarTitle);
+    public SurveyFragment(String actionBarTitle) {
+        super("Survey", actionBarTitle);
     }
 
     @Override
@@ -134,7 +134,7 @@ public class SurveyFragment extends BaseSurveyFragment {
 
                     if (errorBody != null)
                     {
-                        Log.e("FAILURE", errorBody.toString());
+                        Log.e("FAILURE", errorBody);
                         myActivity.onPostSurveyResponsesTaskCompleted(errorBody);
                     }
                     else
@@ -157,11 +157,7 @@ public class SurveyFragment extends BaseSurveyFragment {
         surveyResponse = new SurveyResponse(surveyListing, client, responses);
 
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        String jsonData = gson.toJson(surveyResponse);
-
-        //Log.d("json", jsonData);
-
-        return jsonData;
+        return gson.toJson(surveyResponse);
     }
 
 }

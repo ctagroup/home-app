@@ -26,7 +26,7 @@ public class SingleSelect extends Question {
         qLayout.addView(textView);
 
         //Add potential answers
-        List<String> lstAnswers = new ArrayList<String>();
+        List<String> lstAnswers = new ArrayList<>();
         lstAnswers.add("");
         String[] arrAnswers = getOptions().split("\\|");
         Collections.addAll(lstAnswers, arrAnswers);

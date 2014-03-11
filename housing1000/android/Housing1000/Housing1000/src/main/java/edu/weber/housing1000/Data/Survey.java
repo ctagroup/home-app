@@ -4,7 +4,6 @@ package edu.weber.housing1000.Data;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.*;
 
 import edu.weber.housing1000.Questions.Question;

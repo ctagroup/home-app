@@ -198,7 +198,7 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
      * @return List of Responses
      */
     protected ArrayList<Response> generateResponses(ArrayList<Question> questions) {
-        ArrayList<Response> responses = new ArrayList<Response>();
+        ArrayList<Response> responses = new ArrayList<>();
 
         for (Question question : questions) {
             Response response = new Response(question.getQuestionId(), question.getAnswer());
@@ -252,7 +252,7 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
     protected ScrollView generateQuestionUi(SurveyListing listing) {
         try {
 
-            lstQuestions = new ArrayList<Question>();
+            lstQuestions = new ArrayList<>();
 
             survey = JSONParser.getSurveyFromListing(listing);
             if (survey.getClientQuestions() != null) {
@@ -284,7 +284,7 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
             mainLinearLayout.setLayoutTransition(layoutTransition);
             mainScrollView.addView(mainLinearLayout);
 
-            List<String> lstPanels = new ArrayList<String>();
+            List<String> lstPanels = new ArrayList<>();
 
             //Get panel types
             for (Question q : lstQuestions) {
@@ -372,7 +372,7 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
 //            }
 
             // Set up question dependencies
-            Set<Question> dependencies = new HashSet<Question>();
+            Set<Question> dependencies = new HashSet<>();
 
             for (Question question : lstQuestions) {
                 if (question.getParentQuestionId() > 0) {

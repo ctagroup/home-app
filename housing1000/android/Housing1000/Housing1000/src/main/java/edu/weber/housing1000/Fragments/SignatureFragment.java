@@ -2,6 +2,7 @@ package edu.weber.housing1000.Fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,12 +17,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 
-import edu.weber.housing1000.Helpers.EncryptionHelper;
-import edu.weber.housing1000.Helpers.FileHelper;
 import edu.weber.housing1000.Helpers.REST.RESTHelper;
 import edu.weber.housing1000.Helpers.REST.SurveyService;
 import edu.weber.housing1000.R;
@@ -32,7 +29,6 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.MultipartTypedOutput;
-import retrofit.mime.TypedFile;
 import retrofit.mime.TypedOutput;
 
 /**
@@ -41,23 +37,19 @@ import retrofit.mime.TypedOutput;
 public class SignatureFragment extends SurveyAppFragment {
     public static final int RESULT_SIGNATURE_SAVED = 1;
 
-    SurveyFlowActivity myActivity;
+    private SurveyFlowActivity myActivity;
 
-    ImageView signatureImageView;
-    RelativeLayout signatureLayout;
-    TextView tapHereToSignTextView;
+    private ImageView signatureImageView;
+    private RelativeLayout signatureLayout;
+    private TextView tapHereToSignTextView;
 
-    byte[] signatureImageBytes;
-    String signaturePath;
+    private byte[] signatureImageBytes;
+    private String signaturePath;
 
-    ProgressDialogFragment progressDialogFragment;
+    private ProgressDialogFragment progressDialogFragment;
 
-    // Needs a default constructor to be recreated
     public SignatureFragment() {
-    }
-
-    public SignatureFragment(String name, String actionBarTitle) {
-        super(name, actionBarTitle);
+        super("Signature", "Disclaimer");
     }
 
     @Override
@@ -81,7 +73,7 @@ public class SignatureFragment extends SurveyAppFragment {
     public void onResume() {
         super.onResume();
 
-        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
 
@@ -157,7 +149,7 @@ public class SignatureFragment extends SurveyAppFragment {
 
         if (signatureFile.exists()) {
 
-            ArrayList<String> files = new ArrayList<String>();
+            ArrayList<String> files = new ArrayList<>();
 
             files.add(signaturePath);
 

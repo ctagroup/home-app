@@ -14,8 +14,8 @@ import android.widget.TextView;
 
 public class LoginActivity extends Activity
 {
-    EditText emailField;
-    EditText passwordField;
+    private EditText emailField;
+    private EditText passwordField;
 
     /**
      * Called when the activity is first created.

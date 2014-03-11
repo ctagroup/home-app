@@ -1,6 +1,7 @@
 package edu.weber.housing1000.Fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -18,9 +19,6 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
 
 import edu.weber.housing1000.Helpers.EncryptionHelper;
 import edu.weber.housing1000.Helpers.FileHelper;
@@ -44,18 +42,15 @@ import retrofit.mime.TypedOutput;
 public class PhotosFragment extends SurveyAppFragment {
     private static final int TAKE_PICTURE = 1111;   // Activity result for taking a picture
 
-    SurveyFlowActivity myActivity;  // Parent activity
+    private SurveyFlowActivity myActivity;  // Parent activity
 
-    GridView photosGridView;    // Holds the photos
-    TextView noPhotosTextView; // Text that is shown when no photos are present
+    private GridView photosGridView;    // Holds the photos
+    private TextView noPhotosTextView; // Text that is shown when no photos are present
 
-    ImageAdapter imageAdapter; // Adapter that keeps track of saved photos
+    private ImageAdapter imageAdapter; // Adapter that keeps track of saved photos
 
     public PhotosFragment() {
-    } // Default constructor - Needed to restore state
-
-    public PhotosFragment(String name, String actionBarTitle) {
-        super(name, actionBarTitle);
+        super("Photos", "Client Photo(s)");
 
     }
 
@@ -63,7 +58,7 @@ public class PhotosFragment extends SurveyAppFragment {
     public void onResume() {
         super.onResume();
 
-        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
 
@@ -131,7 +126,7 @@ public class PhotosFragment extends SurveyAppFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_camera:
-                dispatchTakePictureIntent(TAKE_PICTURE);
+                dispatchTakePictureIntent();
                 return true;
             default:
                 break;
@@ -150,13 +145,12 @@ public class PhotosFragment extends SurveyAppFragment {
     /**
      * Opens up the camera to take a picture
      *
-     * @param actionCode Activity result to return
      */
-    private void dispatchTakePictureIntent(int actionCode) {
+    private void dispatchTakePictureIntent() {
         if (Utils.isIntentAvailable(myActivity.getApplicationContext(), MediaStore.ACTION_IMAGE_CAPTURE)) {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-            startActivityForResult(takePictureIntent, actionCode);
+            startActivityForResult(takePictureIntent, PhotosFragment.TAKE_PICTURE);
         }
     }
 
@@ -242,7 +236,7 @@ public class PhotosFragment extends SurveyAppFragment {
         }
     }
 
-    public class MultiChoiceListener implements GridView.MultiChoiceModeListener {
+    private class MultiChoiceListener implements GridView.MultiChoiceModeListener {
         @Override
         public void onItemCheckedStateChanged(android.view.ActionMode mode, int position, long id, boolean checked) {
             int selectCount = photosGridView.getCheckedItemCount();

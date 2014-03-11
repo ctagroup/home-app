@@ -1,11 +1,8 @@
 package edu.weber.housing1000;
 
 import android.app.AlertDialog;
-import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -17,7 +14,6 @@ import edu.weber.housing1000.Data.Survey;
 import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Fragments.PitFragment;
 import edu.weber.housing1000.Fragments.ProgressDialogFragment;
-import edu.weber.housing1000.Fragments.SurveyFragment;
 import edu.weber.housing1000.Helpers.REST.RESTHelper;
 import edu.weber.housing1000.Helpers.REST.SurveyService;
 import edu.weber.housing1000.Questions.Question;
@@ -51,7 +47,7 @@ public class PitActivity extends ActionBarActivity {
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PitFragment("PIT", "Point in Time"), "PIT")
+                    .add(R.id.container, new PitFragment(), "PIT")
                     .commit();
             getPitData();
         }

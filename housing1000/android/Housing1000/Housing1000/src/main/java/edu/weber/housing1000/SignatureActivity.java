@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.*;
 import android.os.Bundle;
 import android.util.AttributeSet;
-import android.util.Base64;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,7 +15,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import edu.weber.housing1000.Data.Survey;
 import edu.weber.housing1000.Fragments.SignatureFragment;
 import edu.weber.housing1000.Helpers.EncryptionHelper;
 import edu.weber.housing1000.Helpers.FileHelper;
@@ -26,13 +24,15 @@ import java.io.ByteArrayOutputStream;
 
 public class SignatureActivity extends Activity {
 
-    LinearLayout mContent;
-    Signature mSignature;
-    Button mClear, mGetSign, mCancel;
+    private LinearLayout mContent;
+    private Signature mSignature;
+    private Button mClear;
+    private Button mGetSign;
+    private Button mCancel;
     private Bitmap mBitmap;
-    View mView;
-    int hmsId = -1;
-    String folderHash;
+    private View mView;
+    private int hmsId = -1;
+    private String folderHash;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

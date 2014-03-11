@@ -23,12 +23,12 @@ import edu.weber.housing1000.Helpers.FileHelper;
  * as the GridView requests them
  */
 public class ImageAdapter extends BaseAdapter {
-    ArrayList<String> images;
+    private ArrayList<String> images;
     private Context mContext;
 
     public ImageAdapter(Context c) {
         mContext = c;
-        images = new ArrayList<String>();
+        images = new ArrayList<>();
     }
 
     public ImageAdapter(Context c, ArrayList<String> images) {

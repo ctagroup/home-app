@@ -1,10 +1,5 @@
 package edu.weber.housing1000;
 
-import android.text.InputType;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -108,71 +103,6 @@ public class JSONParser {
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().registerTypeAdapter(Question.class, new QuestionJSONDeserializer()).create();
 
         return gson.fromJson(surveyListing.getJson(), Survey.class);
-    }
-
-    /**
-     * This is the old way of doing it - Use the QuestionJSONDeserializer instead
-     * @param survey
-     * @return
-     */
-    @Deprecated
-    public static ArrayList<Question> parseSurveyQuestionsOld(String survey) {
-        ArrayList<Question> questionsList = new ArrayList<Question>();
-
-        try {
-            JSONObject surveyJSON = new JSONObject(survey);
-
-            JSONArray questions = surveyJSON.getJSONArray("SurveyQuestions");
-
-            for (int i = 0; i < questions.length(); i++) {
-                String questionType = questions.getJSONObject(i).getString("QuestionType");
-
-                Question question;
-
-                switch (questionType)
-                {
-                    case "MultiSelect":
-                        question = new MultiSelect();
-                        break;
-                    case "SinglelineTextBox":
-                        question = new SinglelineTextBox();
-                        break;
-                    case "SingleSelect":
-                        question = new SingleSelect();
-                        break;
-                    case "SingleSelectRadio":
-                        question = new SingleSelectRadio();
-                        break;
-                    default:
-                        question = null;
-                }
-
-                if (question != null)
-                {
-                    question.setQuestionId(questions.getJSONObject(i).getInt("QuestionId"));
-                    question.setText(questions.getJSONObject(i).getString("text"));
-                    question.setQuestionType(questions.getJSONObject(i).getString("QuestionType"));
-                    question.setOptions(questions.getJSONObject(i).getString("Options"));
-                    question.setOrderId(questions.getJSONObject(i).getInt("OrderId"));
-
-                    try
-                    {
-                        String group = questions.getJSONObject(i).getString("Panel");
-                        question.setGroup(group);
-                    }
-                    catch (Exception e)
-                    {
-
-                    }
-
-                    questionsList.add(question);
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return questionsList;
     }
 
 }
