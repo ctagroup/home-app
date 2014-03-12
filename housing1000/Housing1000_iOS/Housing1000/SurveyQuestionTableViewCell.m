@@ -72,12 +72,30 @@
     return [self.questionData.options count] + 1;
 }
 
--(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+//3-11-14 David H. --- Commenting out to switch to viewForRow instead of titleForRow so we can configure font size
+/*-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
     if(row == 0) {
         return @"Select one";
     } else {
         return [self.questionData.options objectAtIndex:row - 1];
     }
+}*/
+
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view{
+    UILabel* tView = (UILabel*)view;
+    if (!tView){
+        tView = [[UILabel alloc] init];
+        [tView setTextColor:[UIColor blackColor]];
+        tView.font = [UIFont systemFontOfSize:15];
+    }
+    
+    if(row == 0) {
+        [tView setText:@"Select one"];
+    } else {
+        [tView setText:[self.questionData.options objectAtIndex:row - 1]];
+    }
+    
+    return tView;
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
