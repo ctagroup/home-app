@@ -147,8 +147,24 @@
 
 - (IBAction)submitSurvey:(id)sender {
     
-    [SurveySubmitter submitSurvey];
+    UIAlertView *popup = [[UIAlertView alloc] initWithTitle:nil
+                                                    message:@"Are you sure you want to upload the signature, photos, and survey answers?"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Yes"
+                                          otherButtonTitles:@"Cancel", nil];
+    [popup show];
+    
 }
+
+// The callback method for the alertView
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)index {
+    
+    if(index == 0) {    //They selected "Yes" about whether they were sure about submitting or not
+        [SurveySubmitter submitSurvey];
+    }
+    
+}
+
 
 //Called when the alert view's first button is pressed because of a listener
 -(void)performSubmittedSurveySegue:(NSNotification *) notif
