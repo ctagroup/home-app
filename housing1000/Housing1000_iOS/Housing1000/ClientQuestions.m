@@ -7,6 +7,7 @@
 //
 
 #import "ClientQuestions.h"
+#import "Question.h"
 
 @implementation ClientQuestions
 
@@ -17,7 +18,16 @@ NSMutableArray* clientQuestions;
 }
 
 -(void)setClientQuestions:(NSMutableArray*)questions {
-    clientQuestions = questions;
+    
+    
+    //Sort the array before storing it
+    NSArray *sortedArray = [questions sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+        NSNumber *first = [(Question*)a orderId];
+        NSNumber *second = [(Question*)b orderId];
+        return [first compare:second];
+    }];
+
+    clientQuestions = [NSMutableArray arrayWithArray:sortedArray];
 }
 
 @end

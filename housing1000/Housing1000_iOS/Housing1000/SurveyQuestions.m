@@ -7,6 +7,7 @@
 //
 
 #import "SurveyQuestions.h"
+#import "Question.h"
 
 @implementation SurveyQuestions
 
@@ -17,7 +18,16 @@ NSMutableArray* surveyQuestions;
 }
 
 -(void)setSurveyQuestions:(NSMutableArray*)questions {
-    surveyQuestions = questions;
+    
+    //Sort the array before storing it
+    NSArray *sortedArray = [questions sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+        NSNumber *first = [(Question*)a orderId];
+        NSNumber *second = [(Question*)b orderId];
+        return [first compare:second];
+    }];
+    
+    surveyQuestions = [NSMutableArray arrayWithArray:sortedArray];
 }
+
 
 @end
