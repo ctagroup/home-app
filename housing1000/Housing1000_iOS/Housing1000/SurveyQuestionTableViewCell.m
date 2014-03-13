@@ -47,9 +47,19 @@
      NSLog(@"%d",indexPath.row);
      */
     
+    //****Commented out these lines to move them to the textFieldShouldEndEditing method****
+    //****This fixes the bug where you could click on a different uitextfield and it would record that answer
+    //Immediately store what they enter
+    //questionData.answer = textField.text;
+    //[self changeChildQuestions:self.questionData.answer];
+    
+    return YES;
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+    
     //Immediately store what they enter
     questionData.answer = textField.text;
-    
     [self changeChildQuestions:self.questionData.answer];
     
     return YES;
