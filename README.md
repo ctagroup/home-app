@@ -14,12 +14,12 @@ A Point In Time (PIT) survey is also available, which allows the user to get gen
 - Start Android Studio.  You should be presented with a "Welcome to Android Studio" screen.  If not, you most likely have a project open. If so, go to File -> Close
 - From the welcome screen, choose "Check out from version control," then **GitHub**
 - Put in your github credentials and clone this repository
-![](images/checkout.PNG)
+![](images/android-checkout.PNG)
 - Choose "Import project from external model," then **Gradle**
 - Point the top text box to the **build.gradle** file located in the "housing1000/android/Housing1000" folder, use the **default gradle wrapper** and click **Finish**
 
-![](images/build.gradle.PNG)
-![](images/import.PNG)
+![](images/android-build.gradle.PNG)
+![](images/android-import.PNG)
 
 > The project should now be imported.  However, you will most likely be met with a few errors:
 
