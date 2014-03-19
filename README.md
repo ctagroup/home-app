@@ -9,12 +9,14 @@ A Point In Time (PIT) survey is also available, which allows the user to fill ou
 
 ##Android##
 
-- Download and install **[Android Studio](http://tools.android.com/download/studio/canary)** ([IntelliJ IDEA](http://www.jetbrains.com/idea/) can also be used, but Android Studio will most likely be easier to set up since it includes the Android SDK etc.)
+- Download and install **[Android Studio](http://tools.android.com/download/studio/canary)** ([IntelliJ IDEA](http://www.jetbrains.com/idea/) can also be used, but Android Studio will most likely be easier to set up since it includes the Android SDK/ADT files)
 - Make sure that you have the latest Android SDK updates in your SDK Manager
 - Start Android Studio.  You should be presented with a "Welcome to Android Studio" screen.  If not, you most likely have a project open. If so, go to File -> Close
 - From the welcome screen, choose "Check out from version control," then **GitHub**
 - Put in your github credentials and clone this repository
+
 ![Clone the Repository](images/android-checkout.PNG)
+
 - Choose "Import project from external model," then **Gradle**
 - Point the top text box to the **build.gradle** file located in the "housing1000/android/Housing1000" folder, use the **default gradle wrapper** and click **Finish**
 
