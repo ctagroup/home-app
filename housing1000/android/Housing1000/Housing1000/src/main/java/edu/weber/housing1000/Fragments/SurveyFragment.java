@@ -30,6 +30,7 @@ import retrofit.RetrofitError;
  */
 public class SurveyFragment extends BaseSurveyFragment {
     private SurveyFlowActivity myActivity;      // Parent activity
+    private boolean surveySubmitted;
 
     public SurveyFragment() {
     }
@@ -44,7 +45,7 @@ public class SurveyFragment extends BaseSurveyFragment {
 
         // Restore the state after recreation
         if (savedInstanceState != null) {
-
+            surveySubmitted = savedInstanceState.getBoolean("surveySubmitted");
         }
     }
 
@@ -96,13 +97,14 @@ public class SurveyFragment extends BaseSurveyFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
+        outState.putBoolean("surveySubmitted", surveySubmitted);
     }
 
     /**
      * Saves the answers and starts the submission task
      */
     public void saveAnswers() {
-        if (validateForm()) {
+        if (validateForm() && !surveySubmitted) {
             myActivity.showProgressDialog("Please Wait", "Submitting survey responses...", "SurveySubmit");
             myActivity.setSubmittingResponse(true);
 
@@ -117,32 +119,20 @@ public class SurveyFragment extends BaseSurveyFragment {
             service.postResponse(survey.getId(), surveyResponse, new Callback<String>() {
                 @Override
                 public void success(String s, retrofit.client.Response response) {
-                    if (s != null)
-                    {
-                        Log.d("SUCCESS", s);
-                        myActivity.onPostSurveyResponsesTaskCompleted(s);
-                    }
-                    else
-                    {
-                        myActivity.onPostSurveyResponsesTaskCompleted("SUCCESS");
-                    }
+                    myActivity.onPostSurveyResponsesTaskCompleted(response);
+                    surveySubmitted = true;
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    String errorBody = (String) error.getBodyAs(String.class);
-
-                    if (errorBody != null)
-                    {
-                        Log.e("FAILURE", errorBody);
-                        myActivity.onPostSurveyResponsesTaskCompleted(errorBody);
-                    }
-                    else
-                    {
-                        myActivity.onPostSurveyResponsesTaskCompleted("ERROR");
-                    }
+                    myActivity.onPostSurveyResponsesTaskCompleted(error.getResponse());
                 }
+
             });
+        }
+        else
+        {
+            myActivity.onPostSurveyResponsesTaskCompleted(null);
         }
     }
 

@@ -19,6 +19,8 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.weber.housing1000.Helpers.EncryptionHelper;
 import edu.weber.housing1000.Helpers.FileHelper;
@@ -32,6 +34,7 @@ import edu.weber.housing1000.Utils;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
+import retrofit.client.Header;
 import retrofit.client.Response;
 import retrofit.mime.MultipartTypedOutput;
 import retrofit.mime.TypedOutput;
@@ -43,6 +46,7 @@ public class PhotosFragment extends SurveyAppFragment {
     private static final int TAKE_PICTURE = 1111;   // Activity result for taking a picture
 
     private SurveyFlowActivity myActivity;  // Parent activity
+    private boolean photosSubmitted;
 
     private GridView photosGridView;    // Holds the photos
     private TextView noPhotosTextView; // Text that is shown when no photos are present
@@ -80,6 +84,11 @@ public class PhotosFragment extends SurveyAppFragment {
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
+
+        if (savedInstanceState != null)
+        {
+            photosSubmitted = savedInstanceState.getBoolean("photosSubmitted");
+        }
     }
 
     @Override
@@ -90,24 +99,19 @@ public class PhotosFragment extends SurveyAppFragment {
         noPhotosTextView = (TextView) rootView.findViewById(R.id.noPhotosTextView);
 
         // Pull the images list from the saved state
-        if (savedInstanceState != null)
+        if (savedInstanceState != null) {
             imageAdapter = new ImageAdapter(myActivity, savedInstanceState.getStringArrayList("images"));
-        else
+        }
+        else {
             imageAdapter = new ImageAdapter(myActivity);
+        }
+
         photosGridView.setAdapter(imageAdapter);
         photosGridView.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
         photosGridView.setMultiChoiceModeListener(new MultiChoiceListener());
 
         if (imageAdapter.getCount() > 0)
             noPhotosTextView.setVisibility(View.GONE);
-
-//        photosGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-////                v.setSelected(!v.isSelected());
-////                v.setPressed(!v.isPressed());
-//                //Toast.makeText(myActivity, "" + position, Toast.LENGTH_SHORT).show();
-//            }
-//        });
 
         return rootView;
     }
@@ -137,6 +141,7 @@ public class PhotosFragment extends SurveyAppFragment {
         super.onSaveInstanceState(outState);
 
         outState.putStringArrayList("images", imageAdapter.getImages());
+        outState.putBoolean("photosSubmitted", photosSubmitted);
     }
 
     /**
@@ -191,7 +196,7 @@ public class PhotosFragment extends SurveyAppFragment {
     }
 
     public void submitPhotos() {
-        if (imageAdapter.getCount() > 0) {
+        if (imageAdapter.getCount() > 0 && !photosSubmitted) {
             MultipartTypedOutput multipartTypedOutput = new MultipartTypedOutput();
 
             myActivity.showProgressDialog("Please Wait", "Submitting photo(s)...", "Dialog");
@@ -212,6 +217,7 @@ public class PhotosFragment extends SurveyAppFragment {
                     }
 
                     myActivity.onPostPhotoTaskCompleted(response);
+                    photosSubmitted = true;
                 }
 
                 @Override
@@ -229,7 +235,7 @@ public class PhotosFragment extends SurveyAppFragment {
         }
         else
         {
-            myActivity.onPostPhotoTaskCompleted(null);
+            myActivity.onPostPhotoTaskCompleted(new Response("", 200, "", new ArrayList<Header>(), null));
         }
     }
 

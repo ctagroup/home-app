@@ -27,6 +27,7 @@ import edu.weber.housing1000.SurveyFlowActivity;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
+import retrofit.client.Header;
 import retrofit.client.Response;
 import retrofit.mime.MultipartTypedOutput;
 import retrofit.mime.TypedOutput;
@@ -38,6 +39,7 @@ public class SignatureFragment extends SurveyAppFragment {
     public static final int RESULT_SIGNATURE_SAVED = 1;
 
     private SurveyFlowActivity myActivity;
+    private boolean signatureSubmitted;
 
     private ImageView signatureImageView;
     private RelativeLayout signatureLayout;
@@ -45,8 +47,6 @@ public class SignatureFragment extends SurveyAppFragment {
 
     private byte[] signatureImageBytes;
     private String signaturePath;
-
-    private ProgressDialogFragment progressDialogFragment;
 
     public SignatureFragment() {
         super("Signature", "Disclaimer");
@@ -59,6 +59,7 @@ public class SignatureFragment extends SurveyAppFragment {
         if (savedInstanceState != null) {
             signatureImageBytes = savedInstanceState.getByteArray("signatureImageBytes");
             signaturePath = savedInstanceState.getString("signaturePath");
+            signatureSubmitted = savedInstanceState.getBoolean("signatureSubmitted");
         }
     }
 
@@ -125,6 +126,8 @@ public class SignatureFragment extends SurveyAppFragment {
             outState.putByteArray("signatureImageBytes", signatureImageBytes);
         if (signaturePath != null)
             outState.putString("signaturePath", signaturePath);
+
+        outState.putBoolean("signatureSubmitted", signatureSubmitted);
     }
 
     /**
@@ -139,58 +142,60 @@ public class SignatureFragment extends SurveyAppFragment {
     }
 
     public void submitSignature() {
-        MultipartTypedOutput multipartTypedOutput = new MultipartTypedOutput();
+        if (!signatureSubmitted) {
+            MultipartTypedOutput multipartTypedOutput = new MultipartTypedOutput();
 
-        Log.d("Signature path:", signaturePath);
-        File signatureFile = new File(signaturePath);
+            Log.d("Signature path:", signaturePath);
+            File signatureFile = new File(signaturePath);
 
-        myActivity.showProgressDialog("Please Wait", "Submitting signature...", "Dialog");
+            myActivity.showProgressDialog("Please Wait", "Submitting signature...", "Dialog");
 
+            if (signatureFile.exists()) {
 
-        if (signatureFile.exists()) {
+                ArrayList<String> files = new ArrayList<>();
 
-            ArrayList<String> files = new ArrayList<>();
+                files.add(signaturePath);
 
-            files.add(signaturePath);
+                for (TypedOutput image : RESTHelper.generateTypedOutputFromImages(files, myActivity.getClientSurveyId())) {
+                    multipartTypedOutput.addPart(image.fileName(), image);
+                }
 
-            for (TypedOutput image : RESTHelper.generateTypedOutputFromImages(files, myActivity.getClientSurveyId())) {
-                multipartTypedOutput.addPart(image.fileName(), image);
+                RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoDeserialize(getActivity(), null);
+
+                SurveyService service = restAdapter.create(SurveyService.class);
+
+                service.postImage(multipartTypedOutput, new Callback<String>() {
+                    @Override
+                    public void success(String s, Response response) {
+                        if (s != null) {
+                            Log.d("SUCCESS", s);
+                        }
+
+                        myActivity.onPostSignatureTaskCompleted(response);
+                        signatureSubmitted = true;
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        String errorBody = (String) error.getBodyAs(String.class);
+
+                        if (errorBody != null) {
+                            Log.e("FAILURE", errorBody);
+                            myActivity.onPostSignatureTaskCompleted(error.getResponse());
+                        } else {
+                            myActivity.onPostSignatureTaskCompleted(error.getResponse());
+                        }
+                    }
+                });
+
+            } else {
+                new AlertDialog.Builder(getActivity()).setTitle("No Signature").setMessage("The signature seems to be missing!\nPlease sign the survey and resubmit.").show();
             }
-
-            RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoDeserialize(getActivity(), null);
-
-            SurveyService service = restAdapter.create(SurveyService.class);
-
-            service.postImage(multipartTypedOutput, new Callback<String>() {
-                @Override
-                public void success(String s, Response response) {
-                    if (s != null) {
-                        Log.d("SUCCESS", s);
-                    }
-
-                    myActivity.onPostSignatureTaskCompleted(response);
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-                    String errorBody = (String) error.getBodyAs(String.class);
-
-                    if (errorBody != null) {
-                        Log.e("FAILURE", errorBody);
-                        myActivity.onPostSignatureTaskCompleted(error.getResponse());
-                    } else {
-                        myActivity.onPostSignatureTaskCompleted(error.getResponse());
-                    }
-                }
-            });
-
-        } else {
-            new AlertDialog.Builder(getActivity()).setTitle("No Signature").setMessage("The signature seems to be missing!\nPlease sign the survey and resubmit.").show();
+        }
+        else
+        {
+            myActivity.onPostSignatureTaskCompleted(new Response("", 200, "", new ArrayList<Header>(), null));
         }
     }
 
-    public void dismissSubmissionDialog() {
-        if (progressDialogFragment != null)
-            progressDialogFragment.dismiss();
-    }
 }

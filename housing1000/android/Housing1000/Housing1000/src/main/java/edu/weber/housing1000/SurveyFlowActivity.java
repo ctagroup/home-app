@@ -44,9 +44,6 @@ public class SurveyFlowActivity extends ActionBarActivity {
 
     //These are used to keep track of the submission state
     private boolean submittingResponse;
-    private boolean isSurveySubmitted;
-    private boolean isSignatureSubmitted;
-    private boolean isPhotoSubmitted;
 
     private boolean isSignatureCaptured;
 
@@ -119,6 +116,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
             folderHash = savedInstanceState.getString("folderHash");
             currentLocation = savedInstanceState.getParcelable("currentLocation");
             isSignatureCaptured = savedInstanceState.getBoolean("isSignatureCaptured");
+            clientSurveyId = savedInstanceState.getString("clientSurveyId");
         } else {
             // Grab the survey listing from the extras
             surveyListing = (SurveyListing) getIntent().getSerializableExtra(EXTRA_SURVEY);
@@ -197,6 +195,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
         if (currentLocation != null)
             outState.putParcelable("currentLocation", currentLocation);
         outState.putBoolean("isSignatureCaptured", isSignatureCaptured);
+        outState.putString("clientSurveyId", clientSurveyId);
     }
 
     @Override
@@ -208,66 +207,105 @@ public class SurveyFlowActivity extends ActionBarActivity {
         return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
-    public void onPostSurveyResponsesTaskCompleted(String result) {
+    public void onPostSurveyResponsesTaskCompleted(Response response) {
         dismissDialog();
-        isSurveySubmitted = true;
 
-        Log.d("SURVEY RESPONSE", result);
+        if (response != null && response.getStatus() == 201) {
+            String result = "";
 
-        String[] split = result.split("=");
-        clientSurveyId = split[split.length - 1];
-        clientSurveyId = clientSurveyId.replace("\n", "");
+            try {
+                result = RESTHelper.convertStreamToString(response.getBody().in());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-        Log.d("clientSurveyId", clientSurveyId);
+            Log.d("SURVEY RESPONSE", result);
 
-        // Submit the photos
-        Fragment f = this.getSupportFragmentManager().findFragmentByTag(getFragmentTag(1));
+            String[] split = result.split("=");
+            clientSurveyId = split[split.length - 1];
+            clientSurveyId = clientSurveyId.replace("\n", "");
 
-        mViewPager.setCurrentItem(1, true);
+            Log.d("clientSurveyId", clientSurveyId);
 
-        ((PhotosFragment) f).submitPhotos();
+            // Submit the photos
+            Fragment f = this.getSupportFragmentManager().findFragmentByTag(getFragmentTag(1));
+
+            mViewPager.setCurrentItem(1, true);
+
+            ((PhotosFragment) f).submitPhotos();
+        }
+        else if (response != null)
+        {
+            setSubmittingResponse(false);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Uh Oh!");
+            builder.setMessage("There was a problem submitting the survey response.\nPlease try again.");
+            builder.show();
+        }
+        else // survey response has already been submitted, move on to photos
+        {
+            // Submit the photos
+            Fragment f = this.getSupportFragmentManager().findFragmentByTag(getFragmentTag(1));
+
+            mViewPager.setCurrentItem(1, true);
+
+            ((PhotosFragment) f).submitPhotos();
+        }
     }
 
     public void onPostPhotoTaskCompleted(Response response) {
-        //Check the result here
-
         dismissDialog();
 
-        isPhotoSubmitted = true;
-
-        if (response != null)
+        if (response != null && response.getStatus() == 200)
         {
             try {
-                Log.d("PHOTOS RESPONSE", RESTHelper.convertStreamToString(response.getBody().in()));
+                if (response.getBody() != null)
+                    Log.d("PHOTOS RESPONSE", RESTHelper.convertStreamToString(response.getBody().in()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            // Submit signature
+            Fragment f = this.getSupportFragmentManager().findFragmentByTag(getFragmentTag(0));
+            mViewPager.setCurrentItem(0, true);
+
+            ((SignatureFragment) f).submitSignature();
         }
+        else
+        {
+            setSubmittingResponse(false);
 
-        // Submit signature
-        Fragment f = this.getSupportFragmentManager().findFragmentByTag(getFragmentTag(0));
-        mViewPager.setCurrentItem(0, true);
-
-        ((SignatureFragment) f).submitSignature();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Uh Oh!");
+            builder.setMessage("There was a problem submitting the photos.\nPlease try again.");
+            builder.show();
+        }
     }
 
     public void onPostSignatureTaskCompleted(Response response) {
-        //Check the result here
-
         dismissDialog();
 
-        isSignatureSubmitted = true;
-
-        if (response != null)
+        if (response != null && response.getStatus() == 200)
         {
             try {
-                Log.d("SIGNATURE RESPONSE", RESTHelper.convertStreamToString(response.getBody().in()));
+                if (response.getBody() != null)
+                    Log.d("SIGNATURE RESPONSE", RESTHelper.convertStreamToString(response.getBody().in()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
 
-        showSendSuccessMessage();
+            showSendSuccessMessage();
+        }
+        else
+        {
+            setSubmittingResponse(false);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Uh Oh!");
+            builder.setMessage("There was a problem submitting the signature.\nPlease try again.");
+            builder.show();
+        }
     }
 
     private void showSendSuccessMessage()
