@@ -104,7 +104,7 @@ public class SurveyFragment extends BaseSurveyFragment {
     public void saveAnswers() {
         if (validateForm()) {
             myActivity.showProgressDialog("Please Wait", "Submitting survey responses...", "SurveySubmit");
-            myActivity.setSubmittingSurvey(true);
+            myActivity.setSubmittingResponse(true);
 
             saveSurveyResponse();
 

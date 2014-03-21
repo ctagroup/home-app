@@ -144,7 +144,7 @@ public class SignatureFragment extends SurveyAppFragment {
         Log.d("Signature path:", signaturePath);
         File signatureFile = new File(signaturePath);
 
-        myActivity.showProgressDialog("Please Wait", "Submitting signature...", "SignatureSubmit");
+        myActivity.showProgressDialog("Please Wait", "Submitting signature...", "Dialog");
 
 
         if (signatureFile.exists()) {

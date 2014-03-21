@@ -66,16 +66,13 @@ public class PhotosFragment extends SurveyAppFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        myActivity = (SurveyFlowActivity) getActivity();
-
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        if (myActivity == null)
-            myActivity = (SurveyFlowActivity) getActivity();
+        myActivity = (SurveyFlowActivity) getActivity();
     }
 
     @Override
@@ -197,7 +194,7 @@ public class PhotosFragment extends SurveyAppFragment {
         if (imageAdapter.getCount() > 0) {
             MultipartTypedOutput multipartTypedOutput = new MultipartTypedOutput();
 
-            myActivity.showProgressDialog("Please Wait", "Submitting photo(s)...", "PhotoSubmit");
+            myActivity.showProgressDialog("Please Wait", "Submitting photo(s)...", "Dialog");
 
             for (TypedOutput image : RESTHelper.generateTypedOutputFromImages(imageAdapter.getImages(), myActivity.getClientSurveyId())) {
                 multipartTypedOutput.addPart(image.fileName(), image);

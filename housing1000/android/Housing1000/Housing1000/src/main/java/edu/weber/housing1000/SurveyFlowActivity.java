@@ -2,6 +2,7 @@ package edu.weber.housing1000;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -42,7 +43,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
     private GPSTracker gps;
 
     //These are used to keep track of the submission state
-    private boolean submittingSurvey;
+    private boolean submittingResponse;
     private boolean isSurveySubmitted;
     private boolean isSignatureSubmitted;
     private boolean isPhotoSubmitted;
@@ -58,9 +59,6 @@ public class SurveyFlowActivity extends ActionBarActivity {
     private String folderHash;                          //The name of the survey folder (for files)
     private String clientSurveyId;                      //Client survey id for image submission
     private Location currentLocation;
-    private TextView latitudeField;
-    private TextView longitudeField;
-    private LocationManager locationManager;
 
     private ProgressDialogFragment progressDialogFragment;
 
@@ -72,8 +70,16 @@ public class SurveyFlowActivity extends ActionBarActivity {
         return clientSurveyId;
     }
 
-    public void setSubmittingSurvey(boolean value) {
-        submittingSurvey = value;
+    public void setSubmittingResponse(boolean value) {
+        submittingResponse = value;
+        if (submittingResponse)
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+        }
+        else
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        }
     }
 
     public boolean getIsSignatureCaptured() {
@@ -105,9 +111,6 @@ public class SurveyFlowActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey_flow);
 
-        //GPS TESTING
-        /*Intent intent = new Intent(this, GeolocationActivity.class);
-        startActivityForResult(intent, 1);*/
         gps = new GPSTracker(this);
 
         // Restore state after being recreated
@@ -120,6 +123,8 @@ public class SurveyFlowActivity extends ActionBarActivity {
             // Grab the survey listing from the extras
             surveyListing = (SurveyListing) getIntent().getSerializableExtra(EXTRA_SURVEY);
             generateFolderHash();
+
+            progressDialogFragment = (ProgressDialogFragment)getSupportFragmentManager().findFragmentByTag("Dialog");
         }
 
         // Create the adapter that will return a fragment for each of the three
@@ -205,7 +210,6 @@ public class SurveyFlowActivity extends ActionBarActivity {
 
     public void onPostSurveyResponsesTaskCompleted(String result) {
         dismissDialog();
-
         isSurveySubmitted = true;
 
         Log.d("SURVEY RESPONSE", result);
@@ -218,6 +222,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
 
         // Submit the photos
         Fragment f = this.getSupportFragmentManager().findFragmentByTag(getFragmentTag(1));
+
         mViewPager.setCurrentItem(1, true);
 
         ((PhotosFragment) f).submitPhotos();
@@ -244,7 +249,6 @@ public class SurveyFlowActivity extends ActionBarActivity {
         mViewPager.setCurrentItem(0, true);
 
         ((SignatureFragment) f).submitSignature();
-
     }
 
     public void onPostSignatureTaskCompleted(Response response) {
@@ -268,6 +272,8 @@ public class SurveyFlowActivity extends ActionBarActivity {
 
     private void showSendSuccessMessage()
     {
+        setSubmittingResponse(false);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Success!");
         builder.setMessage("The survey response and image(s) have been successfully sent.");
@@ -343,8 +349,9 @@ public class SurveyFlowActivity extends ActionBarActivity {
     }
 
     public void dismissDialog(){
-        if (progressDialogFragment != null) {
+        if (progressDialogFragment != null && progressDialogFragment.isAdded()) {
             progressDialogFragment.dismiss();
+            progressDialogFragment = null;
         }
     }
 
