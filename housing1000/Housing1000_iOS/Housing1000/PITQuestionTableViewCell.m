@@ -8,10 +8,6 @@
 
 #import "PITQuestionTableViewCell.h"
 
-@interface PITQuestionTableViewCell()
-@property UITapGestureRecognizer *gestureRecognizer;
-@end
-
 @implementation PITQuestionTableViewCell
 
 @synthesize questionText, questionTextAnswer, questionSingleAnswer, questionStepperAnswer, questionData, number;
@@ -35,7 +31,6 @@
     questionText.numberOfLines = 0;
     //[questionText sizeToFit];
 
-    //self.gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideNumberPad)];
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideTextFields)];
     [self.superview.superview addGestureRecognizer:gestureRecognizer];
 }

@@ -438,8 +438,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="canceled:" destination="deI-oK-28B" eventType="touchUpInside" id="I8s-XQ-abN"/>
-                                    <segue destination="LNn-kp-7wM" kind="modal" id="mdH-C4-AiV"/>
+                                    <action selector="cancelPopupMessage:" destination="deI-oK-28B" eventType="touchUpInside" id="yCJ-Vl-OJq"/>
                                 </connections>
                             </button>
                             <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rjz-Eg-woX">
@@ -449,7 +448,7 @@
                                     <navigationItem title="Signature" id="zgF-zH-TpT">
                                         <barButtonItem key="leftBarButtonItem" title="Cancel" id="4nC-fj-p8j">
                                             <connections>
-                                                <segue destination="LNn-kp-7wM" kind="modal" id="itA-Ef-9jR"/>
+                                                <action selector="cancelPopupMessage:" destination="deI-oK-28B" id="Em6-QK-hBl"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -463,6 +462,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="cancel" destination="OV0-bl-g7E" id="cDh-KO-E7L"/>
+                        <segue destination="LNn-kp-7wM" kind="modal" identifier="segue.survey.cancelled" id="24q-cE-jpz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fe7-Mm-hYP" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -848,6 +848,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="62H-H5-PPI"/>
-        <segue reference="qUS-hm-4ra"/>
+        <segue reference="24q-cE-jpz"/>
     </inferredMetricsTieBreakers>
 </document>
