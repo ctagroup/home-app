@@ -11,7 +11,7 @@
 #import "SurveySubmitter.h"
 #import "SurveyResponseJSON.h"
 #import "JSONHTTPClient.h"
-#import "HttpPOSTJSONHelper.h"
+#import "HttpConnectionHelper.h"
 
 @implementation SurveySubmitter
 
@@ -48,8 +48,9 @@
     response.Client = clientAnswers;
     
     NSLog(@"Json submission: %@", [response toDictionary]);
-    HttpPOSTJSONHelper *poster = [[HttpPOSTJSONHelper alloc] init];
-    [poster postJSON:[response toDictionary]];
+    //HttpPOSTJSONHelper *poster = [[HttpPOSTJSONHelper alloc] init];
+    HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] init];
+    [httpHelper postSurvey:^(NSMutableArray* results){} :[response toDictionary]];
     
 }
 

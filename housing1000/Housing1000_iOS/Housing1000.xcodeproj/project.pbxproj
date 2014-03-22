@@ -25,6 +25,11 @@
 		3F558BB718D006A5007D531F /* PITViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BB618D006A5007D531F /* PITViewController.m */; };
 		3F558BBA18D00991007D531F /* PITSurvey.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BB918D00991007D531F /* PITSurvey.m */; };
 		3F558BBD18D00F23007D531F /* PITQuestionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BBC18D00F23007D531F /* PITQuestionTableViewCell.m */; };
+		3F558BC018DD26F6007D531F /* HttpConnectionHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BBF18DD26F6007D531F /* HttpConnectionHelper.m */; };
+		3F558BC818DD29C4007D531F /* GetSurveysHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BC718DD29C4007D531F /* GetSurveysHandler.m */; };
+		3F558BCB18DD3922007D531F /* GetSingleSurveyHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BCA18DD3922007D531F /* GetSingleSurveyHandler.m */; };
+		3F558BCE18DE1067007D531F /* PostSurveyHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BCD18DE1067007D531F /* PostSurveyHandler.m */; };
+		3F558BD718DE18AA007D531F /* GetPitHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BD618DE18AA007D531F /* GetPitHandler.m */; };
 		3F5BBA6D184EF87900156CAD /* SurveyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5BBA6C184EF87900156CAD /* SurveyViewController.m */; };
 		3F5BBA7618501AFD00156CAD /* SignatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5BBA7518501AFD00156CAD /* SignatureViewController.m */; };
 		3FD109D918C2E66A005E4743 /* SurveyDataRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD109D818C2E66A005E4743 /* SurveyDataRow.m */; };
@@ -40,7 +45,6 @@
 		3FFE30BF18C2498A004A737D /* ClientQuestions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30BE18C2498A004A737D /* ClientQuestions.m */; };
 		3FFE30C518C25E73004A737D /* SurveyResponseJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30C418C25E73004A737D /* SurveyResponseJSON.m */; };
 		3FFE30CE18C26355004A737D /* SurveySubmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30CD18C26355004A737D /* SurveySubmitter.m */; };
-		3FFE30D718C2A6DB004A737D /* HttpPOSTJSONHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30D618C2A6DB004A737D /* HttpPOSTJSONHelper.m */; };
 		940CA4EE1702894400FA5C87 /* blue_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 940CA4ED1702894400FA5C87 /* blue_button.png */; };
 		940CA4F01702895000FA5C87 /* orange_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 940CA4EF1702895000FA5C87 /* orange_button.png */; };
 		948CBC3516FC8BA000DD4E2B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 948CBC3416FC8BA000DD4E2B /* UIKit.framework */; };
@@ -91,6 +95,17 @@
 		3F558BB918D00991007D531F /* PITSurvey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PITSurvey.m; sourceTree = "<group>"; };
 		3F558BBB18D00F23007D531F /* PITQuestionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PITQuestionTableViewCell.h; sourceTree = "<group>"; };
 		3F558BBC18D00F23007D531F /* PITQuestionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PITQuestionTableViewCell.m; sourceTree = "<group>"; };
+		3F558BBE18DD26F6007D531F /* HttpConnectionHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpConnectionHelper.h; sourceTree = "<group>"; };
+		3F558BBF18DD26F6007D531F /* HttpConnectionHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpConnectionHelper.m; sourceTree = "<group>"; };
+		3F558BC418DD28E6007D531F /* HttpHandlerProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HttpHandlerProtocol.h; sourceTree = "<group>"; };
+		3F558BC618DD29C4007D531F /* GetSurveysHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetSurveysHandler.h; sourceTree = "<group>"; };
+		3F558BC718DD29C4007D531F /* GetSurveysHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetSurveysHandler.m; sourceTree = "<group>"; };
+		3F558BC918DD3922007D531F /* GetSingleSurveyHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetSingleSurveyHandler.h; sourceTree = "<group>"; };
+		3F558BCA18DD3922007D531F /* GetSingleSurveyHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetSingleSurveyHandler.m; sourceTree = "<group>"; };
+		3F558BCC18DE1067007D531F /* PostSurveyHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostSurveyHandler.h; sourceTree = "<group>"; };
+		3F558BCD18DE1067007D531F /* PostSurveyHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostSurveyHandler.m; sourceTree = "<group>"; };
+		3F558BD518DE18AA007D531F /* GetPitHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetPitHandler.h; sourceTree = "<group>"; };
+		3F558BD618DE18AA007D531F /* GetPitHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetPitHandler.m; sourceTree = "<group>"; };
 		3F5BBA6B184EF87900156CAD /* SurveyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyViewController.h; sourceTree = "<group>"; };
 		3F5BBA6C184EF87900156CAD /* SurveyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyViewController.m; sourceTree = "<group>"; };
 		3F5BBA7418501AFD00156CAD /* SignatureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignatureViewController.h; sourceTree = "<group>"; };
@@ -121,8 +136,6 @@
 		3FFE30C418C25E73004A737D /* SurveyResponseJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyResponseJSON.m; sourceTree = "<group>"; };
 		3FFE30CC18C26355004A737D /* SurveySubmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveySubmitter.h; sourceTree = "<group>"; };
 		3FFE30CD18C26355004A737D /* SurveySubmitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveySubmitter.m; sourceTree = "<group>"; };
-		3FFE30D518C2A6DB004A737D /* HttpPOSTJSONHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpPOSTJSONHelper.h; sourceTree = "<group>"; };
-		3FFE30D618C2A6DB004A737D /* HttpPOSTJSONHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpPOSTJSONHelper.m; sourceTree = "<group>"; };
 		4488740D6DDB403186C171EA /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		940CA4ED1702894400FA5C87 /* blue_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_button.png; sourceTree = "<group>"; };
 		940CA4EF1702895000FA5C87 /* orange_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = orange_button.png; sourceTree = "<group>"; };
@@ -167,6 +180,24 @@
 			children = (
 			);
 			name = iPad;
+			sourceTree = "<group>";
+		};
+		3F558BC518DD2924007D531F /* HTTP */ = {
+			isa = PBXGroup;
+			children = (
+				3F558BC418DD28E6007D531F /* HttpHandlerProtocol.h */,
+				3F558BBE18DD26F6007D531F /* HttpConnectionHelper.h */,
+				3F558BBF18DD26F6007D531F /* HttpConnectionHelper.m */,
+				3F558BC618DD29C4007D531F /* GetSurveysHandler.h */,
+				3F558BC718DD29C4007D531F /* GetSurveysHandler.m */,
+				3F558BC918DD3922007D531F /* GetSingleSurveyHandler.h */,
+				3F558BCA18DD3922007D531F /* GetSingleSurveyHandler.m */,
+				3F558BCC18DE1067007D531F /* PostSurveyHandler.h */,
+				3F558BCD18DE1067007D531F /* PostSurveyHandler.m */,
+				3F558BD518DE18AA007D531F /* GetPitHandler.h */,
+				3F558BD618DE18AA007D531F /* GetPitHandler.m */,
+			);
+			name = HTTP;
 			sourceTree = "<group>";
 		};
 		3FFE30B718C235D1004A737D /* UI */ = {
@@ -233,12 +264,11 @@
 		3FFE30B918C243DF004A737D /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				3F558BC518DD2924007D531F /* HTTP */,
 				3FFE30C318C25E73004A737D /* SurveyResponseJSON.h */,
 				3FFE30C418C25E73004A737D /* SurveyResponseJSON.m */,
 				3FFE30CC18C26355004A737D /* SurveySubmitter.h */,
 				3FFE30CD18C26355004A737D /* SurveySubmitter.m */,
-				3FFE30D518C2A6DB004A737D /* HttpPOSTJSONHelper.h */,
-				3FFE30D618C2A6DB004A737D /* HttpPOSTJSONHelper.m */,
 				3FD109E318C95E27005E4743 /* AlertViewDisplayer.h */,
 				3FD109E418C95E27005E4743 /* AlertViewDisplayer.m */,
 			);
@@ -436,8 +466,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FFE30B318A487B5004A737D /* ClientSurveyViewController.m in Sources */,
+				3F558BC818DD29C4007D531F /* GetSurveysHandler.m in Sources */,
+				3F558BC018DD26F6007D531F /* HttpConnectionHelper.m in Sources */,
 				3F558BB718D006A5007D531F /* PITViewController.m in Sources */,
 				3FFE30C518C25E73004A737D /* SurveyResponseJSON.m in Sources */,
+				3F558BD718DE18AA007D531F /* GetPitHandler.m in Sources */,
 				3FFE30B618B091B8004A737D /* SurveyQuestionTableViewCell.m in Sources */,
 				3FD109DC18C2F2D8005E4743 /* SurveyDataRowContainer.m in Sources */,
 				3FD109D918C2E66A005E4743 /* SurveyDataRow.m in Sources */,
@@ -449,7 +482,9 @@
 				3FFE30B018A487A5004A737D /* Question.m in Sources */,
 				3FFE30AE18A487A5004A737D /* Survey.m in Sources */,
 				272AA49918C6EBE80068E023 /* DisclaimerViewController.m in Sources */,
+				3F558BCE18DE1067007D531F /* PostSurveyHandler.m in Sources */,
 				3FFE30BC18C244F3004A737D /* SurveyQuestions.m in Sources */,
+				3F558BCB18DD3922007D531F /* GetSingleSurveyHandler.m in Sources */,
 				3FFE30BF18C2498A004A737D /* ClientQuestions.m in Sources */,
 				948CBC4116FC8BA000DD4E2B /* main.m in Sources */,
 				3F558BAB18CBA1F5007D531F /* SurveyPageViewController.m in Sources */,
@@ -460,7 +495,6 @@
 				3F5BBA7618501AFD00156CAD /* SignatureViewController.m in Sources */,
 				3FFE30CE18C26355004A737D /* SurveySubmitter.m in Sources */,
 				272AA48818B5C6B30068E023 /* TestEncryptionViewController.m in Sources */,
-				3FFE30D718C2A6DB004A737D /* HttpPOSTJSONHelper.m in Sources */,
 				3F558BA818CACB8A007D531F /* ScrollablePageViewController.m in Sources */,
 				272AA48518B5C6950068E023 /* SurveyMenuViewController.m in Sources */,
 				3FFE309B188E08DC004A737D /* PhotoViewController.m in Sources */,

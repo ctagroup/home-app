@@ -2,7 +2,7 @@
 //  PITSurvey.m
 //  Housing1000
 //
-//  Created by student on 3/11/14.
+//  Created by David Horton on 3/11/14.
 //  Copyright (c) 2014 Group 3. All rights reserved.
 //
 
@@ -11,15 +11,15 @@
 
 @implementation PITSurvey
 
-int surveyId;
-int surveyBy = 1;
-NSMutableArray* surveyQuestions;
+static int surveyId;
+static int surveyBy = 1;
+static NSMutableArray* surveyQuestions;
 
--(NSMutableArray*)getPITQuestions {
++(NSMutableArray*)getPITQuestions {
     return surveyQuestions;
 }
 
--(void)setPITQuestions:(NSMutableArray*)questions {
++(void)setPITQuestions:(NSMutableArray*)questions {
     
     //Sort the array before storing it
     NSArray *sortedArray = [questions sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
@@ -31,19 +31,19 @@ NSMutableArray* surveyQuestions;
     surveyQuestions = [NSMutableArray arrayWithArray:sortedArray];
 }
 
--(int)getSurveyId {
++(int)getSurveyId {
     return surveyId;
 }
 
--(void)setSurveyId:(int)tempSurveyId {
++(void)setSurveyId:(int)tempSurveyId {
     surveyId = tempSurveyId;
 }
 
--(int)getSurveyBy {
++(int)getSurveyBy {
     return surveyBy;
 }
 
--(void)setSurveyBy:(int)tempSurveyBy {
++(void)setSurveyBy:(int)tempSurveyBy {
     surveyBy = tempSurveyBy;
 }
 
