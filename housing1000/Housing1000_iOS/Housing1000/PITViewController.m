@@ -89,7 +89,7 @@
     
     if([CellIdentifier isEqualToString:@"SinglelineTextBoxForEachOption"])
         return 80;
-    else if([CellIdentifier isEqualToString:@"SingleSelectRadio"])
+    else if([CellIdentifier isEqualToString:@"SingleSelect"])
         return 225;
     else
         return 150;
@@ -98,35 +98,6 @@
 
 //Private Util functions
 //==============================================
-
--(Question*)createSurveyObject:(NSDictionary*)currentQuestionInJSON :(BOOL)isClientQuestion {
-    Question *question = [[Question alloc] init];
-    question.jsonId = [NSNumber numberWithInteger:[[currentQuestionInJSON objectForKey:@"$id"] integerValue]];
-    question.questionId = [NSNumber numberWithInteger:[[currentQuestionInJSON objectForKey:@"QuestionId"] integerValue]];
-    question.questionText = (NSString*)[currentQuestionInJSON objectForKey:@"text"];
-    question.questionType = (NSString*)[currentQuestionInJSON objectForKey:@"QuestionType"];
-    [question setOptionsArray:(NSString*)[currentQuestionInJSON objectForKey:@"Options"]]; //This one is set in a special way because it converts the String to an array
-    question.orderId = [NSNumber numberWithInteger:[[currentQuestionInJSON objectForKey:@"OrderId"] integerValue]];
-    question.parentQuestionId = [NSNumber numberWithInteger:[[currentQuestionInJSON objectForKey:@"ParentQuestionId"] integerValue]];
-    question.parentRequiredAnswer = (NSString*)[currentQuestionInJSON objectForKey:@"ParentRequiredAnswer"];
-    
-    return question;
-}
-
--(Question*)creatSurveyObjectFromOptions:(NSString*)questionText :(Question*)parentQuestion {
-    Question *question = [[Question alloc] init];
-    question.jsonId = parentQuestion.jsonId;
-    question.questionId = parentQuestion.questionId;
-    question.questionText = questionText;
-    question.questionType = parentQuestion.questionType;
-    //[question setOptionsArray:(NSString*)[currentQuestionInJSON objectForKey:@"Options"]]; //This one is set in a special way because it converts the String to an array
-    question.options = parentQuestion.options;
-    question.orderId = parentQuestion.orderId;
-    question.parentQuestionId = parentQuestion.parentQuestionId;
-    question.parentRequiredAnswer = parentQuestion.parentRequiredAnswer;
-    
-    return question;
-}
 
 //For creating a sort of data model for the rows in the table
 -(void)populateDataRows {
