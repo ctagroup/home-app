@@ -49,12 +49,20 @@ public abstract class Question {
     @SerializedName("ParentRequiredAnswer")
     private String parentRequiredAnswer;
 
+    @Expose
+    @SerializedName("TextBoxDataType")
+    private String textBoxDataType;
+
     private String group = "";
     private ArrayList<Question> dependents;
 
     protected View myView;
 
     // Getters and Setters
+    public String getTextBoxDataType() { return textBoxDataType; }
+
+    public void setTextBoxDataType(String dataType) { this.textBoxDataType = dataType; }
+
     public int getQuestionId() {
         return questionId;
     }

@@ -26,9 +26,26 @@ public class SinglelineTextBox extends Question {
         LinearLayout.LayoutParams editTextParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         editText.setLayoutParams(editTextParams);
 
+        //Add question input validation
+        switch (getTextBoxDataType()) {
+            case "DateTime":
+                editText.setInputType(InputType.TYPE_CLASS_DATETIME);
+                break;
+            case "int":
+                editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                break;
+            case "string":
+                editText.setInputType(InputType.TYPE_CLASS_TEXT);
+                break;
+            default:
+                editText.setInputType(InputType.TYPE_NULL);
+                break;
+        }
+
         // Set up the text type, for validation reasons
         // For now, the ParentRequiredAnswer is used because the API doesn't provide any info for
         // validation.  Hopefully they will add a property
+        /*
         switch (getParentRequiredAnswer())
         {
             case "ServicePointId":
@@ -41,6 +58,7 @@ public class SinglelineTextBox extends Question {
             default:
                 break;
         }
+        */
 
         qLayout.addView(editText);
 
