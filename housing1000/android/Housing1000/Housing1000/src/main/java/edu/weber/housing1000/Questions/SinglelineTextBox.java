@@ -1,16 +1,44 @@
 package edu.weber.housing1000.Questions;
 
 import android.content.Context;
+import android.graphics.Rect;
+import android.support.v4.app.DialogFragment;
+import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spanned;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import edu.weber.housing1000.Fragments.DatePickerFragment;
+import edu.weber.housing1000.SurveyFlowActivity;
+
 /**
  * Created by Blake on 1/21/14.
  */
 public class SinglelineTextBox extends Question {
+    InputFilter[] enableInput = new InputFilter[]
+            {
+                    new InputFilter() {
+                        public CharSequence filter(CharSequence src, int start,
+                                                   int end, Spanned dst, int dstart, int dend) {
+                            return src;
+                        }
+                    }
+            };
+
+    InputFilter[] disableInput = new InputFilter[]
+            {
+                    new InputFilter() {
+                        public CharSequence filter(CharSequence src, int start,
+                                                   int end, Spanned dst, int dstart, int dend) {
+                            return src.length() < 1 ? dst.subSequence(dstart, dend) : "";
+                        }
+                    }
+            };
+
     @Override
     public View createView(Context context) {
         LinearLayout qLayout = new LinearLayout(context);
@@ -22,14 +50,47 @@ public class SinglelineTextBox extends Question {
         if (textView.getText().length() >= 16)
             qLayout.setOrientation(LinearLayout.VERTICAL);
 
-        EditText editText = new EditText(context);
+        final EditText editText = new EditText(context);
         LinearLayout.LayoutParams editTextParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         editText.setLayoutParams(editTextParams);
 
         //Add question input validation
         switch (getTextBoxDataType()) {
             case "DateTime":
-                editText.setInputType(InputType.TYPE_CLASS_DATETIME);
+                editText.setInputType(InputType.TYPE_NULL);
+                // Disable any text input from the keyboard by setting a filter
+                editText.setFilters(new InputFilter[]
+                        {
+                                new InputFilter() {
+                                    public CharSequence filter(CharSequence src, int start,
+                                                               int end, Spanned dst, int dstart, int dend) {
+                                        return src.length() < 1 ? dst.subSequence(dstart, dend) : "";
+                                    }
+                                }
+                        });
+
+                // Set up the click listener
+                editText.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            EditText et = (EditText) v;
+                            // Get the screen coordinates of the EditText
+                            final int screenCords[] = new int[2];
+                            et.getLocationOnScreen(screenCords);
+                            // Set up a rectangle based on the EditText
+                            Rect rect = new Rect(screenCords[0], screenCords[1], screenCords[0] + et.getWidth(), screenCords[1] + et.getHeight());
+
+                            // If the click position is within the EditText rectangle, show a date picker
+                            if (rect.contains((int) event.getRawX(), (int) event.getRawY())) {
+                                createDatePicker(v);
+                                return true;
+                            }
+                        }
+                        event.setAction(MotionEvent.ACTION_CANCEL); //prevent the keyboard from coming up
+                        return false;
+                    }
+                });
                 break;
             case "int":
                 editText.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -42,24 +103,6 @@ public class SinglelineTextBox extends Question {
                 break;
         }
 
-        // Set up the text type, for validation reasons
-        // For now, the ParentRequiredAnswer is used because the API doesn't provide any info for
-        // validation.  Hopefully they will add a property
-        /*
-        switch (getParentRequiredAnswer())
-        {
-            case "ServicePointId":
-            case "Last4SSN":
-                editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                break;
-            case "Birthday":
-                editText.setInputType(InputType.TYPE_CLASS_DATETIME);
-                break;
-            default:
-                break;
-        }
-        */
-
         qLayout.addView(editText);
 
         setView(qLayout);
@@ -69,13 +112,11 @@ public class SinglelineTextBox extends Question {
     @Override
     public String getAnswer() {
         String answer = "";
-        LinearLayout layout = (LinearLayout)myView;
+        LinearLayout layout = (LinearLayout) myView;
 
-        for (int i = 0; i < layout.getChildCount(); i++)
-        {
+        for (int i = 0; i < layout.getChildCount(); i++) {
             View childView = layout.getChildAt(i);
-            if (childView instanceof EditText)
-            {
+            if (childView instanceof EditText) {
                 EditText editText = (EditText) childView;
 
                 answer = editText.getText().toString();
@@ -89,17 +130,22 @@ public class SinglelineTextBox extends Question {
     public void setAnswer(String answer) {
         clearAnswer();
 
-        if (answer != null)
-        {
-            LinearLayout layout = (LinearLayout)myView;
+        if (answer != null) {
+            LinearLayout layout = (LinearLayout) myView;
 
-            for (int i = 0; i < layout.getChildCount(); i++)
-            {
+            for (int i = 0; i < layout.getChildCount(); i++) {
                 View childView = layout.getChildAt(i);
-                if (childView instanceof EditText)
-                {
+                if (childView instanceof EditText) {
                     EditText editText = (EditText) childView;
-                    editText.setText(answer);
+                    if (getTextBoxDataType().equals("DateTime")) {
+                        // This is needed because text input was disabled for the date EditTexts
+                        editText.setFilters(enableInput);
+                        editText.setText(answer);
+                        editText.setFilters(disableInput);
+                    } else {
+                        editText.setText(answer);
+                    }
+
                 }
             }
         }
@@ -107,17 +153,21 @@ public class SinglelineTextBox extends Question {
 
     @Override
     public void clearAnswer() {
-        LinearLayout layout = (LinearLayout)myView;
+        LinearLayout layout = (LinearLayout) myView;
 
-        for (int i = 0; i < layout.getChildCount(); i++)
-        {
+        for (int i = 0; i < layout.getChildCount(); i++) {
             View childView = layout.getChildAt(i);
-            if (childView instanceof EditText)
-            {
+            if (childView instanceof EditText) {
                 EditText editText = (EditText) childView;
                 editText.setText(null);
             }
         }
+    }
+
+    public void createDatePicker(View v) {
+        SurveyFlowActivity mActivity = (SurveyFlowActivity) v.getContext();
+        DialogFragment newFragment = new DatePickerFragment(v);
+        newFragment.show(mActivity.getSupportFragmentManager(), "datePicker");
     }
 
 }

@@ -2,7 +2,6 @@ package edu.weber.housing1000.Fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,8 +61,7 @@ public class SurveyFragment extends BaseSurveyFragment {
 
         ScrollView questionUI = generateQuestionUi(surveyListing);
 
-        if (questionUI != null)
-        {
+        if (questionUI != null) {
             rootLayout.addView(questionUI);
 
             populateAnswers();
@@ -129,9 +127,7 @@ public class SurveyFragment extends BaseSurveyFragment {
                 }
 
             });
-        }
-        else
-        {
+        } else {
             myActivity.onPostSurveyResponsesTaskCompleted(null);
         }
     }

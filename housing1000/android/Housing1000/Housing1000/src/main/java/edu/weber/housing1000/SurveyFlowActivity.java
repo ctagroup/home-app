@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,7 +14,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -69,23 +67,17 @@ public class SurveyFlowActivity extends ActionBarActivity {
 
     public void setSubmittingResponse(boolean value) {
         submittingResponse = value;
-        if (submittingResponse)
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-        }
-        else
-        {
+        if (submittingResponse) {
+            Utils.lockScreenOrientation(this);
+        } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         }
     }
 
     public boolean getIsSignatureCaptured() {
-        if (isSignatureCaptured && mTabs.getVisibility() != View.VISIBLE)
-        {
+        if (isSignatureCaptured && mTabs.getVisibility() != View.VISIBLE) {
             mTabs.setVisibility(View.VISIBLE);
-        }
-        else if (!isSignatureCaptured)
-        {
+        } else if (!isSignatureCaptured) {
             mTabs.setVisibility(View.GONE);
             mViewPager.setCurrentItem(0);
         }
@@ -122,7 +114,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
             surveyListing = (SurveyListing) getIntent().getSerializableExtra(EXTRA_SURVEY);
             generateFolderHash();
 
-            progressDialogFragment = (ProgressDialogFragment)getSupportFragmentManager().findFragmentByTag("Dialog");
+            progressDialogFragment = (ProgressDialogFragment) getSupportFragmentManager().findFragmentByTag("Dialog");
         }
 
         // Create the adapter that will return a fragment for each of the three
@@ -148,8 +140,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
 
                 actionBar.setTitle(actionBarTitle != null ? actionBarTitle : getResources().getString(R.string.app_name));
 
-                if (i == 0)
-                {
+                if (i == 0) {
                     getLocation();
 
                     String message = "Location Details" +
@@ -233,17 +224,14 @@ public class SurveyFlowActivity extends ActionBarActivity {
             mViewPager.setCurrentItem(1, true);
 
             ((PhotosFragment) f).submitPhotos();
-        }
-        else if (response != null)
-        {
+        } else if (response != null) {
             setSubmittingResponse(false);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Uh Oh!");
             builder.setMessage("There was a problem submitting the survey response.\nPlease try again.");
             builder.show();
-        }
-        else // survey response has already been submitted, move on to photos
+        } else // survey response has already been submitted, move on to photos
         {
             // Submit the photos
             Fragment f = this.getSupportFragmentManager().findFragmentByTag(getFragmentTag(1));
@@ -257,8 +245,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
     public void onPostPhotoTaskCompleted(Response response) {
         dismissDialog();
 
-        if (response != null && response.getStatus() == 200)
-        {
+        if (response != null && response.getStatus() == 200) {
             try {
                 if (response.getBody() != null)
                     Log.d("PHOTOS RESPONSE", RESTHelper.convertStreamToString(response.getBody().in()));
@@ -271,9 +258,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
             mViewPager.setCurrentItem(0, true);
 
             ((SignatureFragment) f).submitSignature();
-        }
-        else
-        {
+        } else {
             setSubmittingResponse(false);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -286,8 +271,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
     public void onPostSignatureTaskCompleted(Response response) {
         dismissDialog();
 
-        if (response != null && response.getStatus() == 200)
-        {
+        if (response != null && response.getStatus() == 200) {
             try {
                 if (response.getBody() != null)
                     Log.d("SIGNATURE RESPONSE", RESTHelper.convertStreamToString(response.getBody().in()));
@@ -296,9 +280,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
             }
 
             showSendSuccessMessage();
-        }
-        else
-        {
+        } else {
             setSubmittingResponse(false);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -308,8 +290,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
         }
     }
 
-    private void showSendSuccessMessage()
-    {
+    private void showSendSuccessMessage() {
         setSubmittingResponse(false);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -352,8 +333,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
         }).show();
     }
 
-    private void deleteAllFolderFiles()
-    {
+    private void deleteAllFolderFiles() {
         File surveyDir = new File(FileHelper.getAbsoluteFilePath(getFolderHash(), ""));
         if (surveyDir.exists()) {
             Log.d("DELETING SURVEY DIR", surveyDir.getAbsolutePath());
@@ -371,7 +351,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
     }
 
     public Location getLocation() {
-        if(gps.canGetLocation()) {
+        if (gps.canGetLocation()) {
             currentLocation = gps.getLocation();
 
 
@@ -380,21 +360,20 @@ public class SurveyFlowActivity extends ActionBarActivity {
         return currentLocation;
     }
 
-    public void showProgressDialog(String title, String message, String tag)
-    {
+    public void showProgressDialog(String title, String message, String tag) {
         progressDialogFragment = ProgressDialogFragment.newInstance(title, message);
         progressDialogFragment.show(getSupportFragmentManager(), tag);
     }
 
-    public void dismissDialog(){
+    public void dismissDialog() {
         if (progressDialogFragment != null && progressDialogFragment.isAdded()) {
             progressDialogFragment.dismiss();
             progressDialogFragment = null;
         }
     }
 
-    private String getFragmentTag(int pos){
-        return "android:switcher:"+R.id.pager+":"+pos;
+    private String getFragmentTag(int pos) {
+        return "android:switcher:" + R.id.pager + ":" + pos;
     }
 
     /**
