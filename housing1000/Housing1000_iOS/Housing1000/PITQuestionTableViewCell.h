@@ -15,8 +15,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *number;
 @property (strong, nonatomic) IBOutlet UITextField *questionTextAnswer;
 @property (strong, nonatomic) IBOutlet UIPickerView *questionSingleAnswer;
-@property (strong, nonatomic) IBOutlet UIStepper *questionPickerAnswer;
+@property (strong, nonatomic) IBOutlet UIStepper *questionStepperAnswer;
 @property (strong, nonatomic) Question *questionData;
-//@property (strong, nonatomic) SubQuestion *subQuestionData;
 
 @end

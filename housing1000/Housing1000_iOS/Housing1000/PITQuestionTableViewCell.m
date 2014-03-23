@@ -10,8 +10,7 @@
 
 @implementation PITQuestionTableViewCell
 
-@synthesize questionText, questionTextAnswer, questionSingleAnswer, questionPickerAnswer, questionData, number;
-
+@synthesize questionText, questionTextAnswer, questionSingleAnswer, questionStepperAnswer, questionData, number;
 
 //This is similar to viewDidLoad, but for TableViewCells
 - (void)layoutSubviews
@@ -24,36 +23,34 @@
     [questionSingleAnswer setDelegate:self];
     [questionSingleAnswer setDataSource:self];
     
+    questionStepperAnswer.maximumValue = 9999;
+    questionStepperAnswer.minimumValue = 0;
+    
     //To make the label wrap text
     questionText.lineBreakMode = NSLineBreakByWordWrapping;
     questionText.numberOfLines = 0;
     //[questionText sizeToFit];
-    
+
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideTextFields)];
+    [self.superview.superview addGestureRecognizer:gestureRecognizer];
 }
 
-//To dismiss number pad
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+-(void)hideTextFields {
+    //This is called using the UITapGestureRecognizer registered up above and anytime the screen is tapped.
+    //I had to do it this way because number pads are dealt with differently in iOS
+    [self.superview.superview endEditing:YES];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    self.number.text = self.questionTextAnswer.text;
-    [self.questionTextAnswer resignFirstResponder];
+    if(![self.questionTextAnswer.text isEqualToString:@""]) { //Only store the textfield value if it isn't empty
+        self.number.text = self.questionTextAnswer.text;
+        self.questionStepperAnswer.value = self.questionTextAnswer.text.intValue;
+    }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
-    
-    /*
-     //Get the index of the cell that the current text field is in. Could be useful
-     CGPoint center= textField.center;
-     CGPoint rootViewPoint = [textField.superview convertPoint:center toView:self.superview.superview];
-     NSIndexPath *indexPath = [(UITableView*)self.superview.superview indexPathForRowAtPoint:rootViewPoint];
-     NSLog(@"%d",indexPath.row);
-     */
-    
-    //Immediately store what they enter
-    //questionData.answer = textField.text;
-    
-    //[self changeChildQuestions:self.questionData.answer];
-    
     return YES;
 }
 
@@ -73,15 +70,6 @@
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
     return [self.questionData.options count] + 1;
 }
-
-//3-11-14 David H. --- Commenting out to switch to viewForRow instead of titleForRow so we can configure font size
-/*-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
- if(row == 0) {
- return @"Select one";
- } else {
- return [self.questionData.options objectAtIndex:row - 1];
- }
- }*/
 
 - (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view{
     UILabel* tView = (UILabel*)view;
@@ -117,47 +105,16 @@
 //Private util functions
 //===================================================
 -(void)changeChildQuestions:(NSString*)answer {
-    /*
-    NSMutableArray *childQuestionIds = [[NSMutableArray alloc] init];
-    NSMutableArray *satisifiedChildQuestion = [[NSMutableArray alloc] init];
-    NSMutableArray *surveyDataRowIds = [[NSMutableArray alloc] init];
-    
-    //Loop through all the survey questions to find the children...
-    for(int i = 0; i < [[[Survey getSurveyQuestions] getSurveyQuestions] count]; i++) {
-        Question *currentQuestion = [[[Survey getSurveyQuestions] getSurveyQuestions] objectAtIndex:i];
-        if(currentQuestion.parentQuestionId == questionData.questionId) {
-            [childQuestionIds addObject:currentQuestion.questionId];
-            [surveyDataRowIds addObject:currentQuestion.surveyDataRowIndex];
-            //NSLog(@"Found child, row is %@", currentQuestion.surveyDataRowIndex);
-            //NSLog(@"Required Answer: %@ and answer is: %@", currentQuestion.parentRequiredAnswer, answer);
-            
-            if([currentQuestion.parentRequiredAnswer isEqualToString:answer]) {
-                [satisifiedChildQuestion addObject:[NSNumber numberWithInt:1]];
-            } else {
-                [satisifiedChildQuestion addObject:[NSNumber numberWithInt:0]];
-            }
-        }
-    }
-    
-    for(int i = 0; i < [childQuestionIds count]; i++) {
-        int surveyDataRowIndex = [[surveyDataRowIds objectAtIndex:i] integerValue];
-        UITableView *tableView = (UITableView*)self.superview.superview;
-        UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:surveyDataRowIndex inSection:0]];
-        
-        if([satisifiedChildQuestion objectAtIndex:i] == [NSNumber numberWithInt:1]) {
-            [[[SurveyDataRowContainer getSurveyRows] objectAtIndex:surveyDataRowIndex] setEnabled:YES];
-            cell.userInteractionEnabled = cell.textLabel.enabled = cell.detailTextLabel.enabled = YES;
-            cell.backgroundColor = [UIColor whiteColor];
-        } else {
-            [[[SurveyDataRowContainer getSurveyRows] objectAtIndex:surveyDataRowIndex] setEnabled:NO];
-            cell.userInteractionEnabled = cell.textLabel.enabled = cell.detailTextLabel.enabled = NO;
-            cell.backgroundColor = [UIColor grayColor];
-        }
-    }*/
+
 }
 
--(void)getSurveyDataRowFromQuestionId:(NSNumber*)questionId {
+//Called when the stepper is clicked
+- (IBAction)valueChanged:(id)sender {
     
+    int value = [(UIStepper*)sender value];
+    
+    [self.questionTextAnswer setText:@""];
+    [self.number setText:[NSString stringWithFormat:@"%d", (int)value]];
 }
 
 -(BOOL)shouldAutorotate

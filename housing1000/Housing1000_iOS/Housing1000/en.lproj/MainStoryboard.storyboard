@@ -155,9 +155,12 @@
                                         <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="iyG-wO-XEz">
                                             <rect key="frame" x="206" y="39" width="94" height="29"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <connections>
+                                                <action selector="valueChanged:" destination="DyQ-Nu-2Ad" eventType="valueChanged" id="RwX-Qg-uls"/>
+                                            </connections>
                                         </stepper>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="twv-RC-LaX">
-                                            <rect key="frame" x="83" y="38" width="72" height="30"/>
+                                            <rect key="frame" x="44" y="38" width="72" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
@@ -171,7 +174,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l9c-vX-aWM">
-                                            <rect key="frame" x="172" y="43" width="26" height="21"/>
+                                            <rect key="frame" x="133" y="43" width="54" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="highlightedColor"/>
@@ -179,12 +182,13 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="questionPickerAnswer" destination="iyG-wO-XEz" id="wkc-ds-bjX"/>
+                                    <outlet property="number" destination="l9c-vX-aWM" id="MHs-4C-u9u"/>
+                                    <outlet property="questionStepperAnswer" destination="iyG-wO-XEz" id="Pli-0V-Lu9"/>
                                     <outlet property="questionText" destination="9sf-q7-gpb" id="BSO-LF-iKL"/>
                                     <outlet property="questionTextAnswer" destination="twv-RC-LaX" id="7qL-Sr-tda"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SingleSelectRadio" rowHeight="181" id="Ps8-5s-5xc" customClass="PITQuestionTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SingleSelect" rowHeight="181" id="Ps8-5s-5xc" customClass="PITQuestionTableViewCell">
                                 <rect key="frame" x="0.0" y="162" width="320" height="181"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ps8-5s-5xc" id="Dgk-Et-0U9">
@@ -434,8 +438,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="canceled:" destination="deI-oK-28B" eventType="touchUpInside" id="I8s-XQ-abN"/>
-                                    <segue destination="LNn-kp-7wM" kind="modal" id="mdH-C4-AiV"/>
+                                    <action selector="cancelPopupMessage:" destination="deI-oK-28B" eventType="touchUpInside" id="yCJ-Vl-OJq"/>
                                 </connections>
                             </button>
                             <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rjz-Eg-woX">
@@ -445,7 +448,7 @@
                                     <navigationItem title="Signature" id="zgF-zH-TpT">
                                         <barButtonItem key="leftBarButtonItem" title="Cancel" id="4nC-fj-p8j">
                                             <connections>
-                                                <segue destination="LNn-kp-7wM" kind="modal" id="itA-Ef-9jR"/>
+                                                <action selector="cancelPopupMessage:" destination="deI-oK-28B" id="Em6-QK-hBl"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -459,6 +462,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="cancel" destination="OV0-bl-g7E" id="cDh-KO-E7L"/>
+                        <segue destination="LNn-kp-7wM" kind="modal" identifier="segue.survey.cancelled" id="24q-cE-jpz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fe7-Mm-hYP" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -843,7 +847,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="yIy-Gf-CgX"/>
         <segue reference="62H-H5-PPI"/>
+        <segue reference="24q-cE-jpz"/>
     </inferredMetricsTieBreakers>
 </document>
