@@ -75,7 +75,7 @@ public class DatePickerFragment extends DialogFragment
     public void onDateSet(DatePicker view, int year, int month, int day) {
         // Enable text changes in the EditText
         editText.setFilters(allowAll);
-
+        month = month + 1;
         editText.setText((month <= 9 ? "0" : "") + String.valueOf(month) + "/" + (day <= 9 ? "0" : "") + String.valueOf(day) + "/" + String.valueOf(year));
 
         // Disable text changes in the EditText
