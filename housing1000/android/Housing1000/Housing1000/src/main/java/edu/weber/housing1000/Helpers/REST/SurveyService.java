@@ -2,6 +2,7 @@ package edu.weber.housing1000.Helpers.REST;
 
 import java.util.ArrayList;
 
+import edu.weber.housing1000.Data.PitResponse;
 import edu.weber.housing1000.Data.Survey;
 import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Data.SurveyResponse;
@@ -30,4 +31,7 @@ public interface SurveyService {
 
     @GET("/pit")
     void getPit(Callback<Survey> cb);
+
+    @POST("/pit")
+    void postPit(@Body PitResponse pitResponse, Callback<String> cb);
 }

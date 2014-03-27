@@ -12,19 +12,22 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 
-import edu.weber.housing1000.Data.Client;
+import edu.weber.housing1000.Data.PitResponse;
 import edu.weber.housing1000.Data.Response;
-import edu.weber.housing1000.Data.SurveyResponse;
 import edu.weber.housing1000.Helpers.REST.RESTHelper;
+import edu.weber.housing1000.Helpers.REST.SurveyService;
 import edu.weber.housing1000.PitActivity;
 import edu.weber.housing1000.R;
+import retrofit.Callback;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
 
 /**
  * Created by Blake on 2/11/14.
  */
 public class PitFragment extends BaseSurveyFragment {
     private PitActivity myActivity;      // Parent activity
+    private PitResponse pitResponse;
 
     public PitFragment() {
         super("PIT", "Point in Time");
@@ -92,31 +95,20 @@ public class PitFragment extends BaseSurveyFragment {
 
             RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoDeserialize(getActivity(), gson);
 
-//            SurveyService service = restAdapter.create(SurveyService.class);
-//
-//            service.postResponse(survey.getId(), surveyResponse, new Callback<String>() {
-//                @Override
-//                public void success(String s, retrofit.client.Response response) {
-//                    if (s != null) {
-//                        Log.d("SUCCESS", s);
-//                        myActivity.onPostSurveyResponsesTaskCompleted(s);
-//                    } else {
-//                        myActivity.onPostSurveyResponsesTaskCompleted("SUCCESS");
-//                    }
-//                }
-//
-//                @Override
-//                public void failure(RetrofitError error) {
-//                    String errorBody = (String) error.getBodyAs(String.class);
-//
-//                    if (errorBody != null) {
-//                        Log.e("FAILURE", errorBody.toString());
-//                        myActivity.onPostSurveyResponsesTaskCompleted(errorBody);
-//                    } else {
-//                        myActivity.onPostSurveyResponsesTaskCompleted("ERROR");
-//                    }
-//                }
-//            });
+            SurveyService service = restAdapter.create(SurveyService.class);
+
+            service.postPit(pitResponse, new Callback<String>() {
+                    @Override
+                    public void success(String s, retrofit.client.Response response) {
+                        myActivity.onPostSurveyResponsesTaskCompleted(response);
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        myActivity.onPostSurveyResponsesTaskCompleted(error.getResponse());
+                    }
+
+                });
         }
     }
 
@@ -127,13 +119,12 @@ public class PitFragment extends BaseSurveyFragment {
      */
     @Override
     public String saveSurveyResponse() {
-        Client client = new Client(null, null);
         ArrayList<Response> responses = generateResponses(survey.getSurveyQuestions());
-        surveyResponse = new SurveyResponse(surveyListing, client, responses);
+        pitResponse = new PitResponse("0, 0", responses);
 
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
-        return gson.toJson(surveyResponse);
+        return gson.toJson(pitResponse);
     }
 
     public void loadUI()

@@ -3,6 +3,7 @@ package edu.weber.housing1000;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -136,12 +137,23 @@ public class PitActivity extends ActionBarActivity {
         }
     }
 
-    public void onPostSurveyResponsesTaskCompleted(String result) {
+    public void onPostSurveyResponsesTaskCompleted(Response response) {
         dismissDialog();
 
+        if (response != null && response.getStatus() == 201) {
+            String result = "";
 
 
+            try {
+                if(response.getBody() != null)
+                    result = RESTHelper.convertStreamToString(response.getBody().in());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
+            Log.d("PIT RESPONSE", result);
+
+        }
     }
 
     public void showProgressDialog(String title, String message, String tag)

@@ -1,6 +1,5 @@
 package edu.weber.housing1000.Questions;
 
-import edu.weber.housing1000.R;
 import android.content.Context;
 import android.text.InputType;
 import android.view.Gravity;
@@ -10,6 +9,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import edu.weber.housing1000.R;
+
 import static android.R.color.darker_gray;
 
 /**
@@ -118,6 +120,7 @@ public class SinglelineTextBoxForEachOption extends Question {
 
         @Override
         public String getAnswer() {
+            String name = "";
             String answer = "";
             LinearLayout layout = (LinearLayout)myView;
 
@@ -130,21 +133,23 @@ public class SinglelineTextBoxForEachOption extends Question {
                     for (int j = 0; j < linearLayout.getChildCount(); j++)
                     {
                         View childView_sub = linearLayout.getChildAt(j);
-                        if (childView_sub instanceof EditText)
-                        {
-                            Integer iNum = 0;
-                            EditText editText = (EditText) childView_sub;
-                            if (!editText.getText().toString().equals(""))
-                            {
-                                iNum = Integer.parseInt(editText.getText().toString());
-                            }
+                        View childName = linearLayout.getChildAt(0);
+                        if(childName instanceof TextView) {
+                            TextView textView = (TextView) childName;
+                            name = textView.getText().toString();
 
-                            if (answer.equals(""))
-                            {
-                                answer = iNum.toString();
-                            } else
-                            {
-                                answer += "|" + iNum.toString();
+                            if (childView_sub instanceof EditText) {
+                                Integer iNum = 0;
+                                EditText editText = (EditText) childView_sub;
+                                if (!editText.getText().toString().equals("")) {
+                                    iNum = Integer.parseInt(editText.getText().toString());
+                                }
+
+                                if (answer.equals("")) {
+                                    answer = name + "=" + iNum.toString();
+                                } else {
+                                    answer += "|" + name + "=" + iNum.toString();
+                                }
                             }
                         }
                     }
