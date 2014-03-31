@@ -45,32 +45,10 @@ public class PitFragment extends BaseSurveyFragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // Restore the state after recreation
-        if (savedInstanceState != null) {
-
-        }
-    }
-
-    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         loadUI();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
     }
 
     @Override
@@ -83,13 +61,6 @@ public class PitFragment extends BaseSurveyFragment {
         surveyListing = myActivity.getSurveyListing();
 
         return mainView;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-
     }
 
     /**

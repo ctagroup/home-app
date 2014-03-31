@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -21,7 +20,6 @@ import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 import edu.weber.housing1000.Helpers.EncryptionHelper;
 import edu.weber.housing1000.Helpers.FileHelper;
@@ -74,12 +72,6 @@ public class PhotosFragment extends SurveyAppFragment {
 
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
     }
 
     @Override
@@ -173,7 +165,6 @@ public class PhotosFragment extends SurveyAppFragment {
                 Bitmap sPhoto = ImageHelper.ScaleImage(photo);
 
                 // Set up the file names
-                String imageName = "photo_" + String.valueOf(imageAdapter.getCount()) + ".png";
                 String encryptedName = "photo_" + String.valueOf(imageAdapter.getCount()) + ".secure";
 
                 ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
@@ -185,10 +176,6 @@ public class PhotosFragment extends SurveyAppFragment {
                 FileHelper.writeFileToExternalStorage(encryptedImage, myActivity.getFolderHash(), encryptedName);
 
                 byte[] encryptedFileBytes = FileHelper.readFileFromExternalStorage(myActivity.getFolderHash(), encryptedName);
-
-                // Decrypt the photo - for testing
-                //byte[] decryptedImageBytes = EncryptionHelper.decrypt(encryptedFileBytes);
-                //FileHelper.writeFileToExternalStorage(decryptedImageBytes, myActivity.getFolderHash(), imageName);
 
                 // Add the file path to the imageAdapter
                 imageAdapter.addImagePath(FileHelper.getAbsoluteFilePath(myActivity.getFolderHash(), encryptedName));
@@ -282,10 +269,12 @@ public class PhotosFragment extends SurveyAppFragment {
                 case R.id.action_delete_photo:
                     SparseBooleanArray selected = photosGridView.getCheckedItemPositions();
                     Log.d("SELECTED IMAGE COUNT", String.valueOf(photosGridView.getCheckedItemCount()));
-                    for (int i = 0; i < selected.size(); i++) {
-                        if (selected.get(selected.keyAt(i))) {
-                            Log.d("REMOVING IMAGE", String.valueOf(selected.keyAt(i)));
-                            imageAdapter.removeImage(selected.keyAt(i));
+                    if (selected != null) {
+                        for (int i = 0; i < selected.size(); i++) {
+                            if (selected.get(selected.keyAt(i))) {
+                                Log.d("REMOVING IMAGE", String.valueOf(selected.keyAt(i)));
+                                imageAdapter.removeImage(selected.keyAt(i));
+                            }
                         }
                     }
                     mode.finish();

@@ -88,17 +88,11 @@ public class SignatureFragment extends SurveyAppFragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_signature, container, false);
 
-        signatureImageView = (ImageView) rootView.findViewById(R.id.signatureImageView);
         RelativeLayout signatureLayout = (RelativeLayout) rootView.findViewById(R.id.signatureLayout);
+        signatureImageView = (ImageView) rootView.findViewById(R.id.signatureImageView);
         tapHereToSignTextView = (TextView) rootView.findViewById(R.id.tapHereToSignTextView);
 
         signatureLayout.setOnClickListener(new View.OnClickListener() {
@@ -142,7 +136,7 @@ public class SignatureFragment extends SurveyAppFragment {
     /**
      * Loads the signature image from the byte array that is in memory
      */
-    public void loadImage() {
+    private void loadImage() {
         Bitmap signature = BitmapFactory.decodeByteArray(signatureImageBytes, 0, signatureImageBytes.length);
 
         signatureImageView.setImageBitmap(signature);

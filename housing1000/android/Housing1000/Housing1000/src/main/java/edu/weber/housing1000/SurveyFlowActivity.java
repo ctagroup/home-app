@@ -40,14 +40,10 @@ public class SurveyFlowActivity extends ActionBarActivity {
 
     private GPSTracker gps;
 
-    //These are used to keep track of the submission state
-    private boolean submittingResponse;
-
     private boolean isSignatureCaptured;
 
     private PagerSlidingTabStrip mTabs;                         //Tabs of the view
     private SectionsPagerAdapter mSectionsPagerAdapter;         //Keeps track of the fragments
-    private ViewPager.OnPageChangeListener mPageChangeListener; //Listens for page changes
     private CustomViewPager mViewPager;                         //View object that holds the fragments
 
     private SurveyListing surveyListing;
@@ -66,8 +62,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
     }
 
     public void setSubmittingResponse(boolean value) {
-        submittingResponse = value;
-        if (submittingResponse) {
+        if (value) {
             Utils.lockScreenOrientation(this);
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
@@ -126,7 +121,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setOffscreenPageLimit(3);
 
-        mPageChangeListener = new ViewPager.OnPageChangeListener() {
+        ViewPager.OnPageChangeListener mPageChangeListener = new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i2) {
 
@@ -341,7 +336,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
         }
     }
 
-    public void generateFolderHash() {
+    private void generateFolderHash() {
         HashFunction hf = Hashing.md5();
         HashCode hc = hf.newHasher().putLong(System.currentTimeMillis()).hash();
 
@@ -365,7 +360,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
         progressDialogFragment.show(getSupportFragmentManager(), tag);
     }
 
-    public void dismissDialog() {
+    private void dismissDialog() {
         if (progressDialogFragment != null && progressDialogFragment.isAdded()) {
             progressDialogFragment.dismiss();
             progressDialogFragment = null;
