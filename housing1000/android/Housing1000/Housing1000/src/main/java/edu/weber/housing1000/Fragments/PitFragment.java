@@ -1,5 +1,6 @@
 package edu.weber.housing1000.Fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,8 +30,18 @@ public class PitFragment extends BaseSurveyFragment {
     private PitActivity myActivity;      // Parent activity
     private PitResponse pitResponse;
 
-    public PitFragment() {
-        super("PIT", "Point in Time");
+    public static PitFragment newInstance(Context context)
+    {
+        PitFragment fragment = new PitFragment();
+
+        Bundle args = new Bundle();
+        args.putString("name", context.getString(R.string.fragment_pit_name));
+        args.putString("title", context.getString(R.string.fragment_pit_title));
+        fragment.setArguments(args);
+
+        fragment.updateName();
+
+        return fragment;
     }
 
     @Override

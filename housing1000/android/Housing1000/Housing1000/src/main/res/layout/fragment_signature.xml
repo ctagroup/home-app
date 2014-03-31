@@ -8,7 +8,7 @@
 
     <RelativeLayout
         android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="@dimen/margin_medium">
 
         <TextView
@@ -41,7 +41,7 @@
                 android:scaleType="fitCenter"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
-                android:contentDescription="Signature Image"
+                android:contentDescription="@string/signature_image"
                 android:minHeight="60dp"
                 android:layout_centerHorizontal="true" />
 
@@ -58,10 +58,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="X"
+                android:text="@string/signature_x"
                 android:id="@+id/signatureXTextView"
                 android:layout_alignParentLeft="true"
-                android:textSize="30dp"
+                android:textSize="30sp"
                 android:textStyle="bold"
                 android:layout_alignBottom="@+id/signatureImageView"
                 android:paddingBottom="5dp" />
@@ -69,9 +69,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tap Here to Sign"
+                android:text="@string/tap_here_to_sign"
                 android:id="@+id/tapHereToSignTextView"
-                android:textSize="30dp"
+                android:textSize="30sp"
                 android:textStyle="bold"
                 android:layout_centerHorizontal="true"
                 android:layout_alignBottom="@+id/signatureImageView"

@@ -42,14 +42,23 @@ public class SignatureFragment extends SurveyAppFragment {
     private boolean signatureSubmitted;
 
     private ImageView signatureImageView;
-    private RelativeLayout signatureLayout;
     private TextView tapHereToSignTextView;
 
     private byte[] signatureImageBytes;
     private String signaturePath;
 
-    public SignatureFragment() {
-        super("Signature", "Disclaimer");
+    public static SignatureFragment newInstance(Context context)
+    {
+        SignatureFragment fragment = new SignatureFragment();
+
+        Bundle args = new Bundle();
+        args.putString("name", context.getString(R.string.fragment_signature_name));
+        args.putString("title", context.getString(R.string.fragment_signature_title));
+        fragment.setArguments(args);
+
+        fragment.updateName();
+
+        return fragment;
     }
 
     @Override
@@ -89,7 +98,7 @@ public class SignatureFragment extends SurveyAppFragment {
         View rootView = inflater.inflate(R.layout.fragment_signature, container, false);
 
         signatureImageView = (ImageView) rootView.findViewById(R.id.signatureImageView);
-        signatureLayout = (RelativeLayout) rootView.findViewById(R.id.signatureLayout);
+        RelativeLayout signatureLayout = (RelativeLayout) rootView.findViewById(R.id.signatureLayout);
         tapHereToSignTextView = (TextView) rootView.findViewById(R.id.tapHereToSignTextView);
 
         signatureLayout.setOnClickListener(new View.OnClickListener() {
@@ -148,7 +157,7 @@ public class SignatureFragment extends SurveyAppFragment {
             Log.d("Signature path:", signaturePath);
             File signatureFile = new File(signaturePath);
 
-            myActivity.showProgressDialog("Please Wait", "Submitting signature...", "Dialog");
+            myActivity.showProgressDialog(getActivity().getString(R.string.please_wait), getActivity().getString(R.string.submitting_signature), "Dialog");
 
             if (signatureFile.exists()) {
 
@@ -189,7 +198,7 @@ public class SignatureFragment extends SurveyAppFragment {
                 });
 
             } else {
-                new AlertDialog.Builder(getActivity()).setTitle("No Signature").setMessage("The signature seems to be missing!\nPlease sign the survey and resubmit.").show();
+                new AlertDialog.Builder(getActivity()).setTitle(getActivity().getString(R.string.no_signature)).setMessage(getActivity().getString(R.string.error_missing_signature)).show();
             }
         }
         else

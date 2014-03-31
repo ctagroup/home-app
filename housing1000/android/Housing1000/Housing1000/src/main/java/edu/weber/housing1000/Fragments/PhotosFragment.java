@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -53,9 +54,18 @@ public class PhotosFragment extends SurveyAppFragment {
 
     private ImageAdapter imageAdapter; // Adapter that keeps track of saved photos
 
-    public PhotosFragment() {
-        super("Photos", "Client Photo(s)");
+    public static PhotosFragment newInstance(Context context)
+    {
+        PhotosFragment fragment = new PhotosFragment();
 
+        Bundle args = new Bundle();
+        args.putString("name", context.getString(R.string.fragment_photos_name));
+        args.putString("title", context.getString(R.string.fragment_photos_title));
+        fragment.setArguments(args);
+
+        fragment.updateName();
+
+        return fragment;
     }
 
     @Override
@@ -199,7 +209,7 @@ public class PhotosFragment extends SurveyAppFragment {
         if (imageAdapter.getCount() > 0 && !photosSubmitted) {
             MultipartTypedOutput multipartTypedOutput = new MultipartTypedOutput();
 
-            myActivity.showProgressDialog("Please Wait", "Submitting photo(s)...", "Dialog");
+            myActivity.showProgressDialog(getActivity().getString(R.string.please_wait), getActivity().getString(R.string.submitting_photos), "Dialog");
 
             for (TypedOutput image : RESTHelper.generateTypedOutputFromImages(imageAdapter.getImages(), myActivity.getClientSurveyId())) {
                 multipartTypedOutput.addPart(image.fileName(), image);

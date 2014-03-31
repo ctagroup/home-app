@@ -48,7 +48,7 @@ public class PitActivity extends ActionBarActivity {
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PitFragment(), "PIT")
+                    .add(R.id.container, PitFragment.newInstance(this), "PIT")
                     .commit();
             getPitData();
         }
@@ -57,6 +57,7 @@ public class PitActivity extends ActionBarActivity {
             surveyListing = (SurveyListing) savedInstanceState.getSerializable("surveyListing");
         }
 
+        getSupportActionBar().setTitle(getString(R.string.point_in_time));
     }
 
     @Override
@@ -75,14 +76,6 @@ public class PitActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId())
-//        {
-//            case R.id.menu_fragment_survey:
-//                getPitData();
-//                return true;
-//            default:
-//                break;
-//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -90,7 +83,7 @@ public class PitActivity extends ActionBarActivity {
     public void getPitData()
     {
         // Start the loading dialog
-        showProgressDialog("Please Wait", "Downloading PIT survey...", "");
+        showProgressDialog(getString(R.string.please_wait), getString(R.string.downloading_pit), "");
 
         RestAdapter restAdapter = RESTHelper.setUpRestAdapter(this, new GsonBuilder().excludeFieldsWithoutExposeAnnotation().registerTypeAdapter(Question.class, new QuestionJSONDeserializer()).create());
 
@@ -129,8 +122,8 @@ public class PitActivity extends ActionBarActivity {
         else
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Uh oh...");
-            builder.setMessage("There was a problem downloading the PIT survey. Please try again.");
+            builder.setTitle(getString(R.string.uh_oh));
+            builder.setMessage(getString(R.string.error_problem_downloading_pit));
             builder.show();
 
             finish();

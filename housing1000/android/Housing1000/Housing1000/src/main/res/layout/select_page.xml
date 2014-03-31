@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
     android:layout_gravity="center">
@@ -19,13 +19,14 @@
         android:src="@drawable/ctagroup_logo"
         android:adjustViewBounds="true"
         android:paddingBottom="80dp"
-        android:scaleType="fitCenter" />
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/ctagroup_logo"/>
 
     <Button
         android:id="@+id/pitButton"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
-        android:text="Point in Time"
+        android:text="@string/point_in_time"
         style="@style/ButtonText"
         android:background="@drawable/btn_yellow"
         android:layout_centerHorizontal="true"
@@ -38,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="75dp"
-        android:text="Surveys"
+        android:text="@string/surveys"
         android:background="@drawable/btn_yellow"
         android:layout_below="@+id/pitButton" />
 

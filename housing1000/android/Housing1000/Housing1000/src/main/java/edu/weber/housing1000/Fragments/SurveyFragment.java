@@ -1,6 +1,7 @@
 package edu.weber.housing1000.Fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,11 +32,18 @@ public class SurveyFragment extends BaseSurveyFragment {
     private SurveyFlowActivity myActivity;      // Parent activity
     private boolean surveySubmitted;
 
-    public SurveyFragment() {
-    }
+    public static SurveyFragment newInstance(Context context, String actionBarTitle)
+    {
+        SurveyFragment fragment = new SurveyFragment();
 
-    public SurveyFragment(String actionBarTitle) {
-        super("Survey", actionBarTitle);
+        Bundle args = new Bundle();
+        args.putString("name", context.getString(R.string.fragment_survey_name));
+        args.putString("title", actionBarTitle);
+        fragment.setArguments(args);
+
+        fragment.updateName();
+
+        return fragment;
     }
 
     @Override
@@ -103,7 +111,7 @@ public class SurveyFragment extends BaseSurveyFragment {
      */
     public void saveAnswers() {
         if (validateForm() && !surveySubmitted) {
-            myActivity.showProgressDialog("Please Wait", "Submitting survey responses...", "SurveySubmit");
+            myActivity.showProgressDialog(getActivity().getString(R.string.please_wait), getActivity().getString(R.string.submitting_survey_response), "SurveySubmit");
             myActivity.setSubmittingResponse(true);
 
             saveSurveyResponse();

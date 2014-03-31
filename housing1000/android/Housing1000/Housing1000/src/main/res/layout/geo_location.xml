@@ -8,36 +8,36 @@
         android:id="@+id/latitudeLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Latitude" />
+        android:text="@string/latitude" />
 
     <TextView
         android:id="@+id/latitudeCords"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="waiting..." />
+        android:text="@string/waiting" />
 
     <TextView
         android:id="@+id/longitudeLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Longitude" />
+        android:text="@string/longitude" />
 
     <TextView
         android:id="@+id/longitudeCords"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="waiting..." />
+        android:text="@string/waiting" />
 
     <TextView
         android:id="@+id/timeLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Time" />
+        android:text="@string/time" />
 
     <TextView
         android:id="@+id/timeValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="waiting..." />
+        android:text="@string/waiting" />
 
 </LinearLayout> 

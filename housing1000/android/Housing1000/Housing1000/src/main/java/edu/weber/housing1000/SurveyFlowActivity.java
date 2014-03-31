@@ -143,11 +143,11 @@ public class SurveyFlowActivity extends ActionBarActivity {
                 if (i == 0) {
                     getLocation();
 
-                    String message = "Location Details" +
-                            "\nLatitude: " + gps.getLatitude() +
-                            "\nLongitude: " + gps.getLongitude() +
-                            "\nTime: " + gps.getTime();
-                    Toast.makeText(SurveyFlowActivity.this, message, Toast.LENGTH_SHORT).show();
+//                    String message = "Location Details" +
+//                            "\nLatitude: " + gps.getLatitude() +
+//                            "\nLongitude: " + gps.getLongitude() +
+//                            "\nTime: " + gps.getTime();
+//                    Toast.makeText(SurveyFlowActivity.this, message, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -167,7 +167,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
         // Set the page change listener for the tabs
         mTabs.setOnPageChangeListener(mPageChangeListener);
 
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null || mViewPager.getCurrentItem() == 0) {
             // Force a page change update
             mViewPager.setCurrentItem(1);
             mViewPager.setCurrentItem(0);
@@ -228,8 +228,8 @@ public class SurveyFlowActivity extends ActionBarActivity {
             setSubmittingResponse(false);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Uh Oh!");
-            builder.setMessage("There was a problem submitting the survey response.\nPlease try again.");
+            builder.setTitle(getString(R.string.uh_oh));
+            builder.setMessage(getString(R.string.error_problem_submitting_survey));
             builder.show();
         } else // survey response has already been submitted, move on to photos
         {
@@ -262,8 +262,8 @@ public class SurveyFlowActivity extends ActionBarActivity {
             setSubmittingResponse(false);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Uh Oh!");
-            builder.setMessage("There was a problem submitting the photos.\nPlease try again.");
+            builder.setTitle(getString(R.string.uh_oh));
+            builder.setMessage(getString(R.string.error_problem_submitting_photos));
             builder.show();
         }
     }
@@ -284,8 +284,8 @@ public class SurveyFlowActivity extends ActionBarActivity {
             setSubmittingResponse(false);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Uh Oh!");
-            builder.setMessage("There was a problem submitting the signature.\nPlease try again.");
+            builder.setTitle(getString(R.string.uh_oh));
+            builder.setMessage(getString(R.string.error_problem_submitting_signature));
             builder.show();
         }
     }
@@ -294,9 +294,9 @@ public class SurveyFlowActivity extends ActionBarActivity {
         setSubmittingResponse(false);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Success!");
-        builder.setMessage("The survey response and image(s) have been successfully sent.");
-        builder.setNeutralButton("Okay", new DialogInterface.OnClickListener() {
+        builder.setTitle(getString(R.string.success));
+        builder.setMessage(getString(R.string.success_survey_response));
+        builder.setNeutralButton(getString(R.string.okay), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -313,8 +313,8 @@ public class SurveyFlowActivity extends ActionBarActivity {
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Cancel this survey?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setMessage(getString(R.string.cancel_this_survey));
+        builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -325,7 +325,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
                 finish();
             }
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -395,17 +395,17 @@ public class SurveyFlowActivity extends ActionBarActivity {
             switch (position) {
                 case 0:
                     if (signatureFragment == null)
-                        signatureFragment = new SignatureFragment();
+                        signatureFragment = SignatureFragment.newInstance(getBaseContext());
 
                     return signatureFragment;
                 case 1:
                     if (photosFragment == null)
-                        photosFragment = new PhotosFragment();
+                        photosFragment = PhotosFragment.newInstance(getBaseContext());
 
                     return photosFragment;
                 case 2:
                     if (surveyFragment == null)
-                        surveyFragment = new SurveyFragment(SurveyFlowActivity.this.surveyListing.getTitle());
+                        surveyFragment = SurveyFragment.newInstance(getBaseContext(), SurveyFlowActivity.this.surveyListing.getTitle());
 
                     return surveyFragment;
                 default:
@@ -422,11 +422,11 @@ public class SurveyFlowActivity extends ActionBarActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Signature";
+                    return getString(R.string.signature);
                 case 1:
-                    return "Photos";
+                    return getString(R.string.photos);
                 case 2:
-                    return "Survey";
+                    return getString(R.string.survey);
                 default:
                     return "";
             }

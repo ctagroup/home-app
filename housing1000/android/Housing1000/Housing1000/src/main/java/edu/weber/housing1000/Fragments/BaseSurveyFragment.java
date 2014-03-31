@@ -42,13 +42,6 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
     protected SurveyListing surveyListing;
     protected SurveyResponse surveyResponse;
 
-    public BaseSurveyFragment() {
-    }
-
-    public BaseSurveyFragment(String name, String actionBarTitle) {
-        super(name, actionBarTitle);
-    }
-
     // Abstract Methods
 
     /**
@@ -134,8 +127,8 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
      */
     public void submitButton() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("Submit the survey response?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setMessage(getString(R.string.submit_survey_response));
+        builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -143,7 +136,7 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
                 saveAnswers();
             }
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -156,15 +149,15 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
      */
     public void clearButton() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("Clear the survey answers?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setMessage(getString(R.string.clear_survey_answers));
+        builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 clearAnswers();
                 dialog.dismiss();
             }
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -350,26 +343,6 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
                     }
                 }
             }
-
-//            // Temporary for testing
-//            // TODO REMOVE THIS - DEPENDENCY TESTING
-//            if (survey.getSurveyId() == 1)
-//            {
-//                for (Question q : lstQuestions)
-//                {
-//                    if (q.getQuestionId() == 2)
-//                    {
-//                        q.setParentQuestionId(3);
-//                        q.setParentRequiredAnswer("1234");
-//                    }
-//                    else if (q.getQuestionId() == 3)
-//                    {
-//                        q.setParentQuestionId(1);
-//                        q.setParentRequiredAnswer("1234");
-//                    }
-//
-//                }
-//            }
 
             // Set up question dependencies
             Set<Question> dependencies = new HashSet<>();

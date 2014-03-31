@@ -20,12 +20,10 @@
             android:layout_weight="1" />
 
         <ImageView
-            android:id="@+id/housing_logo"
+            android:id="@+id/ctagroup_logo"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/icon_large"
+            android:src="@drawable/ctagroup_logo"
             android:cropToPadding="false"
             android:adjustViewBounds="true"
             android:paddingBottom="20dp" />
@@ -36,17 +34,14 @@
             android:paddingTop="10dip"
             android:layout_height="40dip"
             android:layout_width="fill_parent"
-            android:layout_below="@id/housing_logo"
             android:gravity="center_horizontal"
-            android:text="User Name:" />
+            android:text="@string/user_name" />
 
 
         <EditText
             android:id="@+id/usernameTextBox"
             android:layout_width="200dip"
             android:layout_height="40dip"
-            android:layout_below="@+id/usernameLabel"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:inputType="textPassword"
             android:imeOptions="actionNext"
@@ -61,17 +56,14 @@
             android:paddingTop="10dip"
             android:layout_height="40dip"
             android:layout_width="fill_parent"
-            android:layout_below="@id/usernameTextBox"
             android:gravity="center_horizontal"
-            android:text="Password:" />
+            android:text="@string/password" />
 
 
         <EditText
             android:id="@+id/passwordLoginTextBox"
             android:layout_width="200dip"
             android:layout_height="40dip"
-            android:layout_below="@+id/passwordLabel"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:ems="10"
             android:inputType="textPassword"
@@ -79,18 +71,16 @@
             android:imeActionLabel="Login"/>
 
         <LinearLayout
-            android:layout_below="@+id/passwordLoginTextBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="10dip"
-            android:layout_centerHorizontal="true">
+            android:paddingTop="10dip">
 
 
             <Button
                 android:id="@+id/clearButton"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Clear"
+                android:text="@string/clear"
                 style="@style/ButtonText"
                 android:background="@drawable/btn_blue"
                 android:textSize="20sp" />
@@ -99,7 +89,7 @@
                 android:id="@+id/loginButton"
                 android:layout_width="100dip"
                 android:layout_height="wrap_content"
-                android:text="Login"
+                android:text="@string/login"
                 android:background="@drawable/btn_yellow"
                 style="@style/ButtonText"
                 android:textSize="20sp" />

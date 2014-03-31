@@ -88,7 +88,7 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
             surveysListView.setAdapter(null);
 
         // Start the loading dialog
-        showProgressDialog("Please Wait...", "Downloading surveys list...", "Dialog");
+        showProgressDialog(getString(R.string.please_wait), getString(R.string.downloading_surveys_list), "Dialog");
 
         RestAdapter restAdapter = RESTHelper.setUpRestAdapter(this, null);
 
@@ -160,7 +160,7 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
     private void loadSurvey(long rowId)
     {
         // Start the loading dialog
-        showProgressDialog("Please Wait...", "Downloading survey...", "Dialog");
+        showProgressDialog(getString(R.string.please_wait), getString(R.string.downloading_survey), "Dialog");
 
         RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoDeserialize(this, null);
 
@@ -202,8 +202,8 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
         else
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Uh oh...");
-            builder.setMessage("There was a problem downloading the survey. Please try again.");
+            builder.setTitle(getString(R.string.uh_oh));
+            builder.setMessage(getString(R.string.error_problem_downloading_survey));
             builder.show();
         }
     }
