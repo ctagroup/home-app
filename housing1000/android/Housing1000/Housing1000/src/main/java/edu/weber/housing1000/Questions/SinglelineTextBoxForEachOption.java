@@ -186,8 +186,9 @@ public class SinglelineTextBoxForEachOption extends Question {
                             //When the EditText box is found, put the stored answer there
                             if (childView_sub instanceof EditText)
                             {
+                                String[] answerSplit = answers[iCountQuestion].split("=");
                                 EditText editText = (EditText) childView_sub;
-                                editText.setText(answers[iCountQuestion]);
+                                editText.setText(answerSplit[1]);
                                 //Increment the answer counter
                                 iCountQuestion++;
                             }

@@ -1,6 +1,7 @@
 package edu.weber.housing1000.Fragments;
 
 import android.content.Context;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +14,10 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 
+import edu.weber.housing1000.Data.Client;
 import edu.weber.housing1000.Data.PitResponse;
 import edu.weber.housing1000.Data.Response;
+import edu.weber.housing1000.Data.SurveyResponse;
 import edu.weber.housing1000.Helpers.REST.RESTHelper;
 import edu.weber.housing1000.Helpers.REST.SurveyService;
 import edu.weber.housing1000.PitActivity;
@@ -72,6 +75,7 @@ public class PitFragment extends BaseSurveyFragment {
             myActivity.setSubmittingSurvey(true);
 
             saveSurveyResponse();
+            savePitResponse();
 
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
@@ -94,13 +98,18 @@ public class PitFragment extends BaseSurveyFragment {
         }
     }
 
-    /**
-     * Serializes the surveyResponse to JSON
-     *
-     * @return Survey response in JSON form
-     */
     @Override
     public String saveSurveyResponse() {
+        Client client = new Client(survey.getClientQuestions(), null);
+        ArrayList<Response> responses = generateResponses(survey.getSurveyQuestions());
+        surveyResponse = new SurveyResponse(surveyListing, client, responses);
+
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        return gson.toJson(surveyResponse);
+    }
+
+    public String savePitResponse()
+    {
         ArrayList<Response> responses = generateResponses(survey.getSurveyQuestions());
         pitResponse = new PitResponse("0, 0", responses);
 
