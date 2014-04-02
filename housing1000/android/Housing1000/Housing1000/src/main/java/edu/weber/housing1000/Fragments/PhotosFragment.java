@@ -1,9 +1,12 @@
 package edu.weber.housing1000.Fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -15,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -109,8 +113,43 @@ public class PhotosFragment extends SurveyAppFragment {
         }
 
         photosGridView.setAdapter(imageAdapter);
-        photosGridView.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
-        photosGridView.setMultiChoiceModeListener(new MultiChoiceListener());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            photosGridView.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
+            photosGridView.setMultiChoiceModeListener(new MultiChoiceListener());
+        }
+        else
+        {
+            photosGridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    final int selectedImage = position;
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle(getActivity().getString(R.string.delete_question_mark));
+                    builder.setMessage(getActivity().getString(R.string.delete_this_photo));
+                    builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            imageAdapter.removeImage(selectedImage);
+                            imageAdapter.notifyDataSetChanged();
+                            if (imageAdapter.getCount() == 0) {
+                                noPhotosTextView.setVisibility(View.VISIBLE);
+                            }
+
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.show();
+                    return true;
+                }
+            });
+        }
 
         if (imageAdapter.getCount() > 0)
             noPhotosTextView.setVisibility(View.GONE);
@@ -174,8 +213,6 @@ public class PhotosFragment extends SurveyAppFragment {
                 byte[] encryptedImage = EncryptionHelper.encrypt(byteImage);
 
                 FileHelper.writeFileToExternalStorage(encryptedImage, myActivity.getFolderHash(), encryptedName);
-
-                byte[] encryptedFileBytes = FileHelper.readFileFromExternalStorage(myActivity.getFolderHash(), encryptedName);
 
                 // Add the file path to the imageAdapter
                 imageAdapter.addImagePath(FileHelper.getAbsoluteFilePath(myActivity.getFolderHash(), encryptedName));

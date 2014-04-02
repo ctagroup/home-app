@@ -72,5 +72,7 @@
     <string name="waiting">waiting…</string>
     <string name="signature_x">X</string>
     <string name="yes">Yes</string>
+    <string name="delete_question_mark">Delete?</string>
+    <string name="delete_this_photo">Are you sure you would like to delete this photo?</string>
 
 </resources>

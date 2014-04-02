@@ -3,6 +3,7 @@ package edu.weber.housing1000.Fragments;
 import android.animation.LayoutTransition;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -260,8 +261,13 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
 
             LinearLayout mainLinearLayout = new LinearLayout(getActivity());
             mainLinearLayout.setOrientation(LinearLayout.VERTICAL);
-            LayoutTransition layoutTransition = new LayoutTransition();
-            mainLinearLayout.setLayoutTransition(layoutTransition);
+
+            // Fade in/out effect is for Honeycomb and up
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                LayoutTransition layoutTransition = new LayoutTransition();
+                mainLinearLayout.setLayoutTransition(layoutTransition);
+            }
+
             mainScrollView.addView(mainLinearLayout);
 
             List<String> lstPanels = new ArrayList<>();
