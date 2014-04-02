@@ -40,7 +40,7 @@
     <string name="fragment_photos_title">Client Photo(s)</string>
     <string name="fragment_pit_name">PIT</string>
     <string name="fragment_pit_title">Point in Time</string>
-    <string name="fragment_signature_name">Signature</string>
+    <string name="fragment_signature_name">Sign</string>
     <string name="fragment_signature_title">Disclaimer</string>
     <string name="fragment_survey_name">Survey</string>
     <string name="latitude">Latitude</string>
@@ -50,12 +50,10 @@
     <string name="no_signature">No Signature</string>
     <string name="okay">Okay</string>
     <string name="password">Password:</string>
-    <string name="photos">Photos</string>
     <string name="please_sign_below">Please Sign below …</string>
     <string name="please_wait">Please Wait</string>
     <string name="point_in_time">Point in Time</string>
     <string name="save">Save</string>
-    <string name="signature">Signature</string>
     <string name="signature_image">Signature Image</string>
     <string name="submitting_photos">Submitting photo(s)…</string>
     <string name="submitting_signature">Submitting signature…</string>
@@ -63,7 +61,6 @@
     <string name="submit_survey_response">Submit the survey response?</string>
     <string name="success">Success!</string>
     <string name="success_survey_response">The survey response and image(s) have been successfully sent.</string>
-    <string name="survey">Survey</string>
     <string name="surveys">Surveys</string>
     <string name="tap_here_to_sign">Tap Here to Sign</string>
     <string name="time">Time</string>

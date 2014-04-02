@@ -417,11 +417,11 @@ public class SurveyFlowActivity extends ActionBarActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return getString(R.string.signature);
+                    return getString(R.string.fragment_signature_name);
                 case 1:
-                    return getString(R.string.photos);
+                    return getString(R.string.fragment_photos_name);
                 case 2:
-                    return getString(R.string.survey);
+                    return getString(R.string.fragment_survey_name);
                 default:
                     return "";
             }
