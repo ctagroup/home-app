@@ -14,6 +14,12 @@ import java.util.List;
 
 
 public class Utils {
+    private static int viewIdCounter = 1;
+
+    public static int getNewViewId(Context context)
+    {
+        return viewIdCounter++;
+    }
 
     public static boolean isIntentAvailable(Context context, String action) {
         final PackageManager packageManager = context.getPackageManager();

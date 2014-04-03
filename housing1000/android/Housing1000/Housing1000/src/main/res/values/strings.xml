@@ -15,6 +15,8 @@
     <string name="clear">Clear</string>
     <string name="clear_survey_answers">Clear the survey answers?</string>
     <string name="ctagroup_logo">CTAGroup Logo</string>
+    <string name="delete_question_mark">Delete?</string>
+    <string name="delete_this_photo">Are you sure you would like to delete this photo?</string>
     <string name="disclaimerText"><b>PLEASE READ THIS DOCUMENT CAREFULLY. YOUR SIGNATURE IS REQUIRED FOR PARTICIPATION. YOU MUST BE AT LEAST 18 YEARS OF AGE TO GIVE YOUR CONSENT TO PARTICIPATE IN RESEARCH. IF YOU DESIRE A COPY OF THIS CONSENT FORM, YOU MAY REQUEST ONE AND WE WILL PROVIDE IT.</b>
         \nConfidentiality: You will be assigned a code number which will protect your identity. All data will be kept in secured files, in accord with the standards of the University, Federal regulations, and the American Psychological Association. All identifying information will be removed from questionnaires as soon as your participation is complete. No one will be able to know which are your questionnaire responses. Finally, remember that it is no individual person\'s responses that interest us; we are studying the usefulness of the tests in question for people in general.</string>
     <string name="downloading_pit">Downloading PIT survey…</string>
@@ -55,6 +57,7 @@
     <string name="point_in_time">Point in Time</string>
     <string name="save">Save</string>
     <string name="signature_image">Signature Image</string>
+    <string name="signature_x">X</string>
     <string name="submitting_photos">Submitting photo(s)…</string>
     <string name="submitting_signature">Submitting signature…</string>
     <string name="submitting_survey_response">Submitting survey responses…</string>
@@ -67,9 +70,7 @@
     <string name="uh_oh">Uh oh…</string>
     <string name="user_name">User Name:</string>
     <string name="waiting">waiting…</string>
-    <string name="signature_x">X</string>
     <string name="yes">Yes</string>
-    <string name="delete_question_mark">Delete?</string>
-    <string name="delete_this_photo">Are you sure you would like to delete this photo?</string>
+    <string name="submitting_pit_responses">Submitting PIT responses...</string>
 
 </resources>

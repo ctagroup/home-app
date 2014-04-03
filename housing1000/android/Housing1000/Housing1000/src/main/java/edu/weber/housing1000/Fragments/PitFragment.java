@@ -71,7 +71,7 @@ public class PitFragment extends BaseSurveyFragment {
      */
     public void saveAnswers() {
         if (validateForm()) {
-            myActivity.showProgressDialog("Please Wait", "Submitting PIT responses...", "SurveySubmit");
+            myActivity.showProgressDialog(getString(R.string.please_wait), getActivity().getString(R.string.submitting_pit_responses), "SurveySubmit");
             myActivity.setSubmittingSurvey(true);
 
             saveSurveyResponse();
