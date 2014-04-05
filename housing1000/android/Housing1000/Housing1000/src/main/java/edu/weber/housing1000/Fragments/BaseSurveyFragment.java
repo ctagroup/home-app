@@ -1,14 +1,17 @@
 package edu.weber.housing1000.Fragments;
 
 import android.animation.LayoutTransition;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -232,6 +235,7 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
      */
     protected ScrollView generateQuestionUi(SurveyListing listing) {
         try {
+            final float scale = getResources().getDisplayMetrics().density;
 
             lstQuestions = new ArrayList<>();
 
@@ -261,6 +265,12 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
 
             LinearLayout mainLinearLayout = new LinearLayout(getActivity());
             mainLinearLayout.setOrientation(LinearLayout.VERTICAL);
+            ScrollView.LayoutParams mainParams = new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.WRAP_CONTENT);
+
+            float upDownMargin = getResources().getDimension(R.dimen.margin_small);
+            float leftRightMargin = getResources().getDimension(R.dimen.margin_medium);
+            mainParams.setMargins((int) leftRightMargin, (int) upDownMargin, (int) leftRightMargin, (int) upDownMargin);
+            mainLinearLayout.setLayoutParams(mainParams);
 
             // Fade in/out effect is for Honeycomb and up
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {

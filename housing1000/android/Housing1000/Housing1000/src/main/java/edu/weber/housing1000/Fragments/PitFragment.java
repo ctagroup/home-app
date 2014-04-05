@@ -1,5 +1,6 @@
 package edu.weber.housing1000.Fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
@@ -48,6 +49,13 @@ public class PitFragment extends BaseSurveyFragment {
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        myActivity = ((PitActivity) getActivity());
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -60,7 +68,6 @@ public class PitFragment extends BaseSurveyFragment {
 
         rootLayout = (RelativeLayout) mainView.findViewById(R.id.root_layout);
 
-        myActivity = ((PitActivity) getActivity());
         surveyListing = myActivity.getSurveyListing();
 
         return mainView;
