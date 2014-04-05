@@ -13,8 +13,8 @@
         android:stackFromBottom="false"
         android:drawSelectorOnTop="true"
         android:focusable="true"
-        android:layout_marginTop="@dimen/margin_small"
-        android:layout_marginBottom="@dimen/margin_small"/>
+        android:paddingTop="@dimen/margin_small"
+        android:paddingBottom="@dimen/margin_small"/>
 
     <TextView
         android:layout_width="fill_parent"
@@ -24,6 +24,6 @@
         android:id="@+id/noPhotosTextView"
         android:gravity="center"
         android:textAlignment="center"
-        android:layout_margin="@dimen/margin_medium"/>
+        android:padding="@dimen/margin_medium"/>
 
 </RelativeLayout>

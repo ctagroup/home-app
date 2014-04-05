@@ -265,12 +265,10 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
 
             LinearLayout mainLinearLayout = new LinearLayout(getActivity());
             mainLinearLayout.setOrientation(LinearLayout.VERTICAL);
-            ScrollView.LayoutParams mainParams = new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.WRAP_CONTENT);
 
             float upDownMargin = getResources().getDimension(R.dimen.margin_small);
             float leftRightMargin = getResources().getDimension(R.dimen.margin_medium);
-            mainParams.setMargins((int) leftRightMargin, (int) upDownMargin, (int) leftRightMargin, (int) upDownMargin);
-            mainLinearLayout.setLayoutParams(mainParams);
+            mainLinearLayout.setPadding((int) leftRightMargin, (int) upDownMargin, (int) leftRightMargin, (int) upDownMargin);
 
             // Fade in/out effect is for Honeycomb and up
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {

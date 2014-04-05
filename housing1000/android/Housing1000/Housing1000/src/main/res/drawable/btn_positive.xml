@@ -4,7 +4,7 @@
 <item android:state_pressed="true" >
     <shape>
         <solid
-                android:color="@color/button_positive" />
+                android:color="@color/button_positive_light" />
         <stroke
                 android:width="1dp"
                 android:color="@color/button_positive_stroke" />
@@ -19,10 +19,8 @@
 </item>
     <item>
         <shape>
-            <gradient
-                    android:startColor="@color/button_positive"
-                    android:endColor="@color/button_positive_dark"
-                    android:angle="270" />
+            <solid
+                    android:color="@color/button_positive" />
             <stroke
                     android:width="1dp"
                     android:color="@color/button_positive_stroke" />
