@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
     <color name="transparent">#00000000</color>
+    <color name="black">#000000</color>
+    <color name="action_bar">#dd7009</color>
+    <color name="tab_selected">#f3ae1b</color>
+    <color name="button_positive">#f3ae1b</color>
+    <color name="button_positive_dark">#bb6008</color>
+    <color name="button_positive_stroke">#aa5008</color>
+    <color name="button_negative">#449def</color>
+    <color name="button_negative_dark">#404cf8</color>
+    <color name="button_negative_stroke">#2f6699</color>
 </resources>

@@ -7,6 +7,11 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Surface;
 import android.view.WindowManager;
 
@@ -71,6 +76,15 @@ public class Utils {
                     break;
             }
         }
+    }
+
+    public static void setActionBarColorToDefault(ActionBarActivity activity)
+    {
+        ActionBar actionBar = activity.getSupportActionBar();
+        ColorDrawable color = new ColorDrawable(activity.getResources().getColor(R.color.action_bar));
+        Drawable bottom = activity.getResources().getDrawable(R.drawable.actionbar_bottom);
+        LayerDrawable ld = new LayerDrawable(new Drawable[] { color, bottom });
+        actionBar.setBackgroundDrawable(ld);
     }
 
 }

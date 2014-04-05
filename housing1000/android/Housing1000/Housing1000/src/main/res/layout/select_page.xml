@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:text="@string/point_in_time"
         style="@style/ButtonText"
-        android:background="@drawable/btn_yellow"
+        android:background="@drawable/btn_positive"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/imageView1" />
 
@@ -40,7 +40,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="75dp"
         android:text="@string/surveys"
-        android:background="@drawable/btn_yellow"
+        android:background="@drawable/btn_positive"
         android:layout_below="@+id/pitButton" />
 
 </RelativeLayout>

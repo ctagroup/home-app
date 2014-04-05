@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<selector xmlns:android="http://schemas.android.com/apk/res/android">      <item android:state_pressed="true" >
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:state_pressed="true" >
     <shape>
         <solid
-                android:color="#f3ae1b" />
+                android:color="@color/button_positive" />
         <stroke
                 android:width="1dp"
-                android:color="#bb6008" />
+                android:color="@color/button_positive_stroke" />
         <corners
                 android:radius="3dp" />
         <padding
@@ -19,12 +20,12 @@
     <item>
         <shape>
             <gradient
-                    android:startColor="#f3ae1b"
-                    android:endColor="#bb6008"
+                    android:startColor="@color/button_positive"
+                    android:endColor="@color/button_positive_dark"
                     android:angle="270" />
             <stroke
                     android:width="1dp"
-                    android:color="#bb6008" />
+                    android:color="@color/button_positive_stroke" />
             <corners
                     android:radius="4dp" />
             <padding

@@ -1,9 +1,9 @@
 package edu.weber.housing1000;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -11,8 +11,7 @@ import android.widget.EditText;
 import android.view.View;
 import android.widget.TextView;
 
-
-public class LoginActivity extends Activity
+public class LoginActivity extends ActionBarActivity
 {
     private EditText emailField;
     private EditText passwordField;
@@ -27,8 +26,8 @@ public class LoginActivity extends Activity
     public void onCreate(Bundle savedInstanceState) 
     {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.main);
+        Utils.setActionBarColorToDefault(this);
         
         //declare the login button
         Button loginButton = (Button) findViewById(R.id.loginButton);
