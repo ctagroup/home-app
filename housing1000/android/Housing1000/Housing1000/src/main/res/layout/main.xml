@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/clear"
                 style="@style/ButtonText"
-                android:background="@drawable/btn_blue"
+                android:background="@drawable/btn_negative"
                 android:textSize="20sp" />
 
             <Button
@@ -90,7 +90,7 @@
                 android:layout_width="100dip"
                 android:layout_height="wrap_content"
                 android:text="@string/login"
-                android:background="@drawable/btn_yellow"
+                android:background="@drawable/btn_positive"
                 style="@style/ButtonText"
                 android:textSize="20sp" />
 

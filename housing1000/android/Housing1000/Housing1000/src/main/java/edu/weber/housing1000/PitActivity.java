@@ -45,6 +45,7 @@ public class PitActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pit);
+        Utils.setActionBarColorToDefault(this);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()

@@ -15,24 +15,27 @@ import android.widget.TextView;
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.Utils;
 
-import static android.R.color.darker_gray;
-
 /**
  * Created by PLW on 3/1/14.
  */
 public class SinglelineTextBoxForEachOption extends Question {
     @Override
     public View createView(Context context) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+
         LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         LinearLayout.LayoutParams mainParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         linearLayout.setLayoutParams(mainParams);
 
         //Add a view for a border at the top of each group of questions
+        int lineMargins = (int) (6 * scale + 0.5f);
+
         View view = new View(context);
-        LinearLayout.LayoutParams viewParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 10);
+        LinearLayout.LayoutParams viewParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 4);
+        viewParams.setMargins(0, lineMargins, 0, lineMargins);
         view.setLayoutParams(viewParams);
-        view.setBackgroundResource(darker_gray);
+        view.setBackgroundResource(android.R.color.darker_gray);
         linearLayout.addView(view);
 
         //Add potential answers
@@ -57,7 +60,6 @@ public class SinglelineTextBoxForEachOption extends Question {
             textView.setTextSize(18);
 
             //Add image buttons
-            final float scale = context.getResources().getDisplayMetrics().density;
             int pixels = (int) (40 * scale + 0.5f);
             int btnPadding = 10;
 
@@ -68,7 +70,7 @@ public class SinglelineTextBoxForEachOption extends Question {
             buttonRightParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             buttonRightParams.setMargins(btnPadding, btnPadding, btnPadding, btnPadding);
             buttonPlus.setLayoutParams(buttonRightParams);
-            buttonPlus.setBackgroundResource(R.drawable.plus_btn);
+            buttonPlus.setBackgroundResource(R.drawable.btn_plus);
 
             ImageButton buttonMinus = new ImageButton(context);
             buttonMinus.setId(Utils.getNewViewId(context));
@@ -77,7 +79,7 @@ public class SinglelineTextBoxForEachOption extends Question {
             buttonLeftParams.addRule(RelativeLayout.LEFT_OF, buttonPlus.getId());
             buttonLeftParams.setMargins(btnPadding, btnPadding, btnPadding, btnPadding);
             buttonMinus.setLayoutParams(buttonLeftParams);
-            buttonMinus.setBackgroundResource(R.drawable.minus_btn);
+            buttonMinus.setBackgroundResource(R.drawable.btn_minus);
 
             //Add edit text box for number entry
             final EditText editText = new EditText(context);

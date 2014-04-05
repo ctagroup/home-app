@@ -6,6 +6,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.widget.TextView;
 
 /**
@@ -16,7 +17,7 @@ import android.widget.TextView;
  * To change this template use File | Settings | File Templates.
  */
 
-public class GeolocationActivity extends Activity implements LocationListener
+public class GeolocationActivity extends ActionBarActivity implements LocationListener
 {//GeolocationActivity
 
     private TextView latitudeField;
@@ -30,6 +31,7 @@ public class GeolocationActivity extends Activity implements LocationListener
     {//onCreate
         super.onCreate(savedInstanceState);
         setContentView(R.layout.geo_location);
+        Utils.setActionBarColorToDefault(this);
 
         latitudeField  = (TextView) findViewById(R.id.latitudeCords);
         longitudeField = (TextView) findViewById(R.id.longitudeCords);

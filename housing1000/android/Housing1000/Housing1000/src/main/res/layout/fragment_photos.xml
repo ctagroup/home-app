@@ -2,8 +2,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/margin_medium">
+    android:layout_height="match_parent">
 
     <GridView
         android:layout_width="fill_parent"
@@ -13,7 +12,9 @@
         android:numColumns="1"
         android:stackFromBottom="false"
         android:drawSelectorOnTop="true"
-        android:focusable="true" />
+        android:focusable="true"
+        android:paddingTop="@dimen/margin_small"
+        android:paddingBottom="@dimen/margin_small"/>
 
     <TextView
         android:layout_width="fill_parent"
@@ -22,6 +23,7 @@
         android:text="@string/error_no_photos"
         android:id="@+id/noPhotosTextView"
         android:gravity="center"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:padding="@dimen/margin_medium"/>
 
 </RelativeLayout>

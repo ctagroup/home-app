@@ -22,25 +22,26 @@
         android:scaleType="fitCenter"
         android:contentDescription="@string/ctagroup_logo"/>
 
-    <Button
+    <Button style="@style/ButtonText"
         android:id="@+id/pitButton"
-        android:layout_width="230dp"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="64dp"
         android:text="@string/point_in_time"
-        style="@style/ButtonText"
-        android:background="@drawable/btn_yellow"
+        android:textSize="18dp"
+        android:background="@drawable/btn_positive"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/imageView1" />
+        android:layout_below="@+id/imageView1"
+        android:layout_margin="@dimen/margin_small"/>
 
     <Button
         style="@style/ButtonText"
         android:id="@+id/dynamicWithApiButton"
-        android:layout_width="230dp"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="64dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="75dp"
         android:text="@string/surveys"
-        android:background="@drawable/btn_yellow"
+        android:textSize="18dp"
+        android:background="@drawable/btn_positive"
         android:layout_below="@+id/pitButton" />
 
 </RelativeLayout>

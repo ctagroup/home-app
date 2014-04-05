@@ -94,6 +94,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey_flow);
+        Utils.setActionBarColorToDefault(this);
 
         gps = new GPSTracker(this);
 
@@ -158,6 +159,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
         mTabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         mTabs.setShouldExpand(true);
         mTabs.setViewPager(mViewPager);
+        mTabs.setIndicatorColorResource(R.color.tab_selected);
 
         // Set the page change listener for the tabs
         mTabs.setOnPageChangeListener(mPageChangeListener);

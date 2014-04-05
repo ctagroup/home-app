@@ -40,6 +40,7 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey_list);
+        Utils.setActionBarColorToDefault(this);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()

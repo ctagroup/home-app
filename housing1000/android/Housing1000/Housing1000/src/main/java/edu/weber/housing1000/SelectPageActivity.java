@@ -1,17 +1,18 @@
 package edu.weber.housing1000;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
 
-public class SelectPageActivity extends Activity {
-	
+public class SelectPageActivity extends ActionBarActivity {
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_page);
+        Utils.setActionBarColorToDefault(this);
 
         //Get the Buttons
         Button pitButton = (Button) findViewById(R.id.pitButton);
@@ -31,7 +32,6 @@ public class SelectPageActivity extends Activity {
                 startActivity(intent);
             }
         });
-
     }
 
 }
