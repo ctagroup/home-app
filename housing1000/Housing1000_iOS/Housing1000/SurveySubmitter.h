@@ -10,6 +10,6 @@
 
 @interface SurveySubmitter : NSObject
 
-+(void)submitSurvey;
+-(void)submitSurvey;
 
 @end

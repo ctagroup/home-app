@@ -13,17 +13,21 @@
 #import "PITQuestionTableViewCell.h"
 #import "Survey.h"
 #import "HttpConnectionHelper.h"
+#import "PITSubmitter.h"
 
 @implementation PITViewController
+
+bool clickedCancel = false;
+bool clickedSubmit = false;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    //Empty any and all static arrays in case they were set previously
-    [[SurveyDataRowContainer getSurveyRows] removeAllObjects];
-    [[[Survey getClientQuestions] getClientQuestions] removeAllObjects];
-    [[[Survey getSurveyQuestions] getSurveyQuestions] removeAllObjects];
-    [[PITSurvey getPITQuestions] removeAllObjects];
+    //Add a listener for when an alert view's first button is pressed
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(performSubmittedSurveySegue:)
+                                                 name:@"performSurveyFinishedSegue"
+                                               object:nil];
     
     HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] init];
     [httpHelper getPIT:^(NSMutableArray* results){
@@ -61,8 +65,15 @@
     
     PITQuestionTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    currentQuestion.surveyDataRowIndex = [NSNumber numberWithInt:indexPath.row];
+    currentQuestion.surveyDataRowIndex = [NSNumber numberWithInteger:indexPath.row];
     cell.questionText.text = currentQuestion.questionText;
+    if(currentQuestion.answer == NULL) {
+        cell.number.text = @"0";
+    } else {
+        cell.number.text = currentQuestion.answer;
+        cell.questionStepperAnswer.value = [currentQuestion.answer doubleValue];    //This is a problem if they ever have text boxes in the PIT section
+    }
+    
     cell.questionData = currentQuestion;
     
     cell.questionTextAnswer.text = @""; //just temporary... needs to be fixed...
@@ -108,7 +119,7 @@
         SurveyDataRow *row = [[SurveyDataRow alloc] init];
         
         //Disable the cell and make the background grey if it has a parent required answer
-        if(currentQuestion.parentQuestionId > [NSNumber numberWithInt:0]) {
+        if([currentQuestion.parentQuestionId intValue] > 0) {
             [row initWithEnablingSettings:i isEnabled:NO];
         } else {
             [row initWithEnablingSettings:i isEnabled:YES];
@@ -116,6 +127,54 @@
         [tempSurveyRows addObject:row];
     }
     [SurveyDataRowContainer setSurveyRows:tempSurveyRows];
+}
+
+- (IBAction)cancelSurvey:(id)sender {
+    clickedCancel = true;
+    clickedSubmit = false;
+    
+    UIAlertView *popup = [[UIAlertView alloc] initWithTitle:nil
+                                                    message:@"Are you sure you want to cancel this survey?"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Yes"
+                                          otherButtonTitles:@"Cancel", nil];
+    [popup show];
+}
+
+- (IBAction)submitSurvey:(id)sender {
+    clickedCancel = false;
+    clickedSubmit = true;
+    
+    UIAlertView *popup = [[UIAlertView alloc] initWithTitle:nil
+                                                    message:@"Are you sure you want to upload the current point in time survey?"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Yes"
+                                          otherButtonTitles:@"Cancel", nil];
+    [popup show];
+}
+
+// The callback method for the alertView
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)index {
+    
+    if(index == 0) {    //They selected "Yes" about whether they were sure about submitting or cancelling
+        if(clickedSubmit) {
+            PITSubmitter* submitter = [[PITSubmitter alloc] init];
+            [submitter submitPIT];
+        }
+        else if(clickedCancel) {
+            [self performSegueWithIdentifier:@"segue.pit.finished" sender:self]; //@"segue.pit.finished" is specified in the storyboard
+            NSLog(@"User chose to cancel the PIT survey");
+
+        }
+    }
+}
+
+//Called when the alert view's first button is pressed because of a listener (for the popup after the submission spinner)
+-(void)performSubmittedSurveySegue:(NSNotification *) notif
+{
+    
+    [self performSegueWithIdentifier:@"segue.pit.finished" sender:self]; //@"segue.pit.finished" is specified in the storyboard
+    
 }
 
 //==============================================

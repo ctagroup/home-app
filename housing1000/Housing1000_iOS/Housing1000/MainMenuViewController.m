@@ -7,6 +7,9 @@
 //
 
 #import "MainMenuViewController.h"
+#import "Survey.h"
+#import "PITSurvey.h"
+#import "SurveyDataRowContainer.h"
 
 @interface MainMenuViewController ()
 
@@ -26,7 +29,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+	
+    //Empty any and all static arrays in case they were set previously
+    [[SurveyDataRowContainer getSurveyRows] removeAllObjects];
+    [[[Survey getClientQuestions] getClientQuestions] removeAllObjects];
+    [[[Survey getSurveyQuestions] getSurveyQuestions] removeAllObjects];
+    [[PITSurvey getPITQuestions] removeAllObjects];
 }
 
 - (void)didReceiveMemoryWarning

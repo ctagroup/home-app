@@ -55,7 +55,7 @@
     
     //BOOL successful = [SurveySubmitter submitSurvey]; //Function definition changed, so commented out
     BOOL successful = YES;
-    [SurveySubmitter submitSurvey];
+    //[SurveySubmitter submitSurvey];
     
     //AlertViewDisplayer *alertDisplayer = [[AlertViewDisplayer alloc] init];
     //[alertDisplayer showAlertViewWithMessage:@"Submitting survey..." andError:@"There was a problem submitting the survey." andSuccessMessage:@"Success!" withSeconds:3 operationSuccessful:successful];

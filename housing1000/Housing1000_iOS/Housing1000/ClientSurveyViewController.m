@@ -56,7 +56,7 @@
         SurveyDataRow *row = [[SurveyDataRow alloc] init];
         
         //Disable the cell and make the background grey if it has a parent required answer
-        if(currentQuestion.parentQuestionId > [NSNumber numberWithInt:0]) {
+        if([currentQuestion.parentQuestionId intValue] > 0) {
             [row initWithEnablingSettings:i isEnabled:NO];
         } else {
             [row initWithEnablingSettings:i isEnabled:YES];
@@ -68,7 +68,7 @@
         SurveyDataRow *row = [[SurveyDataRow alloc] init];
         
         //Disable the cell and make the background grey if it has a parent required answer
-        if(currentQuestion.parentQuestionId > [NSNumber numberWithInt:0]) {
+        if([currentQuestion.parentQuestionId intValue] > 0) {
             [row initWithEnablingSettings:i isEnabled:NO];
         } else {
             [row initWithEnablingSettings:i isEnabled:YES];
@@ -97,7 +97,7 @@
     if(indexPath.row < [[[Survey getClientQuestions] getClientQuestions] count]) {
         currentQuestion = [[[Survey getClientQuestions] getClientQuestions] objectAtIndex:indexPath.row];
     } else {
-        int numOfClientQuestions = [[[Survey getClientQuestions] getClientQuestions] count];
+        int numOfClientQuestions = (int)[[[Survey getClientQuestions] getClientQuestions] count];
         currentQuestion = [[[Survey getSurveyQuestions] getSurveyQuestions] objectAtIndex:indexPath.row - numOfClientQuestions];
     }
     
@@ -105,7 +105,7 @@
     
     SurveyQuestionTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    currentQuestion.surveyDataRowIndex = [NSNumber numberWithInt:indexPath.row];
+    currentQuestion.surveyDataRowIndex = [NSNumber numberWithInteger:indexPath.row];
     cell.questionText.text = currentQuestion.questionText;
     cell.questionData = currentQuestion;
     
@@ -129,7 +129,7 @@
     if(indexPath.row < [[[Survey getClientQuestions] getClientQuestions] count]) {
         currentQuestion = [[[Survey getClientQuestions] getClientQuestions] objectAtIndex:indexPath.row];
     } else {
-        int numOfClientQuestions = [[[Survey getClientQuestions] getClientQuestions] count];
+        int numOfClientQuestions = (int)[[[Survey getClientQuestions] getClientQuestions] count];
         currentQuestion = [[[Survey getSurveyQuestions] getSurveyQuestions] objectAtIndex:indexPath.row - numOfClientQuestions];
     }
     
@@ -160,13 +160,14 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)index {
     
     if(index == 0) {    //They selected "Yes" about whether they were sure about submitting or not
-        [SurveySubmitter submitSurvey];
+        SurveySubmitter* submitter = [[SurveySubmitter alloc] init];
+        [submitter submitSurvey];
     }
     
 }
 
 
-//Called when the alert view's first button is pressed because of a listener
+//Called when the alert view's first button is pressed because of a listener (for the popup after the submission spinner)
 -(void)performSubmittedSurveySegue:(NSNotification *) notif
 {
     

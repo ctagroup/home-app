@@ -20,7 +20,7 @@
 }
 
 -(void)setEnabled:(BOOL)tempIsEnabled {
-    self.isEnabled = tempIsEnabled;
+    self.isEnabled = true;
     if(self.isEnabled)
         self.backgroundColor = [UIColor whiteColor];
     else

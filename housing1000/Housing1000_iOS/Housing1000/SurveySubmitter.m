@@ -15,7 +15,7 @@
 
 @implementation SurveySubmitter
 
-+(void)submitSurvey {
+-(void)submitSurvey {
     
     //TODO add some sort of try catch business so that it knows whether to return a true successful or not
     
@@ -48,7 +48,6 @@
     response.Client = clientAnswers;
     
     NSLog(@"Json submission: %@", [response toDictionary]);
-    //HttpPOSTJSONHelper *poster = [[HttpPOSTJSONHelper alloc] init];
     HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] init];
     [httpHelper postSurvey:^(NSMutableArray* results){} :[response toDictionary]];
     

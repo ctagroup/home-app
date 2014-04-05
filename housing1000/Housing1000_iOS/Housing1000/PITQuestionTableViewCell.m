@@ -2,7 +2,7 @@
 //  PITQuestionTableViewCell.m
 //  Housing1000
 //
-//  Created by student on 3/11/14.
+//  Created by David Horton on 3/11/14.
 //  Copyright (c) 2014 Group 3. All rights reserved.
 //
 
@@ -46,6 +46,7 @@
     if(![self.questionTextAnswer.text isEqualToString:@""]) { //Only store the textfield value if it isn't empty
         self.number.text = self.questionTextAnswer.text;
         self.questionStepperAnswer.value = self.questionTextAnswer.text.intValue;
+        self.questionData.answer = self.questionTextAnswer.text;
     }
 }
 
@@ -115,6 +116,7 @@
     
     [self.questionTextAnswer setText:@""];
     [self.number setText:[NSString stringWithFormat:@"%d", (int)value]];
+    self.questionData.answer = [NSString stringWithFormat:@"%d", (int)value];
 }
 
 -(BOOL)shouldAutorotate
