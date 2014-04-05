@@ -10,6 +10,7 @@
 #import "Survey.h"
 #import "PITSurvey.h"
 #import "SurveyDataRowContainer.h"
+#import "SurveyPageViewController.h"
 
 @interface MainMenuViewController ()
 
@@ -35,6 +36,7 @@
     [[[Survey getClientQuestions] getClientQuestions] removeAllObjects];
     [[[Survey getSurveyQuestions] getSurveyQuestions] removeAllObjects];
     [[PITSurvey getPITQuestions] removeAllObjects];
+    [SurveyPageViewController setWhetherAlreadySigned:NO];  //This is just so access to the rest of the survey is restricted if they haven't signed
 }
 
 - (void)didReceiveMemoryWarning

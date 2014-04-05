@@ -10,4 +10,6 @@
 @property (strong, nonatomic) UIPageViewController *pageController;
 @property (strong, nonatomic) NSArray* collectionOfViews;
 
++(void)setWhetherAlreadySigned:(BOOL)tempAlreadySigned;
+
 @end

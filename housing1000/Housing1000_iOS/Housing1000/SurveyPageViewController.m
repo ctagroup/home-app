@@ -14,6 +14,8 @@
 
 @implementation SurveyPageViewController
 
+static BOOL alreadySigned;
+
 - (void)viewDidLoad {
     
     [super viewDidLoad];
@@ -47,6 +49,10 @@
     
 }
 
++(void)setWhetherAlreadySigned:(BOOL)tempAlreadySigned {
+    alreadySigned = tempAlreadySigned;
+}
+
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
     
     NSUInteger index = [self.collectionOfViews indexOfObject:viewController];
@@ -64,15 +70,20 @@
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
     
-    NSUInteger index = [self.collectionOfViews indexOfObject:viewController];
-
-    index++;
-    
-    if (index == 3) {
+    if(alreadySigned) {
+        NSUInteger index = [self.collectionOfViews indexOfObject:viewController];
+        
+        index++;
+        
+        if (index == 3) {
+            return nil;
+        }
+        
+        return [self.collectionOfViews objectAtIndex:index];
+    }
+    else {
         return nil;
     }
-    
-    return [self.collectionOfViews objectAtIndex:index];
     
 }
 
