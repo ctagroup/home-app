@@ -2,12 +2,13 @@
 <resources>
     <color name="transparent">#00000000</color>
     <color name="black">#000000</color>
-    <color name="action_bar">#2b1a60</color>
+    <color name="action_bar">#ff332478</color>
+    <!--<color name="action_bar">#2b1a60</color>-->
     <color name="tab_selected">#f6c606</color>
     <color name="button_positive">#f5c505</color>
     <color name="button_positive_light">#ffffdd05</color>
     <color name="button_positive_stroke">#ffcb9d05</color>
-    <color name="button_negative">#ff3d2b96</color>
+    <color name="button_negative">#ff332478</color>
     <color name="button_negative_light">#ff5240dd</color>
     <color name="button_negative_stroke">#ff2c1f67</color>
 </resources>

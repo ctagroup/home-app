@@ -1,6 +1,7 @@
 package edu.weber.housing1000;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.location.Location;
@@ -12,8 +13,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -187,6 +193,14 @@ public class SurveyFlowActivity extends ActionBarActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Dismiss any dialogs to prevent WindowLeaked exceptions
+        dismissDialog();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -227,7 +241,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(getString(R.string.uh_oh));
             builder.setMessage(getString(R.string.error_problem_submitting_survey));
-            builder.show();
+            Utils.centerDialogMessageAndShow(builder);
         } else // survey response has already been submitted, move on to photos
         {
             // Submit the photos
@@ -261,7 +275,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(getString(R.string.uh_oh));
             builder.setMessage(getString(R.string.error_problem_submitting_photos));
-            builder.show();
+            Utils.centerDialogMessageAndShow(builder);
         }
     }
 
@@ -283,7 +297,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(getString(R.string.uh_oh));
             builder.setMessage(getString(R.string.error_problem_submitting_signature));
-            builder.show();
+            Utils.centerDialogMessageAndShow(builder);
         }
     }
 
@@ -293,18 +307,17 @@ public class SurveyFlowActivity extends ActionBarActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.success));
         builder.setMessage(getString(R.string.success_survey_response));
-        builder.setNeutralButton(getString(R.string.okay), new DialogInterface.OnClickListener() {
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onCancel(DialogInterface dialog) {
                 dialog.dismiss();
 
                 // Delete the folder containing any related files
                 deleteAllFolderFiles();
 
-                finish();
-            }
+                finish();            }
         });
-        builder.show();
+        Utils.centerDialogMessageAndShow(builder);
     }
 
     @Override
@@ -327,7 +340,8 @@ public class SurveyFlowActivity extends ActionBarActivity {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
-        }).show();
+        });
+        Utils.centerDialogMessageAndShow(builder);
     }
 
     private void deleteAllFolderFiles() {

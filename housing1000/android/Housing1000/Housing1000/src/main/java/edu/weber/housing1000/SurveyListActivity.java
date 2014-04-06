@@ -1,15 +1,18 @@
 package edu.weber.housing1000;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -56,6 +59,14 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Dismiss any dialogs to prevent WindowLeaked exceptions
+        dismissDialog();
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
@@ -87,6 +98,12 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
     {
         if (surveysListView != null)
             surveysListView.setAdapter(null);
+
+        if (!Utils.isOnline(this))
+        {
+            Utils.showNoInternetDialog(this, false);
+            return;
+        }
 
         // Start the loading dialog
         showProgressDialog(getString(R.string.please_wait), getString(R.string.downloading_surveys_list), "Dialog");
@@ -205,7 +222,7 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(getString(R.string.uh_oh));
             builder.setMessage(getString(R.string.error_problem_downloading_survey));
-            builder.show();
+            Utils.centerDialogMessageAndShow(builder);
         }
     }
 

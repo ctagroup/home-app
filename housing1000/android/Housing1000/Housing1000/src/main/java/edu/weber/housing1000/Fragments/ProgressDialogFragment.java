@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.support.v4.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.widget.TextView;
 
 /**
  * Created by Blake on 2/25/14.
@@ -27,7 +29,7 @@ public class ProgressDialogFragment extends DialogFragment {
         ProgressDialog progressDialog = new ProgressDialog(getActivity());
         progressDialog.setTitle(title);
         progressDialog.setMessage(message);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
 

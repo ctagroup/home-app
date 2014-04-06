@@ -1,11 +1,15 @@
 package edu.weber.housing1000;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.google.gson.GsonBuilder;
 
@@ -51,7 +55,14 @@ public class PitActivity extends ActionBarActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, PitFragment.newInstance(this), "PIT")
                     .commit();
-            getPitData();
+
+            if (Utils.isOnline(this)) {
+                getPitData();
+            }
+            else
+            {
+                Utils.showNoInternetDialog(this, true);
+            }
         }
         else
         {
@@ -67,6 +78,14 @@ public class PitActivity extends ActionBarActivity {
 
         if (surveyListing != null)
             outState.putSerializable("surveyListing", surveyListing);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Dismiss any dialogs to prevent WindowLeaked exceptions
+        dismissDialog();
     }
 
     @Override
@@ -118,16 +137,23 @@ public class PitActivity extends ActionBarActivity {
         if (success)
         {
             PitFragment pitFragment = (PitFragment) getSupportFragmentManager().findFragmentByTag("PIT");
-            pitFragment.loadUI();
+
+            if (!isFinishing() && !isDestroyed()) {
+                pitFragment.loadUI();
+            }
         }
         else
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(getString(R.string.uh_oh));
             builder.setMessage(getString(R.string.error_problem_downloading_pit));
-            builder.show();
-
-            finish();
+            builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    PitActivity.this.finish();
+                }
+            });
+            Utils.centerDialogMessageAndShow(builder);
         }
     }
 

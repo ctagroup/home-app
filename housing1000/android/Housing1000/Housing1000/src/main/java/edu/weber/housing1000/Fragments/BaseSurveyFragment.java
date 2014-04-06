@@ -3,6 +3,7 @@ package edu.weber.housing1000.Fragments;
 import android.animation.LayoutTransition;
 import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +13,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -35,6 +38,7 @@ import edu.weber.housing1000.Data.SurveyResponse;
 import edu.weber.housing1000.JSONParser;
 import edu.weber.housing1000.Questions.Question;
 import edu.weber.housing1000.R;
+import edu.weber.housing1000.Utils;
 
 /**
  * Created by Blake on 2/11/14.
@@ -117,6 +121,8 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
      * Handles the submit button click
      */
     public void submitButton() {
+        Utils.hideSoftKeyboard(getActivity());
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(getString(R.string.submit_survey_response));
         builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
@@ -124,7 +130,15 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
 
-                saveAnswers();
+                if (Utils.isOnline(getActivity()))
+                {
+                    saveAnswers();
+                }
+                else
+                {
+                    Utils.showNoInternetDialog(getActivity(), false);
+                }
+
             }
         });
         builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
@@ -153,7 +167,8 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
-        }).show();
+        });
+        Utils.centerDialogMessageAndShow(builder);
     }
 
     /**

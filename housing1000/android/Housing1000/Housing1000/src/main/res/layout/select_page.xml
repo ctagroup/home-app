@@ -7,7 +7,9 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    android:paddingTop="@dimen/margin_large"
+    android:paddingBottom="@dimen/margin_large">
 
     <ImageView
         android:id="@+id/imageView1"
@@ -25,7 +27,7 @@
     <Button style="@style/ButtonText"
         android:id="@+id/pitButton"
         android:layout_width="200dp"
-        android:layout_height="64dp"
+        android:layout_height="50dp"
         android:text="@string/point_in_time"
         android:textSize="18dp"
         android:background="@drawable/btn_positive"
@@ -37,7 +39,7 @@
         style="@style/ButtonText"
         android:id="@+id/dynamicWithApiButton"
         android:layout_width="200dp"
-        android:layout_height="64dp"
+        android:layout_height="50dp"
         android:layout_centerHorizontal="true"
         android:text="@string/surveys"
         android:textSize="18dp"
