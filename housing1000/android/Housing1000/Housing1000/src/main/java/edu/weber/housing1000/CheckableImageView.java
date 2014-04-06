@@ -16,7 +16,13 @@ public class CheckableImageView extends ImageView implements Checkable {
 
     @Override
     public void setChecked(boolean checked) {
-        this.checked = checked;
+        try
+        {
+            this.checked = checked;
+        } catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -26,6 +32,12 @@ public class CheckableImageView extends ImageView implements Checkable {
 
     @Override
     public void toggle() {
-        setChecked(!checked);
+        try
+        {
+            setChecked(!checked);
+        } catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
 }

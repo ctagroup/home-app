@@ -22,6 +22,7 @@ import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Fragments.ProgressDialogFragment;
 import edu.weber.housing1000.Fragments.SurveyListFragment;
 import edu.weber.housing1000.Fragments.SurveyListFragment.*;
+import edu.weber.housing1000.Helpers.ErrorHelper;
 import edu.weber.housing1000.Helpers.REST.RESTHelper;
 import edu.weber.housing1000.Helpers.REST.SurveyService;
 import retrofit.Callback;
@@ -42,19 +43,23 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_survey_list);
-        Utils.setActionBarColorToDefault(this);
+        try {
+            setContentView(R.layout.activity_survey_list);
+            Utils.setActionBarColorToDefault(this);
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new SurveyListFragment(), "SurveyListFragment")
-                    .commit();
-        }
-        else
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.container, new SurveyListFragment(), "SurveyListFragment")
+                        .commit();
+            } else {
+                surveyListings = savedInstanceState.getParcelableArrayList("surveyListings");
+
+                progressDialogFragment = (ProgressDialogFragment) getSupportFragmentManager().findFragmentByTag("Dialog");
+            }
+        } catch (Exception ex)
         {
-            surveyListings = savedInstanceState.getParcelableArrayList("surveyListings");
-
-            progressDialogFragment = (ProgressDialogFragment)getSupportFragmentManager().findFragmentByTag("Dialog");
+            ex.printStackTrace();
+            ErrorHelper.showError(this, ex.getMessage());
         }
     }
 
@@ -70,12 +75,24 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putParcelableArrayList("surveyListings", surveyListings);
+        try {
+            outState.putParcelableArrayList("surveyListings", surveyListings);
+        } catch (Exception ex)
+        {
+            ex.printStackTrace();
+            ErrorHelper.showError(this, ex.getMessage());
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_survey_list, menu);
+        try {
+            getMenuInflater().inflate(R.menu.menu_survey_list, menu);
+        } catch (Exception ex)
+        {
+            ex.printStackTrace();
+            ErrorHelper.showError(this, ex.getMessage());
+        }
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -128,38 +145,47 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
     public void onGetSurveyListingsTaskCompleted(ArrayList<SurveyListing> surveyListings) {
         dismissDialog();
 
-        SurveyListFragment fragment = (SurveyListFragment) this.getSupportFragmentManager().findFragmentByTag("SurveyListFragment");
+        try {
+            SurveyListFragment fragment = (SurveyListFragment) this.getSupportFragmentManager().findFragmentByTag("SurveyListFragment");
 
-        this.surveyListings = surveyListings;
+            this.surveyListings = surveyListings;
 
-        if (surveyListings != null && surveyListings.size() > 0)
+            if (surveyListings != null && surveyListings.size() > 0) {
+                surveyAdapter = new ArrayAdapter<>(
+                        SurveyListActivity.this,
+                        android.R.layout.simple_list_item_1,
+                        surveyListings);
+
+                surveysListView.setAdapter(surveyAdapter);
+                if (fragment != null)
+                    fragment.showNoSurveys(false);
+            } else {
+                if (fragment != null)
+                    fragment.showNoSurveys(true);
+            }
+        } catch (Exception ex)
         {
-            surveyAdapter = new ArrayAdapter<>(
-                    SurveyListActivity.this,
-                    android.R.layout.simple_list_item_1,
-                    surveyListings );
-
-            surveysListView.setAdapter(surveyAdapter);
-            if (fragment != null)
-                fragment.showNoSurveys(false);
-        }
-        else
-        {
-            if (fragment != null)
-                fragment.showNoSurveys(true);
+            ex.printStackTrace();
+            ErrorHelper.showError(this, ex.getMessage());
         }
     }
 
     @Override
     public void setListView(ListView listView) {
-        surveysListView = listView;
+        try {
+            surveysListView = listView;
 
-        surveysListView.setOnItemClickListener(surveyClickListener);
+            surveysListView.setOnItemClickListener(surveyClickListener);
 
-        if (surveyListings != null && !surveyListings.isEmpty())
-            onGetSurveyListingsTaskCompleted(surveyListings);
-        else
-            getSurveyList();
+            if (surveyListings != null && !surveyListings.isEmpty())
+                onGetSurveyListingsTaskCompleted(surveyListings);
+            else
+                getSurveyList();
+        } catch (Exception ex)
+        {
+            ex.printStackTrace();
+            ErrorHelper.showError(this, ex.getMessage());
+        }
     }
 
     /**
@@ -177,59 +203,73 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
 
     private void loadSurvey(long rowId)
     {
-        // Start the loading dialog
-        showProgressDialog(getString(R.string.please_wait), getString(R.string.downloading_survey), "Dialog");
+        try {
+            // Start the loading dialog
+            showProgressDialog(getString(R.string.please_wait), getString(R.string.downloading_survey), "Dialog");
 
-        RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoDeserialize(this, null);
+            RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoDeserialize(this, null);
 
-        SurveyService service = restAdapter.create(SurveyService.class);
+            SurveyService service = restAdapter.create(SurveyService.class);
 
-        service.getSurvey(String.valueOf(rowId), new Callback<String>() {
-            @Override
-            public void success(String result, Response response) {
-                try {
-                    String json = RESTHelper.convertStreamToString(response.getBody().in());
-                    onGetSingleSurveyTaskCompleted(json);
-                } catch (IOException e) {
-                    e.printStackTrace();
+            service.getSurvey(String.valueOf(rowId), new Callback<String>() {
+                @Override
+                public void success(String result, Response response) {
+                    try {
+                        String json = RESTHelper.convertStreamToString(response.getBody().in());
+                        onGetSingleSurveyTaskCompleted(json);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        onGetSingleSurveyTaskCompleted("");
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
                     onGetSingleSurveyTaskCompleted("");
                 }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                onGetSingleSurveyTaskCompleted("");
-            }
-        });
-
+            });
+        } catch (Exception ex)
+        {
+            ex.printStackTrace();
+            ErrorHelper.showError(this, ex.getMessage());
+        }
     }
 
     public void onGetSingleSurveyTaskCompleted(String surveyJson) {
         dismissDialog();
 
-        if (!surveyJson.isEmpty())
-        {
-            chosenSurveyListing.setJson(surveyJson);
+        try {
+            if (!surveyJson.isEmpty()) {
+                chosenSurveyListing.setJson(surveyJson);
 
-            Intent launchSurvey = new Intent(SurveyListActivity.this,
-                    SurveyFlowActivity.class);
+                Intent launchSurvey = new Intent(SurveyListActivity.this,
+                        SurveyFlowActivity.class);
 
-            launchSurvey.putExtra(SurveyFlowActivity.EXTRA_SURVEY, (Serializable) chosenSurveyListing);
-            startActivity(launchSurvey);
-        }
-        else
+                launchSurvey.putExtra(SurveyFlowActivity.EXTRA_SURVEY, (Serializable) chosenSurveyListing);
+                startActivity(launchSurvey);
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(getString(R.string.uh_oh));
+                builder.setMessage(getString(R.string.error_problem_downloading_survey));
+                Utils.centerDialogMessageAndShow(builder);
+            }
+        } catch (Exception ex)
         {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(getString(R.string.uh_oh));
-            builder.setMessage(getString(R.string.error_problem_downloading_survey));
-            Utils.centerDialogMessageAndShow(builder);
+            ex.printStackTrace();
+            ErrorHelper.showError(this, ex.getMessage());
         }
     }
 
     public void showProgressDialog(String title, String message, String tag)
     {
-        progressDialogFragment = ProgressDialogFragment.newInstance(title, message);
-        progressDialogFragment.show(getSupportFragmentManager(), tag);
+        try {
+            progressDialogFragment = ProgressDialogFragment.newInstance(title, message);
+            progressDialogFragment.show(getSupportFragmentManager(), tag);
+        } catch (Exception ex)
+        {
+            ex.printStackTrace();
+            ErrorHelper.showError(this, ex.getMessage());
+        }
     }
 
     public void dismissDialog(){

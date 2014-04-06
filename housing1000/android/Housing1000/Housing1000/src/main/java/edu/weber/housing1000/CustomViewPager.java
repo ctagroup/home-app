@@ -13,20 +13,29 @@ public class CustomViewPager extends ViewPager {
 
     public CustomViewPager(Context context) {
         super(context);
-        if (!isInEditMode())
-            myActivity = (SurveyFlowActivity) context;
+        try {
+            if (!isInEditMode())
+                myActivity = (SurveyFlowActivity) context;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     public CustomViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
-        if (!isInEditMode())
-            myActivity = (SurveyFlowActivity) context;
+        try
+        {
+            if (!isInEditMode())
+                myActivity = (SurveyFlowActivity) context;
+        } catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent arg0) {
         return myActivity.getIsSignatureCaptured() && super.onInterceptTouchEvent(arg0);
-
     }
 
     @Override

@@ -27,26 +27,56 @@ public class ImageAdapter extends BaseAdapter {
     private Context mContext;
 
     public ImageAdapter(Context c) {
-        mContext = c;
-        images = new ArrayList<>();
+        try
+        {
+            mContext = c;
+            images = new ArrayList<>();
+        } catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
 
     public ImageAdapter(Context c, ArrayList<String> images) {
-        mContext = c;
-        this.images = images;
+        try
+        {
+            mContext = c;
+            this.images = images;
+        } catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
 
     public void addImagePath(String path) {
-        images.add(path);
+        try
+        {
+            images.add(path);
+        } catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
 
     public void removeImage(String path) {
-        images.remove(path);
+        try
+        {
+            images.remove(path);
+        } catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
 
     public void removeImage(int index) {
-        FileHelper.deleteAllFiles(new File(images.get(index)));
-        images.remove(index);
+        try
+        {
+            FileHelper.deleteAllFiles(new File(images.get(index)));
+            images.remove(index);
+        } catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
 
     public int getCount() {
