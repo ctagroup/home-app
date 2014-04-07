@@ -7,10 +7,13 @@
 //
 
 #import "DisclaimerViewController.h"
+#import "HousingAppDelegate.h"
+#import <RNDecryptor.h>
+
 
 @interface DisclaimerViewController ()
-@property (weak, nonatomic) IBOutlet UIButton *cancel;
 @end
+
 
 @implementation DisclaimerViewController
 
@@ -25,6 +28,21 @@
 
 - (void)viewDidLoad
 {
+    _scrollableDisclaimer.text = @"PLEASE READ THIS DOCUMENT CAREFULLY. YOUR SIGNATURE IS REQUIRED FOR PARTICIPATION. YOU MUST BE AT LEAST 18 YEARS OF AGE TO GIVE YOUR CONSENT TO PARTICIPATE IN RESEARCH. IF YOU DESIRE A COPY OF THIS CONSENT FORM, YOU MAY REQUEST ONE AND WE WILL PROVIDE IT. For now I will just type a gajillion things into this until I am satisfied that we have enough space covered to make this fully scrollable but then again, legal jargon can be quite long winded indeed... for that we will make more and more and more and mroe and more and more and more and more this is the end of the world as we know it... and I feel fine.";
+    _scrollableDisclaimer.textColor = [UIColor darkGrayColor];
+    _scrollableDisclaimer.font = [UIFont systemFontOfSize:14];
+    [_scrollableDisclaimer setBackgroundColor:[UIColor clearColor]];
+    _scrollableDisclaimer.editable = NO;
+    _scrollableDisclaimer.scrollEnabled = YES;
+    
+    HousingAppDelegate *appDelegate = [[UIApplication sharedApplication]delegate];
+    NSError *error;
+    //decrypting the data
+    NSData *decryptedData = [RNDecryptor decryptData:appDelegate.encryptedSignature
+                                        withPassword:@"UberSecretPassword"
+                                               error:&error];
+    //setting as sample image
+    self.signatureExample.image = [UIImage imageWithData:decryptedData];
     [super viewDidLoad];
 }
 

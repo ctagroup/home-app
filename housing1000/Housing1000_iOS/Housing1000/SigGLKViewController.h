@@ -13,6 +13,7 @@
 @interface SigGLKViewController : GLKViewController
 @property (strong, nonatomic) IBOutlet PPSSignatureView *signatureView;
 @property (weak, nonatomic) IBOutlet UIButton *accept;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *clear;
 
 
 @end

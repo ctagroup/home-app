@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface DisclaimerViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UITextView *scrollableDisclaimer;
+@property (weak, nonatomic) IBOutlet UIImageView *signatureExample;
 
 @end

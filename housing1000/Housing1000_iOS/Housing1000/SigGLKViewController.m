@@ -27,6 +27,9 @@
     }
     return self;
 }
+- (IBAction)clear:(id)sender {
+    signatureView.erase;
+}
 
 - (void)viewDidLoad
 {
@@ -43,6 +46,16 @@
     HousingAppDelegate *appDelegate = [[UIApplication sharedApplication]delegate];
     appDelegate.tempSig = signatureView.signatureImage;
     signatureView.erase;
+}
+
+-(BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskLandscapeLeft;
 }
 
 @end

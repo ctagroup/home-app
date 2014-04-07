@@ -4,12 +4,27 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Pods-CAAnimationBlocks.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-JSONModel.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-LMAlertView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-PPSSignatureView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-RBBAnimation.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -27,22 +42,37 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>4249E47024144058A0C77757</key>
+		<key>0AC0B15E589D4406A4824497</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5214E0488ECD428AB580E404</key>
+		<key>356FCCD9B543434AAEBDFF61</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8750F6C07D304054A67621AA</key>
+		<key>49CC235A88B04A75BF92FD9F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AE3EA0FDB21F4A98A21767E1</key>
+		<key>8F38B18EFE344FAA8F8FB481</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BEF0B824A9B64AD0BEEE7211</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C7C9D0703E2541D2A2340580</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FD88A2720B804CA5A4950D61</key>
 		<dict>
 			<key>primary</key>
 			<true/>
