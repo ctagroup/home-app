@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
+    <string name="notice">Notice...</string>
     <string name="action_camera">Take Picture</string>
     <string name="action_clear">Clear</string>
     <string name="action_delete">Delete</string>
@@ -64,6 +64,7 @@
     <string name="submit_survey_response">Submit the survey response?</string>
     <string name="success">Success!</string>
     <string name="success_survey_response">The survey response and image(s) have been successfully sent.</string>
+    <string name="success_pit_response">The survey response has been successfully sent.</string>
     <string name="surveys">Surveys</string>
     <string name="tap_here_to_sign">Tap Here to Sign</string>
     <string name="time">Time</string>

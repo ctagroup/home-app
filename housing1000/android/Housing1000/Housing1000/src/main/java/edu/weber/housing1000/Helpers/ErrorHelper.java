@@ -28,4 +28,40 @@ public class ErrorHelper {
             }
         });
     }
+
+    public static void showAlert(Context context, String sAlert)
+    {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+
+        alertDialog.setMessage(sAlert);
+        alertDialog.setTitle((R.string.notice));
+        alertDialog.setPositiveButton(R.string.okay, null);
+        alertDialog.setCancelable(true);
+        Utils.centerDialogMessageAndShow(alertDialog);
+
+        alertDialog.setPositiveButton(R.string.okay, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    public static void showSuccess(Context context, String sSuccess)
+    {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+
+        alertDialog.setMessage(sSuccess);
+        alertDialog.setTitle((R.string.success));
+        alertDialog.setPositiveButton(R.string.okay, null);
+        alertDialog.setCancelable(true);
+        Utils.centerDialogMessageAndShow(alertDialog);
+
+        alertDialog.setPositiveButton(R.string.okay, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+    }
 }

@@ -137,11 +137,16 @@ public class SignatureFragment extends SurveyAppFragment {
      * Loads the signature image from the byte array that is in memory
      */
     private void loadImage() {
-        Bitmap signature = BitmapFactory.decodeByteArray(signatureImageBytes, 0, signatureImageBytes.length);
+        try {
+            Bitmap signature = BitmapFactory.decodeByteArray(signatureImageBytes, 0, signatureImageBytes.length);
 
-        signatureImageView.setImageBitmap(signature);
-        tapHereToSignTextView.setVisibility(View.GONE);
-        myActivity.setIsSignatureCaptured(true);
+            signatureImageView.setImageBitmap(signature);
+            tapHereToSignTextView.setVisibility(View.GONE);
+            myActivity.setIsSignatureCaptured(true);
+        } catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
 
     public void submitSignature() {

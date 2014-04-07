@@ -82,32 +82,20 @@ public class SurveyFlowActivity extends ActionBarActivity {
     }
 
     public boolean getIsSignatureCaptured() {
-        try {
-            if (isSignatureCaptured && mTabs.getVisibility() != View.VISIBLE) {
-                mTabs.setVisibility(View.VISIBLE);
-            } else if (!isSignatureCaptured) {
-                mTabs.setVisibility(View.GONE);
-                mViewPager.setCurrentItem(0);
-            }
-        } catch (Exception ex)
-        {
-            ex.printStackTrace();
-            ErrorHelper.showError(this, ex.getMessage());
+        if (isSignatureCaptured && mTabs.getVisibility() != View.VISIBLE) {
+            mTabs.setVisibility(View.VISIBLE);
+        } else if (!isSignatureCaptured) {
+            mTabs.setVisibility(View.GONE);
+            mViewPager.setCurrentItem(0);
         }
 
         return isSignatureCaptured;
     }
 
     public void setIsSignatureCaptured(boolean value) {
-        try {
-            isSignatureCaptured = value;
+        isSignatureCaptured = value;
 
-            getIsSignatureCaptured();
-        } catch (Exception ex)
-        {
-            ex.printStackTrace();
-            ErrorHelper.showError(this, ex.getMessage());
-        }
+        getIsSignatureCaptured();
     }
 
     public SurveyListing getSurveyListing() {
@@ -117,90 +105,84 @@ public class SurveyFlowActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try {
-            setContentView(R.layout.activity_survey_flow);
-            Utils.setActionBarColorToDefault(this);
+        setContentView(R.layout.activity_survey_flow);
+        Utils.setActionBarColorToDefault(this);
 
-            gps = new GPSTracker(this);
+        gps = new GPSTracker(this);
 
-            // Restore state after being recreated
-            if (savedInstanceState != null) {
-                surveyListing = (SurveyListing) savedInstanceState.getSerializable("surveyListing");
-                folderHash = savedInstanceState.getString("folderHash");
-                currentLocation = savedInstanceState.getParcelable("currentLocation");
-                isSignatureCaptured = savedInstanceState.getBoolean("isSignatureCaptured");
-                clientSurveyId = savedInstanceState.getString("clientSurveyId");
-            } else {
-                // Grab the survey listing from the extras
-                surveyListing = (SurveyListing) getIntent().getSerializableExtra(EXTRA_SURVEY);
-                generateFolderHash();
+        // Restore state after being recreated
+        if (savedInstanceState != null) {
+            surveyListing = (SurveyListing) savedInstanceState.getSerializable("surveyListing");
+            folderHash = savedInstanceState.getString("folderHash");
+            currentLocation = savedInstanceState.getParcelable("currentLocation");
+            isSignatureCaptured = savedInstanceState.getBoolean("isSignatureCaptured");
+            clientSurveyId = savedInstanceState.getString("clientSurveyId");
+        } else {
+            // Grab the survey listing from the extras
+            surveyListing = (SurveyListing) getIntent().getSerializableExtra(EXTRA_SURVEY);
+            generateFolderHash();
 
-                progressDialogFragment = (ProgressDialogFragment) getSupportFragmentManager().findFragmentByTag("Dialog");
+            progressDialogFragment = (ProgressDialogFragment) getSupportFragmentManager().findFragmentByTag("Dialog");
+        }
+
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (CustomViewPager) findViewById(R.id.pager);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setOffscreenPageLimit(3);
+
+        ViewPager.OnPageChangeListener mPageChangeListener = new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i2) {
+
             }
 
-            // Create the adapter that will return a fragment for each of the three
-            // primary sections of the activity.
-            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+            @Override
+            public void onPageSelected(int i) {
+                final ActionBar actionBar = getSupportActionBar();
 
-            // Set up the ViewPager with the sections adapter.
-            mViewPager = (CustomViewPager) findViewById(R.id.pager);
-            mViewPager.setAdapter(mSectionsPagerAdapter);
-            mViewPager.setOffscreenPageLimit(3);
+                String actionBarTitle = ((SurveyAppFragment) mSectionsPagerAdapter.getItem(i)).getActionBarTitle();
 
-            ViewPager.OnPageChangeListener mPageChangeListener = new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int i, float v, int i2) {
+                actionBar.setTitle(actionBarTitle != null ? actionBarTitle : getResources().getString(R.string.app_name));
 
-                }
-
-                @Override
-                public void onPageSelected(int i) {
-                    final ActionBar actionBar = getSupportActionBar();
-
-                    String actionBarTitle = ((SurveyAppFragment) mSectionsPagerAdapter.getItem(i)).getActionBarTitle();
-
-                    actionBar.setTitle(actionBarTitle != null ? actionBarTitle : getResources().getString(R.string.app_name));
-
-                    if (i == 0) {
-                        getLocation();
+                if (i == 0) {
+                    getLocation();
 
 //                    String message = "Location Details" +
 //                            "\nLatitude: " + gps.getLatitude() +
 //                            "\nLongitude: " + gps.getLongitude() +
 //                            "\nTime: " + gps.getTime();
 //                    Toast.makeText(SurveyFlowActivity.this, message, Toast.LENGTH_SHORT).show();
-                    }
                 }
-
-                @Override
-                public void onPageScrollStateChanged(int i) {
-
-                }
-            };
-            // Set the page change listener
-            mViewPager.setOnPageChangeListener(mPageChangeListener);
-
-            // Bind the tabs to the ViewPager
-            mTabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-            mTabs.setShouldExpand(true);
-            mTabs.setViewPager(mViewPager);
-            mTabs.setIndicatorColorResource(R.color.tab_selected);
-
-            // Set the page change listener for the tabs
-            mTabs.setOnPageChangeListener(mPageChangeListener);
-
-            if (savedInstanceState == null || mViewPager.getCurrentItem() == 0) {
-                // Force a page change update
-                mViewPager.setCurrentItem(1);
-                mViewPager.setCurrentItem(0);
             }
 
-            getIsSignatureCaptured();
-        } catch (Exception ex)
-        {
-            ex.printStackTrace();
-            ErrorHelper.showError(this, ex.getMessage());
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        };
+        // Set the page change listener
+        mViewPager.setOnPageChangeListener(mPageChangeListener);
+
+        // Bind the tabs to the ViewPager
+        mTabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        mTabs.setShouldExpand(true);
+        mTabs.setViewPager(mViewPager);
+        mTabs.setIndicatorColorResource(R.color.tab_selected);
+
+        // Set the page change listener for the tabs
+        mTabs.setOnPageChangeListener(mPageChangeListener);
+
+        if (savedInstanceState == null || mViewPager.getCurrentItem() == 0) {
+            // Force a page change update
+            mViewPager.setCurrentItem(1);
+            mViewPager.setCurrentItem(0);
         }
+
+        getIsSignatureCaptured();
     }
 
     @Override
@@ -269,10 +251,6 @@ public class SurveyFlowActivity extends ActionBarActivity {
             setSubmittingResponse(false);
 
             ErrorHelper.showError(this,getString(R.string.error_problem_submitting_survey));
-            //AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            //builder.setTitle(getString(R.string.uh_oh));
-            //builder.setMessage(getString(R.string.error_problem_submitting_survey));
-            //Utils.centerDialogMessageAndShow(builder);
         } else // survey response has already been submitted, move on to photos
         {
             // Submit the photos
@@ -304,10 +282,6 @@ public class SurveyFlowActivity extends ActionBarActivity {
             setSubmittingResponse(false);
 
             ErrorHelper.showError(this,getString(R.string.error_problem_submitting_photos));
-            //AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            //builder.setTitle(getString(R.string.uh_oh));
-            //builder.setMessage(getString(R.string.error_problem_submitting_photos));
-            //Utils.centerDialogMessageAndShow(builder);
         }
     }
 
@@ -327,116 +301,81 @@ public class SurveyFlowActivity extends ActionBarActivity {
             setSubmittingResponse(false);
 
             ErrorHelper.showError(this, getString(R.string.error_problem_submitting_signature));
-            //AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            //builder.setTitle(getString(R.string.uh_oh));
-            //builder.setMessage(getString(R.string.error_problem_submitting_signature));
-            //Utils.centerDialogMessageAndShow(builder);
         }
     }
 
     private void showSendSuccessMessage() {
-        try {
-            setSubmittingResponse(false);
+        setSubmittingResponse(false);
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(getString(R.string.success));
-            builder.setMessage(getString(R.string.success_survey_response));
-            builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialog) {
-                    dialog.dismiss();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.success));
+        builder.setMessage(getString(R.string.success_survey_response));
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                dialog.dismiss();
 
-                    // Delete the folder containing any related files
-                    deleteAllFolderFiles();
+                // Delete the folder containing any related files
+                deleteAllFolderFiles();
 
-                    finish();
-                }
-            });
-            Utils.centerDialogMessageAndShow(builder);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            ErrorHelper.showError(this, ex.getMessage());
-        }
+                finish();
+            }
+        });
+        Utils.centerDialogMessageAndShow(builder);
     }
 
     @Override
     public void onBackPressed() {
-        try {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(getString(R.string.cancel_this_survey));
-            builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.cancel_this_survey));
+        builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
 
-                    // Delete the folder containing any related files
-                    deleteAllFolderFiles();
+                // Delete the folder containing any related files
+                deleteAllFolderFiles();
 
-                    finish();
-                }
-            });
-            builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            Utils.centerDialogMessageAndShow(builder);
-        } catch (Exception ex)
-        {
-            ex.printStackTrace();
-            ErrorHelper.showError(this, ex.getMessage());
-        }
+                finish();
+            }
+        });
+        builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        Utils.centerDialogMessageAndShow(builder);
     }
 
     private void deleteAllFolderFiles() {
-        try {
-            File surveyDir = new File(FileHelper.getAbsoluteFilePath(getFolderHash(), ""));
-            if (surveyDir.exists()) {
-                Log.d("DELETING SURVEY DIR", surveyDir.getAbsolutePath());
-                FileHelper.deleteAllFiles(surveyDir);
-            }
-        } catch (Exception ex)
-        {
-            ex.printStackTrace();
-            ErrorHelper.showError(this, ex.getMessage());
+        File surveyDir = new File(FileHelper.getAbsoluteFilePath(getFolderHash(), ""));
+        if (surveyDir.exists()) {
+            Log.d("DELETING SURVEY DIR", surveyDir.getAbsolutePath());
+            FileHelper.deleteAllFiles(surveyDir);
         }
     }
 
     private void generateFolderHash() {
-        try {
-            HashFunction hf = Hashing.md5();
-            HashCode hc = hf.newHasher().putLong(System.currentTimeMillis()).hash();
+        HashFunction hf = Hashing.md5();
+        HashCode hc = hf.newHasher().putLong(System.currentTimeMillis()).hash();
 
-            folderHash = hc.toString();
+        folderHash = hc.toString();
 
-            Log.d("FOLDER HASH", folderHash);
-        } catch (Exception ex)
-        {
-            ex.printStackTrace();
-            ErrorHelper.showError(this,ex.getMessage());
-        }
+        Log.d("FOLDER HASH", folderHash);
     }
 
     public Location getLocation() {
         if (gps.canGetLocation()) {
             currentLocation = gps.getLocation();
-
-
         }
         gps.stopUsingGPS();
         return currentLocation;
     }
 
     public void showProgressDialog(String title, String message, String tag) {
-        try {
-            progressDialogFragment = ProgressDialogFragment.newInstance(title, message);
-            progressDialogFragment.show(getSupportFragmentManager(), tag);
-        } catch (Exception ex)
-        {
-            ex.printStackTrace();
-            ErrorHelper.showError(this, ex.getMessage());
-        }
+        progressDialogFragment = ProgressDialogFragment.newInstance(title, message);
+        progressDialogFragment.show(getSupportFragmentManager(), tag);
     }
 
     private void dismissDialog() {

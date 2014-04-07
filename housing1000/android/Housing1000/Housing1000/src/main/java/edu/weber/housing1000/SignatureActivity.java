@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 
 import edu.weber.housing1000.Fragments.SignatureFragment;
 import edu.weber.housing1000.Helpers.EncryptionHelper;
-import edu.weber.housing1000.Helpers.ErrorHelper;
 import edu.weber.housing1000.Helpers.FileHelper;
 import edu.weber.housing1000.Helpers.ImageHelper;
 
@@ -38,52 +37,46 @@ public class SignatureActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try {
-            this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            setContentView(R.layout.signature);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.signature);
 
-            folderHash = getIntent().getStringExtra("folderHash");
+        folderHash = getIntent().getStringExtra("folderHash");
 
-            // Setting this to -1 until the RestHelper is taken off of the main thread
-            // Side note: any IO/slow operations need to be done on a separate thread
-            hmsId = -1;
+        // Setting this to -1 until the RestHelper is taken off of the main thread
+        // Side note: any IO/slow operations need to be done on a separate thread
+        hmsId = -1;
 
-            mGetSign = (Button) findViewById(R.id.getsign);
-            mContent = (LinearLayout) findViewById(R.id.signatureLinearLayout);
-            mSignature = new Signature(this, null);
-            mSignature.setBackgroundColor(Color.WHITE);
-            mContent.addView(mSignature, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-            mClear = (Button) findViewById(R.id.clear);
-            mGetSign.setEnabled(false);
-            mCancel = (Button) findViewById(R.id.cancel);
-            mView = mContent;
+        mGetSign = (Button) findViewById(R.id.getsign);
+        mContent = (LinearLayout) findViewById(R.id.signatureLinearLayout);
+        mSignature = new Signature(this, null);
+        mSignature.setBackgroundColor(Color.WHITE);
+        mContent.addView(mSignature, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        mClear = (Button) findViewById(R.id.clear);
+        mGetSign.setEnabled(false);
+        mCancel = (Button) findViewById(R.id.cancel);
+        mView = mContent;
 
-            mClear.setOnClickListener(new OnClickListener() {
-                public void onClick(View v) {
-                    Log.v("log_tag", "Panel Cleared");
-                    mSignature.clear();
-                    mGetSign.setEnabled(false);
-                }
-            });
+        mClear.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                Log.v("log_tag", "Panel Cleared");
+                mSignature.clear();
+                mGetSign.setEnabled(false);
+            }
+        });
 
-            mGetSign.setOnClickListener(new OnClickListener() {
-                public void onClick(View v) {
-                    mView.setDrawingCacheEnabled(true);
-                    mSignature.save(mView);
-                    finish();
-                }
-            });
+        mGetSign.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                mView.setDrawingCacheEnabled(true);
+                mSignature.save(mView);
+                finish();
+            }
+        });
 
-            mCancel.setOnClickListener(new OnClickListener() {
-                public void onClick(View v) {
-                    finish();
-                }
-            });
-        } catch (Exception ex)
-        {
-            ex.printStackTrace();
-            ErrorHelper.showError(this, ex.getMessage());
-        }
+        mCancel.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override
@@ -104,18 +97,11 @@ public class SignatureActivity extends Activity {
 
         public Signature(Context context, AttributeSet attrs) {
             super(context, attrs);
-            try
-            {
-                paint.setAntiAlias(true);
-                paint.setColor(Color.BLACK);
-                paint.setStyle(Paint.Style.STROKE);
-                paint.setStrokeJoin(Paint.Join.ROUND);
-                paint.setStrokeWidth(STROKE_WIDTH);
-            } catch (Exception ex)
-            {
-                ex.printStackTrace();
-                ErrorHelper.showError(context, ex.getMessage());
-            }
+            paint.setAntiAlias(true);
+            paint.setColor(Color.BLACK);
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeJoin(Paint.Join.ROUND);
+            paint.setStrokeWidth(STROKE_WIDTH);
         }
 
         public void save(View v) {
@@ -162,8 +148,6 @@ public class SignatureActivity extends Activity {
 
         @Override
         public boolean onTouchEvent(MotionEvent event) {
-            try
-            {
             float eventX = event.getX();
             float eventY = event.getY();
             mGetSign.setEnabled(true);
@@ -203,44 +187,27 @@ public class SignatureActivity extends Activity {
             lastTouchY = eventY;
 
             return true;
-
-            } catch (Exception ex)
-            {
-                ex.printStackTrace();
-                return false;
-            }
         }
 
         private void expandDirtyRect(float historicalX, float historicalY) {
-            try {
-                if (historicalX < dirtyRect.left) {
-                    dirtyRect.left = historicalX;
-                } else if (historicalX > dirtyRect.right) {
-                    dirtyRect.right = historicalX;
-                }
+            if (historicalX < dirtyRect.left) {
+                dirtyRect.left = historicalX;
+            } else if (historicalX > dirtyRect.right) {
+                dirtyRect.right = historicalX;
+            }
 
-                if (historicalY < dirtyRect.top) {
-                    dirtyRect.top = historicalY;
-                } else if (historicalY > dirtyRect.bottom) {
-                    dirtyRect.bottom = historicalY;
-                }
-            } catch (Exception ex)
-            {
-                ex.printStackTrace();
+            if (historicalY < dirtyRect.top) {
+                dirtyRect.top = historicalY;
+            } else if (historicalY > dirtyRect.bottom) {
+                dirtyRect.bottom = historicalY;
             }
         }
 
         private void resetDirtyRect(float eventX, float eventY) {
-            try
-            {
-                dirtyRect.left = Math.min(lastTouchX, eventX);
-                dirtyRect.right = Math.max(lastTouchX, eventX);
-                dirtyRect.top = Math.min(lastTouchY, eventY);
-                dirtyRect.bottom = Math.max(lastTouchY, eventY);
-            } catch (Exception ex)
-            {
-                ex.printStackTrace();
-            }
+            dirtyRect.left = Math.min(lastTouchX, eventX);
+            dirtyRect.right = Math.max(lastTouchX, eventX);
+            dirtyRect.top = Math.min(lastTouchY, eventY);
+            dirtyRect.bottom = Math.max(lastTouchY, eventY);
         }
     }
 }
