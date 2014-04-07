@@ -13,24 +13,14 @@ public class CustomViewPager extends ViewPager {
 
     public CustomViewPager(Context context) {
         super(context);
-        try {
-            if (!isInEditMode())
-                myActivity = (SurveyFlowActivity) context;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        if (!isInEditMode())
+            myActivity = (SurveyFlowActivity) context;
     }
 
     public CustomViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
-        try
-        {
-            if (!isInEditMode())
-                myActivity = (SurveyFlowActivity) context;
-        } catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
+        if (!isInEditMode())
+            myActivity = (SurveyFlowActivity) context;
     }
 
     @Override

@@ -273,17 +273,23 @@ public class PhotosFragment extends SurveyAppFragment {
         }
     }
 
+    // TODO: Modify for API10
     private class MultiChoiceListener implements GridView.MultiChoiceModeListener {
         @Override
         public void onItemCheckedStateChanged(android.view.ActionMode mode, int position, long id, boolean checked) {
-            int selectCount = photosGridView.getCheckedItemCount();
-            switch (selectCount) {
-                case 1:
-                    mode.setSubtitle("One item selected");
-                    break;
-                default:
-                    mode.setSubtitle("" + selectCount + " items selected");
-                    break;
+            try {
+                int selectCount = photosGridView.getCheckedItemCount();
+                switch (selectCount) {
+                    case 1:
+                        mode.setSubtitle("One item selected");
+                        break;
+                    default:
+                        mode.setSubtitle("" + selectCount + " items selected");
+                        break;
+                }
+            } catch (Exception ex)
+            {
+                ex.printStackTrace();
             }
         }
 

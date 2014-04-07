@@ -1,20 +1,14 @@
 package edu.weber.housing1000.Fragments;
 
 import android.animation.LayoutTransition;
-import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -186,7 +180,12 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
      * @return True if valid
      */
     public boolean validateForm() {
-        // TODO: Validate the form
+        // Form validation is done by limiting the characters
+        // that can be input into an answer field.  This is
+        // controlled on question creation.
+
+        // If there becomes required fields, then that will need
+        // to be handled here.
 
         return true;
     }

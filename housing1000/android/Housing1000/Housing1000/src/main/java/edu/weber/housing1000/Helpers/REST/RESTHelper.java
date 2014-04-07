@@ -54,6 +54,7 @@ public class RESTHelper {
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
             // From https://www.washington.edu/itconnect/security/ca/load-der.crt
             Certificate ca;
+            // TODO: Modify for API10
             try (InputStream caInput = context.getResources().openRawResource(R.raw.certificate)) {
                 ca = cf.generateCertificate(caInput);
                 System.out.println("ca=" + ((X509Certificate) ca).getSubjectDN());

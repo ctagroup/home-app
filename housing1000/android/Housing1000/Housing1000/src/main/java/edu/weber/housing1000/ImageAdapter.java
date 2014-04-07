@@ -27,25 +27,13 @@ public class ImageAdapter extends BaseAdapter {
     private Context mContext;
 
     public ImageAdapter(Context c) {
-        try
-        {
             mContext = c;
             images = new ArrayList<>();
-        } catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
     }
 
     public ImageAdapter(Context c, ArrayList<String> images) {
-        try
-        {
             mContext = c;
             this.images = images;
-        } catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
     }
 
     public void addImagePath(String path) {

@@ -2,7 +2,6 @@ package edu.weber.housing1000.Fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -127,20 +126,24 @@ public class PitFragment extends BaseSurveyFragment {
 
     public void loadUI()
     {
-        if (surveyListing == null) {
-            if (myActivity.getSurveyListing() == null)
-                return;
-            else
-                surveyListing = myActivity.getSurveyListing();
-        }
+        try {
+            if (surveyListing == null) {
+                if (myActivity.getSurveyListing() == null)
+                    return;
+                else
+                    surveyListing = myActivity.getSurveyListing();
+            }
 
-        ScrollView questionUI = generateQuestionUi(surveyListing);
+            ScrollView questionUI = generateQuestionUi(surveyListing);
 
-        if (questionUI != null)
+            if (questionUI != null) {
+                rootLayout.addView(questionUI);
+
+                populateAnswers();
+            }
+        } catch (Exception ex)
         {
-            rootLayout.addView(questionUI);
-
-            populateAnswers();
+            ex.printStackTrace();
         }
     }
 
