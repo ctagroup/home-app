@@ -136,8 +136,7 @@ public class PitActivity extends ActionBarActivity {
             if (success) {
                 PitFragment pitFragment = (PitFragment) getSupportFragmentManager().findFragmentByTag("PIT");
 
-                //TODO: Modify for API10
-                if (!isFinishing() && !isDestroyed()) {
+                if (!isFinishing()) {
                     pitFragment.loadUI();
                 }
             } else {

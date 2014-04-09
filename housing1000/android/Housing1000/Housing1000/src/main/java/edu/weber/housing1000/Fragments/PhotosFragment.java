@@ -1,5 +1,6 @@
 package edu.weber.housing1000.Fragments;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -273,23 +274,18 @@ public class PhotosFragment extends SurveyAppFragment {
         }
     }
 
-    // TODO: Modify for API10
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private class MultiChoiceListener implements GridView.MultiChoiceModeListener {
         @Override
         public void onItemCheckedStateChanged(android.view.ActionMode mode, int position, long id, boolean checked) {
-            try {
-                int selectCount = photosGridView.getCheckedItemCount();
-                switch (selectCount) {
-                    case 1:
-                        mode.setSubtitle("One item selected");
-                        break;
-                    default:
-                        mode.setSubtitle("" + selectCount + " items selected");
-                        break;
-                }
-            } catch (Exception ex)
-            {
-                ex.printStackTrace();
+            int selectCount = photosGridView.getCheckedItemCount();
+            switch (selectCount) {
+                case 1:
+                    mode.setSubtitle("One item selected");
+                    break;
+                default:
+                    mode.setSubtitle("" + selectCount + " items selected");
+                    break;
             }
         }
 

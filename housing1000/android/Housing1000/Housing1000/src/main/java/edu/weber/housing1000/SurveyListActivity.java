@@ -195,21 +195,23 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
     }
 
     public void onGetSingleSurveyTaskCompleted(String surveyJson) {
-        dismissDialog();
+        // If user hits back, loading will not happen
+        if (dismissDialog()) {
 
-        if (!surveyJson.isEmpty()) {
-            chosenSurveyListing.setJson(surveyJson);
+            if (!surveyJson.isEmpty()) {
+                chosenSurveyListing.setJson(surveyJson);
 
-            Intent launchSurvey = new Intent(SurveyListActivity.this,
-                    SurveyFlowActivity.class);
+                Intent launchSurvey = new Intent(SurveyListActivity.this,
+                        SurveyFlowActivity.class);
 
-            launchSurvey.putExtra(SurveyFlowActivity.EXTRA_SURVEY, (Serializable) chosenSurveyListing);
-            startActivity(launchSurvey);
-        } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(getString(R.string.uh_oh));
-            builder.setMessage(getString(R.string.error_problem_downloading_survey));
-            Utils.centerDialogMessageAndShow(builder);
+                launchSurvey.putExtra(SurveyFlowActivity.EXTRA_SURVEY, (Serializable) chosenSurveyListing);
+                startActivity(launchSurvey);
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(getString(R.string.uh_oh));
+                builder.setMessage(getString(R.string.error_problem_downloading_survey));
+                Utils.centerDialogMessageAndShow(builder);
+            }
         }
     }
 
@@ -219,10 +221,13 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
         progressDialogFragment.show(getSupportFragmentManager(), tag);
     }
 
-    public void dismissDialog(){
+    public boolean dismissDialog(){
         if (progressDialogFragment != null && progressDialogFragment.isAdded()) {
             progressDialogFragment.dismiss();
             progressDialogFragment = null;
+            return true;
         }
+
+        return false;
     }
 }
