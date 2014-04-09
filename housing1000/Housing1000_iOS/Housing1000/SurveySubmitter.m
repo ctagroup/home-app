@@ -12,6 +12,7 @@
 #import "SurveyResponseJSON.h"
 #import "JSONHTTPClient.h"
 #import "HttpConnectionHelper.h"
+#import "ImageUploader.h"
 
 @implementation SurveySubmitter
 
@@ -49,8 +50,22 @@
     
     NSLog(@"Json submission: %@", [response toDictionary]);
     HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] init];
-    [httpHelper postSurvey:^(NSMutableArray* results){} :[response toDictionary]];
+    [httpHelper postSurvey:^(NSMutableArray* results){
+        NSString* clientSurveyId = [results objectAtIndex:0];
+        [self postImages:clientSurveyId];
+    } :[response toDictionary]];
     
+}
+
+//Takes in the client survey ID returned from posting the survey so that the image file names can be appended with that
+-(void)postImages:(NSString*)clientSurveyId {
+    NSLog(@"Uploading images...");
+    
+    NSArray *items = [clientSurveyId componentsSeparatedByString:@"="]; //Make an array to get the last part of the string, after the equals sign
+    NSString *actualId = [[items lastObject] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];    //Get what's after the equals sign and strip it of whitespace
+    
+    ImageUploader *uploader = [[ImageUploader alloc] init];
+    [uploader uploadImages:actualId];
 }
 
 

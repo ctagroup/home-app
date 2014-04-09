@@ -10,6 +10,7 @@
 #import "HousingAppDelegate.h"
 #import <RNCryptor/RNEncryptor.h>
 #import "SurveyPageViewController.h"
+#import "ImagesContainer.h"
 
 @interface SigConfrimViewController ()
 
@@ -48,6 +49,8 @@
                                                  withSettings:kRNCryptorAES256Settings
                                                      password:@"UberSecretPassword"
                                                         error:&error];
+    [ImagesContainer setSignatureImage:self.sigToSave.image];
+    
     self.sigToSave.image = nil;  //clearing unencrypted version in view
     
     [SurveyPageViewController setWhetherAlreadySigned:YES]; //This is to allow the rest of the survey to be accessed once they've signed

@@ -26,9 +26,16 @@ NSString* urlString;
 id<HttpHandlerProtocol> httpHandler;    //Declared like this so it can be called polymorphically
 
 -(id)init {
+    returnedJsonData = nil;
     self.responseData = [NSMutableData data];
     trustedHosts = [NSArray arrayWithObjects:@"staging.ctagroup.org", nil];
+    callbackAction = nil;
     return self;
+}
+
+-(void)clearCallback:(CallbackToDoWhenFinished)callback {
+    callbackAction = callback;
+    callbackAction(nil);
 }
 
 -(NSMutableArray*)getSurveys:(CallbackToDoWhenFinished)callback {
@@ -138,7 +145,6 @@ id<HttpHandlerProtocol> httpHandler;    //Declared like this so it can be called
     NSLog(@"Connection: %@", conn.description);
     
     return returnedJsonData;
-    
 }
 
 
@@ -149,7 +155,6 @@ id<HttpHandlerProtocol> httpHandler;    //Declared like this so it can be called
     NSLog(@"%@ response: %@", actionDescription, response);
     [self.responseData setLength:0];
 }
-
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
     [self.responseData appendData:data];

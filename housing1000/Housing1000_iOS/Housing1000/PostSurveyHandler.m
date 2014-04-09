@@ -30,9 +30,15 @@
 }
 
 -(NSMutableArray*)handleDidFinishLoading:(NSMutableData*)responseData {
+    NSString* dataStr = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
+    NSLog(@"Response: %@", dataStr);
+    
+    NSMutableArray* resultString = [[NSMutableArray alloc] initWithObjects:dataStr, nil];   //Initialize with just the results string to be used by the image upload in SurveySubmitter
+    
     [self.alertDisplayer dismissSpinner];
     [self.alertDisplayer showMessageWithCloseButton:@"Submitted successfully." closeButtonText:@"Done"];
-    return NULL;
+    
+    return resultString;
 }
 
 

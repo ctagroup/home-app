@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="bgm-YS-kHp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="bgm-YS-kHp">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
         <!--Housing View Controller - Login-->
@@ -579,7 +579,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gZD-7p-sAz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3708" y="2459"/>
+            <point key="canvasLocation" x="3141" y="1712"/>
         </scene>
         <!--Photo View Controller - Photo-->
         <scene sceneID="u2c-e8-yBS">
@@ -646,56 +646,6 @@
             </objects>
             <point key="canvasLocation" x="3141" y="945"/>
         </scene>
-        <!--Signature View Controller - Signature-->
-        <scene sceneID="6Fe-mS-bmc">
-            <objects>
-                <viewController id="Mq7-43-H8c" customClass="SignatureViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Ez3-Db-N9p"/>
-                        <viewControllerLayoutGuide type="bottom" id="Okt-d8-ouy"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="6bS-AP-HhR">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y4J-zM-cOX" userLabel="tempDrawImage">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            </imageView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FdA-S2-rmU">
-                                <rect key="frame" x="0.0" y="524" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <items>
-                                    <barButtonItem style="plain" id="vY4-Uu-Gkj">
-                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="1eh-lt-59O">
-                                            <rect key="frame" x="16" y="6" width="287" height="33"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <state key="normal" title="Clear">
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="clearSig:" destination="Mq7-43-H8c" eventType="touchUpInside" id="GAj-g7-bnU"/>
-                                            </connections>
-                                        </button>
-                                    </barButtonItem>
-                                </items>
-                            </toolbar>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Signature" id="mOb-uT-bND">
-                        <barButtonItem key="backBarButtonItem" title="Signature" id="oyI-hC-bfN"/>
-                        <barButtonItem key="rightBarButtonItem" title="Save" id="UpX-q6-tSb"/>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="clearButton" destination="FdA-S2-rmU" id="lL7-oJ-c8O"/>
-                        <outlet property="tempDrawImage" destination="Y4J-zM-cOX" id="1Y6-Fk-RcB"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="c2K-14-YJr" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3708" y="1712"/>
-        </scene>
         <!--Sig Confrim View Controller - Confirmation-->
         <scene sceneID="0g7-VI-7m5">
             <objects>
@@ -741,89 +691,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ysQ-AI-DGV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2585" y="3239"/>
-        </scene>
-        <!--Survey Menu View Controller - Survey Menu-->
-        <scene sceneID="Itp-Fk-oaj">
-            <objects>
-                <viewController id="D1v-NU-X5r" customClass="SurveyMenuViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="o3E-f9-M4t"/>
-                        <viewControllerLayoutGuide type="bottom" id="ZCT-1X-W1a"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="dCb-xx-uxl">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3oi-p1-VkZ">
-                                <rect key="frame" x="53" y="141" width="215" height="44"/>
-                                <color key="backgroundColor" red="0.89754065689999996" green="0.56875078639999999" blue="0.02444025406" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="tintColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Survey">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jvx-qW-a8N">
-                                <rect key="frame" x="53" y="209" width="215" height="44"/>
-                                <color key="backgroundColor" red="0.89754065689999996" green="0.56875078639999999" blue="0.02444025406" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="tintColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Photo">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ds9-08-09E">
-                                <rect key="frame" x="53" y="277" width="215" height="44"/>
-                                <color key="backgroundColor" red="0.89754065689999996" green="0.56875078639999999" blue="0.02444025406" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="tintColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Submit">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="submitSurvey:" destination="D1v-NU-X5r" eventType="touchUpInside" id="MoC-Em-bNe"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BLf-do-fTM">
-                                <rect key="frame" x="53" y="337" width="215" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Test Encryption">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="JrR-fa-hdL" kind="push" id="5Mb-7o-Itw"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Survey Menu" id="XLz-de-RaS">
-                        <barButtonItem key="backBarButtonItem" title="Menu" id="RR7-1k-Rbj"/>
-                        <barButtonItem key="leftBarButtonItem" style="plain" id="B0H-96-sPl">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Wda-fD-9dc">
-                                <rect key="frame" x="16" y="5" width="71" height="33"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <state key="normal" title="Signature">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="goBack:" destination="D1v-NU-X5r" eventType="touchUpInside" id="TPC-uM-akz"/>
-                                </connections>
-                            </button>
-                        </barButtonItem>
-                    </navigationItem>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
-                    <connections>
-                        <outlet property="back" destination="B0H-96-sPl" id="4Wg-Ji-49g"/>
-                        <outlet property="photoButton" destination="jvx-qW-a8N" id="1R6-g5-9A8"/>
-                        <outlet property="submitButton" destination="Ds9-08-09E" id="w3U-S1-2hZ"/>
-                        <outlet property="surveyButton" destination="3oi-p1-VkZ" id="PQx-on-5Fu"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="gDU-q4-HLX" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3141" y="1716"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="jkW-aU-3a0">

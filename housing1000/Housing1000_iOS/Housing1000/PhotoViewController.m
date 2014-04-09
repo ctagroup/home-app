@@ -7,6 +7,7 @@
 //
 
 #import "PhotoViewController.h"
+#import "ImagesContainer.h"
 
 @interface PhotoViewController ()
 
@@ -72,6 +73,7 @@
     
     UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
     self.imageView.image = chosenImage;
+    [ImagesContainer addPhotoImage:chosenImage];
     
     [picker dismissViewControllerAnimated:YES completion:NULL];
     

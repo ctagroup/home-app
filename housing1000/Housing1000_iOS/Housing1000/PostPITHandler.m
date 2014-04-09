@@ -30,6 +30,9 @@
 }
 
 -(NSMutableArray*)handleDidFinishLoading:(NSMutableData*)responseData {
+    NSString* dataStr = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
+    NSLog(@"Response: %@", dataStr);
+    
     [self.alertDisplayer dismissSpinner];
     [self.alertDisplayer showMessageWithCloseButton:@"Submitted successfully." closeButtonText:@"Done"];
     return NULL;
