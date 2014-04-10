@@ -184,8 +184,8 @@ public class SurveyFlowActivity extends ActionBarActivity {
             // Store the survey listing and folder hash
             outState.putSerializable("surveyListing", surveyListing);
             outState.putString("folderHash", folderHash);
-            if (SelectPageActivity.LOCATION != null)
-                outState.putParcelable("currentLocation", SelectPageActivity.LOCATION);
+            if (SelectPageActivity.getLocation() != null)
+                outState.putParcelable("currentLocation", SelectPageActivity.getLocation());
             outState.putBoolean("isSignatureCaptured", isSignatureCaptured);
             outState.putString("clientSurveyId", clientSurveyId);
         } catch (Exception ex)
