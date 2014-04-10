@@ -19,6 +19,7 @@
 @property (strong, nonatomic) NSNumber<Ignore> *orderId;
 @property (strong, nonatomic) NSNumber<Ignore> *parentQuestionId;
 @property (strong, nonatomic) NSString<Ignore> *parentRequiredAnswer;
+@property (strong, nonatomic) NSString<Ignore> *textBoxDataType;
 
 @property (strong, nonatomic) NSString *answer;
 @property (strong, nonatomic) NSNumber<Ignore> *surveyDataRowIndex;

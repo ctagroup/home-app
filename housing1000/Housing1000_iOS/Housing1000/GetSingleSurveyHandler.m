@@ -83,6 +83,7 @@
     question.orderId = [NSNumber numberWithInteger:[[currentQuestionInJSON objectForKey:@"OrderId"] integerValue]];
     question.parentQuestionId = [NSNumber numberWithInteger:[[currentQuestionInJSON objectForKey:@"ParentQuestionId"] integerValue]];
     question.parentRequiredAnswer = (NSString*)[currentQuestionInJSON objectForKey:@"ParentRequiredAnswer"];
+    question.textBoxDataType = (NSString*)[currentQuestionInJSON objectForKey:@"TextBoxDataType"];
     
     if([question.questionType isEqualToString:@"SingleSelectRadio"]) {
         question.questionType = @"SingleSelect"; //For now, it is treating SingleSelect and SingleSelectRadio as the same

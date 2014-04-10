@@ -63,6 +63,7 @@ bool clickedSubmit = false;
     
     NSString *CellIdentifier = currentQuestion.questionType;
     
+    
     PITQuestionTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     currentQuestion.surveyDataRowIndex = [NSNumber numberWithInteger:indexPath.row];

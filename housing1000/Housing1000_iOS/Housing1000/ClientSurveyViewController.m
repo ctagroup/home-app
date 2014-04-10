@@ -103,7 +103,14 @@
     
     NSString *CellIdentifier = currentQuestion.questionType;
     
-    SurveyQuestionTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    SurveyQuestionTableViewCell *cell;
+    if((currentQuestion.textBoxDataType != [NSNull null]) && [currentQuestion.textBoxDataType isEqualToString:@"DateTime"]) {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"SinglelineTextBox_WithDatePicker" forIndexPath:indexPath];
+    }
+    else {
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    }
     
     currentQuestion.surveyDataRowIndex = [NSNumber numberWithInteger:indexPath.row];
     cell.questionText.text = currentQuestion.questionText;
@@ -135,8 +142,15 @@
     
     NSString *CellIdentifier = currentQuestion.questionType;
     
-    if([CellIdentifier isEqualToString:@"SinglelineTextBox"])
-        return 125;
+    if([CellIdentifier isEqualToString:@"SinglelineTextBox"]) {
+        
+        NSString *textBoxFieldType = currentQuestion.textBoxDataType;
+        
+        if([textBoxFieldType isEqualToString:@"DateTime"])
+            return 250;
+        else
+            return 125;
+    }
     else if([CellIdentifier isEqualToString:@"SingleSelect"])
         return 225;
     else
