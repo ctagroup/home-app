@@ -135,7 +135,7 @@ public class SurveyFragment extends BaseSurveyFragment {
      * @return Survey response in JSON form
      */
     public String saveSurveyResponse() {
-        Client client = new Client(survey.getClientQuestions(), SelectPageActivity.LOCATION);
+        Client client = new Client(survey.getClientQuestions(), SelectPageActivity.getLocation());
         ArrayList<Response> responses = generateResponses(survey.getSurveyQuestions());
         surveyResponse = new SurveyResponse(surveyListing, client, responses);
 

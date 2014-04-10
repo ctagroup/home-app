@@ -118,7 +118,7 @@ public class PitFragment extends BaseSurveyFragment {
     public String savePitResponse()
     {
         ArrayList<Response> responses = generateResponses(survey.getSurveyQuestions());
-        pitResponse = new PitResponse(SelectPageActivity.LATITUDE + ", " + SelectPageActivity.LONGITUDE, responses);
+        pitResponse = new PitResponse(SelectPageActivity.getLatitude() + ", " + SelectPageActivity.getLongitude(), responses);
 
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 

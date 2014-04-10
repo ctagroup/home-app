@@ -15,10 +15,10 @@ import android.view.View;
 import android.widget.Button;
 
 public class SelectPageActivity extends ActionBarActivity {
-    public static double LATITUDE = 0;
-    public static double LONGITUDE = 0;
-    public static Location LOCATION = new Location("0, 0");
-    Context context = this;
+    private static double latitude = 0;
+    private static double longitude = 0;
+    private static Location currentLocation = new Location("0, 0");
+    private final Context context = this;
 
 
     @Override
@@ -51,11 +51,11 @@ public class SelectPageActivity extends ActionBarActivity {
         LocationListener locationlistener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                LATITUDE = location.getLatitude();
-                LONGITUDE = location.getLongitude();
-                LOCATION = location;
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+                currentLocation = location;
 
-                Log.d("GPS Location:", LATITUDE + "," + LONGITUDE);
+                Log.d("GPS Location:", latitude + "," + longitude);
             }
 
             @Override
@@ -73,9 +73,9 @@ public class SelectPageActivity extends ActionBarActivity {
 
         locationmanager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000, 0, locationlistener);
 
+        //Alert user to enable GPS if it is disabled
         if(!locationmanager.isProviderEnabled(LocationManager.GPS_PROVIDER))
         {
-            //Alert user to enable GPS
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
             alertDialog.setTitle("GPS Disabled");
@@ -101,6 +101,21 @@ public class SelectPageActivity extends ActionBarActivity {
             Log.d("GPS Disabled: ", "Please Enable GPS");
         }
 
+    }
+
+    public static Double getLatitude()
+    {
+        return latitude;
+    }
+
+    public static Double getLongitude()
+    {
+        return longitude;
+    }
+
+    public static Location getLocation()
+    {
+        return currentLocation;
     }
 }
 
