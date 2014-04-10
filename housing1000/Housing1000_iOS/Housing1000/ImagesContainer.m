@@ -52,9 +52,9 @@ static void destroy_navigationBarImages() {
     
     NSError *error;
     NSData *encryptedImage = [RNEncryptor encryptData:imageToEncrypt
-                                                 withSettings:kRNCryptorAES256Settings
-                                                     password:@"UberSecretPassword"
-                                                        error:&error];
+                                         withSettings:kRNCryptorAES256Settings
+                                             password:@"UberSecretPassword"
+                                                error:&error];
     
     return encryptedImage;
     
@@ -65,7 +65,7 @@ static void destroy_navigationBarImages() {
     NSError *error;
     NSData *decryptedData = [RNDecryptor decryptData:imageToDecrypt
                                         withPassword:@"UberSecretPassword"
-                                                error:&error];
+                                               error:&error];
         
     return [UIImage imageWithData:decryptedData];
 

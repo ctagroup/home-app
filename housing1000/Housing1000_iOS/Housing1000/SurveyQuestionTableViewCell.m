@@ -25,6 +25,12 @@
     questionTextAnswer.returnKeyType = UIReturnKeyDone;
     [questionTextAnswer setDelegate:self];
     
+    //If the data type for the text field is an int, make it a number pad
+    //Otherwise, leave it as the default
+    if((self.questionData.textBoxDataType != [NSNull null]) && [self.questionData.textBoxDataType isEqualToString:@"int"]) {
+        [questionTextAnswer setKeyboardType:UIKeyboardTypeNumberPad];
+    }
+    
     //For loading the picker values
     [questionSingleAnswer setDelegate:self];
     [questionSingleAnswer setDataSource:self];
@@ -34,6 +40,14 @@
     questionText.numberOfLines = 0;
     [questionText sizeToFit];
     
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideTextFields)];
+    [self.superview.superview addGestureRecognizer:gestureRecognizer];
+}
+
+-(void)hideTextFields {
+    //This is called using the UITapGestureRecognizer registered up above and anytime the screen is tapped.
+    //I had to do it this way because number pads are dealt with differently in iOS
+    [self.superview.superview endEditing:YES];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		272AA48818B5C6B30068E023 /* TestEncryptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 272AA48718B5C6B30068E023 /* TestEncryptionViewController.m */; };
 		272AA48A18B5CDFE0068E023 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272AA48918B5CDFE0068E023 /* Security.framework */; };
 		272AA49318C6E77F0068E023 /* UINavigationController+Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 272AA49218C6E77F0068E023 /* UINavigationController+Orientation.m */; };
 		272AA49618C6EBCB0068E023 /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 272AA49518C6EBCB0068E023 /* MainMenuViewController.m */; };
@@ -67,8 +66,6 @@
 
 /* Begin PBXFileReference section */
 		259724FD44CA438283C7C306 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		272AA48618B5C6B30068E023 /* TestEncryptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestEncryptionViewController.h; sourceTree = "<group>"; };
-		272AA48718B5C6B30068E023 /* TestEncryptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestEncryptionViewController.m; sourceTree = "<group>"; };
 		272AA48918B5CDFE0068E023 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		272AA49118C6E77F0068E023 /* UINavigationController+Orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Orientation.h"; sourceTree = "<group>"; };
 		272AA49218C6E77F0068E023 /* UINavigationController+Orientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Orientation.m"; sourceTree = "<group>"; };
@@ -232,8 +229,6 @@
 				27642FEA18A351C900277F24 /* SigConfrimViewController.m */,
 				3FFE3099188E08DC004A737D /* PhotoViewController.h */,
 				3FFE309A188E08DC004A737D /* PhotoViewController.m */,
-				272AA48618B5C6B30068E023 /* TestEncryptionViewController.h */,
-				272AA48718B5C6B30068E023 /* TestEncryptionViewController.m */,
 				272AA49418C6EBCB0068E023 /* MainMenuViewController.h */,
 				272AA49518C6EBCB0068E023 /* MainMenuViewController.m */,
 				272AA49718C6EBE80068E023 /* DisclaimerViewController.h */,
@@ -506,7 +501,6 @@
 				3F7493EB18F0975900C0901E /* PITResponseJSON.m in Sources */,
 				948CBC4516FC8BA000DD4E2B /* HousingAppDelegate.m in Sources */,
 				3FFE30CE18C26355004A737D /* SurveySubmitter.m in Sources */,
-				272AA48818B5C6B30068E023 /* TestEncryptionViewController.m in Sources */,
 				3F7493F118F3BBEC00C0901E /* ImageUploader.m in Sources */,
 				3F7ABC6618F084F400D99525 /* PostPITHandler.m in Sources */,
 				3FFE309B188E08DC004A737D /* PhotoViewController.m in Sources */,
