@@ -20,6 +20,7 @@ import edu.weber.housing1000.Data.SurveyResponse;
 import edu.weber.housing1000.Helpers.REST.RESTHelper;
 import edu.weber.housing1000.Helpers.REST.SurveyService;
 import edu.weber.housing1000.R;
+import edu.weber.housing1000.SelectPageActivity;
 import edu.weber.housing1000.SurveyFlowActivity;
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -134,7 +135,7 @@ public class SurveyFragment extends BaseSurveyFragment {
      * @return Survey response in JSON form
      */
     public String saveSurveyResponse() {
-        Client client = new Client(survey.getClientQuestions(), myActivity.getLocation());
+        Client client = new Client(survey.getClientQuestions(), SelectPageActivity.LOCATION);
         ArrayList<Response> responses = generateResponses(survey.getSurveyQuestions());
         surveyResponse = new SurveyResponse(surveyListing, client, responses);
 

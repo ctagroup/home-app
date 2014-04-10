@@ -1,10 +1,8 @@
 package edu.weber.housing1000;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,14 +11,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.google.common.hash.HashCode;
@@ -38,14 +30,13 @@ import edu.weber.housing1000.Fragments.SurveyAppFragment;
 import edu.weber.housing1000.Fragments.SurveyFragment;
 import edu.weber.housing1000.Helpers.ErrorHelper;
 import edu.weber.housing1000.Helpers.FileHelper;
-import edu.weber.housing1000.Helpers.GPSTracker;
 import edu.weber.housing1000.Helpers.REST.RESTHelper;
 import retrofit.client.Response;
 
 public class SurveyFlowActivity extends ActionBarActivity {
     public static final String EXTRA_SURVEY = "survey";
 
-    private GPSTracker gps;
+    //private GPSTracker gps;
 
     private boolean isSignatureCaptured;
 
@@ -56,7 +47,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
     private SurveyListing surveyListing;
     private String folderHash;                          //The name of the survey folder (for files)
     private String clientSurveyId;                      //Client survey id for image submission
-    private Location currentLocation;
+    //private Location currentLocation;
 
     private ProgressDialogFragment progressDialogFragment;
 
@@ -108,13 +99,13 @@ public class SurveyFlowActivity extends ActionBarActivity {
         setContentView(R.layout.activity_survey_flow);
         Utils.setActionBarColorToDefault(this);
 
-        gps = new GPSTracker(this);
+        //gps = new GPSTracker(this);
 
         // Restore state after being recreated
         if (savedInstanceState != null) {
             surveyListing = (SurveyListing) savedInstanceState.getSerializable("surveyListing");
             folderHash = savedInstanceState.getString("folderHash");
-            currentLocation = savedInstanceState.getParcelable("currentLocation");
+            //currentLocation = savedInstanceState.getParcelable("currentLocation");
             isSignatureCaptured = savedInstanceState.getBoolean("isSignatureCaptured");
             clientSurveyId = savedInstanceState.getString("clientSurveyId");
         } else {
@@ -149,7 +140,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
                 actionBar.setTitle(actionBarTitle != null ? actionBarTitle : getResources().getString(R.string.app_name));
 
                 if (i == 0) {
-                    getLocation();
+//                    getLocation();
 
 //                    String message = "Location Details" +
 //                            "\nLatitude: " + gps.getLatitude() +
@@ -193,8 +184,8 @@ public class SurveyFlowActivity extends ActionBarActivity {
             // Store the survey listing and folder hash
             outState.putSerializable("surveyListing", surveyListing);
             outState.putString("folderHash", folderHash);
-            if (currentLocation != null)
-                outState.putParcelable("currentLocation", currentLocation);
+            if (SelectPageActivity.LOCATION != null)
+                outState.putParcelable("currentLocation", SelectPageActivity.LOCATION);
             outState.putBoolean("isSignatureCaptured", isSignatureCaptured);
             outState.putString("clientSurveyId", clientSurveyId);
         } catch (Exception ex)
@@ -365,13 +356,13 @@ public class SurveyFlowActivity extends ActionBarActivity {
         Log.d("FOLDER HASH", folderHash);
     }
 
-    public Location getLocation() {
-        if (gps.canGetLocation()) {
-            currentLocation = gps.getLocation();
-        }
-        gps.stopUsingGPS();
-        return currentLocation;
-    }
+//    public Location getLocation() {
+//        if (gps.canGetLocation()) {
+//            currentLocation = gps.getLocation();
+//        }
+//        gps.stopUsingGPS();
+//        return currentLocation;
+//    }
 
     public void showProgressDialog(String title, String message, String tag) {
         progressDialogFragment = ProgressDialogFragment.newInstance(title, message);
