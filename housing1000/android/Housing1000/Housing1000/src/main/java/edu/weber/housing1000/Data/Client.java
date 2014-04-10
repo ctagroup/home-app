@@ -2,11 +2,11 @@ package edu.weber.housing1000.Data;
 
 import android.location.Location;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 
 import edu.weber.housing1000.Questions.Question;
 
@@ -63,7 +63,7 @@ public class Client implements Serializable {
             }
         }
 
-        geoLocation = location != null ? location.getLongitude() + "," + location.getLatitude() : "0, 0";
+        geoLocation = location != null ? location.getLatitude() + "," + location.getLongitude() : "0,0";
     }
 
 }
