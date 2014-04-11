@@ -19,11 +19,11 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.ArrayList;
 
-import edu.weber.housing1000.Helpers.REST.RESTHelper;
-import edu.weber.housing1000.Helpers.REST.SurveyService;
+import edu.weber.housing1000.Helpers.RESTHelper;
+import edu.weber.housing1000.SurveyService;
 import edu.weber.housing1000.R;
-import edu.weber.housing1000.SignatureActivity;
-import edu.weber.housing1000.SurveyFlowActivity;
+import edu.weber.housing1000.Activities.SignatureActivity;
+import edu.weber.housing1000.Activities.SurveyFlowActivity;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;

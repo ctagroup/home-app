@@ -1,4 +1,4 @@
-package edu.weber.housing1000;
+package edu.weber.housing1000.Activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -17,10 +17,12 @@ import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Fragments.PitFragment;
 import edu.weber.housing1000.Fragments.ProgressDialogFragment;
 import edu.weber.housing1000.Helpers.ErrorHelper;
-import edu.weber.housing1000.Helpers.REST.RESTHelper;
-import edu.weber.housing1000.Helpers.REST.SurveyService;
+import edu.weber.housing1000.Helpers.RESTHelper;
 import edu.weber.housing1000.Questions.Question;
 import edu.weber.housing1000.Questions.QuestionJSONDeserializer;
+import edu.weber.housing1000.R;
+import edu.weber.housing1000.SurveyService;
+import edu.weber.housing1000.Utils;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;

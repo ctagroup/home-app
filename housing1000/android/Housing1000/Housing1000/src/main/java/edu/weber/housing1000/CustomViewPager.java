@@ -5,6 +5,8 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+import edu.weber.housing1000.Activities.SurveyFlowActivity;
+
 /**
  * Created by Blake on 2/20/14.
  */

@@ -1,4 +1,4 @@
-package edu.weber.housing1000;
+package edu.weber.housing1000.Activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -22,6 +22,7 @@ import com.google.common.hash.Hashing;
 import java.io.File;
 import java.io.IOException;
 
+import edu.weber.housing1000.CustomViewPager;
 import edu.weber.housing1000.Data.SurveyListing;
 import edu.weber.housing1000.Fragments.PhotosFragment;
 import edu.weber.housing1000.Fragments.ProgressDialogFragment;
@@ -30,13 +31,13 @@ import edu.weber.housing1000.Fragments.SurveyAppFragment;
 import edu.weber.housing1000.Fragments.SurveyFragment;
 import edu.weber.housing1000.Helpers.ErrorHelper;
 import edu.weber.housing1000.Helpers.FileHelper;
-import edu.weber.housing1000.Helpers.REST.RESTHelper;
+import edu.weber.housing1000.Helpers.RESTHelper;
+import edu.weber.housing1000.R;
+import edu.weber.housing1000.Utils;
 import retrofit.client.Response;
 
 public class SurveyFlowActivity extends ActionBarActivity {
     public static final String EXTRA_SURVEY = "survey";
-
-    //private GPSTracker gps;
 
     private boolean isSignatureCaptured;
 
@@ -47,7 +48,6 @@ public class SurveyFlowActivity extends ActionBarActivity {
     private SurveyListing surveyListing;
     private String folderHash;                          //The name of the survey folder (for files)
     private String clientSurveyId;                      //Client survey id for image submission
-    //private Location currentLocation;
 
     private ProgressDialogFragment progressDialogFragment;
 
@@ -99,8 +99,6 @@ public class SurveyFlowActivity extends ActionBarActivity {
         setContentView(R.layout.activity_survey_flow);
         Utils.setActionBarColorToDefault(this);
 
-        //gps = new GPSTracker(this);
-
         // Restore state after being recreated
         if (savedInstanceState != null) {
             surveyListing = (SurveyListing) savedInstanceState.getSerializable("surveyListing");
@@ -138,16 +136,6 @@ public class SurveyFlowActivity extends ActionBarActivity {
                 String actionBarTitle = ((SurveyAppFragment) mSectionsPagerAdapter.getItem(i)).getActionBarTitle();
 
                 actionBar.setTitle(actionBarTitle != null ? actionBarTitle : getResources().getString(R.string.app_name));
-
-                if (i == 0) {
-//                    getLocation();
-
-//                    String message = "Location Details" +
-//                            "\nLatitude: " + gps.getLatitude() +
-//                            "\nLongitude: " + gps.getLongitude() +
-//                            "\nTime: " + gps.getTime();
-//                    Toast.makeText(SurveyFlowActivity.this, message, Toast.LENGTH_SHORT).show();
-                }
             }
 
             @Override
@@ -355,14 +343,6 @@ public class SurveyFlowActivity extends ActionBarActivity {
 
         Log.d("FOLDER HASH", folderHash);
     }
-
-//    public Location getLocation() {
-//        if (gps.canGetLocation()) {
-//            currentLocation = gps.getLocation();
-//        }
-//        gps.stopUsingGPS();
-//        return currentLocation;
-//    }
 
     public void showProgressDialog(String title, String message, String tag) {
         progressDialogFragment = ProgressDialogFragment.newInstance(title, message);

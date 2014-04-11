@@ -1,4 +1,4 @@
-package edu.weber.housing1000.Helpers.REST;
+package edu.weber.housing1000;
 
 import java.util.ArrayList;
 

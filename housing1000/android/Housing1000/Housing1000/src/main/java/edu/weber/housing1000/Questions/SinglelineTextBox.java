@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import edu.weber.housing1000.Fragments.DatePickerFragment;
-import edu.weber.housing1000.SurveyFlowActivity;
+import edu.weber.housing1000.Activities.SurveyFlowActivity;
 
 /**
  * Created by Blake on 1/21/14.

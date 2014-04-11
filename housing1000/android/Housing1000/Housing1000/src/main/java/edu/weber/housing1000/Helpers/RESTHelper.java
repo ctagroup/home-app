@@ -1,4 +1,4 @@
-package edu.weber.housing1000.Helpers.REST;
+package edu.weber.housing1000.Helpers;
 
 import android.content.Context;
 import android.util.Log;
@@ -24,7 +24,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManagerFactory;
 
-import edu.weber.housing1000.Helpers.EncryptionHelper;
 import edu.weber.housing1000.R;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
