@@ -71,7 +71,8 @@ public class SelectPageActivity extends ActionBarActivity {
             }
         };
 
-        locationmanager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000, 0, locationlistener);
+        // Get updates every 15 minutes
+        locationmanager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000 * 15, 0, locationlistener);
 
         //Alert user to enable GPS if it is disabled
         if(!locationmanager.isProviderEnabled(LocationManager.GPS_PROVIDER))
