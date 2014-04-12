@@ -16,20 +16,29 @@
 - (void)layoutSubviews
 {
 	// Make it so the keyboard can be closed
-    questionTextAnswer.returnKeyType = UIReturnKeyDone;
-    [questionTextAnswer setDelegate:self];
+    self.questionTextAnswer.returnKeyType = UIReturnKeyDone;
+    [self.questionTextAnswer setDelegate:self];
     
     //For loading the picker values
-    [questionSingleAnswer setDelegate:self];
-    [questionSingleAnswer setDataSource:self];
+    [self.questionSingleAnswer setDelegate:self];
+    [self.questionSingleAnswer setDataSource:self];
     
-    questionStepperAnswer.maximumValue = 9999;
-    questionStepperAnswer.minimumValue = 0;
+    self.questionStepperAnswer.maximumValue = 9999;
+    self.questionStepperAnswer.minimumValue = 0;
     
     //To make the label wrap text
-    questionText.lineBreakMode = NSLineBreakByWordWrapping;
-    questionText.numberOfLines = 0;
+    self.questionText.lineBreakMode = NSLineBreakByWordWrapping;
+    self.questionText.numberOfLines = 0;
     //[questionText sizeToFit];
+    
+    //For the selected row of the picker view...
+    if([self.questionData getAnswerForJson] == [NSNull null] || [@"" isEqualToString:[self.questionData getAnswerForJson]]) {
+        [self.questionSingleAnswer selectRow:0 inComponent:0 animated:YES];
+    } else {
+        //Get the index of option that matches to the answer stored in the questionData
+        NSUInteger answerIndex = [self.questionData.options indexOfObject:[self.questionData getAnswerForJson]];
+        [self.questionSingleAnswer selectRow:answerIndex + 1 inComponent:0 animated:NO];
+    }
 
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideTextFields)];
     [self.superview.superview addGestureRecognizer:gestureRecognizer];

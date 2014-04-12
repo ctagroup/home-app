@@ -49,6 +49,15 @@
         self.questionDatePicker.date = dateForPicker;
     }
     
+    //For the selected row of the picker view...
+    if([self.questionData getAnswerForJson] == [NSNull null] || [@"" isEqualToString:[self.questionData getAnswerForJson]]) {
+        [self.questionSingleAnswer selectRow:0 inComponent:0 animated:YES];
+    } else {
+        //Get the index of option that matches to the answer stored in the questionData
+        NSUInteger answerIndex = [self.questionData.options indexOfObject:[self.questionData getAnswerForJson]];
+        [self.questionSingleAnswer selectRow:answerIndex + 1 inComponent:0 animated:NO];
+    }
+    
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideTextFields)];
     [self.superview.superview addGestureRecognizer:gestureRecognizer];
 }

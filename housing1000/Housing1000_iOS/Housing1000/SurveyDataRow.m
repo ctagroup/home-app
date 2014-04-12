@@ -20,7 +20,8 @@
 }
 
 -(void)setEnabled:(BOOL)tempIsEnabled {
-    self.isEnabled = true;
+    NSLog(@"getting changed to %d", tempIsEnabled);
+    self.isEnabled = tempIsEnabled;
     if(self.isEnabled)
         self.backgroundColor = [UIColor whiteColor];
     else

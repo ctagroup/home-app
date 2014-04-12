@@ -68,8 +68,9 @@ bool clickedSubmit = false;
     
     currentQuestion.surveyDataRowIndex = [NSNumber numberWithInteger:indexPath.row];
     cell.questionText.text = currentQuestion.questionText;
-    if([currentQuestion getAnswerForJson] == [NSNull null]) {
+    if([currentQuestion getAnswerForJson] == [NSNull null] || [@"" isEqualToString:[currentQuestion getAnswerForJson]]) {
         cell.number.text = @"0";
+        
     } else {
         cell.number.text = [currentQuestion getAnswerForJson];
         cell.questionStepperAnswer.value = [[currentQuestion getAnswerForJson] doubleValue];    //This is a problem if they ever have text boxes in the PIT section

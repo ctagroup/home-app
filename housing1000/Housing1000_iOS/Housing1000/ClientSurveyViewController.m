@@ -127,7 +127,6 @@
     cell.userInteractionEnabled = surveyRow.isEnabled;
     cell.textLabel.enabled = surveyRow.isEnabled;
     cell.detailTextLabel.enabled = surveyRow.isEnabled;
-    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
