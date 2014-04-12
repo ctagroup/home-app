@@ -31,4 +31,23 @@ A Point In Time (PIT) survey is also available, which allows the user to fill ou
 
 ##iOS##
 
-- TODO
+- Download and install the latest version of **[Xcode](https://developer.apple.com/xcode/downloads/)**.
+- Start up Xcode and choose to "Check out an existing project."
+
+![Start up Xcode](images/xcodeStartup.PNG)
+
+- Enter the repo location (https://github.com/WeberState/cs3750fall2013group3/) and hit next.
+- Choose the directory where you want it to be checked out to.
+- When prompted to "Choose a Project or Workspace to open," select the Housing1000.xcodeproj file.
+
+![Choose the project](images/xcodeproject.PNG)
+
+- You'll see that it tries to build and fails with some nasty looking errors. This is because it doesn't have the dependencies it needs. Just close this Xcode window.
+- The next step is to install CocoaPods, which is what we've used for managing dependencies:
+> - Open up the command line and run this command to update your current Ruby version: **sudo gem update --system**
+> - Next, run: **sudo gem install cocoapods**
+> - Next, run: **pod setup --verbose**
+- Cool, CocoaPods is installed. Now with your terminal still open, navigate to the root directory of the project (which should be cs3750fall2013group3/housing1000/Housing1000_iOS).
+- Run ***pod install***. This will fetch the required dependencies to run the project and will also create a new file called Housing1000.xcworkspace in the root directory of your project.
+- As stated in the command line window, from now on use this new Housing1000.xcworkspace file. Navigate to it in Finder and just double click.
+- The project will automatically build and you'll be good to go.
