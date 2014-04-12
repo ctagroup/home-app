@@ -9,6 +9,8 @@
 #import "GetPitHandler.h"
 #import "AlertViewDisplayer.h"
 #import "Question.h"
+#import "QuestionNumAnswer.h"
+#import "QuestionTextAnswer.h"
 #import "PITSurvey.h"
 
 @interface GetPitHandler()
@@ -72,7 +74,10 @@
 //==============================================
 
 -(Question*)createSurveyObject:(NSDictionary*)currentQuestionInJSON :(BOOL)isClientQuestion {
-    Question *question = [[Question alloc] init];
+    
+    NSString *questionDataType = (NSString*)[currentQuestionInJSON objectForKey:@"TextBoxDataType"];
+    Question *question = [self createCorrectQuestionType:questionDataType];
+    
     question.jsonId = [NSNumber numberWithInteger:[[currentQuestionInJSON objectForKey:@"$id"] integerValue]];
     question.questionId = [NSNumber numberWithInteger:[[currentQuestionInJSON objectForKey:@"QuestionId"] integerValue]];
     question.questionText = (NSString*)[currentQuestionInJSON objectForKey:@"text"];
@@ -81,7 +86,7 @@
     question.orderId = [NSNumber numberWithInteger:[[currentQuestionInJSON objectForKey:@"OrderId"] integerValue]];
     question.parentQuestionId = [NSNumber numberWithInteger:[[currentQuestionInJSON objectForKey:@"ParentQuestionId"] integerValue]];
     question.parentRequiredAnswer = (NSString*)[currentQuestionInJSON objectForKey:@"ParentRequiredAnswer"];
-    question.textBoxDataType = (NSString*)[currentQuestionInJSON objectForKey:@"TextBoxDataType"];
+    question.textBoxDataType = questionDataType;
     
     if([question.questionType isEqualToString:@"SingleSelectRadio"]) {
         question.questionType = @"SingleSelect"; //For now, it is treating SingleSelect and SingleSelectRadio as the same
@@ -91,7 +96,7 @@
 }
 
 -(Question*)creatSurveyObjectFromOptions:(NSString*)questionText :(Question*)parentQuestion {
-    Question *question = [[Question alloc] init];
+    Question *question = [self createCorrectQuestionType:parentQuestion.textBoxDataType];
     question.jsonId = parentQuestion.jsonId;
     question.questionId = parentQuestion.questionId;
     question.questionText = questionText;
@@ -104,6 +109,19 @@
     question.textBoxDataType = parentQuestion.textBoxDataType;
     
     return question;
+}
+
+-(Question*)createCorrectQuestionType:(NSString*)dataType {
+    Question* questionToCreate;
+    
+    //TODO treat date return types differently?
+    if([@"int" isEqualToString:dataType]) {
+        questionToCreate = [[QuestionNumAnswer alloc] init];
+    } else {
+        questionToCreate = [[QuestionTextAnswer alloc] init];
+    }
+    
+    return questionToCreate;
 }
 
 @end

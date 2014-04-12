@@ -1,16 +1,14 @@
 //
-//  SurveyQuestion.m
+//  QuestionBase.m
 //  Housing1000
 //
-//  Created by David Horton on 2/5/14.
+//  Created by student on 4/11/14.
 //  Copyright (c) 2014 Group 3. All rights reserved.
 //
 
 #import "Question.h"
 
 @implementation Question
-
-BOOL isClientQuestion = NO;
 
 //Convert the string from JSON into an array
 - (void)setOptionsArray:(NSString *)stringOptions {
@@ -25,18 +23,18 @@ BOOL isClientQuestion = NO;
 +(JSONKeyMapper*)keyMapper {
     
     return [[JSONKeyMapper alloc] initWithDictionary:@{
-                                                        @"QuestionId": @"questionId",
-                                                        @"Answer":@"answer",
-                                                      }];
+                                                       @"QuestionId": @"questionId",
+                                                       @"Answer":@"answer",
+                                                       }];
 }
 
-
--(void)setIsClientQuestion:(BOOL)tempIsClientQuestion {
-    isClientQuestion = tempIsClientQuestion;
+-(void)setAnswerForJson:(id)input {
+    //Intended to be an "abstract" method that is defined by children
 }
 
--(BOOL)isClientQuestion {
-    return isClientQuestion;
+-(id)getAnswerForJson {
+    //Intended to be an "abstract" method that is defined by children
+    return nil;
 }
 
 @end

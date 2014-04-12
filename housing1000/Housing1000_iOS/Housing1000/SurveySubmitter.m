@@ -35,15 +35,14 @@
     NSMutableDictionary *clientAnswers = [[NSMutableDictionary alloc] init];
     for(int i = 0; i < [[[Survey getClientQuestions] getClientQuestions] count]; i++) {
         Question *currentQuestion = [[[Survey getClientQuestions] getClientQuestions] objectAtIndex:i];
-        if(currentQuestion.answer == Nil) { //Make it not null so that it doesn't error when creating JSON
-            currentQuestion.answer = @"";
-        }
+        
         //TODO: Make this follow some sort of regex expression or something. For now it just forces the date to a proper format so that it doesn't error
         if([currentQuestion.parentRequiredAnswer isEqualToString:@"Birthday"]) {
-            currentQuestion.answer = @"01/01/1900"; //Force it to be some random date
+            //[currentQuestion setAnswerForJson:@"01/01/1900"]; //Force it to be some random date
+            //TODO make it compatible with the pod we are using for JSON...
         }
         
-        [clientAnswers setObject:currentQuestion.answer forKey:currentQuestion.parentRequiredAnswer];
+        [clientAnswers setObject:[currentQuestion getAnswerForJson] forKey:currentQuestion.parentRequiredAnswer];
     }
     [clientAnswers setObject:@"37.336704, -121.919087" forKey:@"GeoLoc"];
     response.Client = clientAnswers;
