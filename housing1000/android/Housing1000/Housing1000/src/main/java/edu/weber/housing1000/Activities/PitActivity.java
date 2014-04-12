@@ -1,7 +1,11 @@
 package edu.weber.housing1000.Activities;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -29,6 +33,10 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class PitActivity extends ActionBarActivity {
+    private LocationManager locationmanager;
+    private LocationListener locationlistener;
+    private static double latitude = 0;
+    private static double longitude = 0;
 
     private ProgressDialogFragment progressDialogFragment;
 
@@ -67,6 +75,34 @@ public class PitActivity extends ActionBarActivity {
             }
 
             getSupportActionBar().setTitle(getString(R.string.point_in_time));
+
+            //Start Location Listener
+            locationmanager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+            locationlistener = new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+
+                    Log.d("GPS Location:", latitude + "," + longitude);
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+                }
+            };
+
+            // Get updates within no less than 5 minutes and 1000 meters
+            locationmanager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5 * 60 * 1000, 1000, locationlistener);
+
         } catch (Exception ex)
         {
             ex.printStackTrace();
@@ -86,6 +122,7 @@ public class PitActivity extends ActionBarActivity {
         super.onPause();
             // Dismiss any dialogs to prevent WindowLeaked exceptions
             dismissDialog();
+        locationmanager.removeUpdates(locationlistener);
     }
 
     @Override
@@ -207,5 +244,15 @@ public class PitActivity extends ActionBarActivity {
         if (progressDialogFragment != null) {
             progressDialogFragment.dismiss();
         }
+    }
+
+    public static Double getLatitude()
+    {
+        return latitude;
+    }
+
+    public static Double getLongitude()
+    {
+        return longitude;
     }
 }
