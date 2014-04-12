@@ -1,8 +1,12 @@
 package edu.weber.housing1000.Activities;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -38,6 +42,12 @@ import retrofit.client.Response;
 
 public class SurveyFlowActivity extends ActionBarActivity {
     public static final String EXTRA_SURVEY = "survey";
+
+    private LocationManager locationmanager;
+    private LocationListener locationlistener;
+    private static Double latitude;
+    private static Double longitude;
+    private static Location currentLocation;
 
     private boolean isSignatureCaptured;
 
@@ -162,6 +172,34 @@ public class SurveyFlowActivity extends ActionBarActivity {
         }
 
         getIsSignatureCaptured();
+
+        //Start Location Listener
+        locationmanager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        locationlistener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+                currentLocation = location;
+
+                Log.d("GPS Location:", latitude + "," + longitude);
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+            }
+        };
+
+        // Get updates within no less than 15 minutes and 100 meters
+        locationmanager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 15 * 60 * 1000, 100, locationlistener);
     }
 
     @Override
@@ -172,8 +210,8 @@ public class SurveyFlowActivity extends ActionBarActivity {
             // Store the survey listing and folder hash
             outState.putSerializable("surveyListing", surveyListing);
             outState.putString("folderHash", folderHash);
-            if (SelectPageActivity.getLocation() != null)
-                outState.putParcelable("currentLocation", SelectPageActivity.getLocation());
+            if (currentLocation != null)
+                outState.putParcelable("currentLocation", currentLocation);
             outState.putBoolean("isSignatureCaptured", isSignatureCaptured);
             outState.putString("clientSurveyId", clientSurveyId);
         } catch (Exception ex)
@@ -189,6 +227,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
 
         // Dismiss any dialogs to prevent WindowLeaked exceptions
         dismissDialog();
+        locationmanager.removeUpdates(locationlistener);
     }
 
     @Override
@@ -415,6 +454,13 @@ public class SurveyFlowActivity extends ActionBarActivity {
                     return "";
             }
         }
+
+
+    }
+
+    public static Location getLocation()
+    {
+        return currentLocation;
     }
 
 }

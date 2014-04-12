@@ -14,15 +14,14 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 
+import edu.weber.housing1000.Activities.PitActivity;
 import edu.weber.housing1000.Data.Client;
 import edu.weber.housing1000.Data.PitResponse;
 import edu.weber.housing1000.Data.Response;
 import edu.weber.housing1000.Data.SurveyResponse;
 import edu.weber.housing1000.Helpers.RESTHelper;
-import edu.weber.housing1000.SurveyService;
-import edu.weber.housing1000.Activities.PitActivity;
 import edu.weber.housing1000.R;
-import edu.weber.housing1000.Activities.SelectPageActivity;
+import edu.weber.housing1000.SurveyService;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -118,7 +117,7 @@ public class PitFragment extends BaseSurveyFragment {
     public String savePitResponse()
     {
         ArrayList<Response> responses = generateResponses(survey.getSurveyQuestions());
-        pitResponse = new PitResponse(SelectPageActivity.getLatitude() + ", " + SelectPageActivity.getLongitude(), responses);
+        pitResponse = new PitResponse(PitActivity.getLatitude() + ", " + PitActivity.getLongitude(), responses);
 
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 

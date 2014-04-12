@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -17,9 +16,6 @@ import edu.weber.housing1000.R;
 import edu.weber.housing1000.Utils;
 
 public class SelectPageActivity extends ActionBarActivity {
-    private static double latitude = 0;
-    private static double longitude = 0;
-    private static Location currentLocation = new Location("0, 0");
     private final Context context = this;
 
 
