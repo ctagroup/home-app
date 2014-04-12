@@ -11,7 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import edu.weber.housing1000.R;
-import edu.weber.housing1000.SurveyListActivity;
+import edu.weber.housing1000.Activities.SurveyListActivity;
 
 /**
  * A placeholder fragment containing a simple view.

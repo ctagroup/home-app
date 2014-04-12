@@ -1,4 +1,4 @@
-package edu.weber.housing1000;
+package edu.weber.housing1000.Activities;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import edu.weber.housing1000.Helpers.ErrorHelper;
+import edu.weber.housing1000.R;
+import edu.weber.housing1000.Utils;
 
 public class LoginActivity extends ActionBarActivity
 {

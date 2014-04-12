@@ -1,4 +1,4 @@
-package edu.weber.housing1000;
+package edu.weber.housing1000.Activities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,6 +19,7 @@ import edu.weber.housing1000.Fragments.SignatureFragment;
 import edu.weber.housing1000.Helpers.EncryptionHelper;
 import edu.weber.housing1000.Helpers.FileHelper;
 import edu.weber.housing1000.Helpers.ImageHelper;
+import edu.weber.housing1000.R;
 
 import java.io.ByteArrayOutputStream;
 

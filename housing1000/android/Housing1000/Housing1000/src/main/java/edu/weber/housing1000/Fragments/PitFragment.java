@@ -18,10 +18,11 @@ import edu.weber.housing1000.Data.Client;
 import edu.weber.housing1000.Data.PitResponse;
 import edu.weber.housing1000.Data.Response;
 import edu.weber.housing1000.Data.SurveyResponse;
-import edu.weber.housing1000.Helpers.REST.RESTHelper;
-import edu.weber.housing1000.Helpers.REST.SurveyService;
-import edu.weber.housing1000.PitActivity;
+import edu.weber.housing1000.Helpers.RESTHelper;
+import edu.weber.housing1000.SurveyService;
+import edu.weber.housing1000.Activities.PitActivity;
 import edu.weber.housing1000.R;
+import edu.weber.housing1000.Activities.SelectPageActivity;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -117,7 +118,7 @@ public class PitFragment extends BaseSurveyFragment {
     public String savePitResponse()
     {
         ArrayList<Response> responses = generateResponses(survey.getSurveyQuestions());
-        pitResponse = new PitResponse("0, 0", responses);
+        pitResponse = new PitResponse(SelectPageActivity.getLatitude() + ", " + SelectPageActivity.getLongitude(), responses);
 
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
