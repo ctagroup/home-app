@@ -1,12 +1,12 @@
 //
-//  SurveyQuestion.h
+//  QuestionBase.h
 //  Housing1000
 //
-//  Created by David Horton on 2/5/14.
+//  Created by student on 4/11/14.
 //  Copyright (c) 2014 Group 3. All rights reserved.
 //
 
-//#import <Foundation/Foundation.h>
+#import <Foundation/Foundation.h>
 #import "JSONModel.h"
 
 @interface Question : JSONModel
@@ -21,11 +21,11 @@
 @property (strong, nonatomic) NSString<Ignore> *parentRequiredAnswer;
 @property (strong, nonatomic) NSString<Ignore> *textBoxDataType;
 
-@property (strong, nonatomic) NSString *answer;
+//@property (strong, nonatomic) NSString *answer;
 @property (strong, nonatomic) NSNumber<Ignore> *surveyDataRowIndex;
 
 -(void)setOptionsArray:(NSString*)stringOptions;
--(void)setIsClientQuestion:(BOOL)tempIsClientQuestion;
--(BOOL)isClientQuestion;
+-(void)setAnswerForJson:(id)input;
+-(id)getAnswerForJson;
 
 @end

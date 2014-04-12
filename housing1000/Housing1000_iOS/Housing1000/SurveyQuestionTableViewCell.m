@@ -22,23 +22,32 @@
 - (void)layoutSubviews
 {
 	// Make it so the keyboard can be closed
-    questionTextAnswer.returnKeyType = UIReturnKeyDone;
-    [questionTextAnswer setDelegate:self];
+    self.questionTextAnswer.returnKeyType = UIReturnKeyDone;
+    [self.questionTextAnswer setDelegate:self];
     
     //If the data type for the text field is an int, make it a number pad
     //Otherwise, leave it as the default
     if((self.questionData.textBoxDataType != [NSNull null]) && [self.questionData.textBoxDataType isEqualToString:@"int"]) {
-        [questionTextAnswer setKeyboardType:UIKeyboardTypeNumberPad];
+        [self.questionTextAnswer setKeyboardType:UIKeyboardTypeNumberPad];
     }
     
     //For loading the picker values
-    [questionSingleAnswer setDelegate:self];
-    [questionSingleAnswer setDataSource:self];
+    [self.questionSingleAnswer setDelegate:self];
+    [self.questionSingleAnswer setDataSource:self];
     
     //To make the label wrap text
-    questionText.lineBreakMode = NSLineBreakByWordWrapping;
-    questionText.numberOfLines = 0;
-    [questionText sizeToFit];
+    self.questionText.lineBreakMode = NSLineBreakByWordWrapping;
+    self.questionText.numberOfLines = 0;
+    [self.questionText sizeToFit];
+    
+    //Set the date of the date picker to the whatever the answer is
+    if([@"DateTime" isEqualToString:self.questionData.textBoxDataType]) {
+        NSString *string = [self.questionData getAnswerForJson];
+        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+        [dateFormat setDateFormat:@"MM/dd/yyyy"];
+        NSDate *dateForPicker = [dateFormat dateFromString:string];
+        self.questionDatePicker.date = dateForPicker;
+    }
     
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideTextFields)];
     [self.superview.superview addGestureRecognizer:gestureRecognizer];
@@ -52,29 +61,14 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
-    
-    /*
-     //Get the index of the cell that the current text field is in. Could be useful
-     CGPoint center= textField.center;
-     CGPoint rootViewPoint = [textField.superview convertPoint:center toView:self.superview.superview];
-     NSIndexPath *indexPath = [(UITableView*)self.superview.superview indexPathForRowAtPoint:rootViewPoint];
-     NSLog(@"%d",indexPath.row);
-     */
-    
-    //****Commented out these lines to move them to the textFieldShouldEndEditing method****
-    //****This fixes the bug where you could click on a different uitextfield and it would record that answer
-    //Immediately store what they enter
-    //questionData.answer = textField.text;
-    //[self changeChildQuestions:self.questionData.answer];
-    
     return YES;
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
     
     //Immediately store what they enter
-    questionData.answer = textField.text;
-    [self changeChildQuestions:self.questionData.answer];
+    [self.questionData setAnswerForJson:textField.text];
+    [self changeChildQuestions:[self.questionData getAnswerForJson]];
     
     return YES;
 }
@@ -95,15 +89,6 @@
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
     return [self.questionData.options count] + 1;
 }
-
-//3-11-14 David H. --- Commenting out to switch to viewForRow instead of titleForRow so we can configure font size
-/*-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    if(row == 0) {
-        return @"Select one";
-    } else {
-        return [self.questionData.options objectAtIndex:row - 1];
-    }
-}*/
 
 - (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view{
     UILabel* tView = (UILabel*)view;
@@ -127,11 +112,11 @@
     
     //Immediately store what they select
     if(row == 0) {
-        self.questionData.answer = nil;
+        [self.questionData setAnswerForJson:[NSNull null]];
         [self changeChildQuestions:nil];
     } else {
-        self.questionData.answer = [self.questionData.options objectAtIndex:row - 1];
-        [self changeChildQuestions:self.questionData.answer];
+        [self.questionData setAnswerForJson:[self.questionData.options objectAtIndex:row - 1]];
+        [self changeChildQuestions:[self.questionData getAnswerForJson]];
     }
     
 }
@@ -178,9 +163,16 @@
     }
 }
 
--(void)getSurveyDataRowFromQuestionId:(NSNumber*)questionId {
+- (IBAction)storeChangedDate:(id)sender {
+    //UIDatePicker *datePicker = (UIDatePicker*)sender;
     
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat: @"MM/dd/yyyy"];
+    NSString *stringFromDate = [formatter stringFromDate:self.questionDatePicker.date];
+    
+    [self.questionData setAnswerForJson:stringFromDate];
 }
+
 
 -(BOOL)shouldAutorotate
 {

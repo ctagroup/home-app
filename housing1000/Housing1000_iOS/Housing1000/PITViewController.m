@@ -68,11 +68,11 @@ bool clickedSubmit = false;
     
     currentQuestion.surveyDataRowIndex = [NSNumber numberWithInteger:indexPath.row];
     cell.questionText.text = currentQuestion.questionText;
-    if(currentQuestion.answer == NULL) {
+    if([currentQuestion getAnswerForJson] == [NSNull null]) {
         cell.number.text = @"0";
     } else {
-        cell.number.text = currentQuestion.answer;
-        cell.questionStepperAnswer.value = [currentQuestion.answer doubleValue];    //This is a problem if they ever have text boxes in the PIT section
+        cell.number.text = [currentQuestion getAnswerForJson];
+        cell.questionStepperAnswer.value = [[currentQuestion getAnswerForJson] doubleValue];    //This is a problem if they ever have text boxes in the PIT section
     }
     
     cell.questionData = currentQuestion;

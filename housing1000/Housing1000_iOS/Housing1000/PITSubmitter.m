@@ -10,6 +10,8 @@
 #import "PITSurvey.h"
 #import "HttpConnectionHelper.h"
 #import "Question.h"
+#import "QuestionTextAnswer.h"
+#import "QuestionNumAnswer.h"
 #import "PITResponseJSON.h"
 
 @implementation PITSubmitter
@@ -89,9 +91,9 @@
         Question* question = [subQuestions objectAtIndex:i];
         
         if(i == [subQuestions count] - 1) { //It is the last question, and so it shouldn't have a pipe at the end of it
-            [answer appendFormat:@"%@=%@", question.questionText, question.answer];
+            [answer appendFormat:@"%@=%@", question.questionText, [question getAnswerForJson]];
         } else {
-            [answer appendFormat:@"%@=%@|", question.questionText, question.answer];
+            [answer appendFormat:@"%@=%@|", question.questionText, [question getAnswerForJson]];
         }
         
     }
@@ -119,7 +121,7 @@
 //Create a new question that will get send along in the JSON that has the specified answer. Every other field will match the question getting passed in, which will
 //be the first sub question in the group. Most of these fields probably aren't necessary (because they're not getting passed along in the JSON), but oh well.
 -(Question*)createConsolidatedQuestionWithAnswer:(NSString*)answer AndModelQuestion:(Question*)modelQuestion {
-    Question *question = [[Question alloc] init];
+    Question *question = [self createCorrectQuestionType:modelQuestion.textBoxDataType];
     question.jsonId = modelQuestion.jsonId;
     question.questionId = modelQuestion.questionId;
     question.questionText = modelQuestion.questionText;
@@ -128,9 +130,22 @@
     question.orderId = modelQuestion.orderId;
     question.parentQuestionId = modelQuestion.parentQuestionId;
     question.parentRequiredAnswer = modelQuestion.parentRequiredAnswer;
-    question.answer = answer;
+    [question setAnswerForJson:answer];
     
     return question;
+}
+
+-(Question*)createCorrectQuestionType:(NSString*)dataType {
+    Question* questionToCreate;
+    
+    //TODO treat date return types differently?
+    if([@"int" isEqualToString:dataType]) {
+        questionToCreate = [[QuestionNumAnswer alloc] init];
+    } else {
+        questionToCreate = [[QuestionTextAnswer alloc] init];
+    }
+    
+    return questionToCreate;
 }
 
 @end

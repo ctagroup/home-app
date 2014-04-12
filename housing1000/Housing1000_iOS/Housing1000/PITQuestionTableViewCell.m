@@ -46,7 +46,7 @@
     if(![self.questionTextAnswer.text isEqualToString:@""]) { //Only store the textfield value if it isn't empty
         self.number.text = self.questionTextAnswer.text;
         self.questionStepperAnswer.value = self.questionTextAnswer.text.intValue;
-        self.questionData.answer = self.questionTextAnswer.text;
+        [self.questionData setAnswerForJson:self.questionTextAnswer.text];
     }
 }
 
@@ -94,11 +94,11 @@
     
     //Immediately store what they select
     if(row == 0) {
-        self.questionData.answer = nil;
+        [self.questionData setAnswerForJson:[NSNull null]];
         [self changeChildQuestions:nil];
     } else {
-        self.questionData.answer = [self.questionData.options objectAtIndex:row - 1];
-        [self changeChildQuestions:self.questionData.answer];
+        [self.questionData setAnswerForJson:[self.questionData.options objectAtIndex:row - 1]];
+        [self changeChildQuestions:[self.questionData getAnswerForJson]];
     }
     
 }
@@ -116,7 +116,7 @@
     
     [self.questionTextAnswer setText:@""];
     [self.number setText:[NSString stringWithFormat:@"%d", (int)value]];
-    self.questionData.answer = [NSString stringWithFormat:@"%d", (int)value];
+    [self.questionData setAnswerForJson:[NSString stringWithFormat:@"%d", (int)value]];
 }
 
 -(BOOL)shouldAutorotate
