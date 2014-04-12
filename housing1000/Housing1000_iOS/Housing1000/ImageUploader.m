@@ -28,10 +28,24 @@ NSString* imgActionDescription;
 -(void)uploadImages:(NSString*)imageFileNamePrefix {
     
     NSString *boundary = @"---------------------------14737809831466499882746641449";
-    //NSString *FileParamConstant = @"1_testing.jpg";
-    NSString *fileName = [NSString stringWithFormat:@"%@_signature.jpg", imageFileNamePrefix];
     
-    UIImage *imageToPost = [ImagesContainer getSignatureImage];
+    //Get signature image
+    UIImage *signature = [ImagesContainer getSignatureImage];
+    
+    //Arrays used for uploading multiple images in the same payload
+    NSMutableArray *images = [[NSMutableArray alloc] init];
+    NSMutableArray *imageNames = [[NSMutableArray alloc] init];
+    
+    //Add signature image and signature file name
+    [images addObject:signature];
+    [imageNames addObject:[NSString stringWithFormat:@"%@_signature.jpg", imageFileNamePrefix]];
+    
+    //Add any and all photo images and file names
+    for(int i = 0; i < [[ImagesContainer getPhotoImages] count]; i++) {
+        [images addObject:[[ImagesContainer getPhotoImages] objectAtIndex:i]];
+        [imageNames addObject:[NSString stringWithFormat:@"%@_photo%d.jpg", imageFileNamePrefix, i]];
+    }
+    
     NSString *urlString = @"https://staging.ctagroup.org/survey/api/upload";
     NSURL *requestURL=[NSURL URLWithString:urlString];
     
@@ -49,7 +63,7 @@ NSString* imgActionDescription;
     // post body
     NSMutableData *body = [NSMutableData data];
     
-    /*
+    /* //Commented out because we don't use this, but it might be useful someday
     // add params (all params are strings)
     for (NSString *param in _params) {
         [body appendData:[[NSString stringWithFormat:@"--%@\r\n", BoundaryConstant] dataUsingEncoding:NSUTF8StringEncoding]];
@@ -57,14 +71,21 @@ NSString* imgActionDescription;
         [body appendData:[[NSString stringWithFormat:@"%@\r\n", [_params objectForKey:param]] dataUsingEncoding:NSUTF8StringEncoding]];
     }*/
     
-    // add image data
-    NSData *imageData = UIImageJPEGRepresentation(imageToPost, 1.0);
-    if (imageData) {
-        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\r\n", fileName, fileName] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[@"Content-Type: image/jpeg\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:imageData];
-        [body appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    for(int i = 0; i < [images count]; i++) {
+        
+        UIImage *imageToPost = [images objectAtIndex:i];
+        NSString * imageFileName = [imageNames objectAtIndex:i];
+        NSLog(@"Adding image number %d to the payload with name of %@.", i+1, imageFileName);
+        
+        NSData *imageData = UIImageJPEGRepresentation(imageToPost, 1.0);
+        if (imageData) {
+            [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\r\n", imageFileName, imageFileName] dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[@"Content-Type: image/jpeg\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:imageData];
+            [body appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        }
     }
     
     [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
