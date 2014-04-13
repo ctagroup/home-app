@@ -19,21 +19,21 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".Activities.LoginActivity" />
+        <activity android:name=".activities.LoginActivity" />
         <activity
-            android:name=".Activities.SignatureActivity"
+            android:name=".activities.SignatureActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="landscape" />
-        <activity android:name=".Activities.SelectPageActivity">
+        <activity android:name=".activities.SelectPageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.SurveyListActivity" />
-        <activity android:name=".Activities.SurveyFlowActivity" />
-        <activity android:name=".Activities.PitActivity" />
+        <activity android:name=".activities.SurveyListActivity" />
+        <activity android:name=".activities.SurveyFlowActivity" />
+        <activity android:name=".activities.PitActivity" />
     </application>
 
 </manifest>

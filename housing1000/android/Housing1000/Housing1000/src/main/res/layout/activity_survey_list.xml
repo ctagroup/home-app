@@ -3,5 +3,5 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edu.weber.housing1000.Activities.SurveyListActivity"
+    tools:context="edu.weber.housing1000.activities.SurveyListActivity"
     tools:ignore="MergeRootFrame" />

@@ -13,8 +13,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 
-import edu.weber.housing1000.Helpers.EncryptionHelper;
-import edu.weber.housing1000.Helpers.FileHelper;
+import edu.weber.housing1000.helpers.EncryptionHelper;
+import edu.weber.housing1000.helpers.FileHelper;
 
 /**
  * Created by Blake on 2/18/14.

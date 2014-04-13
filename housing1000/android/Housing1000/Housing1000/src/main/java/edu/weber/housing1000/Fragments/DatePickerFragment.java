@@ -1,4 +1,4 @@
-package edu.weber.housing1000.Fragments;
+package edu.weber.housing1000.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

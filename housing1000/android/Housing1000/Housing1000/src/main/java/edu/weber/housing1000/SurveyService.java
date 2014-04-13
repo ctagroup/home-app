@@ -2,10 +2,10 @@ package edu.weber.housing1000;
 
 import java.util.ArrayList;
 
-import edu.weber.housing1000.Data.PitResponse;
-import edu.weber.housing1000.Data.Survey;
-import edu.weber.housing1000.Data.SurveyListing;
-import edu.weber.housing1000.Data.SurveyResponse;
+import edu.weber.housing1000.data.PitResponse;
+import edu.weber.housing1000.data.Survey;
+import edu.weber.housing1000.data.SurveyListing;
+import edu.weber.housing1000.data.SurveyResponse;
 import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.GET;

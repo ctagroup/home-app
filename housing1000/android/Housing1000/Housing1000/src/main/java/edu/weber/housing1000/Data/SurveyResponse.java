@@ -1,4 +1,4 @@
-package edu.weber.housing1000.Data;
+package edu.weber.housing1000.data;
 
 import java.util.*;
 

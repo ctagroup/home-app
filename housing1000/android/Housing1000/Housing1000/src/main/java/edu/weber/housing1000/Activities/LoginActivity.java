@@ -1,4 +1,4 @@
-package edu.weber.housing1000.Activities;
+package edu.weber.housing1000.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.view.View;
 import android.widget.TextView;
 
-import edu.weber.housing1000.Helpers.ErrorHelper;
+import edu.weber.housing1000.helpers.ErrorHelper;
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.Utils;
 

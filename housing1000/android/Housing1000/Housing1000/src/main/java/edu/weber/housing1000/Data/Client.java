@@ -1,4 +1,4 @@
-package edu.weber.housing1000.Data;
+package edu.weber.housing1000.data;
 
 import android.location.Location;
 
@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import edu.weber.housing1000.Questions.Question;
+import edu.weber.housing1000.questions.Question;
 
 /**
  * Created by Blake on 1/22/14.

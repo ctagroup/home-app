@@ -1,4 +1,4 @@
-package edu.weber.housing1000.Fragments;
+package edu.weber.housing1000.fragments;
 
 import android.app.Dialog;
 import android.support.v4.app.DialogFragment;

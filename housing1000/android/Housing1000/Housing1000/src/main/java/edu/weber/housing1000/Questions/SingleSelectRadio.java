@@ -1,4 +1,4 @@
-package edu.weber.housing1000.Questions;
+package edu.weber.housing1000.questions;
 
 import android.content.Context;
 import android.view.View;

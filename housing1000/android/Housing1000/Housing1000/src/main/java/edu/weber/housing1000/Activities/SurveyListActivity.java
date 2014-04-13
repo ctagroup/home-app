@@ -1,4 +1,4 @@
-package edu.weber.housing1000.Activities;
+package edu.weber.housing1000.activities;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -15,11 +15,11 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import edu.weber.housing1000.Data.SurveyListing;
-import edu.weber.housing1000.Fragments.ProgressDialogFragment;
-import edu.weber.housing1000.Fragments.SurveyListFragment;
-import edu.weber.housing1000.Fragments.SurveyListFragment.*;
-import edu.weber.housing1000.Helpers.RESTHelper;
+import edu.weber.housing1000.data.SurveyListing;
+import edu.weber.housing1000.fragments.ProgressDialogFragment;
+import edu.weber.housing1000.fragments.SurveyListFragment;
+import edu.weber.housing1000.fragments.SurveyListFragment.*;
+import edu.weber.housing1000.helpers.RESTHelper;
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.SurveyService;
 import edu.weber.housing1000.Utils;

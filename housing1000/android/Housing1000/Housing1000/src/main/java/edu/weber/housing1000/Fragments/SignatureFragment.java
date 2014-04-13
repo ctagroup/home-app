@@ -1,4 +1,4 @@
-package edu.weber.housing1000.Fragments;
+package edu.weber.housing1000.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -19,11 +19,11 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.ArrayList;
 
-import edu.weber.housing1000.Helpers.RESTHelper;
+import edu.weber.housing1000.helpers.RESTHelper;
 import edu.weber.housing1000.SurveyService;
 import edu.weber.housing1000.R;
-import edu.weber.housing1000.Activities.SignatureActivity;
-import edu.weber.housing1000.Activities.SurveyFlowActivity;
+import edu.weber.housing1000.activities.SignatureActivity;
+import edu.weber.housing1000.activities.SurveyFlowActivity;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;

@@ -1,4 +1,4 @@
-package edu.weber.housing1000.Activities;
+package edu.weber.housing1000.activities;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -16,14 +16,14 @@ import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 
-import edu.weber.housing1000.Data.Survey;
-import edu.weber.housing1000.Data.SurveyListing;
-import edu.weber.housing1000.Fragments.PitFragment;
-import edu.weber.housing1000.Fragments.ProgressDialogFragment;
-import edu.weber.housing1000.Helpers.ErrorHelper;
-import edu.weber.housing1000.Helpers.RESTHelper;
-import edu.weber.housing1000.Questions.Question;
-import edu.weber.housing1000.Questions.QuestionJSONDeserializer;
+import edu.weber.housing1000.data.Survey;
+import edu.weber.housing1000.data.SurveyListing;
+import edu.weber.housing1000.fragments.PitFragment;
+import edu.weber.housing1000.fragments.ProgressDialogFragment;
+import edu.weber.housing1000.helpers.ErrorHelper;
+import edu.weber.housing1000.helpers.RESTHelper;
+import edu.weber.housing1000.questions.Question;
+import edu.weber.housing1000.questions.QuestionJSONDeserializer;
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.SurveyService;
 import edu.weber.housing1000.Utils;

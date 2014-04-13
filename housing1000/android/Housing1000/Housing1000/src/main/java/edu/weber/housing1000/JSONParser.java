@@ -7,10 +7,10 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-import edu.weber.housing1000.Data.Survey;
-import edu.weber.housing1000.Data.SurveyListing;
-import edu.weber.housing1000.Questions.Question;
-import edu.weber.housing1000.Questions.QuestionJSONDeserializer;
+import edu.weber.housing1000.data.Survey;
+import edu.weber.housing1000.data.SurveyListing;
+import edu.weber.housing1000.questions.Question;
+import edu.weber.housing1000.questions.QuestionJSONDeserializer;
 
 /**
  * Created by Blake on 11/12/13.

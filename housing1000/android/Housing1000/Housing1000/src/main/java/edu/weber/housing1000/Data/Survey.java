@@ -1,4 +1,4 @@
-package edu.weber.housing1000.Data;
+package edu.weber.housing1000.data;
 
 
 import com.google.gson.annotations.Expose;
@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.*;
 
-import edu.weber.housing1000.Questions.Question;
+import edu.weber.housing1000.questions.Question;
 
 public class Survey {
 

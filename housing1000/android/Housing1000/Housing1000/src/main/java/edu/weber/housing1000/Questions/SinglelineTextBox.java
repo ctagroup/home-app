@@ -1,4 +1,4 @@
-package edu.weber.housing1000.Questions;
+package edu.weber.housing1000.questions;
 
 import android.content.Context;
 import android.graphics.Rect;
@@ -12,8 +12,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import edu.weber.housing1000.Fragments.DatePickerFragment;
-import edu.weber.housing1000.Activities.SurveyFlowActivity;
+import edu.weber.housing1000.fragments.DatePickerFragment;
+import edu.weber.housing1000.activities.SurveyFlowActivity;
 
 /**
  * Created by Blake on 1/21/14.

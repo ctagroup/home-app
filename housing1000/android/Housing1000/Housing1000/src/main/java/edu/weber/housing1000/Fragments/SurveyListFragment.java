@@ -1,4 +1,4 @@
-package edu.weber.housing1000.Fragments;
+package edu.weber.housing1000.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -11,7 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import edu.weber.housing1000.R;
-import edu.weber.housing1000.Activities.SurveyListActivity;
+import edu.weber.housing1000.activities.SurveyListActivity;
 
 /**
  * A placeholder fragment containing a simple view.

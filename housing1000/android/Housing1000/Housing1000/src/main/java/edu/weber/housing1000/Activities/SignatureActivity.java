@@ -1,4 +1,4 @@
-package edu.weber.housing1000.Activities;
+package edu.weber.housing1000.activities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,10 +15,10 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import edu.weber.housing1000.Fragments.SignatureFragment;
-import edu.weber.housing1000.Helpers.EncryptionHelper;
-import edu.weber.housing1000.Helpers.FileHelper;
-import edu.weber.housing1000.Helpers.ImageHelper;
+import edu.weber.housing1000.fragments.SignatureFragment;
+import edu.weber.housing1000.helpers.EncryptionHelper;
+import edu.weber.housing1000.helpers.FileHelper;
+import edu.weber.housing1000.helpers.ImageHelper;
 import edu.weber.housing1000.R;
 
 import java.io.ByteArrayOutputStream;

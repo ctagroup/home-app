@@ -1,4 +1,4 @@
-package edu.weber.housing1000.Fragments;
+package edu.weber.housing1000.fragments;
 
 import android.animation.LayoutTransition;
 import android.app.AlertDialog;
@@ -24,13 +24,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import edu.weber.housing1000.Data.Client;
-import edu.weber.housing1000.Data.Response;
-import edu.weber.housing1000.Data.Survey;
-import edu.weber.housing1000.Data.SurveyListing;
-import edu.weber.housing1000.Data.SurveyResponse;
+import edu.weber.housing1000.data.Client;
+import edu.weber.housing1000.data.Response;
+import edu.weber.housing1000.data.Survey;
+import edu.weber.housing1000.data.SurveyListing;
+import edu.weber.housing1000.data.SurveyResponse;
 import edu.weber.housing1000.JSONParser;
-import edu.weber.housing1000.Questions.Question;
+import edu.weber.housing1000.questions.Question;
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.Utils;
 

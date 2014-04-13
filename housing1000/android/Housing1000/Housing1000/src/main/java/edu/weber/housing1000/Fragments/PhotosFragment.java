@@ -1,4 +1,4 @@
-package edu.weber.housing1000.Fragments;
+package edu.weber.housing1000.fragments;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -26,14 +26,14 @@ import android.widget.TextView;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
-import edu.weber.housing1000.Helpers.EncryptionHelper;
-import edu.weber.housing1000.Helpers.FileHelper;
-import edu.weber.housing1000.Helpers.ImageHelper;
-import edu.weber.housing1000.Helpers.RESTHelper;
+import edu.weber.housing1000.helpers.EncryptionHelper;
+import edu.weber.housing1000.helpers.FileHelper;
+import edu.weber.housing1000.helpers.ImageHelper;
+import edu.weber.housing1000.helpers.RESTHelper;
 import edu.weber.housing1000.SurveyService;
 import edu.weber.housing1000.ImageAdapter;
 import edu.weber.housing1000.R;
-import edu.weber.housing1000.Activities.SurveyFlowActivity;
+import edu.weber.housing1000.activities.SurveyFlowActivity;
 import edu.weber.housing1000.Utils;
 import retrofit.Callback;
 import retrofit.RestAdapter;

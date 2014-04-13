@@ -6,7 +6,7 @@
     android:paddingBottom="@dimen/margin_small"
     android:paddingLeft="@dimen/margin_medium"
     android:paddingRight="@dimen/margin_medium"
-    tools:context="edu.weber.housing1000.Fragments.SurveyListFragment">
+    tools:context="edu.weber.housing1000.fragments.SurveyListFragment">
 
     <ListView
         android:layout_width="match_parent"

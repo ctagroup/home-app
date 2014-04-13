@@ -1,4 +1,4 @@
-package edu.weber.housing1000.Activities;
+package edu.weber.housing1000.activities;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -27,15 +27,15 @@ import java.io.File;
 import java.io.IOException;
 
 import edu.weber.housing1000.CustomViewPager;
-import edu.weber.housing1000.Data.SurveyListing;
-import edu.weber.housing1000.Fragments.PhotosFragment;
-import edu.weber.housing1000.Fragments.ProgressDialogFragment;
-import edu.weber.housing1000.Fragments.SignatureFragment;
-import edu.weber.housing1000.Fragments.SurveyAppFragment;
-import edu.weber.housing1000.Fragments.SurveyFragment;
-import edu.weber.housing1000.Helpers.ErrorHelper;
-import edu.weber.housing1000.Helpers.FileHelper;
-import edu.weber.housing1000.Helpers.RESTHelper;
+import edu.weber.housing1000.data.SurveyListing;
+import edu.weber.housing1000.fragments.PhotosFragment;
+import edu.weber.housing1000.fragments.ProgressDialogFragment;
+import edu.weber.housing1000.fragments.SignatureFragment;
+import edu.weber.housing1000.fragments.SurveyAppFragment;
+import edu.weber.housing1000.fragments.SurveyFragment;
+import edu.weber.housing1000.helpers.ErrorHelper;
+import edu.weber.housing1000.helpers.FileHelper;
+import edu.weber.housing1000.helpers.RESTHelper;
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.Utils;
 import retrofit.client.Response;

@@ -1,4 +1,4 @@
-package edu.weber.housing1000.Helpers;
+package edu.weber.housing1000.helpers;
 
 import android.os.Environment;
 import android.util.Log;

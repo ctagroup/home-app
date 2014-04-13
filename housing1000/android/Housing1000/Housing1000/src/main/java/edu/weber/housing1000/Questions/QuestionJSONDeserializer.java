@@ -1,4 +1,4 @@
-package edu.weber.housing1000.Questions;
+package edu.weber.housing1000.questions;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

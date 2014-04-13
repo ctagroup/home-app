@@ -1,4 +1,4 @@
-package edu.weber.housing1000.Fragments;
+package edu.weber.housing1000.fragments;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,12 +14,12 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 
-import edu.weber.housing1000.Activities.PitActivity;
-import edu.weber.housing1000.Data.Client;
-import edu.weber.housing1000.Data.PitResponse;
-import edu.weber.housing1000.Data.Response;
-import edu.weber.housing1000.Data.SurveyResponse;
-import edu.weber.housing1000.Helpers.RESTHelper;
+import edu.weber.housing1000.activities.PitActivity;
+import edu.weber.housing1000.data.Client;
+import edu.weber.housing1000.data.PitResponse;
+import edu.weber.housing1000.data.Response;
+import edu.weber.housing1000.data.SurveyResponse;
+import edu.weber.housing1000.helpers.RESTHelper;
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.SurveyService;
 import retrofit.Callback;
