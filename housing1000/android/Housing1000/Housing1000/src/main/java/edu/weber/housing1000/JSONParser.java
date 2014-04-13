@@ -4,21 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import edu.weber.housing1000.Data.Survey;
 import edu.weber.housing1000.Data.SurveyListing;
-import edu.weber.housing1000.Questions.MultiSelect;
 import edu.weber.housing1000.Questions.Question;
 import edu.weber.housing1000.Questions.QuestionJSONDeserializer;
-import edu.weber.housing1000.Questions.SingleSelect;
-import edu.weber.housing1000.Questions.SingleSelectRadio;
-import edu.weber.housing1000.Questions.SinglelineTextBox;
 
 /**
  * Created by Blake on 11/12/13.

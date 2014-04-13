@@ -26,7 +26,8 @@
             android:src="@drawable/ctagroup_logo"
             android:cropToPadding="false"
             android:adjustViewBounds="true"
-            android:paddingBottom="20dp" />
+            android:paddingBottom="20dp"
+            android:contentDescription="@string/ctagroup_logo"/>
 
 
         <TextView

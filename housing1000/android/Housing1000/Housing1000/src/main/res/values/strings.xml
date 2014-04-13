@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="notice">Notice...</string>
+    <string name="notice">Notice…</string>
     <string name="action_camera">Take Picture</string>
     <string name="action_clear">Clear</string>
     <string name="action_delete">Delete</string>
@@ -72,7 +72,7 @@
     <string name="user_name">User Name:</string>
     <string name="waiting">waiting…</string>
     <string name="yes">Yes</string>
-    <string name="submitting_pit_responses">Submitting PIT responses...</string><string name="error_internet_connection">Your device doesn\'t appear to have an internet connection.
+    <string name="submitting_pit_responses">Submitting PIT responses…</string><string name="error_internet_connection">Your device doesn\'t appear to have an internet connection.
 Please make sure you are connected and try again.</string>
     <string name="no_connection">No Connection</string>
 
