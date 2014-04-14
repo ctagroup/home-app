@@ -28,7 +28,7 @@
 
 - (void)viewDidLoad
 {
-    _scrollableDisclaimer.text = @"PLEASE READ THIS DOCUMENT CAREFULLY. YOUR SIGNATURE IS REQUIRED FOR PARTICIPATION. YOU MUST BE AT LEAST 18 YEARS OF AGE TO GIVE YOUR CONSENT TO PARTICIPATE IN RESEARCH. IF YOU DESIRE A COPY OF THIS CONSENT FORM, YOU MAY REQUEST ONE AND WE WILL PROVIDE IT. For now I will just type a gajillion things into this until I am satisfied that we have enough space covered to make this fully scrollable but then again, legal jargon can be quite long winded indeed... for that we will make more and more and more and mroe and more and more and more and more this is the end of the world as we know it... and I feel fine.";
+    _scrollableDisclaimer.text = @"PLEASE READ THIS DOCUMENT CAREFULLY. YOUR SIGNATURE IS REQUIRED FOR PARTICIPATION. YOU MUST BE AT LEAST 18 YEARS OF AGE TO GIVE YOUR CONSENT TO PARTICIPATE IN RESEARCH. IF YOU DESIRE A COPY OF THIS CONSENT FORM, YOU MAY REQUEST ONE AND WE WILL PROVIDE IT. Confidentiality: You will be assigned a code number which will protect your identity. All data will be kept in secured files, in accord with the standards of the University, Federal regulations, and the American Psychological Association. All identifying information will be removed from questionnaires as soon as your participation is complete. No one will be able to know which are your questionnaire responses. Finally, remember that it is no individual person's responses that interest us; we are studying the usefulness of the tests in question for people in general.";
     _scrollableDisclaimer.textColor = [UIColor darkGrayColor];
     _scrollableDisclaimer.font = [UIFont systemFontOfSize:14];
     [_scrollableDisclaimer setBackgroundColor:[UIColor clearColor]];

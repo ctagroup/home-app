@@ -17,6 +17,7 @@
 		27642FF118A47E6500277F24 /* bg-signature-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27642FED18A47E6500277F24 /* bg-signature-landscape@2x.png */; };
 		27642FF218A47E6500277F24 /* bg-signature-portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 27642FEE18A47E6500277F24 /* bg-signature-portrait.png */; };
 		27642FF318A47E6500277F24 /* bg-signature-portrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27642FEF18A47E6500277F24 /* bg-signature-portrait@2x.png */; };
+		27B8D78718FB8857001CEED1 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 27B8D78618FB8857001CEED1 /* Credits.rtf */; };
 		3F558BAB18CBA1F5007D531F /* SurveyPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BAA18CBA1F5007D531F /* SurveyPageViewController.m */; };
 		3F558BB418CE9CC6007D531F /* ctagroup_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F558BB318CE9CC6007D531F /* ctagroup_logo.png */; };
 		3F558BB718D006A5007D531F /* PITViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BB618D006A5007D531F /* PITViewController.m */; };
@@ -84,6 +85,7 @@
 		27642FED18A47E6500277F24 /* bg-signature-landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-signature-landscape@2x.png"; sourceTree = "<group>"; };
 		27642FEE18A47E6500277F24 /* bg-signature-portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-signature-portrait.png"; sourceTree = "<group>"; };
 		27642FEF18A47E6500277F24 /* bg-signature-portrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-signature-portrait@2x.png"; sourceTree = "<group>"; };
+		27B8D78618FB8857001CEED1 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		3F558BA918CBA1F5007D531F /* SurveyPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyPageViewController.h; sourceTree = "<group>"; };
 		3F558BAA18CBA1F5007D531F /* SurveyPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyPageViewController.m; sourceTree = "<group>"; };
 		3F558BB318CE9CC6007D531F /* ctagroup_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ctagroup_logo.png; sourceTree = "<group>"; };
@@ -347,6 +349,7 @@
 		948CBC3B16FC8BA000DD4E2B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				27B8D78618FB8857001CEED1 /* Credits.rtf */,
 				94922FEB17027A3000670EB7 /* Fields.txt */,
 				948CBC3C16FC8BA000DD4E2B /* Housing1000-Info.plist */,
 				948CBC3D16FC8BA000DD4E2B /* InfoPlist.strings */,
@@ -438,6 +441,7 @@
 				948CBC4E16FC8BA000DD4E2B /* MainStoryboard.storyboard in Resources */,
 				948CBC5D16FC939F00DD4E2B /* housing1000logo.png in Resources */,
 				94922FEC17027A3000670EB7 /* Fields.txt in Resources */,
+				27B8D78718FB8857001CEED1 /* Credits.rtf in Resources */,
 				940CA4EE1702894400FA5C87 /* blue_button.png in Resources */,
 				3F558BB418CE9CC6007D531F /* ctagroup_logo.png in Resources */,
 				27642FF218A47E6500277F24 /* bg-signature-portrait.png in Resources */,

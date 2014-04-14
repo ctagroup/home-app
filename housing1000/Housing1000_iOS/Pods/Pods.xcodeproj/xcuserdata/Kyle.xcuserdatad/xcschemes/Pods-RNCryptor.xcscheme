@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "49CC235A88B04A75BF92FD9F"
+               BlueprintIdentifier = "3936BF78991B4FCBBF03F917"
                BuildableName = "libPods-RNCryptor.a"
                BlueprintName = "Pods-RNCryptor"
                ReferencedContainer = "container:Pods.xcodeproj">

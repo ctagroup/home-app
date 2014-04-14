@@ -15,7 +15,7 @@ DEPENDENCIES:
   - RNCryptor
 
 SPEC CHECKSUMS:
-  CAAnimationBlocks: b70f877c5b92734abef270152187d3287d84e8f8
+  CAAnimationBlocks: 0b18c88fcdffc0b8bb5e4c2ef57096f85119bb4d
   JSONModel: f391da60a15e11f8fa8950fb980b8f799ae3453f
   LMAlertView: ff5df3c67159622484d46c3fd63d6caff05a4ef3
   PPSSignatureView: 83ffa630306afc93ad595e5a6e98a0dba1c8a49b
