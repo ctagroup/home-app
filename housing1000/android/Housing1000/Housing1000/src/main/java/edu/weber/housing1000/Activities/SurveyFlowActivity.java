@@ -230,6 +230,8 @@ public class SurveyFlowActivity extends ActionBarActivity {
         locationmanager.removeUpdates(locationlistener);
     }
 
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -331,8 +333,6 @@ public class SurveyFlowActivity extends ActionBarActivity {
         builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                dialog.dismiss();
-
                 // Delete the folder containing any related files
                 deleteAllFolderFiles();
 
@@ -349,8 +349,6 @@ public class SurveyFlowActivity extends ActionBarActivity {
         builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-
                 // Delete the folder containing any related files
                 deleteAllFolderFiles();
 
@@ -367,7 +365,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
     }
 
     private void deleteAllFolderFiles() {
-        File surveyDir = new File(FileHelper.getAbsoluteFilePath(getFolderHash(), ""));
+        File surveyDir = new File(FileHelper.getAbsoluteFilePath(getFolderHash(), "", this));
         if (surveyDir.exists()) {
             Log.d("DELETING SURVEY DIR", surveyDir.getAbsolutePath());
             FileHelper.deleteAllFiles(surveyDir);

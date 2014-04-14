@@ -213,10 +213,10 @@ public class PhotosFragment extends SurveyAppFragment {
 
                 byte[] encryptedImage = EncryptionHelper.encrypt(byteImage);
 
-                FileHelper.writeFileToExternalStorage(encryptedImage, myActivity.getFolderHash(), encryptedName);
+                FileHelper.writeFileToExternalStorage(encryptedImage, myActivity.getFolderHash(), encryptedName, getActivity());
 
                 // Add the file path to the imageAdapter
-                imageAdapter.addImagePath(FileHelper.getAbsoluteFilePath(myActivity.getFolderHash(), encryptedName));
+                imageAdapter.addImagePath(FileHelper.getAbsoluteFilePath(myActivity.getFolderHash(), encryptedName, getActivity()));
 
                 Log.d("PHOTO ADDED", (String) imageAdapter.getItem(imageAdapter.getCount() - 1));
                 Log.d("PHOTO COUNT", String.valueOf(imageAdapter.getCount()));

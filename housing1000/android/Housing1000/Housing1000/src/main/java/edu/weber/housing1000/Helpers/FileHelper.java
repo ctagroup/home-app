@@ -1,5 +1,7 @@
 package edu.weber.housing1000.helpers;
 
+import android.app.Application;
+import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
@@ -11,15 +13,13 @@ import java.io.FileOutputStream;
  * Created by Blake on 11/16/13.
  */
 public class FileHelper {
-    private static final String appDirectory = "/.housing1000";
-
     /**
      * Writes a file to external storage
      * @param fileBytes Bytes to be written
      * @param subDirectory Subdirectory that will contain the file
      * @param filename Name of the file to be written
      */
-    public static void writeFileToExternalStorage(byte[] fileBytes, String subDirectory, String filename)
+    public static void writeFileToExternalStorage(byte[] fileBytes, String subDirectory, String filename, Context context)
     {
         // Check to see if we can write to external storage
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()))
@@ -27,7 +27,7 @@ public class FileHelper {
             try {
                 // Get the external storage directory
                 File sdCard = Environment.getExternalStorageDirectory();
-                String dirPath = sdCard.getAbsolutePath() + appDirectory + "/" + subDirectory;
+                String dirPath = context.getExternalCacheDir() + "/" + subDirectory;
 
                 // Set up the directory that we are saving to
                 File dir = new File (dirPath);
@@ -54,16 +54,13 @@ public class FileHelper {
      * @param filename Name of the file
      * @return Bytes of the file
      */
-    public static byte[] readFileFromExternalStorage(String subDirectory, String filename)
+    public static byte[] readFileFromExternalStorage(String subDirectory, String filename, Context context)
     {
         // Check to see if we can write to external storage
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()))
         {
             try {
-
-                // Get the external storage directory
-                File sdCard = Environment.getExternalStorageDirectory();
-                String dirPath = sdCard.getAbsolutePath() + appDirectory + "/" + subDirectory;
+                String dirPath = context.getExternalCacheDir() + "/" + subDirectory;
 
                 // Set up the directory that we are reading from
                 File dir = new File (dirPath);
@@ -124,11 +121,9 @@ public class FileHelper {
      * @param filename Name of the file
      * @return Absolute path of the file
      */
-    public static String getAbsoluteFilePath(String subDirectory, String filename)
+    public static String getAbsoluteFilePath(String subDirectory, String filename, Context context)
     {
-        // Get the external storage directory
-        File sdCard = Environment.getExternalStorageDirectory();
-        String dirPath = sdCard.getAbsolutePath() + appDirectory + "/" + subDirectory;
+        String dirPath = context.getExternalCacheDir() + "/" + subDirectory;
 
         // Set up the directory that we are reading from
         File dir = new File (dirPath);
@@ -152,6 +147,7 @@ public class FileHelper {
                     for (File f : fileOrDirectory.listFiles())
                         deleteAllFiles(f);
 
+                Log.d("ATTEMPTING TO DELETE", fileOrDirectory.toString());
                 fileOrDirectory.delete();
             }
         } catch (Exception ex)
