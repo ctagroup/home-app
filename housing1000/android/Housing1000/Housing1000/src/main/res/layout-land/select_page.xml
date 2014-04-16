@@ -9,32 +9,33 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_gravity="center"
-    android:paddingTop="@dimen/margin_large"
-    android:paddingBottom="@dimen/margin_large">
+    android:paddingLeft="@dimen/margin_large"
+    android:paddingRight="@dimen/margin_large">
 
     <ImageView
         android:layout_width="260dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="false"
         android:src="@drawable/ctagroup_logo"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
         android:contentDescription="@string/ctagroup_logo"
         android:id="@+id/logoImageView"
         android:paddingBottom="40dp"
-        android:paddingTop="20dp" />
+        android:paddingTop="20dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true" />
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/logoImageView"
         android:id="@+id/pitBtnLayout"
         android:gravity="center"
         android:layout_marginBottom="@dimen/margin_large"
         android:clickable="true"
-        android:onClick="startPitActivity">
+        android:onClick="startPitActivity"
+        android:layout_toRightOf="@+id/logoImageView">
 
         <ImageView
             android:duplicateParentState="true"
@@ -60,10 +61,11 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/surveyBtnLayout"
-        android:layout_below="@+id/pitBtnLayout"
         android:gravity="center"
         android:clickable="true"
-        android:onClick="startSurveyListActivity" >
+        android:onClick="startSurveyListActivity"
+        android:layout_toRightOf="@+id/logoImageView"
+        android:layout_below="@+id/pitBtnLayout">
 
         <ImageView
             android:duplicateParentState="true"

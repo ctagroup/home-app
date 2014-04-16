@@ -12,8 +12,5 @@
     <item>
         <bitmap android:src="@drawable/minus" android:antialias="false" android:dither="true" android:filter="false" android:mipMap="false" />
     </item>
-    <item>
-        <bitmap android:src="@drawable/minus" android:antialias="false" android:dither="true" android:filter="false" android:mipMap="false" />
-    </item>
 </layer-list>
 

@@ -2,6 +2,7 @@
 <resources>
     <color name="transparent">#00000000</color>
     <color name="black">#000000</color>
+    <color name="grey">#4d4d4d</color>
     <color name="action_bar">#ff332478</color>
     <!--<color name="action_bar">#2b1a60</color>-->
     <color name="tab_selected">#f6c606</color>

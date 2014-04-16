@@ -27,6 +27,8 @@ import java.io.File;
 import java.io.IOException;
 
 import edu.weber.housing1000.CustomViewPager;
+import edu.weber.housing1000.R;
+import edu.weber.housing1000.Utils;
 import edu.weber.housing1000.data.SurveyListing;
 import edu.weber.housing1000.fragments.PhotosFragment;
 import edu.weber.housing1000.fragments.ProgressDialogFragment;
@@ -36,19 +38,15 @@ import edu.weber.housing1000.fragments.SurveyFragment;
 import edu.weber.housing1000.helpers.ErrorHelper;
 import edu.weber.housing1000.helpers.FileHelper;
 import edu.weber.housing1000.helpers.RESTHelper;
-import edu.weber.housing1000.R;
-import edu.weber.housing1000.Utils;
 import retrofit.client.Response;
 
 public class SurveyFlowActivity extends ActionBarActivity {
     public static final String EXTRA_SURVEY = "survey";
-
-    private LocationManager locationmanager;
-    private LocationListener locationlistener;
     private static Double latitude;
     private static Double longitude;
     private static Location currentLocation;
-
+    private LocationManager locationmanager;
+    private LocationListener locationlistener;
     private boolean isSignatureCaptured;
 
     private PagerSlidingTabStrip mTabs;                         //Tabs of the view
@@ -60,6 +58,10 @@ public class SurveyFlowActivity extends ActionBarActivity {
     private String clientSurveyId;                      //Client survey id for image submission
 
     private ProgressDialogFragment progressDialogFragment;
+
+    public static Location getLocation() {
+        return currentLocation;
+    }
 
     public String getFolderHash() {
         return folderHash;
@@ -214,8 +216,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
                 outState.putParcelable("currentLocation", currentLocation);
             outState.putBoolean("isSignatureCaptured", isSignatureCaptured);
             outState.putString("clientSurveyId", clientSurveyId);
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
             ErrorHelper.showError(this, ex.getMessage());
         }
@@ -229,8 +230,6 @@ public class SurveyFlowActivity extends ActionBarActivity {
         dismissDialog();
         locationmanager.removeUpdates(locationlistener);
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -270,7 +269,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
         } else if (response != null) {
             setSubmittingResponse(false);
 
-            ErrorHelper.showError(this,getString(R.string.error_problem_submitting_survey));
+            ErrorHelper.showError(this, getString(R.string.error_problem_submitting_survey));
         } else // survey response has already been submitted, move on to photos
         {
             // Submit the photos
@@ -301,7 +300,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
         } else {
             setSubmittingResponse(false);
 
-            ErrorHelper.showError(this,getString(R.string.error_problem_submitting_photos));
+            ErrorHelper.showError(this, getString(R.string.error_problem_submitting_photos));
         }
     }
 
@@ -327,18 +326,24 @@ public class SurveyFlowActivity extends ActionBarActivity {
     private void showSendSuccessMessage() {
         setSubmittingResponse(false);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.success));
-        builder.setMessage(getString(R.string.success_survey_response));
-        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                // Delete the folder containing any related files
-                deleteAllFolderFiles();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.success))
+                .setMessage(getString(R.string.success_survey_response))
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        // Delete the folder containing any related files
+                        deleteAllFolderFilesAndFinish();
+                    }
+                })
+                .setPositiveButton(getString(R.string.okay), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Delete the folder containing any related files
+                        deleteAllFolderFilesAndFinish();
+                    }
+                });
 
-                finish();
-            }
-        });
         Utils.centerDialogMessageAndShow(builder);
     }
 
@@ -350,9 +355,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Delete the folder containing any related files
-                deleteAllFolderFiles();
-
-                finish();
+                deleteAllFolderFilesAndFinish();
             }
         });
         builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
@@ -364,12 +367,14 @@ public class SurveyFlowActivity extends ActionBarActivity {
         Utils.centerDialogMessageAndShow(builder);
     }
 
-    private void deleteAllFolderFiles() {
+    private void deleteAllFolderFilesAndFinish() {
         File surveyDir = new File(FileHelper.getAbsoluteFilePath(getFolderHash(), "", this));
         if (surveyDir.exists()) {
             Log.d("DELETING SURVEY DIR", surveyDir.getAbsolutePath());
             FileHelper.deleteAllFiles(surveyDir);
         }
+
+        finish();
     }
 
     private void generateFolderHash() {
@@ -454,11 +459,6 @@ public class SurveyFlowActivity extends ActionBarActivity {
         }
 
 
-    }
-
-    public static Location getLocation()
-    {
-        return currentLocation;
     }
 
 }

@@ -18,31 +18,11 @@ import edu.weber.housing1000.Utils;
 public class SelectPageActivity extends ActionBarActivity {
     private final Context context = this;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_page);
         Utils.setActionBarColorToDefault(this);
-
-        //Get the Buttons
-        Button pitButton = (Button) findViewById(R.id.pitButton);
-        Button dynamicWithApiButton = (Button) findViewById(R.id.dynamicWithApiButton);
-
-        pitButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent intent = new Intent(SelectPageActivity.this, PitActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        dynamicWithApiButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                //getSurveyList();
-                Intent intent = new Intent(SelectPageActivity.this, SurveyListActivity.class);
-                startActivity(intent);
-            }
-        });
 
         //Check if GPS is enabled
         LocationManager locationmanager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -74,6 +54,18 @@ public class SelectPageActivity extends ActionBarActivity {
             Log.d("GPS Disabled: ", "Please Enable GPS");
         }
 
+    }
+
+    public void startPitActivity(View v)
+    {
+        Intent intent = new Intent(SelectPageActivity.this, PitActivity.class);
+        startActivity(intent);
+    }
+
+    public void startSurveyListActivity(View v)
+    {
+        Intent intent = new Intent(SelectPageActivity.this, SurveyListActivity.class);
+        startActivity(intent);
     }
 
 }
