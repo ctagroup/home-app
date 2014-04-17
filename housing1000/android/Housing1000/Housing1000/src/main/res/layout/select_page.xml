@@ -22,8 +22,7 @@
         android:scaleType="fitCenter"
         android:contentDescription="@string/ctagroup_logo"
         android:id="@+id/logoImageView"
-        android:paddingBottom="40dp"
-        android:paddingTop="20dp" />
+        android:paddingBottom="40dp" />
 
     <LinearLayout
         android:orientation="horizontal"
