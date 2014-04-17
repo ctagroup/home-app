@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="false"
+    android:measureAllChildren="false">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:paddingLeft="@dimen/margin_medium"
+    android:paddingRight="@dimen/margin_medium">
+
+    <ImageView
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="false"
+        android:src="@drawable/ctagroup_logo"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/ctagroup_logo"
+        android:id="@+id/logoImageView"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/pitBtnLayout"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:clickable="true"
+        android:onClick="startPitActivity"
+        android:layout_toRightOf="@+id/logoImageView">
+
+        <ImageView
+            android:duplicateParentState="true"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:id="@+id/pitImageButton"
+            android:background="@drawable/btn_pit"
+            android:contentDescription="@string/btn_point_in_time" />
+
+        <TextView
+            android:duplicateParentState="true"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:text="@string/point_in_time"
+            android:textSize="18sp"
+            android:textColor="@color/grey"
+            android:textStyle="bold"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/surveyBtnLayout"
+        android:gravity="center"
+        android:clickable="true"
+        android:onClick="startSurveyListActivity"
+        android:layout_toRightOf="@+id/logoImageView"
+        android:layout_below="@+id/pitBtnLayout">
+
+        <ImageView
+            android:duplicateParentState="true"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:id="@+id/surveyImageButton"
+            android:background="@drawable/btn_survey"
+            android:contentDescription="@string/btn_surveys" />
+
+        <TextView
+            android:duplicateParentState="true"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:text="@string/surveys"
+            android:textSize="18sp"
+            android:background="@color/transparent"
+            android:textStyle="bold"
+            android:textColor="@color/grey"
+            android:gravity="center" />
+    </LinearLayout>
+
+</RelativeLayout>
+</ScrollView>
