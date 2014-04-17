@@ -3,6 +3,7 @@ package edu.weber.housing1000.activities;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -41,8 +42,6 @@ public class PitActivity extends ActionBarActivity {
 
     private SurveyListing surveyListing;
 
-    private boolean submittingSurvey;
-
     public static Double getLatitude() {
         return latitude;
     }
@@ -52,7 +51,16 @@ public class PitActivity extends ActionBarActivity {
     }
 
     public void setSubmittingSurvey(boolean value) {
-        submittingSurvey = value;
+        try {
+            if (value) {
+                Utils.lockScreenOrientation(this);
+            } else {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            ErrorHelper.showError(this, ex.getMessage());
+        }
     }
 
     public SurveyListing getSurveyListing() {
@@ -215,20 +223,20 @@ public class PitActivity extends ActionBarActivity {
     }
 
     private void showSendSuccessMessage() {
-        setSubmittingSurvey(false);
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.success))
                 .setMessage(getString(R.string.success_pit_response))
                 .setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialog) {
+                        setSubmittingSurvey(false);
                         finish();
                     }
                 })
                 .setPositiveButton(getString(R.string.okay), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        setSubmittingSurvey(false);
                         finish();
                     }
                 });

@@ -324,8 +324,6 @@ public class SurveyFlowActivity extends ActionBarActivity {
     }
 
     private void showSendSuccessMessage() {
-        setSubmittingResponse(false);
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.success))
                 .setMessage(getString(R.string.success_survey_response))
@@ -368,6 +366,8 @@ public class SurveyFlowActivity extends ActionBarActivity {
     }
 
     private void deleteAllFolderFilesAndFinish() {
+        setSubmittingResponse(false);
+
         File surveyDir = new File(FileHelper.getAbsoluteFilePath(getFolderHash(), "", this));
         if (surveyDir.exists()) {
             Log.d("DELETING SURVEY DIR", surveyDir.getAbsolutePath());
