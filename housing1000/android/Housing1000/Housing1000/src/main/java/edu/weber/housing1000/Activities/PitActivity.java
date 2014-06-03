@@ -3,6 +3,7 @@ package edu.weber.housing1000.activities;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -16,6 +17,9 @@ import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 
+import edu.weber.housing1000.R;
+import edu.weber.housing1000.SurveyService;
+import edu.weber.housing1000.Utils;
 import edu.weber.housing1000.data.Survey;
 import edu.weber.housing1000.data.SurveyListing;
 import edu.weber.housing1000.fragments.PitFragment;
@@ -24,29 +28,39 @@ import edu.weber.housing1000.helpers.ErrorHelper;
 import edu.weber.housing1000.helpers.RESTHelper;
 import edu.weber.housing1000.questions.Question;
 import edu.weber.housing1000.questions.QuestionJSONDeserializer;
-import edu.weber.housing1000.R;
-import edu.weber.housing1000.SurveyService;
-import edu.weber.housing1000.Utils;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class PitActivity extends ActionBarActivity {
-    private LocationManager locationmanager;
-    private LocationListener locationlistener;
     private static double latitude = 0;
     private static double longitude = 0;
-
+    private LocationManager locationmanager;
+    private LocationListener locationlistener;
     private ProgressDialogFragment progressDialogFragment;
 
     private SurveyListing surveyListing;
 
-    private boolean submittingSurvey;
+    public static Double getLatitude() {
+        return latitude;
+    }
 
-    public void setSubmittingSurvey(boolean value)
-    {
-        submittingSurvey = value;
+    public static Double getLongitude() {
+        return longitude;
+    }
+
+    public void setSubmittingSurvey(boolean value) {
+        try {
+            if (value) {
+                Utils.lockScreenOrientation(this);
+            } else {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            ErrorHelper.showError(this, ex.getMessage());
+        }
     }
 
     public SurveyListing getSurveyListing() {
@@ -103,8 +117,7 @@ public class PitActivity extends ActionBarActivity {
             // Get updates within no less than 5 minutes and 1000 meters
             locationmanager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5 * 60 * 1000, 1000, locationlistener);
 
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
             ErrorHelper.showError(this, ex.getMessage());
         }
@@ -120,8 +133,8 @@ public class PitActivity extends ActionBarActivity {
     @Override
     protected void onPause() {
         super.onPause();
-            // Dismiss any dialogs to prevent WindowLeaked exceptions
-            dismissDialog();
+        // Dismiss any dialogs to prevent WindowLeaked exceptions
+        dismissDialog();
         locationmanager.removeUpdates(locationlistener);
     }
 
@@ -137,8 +150,7 @@ public class PitActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void getPitData()
-    {
+    public void getPitData() {
         // Start the loading dialog
         showProgressDialog(getString(R.string.please_wait), getString(R.string.downloading_pit), "");
 
@@ -181,78 +193,65 @@ public class PitActivity extends ActionBarActivity {
             } else {
                 ErrorHelper.showError(this, getString(R.string.error_problem_downloading_pit));
             }
-        } catch (Exception ex)
-        {
-            ex.printStackTrace();
-            ErrorHelper.showError(this, ex.getMessage());
-        }
-    }
-
-    public void onPostSurveyResponsesTaskCompleted(Response response) {
-            dismissDialog();
-
-            if (response != null && response.getStatus() == 201) {
-                String result = "";
-
-                try {
-                    if (response.getBody() != null)
-                        result = RESTHelper.convertStreamToString(response.getBody().in());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                Log.d("PIT RESPONSE", result);
-
-                showSendSuccessMessage();
-            } else
-            {
-                setSubmittingSurvey(false);
-
-                ErrorHelper.showError(this, getString(R.string.error_problem_submitting_survey));
-            }
-    }
-
-
-    private void showSendSuccessMessage() {
-        try {
-            setSubmittingSurvey(false);
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(getString(R.string.success));
-            builder.setMessage(getString(R.string.success_pit_response));
-            builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialog) {
-                    dialog.dismiss();
-                    finish();
-                }
-            });
-            Utils.centerDialogMessageAndShow(builder);
         } catch (Exception ex) {
             ex.printStackTrace();
             ErrorHelper.showError(this, ex.getMessage());
         }
     }
 
-    public void showProgressDialog(String title, String message, String tag)
-    {
+    public void onPostSurveyResponsesTaskCompleted(Response response) {
+        dismissDialog();
+
+        if (response != null && response.getStatus() == 201) {
+            String result = "";
+
+            try {
+                if (response.getBody() != null)
+                    result = RESTHelper.convertStreamToString(response.getBody().in());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Log.d("PIT RESPONSE", result);
+
+            showSendSuccessMessage();
+        } else {
+            setSubmittingSurvey(false);
+
+            ErrorHelper.showError(this, getString(R.string.error_problem_submitting_survey));
+        }
+    }
+
+    private void showSendSuccessMessage() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.success))
+                .setMessage(getString(R.string.success_pit_response))
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        setSubmittingSurvey(false);
+                        finish();
+                    }
+                })
+                .setPositiveButton(getString(R.string.okay), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setSubmittingSurvey(false);
+                        finish();
+                    }
+                });
+
+        Utils.centerDialogMessageAndShow(builder);
+    }
+
+    public void showProgressDialog(String title, String message, String tag) {
         progressDialogFragment = ProgressDialogFragment.newInstance(title, message);
         progressDialogFragment.show(getSupportFragmentManager(), tag);
     }
 
-    public void dismissDialog(){
+    public void dismissDialog() {
         if (progressDialogFragment != null) {
             progressDialogFragment.dismiss();
         }
-    }
-
-    public static Double getLatitude()
-    {
-        return latitude;
-    }
-
-    public static Double getLongitude()
-    {
-        return longitude;
     }
 }

@@ -119,8 +119,6 @@ public class RESTHelper {
      */
     private static RestAdapter.Builder setUpRestAdapterBuilder(Context context)
     {
-        // Set up SSL
-        SSLContext sslContext = RESTHelper.getSSLContext(context);
         OkHttpClient client = new OkHttpClient();
 
         // This setHostnameVerifier line removes hostname verification!
@@ -132,7 +130,10 @@ public class RESTHelper {
             }
         });
 
-        client.setSslSocketFactory(sslContext.getSocketFactory());
+        // COMMENTING THIS OUT BECAUSE THERE IS NOW A VALID CERTIFICATE
+        // Set up SSL
+        //SSLContext sslContext = RESTHelper.getSSLContext(context);
+        //client.setSslSocketFactory(sslContext.getSocketFactory());
         OkClient okClient = new OkClient(client);
 
         return new RestAdapter.Builder()
