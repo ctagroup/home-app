@@ -12,6 +12,7 @@
 #import "SurveyDataRowContainer.h"
 #import "SurveyPageViewController.h"
 #import "ImagesContainer.h"
+#import "HousingAppDelegate.h"
 
 @interface MainMenuViewController ()
 
@@ -39,6 +40,9 @@
     [[PITSurvey getPITQuestions] removeAllObjects];
     [SurveyPageViewController setWhetherAlreadySigned:NO];  //This is just so access to the rest of the survey is restricted if they haven't signed
     [ImagesContainer clearImages];
+    
+    HousingAppDelegate *appDelegate = [[UIApplication sharedApplication]delegate];
+    appDelegate.encryptedSignature = nil;
 }
 
 - (void)didReceiveMemoryWarning
