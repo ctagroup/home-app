@@ -1,8 +1,8 @@
 //
-//  ClientSurveyViewController.m
+//  ClientSurveyViewController2.m
 //  Housing1000
 //
-//  Created by David Horton on 2/5/14.
+//  Created by student on 6/2/14.
 //  Copyright (c) 2014 Group 3. All rights reserved.
 //
 
