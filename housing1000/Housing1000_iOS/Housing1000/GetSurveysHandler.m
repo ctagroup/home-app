@@ -26,6 +26,7 @@
 }
 
 -(void)handleDidFailWithError {
+    [self.alertDisplayer dismissSpinner];
     [self.alertDisplayer showMessageWithCloseButton:@"There was a problem loading surveys... Please try again." closeButtonText:@"Okay"];
 }
 

@@ -85,7 +85,7 @@ id<HttpHandlerProtocol> httpHandler;    //Declared like this so it can be called
 -(NSMutableArray*)postSurvey:(CallbackToDoWhenFinished)callback :(NSDictionary*)jsonData {
     httpHandler = [[PostSurveyHandler alloc] init];
     actionDescription = @"Post Survey";
-    urlString = @"https://staging.ctagroup.org/survey/api/survey";
+    urlString = @"https://staging.ctagroup.org/survey/api/survey/";
     callbackAction = callback;
     
     [httpHandler handlePreConnectionAction];
@@ -132,7 +132,7 @@ id<HttpHandlerProtocol> httpHandler;    //Declared like this so it can be called
     NSString* jsonStrippedOfBackslash = [jsonString stringByReplacingOccurrencesOfString:@"\\" withString:@""];
     NSLog(@"JSON to be submitted %@", jsonStrippedOfBackslash);
     NSData *postData = [jsonStrippedOfBackslash dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-    NSString *postLength = [NSString stringWithFormat:@"%lu", [postData length]];
+    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setURL:url];
@@ -152,6 +152,17 @@ id<HttpHandlerProtocol> httpHandler;    //Declared like this so it can be called
 //==============================================
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    if ([response respondsToSelector:@selector(statusCode)]) {
+        int statusCode = [((NSHTTPURLResponse *)response) statusCode];
+        
+        //Don't continue if an error HTTP code was received from the server
+        if(statusCode >= 400) {
+            [connection cancel];
+            NSString *errorCodeString = [NSString stringWithFormat:@"%i", statusCode];
+            NSLog(@"%@", [NSString stringWithFormat:@"%@ %@", @"Connection cancelled because of status code ", errorCodeString]);
+            [httpHandler handleDidFailWithError];
+        }
+    }
     NSLog(@"%@ response: %@", actionDescription, response);
     [self.responseData setLength:0];
 }
@@ -166,7 +177,7 @@ id<HttpHandlerProtocol> httpHandler;    //Declared like this so it can be called
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    NSLog(@"%@ Succeeded! Received %lu bytes of data", actionDescription, [self.responseData length]);
+    NSLog(@"%@ Finished. Received %lu bytes of data", actionDescription, (unsigned long)[self.responseData length]);
     returnedJsonData = [httpHandler handleDidFinishLoading:self.responseData];
     callbackAction(returnedJsonData);
 }

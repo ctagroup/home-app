@@ -18,8 +18,6 @@
 
 -(void)submitSurvey {
     
-    //TODO add some sort of try catch business so that it knows whether to return a true successful or not
-    
     SurveyResponseJSON *response = [[SurveyResponseJSON alloc] init];
     
     //Convert survey ID to JSON

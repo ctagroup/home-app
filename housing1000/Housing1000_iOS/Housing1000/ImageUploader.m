@@ -109,6 +109,17 @@ NSString* imgActionDescription;
 //==============================================
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    if ([response respondsToSelector:@selector(statusCode)]) {
+        int statusCode = [((NSHTTPURLResponse *)response) statusCode];
+        
+        //Don't continue if an error HTTP code was received from the server
+        if(statusCode >= 400) {
+            [connection cancel];
+            NSString *errorCodeString = [NSString stringWithFormat:@"%i", statusCode];
+            NSLog(@"%@", [NSString stringWithFormat:@"%@ %@", @"Connection cancelled because of status code ", errorCodeString]);
+            NSLog(@"%@ Upload failed.", imgActionDescription);
+        }
+    }
     NSLog(@"%@ response: %@", imgActionDescription, response);
     [self.imageResponseData setLength:0];
 }
@@ -128,7 +139,7 @@ NSString* imgActionDescription;
     NSArray *json = [NSJSONSerialization JSONObjectWithData:self.imageResponseData options:NSJSONReadingMutableLeaves error:&myError];
     NSLog(@"Response JSON: %@", json);
     
-    NSLog(@"%@ Succeeded! Received %lu bytes of data", imgActionDescription, [self.imageResponseData length]);
+    NSLog(@"%@ Finished. Received %lu bytes of data", imgActionDescription, (unsigned long)[self.imageResponseData length]);
 }
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
     return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];

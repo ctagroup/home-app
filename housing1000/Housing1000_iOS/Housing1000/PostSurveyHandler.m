@@ -26,6 +26,7 @@
 }
 
 -(void)handleDidFailWithError {
+    [self.alertDisplayer dismissSpinner];
     [self.alertDisplayer showMessageWithTwoButtons:@"There was a problem submitting... Please try again." cancelButtonText:@"Main Menu" otherButtonText:@"Return to Survey"];
 }
 

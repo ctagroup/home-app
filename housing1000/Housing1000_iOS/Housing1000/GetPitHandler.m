@@ -29,6 +29,7 @@
 }
 
 -(void)handleDidFailWithError {
+    [self.alertDisplayer dismissSpinner];
     [self.alertDisplayer showMessageWithCloseButton:@"There was a problem loading PIT items... Please try again." closeButtonText:@"Okay"];
 }
 
