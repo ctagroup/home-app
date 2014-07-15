@@ -38,6 +38,7 @@
 		3F7ABC6318F0575D00D99525 /* PITSubmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F7ABC6218F0575D00D99525 /* PITSubmitter.m */; };
 		3F7ABC6618F084F400D99525 /* PostPITHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F7ABC6518F084F400D99525 /* PostPITHandler.m */; };
 		3FC22F0A193D7B700049ADDC /* ClientSurveyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FC22F09193D7B700049ADDC /* ClientSurveyViewController.m */; };
+		3FCD0B0E1974BFAF00F7A15E /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FCD0B0D1974BFAF00F7A15E /* MobileCoreServices.framework */; };
 		3FD109D918C2E66A005E4743 /* SurveyDataRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD109D818C2E66A005E4743 /* SurveyDataRow.m */; };
 		3FD109DC18C2F2D8005E4743 /* SurveyDataRowContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD109DB18C2F2D8005E4743 /* SurveyDataRowContainer.m */; };
 		3FD109E518C95E27005E4743 /* AlertViewDisplayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD109E418C95E27005E4743 /* AlertViewDisplayer.m */; };
@@ -126,6 +127,7 @@
 		3F7ABC6518F084F400D99525 /* PostPITHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostPITHandler.m; sourceTree = "<group>"; };
 		3FC22F08193D7B700049ADDC /* ClientSurveyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientSurveyViewController.h; sourceTree = "<group>"; };
 		3FC22F09193D7B700049ADDC /* ClientSurveyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientSurveyViewController.m; sourceTree = "<group>"; };
+		3FCD0B0D1974BFAF00F7A15E /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		3FD109D718C2E66A005E4743 /* SurveyDataRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyDataRow.h; sourceTree = "<group>"; };
 		3FD109D818C2E66A005E4743 /* SurveyDataRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyDataRow.m; sourceTree = "<group>"; };
 		3FD109DA18C2F2D8005E4743 /* SurveyDataRowContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyDataRowContainer.h; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FCD0B0E1974BFAF00F7A15E /* MobileCoreServices.framework in Frameworks */,
 				272AA48A18B5CDFE0068E023 /* Security.framework in Frameworks */,
 				948CBC3516FC8BA000DD4E2B /* UIKit.framework in Frameworks */,
 				948CBC3716FC8BA000DD4E2B /* Foundation.framework in Frameworks */,
@@ -322,6 +325,7 @@
 		948CBC3316FC8BA000DD4E2B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3FCD0B0D1974BFAF00F7A15E /* MobileCoreServices.framework */,
 				272AA48918B5CDFE0068E023 /* Security.framework */,
 				948CBC3416FC8BA000DD4E2B /* UIKit.framework */,
 				948CBC3616FC8BA000DD4E2B /* Foundation.framework */,
