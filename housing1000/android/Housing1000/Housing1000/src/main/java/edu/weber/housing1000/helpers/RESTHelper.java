@@ -25,6 +25,8 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManagerFactory;
 
 import edu.weber.housing1000.R;
+import edu.weber.housing1000.authentication.TokenResponse;
+import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import retrofit.converter.ConversionException;
@@ -115,9 +117,10 @@ public class RESTHelper {
     /**
      * Sets up the RestAdapter Builder
      * @param context Android Context
+     * @param needsAuthorizationToken If this is the client for requesting a token, it obviously shouldn't have the token
      * @return RestAdapter Builder
      */
-    private static RestAdapter.Builder setUpRestAdapterBuilder(Context context)
+    private static RestAdapter.Builder setUpRestAdapterBuilder(Context context, boolean needsAuthorizationToken)
     {
         OkHttpClient client = new OkHttpClient();
 
@@ -136,10 +139,27 @@ public class RESTHelper {
         //client.setSslSocketFactory(sslContext.getSocketFactory());
         OkClient okClient = new OkClient(client);
 
-        return new RestAdapter.Builder()
+        RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setClient(okClient)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setEndpoint("https://staging.ctagroup.org/Survey/api");
+                .setEndpoint(context.getResources().getString(R.string.api_endpoint))
+                .setLog(new RestAdapter.Log() {
+                    @Override
+                    public void log(String msg) {
+                        Log.i("HOUSING 1000", msg);
+                    }
+                });
+
+        if(needsAuthorizationToken) {
+            builder.setRequestInterceptor(new RequestInterceptor() {
+                @Override
+                public void intercept(RequestFacade request) {
+                    request.addHeader("Authorization", "Bearer " + TokenResponse.getACCESS_TOKEN());
+                }
+            });
+        }
+
+        return builder;
     }
 
     /**
@@ -150,7 +170,25 @@ public class RESTHelper {
      */
     public static RestAdapter setUpRestAdapter(Context context, Gson gson)
     {
-        RestAdapter.Builder builder = setUpRestAdapterBuilder(context);
+        RestAdapter.Builder builder = setUpRestAdapterBuilder(context, true);
+
+        if (gson != null)
+            builder.setConverter(new GsonConverter(gson));
+
+        return builder.build();
+    }
+
+    /**
+     * Setups up the RestAdapter, with a JSON response, without the authorization header
+     * (this should only get called by the initial request to get the authorization token, since it of
+     * course doesn't have it yet at that point).
+     * @param context Android context
+     * @param gson GSON that will be used to convert the data of the request to JSON
+     * @return
+     */
+    public static RestAdapter setUpRestAdapterWithoutAuthorizationToken(Context context, Gson gson)
+    {
+        RestAdapter.Builder builder = setUpRestAdapterBuilder(context, false);
 
         if (gson != null)
             builder.setConverter(new GsonConverter(gson));
@@ -166,7 +204,7 @@ public class RESTHelper {
      */
     public static RestAdapter setUpRestAdapterNoDeserialize(Context context, Gson gson)
     {
-        RestAdapter.Builder builder = setUpRestAdapterBuilder(context);
+        RestAdapter.Builder builder = setUpRestAdapterBuilder(context, true);
 
         // GSON object is provided for serializing the data being sent
         if (gson != null)

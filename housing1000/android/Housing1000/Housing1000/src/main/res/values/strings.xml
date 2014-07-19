@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="api_endpoint">https://staging.ctagroup.org</string>
     <string name="notice">Notice…</string>
     <string name="action_camera">Take Picture</string>
     <string name="action_clear">Clear</string>
@@ -69,7 +70,7 @@
     <string name="tap_here_to_sign">Tap Here to Sign</string>
     <string name="time">Time</string>
     <string name="uh_oh">Uh oh…</string>
-    <string name="user_name">User Name:</string>
+    <string name="user_name">Username:</string>
     <string name="waiting">waiting…</string>
     <string name="yes">Yes</string>
     <string name="submitting_pit_responses">Submitting PIT responses…</string><string name="error_internet_connection">Your device doesn\'t appear to have an internet connection.
@@ -77,5 +78,6 @@ Please make sure you are connected and try again.</string>
     <string name="no_connection">No Connection</string>
     <string name="btn_point_in_time">Point in Time button</string>
     <string name="btn_surveys">Surveys button</string>
+    <string name="logout_message">Are you sure you want to logout?</string>
 
 </resources>
