@@ -24,7 +24,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:+'
+    compile 'com.android.support:appcompat-v7:20.+'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.google.guava:guava:16.0.1'
     compile 'com.squareup.retrofit:retrofit:1.4.1'
