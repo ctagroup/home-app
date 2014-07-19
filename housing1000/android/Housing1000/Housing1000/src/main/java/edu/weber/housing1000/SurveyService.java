@@ -18,20 +18,20 @@ import retrofit.mime.MultipartTypedOutput;
  * More info here: http://square.github.io/retrofit/
  */
 public interface SurveyService {
-    @GET("/survey")
+    @GET("/Survey/api/survey")
     void listSurveys(Callback<ArrayList<SurveyListing>> cb);
-    @GET("/survey/{id}")
+    @GET("/Survey/api/survey/{id}")
     void getSurvey(@Path("id") String id, Callback<String> cb);
 
-    @POST("/survey/{id}")
+    @POST("/Survey/api/survey/{id}")
     void postResponse(@Path("id") String id, @Body SurveyResponse surveyResponse, Callback<String> cb);
 
-    @POST("/upload")
+    @POST("/Survey/api/upload")
     void postImage(@Body MultipartTypedOutput images, Callback<String> cb);
 
-    @GET("/pit")
+    @GET("/Survey/api/pit")
     void getPit(Callback<Survey> cb);
 
-    @POST("/pit")
+    @POST("/Survey/api/pit")
     void postPit(@Body PitResponse pitResponse, Callback<String> cb);
 }
