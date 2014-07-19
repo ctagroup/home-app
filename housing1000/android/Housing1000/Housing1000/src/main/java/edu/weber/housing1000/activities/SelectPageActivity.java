@@ -9,11 +9,14 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.Utils;
+import edu.weber.housing1000.authentication.TokenResponse;
 
 public class SelectPageActivity extends ActionBarActivity {
     private final Context context = this;
@@ -66,6 +69,51 @@ public class SelectPageActivity extends ActionBarActivity {
     {
         Intent intent = new Intent(SelectPageActivity.this, SurveyListActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        logoutPrompt();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_select_page, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.action_logout:
+                logoutPrompt();
+                return true;
+            default:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void logoutPrompt() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.logout_message));
+        builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                TokenResponse.setACCESS_TOKEN("");
+                finish();
+            }
+        });
+        builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        Utils.centerDialogMessageAndShow(builder);
     }
 
 }
