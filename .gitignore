@@ -15,6 +15,8 @@ bin/
 gen/
 target/
 classes/
+build/
+Pods/
 
 # Local configuration file (sdk path, etc)
 local.properties
