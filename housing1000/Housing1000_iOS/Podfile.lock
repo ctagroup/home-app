@@ -1,0 +1,25 @@
+PODS:
+  - CAAnimationBlocks (0.0.1)
+  - JSONModel (0.13.0)
+  - LMAlertView (1.1.0):
+    - CAAnimationBlocks (~> 0.0.1)
+    - RBBAnimation (~> 0.3.0)
+  - PPSSignatureView (0.1.0)
+  - RBBAnimation (0.3.0)
+  - RNCryptor (2.2)
+
+DEPENDENCIES:
+  - JSONModel
+  - LMAlertView
+  - PPSSignatureView
+  - RNCryptor
+
+SPEC CHECKSUMS:
+  CAAnimationBlocks: 981bfca79ac481f07957aa8357885e620637f926
+  JSONModel: 62ea96b49ea18a8b91ef89c249dba291d8601d82
+  LMAlertView: 1d7c0624323b6bde13c90b57b1d0f5605980f068
+  PPSSignatureView: 9a1a1b601ab9642d69e8268b99784fd7f9ed88bc
+  RBBAnimation: 243d73be1a526f1b51d266b182e4aa0cfe9cbf64
+  RNCryptor: 4f562062c39f288b99601674f2c50dd44b68d58a
+
+COCOAPODS: 0.33.1
