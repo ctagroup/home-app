@@ -18,6 +18,7 @@ typedef void (^CallbackToDoWhenFinished)(NSMutableArray* results);
 -(NSMutableArray*)getPIT:(CallbackToDoWhenFinished)callback;
 -(NSMutableArray*)postSurvey:(CallbackToDoWhenFinished)callback :(NSDictionary*)jsonData;
 -(NSMutableArray*)postPit:(CallbackToDoWhenFinished)callback :(NSDictionary*)jsonData;
+-(NSMutableArray*)postAuthentication:(CallbackToDoWhenFinished)callback :(NSString*)username :(NSString*)password;
 
 @property (nonatomic, strong) NSMutableData *responseData;
 @property int httpArgument;

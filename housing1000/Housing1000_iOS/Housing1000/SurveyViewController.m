@@ -16,8 +16,6 @@
 
 @implementation SurveyViewController
 
-NSArray* trustedHosts;  //This is declared to simply hold the staging.ctagroup.org domain
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self populateWithSurveys];

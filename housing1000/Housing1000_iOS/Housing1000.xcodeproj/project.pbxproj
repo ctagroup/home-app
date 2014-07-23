@@ -18,6 +18,8 @@
 		27642FF218A47E6500277F24 /* bg-signature-portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 27642FEE18A47E6500277F24 /* bg-signature-portrait.png */; };
 		27642FF318A47E6500277F24 /* bg-signature-portrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27642FEF18A47E6500277F24 /* bg-signature-portrait@2x.png */; };
 		27B8D78718FB8857001CEED1 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 27B8D78618FB8857001CEED1 /* Credits.rtf */; };
+		3F045AE2197B3FCC008F85E0 /* PostAuthenticationHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F045AE1197B3FCC008F85E0 /* PostAuthenticationHandler.m */; };
+		3F045AE5197DE968008F85E0 /* AuthenticationToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F045AE4197DE968008F85E0 /* AuthenticationToken.m */; };
 		3F558BAB18CBA1F5007D531F /* SurveyPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BAA18CBA1F5007D531F /* SurveyPageViewController.m */; };
 		3F558BB418CE9CC6007D531F /* ctagroup_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F558BB318CE9CC6007D531F /* ctagroup_logo.png */; };
 		3F558BB718D006A5007D531F /* PITViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BB618D006A5007D531F /* PITViewController.m */; };
@@ -87,6 +89,10 @@
 		27642FEE18A47E6500277F24 /* bg-signature-portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-signature-portrait.png"; sourceTree = "<group>"; };
 		27642FEF18A47E6500277F24 /* bg-signature-portrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-signature-portrait@2x.png"; sourceTree = "<group>"; };
 		27B8D78618FB8857001CEED1 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
+		3F045AE0197B3FCC008F85E0 /* PostAuthenticationHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostAuthenticationHandler.h; sourceTree = "<group>"; };
+		3F045AE1197B3FCC008F85E0 /* PostAuthenticationHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostAuthenticationHandler.m; sourceTree = "<group>"; };
+		3F045AE3197DE968008F85E0 /* AuthenticationToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationToken.h; sourceTree = "<group>"; };
+		3F045AE4197DE968008F85E0 /* AuthenticationToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationToken.m; sourceTree = "<group>"; };
 		3F558BA918CBA1F5007D531F /* SurveyPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyPageViewController.h; sourceTree = "<group>"; };
 		3F558BAA18CBA1F5007D531F /* SurveyPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyPageViewController.m; sourceTree = "<group>"; };
 		3F558BB318CE9CC6007D531F /* ctagroup_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ctagroup_logo.png; sourceTree = "<group>"; };
@@ -215,6 +221,8 @@
 				3F558BD618DE18AA007D531F /* GetPitHandler.m */,
 				3F7ABC6418F084F400D99525 /* PostPITHandler.h */,
 				3F7ABC6518F084F400D99525 /* PostPITHandler.m */,
+				3F045AE0197B3FCC008F85E0 /* PostAuthenticationHandler.h */,
+				3F045AE1197B3FCC008F85E0 /* PostAuthenticationHandler.m */,
 				3F7493EF18F3BBEC00C0901E /* ImageUploader.h */,
 				3F7493F018F3BBEC00C0901E /* ImageUploader.m */,
 			);
@@ -282,6 +290,8 @@
 				3F72D7C118F8E7EE0090E7C3 /* QuestionTextAnswer.m */,
 				3FE4FF9018F915F900E47703 /* QuestionDateAnswer.h */,
 				3FE4FF9118F915F900E47703 /* QuestionDateAnswer.m */,
+				3F045AE3197DE968008F85E0 /* AuthenticationToken.h */,
+				3F045AE4197DE968008F85E0 /* AuthenticationToken.m */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -517,6 +527,7 @@
 				3FC22F0A193D7B700049ADDC /* ClientSurveyViewController.m in Sources */,
 				3FFE30BF18C2498A004A737D /* ClientQuestions.m in Sources */,
 				3FE4FF9218F915F900E47703 /* QuestionDateAnswer.m in Sources */,
+				3F045AE5197DE968008F85E0 /* AuthenticationToken.m in Sources */,
 				948CBC4116FC8BA000DD4E2B /* main.m in Sources */,
 				3F7ABC6318F0575D00D99525 /* PITSubmitter.m in Sources */,
 				3F558BAB18CBA1F5007D531F /* SurveyPageViewController.m in Sources */,
@@ -527,6 +538,7 @@
 				948CBC4516FC8BA000DD4E2B /* HousingAppDelegate.m in Sources */,
 				3FFE30CE18C26355004A737D /* SurveySubmitter.m in Sources */,
 				3F7493F118F3BBEC00C0901E /* ImageUploader.m in Sources */,
+				3F045AE2197B3FCC008F85E0 /* PostAuthenticationHandler.m in Sources */,
 				3F72D7BF18F8E7A40090E7C3 /* QuestionNumAnswer.m in Sources */,
 				3F7ABC6618F084F400D99525 /* PostPITHandler.m in Sources */,
 				3FFE309B188E08DC004A737D /* PhotoViewController.m in Sources */,

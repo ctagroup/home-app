@@ -55,7 +55,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="LNn-kp-7wM" kind="modal" id="qUS-hm-4ra"/>
+                                    <action selector="login:" destination="2" eventType="touchUpInside" id="uvj-0c-QpW"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zbu-l5-paM">
@@ -80,6 +80,7 @@
                     <connections>
                         <outlet property="passwordTextField" destination="kHP-30-7Ol" id="D2O-f7-vJd"/>
                         <outlet property="usernameTextField" destination="rjD-xV-waE" id="drR-0N-6gF"/>
+                        <segue destination="LNn-kp-7wM" kind="modal" identifier="segue.login.finished" id="0zx-xK-Hn7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
@@ -130,7 +131,15 @@
                     </view>
                     <navigationItem key="navigationItem" title="Main Menu" id="i5N-pb-5Gc">
                         <barButtonItem key="backBarButtonItem" title="Menu" id="8Y4-JZ-Gq8"/>
+                        <barButtonItem key="rightBarButtonItem" title="Logout" id="DdR-vI-1jI">
+                            <connections>
+                                <action selector="logout:" destination="tGo-8g-Ye3" id="5Uc-9y-189"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="2" kind="modal" identifier="segue.logout" id="3QB-9R-BQI"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K3H-Jh-cJD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -763,7 +772,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="24q-cE-jpz"/>
+        <segue reference="0zx-xK-Hn7"/>
+        <segue reference="3QB-9R-BQI"/>
         <segue reference="62H-H5-PPI"/>
     </inferredMetricsTieBreakers>
 </document>

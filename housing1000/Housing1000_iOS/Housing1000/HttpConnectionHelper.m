@@ -13,6 +13,8 @@
 #import "PostSurveyHandler.h"
 #import "GetPitHandler.h"
 #import "PostPITHandler.h"
+#import "PostAuthenticationHandler.h"
+#import "AuthenticationToken.h"
 
 @implementation HttpConnectionHelper
 
@@ -38,6 +40,36 @@ id<HttpHandlerProtocol> httpHandler;    //Declared like this so it can be called
     callbackAction(nil);
 }
 
+-(NSMutableArray*)postAuthentication:(CallbackToDoWhenFinished)callback :(NSString*)username :(NSString*)password {
+    httpHandler = [[PostAuthenticationHandler alloc] init];
+    actionDescription = @"Post Authentication";
+    urlString = @"https://staging.ctagroup.org/Outreach/token";
+    callbackAction = callback;
+    
+    [httpHandler handlePreConnectionAction];
+    
+    NSURL *url=[NSURL URLWithString:urlString];
+    
+    NSString *bodyString = [NSString stringWithFormat:@"grant_type=password&username=%@&password=%@",username, password];
+    NSData *postData = [bodyString dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:url];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
+    
+    //[request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:postData];
+    
+    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    NSLog(@"Connection: %@", conn.description);
+    
+    return returnedJsonData;
+}
+
 -(NSMutableArray*)getSurveys:(CallbackToDoWhenFinished)callback {
     httpHandler = [[GetSurveysHandler alloc] init];
     actionDescription = @"Get Surveys";
@@ -46,7 +78,9 @@ id<HttpHandlerProtocol> httpHandler;    //Declared like this so it can be called
     
     [httpHandler handlePreConnectionAction];
     
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    NSString *token = [NSString stringWithFormat:@"Bearer %@",[AuthenticationToken getAuthenticationToken]];
+    [request setValue:token forHTTPHeaderField:@"Authorization"];
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     NSLog(@"%@ Connection: %@", actionDescription, conn.description);
     
@@ -60,7 +94,9 @@ id<HttpHandlerProtocol> httpHandler;    //Declared like this so it can be called
     callbackAction = callback;
     
     [httpHandler handlePreConnectionAction];
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    NSString *token = [NSString stringWithFormat:@"Bearer %@",[AuthenticationToken getAuthenticationToken]];
+    [request setValue:token forHTTPHeaderField:@"Authorization"];
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     NSLog(@"%@ Connection: %@", actionDescription, conn.description);
     
@@ -75,7 +111,9 @@ id<HttpHandlerProtocol> httpHandler;    //Declared like this so it can be called
     
     [httpHandler handlePreConnectionAction];
     
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    NSString *token = [NSString stringWithFormat:@"Bearer %@",[AuthenticationToken getAuthenticationToken]];
+    [request setValue:token forHTTPHeaderField:@"Authorization"];
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     NSLog(@"%@ Connection: %@", actionDescription, conn.description);
     
@@ -107,6 +145,9 @@ id<HttpHandlerProtocol> httpHandler;    //Declared like this so it can be called
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPBody:postData];
+    
+    NSString *token = [NSString stringWithFormat:@"Bearer %@",[AuthenticationToken getAuthenticationToken]];
+    [request setValue:token forHTTPHeaderField:@"Authorization"];
     
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     NSLog(@"Connection: %@", conn.description);
@@ -140,6 +181,9 @@ id<HttpHandlerProtocol> httpHandler;    //Declared like this so it can be called
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPBody:postData];
+    
+    NSString *token = [NSString stringWithFormat:@"Bearer %@",[AuthenticationToken getAuthenticationToken]];
+    [request setValue:token forHTTPHeaderField:@"Authorization"];
     
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     NSLog(@"Connection: %@", conn.description);
@@ -178,6 +222,8 @@ id<HttpHandlerProtocol> httpHandler;    //Declared like this so it can be called
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     NSLog(@"%@ Finished. Received %lu bytes of data", actionDescription, (unsigned long)[self.responseData length]);
+    //Uncommenting this will print the body of the response. I comment it out because I pretty-print it the HTTPHandlers, and I prefer that.
+    //NSLog(@"%@ response string: %@", actionDescription, [[NSString alloc] initWithData:self.responseData encoding:NSUTF8StringEncoding]);
     returnedJsonData = [httpHandler handleDidFinishLoading:self.responseData];
     callbackAction(returnedJsonData);
 }

@@ -13,6 +13,7 @@
 #import "SurveyPageViewController.h"
 #import "ImagesContainer.h"
 #import "HousingAppDelegate.h"
+#import "AuthenticationToken.h"
 
 @interface MainMenuViewController ()
 
@@ -44,6 +45,28 @@
     HousingAppDelegate *appDelegate = [[UIApplication sharedApplication]delegate];
     appDelegate.encryptedSignature = nil;
 }
+
+- (IBAction)logout:(id)sender {
+    
+    UIAlertView *popup = [[UIAlertView alloc] initWithTitle:nil
+                                                    message:@"Are you sure you want to logout?"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Yes"
+                                          otherButtonTitles:@"Cancel", nil];
+    [popup show];
+    
+}
+
+// The callback method for the alertView
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)index {
+    
+    if(index == 0) {    //They selected "Yes" about whether they were sure about submitting or not
+        [AuthenticationToken setAuthenticationToken:@""];
+        [self performSegueWithIdentifier:@"segue.logout" sender:self]; //@"segue.logout" is defined in the storyboard
+    }
+    
+}
+
 
 - (void)didReceiveMemoryWarning
 {
