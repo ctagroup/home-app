@@ -584,7 +584,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <segue destination="Sjn-Wc-cVV" kind="modal" id="62H-H5-PPI"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="Y6T-SU-hl4">
+                        <barButtonItem key="rightBarButtonItem" id="Y6T-SU-hl4">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="BkC-gB-OUx">
                                 <rect key="frame" x="481" y="5" width="71" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -701,7 +701,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <navigationItem key="navigationItem" title="Confirmation" id="pec-OF-0ju">
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="eby-px-nsk">
+                        <barButtonItem key="rightBarButtonItem" id="eby-px-nsk">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="9K8-Lq-mge">
                                 <rect key="frame" x="481" y="5" width="71" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -772,7 +772,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="0zx-xK-Hn7"/>
+        <segue reference="24q-cE-jpz"/>
         <segue reference="3QB-9R-BQI"/>
         <segue reference="62H-H5-PPI"/>
     </inferredMetricsTieBreakers>
