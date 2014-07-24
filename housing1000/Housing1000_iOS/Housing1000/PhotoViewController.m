@@ -7,7 +7,7 @@
 //
 
 #import "PhotoViewController.h"
-#import "ImagesContainer.h"
+#import "ImageFileHelper.h"
 #import <MobileCoreServices/UTCoreTypes.h>
 
 @interface PhotoViewController ()
@@ -99,7 +99,7 @@
         }
         
         self.imageView.image = imageToSave;
-        [ImagesContainer addPhotoImage:imageToSave];
+        [ImageFileHelper addPhotoImage:imageToSave];
         
     }
     
@@ -109,7 +109,7 @@
 
 //For when the user clicks to "Delete Current"
 - (IBAction)deletePhoto:(id)sender {
-    NSMutableArray* savedPhotos = [ImagesContainer getPhotoImages];
+    NSMutableArray* savedPhotos = [ImageFileHelper getPhotoImages];
     
     if([savedPhotos count] == 0) {
         UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"

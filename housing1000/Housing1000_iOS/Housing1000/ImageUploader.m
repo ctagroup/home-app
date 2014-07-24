@@ -7,7 +7,7 @@
 //
 
 #import "ImageUploader.h"
-#import "ImagesContainer.h"
+#import "ImageFileHelper.h"
 
 @implementation ImageUploader
 
@@ -30,7 +30,7 @@ NSString* imgActionDescription;
     NSString *boundary = @"---------------------------14737809831466499882746641449";
     
     //Get signature image
-    UIImage *signature = [ImagesContainer getSignatureImage];
+    UIImage *signature = [ImageFileHelper getSignatureImage];
     
     //Arrays used for uploading multiple images in the same payload
     NSMutableArray *images = [[NSMutableArray alloc] init];
@@ -41,8 +41,8 @@ NSString* imgActionDescription;
     [imageNames addObject:[NSString stringWithFormat:@"%@_signature.jpg", imageFileNamePrefix]];
     
     //Add any and all photo images and file names
-    for(int i = 0; i < [[ImagesContainer getPhotoImages] count]; i++) {
-        [images addObject:[[ImagesContainer getPhotoImages] objectAtIndex:i]];
+    for(int i = 0; i < [[ImageFileHelper getPhotoImages] count]; i++) {
+        [images addObject:[[ImageFileHelper getPhotoImages] objectAtIndex:i]];
         [imageNames addObject:[NSString stringWithFormat:@"%@_photo%d.jpg", imageFileNamePrefix, i]];
     }
     

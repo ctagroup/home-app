@@ -36,9 +36,10 @@
 		3F72D7C218F8E7EE0090E7C3 /* QuestionTextAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F72D7C118F8E7EE0090E7C3 /* QuestionTextAnswer.m */; };
 		3F7493EB18F0975900C0901E /* PITResponseJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F7493EA18F0975900C0901E /* PITResponseJSON.m */; };
 		3F7493F118F3BBEC00C0901E /* ImageUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F7493F018F3BBEC00C0901E /* ImageUploader.m */; };
-		3F7493F818F4F90000C0901E /* ImagesContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F7493F718F4F90000C0901E /* ImagesContainer.m */; };
 		3F7ABC6318F0575D00D99525 /* PITSubmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F7ABC6218F0575D00D99525 /* PITSubmitter.m */; };
 		3F7ABC6618F084F400D99525 /* PostPITHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F7ABC6518F084F400D99525 /* PostPITHandler.m */; };
+		3FA0A1F91981863B00D70A07 /* ImageFileHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA0A1F81981863B00D70A07 /* ImageFileHelper.m */; };
+		3FA0A1FC1981881D00D70A07 /* NSData+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA0A1FB1981881D00D70A07 /* NSData+MD5.m */; };
 		3FC22F0A193D7B700049ADDC /* ClientSurveyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FC22F09193D7B700049ADDC /* ClientSurveyViewController.m */; };
 		3FCD0B0E1974BFAF00F7A15E /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FCD0B0D1974BFAF00F7A15E /* MobileCoreServices.framework */; };
 		3FD109D918C2E66A005E4743 /* SurveyDataRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD109D818C2E66A005E4743 /* SurveyDataRow.m */; };
@@ -125,12 +126,14 @@
 		3F7493EA18F0975900C0901E /* PITResponseJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PITResponseJSON.m; sourceTree = "<group>"; };
 		3F7493EF18F3BBEC00C0901E /* ImageUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageUploader.h; sourceTree = "<group>"; };
 		3F7493F018F3BBEC00C0901E /* ImageUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageUploader.m; sourceTree = "<group>"; };
-		3F7493F618F4F90000C0901E /* ImagesContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagesContainer.h; sourceTree = "<group>"; };
-		3F7493F718F4F90000C0901E /* ImagesContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagesContainer.m; sourceTree = "<group>"; };
 		3F7ABC6118F0575D00D99525 /* PITSubmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PITSubmitter.h; sourceTree = "<group>"; };
 		3F7ABC6218F0575D00D99525 /* PITSubmitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PITSubmitter.m; sourceTree = "<group>"; };
 		3F7ABC6418F084F400D99525 /* PostPITHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostPITHandler.h; sourceTree = "<group>"; };
 		3F7ABC6518F084F400D99525 /* PostPITHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostPITHandler.m; sourceTree = "<group>"; };
+		3FA0A1F71981863B00D70A07 /* ImageFileHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageFileHelper.h; sourceTree = "<group>"; };
+		3FA0A1F81981863B00D70A07 /* ImageFileHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageFileHelper.m; sourceTree = "<group>"; };
+		3FA0A1FA1981881D00D70A07 /* NSData+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+MD5.h"; sourceTree = "<group>"; };
+		3FA0A1FB1981881D00D70A07 /* NSData+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+MD5.m"; sourceTree = "<group>"; };
 		3FC22F08193D7B700049ADDC /* ClientSurveyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientSurveyViewController.h; sourceTree = "<group>"; };
 		3FC22F09193D7B700049ADDC /* ClientSurveyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientSurveyViewController.m; sourceTree = "<group>"; };
 		3FCD0B0D1974BFAF00F7A15E /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -280,8 +283,6 @@
 				3FD109DB18C2F2D8005E4743 /* SurveyDataRowContainer.m */,
 				3F558BB818D00991007D531F /* PITSurvey.h */,
 				3F558BB918D00991007D531F /* PITSurvey.m */,
-				3F7493F618F4F90000C0901E /* ImagesContainer.h */,
-				3F7493F718F4F90000C0901E /* ImagesContainer.m */,
 				3F72D7BA18F8E4E80090E7C3 /* Question.h */,
 				3F72D7BB18F8E4E80090E7C3 /* Question.m */,
 				3F72D7BD18F8E7A40090E7C3 /* QuestionNumAnswer.h */,
@@ -310,6 +311,10 @@
 				3F7ABC6218F0575D00D99525 /* PITSubmitter.m */,
 				3F7493E918F0975900C0901E /* PITResponseJSON.h */,
 				3F7493EA18F0975900C0901E /* PITResponseJSON.m */,
+				3FA0A1F71981863B00D70A07 /* ImageFileHelper.h */,
+				3FA0A1F81981863B00D70A07 /* ImageFileHelper.m */,
+				3FA0A1FA1981881D00D70A07 /* NSData+MD5.h */,
+				3FA0A1FB1981881D00D70A07 /* NSData+MD5.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -518,12 +523,12 @@
 				3FD109E518C95E27005E4743 /* AlertViewDisplayer.m in Sources */,
 				3FFE30AE18A487A5004A737D /* Survey.m in Sources */,
 				272AA49918C6EBE80068E023 /* DisclaimerViewController.m in Sources */,
+				3FA0A1F91981863B00D70A07 /* ImageFileHelper.m in Sources */,
 				3F558BCE18DE1067007D531F /* PostSurveyHandler.m in Sources */,
 				3FFE30BC18C244F3004A737D /* SurveyQuestions.m in Sources */,
 				3F558BCB18DD3922007D531F /* GetSingleSurveyHandler.m in Sources */,
 				3F72D7C218F8E7EE0090E7C3 /* QuestionTextAnswer.m in Sources */,
 				3F72D7BC18F8E4E80090E7C3 /* Question.m in Sources */,
-				3F7493F818F4F90000C0901E /* ImagesContainer.m in Sources */,
 				3FC22F0A193D7B700049ADDC /* ClientSurveyViewController.m in Sources */,
 				3FFE30BF18C2498A004A737D /* ClientQuestions.m in Sources */,
 				3FE4FF9218F915F900E47703 /* QuestionDateAnswer.m in Sources */,
@@ -533,6 +538,7 @@
 				3F558BAB18CBA1F5007D531F /* SurveyPageViewController.m in Sources */,
 				272AA52B18C84E580068E023 /* SigGLKViewController.m in Sources */,
 				3FFE30AF18A487A5004A737D /* SurveyInfo.m in Sources */,
+				3FA0A1FC1981881D00D70A07 /* NSData+MD5.m in Sources */,
 				272AA49618C6EBCB0068E023 /* MainMenuViewController.m in Sources */,
 				3F7493EB18F0975900C0901E /* PITResponseJSON.m in Sources */,
 				948CBC4516FC8BA000DD4E2B /* HousingAppDelegate.m in Sources */,

@@ -11,7 +11,7 @@
 #import "PITSurvey.h"
 #import "SurveyDataRowContainer.h"
 #import "SurveyPageViewController.h"
-#import "ImagesContainer.h"
+#import "ImageFileHelper.h"
 #import "HousingAppDelegate.h"
 #import "AuthenticationToken.h"
 
@@ -40,7 +40,7 @@
     [[[Survey getSurveyQuestions] getSurveyQuestions] removeAllObjects];
     [[PITSurvey getPITQuestions] removeAllObjects];
     [SurveyPageViewController setWhetherAlreadySigned:NO];  //This is just so access to the rest of the survey is restricted if they haven't signed
-    [ImagesContainer clearImages];
+    [ImageFileHelper clearImages];
     
     HousingAppDelegate *appDelegate = [[UIApplication sharedApplication]delegate];
     appDelegate.encryptedSignature = nil;

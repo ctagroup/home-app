@@ -10,7 +10,7 @@
 #import "HousingAppDelegate.h"
 #import <RNCryptor/RNEncryptor.h>
 #import "SurveyPageViewController.h"
-#import "ImagesContainer.h"
+#import "ImageFileHelper.h"
 
 @interface SigConfrimViewController ()
 
@@ -49,7 +49,7 @@
                                                  withSettings:kRNCryptorAES256Settings
                                                      password:@"UberSecretPassword"
                                                         error:&error];
-    [ImagesContainer setSignatureImage:self.sigToSave.image];
+    [ImageFileHelper setSignatureImage:self.sigToSave.image];
     
     self.sigToSave.image = nil;  //clearing unencrypted version in view
     
