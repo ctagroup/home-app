@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Question.h"
 
-@interface PITQuestionTableViewCell : UITableViewCell <UIPickerViewDataSource,UIPickerViewDelegate>
+@interface PITQuestionTableViewCell : UITableViewCell <UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate>
 
 @property (strong, nonatomic) IBOutlet UILabel *questionText;
 @property (strong, nonatomic) IBOutlet UILabel *number;

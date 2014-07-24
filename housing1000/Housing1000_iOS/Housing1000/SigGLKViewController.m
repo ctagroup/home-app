@@ -28,7 +28,7 @@
     return self;
 }
 - (IBAction)clear:(id)sender {
-    signatureView.erase;
+    [signatureView erase];
 }
 
 - (void)viewDidLoad
@@ -45,7 +45,7 @@
 - (IBAction)saveSig:(id)sender {
     HousingAppDelegate *appDelegate = [[UIApplication sharedApplication]delegate];
     appDelegate.tempSig = signatureView.signatureImage;
-    signatureView.erase;
+    [signatureView erase];
 }
 
 -(BOOL)shouldAutorotate

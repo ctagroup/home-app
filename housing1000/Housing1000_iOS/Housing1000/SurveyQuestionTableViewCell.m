@@ -27,7 +27,7 @@
     
     //If the data type for the text field is an int, make it a number pad
     //Otherwise, leave it as the default
-    if((self.questionData.textBoxDataType != [NSNull null]) && [self.questionData.textBoxDataType isEqualToString:@"int"]) {
+    if((self.questionData.textBoxDataType != (id)[NSNull null]) && [self.questionData.textBoxDataType isEqualToString:@"int"]) {
         [self.questionTextAnswer setKeyboardType:UIKeyboardTypeNumberPad];
     }
     

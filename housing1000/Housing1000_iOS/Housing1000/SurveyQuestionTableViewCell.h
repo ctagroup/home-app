@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Question.h"
 
-@interface SurveyQuestionTableViewCell : UITableViewCell <UIPickerViewDataSource,UIPickerViewDelegate>
+@interface SurveyQuestionTableViewCell : UITableViewCell <UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate>
 
 @property (strong, nonatomic) IBOutlet UILabel *questionText;
 @property (strong, nonatomic) IBOutlet UITextField *questionTextAnswer;

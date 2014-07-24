@@ -27,7 +27,8 @@
     response.SurveyBy = [Survey getSurveyBy];
     
     //Convert the survey answers to JSON
-    response.Responses = [[Survey getSurveyQuestions] getSurveyQuestions];   //Xcode throws a warning, but it doesn't seem to work without this...
+    //response.Responses = [[Survey getSurveyQuestions] getSurveyQuestions];   //Xcode throws a warning, but it doesn't seem to work without this...
+    response.Responses = [[[Survey getSurveyQuestions] getSurveyQuestions] copy];
     
     //Convert the client answers to JSON
     NSMutableDictionary *clientAnswers = [[NSMutableDictionary alloc] init];

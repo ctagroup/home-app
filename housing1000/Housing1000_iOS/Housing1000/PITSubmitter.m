@@ -25,7 +25,8 @@
     response.UserId = 1;                            //TODO make this a real value
     
     //Convert the survey answers to JSON
-    response.Responses = [self packagePITQuestionsForSending:[PITSurvey getPITQuestions]];   //Xcode throws a warning, but it doesn't seem to work without this...
+    //response.Responses = [self packagePITQuestionsForSending:[PITSurvey getPITQuestions]];   //Xcode throws a warning, but it doesn't seem to work without this...
+    response.Responses = [[self packagePITQuestionsForSending:[PITSurvey getPITQuestions]] copy];
     
     NSLog(@"PIT Json submission: %@", [response toDictionary]);
     HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] init];

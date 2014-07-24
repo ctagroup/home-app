@@ -105,7 +105,7 @@
     
     
     SurveyQuestionTableViewCell *cell;
-    if((currentQuestion.textBoxDataType != [NSNull null]) && [currentQuestion.textBoxDataType isEqualToString:@"DateTime"]) {
+    if((currentQuestion.textBoxDataType != (id)[NSNull null]) && [currentQuestion.textBoxDataType isEqualToString:@"DateTime"]) {
         cell = [tableView dequeueReusableCellWithIdentifier:@"SinglelineTextBox_WithDatePicker" forIndexPath:indexPath];
     }
     else {
