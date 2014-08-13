@@ -34,6 +34,7 @@
         <activity android:name=".activities.SurveyListActivity" />
         <activity android:name=".activities.SurveyFlowActivity" />
         <activity android:name=".activities.PitActivity" />
+        <activity android:name=".activities.EncampmentActivity" />
     </application>
 
 </manifest>
