@@ -13,6 +13,7 @@
 #import "JSONHTTPClient.h"
 #import "HttpConnectionHelper.h"
 #import "ImageUploader.h"
+#import "GPSLocationRetriever.h"
 
 @implementation SurveySubmitter
 
@@ -27,7 +28,6 @@
     response.SurveyBy = [Survey getSurveyBy];
     
     //Convert the survey answers to JSON
-    //response.Responses = [[Survey getSurveyQuestions] getSurveyQuestions];   //Xcode throws a warning, but it doesn't seem to work without this...
     response.Responses = [[[Survey getSurveyQuestions] getSurveyQuestions] copy];
     
     //Convert the client answers to JSON
@@ -43,7 +43,10 @@
         
         [clientAnswers setObject:[currentQuestion getAnswerForJson] forKey:currentQuestion.parentRequiredAnswer];
     }
-    [clientAnswers setObject:@"37.336704, -121.919087" forKey:@"GeoLoc"];
+    
+    GPSLocationRetriever *gpsRetriever = [[GPSLocationRetriever alloc] init];
+    [clientAnswers setObject:[gpsRetriever getCurrentLocation] forKey:@"GeoLoc"];
+    
     response.Client = clientAnswers;
     
     NSLog(@"Json submission: %@", [response toDictionary]);

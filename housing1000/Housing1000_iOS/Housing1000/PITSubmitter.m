@@ -13,6 +13,7 @@
 #import "QuestionTextAnswer.h"
 #import "QuestionNumAnswer.h"
 #import "PITResponseJSON.h"
+#import "GPSLocationRetriever.h"
 
 @implementation PITSubmitter
 
@@ -21,11 +22,11 @@
     
     PITResponseJSON *response = [[PITResponseJSON alloc] init];
     
-    response.GeoLoc = @"37.336704, -121.919087";    //TODO make this a real value
     response.UserId = 1;                            //TODO make this a real value
+    GPSLocationRetriever *gpsRetriever = [[GPSLocationRetriever alloc] init];
+    response.GeoLoc = [gpsRetriever getCurrentLocation];
     
     //Convert the survey answers to JSON
-    //response.Responses = [self packagePITQuestionsForSending:[PITSurvey getPITQuestions]];   //Xcode throws a warning, but it doesn't seem to work without this...
     response.Responses = [[self packagePITQuestionsForSending:[PITSurvey getPITQuestions]] copy];
     
     NSLog(@"PIT Json submission: %@", [response toDictionary]);
