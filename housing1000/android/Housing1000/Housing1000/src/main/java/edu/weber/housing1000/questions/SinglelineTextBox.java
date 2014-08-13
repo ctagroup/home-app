@@ -55,52 +55,58 @@ public class SinglelineTextBox extends Question {
         editText.setLayoutParams(editTextParams);
 
         //Add question input validation
-        switch (getTextBoxDataType()) {
-            case "DateTime":
-                editText.setInputType(InputType.TYPE_NULL);
-                // Disable any text input from the keyboard by setting a filter
-                editText.setFilters(new InputFilter[]
-                        {
-                                new InputFilter() {
-                                    public CharSequence filter(CharSequence src, int start,
-                                                               int end, Spanned dst, int dstart, int dend) {
-                                        return src.length() < 1 ? dst.subSequence(dstart, dend) : "";
+        if(getTextBoxDataType() != null) {
+            switch (getTextBoxDataType()) {
+                case "DateTime":
+                    editText.setInputType(InputType.TYPE_NULL);
+                    // Disable any text input from the keyboard by setting a filter
+                    editText.setFilters(new InputFilter[]
+                            {
+                                    new InputFilter() {
+                                        public CharSequence filter(CharSequence src, int start,
+                                                                   int end, Spanned dst, int dstart, int dend) {
+                                            return src.length() < 1 ? dst.subSequence(dstart, dend) : "";
+                                        }
                                     }
+                            });
+
+                    // Set up the click listener
+                    editText.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            if (event.getAction() == MotionEvent.ACTION_UP) {
+                                EditText et = (EditText) v;
+                                // Get the screen coordinates of the EditText
+                                final int screenCords[] = new int[2];
+                                et.getLocationOnScreen(screenCords);
+                                // Set up a rectangle based on the EditText
+                                Rect rect = new Rect(screenCords[0], screenCords[1], screenCords[0] + et.getWidth(), screenCords[1] + et.getHeight());
+
+                                // If the click position is within the EditText rectangle, show a date picker
+                                if (rect.contains((int) event.getRawX(), (int) event.getRawY())) {
+                                    createDatePicker(v);
+                                    return true;
                                 }
-                        });
-
-                // Set up the click listener
-                editText.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            EditText et = (EditText) v;
-                            // Get the screen coordinates of the EditText
-                            final int screenCords[] = new int[2];
-                            et.getLocationOnScreen(screenCords);
-                            // Set up a rectangle based on the EditText
-                            Rect rect = new Rect(screenCords[0], screenCords[1], screenCords[0] + et.getWidth(), screenCords[1] + et.getHeight());
-
-                            // If the click position is within the EditText rectangle, show a date picker
-                            if (rect.contains((int) event.getRawX(), (int) event.getRawY())) {
-                                createDatePicker(v);
-                                return true;
                             }
+                            event.setAction(MotionEvent.ACTION_CANCEL); //prevent the keyboard from coming up
+                            return false;
                         }
-                        event.setAction(MotionEvent.ACTION_CANCEL); //prevent the keyboard from coming up
-                        return false;
-                    }
-                });
-                break;
-            case "int":
-                editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                break;
-            case "string":
-                editText.setInputType(InputType.TYPE_CLASS_TEXT);
-                break;
-            default:
-                editText.setInputType(InputType.TYPE_NULL);
-                break;
+                    });
+                    break;
+                case "int":
+                    editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    break;
+                case "string":
+                    editText.setInputType(InputType.TYPE_CLASS_TEXT);
+                    break;
+                default:
+                    editText.setInputType(InputType.TYPE_NULL);
+                    break;
+            }
+        }
+        //If the text box data type is null, default to TYPE_NULL
+        else {
+            editText.setInputType(InputType.TYPE_NULL);
         }
 
         qLayout.addView(editText);
