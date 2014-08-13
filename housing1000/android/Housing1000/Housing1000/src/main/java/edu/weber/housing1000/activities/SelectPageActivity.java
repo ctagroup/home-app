@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.Utils;
@@ -59,15 +58,18 @@ public class SelectPageActivity extends ActionBarActivity {
 
     }
 
-    public void startPitActivity(View v)
-    {
+    public void startPitActivity(View v) {
         Intent intent = new Intent(SelectPageActivity.this, PitActivity.class);
         startActivity(intent);
     }
 
-    public void startSurveyListActivity(View v)
-    {
+    public void startSurveyListActivity(View v) {
         Intent intent = new Intent(SelectPageActivity.this, SurveyListActivity.class);
+        startActivity(intent);
+    }
+
+    public void startEncampmentActivity(View v) {
+        Intent intent = new Intent(SelectPageActivity.this, EncampmentActivity.class);
         startActivity(intent);
     }
 

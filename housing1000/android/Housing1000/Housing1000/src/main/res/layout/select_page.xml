@@ -22,7 +22,8 @@
         android:scaleType="fitCenter"
         android:contentDescription="@string/ctagroup_logo"
         android:id="@+id/logoImageView"
-        android:paddingBottom="40dp" />
+        android:paddingBottom="40dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -61,6 +62,7 @@
         android:id="@+id/surveyBtnLayout"
         android:layout_below="@+id/pitBtnLayout"
         android:gravity="center"
+        android:layout_marginBottom="@dimen/margin_large"
         android:clickable="true"
         android:onClick="startSurveyListActivity" >
 
@@ -82,6 +84,37 @@
             android:textStyle="bold"
             android:textColor="@color/grey"
             android:gravity="center" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/encampmentBtnLayout"
+        android:layout_below="@+id/surveyBtnLayout"
+        android:gravity="center"
+        android:clickable="true"
+        android:onClick="startEncampmentActivity" >
+
+        <ImageView
+            android:duplicateParentState="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/encampmentImageButton"
+            android:background="@drawable/btn_survey"
+            android:contentDescription="@string/btn_surveys" />
+
+        <TextView
+            android:duplicateParentState="true"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:text="Encampment"
+            android:textSize="18sp"
+            android:background="@color/transparent"
+            android:textStyle="bold"
+            android:textColor="@color/grey"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/margin_small" />
     </LinearLayout>
 
 </RelativeLayout>
