@@ -6,7 +6,7 @@ import retrofit.http.FormUrlEncoded;
 import retrofit.http.POST;
 
 /**
- * Created by David Horton on 7/18/14.
+ * @author David Horton
  */
 public interface AuthenticationService {
 

@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Date;
 
 /**
- * Created by David Horton on 7/18/14.
+ * @author David Horton
  */
 public class TokenResponse {
 
