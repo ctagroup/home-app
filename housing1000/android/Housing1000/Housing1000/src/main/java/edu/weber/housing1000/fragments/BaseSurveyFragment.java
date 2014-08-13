@@ -35,7 +35,7 @@ import edu.weber.housing1000.R;
 import edu.weber.housing1000.Utils;
 
 /**
- * Created by Blake on 2/11/14.
+ * @author Blake
  */
 public abstract class BaseSurveyFragment extends SurveyAppFragment {
     private ArrayList<Question> lstQuestions;   // List of all questions
@@ -249,7 +249,6 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
      */
     protected ScrollView generateQuestionUi(SurveyListing listing) {
         try {
-            final float scale = getResources().getDisplayMetrics().density;
 
             lstQuestions = new ArrayList<>();
 
