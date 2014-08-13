@@ -18,8 +18,10 @@ import retrofit.mime.MultipartTypedOutput;
  * More info here: http://square.github.io/retrofit/
  */
 public interface SurveyService {
+
     @GET("/Survey/api/survey")
     void listSurveys(Callback<ArrayList<SurveyListing>> cb);
+
     @GET("/Survey/api/survey/{id}")
     void getSurvey(@Path("id") String id, Callback<String> cb);
 
@@ -34,4 +36,5 @@ public interface SurveyService {
 
     @POST("/Survey/api/pit")
     void postPit(@Body PitResponse pitResponse, Callback<String> cb);
+
 }
