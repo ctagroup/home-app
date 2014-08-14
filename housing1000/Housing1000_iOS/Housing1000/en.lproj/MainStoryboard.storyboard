@@ -478,12 +478,12 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ted-zE-ejT">
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="ted-zE-ejT">
                                 <rect key="frame" x="0.0" y="83" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gJZ-XQ-DDA">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gJZ-XQ-DDA">
                                 <rect key="frame" x="38" y="149" width="103" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.20000000000000001" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -499,7 +499,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     <action selector="performSearchSegue:" destination="Zrf-5q-KnZ" eventType="touchUpInside" id="tUK-yL-1Lv"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I3N-DF-X38">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I3N-DF-X38">
                                 <rect key="frame" x="176" y="149" width="103" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.20000000000000001" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -514,6 +514,15 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="ted-zE-ejT" secondAttribute="trailing" id="Vr2-v6-wm0"/>
+                            <constraint firstItem="gJZ-XQ-DDA" firstAttribute="top" secondItem="ted-zE-ejT" secondAttribute="bottom" constant="22" id="Zb0-Fg-nQG"/>
+                            <constraint firstItem="gJZ-XQ-DDA" firstAttribute="baseline" secondItem="I3N-DF-X38" secondAttribute="baseline" id="dRf-LS-2gb"/>
+                            <constraint firstItem="ted-zE-ejT" firstAttribute="leading" secondItem="A0R-De-Gfq" secondAttribute="leading" id="eEx-Vb-t7M"/>
+                            <constraint firstItem="gJZ-XQ-DDA" firstAttribute="leading" secondItem="A0R-De-Gfq" secondAttribute="leading" constant="38" id="gHW-Vr-8af"/>
+                            <constraint firstItem="I3N-DF-X38" firstAttribute="leading" secondItem="gJZ-XQ-DDA" secondAttribute="trailing" constant="35" id="m6T-Rm-My9"/>
+                            <constraint firstItem="RN0-ss-94a" firstAttribute="top" secondItem="gJZ-XQ-DDA" secondAttribute="bottom" constant="389" id="smb-Si-rsj"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Encampment Sites" id="dcL-dL-SYt"/>
                     <connections>
