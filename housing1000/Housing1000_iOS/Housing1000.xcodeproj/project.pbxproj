@@ -22,6 +22,9 @@
 		3F045AE5197DE968008F85E0 /* AuthenticationToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F045AE4197DE968008F85E0 /* AuthenticationToken.m */; };
 		3F1E378D199BE8CB00562EEC /* GPSLocationRetriever.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F1E378C199BE8CB00562EEC /* GPSLocationRetriever.m */; };
 		3F1E378F199C2C9800562EEC /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F1E378E199C2C9800562EEC /* CoreLocation.framework */; };
+		3F1E3792199C383500562EEC /* SearchEncampmentHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F1E3791199C383500562EEC /* SearchEncampmentHandler.m */; };
+		3F1E3795199C398600562EEC /* EncampMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F1E3794199C398600562EEC /* EncampMainViewController.m */; };
+		3F1E3798199C3AF100562EEC /* EncampSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F1E3797199C3AF100562EEC /* EncampSearchViewController.m */; };
 		3F558BAB18CBA1F5007D531F /* SurveyPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BAA18CBA1F5007D531F /* SurveyPageViewController.m */; };
 		3F558BB418CE9CC6007D531F /* ctagroup_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F558BB318CE9CC6007D531F /* ctagroup_logo.png */; };
 		3F558BB718D006A5007D531F /* PITViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BB618D006A5007D531F /* PITViewController.m */; };
@@ -99,6 +102,12 @@
 		3F1E378B199BE8CB00562EEC /* GPSLocationRetriever.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPSLocationRetriever.h; sourceTree = "<group>"; };
 		3F1E378C199BE8CB00562EEC /* GPSLocationRetriever.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPSLocationRetriever.m; sourceTree = "<group>"; };
 		3F1E378E199C2C9800562EEC /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		3F1E3790199C383500562EEC /* SearchEncampmentHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchEncampmentHandler.h; sourceTree = "<group>"; };
+		3F1E3791199C383500562EEC /* SearchEncampmentHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchEncampmentHandler.m; sourceTree = "<group>"; };
+		3F1E3793199C398600562EEC /* EncampMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncampMainViewController.h; sourceTree = "<group>"; };
+		3F1E3794199C398600562EEC /* EncampMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncampMainViewController.m; sourceTree = "<group>"; };
+		3F1E3796199C3AF100562EEC /* EncampSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncampSearchViewController.h; sourceTree = "<group>"; };
+		3F1E3797199C3AF100562EEC /* EncampSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncampSearchViewController.m; sourceTree = "<group>"; };
 		3F558BA918CBA1F5007D531F /* SurveyPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyPageViewController.h; sourceTree = "<group>"; };
 		3F558BAA18CBA1F5007D531F /* SurveyPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyPageViewController.m; sourceTree = "<group>"; };
 		3F558BB318CE9CC6007D531F /* ctagroup_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ctagroup_logo.png; sourceTree = "<group>"; };
@@ -232,6 +241,8 @@
 				3F7ABC6518F084F400D99525 /* PostPITHandler.m */,
 				3F045AE0197B3FCC008F85E0 /* PostAuthenticationHandler.h */,
 				3F045AE1197B3FCC008F85E0 /* PostAuthenticationHandler.m */,
+				3F1E3790199C383500562EEC /* SearchEncampmentHandler.h */,
+				3F1E3791199C383500562EEC /* SearchEncampmentHandler.m */,
 				3F7493EF18F3BBEC00C0901E /* ImageUploader.h */,
 				3F7493F018F3BBEC00C0901E /* ImageUploader.m */,
 			);
@@ -268,6 +279,10 @@
 				3F558BB618D006A5007D531F /* PITViewController.m */,
 				3F558BBB18D00F23007D531F /* PITQuestionTableViewCell.h */,
 				3F558BBC18D00F23007D531F /* PITQuestionTableViewCell.m */,
+				3F1E3793199C398600562EEC /* EncampMainViewController.h */,
+				3F1E3794199C398600562EEC /* EncampMainViewController.m */,
+				3F1E3796199C3AF100562EEC /* EncampSearchViewController.h */,
+				3F1E3797199C3AF100562EEC /* EncampSearchViewController.m */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -529,14 +544,17 @@
 				3F558BBA18D00991007D531F /* PITSurvey.m in Sources */,
 				3F558BBD18D00F23007D531F /* PITQuestionTableViewCell.m in Sources */,
 				272AA49318C6E77F0068E023 /* UINavigationController+Orientation.m in Sources */,
+				3F1E3792199C383500562EEC /* SearchEncampmentHandler.m in Sources */,
 				3FD109E518C95E27005E4743 /* AlertViewDisplayer.m in Sources */,
 				3FFE30AE18A487A5004A737D /* Survey.m in Sources */,
 				272AA49918C6EBE80068E023 /* DisclaimerViewController.m in Sources */,
 				3FA0A1F91981863B00D70A07 /* ImageFileHelper.m in Sources */,
+				3F1E3795199C398600562EEC /* EncampMainViewController.m in Sources */,
 				3F558BCE18DE1067007D531F /* PostSurveyHandler.m in Sources */,
 				3FFE30BC18C244F3004A737D /* SurveyQuestions.m in Sources */,
 				3F558BCB18DD3922007D531F /* GetSingleSurveyHandler.m in Sources */,
 				3F72D7C218F8E7EE0090E7C3 /* QuestionTextAnswer.m in Sources */,
+				3F1E3798199C3AF100562EEC /* EncampSearchViewController.m in Sources */,
 				3F72D7BC18F8E4E80090E7C3 /* Question.m in Sources */,
 				3FC22F0A193D7B700049ADDC /* ClientSurveyViewController.m in Sources */,
 				3FFE30BF18C2498A004A737D /* ClientQuestions.m in Sources */,

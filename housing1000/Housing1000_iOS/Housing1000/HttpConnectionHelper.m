@@ -15,6 +15,7 @@
 #import "PostPITHandler.h"
 #import "PostAuthenticationHandler.h"
 #import "AuthenticationToken.h"
+#import "SearchEncampmentHandler.h"
 
 @implementation HttpConnectionHelper
 
@@ -187,6 +188,23 @@ id<HttpHandlerProtocol> httpHandler;    //Declared like this so it can be called
     
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     NSLog(@"Connection: %@", conn.description);
+    
+    return returnedJsonData;
+}
+
+-(NSMutableArray*)searchEncampment:(CallbackToDoWhenFinished)callback :(NSString*)searchString {
+    httpHandler = [[SearchEncampmentHandler alloc] init];
+    actionDescription = @"Search Encampment";
+    urlString = [NSString stringWithFormat:@"https://staging.ctagroup.org/Outreach/api/EncampmentSite?searchStr=%@", searchString];
+    callbackAction = callback;
+    
+    [httpHandler handlePreConnectionAction];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    NSString *token = [NSString stringWithFormat:@"Bearer %@",[AuthenticationToken getAuthenticationToken]];
+    [request setValue:token forHTTPHeaderField:@"Authorization"];
+    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    NSLog(@"%@ Connection: %@", actionDescription, conn.description);
     
     return returnedJsonData;
 }
