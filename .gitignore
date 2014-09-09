@@ -38,3 +38,8 @@ project.properties
 *.iws
 *.iml
 out/
+
+#Xcode files
+*.xcuserstate
+*.plist
+*.xcscheme
