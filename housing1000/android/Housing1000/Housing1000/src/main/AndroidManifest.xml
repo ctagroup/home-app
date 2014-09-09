@@ -25,6 +25,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            android:windowSoftInputMode="adjustResize"
         </activity>
         <activity
             android:name=".activities.SignatureActivity"
@@ -32,9 +33,12 @@
             android:screenOrientation="landscape" />
         <activity android:name=".activities.SelectPageActivity"/>
         <activity android:name=".activities.SurveyListActivity" />
-        <activity android:name=".activities.SurveyFlowActivity" />
-        <activity android:name=".activities.PitActivity" />
-        <activity android:name=".activities.EncampmentActivity" />
+        <activity android:name=".activities.SurveyFlowActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".activities.PitActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".activities.EncampmentActivity"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>
