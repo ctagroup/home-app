@@ -10,7 +10,8 @@
     android:orientation="vertical"
     android:layout_gravity="center"
     android:paddingLeft="@dimen/margin_large"
-    android:paddingRight="@dimen/margin_large">
+    android:paddingRight="@dimen/margin_large"
+    android:paddingTop="@dimen/margin_large">
 
     <ImageView
         android:layout_width="260dp"
@@ -33,7 +34,8 @@
         android:layout_marginBottom="@dimen/margin_large"
         android:clickable="true"
         android:onClick="startPitActivity"
-        android:layout_toRightOf="@+id/logoImageView">
+        android:layout_toRightOf="@+id/logoImageView"
+        android:layout_marginTop="@dimen/margin_medium">
 
         <ImageView
             android:duplicateParentState="true"
@@ -83,6 +85,38 @@
             android:textStyle="bold"
             android:textColor="@color/grey"
             android:gravity="center" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/encampmentBtnLayout"
+        android:layout_below="@+id/surveyBtnLayout"
+        android:gravity="center"
+        android:clickable="true"
+        android:onClick="startEncampmentActivity"
+        android:layout_toRightOf="@+id/logoImageView"
+        android:layout_marginTop="@dimen/margin_large" >
+
+        <ImageView
+            android:duplicateParentState="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/encampmentImageButton"
+            android:background="@drawable/btn_survey"
+            android:contentDescription="@string/btn_surveys" />
+
+        <TextView
+            android:duplicateParentState="true"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:text="Encampment"
+            android:textSize="18sp"
+            android:background="@color/transparent"
+            android:textStyle="bold"
+            android:textColor="@color/grey"
+            android:gravity="center"/>
     </LinearLayout>
 
 </RelativeLayout>
