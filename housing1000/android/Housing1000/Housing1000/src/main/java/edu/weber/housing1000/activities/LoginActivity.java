@@ -247,10 +247,10 @@ public class LoginActivity extends ActionBarActivity
             successful = false;
             Log.w("HOUSING 1000", "Authentication failed because the token is not of a 'bearer' type.");
         }
-        if(dateIssuedAsDate.compareTo(rightNow) > 0) {
+        /*if(dateIssuedAsDate.compareTo(rightNow) > 0) {
             successful = false;
             Log.w("HOUSING 1000", "Authentication failed because the token has an issue date that is later than today.");
-        }
+        }*/
         if(dateExpiresAsDate.compareTo(rightNow) < 0) {
             successful = false;
             Log.w("HOUSING 1000", "Authentication failed because the token has an expires date that has already happened.");
