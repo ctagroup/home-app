@@ -101,7 +101,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/encampmentImageButton"
-            android:background="@drawable/btn_survey"
+            android:background="@drawable/btn_encampment"
             android:contentDescription="@string/btn_surveys" />
 
         <TextView
