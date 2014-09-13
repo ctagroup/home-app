@@ -17,7 +17,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 /**
- * Created by Blake on 11/29/13.
+ * @author Blake
  */
 public abstract class Question {
 
@@ -61,7 +61,9 @@ public abstract class Question {
     // Getters and Setters
     public String getTextBoxDataType() { return textBoxDataType; }
 
-    public void setTextBoxDataType(String dataType) { this.textBoxDataType = dataType; }
+    public void setTextBoxDataType(String dataType) {
+        this.textBoxDataType = dataType;
+    }
 
     public int getQuestionId() {
         return questionId;
@@ -111,38 +113,31 @@ public abstract class Question {
         this.orderId = orderId;
     }
 
-    public View getView()
-    {
+    public View getView() {
         return myView;
     }
 
-    public void setView(View v)
-    {
+    public void setView(View v) {
         myView = v;
     }
 
-    public int getParentQuestionId()
-    {
+    public int getParentQuestionId() {
         return parentQuestionId;
     }
 
-    public void setParentQuestionId(int parentQuestionId)
-    {
+    public void setParentQuestionId(int parentQuestionId) {
         this.parentQuestionId = parentQuestionId;
     }
 
-    public String getParentRequiredAnswer()
-    {
+    public String getParentRequiredAnswer() {
         return parentRequiredAnswer;
     }
 
-    public void setParentRequiredAnswer(String parentRequiredAnswer)
-    {
+    public void setParentRequiredAnswer(String parentRequiredAnswer) {
         this.parentRequiredAnswer = parentRequiredAnswer;
     }
 
-    public ArrayList<Question> getDependents()
-    {
+    public ArrayList<Question> getDependents() {
         return dependents;
     }
 
@@ -151,17 +146,14 @@ public abstract class Question {
         dependents = new ArrayList<>();
     }
 
-    public void addDependent(Question dependent)
-    {
+    public void addDependent(Question dependent) {
         dependents.add(dependent);
     }
 
-    public void hookUpDependents()
-    {
+    public void hookUpDependents() {
         LinearLayout myLayout = (LinearLayout) getView();
 
-        for (final Question question : dependents)
-        {
+        for (final Question question : dependents) {
             // Add an on click listener to the parent's main layout
             View.OnClickListener onClickListener = new View.OnClickListener() {
                 @Override
@@ -174,14 +166,11 @@ public abstract class Question {
             myLayout.setOnClickListener(onClickListener);
 
             // Add a listener to all child views, too
-            if (myLayout.getChildCount() > 0)
-            {
-                for (int i = 0; i < myLayout.getChildCount(); i++)
-                {
+            if (myLayout.getChildCount() > 0) {
+                for (int i = 0; i < myLayout.getChildCount(); i++) {
                     View child = myLayout.getChildAt(i);
 
-                    if (child instanceof Spinner)
-                    {
+                    if (child instanceof Spinner) {
                         Spinner spinner = (Spinner) child;
                         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
@@ -196,8 +185,7 @@ public abstract class Question {
                         });
 
                     }
-                    else if (child instanceof EditText)
-                    {
+                    else if (child instanceof EditText) {
                         EditText editText = (EditText) child;
                         editText.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -216,8 +204,7 @@ public abstract class Question {
                             }
                         });
                     }
-                    else
-                    {
+                    else {
                         child.setOnClickListener(onClickListener);
                     }
                 }
@@ -227,78 +214,62 @@ public abstract class Question {
         }
     }
 
-    private void toggleVisibility(Question question, Question parent)
-    {
+    private void toggleVisibility(Question question, Question parent) {
+
         final LinearLayout questionLayout = (LinearLayout) question.getView();
-        if (parent == null)
-        {
+        if (parent == null) {
             parent = this;
         }
 
-        if (parent.getQuestionType().equals("SinglelineTextBox"))
-        {
-            //Make dependent questions visible if EditText is not blank
-            if (!parent.getAnswer().equals(""))
-            {
-                questionLayout.setVisibility(View.VISIBLE);
-            }
-            else
-            {
-                questionLayout.setVisibility(View.GONE);
-                question.clearAnswer();
-            }
-        } else if (parent.getQuestionType().equals("MultiSelect"))
-        {
-            LinearLayout parentLayout = (LinearLayout) parent.getView();
-            for (int k = 0; k < parentLayout.getChildCount(); k++)
-            {
-                View child = parentLayout.getChildAt(k);
-                //Make dependent questions visible if the required parent answer is checked
-                if (child instanceof CheckBox)
-                {
-                    if (((CheckBox) child).isChecked() && ((CheckBox) child).getText().toString().toLowerCase().equals(question.getParentRequiredAnswer().toLowerCase()))
-                    {
-                        questionLayout.setVisibility(View.VISIBLE);
-                        return;
-                    } else
-                    {
-                        questionLayout.setVisibility(View.GONE);
-                        question.clearAnswer();
-                    }
-                }
+        Log.d("HOUSING1000", "Parent required answer before splitting it: " + question.getParentRequiredAnswer());
+        String[] requiredAnswers = question.getParentRequiredAnswer().split("\\|");
 
-            }
-            /*
-            //Make dependent questions visible if question answer contains the required answer
-            if (!parent.getAnswer().toLowerCase().equals("") && question.getParentRequiredAnswer().toLowerCase().contains(parent.getAnswer().toLowerCase()))
-            {
+        if (parent.getQuestionType().equals("SinglelineTextBox")) {
+            //Make dependent questions visible if EditText is not blank
+            if (!parent.getAnswer().equals("")) {
                 questionLayout.setVisibility(View.VISIBLE);
             }
-            else
-            {
-                questionLayout.setVisibility(View.GONE);
-                question.clearAnswer();
-            }*/
-        } else
-        {
-            if (question.getParentRequiredAnswer().toLowerCase().equals(parent.getAnswer().toLowerCase()))
-            {
-                questionLayout.setVisibility(View.VISIBLE);
-            }
-            else
-            {
+            else {
                 questionLayout.setVisibility(View.GONE);
                 question.clearAnswer();
             }
         }
+        else if (parent.getQuestionType().equals("MultiSelect")) {
+            LinearLayout parentLayout = (LinearLayout) parent.getView();
+            for (int k = 0; k < parentLayout.getChildCount(); k++) {
+                View child = parentLayout.getChildAt(k);
+                //Make dependent questions visible if the required parent answer is checked
+                if (child instanceof CheckBox) {
+                    for(String requiredAnswer : requiredAnswers) {
+                        if (((CheckBox) child).isChecked() && ((CheckBox) child).getText().toString().toLowerCase().equals(requiredAnswer.toLowerCase())) {
+                            questionLayout.setVisibility(View.VISIBLE);
+                            return;
+                        }
+                        else {
+                            questionLayout.setVisibility(View.GONE);
+                            question.clearAnswer();
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            for(String requiredAnswer : requiredAnswers) {
+                if (requiredAnswer.toLowerCase().equals(parent.getAnswer().toLowerCase())) {
+                    questionLayout.setVisibility(View.VISIBLE);
+                } else {
+                    questionLayout.setVisibility(View.GONE);
+                    question.clearAnswer();
+                }
+            }
+        }
 
-        for (Question childQuestion : question.getDependents())
-        {
+        for (Question childQuestion : question.getDependents()) {
             toggleVisibility(childQuestion, question);
         }
     }
 
-    // Abstract classes
+    // Abstract methods
     public abstract View createView(Context context);
     public abstract String getAnswer();
     public abstract void setAnswer(String answer);
