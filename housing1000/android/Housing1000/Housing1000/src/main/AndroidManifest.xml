@@ -39,6 +39,8 @@
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".activities.EncampmentActivity"
             android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".activities.EncampmentDetailActivity"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

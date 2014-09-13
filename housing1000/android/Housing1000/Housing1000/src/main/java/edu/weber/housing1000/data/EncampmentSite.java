@@ -1,5 +1,8 @@
 package edu.weber.housing1000.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -9,7 +12,7 @@ import java.util.ArrayList;
 /**
  * @author David Horton
  */
-public class EncampmentSite implements Serializable {
+public class EncampmentSite implements Serializable, Parcelable {
 
     /* //An example JSON representation of this class
        {
@@ -130,4 +133,49 @@ public class EncampmentSite implements Serializable {
     public String toString() {
         return this.id + " - " + this.encampLocation + "; Type: " + this.encampType;
     }
+
+    public EncampmentSite(Parcel in) {
+        this.id = in.readString();
+        this.dispatchId = in.readString();
+        this.encampLocation = in.readString();
+        this.encampSize = in.readString();
+        this.encampType = in.readString();
+        this.environmentImpact = in.readString();
+        this.publicVisibility = in.readString();
+        this.siteCode = in.readString();
+        this.councilDistrict = in.readLong();
+        this.encampSiteId = in.readLong();
+        this.isInactive = in.readByte() != 0;     //this.isInactive == true if byte != 0
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.dispatchId);
+        dest.writeString(this.encampLocation);
+        dest.writeString(this.encampSize);
+        dest.writeString(this.encampType);
+        dest.writeString(this.environmentImpact);
+        dest.writeString(this.publicVisibility);
+        dest.writeString(this.siteCode);
+        dest.writeLong(this.councilDistrict);
+        dest.writeLong(this.encampSiteId);
+        dest.writeByte((byte) (this.isInactive ? 1 : 0));
+    }
+
+    public static final Parcelable.Creator<EncampmentSite> CREATOR
+            = new Parcelable.Creator<EncampmentSite>() {
+        public EncampmentSite createFromParcel(Parcel in) {
+            return new EncampmentSite(in);
+        }
+
+        public EncampmentSite[] newArray(int size) {
+            return new EncampmentSite[size];
+        }
+    };
 }

@@ -1,5 +1,6 @@
 package edu.weber.housing1000.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
@@ -7,7 +8,6 @@ import edu.weber.housing1000.R;
 import edu.weber.housing1000.Utils;
 import edu.weber.housing1000.data.EncampmentSite;
 import edu.weber.housing1000.fragments.EncampCreateNewFragment;
-import edu.weber.housing1000.fragments.EncampDetailsFragment;
 import edu.weber.housing1000.fragments.EncampMainFragment;
 import edu.weber.housing1000.fragments.EncampSearchFragment;
 
@@ -61,16 +61,12 @@ public class EncampmentActivity extends ActionBarActivity
     @Override
     public void onEncampmentSelected(EncampmentSite selectedSite) {
 
-        EncampDetailsFragment detailsFragment = new EncampDetailsFragment();
-
         Bundle arguments = new Bundle();
         arguments.putSerializable(ENCAMP_DETAILS_BUNDLE_TAG, selectedSite);
-        detailsFragment.setArguments(arguments);
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.encampmentContainer, detailsFragment)
-                .addToBackStack(null)
-                .commit();
+        Intent intent = new Intent(EncampmentActivity.this, EncampmentDetailActivity.class);
+        intent.putExtras(arguments);
+        startActivity(intent);
     }
 
 

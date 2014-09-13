@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,8 +52,18 @@ public class EncampSearchFragment extends Fragment {
         ActionBar ab = ((android.support.v7.app.ActionBarActivity) this.getActivity()).getSupportActionBar();
         ab.setTitle("Search Results");
 
-        String searchString = getArguments().getString(EncampmentActivity.ENCAMP_SEARCH_BUNDLE_TAG);
-        getSearchResults(searchString);
+        if (savedInstanceState == null) {
+            String searchString = getArguments().getString(EncampmentActivity.ENCAMP_SEARCH_BUNDLE_TAG);
+            getSearchResults(searchString);
+        } else {
+            encampmentSites = savedInstanceState.getParcelableArrayList("encampmentSites");
+
+            adapter.notifyDataSetChanged();
+
+            if(encampmentSites.size() == 0) {
+                noResultsText.setVisibility(View.VISIBLE);
+            }
+        }
 
         return rootView;
     }
@@ -97,6 +108,12 @@ public class EncampSearchFragment extends Fragment {
                 noResultsText.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("encampmentSites", encampmentSites);
     }
 
 
