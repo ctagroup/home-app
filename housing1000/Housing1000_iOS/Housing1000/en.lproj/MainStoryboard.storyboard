@@ -90,57 +90,102 @@
         <!--Main Menu View Controller - Main Menu-->
         <scene sceneID="rdQ-ce-FOd">
             <objects>
-                <viewController id="tGo-8g-Ye3" customClass="MainMenuViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="LCr-Mt-vcj"/>
-                        <viewControllerLayoutGuide type="bottom" id="lG0-IF-Ebz"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="1Jy-QD-zNL">
+                <tableViewController id="tGo-8g-Ye3" customClass="MainMenuViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="qan-XJ-33q">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AyZ-P0-nkE">
-                                <rect key="frame" x="53" y="261" width="215" height="44"/>
-                                <color key="backgroundColor" red="0.89754065689999996" green="0.56875078639999999" blue="0.02444025406" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="tintColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Point in Time">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="5ya-t6-Czy" kind="push" id="Yyz-2i-NAS"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jda-lg-F5E">
-                                <rect key="frame" x="53" y="331" width="215" height="44"/>
-                                <color key="backgroundColor" red="0.89754065689999996" green="0.56875078639999999" blue="0.02444025406" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="tintColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Surveys">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="KH6-ei-P0S" kind="push" id="iA0-0u-1cF"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4jY-S8-Txz">
-                                <rect key="frame" x="53" y="397" width="215" height="44"/>
-                                <color key="backgroundColor" red="0.89754065689999996" green="0.56875078639999999" blue="0.02444025406" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="tintColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Encampment">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="Zrf-5q-KnZ" kind="push" id="Lvp-ra-psa"/>
-                                </connections>
-                            </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" image="ctagroup_logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="9Wy-mO-QtB">
-                                <rect key="frame" x="40" y="99" width="240" height="128"/>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <sections>
+                            <tableViewSection id="y9j-4C-bNE">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="196" id="t9z-lm-xHv">
+                                        <rect key="frame" x="0.0" y="64" width="320" height="196"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="t9z-lm-xHv" id="YTG-Zf-AoW">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="195"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" image="ctagroup_logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="h3O-Of-zmP">
+                                                    <rect key="frame" x="40" y="34" width="240" height="128"/>
+                                                </imageView>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="128" id="eoU-r0-VIf">
+                                        <rect key="frame" x="0.0" y="260" width="320" height="128"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eoU-r0-VIf" id="Mj4-fQ-fXZ">
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="127"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ios_btn_pit.png" translatesAutoresizingMaskIntoConstraints="NO" id="l4A-Tb-Iv4">
+                                                    <rect key="frame" x="20" y="0.0" width="127" height="127"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                </imageView>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Point in Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aUV-8o-8XW">
+                                                    <rect key="frame" x="166" y="53" width="101" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="5ya-t6-Czy" kind="push" id="bg9-k1-TDu"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="128" id="yla-TO-WJ8">
+                                        <rect key="frame" x="0.0" y="388" width="320" height="128"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yla-TO-WJ8" id="d9h-hf-aCY">
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="127"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ios_btn_survey.png" translatesAutoresizingMaskIntoConstraints="NO" id="A6E-5N-ZM6">
+                                                    <rect key="frame" x="20" y="0.0" width="127" height="127"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                </imageView>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Surveys" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AiV-SD-GuP">
+                                                    <rect key="frame" x="190" y="53" width="62" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="KH6-ei-P0S" kind="push" id="rul-VR-P2n"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="128" id="hV4-J2-hrY">
+                                        <rect key="frame" x="0.0" y="516" width="320" height="128"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hV4-J2-hrY" id="vRA-Ys-4UF">
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="127"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ios_btn_encampment.png" translatesAutoresizingMaskIntoConstraints="NO" id="2ZV-vX-Flf">
+                                                    <rect key="frame" x="20" y="0.0" width="127" height="127"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                </imageView>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Encampment" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bka-IR-3E0">
+                                                    <rect key="frame" x="176" y="53" width="102" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="Zrf-5q-KnZ" kind="push" id="yuB-IG-NmA"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                    </tableView>
                     <navigationItem key="navigationItem" title="Main Menu" id="i5N-pb-5Gc">
                         <barButtonItem key="backBarButtonItem" title="Menu" id="8Y4-JZ-Gq8"/>
                         <barButtonItem key="rightBarButtonItem" title="Logout" id="DdR-vI-1jI">
@@ -152,7 +197,7 @@
                     <connections>
                         <segue destination="2" kind="modal" identifier="segue.logout" id="3QB-9R-BQI"/>
                     </connections>
-                </viewController>
+                </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K3H-Jh-cJD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="965" y="557"/>
@@ -915,6 +960,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
     </scenes>
     <resources>
         <image name="ctagroup_logo.png" width="1456" height="705"/>
+        <image name="ios_btn_encampment.png" width="288" height="288"/>
+        <image name="ios_btn_pit.png" width="288" height="288"/>
+        <image name="ios_btn_survey.png" width="288" height="288"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

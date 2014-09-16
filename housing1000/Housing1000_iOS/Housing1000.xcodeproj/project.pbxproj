@@ -59,6 +59,9 @@
 		3FFE30BF18C2498A004A737D /* ClientQuestions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30BE18C2498A004A737D /* ClientQuestions.m */; };
 		3FFE30C518C25E73004A737D /* SurveyResponseJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30C418C25E73004A737D /* SurveyResponseJSON.m */; };
 		3FFE30CE18C26355004A737D /* SurveySubmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30CD18C26355004A737D /* SurveySubmitter.m */; };
+		6320463A19C7D6D000A88A69 /* ios_btn_encampment.png in Resources */ = {isa = PBXBuildFile; fileRef = 6320463719C7D6D000A88A69 /* ios_btn_encampment.png */; };
+		6320463B19C7D6D000A88A69 /* ios_btn_pit.png in Resources */ = {isa = PBXBuildFile; fileRef = 6320463819C7D6D000A88A69 /* ios_btn_pit.png */; };
+		6320463C19C7D6D000A88A69 /* ios_btn_survey.png in Resources */ = {isa = PBXBuildFile; fileRef = 6320463919C7D6D000A88A69 /* ios_btn_survey.png */; };
 		940CA4EE1702894400FA5C87 /* blue_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 940CA4ED1702894400FA5C87 /* blue_button.png */; };
 		940CA4F01702895000FA5C87 /* orange_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 940CA4EF1702895000FA5C87 /* orange_button.png */; };
 		948CBC3516FC8BA000DD4E2B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 948CBC3416FC8BA000DD4E2B /* UIKit.framework */; };
@@ -176,6 +179,9 @@
 		3FFE30CC18C26355004A737D /* SurveySubmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveySubmitter.h; sourceTree = "<group>"; };
 		3FFE30CD18C26355004A737D /* SurveySubmitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveySubmitter.m; sourceTree = "<group>"; };
 		4488740D6DDB403186C171EA /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		6320463719C7D6D000A88A69 /* ios_btn_encampment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ios_btn_encampment.png; path = ../../../../../../Pictures/ios_btn_encampment.png; sourceTree = "<group>"; };
+		6320463819C7D6D000A88A69 /* ios_btn_pit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ios_btn_pit.png; path = ../../../../../../Pictures/ios_btn_pit.png; sourceTree = "<group>"; };
+		6320463919C7D6D000A88A69 /* ios_btn_survey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ios_btn_survey.png; path = ../../../../../../Pictures/ios_btn_survey.png; sourceTree = "<group>"; };
 		940CA4ED1702894400FA5C87 /* blue_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_button.png; sourceTree = "<group>"; };
 		940CA4EF1702895000FA5C87 /* orange_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = orange_button.png; sourceTree = "<group>"; };
 		948CBC3116FC8BA000DD4E2B /* Housing1000.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Housing1000.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -408,6 +414,9 @@
 		948CBC5916FC932500DD4E2B /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				6320463719C7D6D000A88A69 /* ios_btn_encampment.png */,
+				6320463819C7D6D000A88A69 /* ios_btn_pit.png */,
+				6320463919C7D6D000A88A69 /* ios_btn_survey.png */,
 				3F558BB318CE9CC6007D531F /* ctagroup_logo.png */,
 				27642FEC18A47E6500277F24 /* bg-signature-landscape.png */,
 				27642FED18A47E6500277F24 /* bg-signature-landscape@2x.png */,
@@ -478,6 +487,8 @@
 				948CBC4716FC8BA000DD4E2B /* Default.png in Resources */,
 				948CBC4916FC8BA000DD4E2B /* Default@2x.png in Resources */,
 				27642FF018A47E6500277F24 /* bg-signature-landscape.png in Resources */,
+				6320463C19C7D6D000A88A69 /* ios_btn_survey.png in Resources */,
+				6320463B19C7D6D000A88A69 /* ios_btn_pit.png in Resources */,
 				948CBC4B16FC8BA000DD4E2B /* Default-568h@2x.png in Resources */,
 				27642FF318A47E6500277F24 /* bg-signature-portrait@2x.png in Resources */,
 				27642FF118A47E6500277F24 /* bg-signature-landscape@2x.png in Resources */,
@@ -488,6 +499,7 @@
 				940CA4EE1702894400FA5C87 /* blue_button.png in Resources */,
 				3F558BB418CE9CC6007D531F /* ctagroup_logo.png in Resources */,
 				27642FF218A47E6500277F24 /* bg-signature-portrait.png in Resources */,
+				6320463A19C7D6D000A88A69 /* ios_btn_encampment.png in Resources */,
 				940CA4F01702895000FA5C87 /* orange_button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
