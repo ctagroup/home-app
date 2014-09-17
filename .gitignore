@@ -43,3 +43,4 @@ out/
 *.xcuserstate
 *.plist
 *.xcscheme
+*.xcuserdatad
