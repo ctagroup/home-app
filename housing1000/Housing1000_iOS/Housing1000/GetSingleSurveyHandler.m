@@ -91,7 +91,9 @@
     question.questionType = (NSString*)[currentQuestionInJSON objectForKey:@"QuestionType"];
     [question setOptionsArray:(NSString*)[currentQuestionInJSON objectForKey:@"Options"]]; //This is one is set in a special way because it converts the String to an array
     question.orderId = [NSNumber numberWithInteger:[[currentQuestionInJSON objectForKey:@"OrderId"] integerValue]];
-    question.parentQuestionId = [NSNumber numberWithInteger:[[currentQuestionInJSON objectForKey:@"ParentQuestionId"] integerValue]];
+    if([currentQuestionInJSON objectForKey:@"ParentQuestionId"] != [NSNull null]) {
+        question.parentQuestionId = [NSNumber numberWithInteger:[[currentQuestionInJSON objectForKey:@"ParentQuestionId"] integerValue]];
+    }
     question.parentRequiredAnswer = (NSString*)[currentQuestionInJSON objectForKey:@"ParentRequiredAnswer"];
     question.textBoxDataType = questionDataType;
     
