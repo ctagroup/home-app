@@ -98,7 +98,7 @@
                         <sections>
                             <tableViewSection id="y9j-4C-bNE">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="196" id="t9z-lm-xHv">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="196" id="t9z-lm-xHv">
                                         <rect key="frame" x="0.0" y="64" width="320" height="196"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="t9z-lm-xHv" id="YTG-Zf-AoW">
