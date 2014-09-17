@@ -65,8 +65,9 @@
 
 //Record what survey was selected and go retrieve it
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    int selectedRow = indexPath.row + 1;
-    [self getSingleSurvey:selectedRow];
+    SurveyInfo *surveyCell = [self.surveys objectAtIndex:indexPath.row];
+    NSNumber *selectSurveyId = surveyCell.surveyID;
+    [self getSingleSurvey:[selectSurveyId intValue]];
 }
 
 //==============================================
