@@ -1,5 +1,5 @@
 //
-//  SurveyViewController.h
+//  SurveysViewController.h
 //  Housing1000_iOS
 //
 //  Created by David Horton on 12/3/13.
@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SurveyViewController : UITableViewController
+@interface SurveysViewController : UITableViewController
 
 @end

@@ -1,20 +1,20 @@
 //
-//  SurveyViewController.m
+//  SurveysViewController.m
 //  Housing1000_iOS
 //
 //  Created by David Horton on 12/3/13.
 //  Copyright (c) 2013 student. All rights reserved.
 //
 
-#import "SurveyViewController.h"
+#import "SurveysViewController.h"
 #import "HttpConnectionHelper.h"
 #import "SurveyInfo.h"
 
-@interface SurveyViewController()
+@interface SurveysViewController()
 @property NSMutableArray *surveys;
 @end
 
-@implementation SurveyViewController
+@implementation SurveysViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

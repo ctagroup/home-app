@@ -35,7 +35,7 @@
 		3F558BCB18DD3922007D531F /* GetSingleSurveyHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BCA18DD3922007D531F /* GetSingleSurveyHandler.m */; };
 		3F558BCE18DE1067007D531F /* PostSurveyHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BCD18DE1067007D531F /* PostSurveyHandler.m */; };
 		3F558BD718DE18AA007D531F /* GetPitHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BD618DE18AA007D531F /* GetPitHandler.m */; };
-		3F5BBA6D184EF87900156CAD /* SurveyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5BBA6C184EF87900156CAD /* SurveyViewController.m */; };
+		3F5BBA6D184EF87900156CAD /* SurveysViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5BBA6C184EF87900156CAD /* SurveysViewController.m */; };
 		3F72D7BC18F8E4E80090E7C3 /* Question.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F72D7BB18F8E4E80090E7C3 /* Question.m */; };
 		3F72D7BF18F8E7A40090E7C3 /* QuestionNumAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F72D7BE18F8E7A40090E7C3 /* QuestionNumAnswer.m */; };
 		3F72D7C218F8E7EE0090E7C3 /* QuestionTextAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F72D7C118F8E7EE0090E7C3 /* QuestionTextAnswer.m */; };
@@ -131,8 +131,8 @@
 		3F558BCD18DE1067007D531F /* PostSurveyHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostSurveyHandler.m; sourceTree = "<group>"; };
 		3F558BD518DE18AA007D531F /* GetPitHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetPitHandler.h; sourceTree = "<group>"; };
 		3F558BD618DE18AA007D531F /* GetPitHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetPitHandler.m; sourceTree = "<group>"; };
-		3F5BBA6B184EF87900156CAD /* SurveyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyViewController.h; sourceTree = "<group>"; };
-		3F5BBA6C184EF87900156CAD /* SurveyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyViewController.m; sourceTree = "<group>"; };
+		3F5BBA6B184EF87900156CAD /* SurveysViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveysViewController.h; sourceTree = "<group>"; };
+		3F5BBA6C184EF87900156CAD /* SurveysViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveysViewController.m; sourceTree = "<group>"; };
 		3F72D7BA18F8E4E80090E7C3 /* Question.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Question.h; sourceTree = "<group>"; };
 		3F72D7BB18F8E4E80090E7C3 /* Question.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Question.m; sourceTree = "<group>"; };
 		3F72D7BD18F8E7A40090E7C3 /* QuestionNumAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestionNumAnswer.h; sourceTree = "<group>"; };
@@ -271,8 +271,8 @@
 				3FC22F09193D7B700049ADDC /* ClientSurveyViewController.m */,
 				3FFE30B418B091B8004A737D /* SurveyQuestionTableViewCell.h */,
 				3FFE30B518B091B8004A737D /* SurveyQuestionTableViewCell.m */,
-				3F5BBA6B184EF87900156CAD /* SurveyViewController.h */,
-				3F5BBA6C184EF87900156CAD /* SurveyViewController.m */,
+				3F5BBA6B184EF87900156CAD /* SurveysViewController.h */,
+				3F5BBA6C184EF87900156CAD /* SurveysViewController.m */,
 				27642FE918A351C900277F24 /* SigConfrimViewController.h */,
 				27642FEA18A351C900277F24 /* SigConfrimViewController.m */,
 				3FFE3099188E08DC004A737D /* PhotoViewController.h */,
@@ -588,7 +588,7 @@
 				3F72D7BF18F8E7A40090E7C3 /* QuestionNumAnswer.m in Sources */,
 				3F7ABC6618F084F400D99525 /* PostPITHandler.m in Sources */,
 				3FFE309B188E08DC004A737D /* PhotoViewController.m in Sources */,
-				3F5BBA6D184EF87900156CAD /* SurveyViewController.m in Sources */,
+				3F5BBA6D184EF87900156CAD /* SurveysViewController.m in Sources */,
 				948CBC5116FC8BA000DD4E2B /* HousingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
