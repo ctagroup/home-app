@@ -28,8 +28,6 @@
 		3F558BAB18CBA1F5007D531F /* SurveyPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BAA18CBA1F5007D531F /* SurveyPageViewController.m */; };
 		3F558BB418CE9CC6007D531F /* ctagroup_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F558BB318CE9CC6007D531F /* ctagroup_logo.png */; };
 		3F558BB718D006A5007D531F /* PITViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BB618D006A5007D531F /* PITViewController.m */; };
-		3F558BBA18D00991007D531F /* PITSurvey.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BB918D00991007D531F /* PITSurvey.m */; };
-		3F558BBD18D00F23007D531F /* PITQuestionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BBC18D00F23007D531F /* PITQuestionTableViewCell.m */; };
 		3F558BC018DD26F6007D531F /* HttpConnectionHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BBF18DD26F6007D531F /* HttpConnectionHelper.m */; };
 		3F558BC818DD29C4007D531F /* GetSurveysHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BC718DD29C4007D531F /* GetSurveysHandler.m */; };
 		3F558BCB18DD3922007D531F /* GetSingleSurveyHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F558BCA18DD3922007D531F /* GetSingleSurveyHandler.m */; };
@@ -47,18 +45,17 @@
 		3FA0A1FC1981881D00D70A07 /* NSData+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA0A1FB1981881D00D70A07 /* NSData+MD5.m */; };
 		3FC22F0A193D7B700049ADDC /* ClientSurveyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FC22F09193D7B700049ADDC /* ClientSurveyViewController.m */; };
 		3FCD0B0E1974BFAF00F7A15E /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FCD0B0D1974BFAF00F7A15E /* MobileCoreServices.framework */; };
-		3FD109D918C2E66A005E4743 /* SurveyDataRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD109D818C2E66A005E4743 /* SurveyDataRow.m */; };
-		3FD109DC18C2F2D8005E4743 /* SurveyDataRowContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD109DB18C2F2D8005E4743 /* SurveyDataRowContainer.m */; };
 		3FD109E518C95E27005E4743 /* AlertViewDisplayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD109E418C95E27005E4743 /* AlertViewDisplayer.m */; };
 		3FE4FF9218F915F900E47703 /* QuestionDateAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FE4FF9118F915F900E47703 /* QuestionDateAnswer.m */; };
 		3FFE309B188E08DC004A737D /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE309A188E08DC004A737D /* PhotoViewController.m */; };
 		3FFE30AE18A487A5004A737D /* Survey.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30A918A487A5004A737D /* Survey.m */; };
 		3FFE30AF18A487A5004A737D /* SurveyInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30AB18A487A5004A737D /* SurveyInfo.m */; };
 		3FFE30B618B091B8004A737D /* SurveyQuestionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30B518B091B8004A737D /* SurveyQuestionTableViewCell.m */; };
-		3FFE30BC18C244F3004A737D /* SurveyQuestions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30BB18C244F3004A737D /* SurveyQuestions.m */; };
-		3FFE30BF18C2498A004A737D /* ClientQuestions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30BE18C2498A004A737D /* ClientQuestions.m */; };
 		3FFE30C518C25E73004A737D /* SurveyResponseJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30C418C25E73004A737D /* SurveyResponseJSON.m */; };
 		3FFE30CE18C26355004A737D /* SurveySubmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30CD18C26355004A737D /* SurveySubmitter.m */; };
+		630FB4D219CA79C70042A8B1 /* BaseSurveyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 630FB4D119CA79C70042A8B1 /* BaseSurveyViewController.m */; };
+		630FB4D819CBFB970042A8B1 /* HousingBool.m in Sources */ = {isa = PBXBuildFile; fileRef = 630FB4D719CBFB970042A8B1 /* HousingBool.m */; };
+		630FB4DB19CE13780042A8B1 /* SurveyJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 630FB4DA19CE13780042A8B1 /* SurveyJSONParser.m */; };
 		6320463A19C7D6D000A88A69 /* ios_btn_encampment.png in Resources */ = {isa = PBXBuildFile; fileRef = 6320463719C7D6D000A88A69 /* ios_btn_encampment.png */; };
 		6320463B19C7D6D000A88A69 /* ios_btn_pit.png in Resources */ = {isa = PBXBuildFile; fileRef = 6320463819C7D6D000A88A69 /* ios_btn_pit.png */; };
 		6320463C19C7D6D000A88A69 /* ios_btn_survey.png in Resources */ = {isa = PBXBuildFile; fileRef = 6320463919C7D6D000A88A69 /* ios_btn_survey.png */; };
@@ -116,10 +113,6 @@
 		3F558BB318CE9CC6007D531F /* ctagroup_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ctagroup_logo.png; sourceTree = "<group>"; };
 		3F558BB518D006A5007D531F /* PITViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PITViewController.h; sourceTree = "<group>"; };
 		3F558BB618D006A5007D531F /* PITViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PITViewController.m; sourceTree = "<group>"; };
-		3F558BB818D00991007D531F /* PITSurvey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PITSurvey.h; sourceTree = "<group>"; };
-		3F558BB918D00991007D531F /* PITSurvey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PITSurvey.m; sourceTree = "<group>"; };
-		3F558BBB18D00F23007D531F /* PITQuestionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PITQuestionTableViewCell.h; sourceTree = "<group>"; };
-		3F558BBC18D00F23007D531F /* PITQuestionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PITQuestionTableViewCell.m; sourceTree = "<group>"; };
 		3F558BBE18DD26F6007D531F /* HttpConnectionHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpConnectionHelper.h; sourceTree = "<group>"; };
 		3F558BBF18DD26F6007D531F /* HttpConnectionHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpConnectionHelper.m; sourceTree = "<group>"; };
 		3F558BC418DD28E6007D531F /* HttpHandlerProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HttpHandlerProtocol.h; sourceTree = "<group>"; };
@@ -154,10 +147,6 @@
 		3FC22F08193D7B700049ADDC /* ClientSurveyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientSurveyViewController.h; sourceTree = "<group>"; };
 		3FC22F09193D7B700049ADDC /* ClientSurveyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientSurveyViewController.m; sourceTree = "<group>"; };
 		3FCD0B0D1974BFAF00F7A15E /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		3FD109D718C2E66A005E4743 /* SurveyDataRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyDataRow.h; sourceTree = "<group>"; };
-		3FD109D818C2E66A005E4743 /* SurveyDataRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyDataRow.m; sourceTree = "<group>"; };
-		3FD109DA18C2F2D8005E4743 /* SurveyDataRowContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyDataRowContainer.h; sourceTree = "<group>"; };
-		3FD109DB18C2F2D8005E4743 /* SurveyDataRowContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyDataRowContainer.m; sourceTree = "<group>"; };
 		3FD109E318C95E27005E4743 /* AlertViewDisplayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertViewDisplayer.h; sourceTree = "<group>"; };
 		3FD109E418C95E27005E4743 /* AlertViewDisplayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertViewDisplayer.m; sourceTree = "<group>"; };
 		3FE4FF9018F915F900E47703 /* QuestionDateAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestionDateAnswer.h; sourceTree = "<group>"; };
@@ -170,15 +159,17 @@
 		3FFE30AB18A487A5004A737D /* SurveyInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyInfo.m; sourceTree = "<group>"; };
 		3FFE30B418B091B8004A737D /* SurveyQuestionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyQuestionTableViewCell.h; sourceTree = "<group>"; };
 		3FFE30B518B091B8004A737D /* SurveyQuestionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyQuestionTableViewCell.m; sourceTree = "<group>"; };
-		3FFE30BA18C244F3004A737D /* SurveyQuestions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyQuestions.h; sourceTree = "<group>"; };
-		3FFE30BB18C244F3004A737D /* SurveyQuestions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyQuestions.m; sourceTree = "<group>"; };
-		3FFE30BD18C2498A004A737D /* ClientQuestions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientQuestions.h; sourceTree = "<group>"; };
-		3FFE30BE18C2498A004A737D /* ClientQuestions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientQuestions.m; sourceTree = "<group>"; };
 		3FFE30C318C25E73004A737D /* SurveyResponseJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyResponseJSON.h; sourceTree = "<group>"; };
 		3FFE30C418C25E73004A737D /* SurveyResponseJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyResponseJSON.m; sourceTree = "<group>"; };
 		3FFE30CC18C26355004A737D /* SurveySubmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveySubmitter.h; sourceTree = "<group>"; };
 		3FFE30CD18C26355004A737D /* SurveySubmitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveySubmitter.m; sourceTree = "<group>"; };
 		4488740D6DDB403186C171EA /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		630FB4D019CA79C70042A8B1 /* BaseSurveyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseSurveyViewController.h; sourceTree = "<group>"; };
+		630FB4D119CA79C70042A8B1 /* BaseSurveyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseSurveyViewController.m; sourceTree = "<group>"; };
+		630FB4D619CBFB970042A8B1 /* HousingBool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HousingBool.h; sourceTree = "<group>"; };
+		630FB4D719CBFB970042A8B1 /* HousingBool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HousingBool.m; sourceTree = "<group>"; };
+		630FB4D919CE13780042A8B1 /* SurveyJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyJSONParser.h; sourceTree = "<group>"; };
+		630FB4DA19CE13780042A8B1 /* SurveyJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyJSONParser.m; sourceTree = "<group>"; };
 		6320463719C7D6D000A88A69 /* ios_btn_encampment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ios_btn_encampment.png; path = ../../../../../../Pictures/ios_btn_encampment.png; sourceTree = "<group>"; };
 		6320463819C7D6D000A88A69 /* ios_btn_pit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ios_btn_pit.png; path = ../../../../../../Pictures/ios_btn_pit.png; sourceTree = "<group>"; };
 		6320463919C7D6D000A88A69 /* ios_btn_survey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ios_btn_survey.png; path = ../../../../../../Pictures/ios_btn_survey.png; sourceTree = "<group>"; };
@@ -258,37 +249,20 @@
 		3FFE30B718C235D1004A737D /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				630FB4CD19CA78D20042A8B1 /* Survey */,
+				630FB4CE19CA78DF0042A8B1 /* PIT */,
+				630FB4CF19CA78E50042A8B1 /* Encampment */,
 				948CBC4C16FC8BA000DD4E2B /* MainStoryboard.storyboard */,
 				272AA49118C6E77F0068E023 /* UINavigationController+Orientation.h */,
 				272AA49218C6E77F0068E023 /* UINavigationController+Orientation.m */,
-				272AA52918C84E580068E023 /* SigGLKViewController.h */,
-				272AA52A18C84E580068E023 /* SigGLKViewController.m */,
 				948CBC4F16FC8BA000DD4E2B /* HousingViewController.h */,
 				948CBC5016FC8BA000DD4E2B /* HousingViewController.m */,
-				3F558BA918CBA1F5007D531F /* SurveyPageViewController.h */,
-				3F558BAA18CBA1F5007D531F /* SurveyPageViewController.m */,
-				3FC22F08193D7B700049ADDC /* ClientSurveyViewController.h */,
-				3FC22F09193D7B700049ADDC /* ClientSurveyViewController.m */,
-				3FFE30B418B091B8004A737D /* SurveyQuestionTableViewCell.h */,
-				3FFE30B518B091B8004A737D /* SurveyQuestionTableViewCell.m */,
-				3F5BBA6B184EF87900156CAD /* SurveysViewController.h */,
-				3F5BBA6C184EF87900156CAD /* SurveysViewController.m */,
-				27642FE918A351C900277F24 /* SigConfrimViewController.h */,
-				27642FEA18A351C900277F24 /* SigConfrimViewController.m */,
-				3FFE3099188E08DC004A737D /* PhotoViewController.h */,
-				3FFE309A188E08DC004A737D /* PhotoViewController.m */,
 				272AA49418C6EBCB0068E023 /* MainMenuViewController.h */,
 				272AA49518C6EBCB0068E023 /* MainMenuViewController.m */,
-				272AA49718C6EBE80068E023 /* DisclaimerViewController.h */,
-				272AA49818C6EBE80068E023 /* DisclaimerViewController.m */,
-				3F558BB518D006A5007D531F /* PITViewController.h */,
-				3F558BB618D006A5007D531F /* PITViewController.m */,
-				3F558BBB18D00F23007D531F /* PITQuestionTableViewCell.h */,
-				3F558BBC18D00F23007D531F /* PITQuestionTableViewCell.m */,
-				3F1E3793199C398600562EEC /* EncampMainViewController.h */,
-				3F1E3794199C398600562EEC /* EncampMainViewController.m */,
-				3F1E3796199C3AF100562EEC /* EncampSearchViewController.h */,
-				3F1E3797199C3AF100562EEC /* EncampSearchViewController.m */,
+				630FB4D019CA79C70042A8B1 /* BaseSurveyViewController.h */,
+				630FB4D119CA79C70042A8B1 /* BaseSurveyViewController.m */,
+				3FFE30B418B091B8004A737D /* SurveyQuestionTableViewCell.h */,
+				3FFE30B518B091B8004A737D /* SurveyQuestionTableViewCell.m */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -300,16 +274,8 @@
 				3FFE30A918A487A5004A737D /* Survey.m */,
 				3FFE30AA18A487A5004A737D /* SurveyInfo.h */,
 				3FFE30AB18A487A5004A737D /* SurveyInfo.m */,
-				3FFE30BA18C244F3004A737D /* SurveyQuestions.h */,
-				3FFE30BB18C244F3004A737D /* SurveyQuestions.m */,
-				3FFE30BD18C2498A004A737D /* ClientQuestions.h */,
-				3FFE30BE18C2498A004A737D /* ClientQuestions.m */,
-				3FD109D718C2E66A005E4743 /* SurveyDataRow.h */,
-				3FD109D818C2E66A005E4743 /* SurveyDataRow.m */,
-				3FD109DA18C2F2D8005E4743 /* SurveyDataRowContainer.h */,
-				3FD109DB18C2F2D8005E4743 /* SurveyDataRowContainer.m */,
-				3F558BB818D00991007D531F /* PITSurvey.h */,
-				3F558BB918D00991007D531F /* PITSurvey.m */,
+				630FB4D619CBFB970042A8B1 /* HousingBool.h */,
+				630FB4D719CBFB970042A8B1 /* HousingBool.m */,
 				3F72D7BA18F8E4E80090E7C3 /* Question.h */,
 				3F72D7BB18F8E4E80090E7C3 /* Question.m */,
 				3F72D7BD18F8E7A40090E7C3 /* QuestionNumAnswer.h */,
@@ -344,8 +310,51 @@
 				3FA0A1FB1981881D00D70A07 /* NSData+MD5.m */,
 				3F1E378B199BE8CB00562EEC /* GPSLocationRetriever.h */,
 				3F1E378C199BE8CB00562EEC /* GPSLocationRetriever.m */,
+				630FB4D919CE13780042A8B1 /* SurveyJSONParser.h */,
+				630FB4DA19CE13780042A8B1 /* SurveyJSONParser.m */,
 			);
 			name = Helpers;
+			sourceTree = "<group>";
+		};
+		630FB4CD19CA78D20042A8B1 /* Survey */ = {
+			isa = PBXGroup;
+			children = (
+				3F5BBA6B184EF87900156CAD /* SurveysViewController.h */,
+				3F5BBA6C184EF87900156CAD /* SurveysViewController.m */,
+				3F558BA918CBA1F5007D531F /* SurveyPageViewController.h */,
+				3F558BAA18CBA1F5007D531F /* SurveyPageViewController.m */,
+				272AA49718C6EBE80068E023 /* DisclaimerViewController.h */,
+				272AA49818C6EBE80068E023 /* DisclaimerViewController.m */,
+				27642FE918A351C900277F24 /* SigConfrimViewController.h */,
+				27642FEA18A351C900277F24 /* SigConfrimViewController.m */,
+				272AA52918C84E580068E023 /* SigGLKViewController.h */,
+				272AA52A18C84E580068E023 /* SigGLKViewController.m */,
+				3FFE3099188E08DC004A737D /* PhotoViewController.h */,
+				3FFE309A188E08DC004A737D /* PhotoViewController.m */,
+				3FC22F08193D7B700049ADDC /* ClientSurveyViewController.h */,
+				3FC22F09193D7B700049ADDC /* ClientSurveyViewController.m */,
+			);
+			name = Survey;
+			sourceTree = "<group>";
+		};
+		630FB4CE19CA78DF0042A8B1 /* PIT */ = {
+			isa = PBXGroup;
+			children = (
+				3F558BB518D006A5007D531F /* PITViewController.h */,
+				3F558BB618D006A5007D531F /* PITViewController.m */,
+			);
+			name = PIT;
+			sourceTree = "<group>";
+		};
+		630FB4CF19CA78E50042A8B1 /* Encampment */ = {
+			isa = PBXGroup;
+			children = (
+				3F1E3793199C398600562EEC /* EncampMainViewController.h */,
+				3F1E3794199C398600562EEC /* EncampMainViewController.m */,
+				3F1E3796199C3AF100562EEC /* EncampSearchViewController.h */,
+				3F1E3797199C3AF100562EEC /* EncampSearchViewController.m */,
+			);
+			name = Encampment;
 			sourceTree = "<group>";
 		};
 		948CBC2816FC8BA000DD4E2B = {
@@ -545,16 +554,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F558BC818DD29C4007D531F /* GetSurveysHandler.m in Sources */,
+				630FB4D819CBFB970042A8B1 /* HousingBool.m in Sources */,
 				3F558BC018DD26F6007D531F /* HttpConnectionHelper.m in Sources */,
+				630FB4D219CA79C70042A8B1 /* BaseSurveyViewController.m in Sources */,
 				3F558BB718D006A5007D531F /* PITViewController.m in Sources */,
 				3FFE30C518C25E73004A737D /* SurveyResponseJSON.m in Sources */,
 				3F558BD718DE18AA007D531F /* GetPitHandler.m in Sources */,
 				3FFE30B618B091B8004A737D /* SurveyQuestionTableViewCell.m in Sources */,
-				3FD109DC18C2F2D8005E4743 /* SurveyDataRowContainer.m in Sources */,
-				3FD109D918C2E66A005E4743 /* SurveyDataRow.m in Sources */,
 				27642FEB18A351C900277F24 /* SigConfrimViewController.m in Sources */,
-				3F558BBA18D00991007D531F /* PITSurvey.m in Sources */,
-				3F558BBD18D00F23007D531F /* PITQuestionTableViewCell.m in Sources */,
 				272AA49318C6E77F0068E023 /* UINavigationController+Orientation.m in Sources */,
 				3F1E3792199C383500562EEC /* SearchEncampmentHandler.m in Sources */,
 				3FD109E518C95E27005E4743 /* AlertViewDisplayer.m in Sources */,
@@ -563,13 +570,11 @@
 				3FA0A1F91981863B00D70A07 /* ImageFileHelper.m in Sources */,
 				3F1E3795199C398600562EEC /* EncampMainViewController.m in Sources */,
 				3F558BCE18DE1067007D531F /* PostSurveyHandler.m in Sources */,
-				3FFE30BC18C244F3004A737D /* SurveyQuestions.m in Sources */,
 				3F558BCB18DD3922007D531F /* GetSingleSurveyHandler.m in Sources */,
 				3F72D7C218F8E7EE0090E7C3 /* QuestionTextAnswer.m in Sources */,
 				3F1E3798199C3AF100562EEC /* EncampSearchViewController.m in Sources */,
 				3F72D7BC18F8E4E80090E7C3 /* Question.m in Sources */,
 				3FC22F0A193D7B700049ADDC /* ClientSurveyViewController.m in Sources */,
-				3FFE30BF18C2498A004A737D /* ClientQuestions.m in Sources */,
 				3FE4FF9218F915F900E47703 /* QuestionDateAnswer.m in Sources */,
 				3F045AE5197DE968008F85E0 /* AuthenticationToken.m in Sources */,
 				948CBC4116FC8BA000DD4E2B /* main.m in Sources */,
@@ -579,6 +584,7 @@
 				3FFE30AF18A487A5004A737D /* SurveyInfo.m in Sources */,
 				3FA0A1FC1981881D00D70A07 /* NSData+MD5.m in Sources */,
 				272AA49618C6EBCB0068E023 /* MainMenuViewController.m in Sources */,
+				630FB4DB19CE13780042A8B1 /* SurveyJSONParser.m in Sources */,
 				3F7493EB18F0975900C0901E /* PITResponseJSON.m in Sources */,
 				948CBC4516FC8BA000DD4E2B /* HousingAppDelegate.m in Sources */,
 				3FFE30CE18C26355004A737D /* SurveySubmitter.m in Sources */,

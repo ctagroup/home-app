@@ -8,8 +8,6 @@
 
 #import "MainMenuViewController.h"
 #import "Survey.h"
-#import "PITSurvey.h"
-#import "SurveyDataRowContainer.h"
 #import "SurveyPageViewController.h"
 #import "ImageFileHelper.h"
 #import "HousingAppDelegate.h"
@@ -35,14 +33,14 @@
     [super viewDidLoad];
 	
     //Empty any and all static arrays in case they were set previously
-    [[SurveyDataRowContainer getSurveyRows] removeAllObjects];
-    [[[Survey getClientQuestions] getClientQuestions] removeAllObjects];
-    [[[Survey getSurveyQuestions] getSurveyQuestions] removeAllObjects];
-    [[PITSurvey getPITQuestions] removeAllObjects];
+    Survey* survey = [Survey sharedManager];
+    
+    [survey.clientQuestions removeAllObjects];
+    [survey.surveyQuestions removeAllObjects];
     [SurveyPageViewController setWhetherAlreadySigned:NO];  //This is just so access to the rest of the survey is restricted if they haven't signed
     [ImageFileHelper clearImages];
     
-    HousingAppDelegate *appDelegate = [[UIApplication sharedApplication]delegate];
+    HousingAppDelegate *appDelegate = (HousingAppDelegate*)[[UIApplication sharedApplication]delegate];
     appDelegate.encryptedSignature = nil;
 }
 

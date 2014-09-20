@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BaseSurveyViewController.h"
 
-@interface ClientSurveyViewController : UIViewController
+@interface ClientSurveyViewController : BaseSurveyViewController
 
 @property (strong, nonatomic) IBOutlet UINavigationItem *submit;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+
 
 @end

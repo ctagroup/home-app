@@ -21,26 +21,21 @@
     
     SurveyResponseJSON *response = [[SurveyResponseJSON alloc] init];
     
+    Survey* survey = [Survey sharedManager];
+    
     //Convert survey ID to JSON
-    response.SurveyId = [Survey getSurveyId];
+    response.SurveyId = survey.surveyId;
     
     //Convert survey "By" value to JSON
-    response.SurveyBy = [Survey getSurveyBy];
+    response.SurveyBy = survey.surveyBy;
     
     //Convert the survey answers to JSON
-    response.Responses = [[[Survey getSurveyQuestions] getSurveyQuestions] copy];
+    response.Responses = [survey.surveyQuestions copy];
     
     //Convert the client answers to JSON
     NSMutableDictionary *clientAnswers = [[NSMutableDictionary alloc] init];
-    for(int i = 0; i < [[[Survey getClientQuestions] getClientQuestions] count]; i++) {
-        Question *currentQuestion = [[[Survey getClientQuestions] getClientQuestions] objectAtIndex:i];
-        
-        //TODO: Make this follow some sort of regex expression or something. For now it just forces the date to a proper format so that it doesn't error
-        if([currentQuestion.parentRequiredAnswer isEqualToString:@"Birthday"]) {
-            //[currentQuestion setAnswerForJson:@"01/01/1900"]; //Force it to be some random date
-            //TODO make it compatible with the pod we are using for JSON...
-        }
-        
+    for(int i = 0; i < [survey.clientQuestions count]; i++) {
+        Question *currentQuestion = [survey.clientQuestions objectAtIndex:i];
         [clientAnswers setObject:[currentQuestion getAnswerForJson] forKey:currentQuestion.parentRequiredAnswer];
     }
     

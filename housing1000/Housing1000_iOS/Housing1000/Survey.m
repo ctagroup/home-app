@@ -7,46 +7,64 @@
 //
 
 #import "Survey.h"
-#import "SurveyQuestions.h"
-#import "ClientQuestions.h"
 
 @implementation Survey
 
-static SurveyQuestions* surveyQuestions;
-static ClientQuestions* clientQuestions;
-static int surveyId;
-static int surveyBy = 1;
+@synthesize clientQuestions = _clientQuestions;
+@synthesize surveyQuestions = _surveyQuestions;
 
-+(SurveyQuestions*)getSurveyQuestions {
-    return surveyQuestions;
+static Survey *survey = nil;
+
+-(id)init {
+    
+    self.surveyQuestions = [[NSMutableArray alloc] init];
+    self.clientQuestions = [[NSMutableArray alloc] init];
+    
+    return self;
 }
 
-+(void)setSurveyQuestions:(SurveyQuestions*)tempSurveyQuestions {
-    surveyQuestions = tempSurveyQuestions;
+-(void)setClientQuestions:(NSMutableArray*)questions {
+    
+    //Sort the array before storing it
+    NSArray *sortedArray = [self sortQuestions:questions];
+    
+    _clientQuestions = [NSMutableArray arrayWithArray:sortedArray];
 }
 
-+(ClientQuestions*)getClientQuestions {
-    return clientQuestions;
+-(void)setSurveyQuestions:(NSMutableArray*)questions {
+    
+    //Sort the array before storing it
+    NSArray *sortedArray = [self sortQuestions:questions];
+    
+    _surveyQuestions = [NSMutableArray arrayWithArray:sortedArray];
 }
 
-+(void)setClientQuestions:(ClientQuestions*)tempClientQuestions {
-    clientQuestions = tempClientQuestions;
+-(NSMutableArray*)clientQuestions {
+    return _clientQuestions;
 }
 
-+(int)getSurveyId {
-    return surveyId;
+-(NSMutableArray*)surveyQuestions {
+    return _surveyQuestions;
 }
 
-+(void)setSurveyId:(int)tempSurveyId {
-    surveyId = tempSurveyId;
+-(NSArray*)sortQuestions:(NSMutableArray*)questions {
+    return [questions sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+        NSNumber *first = [(Question*)a orderId];
+        NSNumber *second = [(Question*)b orderId];
+        return [first compare:second];
+    }];
 }
 
-+(int)getSurveyBy {
-    return surveyBy;
-}
-
-+(void)setSurveyBy:(int)tempSurveyBy {
-    surveyBy = tempSurveyBy;
++(id)sharedManager {
+    
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        survey = [[Survey alloc] init];
+        survey.surveyBy = 1; //TODO actually get this from somewhere?
+    });
+    
+    return survey;
 }
 
 @end

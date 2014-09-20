@@ -10,12 +10,11 @@
 #import "Question.h"
 #import "Survey.h"
 #import "ClientSurveyViewController.h"
-#import "SurveyDataRow.h"
-#import "SurveyDataRowContainer.h"
+
 
 @implementation SurveyQuestionTableViewCell
 
-@synthesize questionText, questionTextAnswer, questionSingleAnswer, questionData;
+@synthesize questionText, questionTextAnswer, questionSingleAnswer, questionData, questionStepperAnswer, number;
 
 
 //This is similar to viewDidLoad, but for TableViewCells
@@ -35,10 +34,15 @@
     [self.questionSingleAnswer setDelegate:self];
     [self.questionSingleAnswer setDataSource:self];
     
+    self.questionStepperAnswer.maximumValue = 9999;
+    self.questionStepperAnswer.minimumValue = 0;
+    
     //To make the label wrap text
     self.questionText.lineBreakMode = NSLineBreakByWordWrapping;
     self.questionText.numberOfLines = 0;
-    [self.questionText sizeToFit];
+    if(![@"SinglelineTextBoxForEachOption" isEqualToString:self.questionData.questionType]) {
+        [self.questionText sizeToFit];
+    }
     
     //Set the date of the date picker to the whatever the answer is
     if([@"DateTime" isEqualToString:self.questionData.textBoxDataType]) {
@@ -68,6 +72,16 @@
     [self.superview.superview endEditing:YES];
 }
 
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    //For SinglelineTextBoxForEachOption, only store the textfield value if it isn't empty
+    if([@"SinglelineTextBoxForEachOption" isEqualToString:self.questionData.questionType] && ![self.questionTextAnswer.text isEqualToString:@""]) {
+        self.number.text = self.questionTextAnswer.text;
+        self.questionStepperAnswer.value = self.questionTextAnswer.text.intValue;
+        [self.questionData setAnswerForJson:self.questionTextAnswer.text];
+    }
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
@@ -75,9 +89,11 @@
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
     
-    //Immediately store what they enter
-    [self.questionData setAnswerForJson:textField.text];
-    [self changeChildQuestions:[self.questionData getAnswerForJson]];
+    if(![@"SinglelineTextBoxForEachOption" isEqualToString:self.questionData.questionType]) {
+        //Immediately store what they enter
+        [self.questionData setAnswerForJson:textField.text];
+        [self changeChildQuestions:[self.questionData getAnswerForJson]];
+    }
     
     return YES;
 }
@@ -138,9 +154,11 @@
     NSMutableArray *satisifiedChildQuestion = [[NSMutableArray alloc] init];
     NSMutableArray *surveyDataRowIds = [[NSMutableArray alloc] init];
     
+    Survey* survey = [Survey sharedManager];
+    
     //Loop through all the survey questions to find the children...
-    for(int i = 0; i < [[[Survey getSurveyQuestions] getSurveyQuestions] count]; i++) {
-        Question *currentQuestion = [[[Survey getSurveyQuestions] getSurveyQuestions] objectAtIndex:i];
+    for(int i = 0; i < [survey.surveyQuestions count]; i++) {
+        Question *currentQuestion = [survey.surveyQuestions objectAtIndex:i];
         if(currentQuestion.parentQuestionId == questionData.questionId) {
             [childQuestionIds addObject:currentQuestion.questionId];
             [surveyDataRowIds addObject:currentQuestion.surveyDataRowIndex];
@@ -158,14 +176,14 @@
     for(int i = 0; i < [childQuestionIds count]; i++) {
         int surveyDataRowIndex = [[surveyDataRowIds objectAtIndex:i] integerValue];
         UITableView *tableView = (UITableView*)self.superview.superview;
-        UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:surveyDataRowIndex inSection:0]];
+        SurveyQuestionTableViewCell *cell = (SurveyQuestionTableViewCell*)[tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:surveyDataRowIndex inSection:0]];
         
         if([satisifiedChildQuestion objectAtIndex:i] == [NSNumber numberWithInt:1]) {
-            [[[SurveyDataRowContainer getSurveyRows] objectAtIndex:surveyDataRowIndex] setEnabled:YES];
+            [cell.questionData setEnabled:YES];
             cell.userInteractionEnabled = cell.textLabel.enabled = cell.detailTextLabel.enabled = YES;
             cell.backgroundColor = [UIColor whiteColor];
         } else {
-            [[[SurveyDataRowContainer getSurveyRows] objectAtIndex:surveyDataRowIndex] setEnabled:NO];
+            [cell.questionData setEnabled:NO];
             cell.userInteractionEnabled = cell.textLabel.enabled = cell.detailTextLabel.enabled = NO;
             cell.backgroundColor = [UIColor grayColor];
         }
@@ -180,6 +198,16 @@
     NSString *stringFromDate = [formatter stringFromDate:self.questionDatePicker.date];
     
     [self.questionData setAnswerForJson:stringFromDate];
+}
+
+//Called when the stepper is clicked
+- (IBAction)valueChanged:(id)sender {
+    
+    int value = [(UIStepper*)sender value];
+    
+    [self.questionTextAnswer setText:@""];
+    [self.number setText:[NSString stringWithFormat:@"%d", (int)value]];
+    [self.questionData setAnswerForJson:[NSString stringWithFormat:@"%d", (int)value]];
 }
 
 

@@ -7,13 +7,13 @@
 //
 
 #import "PITSubmitter.h"
-#import "PITSurvey.h"
 #import "HttpConnectionHelper.h"
 #import "Question.h"
 #import "QuestionTextAnswer.h"
 #import "QuestionNumAnswer.h"
 #import "PITResponseJSON.h"
 #import "GPSLocationRetriever.h"
+#import "Survey.h"
 
 @implementation PITSubmitter
 
@@ -22,12 +22,14 @@
     
     PITResponseJSON *response = [[PITResponseJSON alloc] init];
     
+    Survey* survey = [Survey sharedManager];
+    
     response.UserId = 1;                            //TODO make this a real value
     GPSLocationRetriever *gpsRetriever = [[GPSLocationRetriever alloc] init];
     response.GeoLoc = [gpsRetriever getCurrentLocation];
     
     //Convert the survey answers to JSON
-    response.Responses = [[self packagePITQuestionsForSending:[PITSurvey getPITQuestions]] copy];
+    response.Responses = [[self packagePITQuestionsForSending:survey.surveyQuestions] copy];
     
     NSLog(@"PIT Json submission: %@", [response toDictionary]);
     HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] init];

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "JSONModel.h"
+#import "HousingBool.h"
 
 @interface Question : JSONModel
 
@@ -20,12 +21,17 @@
 @property (strong, nonatomic) NSNumber<Ignore> *parentQuestionId;
 @property (strong, nonatomic) NSString<Ignore> *parentRequiredAnswer;
 @property (strong, nonatomic) NSString<Ignore> *textBoxDataType;
-
-//@property (strong, nonatomic) NSString *answer;
 @property (strong, nonatomic) NSNumber<Ignore> *surveyDataRowIndex;
 
--(void)setOptionsArray:(NSString*)stringOptions;
--(void)setAnswerForJson:(id)input;
+@property (strong, nonatomic) UIColor<Ignore> *backgroundColor;
+
+@property (strong, nonatomic) HousingBool<Ignore> *isEnabled;
+
+-(void)setEnabled:(BOOL)setEnabled;
+-(BOOL)getEnabled;
+-(void)setOptionsArray:(NSString *)stringOptions;
+
 -(id)getAnswerForJson;
+-(void)setAnswerForJson:(id)input;
 
 @end

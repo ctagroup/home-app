@@ -8,13 +8,17 @@
 
 #import "Question.h"
 
+@interface Question()
+@end
+
 @implementation Question
+
 
 //Convert the string from JSON into an array
 - (void)setOptionsArray:(NSString *)stringOptions {
     
     if(stringOptions != (id)[NSNull null]) {
-        self.options = [stringOptions componentsSeparatedByString:@"|"];
+        _options = [stringOptions componentsSeparatedByString:@"|"];
     }
     
 }
@@ -35,6 +39,26 @@
 -(id)getAnswerForJson {
     //Intended to be an "abstract" method that is defined by children
     return nil;
+}
+
+-(void)setEnabled:(BOOL)tempIsEnabled {
+    
+    _isEnabled = [self getBoolObjectAs:tempIsEnabled];
+    
+    if(_isEnabled.isTrue)
+        _backgroundColor = [UIColor whiteColor];
+    else
+        _backgroundColor = [UIColor grayColor];
+}
+
+-(BOOL)getEnabled {
+    return _isEnabled.isTrue;
+}
+
+-(HousingBool*)getBoolObjectAs:(BOOL)trueOrFalse {
+    HousingBool* boolObject = [[HousingBool alloc] init];
+    boolObject.isTrue = trueOrFalse;
+    return boolObject;
 }
 
 @end

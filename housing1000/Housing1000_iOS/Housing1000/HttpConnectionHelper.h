@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "PITSurvey.h"
 
 @interface HttpConnectionHelper : NSObject
 

@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BaseSurveyViewController.h"
 
-@interface PITViewController : UITableViewController
+@interface PITViewController : BaseSurveyViewController
 
 @end
