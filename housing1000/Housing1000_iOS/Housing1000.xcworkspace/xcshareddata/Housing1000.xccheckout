@@ -10,29 +10,29 @@
 	<string>Housing1000</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>9C389F19-0F7E-4849-8153-7C79B5A17A91</key>
+		<key>E271301774FCB84040E0AB75C81A13C9747F7539</key>
 		<string>https://github.com/WeberState/cs3750fall2013group3.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>housing1000/Housing1000_iOS/Housing1000.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>9C389F19-0F7E-4849-8153-7C79B5A17A91</key>
+		<key>E271301774FCB84040E0AB75C81A13C9747F7539</key>
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/WeberState/cs3750fall2013group3.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>9C389F19-0F7E-4849-8153-7C79B5A17A91</string>
+	<string>E271301774FCB84040E0AB75C81A13C9747F7539</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>9C389F19-0F7E-4849-8153-7C79B5A17A91</string>
+			<string>E271301774FCB84040E0AB75C81A13C9747F7539</string>
 			<key>IDESourceControlWCCName</key>
 			<string>cs3750fall2013group3</string>
 		</dict>

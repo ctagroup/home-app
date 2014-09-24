@@ -173,6 +173,7 @@
 		6320463719C7D6D000A88A69 /* ios_btn_encampment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ios_btn_encampment.png; path = ../../../../../../Pictures/ios_btn_encampment.png; sourceTree = "<group>"; };
 		6320463819C7D6D000A88A69 /* ios_btn_pit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ios_btn_pit.png; path = ../../../../../../Pictures/ios_btn_pit.png; sourceTree = "<group>"; };
 		6320463919C7D6D000A88A69 /* ios_btn_survey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ios_btn_survey.png; path = ../../../../../../Pictures/ios_btn_survey.png; sourceTree = "<group>"; };
+		63EBF60719D24B9C008FA62F /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		940CA4ED1702894400FA5C87 /* blue_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_button.png; sourceTree = "<group>"; };
 		940CA4EF1702895000FA5C87 /* orange_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = orange_button.png; sourceTree = "<group>"; };
 		948CBC3116FC8BA000DD4E2B /* Housing1000.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Housing1000.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -378,6 +379,7 @@
 		948CBC3316FC8BA000DD4E2B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				63EBF60719D24B9C008FA62F /* OpenGLES.framework */,
 				3F1E378E199C2C9800562EEC /* CoreLocation.framework */,
 				3FCD0B0D1974BFAF00F7A15E /* MobileCoreServices.framework */,
 				272AA48918B5CDFE0068E023 /* Security.framework */,
