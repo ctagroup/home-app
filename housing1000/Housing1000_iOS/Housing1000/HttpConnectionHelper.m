@@ -215,12 +215,12 @@ id<HttpHandlerProtocol> httpHandler;    //Declared like this so it can be called
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     if ([response respondsToSelector:@selector(statusCode)]) {
-        int statusCode = [((NSHTTPURLResponse *)response) statusCode];
+        long statusCode = [((NSHTTPURLResponse *)response) statusCode];
         
         //Don't continue if an error HTTP code was received from the server
         if(statusCode >= 400) {
             [connection cancel];
-            NSString *errorCodeString = [NSString stringWithFormat:@"%i", statusCode];
+            NSString *errorCodeString = [NSString stringWithFormat:@"%ld", statusCode];
             NSLog(@"%@", [NSString stringWithFormat:@"%@ %@", @"Connection cancelled because of status code ", errorCodeString]);
             [httpHandler handleDidFailWithError];
         }

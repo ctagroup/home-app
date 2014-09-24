@@ -174,7 +174,7 @@
     }
     
     for(int i = 0; i < [childQuestionIds count]; i++) {
-        int surveyDataRowIndex = [[surveyDataRowIds objectAtIndex:i] integerValue];
+        long surveyDataRowIndex = [[surveyDataRowIds objectAtIndex:i] integerValue];
         UITableView *tableView = (UITableView*)self.superview.superview;
         SurveyQuestionTableViewCell *cell = (SurveyQuestionTableViewCell*)[tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:surveyDataRowIndex inSection:0]];
         
