@@ -17,18 +17,30 @@
 #import "AuthenticationToken.h"
 #import "SearchEncampmentHandler.h"
 
+@interface HttpConnectionHelper()
+
+@property(nonatomic, strong) CallbackToDoWhenFinished callbackAction;
+@property NSArray* trustedHosts;  //This is declared to simply hold the staging.ctagroup.org domain
+@property NSMutableArray* returnedJsonData;
+@property NSString* actionDescription;
+@property id<HttpHandlerProtocol> httpHandler;    //Declared like this so it can be called polymorphically
+@property NSString* apiHostname;
+
+@end
+
 @implementation HttpConnectionHelper
 
 @synthesize responseData = _responseData;
+@synthesize callbackAction = callbackAction;
+@synthesize trustedHosts = trustedHosts;
+@synthesize returnedJsonData = returnedJsonData;
+@synthesize actionDescription = actionDescription;
+@synthesize httpHandler = httpHandler;
+@synthesize apiHostname = apiHostname;
 
-CallbackToDoWhenFinished callbackAction;
-NSArray* trustedHosts;  //This is declared to simply hold the staging.ctagroup.org domain
-NSMutableArray* returnedJsonData;
-NSString* actionDescription;
-NSString* urlString;
-id<HttpHandlerProtocol> httpHandler;    //Declared like this so it can be called polymorphically
 
 -(id)init {
+    apiHostname = @"https://staging.ctagroup.org/";
     returnedJsonData = nil;
     self.responseData = [NSMutableData data];
     trustedHosts = [NSArray arrayWithObjects:@"staging.ctagroup.org", nil];
@@ -41,15 +53,15 @@ id<HttpHandlerProtocol> httpHandler;    //Declared like this so it can be called
     callbackAction(nil);
 }
 
+//For getting an authentication token for the given username and password
 -(NSMutableArray*)postAuthentication:(CallbackToDoWhenFinished)callback :(NSString*)username :(NSString*)password {
     httpHandler = [[PostAuthenticationHandler alloc] init];
     actionDescription = @"Post Authentication";
-    urlString = @"https://staging.ctagroup.org/Outreach/token";
     callbackAction = callback;
     
     [httpHandler handlePreConnectionAction];
     
-    NSURL *url=[NSURL URLWithString:urlString];
+    NSURL *url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@", apiHostname, @"Outreach/token"]];
     
     NSString *bodyString = [NSString stringWithFormat:@"grant_type=password&username=%@&password=%@",username, password];
     NSData *postData = [bodyString dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
@@ -71,138 +83,90 @@ id<HttpHandlerProtocol> httpHandler;    //Declared like this so it can be called
     return returnedJsonData;
 }
 
+//For getting a list of available surveys
 -(NSMutableArray*)getSurveys:(CallbackToDoWhenFinished)callback {
     httpHandler = [[GetSurveysHandler alloc] init];
     actionDescription = @"Get Surveys";
-    urlString = @"https://staging.ctagroup.org/survey/api/survey/";
     callbackAction = callback;
     
     [httpHandler handlePreConnectionAction];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
-    NSString *token = [NSString stringWithFormat:@"Bearer %@",[AuthenticationToken getAuthenticationToken]];
-    [request setValue:token forHTTPHeaderField:@"Authorization"];
+    NSMutableURLRequest *request = [self createHttpGetRequest:[NSString stringWithFormat:@"%@%@", apiHostname, @"survey/api/survey/"]];
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     NSLog(@"%@ Connection: %@", actionDescription, conn.description);
     
     return returnedJsonData;
 }
 
+//For getting the questions for a single survey
 -(NSMutableArray*)getSingleSurvey:(CallbackToDoWhenFinished)callback :(int)surveyIndex {
     httpHandler = [[GetSingleSurveyHandler alloc] init];
     actionDescription = @"Get Single Survey";
-    urlString = [NSString stringWithFormat:@"%@%d", @"https://staging.ctagroup.org/survey/api/survey/", surveyIndex]; //Concatenate selected survey with URL
     callbackAction = callback;
     
     [httpHandler handlePreConnectionAction];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
-    NSString *token = [NSString stringWithFormat:@"Bearer %@",[AuthenticationToken getAuthenticationToken]];
-    [request setValue:token forHTTPHeaderField:@"Authorization"];
+    NSMutableURLRequest *request = [self createHttpGetRequest:[NSString stringWithFormat:@"%@%@%d", apiHostname, @"survey/api/survey/", surveyIndex]];
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     NSLog(@"%@ Connection: %@", actionDescription, conn.description);
     
     return returnedJsonData;
 }
 
+//For getting the PIT questions
 -(NSMutableArray*)getPIT:(CallbackToDoWhenFinished)callback {
     httpHandler = [[GetPitHandler alloc] init];
     actionDescription = @"Get PIT";
-    urlString = @"https://staging.ctagroup.org/survey/api/pit/";
     callbackAction = callback;
     
     [httpHandler handlePreConnectionAction];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
-    NSString *token = [NSString stringWithFormat:@"Bearer %@",[AuthenticationToken getAuthenticationToken]];
-    [request setValue:token forHTTPHeaderField:@"Authorization"];
+    NSMutableURLRequest *request = [self createHttpGetRequest:[NSString stringWithFormat:@"%@%@", apiHostname, @"survey/api/pit/"]];
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     NSLog(@"%@ Connection: %@", actionDescription, conn.description);
     
     return returnedJsonData;
 }
 
+//For posting the answers to a survey
 -(NSMutableArray*)postSurvey:(CallbackToDoWhenFinished)callback :(NSDictionary*)jsonData {
     httpHandler = [[PostSurveyHandler alloc] init];
     actionDescription = @"Post Survey";
-    urlString = @"https://staging.ctagroup.org/survey/api/survey/";
     callbackAction = callback;
     
     [httpHandler handlePreConnectionAction];
     
-    NSURL *url=[NSURL URLWithString:urlString];
-    
-    //This is just a temporary test JSON string so that it can successfully be submitted to their servers
-    //NSString *jsonString = @"{\"SurveyId\":1,\"SurveyBy\":1,\"Client\":{\"Birthday\":\"2/14/1977\",\"GeoLoc\":\"37.336704, -121.919087\",\"Last4SSN\":\"1234\",\"ServicePointId\":14},\"Responses\":[{\"QuestionId\":4,null:\" Male\"},{\"QuestionId\":6,\"Answer\":\" White/Caucasian \"}]}";
-    
-    NSString* jsonString = [self convertDictionaryToString:jsonData];
-    NSString* jsonStrippedOfBackslash = [jsonString stringByReplacingOccurrencesOfString:@"\\" withString:@""];
-    NSLog(@"JSON to be submitted %@", jsonStrippedOfBackslash);
-    NSData *postData = [jsonStrippedOfBackslash dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setURL:url];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request setHTTPBody:postData];
-    
-    NSString *token = [NSString stringWithFormat:@"Bearer %@",[AuthenticationToken getAuthenticationToken]];
-    [request setValue:token forHTTPHeaderField:@"Authorization"];
-    
+    NSMutableURLRequest* request = [self createHttpPostRequest:[NSString stringWithFormat:@"%@%@", apiHostname, @"survey/api/survey/"] withJson:jsonData];
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     NSLog(@"Connection: %@", conn.description);
     
     return returnedJsonData;
 }
 
+//For posting the answers to the PIT survey
 -(NSMutableArray*)postPit:(CallbackToDoWhenFinished)callback :(NSDictionary*)jsonData {
     
     httpHandler = [[PostPITHandler alloc] init];
     actionDescription = @"Post PIT";
-    urlString = @"https://staging.ctagroup.org/survey/api/pit";
     callbackAction = callback;
     
     [httpHandler handlePreConnectionAction];
     
-    NSURL *url=[NSURL URLWithString:urlString];
-    
-    //This is just a temporary test JSON string so that it can successfully be submitted to their servers
-    //NSString *jsonString = @"{\"SurveyId\":1,\"SurveyBy\":1,\"Client\":{\"Birthday\":\"2/14/1977\",\"GeoLoc\":\"37.336704, -121.919087\",\"Last4SSN\":\"1234\",\"ServicePointId\":14},\"Responses\":[{\"QuestionId\":4,null:\" Male\"},{\"QuestionId\":6,\"Answer\":\" White/Caucasian \"}]}";
-    
-    NSString* jsonString = [self convertDictionaryToString:jsonData];
-    NSString* jsonStrippedOfBackslash = [jsonString stringByReplacingOccurrencesOfString:@"\\" withString:@""];
-    NSLog(@"JSON to be submitted %@", jsonStrippedOfBackslash);
-    NSData *postData = [jsonStrippedOfBackslash dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setURL:url];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request setHTTPBody:postData];
-    
-    NSString *token = [NSString stringWithFormat:@"Bearer %@",[AuthenticationToken getAuthenticationToken]];
-    [request setValue:token forHTTPHeaderField:@"Authorization"];
-    
+    NSMutableURLRequest* request = [self createHttpPostRequest:[NSString stringWithFormat:@"%@%@", apiHostname, @"survey/api/pit/"] withJson:jsonData];
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     NSLog(@"Connection: %@", conn.description);
     
     return returnedJsonData;
 }
 
+//For searching encampment sites
 -(NSMutableArray*)searchEncampment:(CallbackToDoWhenFinished)callback :(NSString*)searchString {
     httpHandler = [[SearchEncampmentHandler alloc] init];
     actionDescription = @"Search Encampment";
-    urlString = [NSString stringWithFormat:@"https://staging.ctagroup.org/Outreach/api/EncampmentSite?searchStr=%@", searchString];
     callbackAction = callback;
     
     [httpHandler handlePreConnectionAction];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
-    NSString *token = [NSString stringWithFormat:@"Bearer %@",[AuthenticationToken getAuthenticationToken]];
-    [request setValue:token forHTTPHeaderField:@"Authorization"];
+    NSMutableURLRequest *request = [self createHttpGetRequest:[NSString stringWithFormat:@"%@%@%@", apiHostname, @"Outreach/api/EncampmentSite?searchStr=", searchString]];
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     NSLog(@"%@ Connection: %@", actionDescription, conn.description);
     
@@ -276,6 +240,38 @@ id<HttpHandlerProtocol> httpHandler;    //Declared like this so it can be called
     }
     return jsonString;
 }
+
+//Create the request object for making an HTTP Get call
+-(NSMutableURLRequest*) createHttpGetRequest:(NSString*)urlString {
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    NSString *token = [NSString stringWithFormat:@"Bearer %@",[AuthenticationToken getAuthenticationToken]];
+    [request setValue:token forHTTPHeaderField:@"Authorization"];
+    return request;
+}
+
+//Create the request object for making an HTTP Post with a given Json body
+-(NSMutableURLRequest*)createHttpPostRequest:(NSString*)urlString withJson:(NSDictionary*)jsonData {
+    NSURL *url=[NSURL URLWithString:urlString];
+    
+    NSString* jsonString = [self convertDictionaryToString:jsonData];
+    NSString* jsonStrippedOfBackslash = [jsonString stringByReplacingOccurrencesOfString:@"\\" withString:@""];
+    NSLog(@"JSON to be submitted %@", jsonStrippedOfBackslash);
+    NSData *postData = [jsonStrippedOfBackslash dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:url];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:postData];
+    
+    NSString *token = [NSString stringWithFormat:@"Bearer %@",[AuthenticationToken getAuthenticationToken]];
+    [request setValue:token forHTTPHeaderField:@"Authorization"];
+    
+    return request;
+}
+
 
 @end
 
