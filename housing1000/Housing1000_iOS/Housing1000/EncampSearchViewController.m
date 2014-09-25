@@ -33,7 +33,7 @@
 }
 
 -(void) getSearchResults {
-    HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] init];
+    HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] initWithView:self];
     [httpHelper searchEncampment:^(NSMutableArray* results){
         //This block gets called once the NSURLConnection finishes loading
         //self.surveys = results;

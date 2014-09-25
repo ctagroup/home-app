@@ -13,13 +13,10 @@
 
 @implementation PITViewController
 
-bool clickedCancel = false;
-bool clickedSubmit = false;
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] init];
+    HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] initWithView:self];
     [httpHelper getPIT:^(NSMutableArray* results){
         [self populateDataRows];
     }];
@@ -30,49 +27,75 @@ bool clickedSubmit = false;
 }
 
 - (IBAction)cancelSurvey:(id)sender {
-    clickedCancel = true;
-    clickedSubmit = false;
     
-    UIAlertView *popup = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:@"Are you sure you want to cancel this survey?"
-                                                   delegate:self
-                                          cancelButtonTitle:@"Yes"
-                                          otherButtonTitles:@"Cancel", nil];
-    [popup show];
+    UIAlertController* alert =  [UIAlertController
+                                 alertControllerWithTitle:nil
+                                 message:@"Are you sure you want to cancel this survey?"
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* left = [UIAlertAction
+                           actionWithTitle:@"Yes"
+                           style:UIAlertActionStyleDefault
+                           handler:^(UIAlertAction * action)
+                           {
+                               [alert dismissViewControllerAnimated:YES completion:nil];
+                               [self performSegueWithIdentifier:@"segue.pit.finished" sender:self]; //@"segue.pit.finished" is specified in the storyboard
+                               NSLog(@"User chose to cancel the PIT survey");
+                               
+                           }];
+    
+    UIAlertAction* right = [UIAlertAction
+                            actionWithTitle:@"Cancel"
+                            style:UIAlertActionStyleDefault
+                            handler:^(UIAlertAction * action)
+                            {
+                                [alert dismissViewControllerAnimated:YES completion:nil];
+                                
+                            }];
+    
+    [alert addAction:left];
+    [alert addAction:right];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+    
 }
 
 - (IBAction)submitSurvey:(id)sender {
-    clickedCancel = false;
-    clickedSubmit = true;
     
-    UIAlertView *popup = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:@"Are you sure you want to upload the current point in time survey?"
-                                                   delegate:self
-                                          cancelButtonTitle:@"Yes"
-                                          otherButtonTitles:@"Cancel", nil];
-    [popup show];
-}
-
-// The callback method for the alertView
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)index {
+    UIAlertController* alert =  [UIAlertController
+                                 alertControllerWithTitle:nil
+                                 message:@"Are you sure you want to upload the current point in time survey?"
+                                 preferredStyle:UIAlertControllerStyleAlert];
     
-    if(index == 0) {    //They selected "Yes" about whether they were sure about submitting or cancelling
-        if(clickedSubmit) {
-            PITSubmitter* submitter = [[PITSubmitter alloc] init];
-            [submitter submitPIT];
-        }
-        else if(clickedCancel) {
-            [self performSegueWithIdentifier:@"segue.pit.finished" sender:self]; //@"segue.pit.finished" is specified in the storyboard
-            NSLog(@"User chose to cancel the PIT survey");
-
-        }
-    }
+    UIAlertAction* left = [UIAlertAction
+                           actionWithTitle:@"Yes"
+                           style:UIAlertActionStyleDefault
+                           handler:^(UIAlertAction * action)
+                           {
+                               [alert dismissViewControllerAnimated:YES completion:nil];
+                               PITSubmitter* submitter = [[PITSubmitter alloc] initWithView:self];
+                               [submitter submitPIT];
+                               
+                           }];
+    
+    UIAlertAction* right = [UIAlertAction
+                            actionWithTitle:@"Cancel"
+                            style:UIAlertActionStyleDefault
+                            handler:^(UIAlertAction * action)
+                            {
+                                [alert dismissViewControllerAnimated:YES completion:nil];
+                                
+                            }];
+    
+    [alert addAction:left];
+    [alert addAction:right];
+    
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 //Called when the alert view's first button is pressed because of a listener (for the popup after the submission spinner)
 -(void)performSubmittedSurveySegue:(NSNotification *) notif
 {
-    
     [self performSegueWithIdentifier:@"segue.pit.finished" sender:self]; //@"segue.pit.finished" is specified in the storyboard
     
 }

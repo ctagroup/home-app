@@ -13,7 +13,7 @@
 @protocol HttpHandlerProtocol <NSObject>
 
 -(void)handlePreConnectionAction;
--(void)handleDidFailWithError;
--(NSMutableArray*)handleDidFinishLoading:(NSMutableData*)responseData;
+-(void)handleDidFailWithError:(UIViewController*)viewController;
+-(NSMutableArray*)handleDidFinishLoading:(NSMutableData*)responseData viewController:(UIViewController*)viewController;
 
 @end

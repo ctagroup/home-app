@@ -15,7 +15,19 @@
 #import "GPSLocationRetriever.h"
 #import "Survey.h"
 
+@interface PITSubmitter()
+
+@property UIViewController* viewController;
+
+@end
+
 @implementation PITSubmitter
+
+-(id)initWithView:(UIViewController*)viewController {
+    
+    _viewController = viewController;
+    return self;
+}
 
 -(void)submitPIT {
     
@@ -25,14 +37,14 @@
     Survey* survey = [Survey sharedManager];
     
     response.UserId = 1;                            //TODO make this a real value
-    GPSLocationRetriever *gpsRetriever = [[GPSLocationRetriever alloc] init];
+    GPSLocationRetriever *gpsRetriever = [[GPSLocationRetriever alloc] initWithViewController:_viewController];
     response.GeoLoc = [gpsRetriever getCurrentLocation];
     
     //Convert the survey answers to JSON
     response.Responses = [[self packagePITQuestionsForSending:survey.surveyQuestions] copy];
     
     NSLog(@"PIT Json submission: %@", [response toDictionary]);
-    HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] init];
+    HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] initWithView:_viewController];
     [httpHelper postPit:^(NSMutableArray* results){} :[response toDictionary]];
     
     NSLog(@"submitting..");

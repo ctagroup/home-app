@@ -9,6 +9,7 @@
 #import "DisclaimerViewController.h"
 #import "HousingAppDelegate.h"
 #import <RNDecryptor.h>
+#import "AlertViewDisplayer.h"
 
 
 @interface DisclaimerViewController ()
@@ -52,49 +53,38 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*  //Commented this section out because with the page view controller that got added I didn't think it was being used anywhere -DHorton 3/22/14
-- (IBAction)canceled:(id)sender {
-    //first back button is not animated then viewWillDisappear runs the animated version to go back two pages
-    //edit: setting this animation to true so cancel only goes back one page
-    [self.navigationController popViewControllerAnimated:true];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    //if true, back was pressed
-    if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) {
-        //going back a second page (skips the confirm view)
-        //commenting this out because it broke the back button
-        //[self.navigationController popViewControllerAnimated:true];
-    }
-}
-*/
-- (IBAction)submitSurvey:(id)sender {
-    
-    UIAlertView *popup = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:@"Are you sure you want to upload the signature, photos, and survey answers?"
-                                                   delegate:self
-                                          cancelButtonTitle:@"Yes"
-                                          otherButtonTitles:@"Cancel", nil];
-    [popup show];
-    
-}
-
 - (IBAction)cancelPopupMessage:(id)sender {
-    UIAlertView *popup = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:@"Are you sure you want to cancel this survey? Any unsubmitted data will be lost."
-                                                   delegate:self
-                                          cancelButtonTitle:@"Yes"
-                                          otherButtonTitles:@"Cancel", nil];
-    [popup show];
-}
-
-// The callback method for the alertView
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)index {
     
-    if(index == 0) {    //They selected "Yes" about whether they were sure about cancelling or not
-        [self performSegueWithIdentifier:@"segue.survey.cancelled" sender:self]; //@"segue.survey.cancelled" is specified in the storyboard
-        NSLog(@"User chose to cancel the survey");
-    }
+    
+    UIAlertController* alert =  [UIAlertController
+                                 alertControllerWithTitle:nil
+                                 message:@"Are you sure you want to cancel this survey? Any unsubmitted data will be lost."
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* left = [UIAlertAction
+                           actionWithTitle:@"Yes"
+                           style:UIAlertActionStyleDefault
+                           handler:^(UIAlertAction * action)
+                           {
+                               [alert dismissViewControllerAnimated:YES completion:nil];
+                               [self performSegueWithIdentifier:@"segue.survey.cancelled" sender:self]; //@"segue.survey.cancelled" is specified in the storyboard
+                               NSLog(@"User chose to cancel the survey");
+                               
+                           }];
+    
+    UIAlertAction* right = [UIAlertAction
+                            actionWithTitle:@"Cancel"
+                            style:UIAlertActionStyleDefault
+                            handler:^(UIAlertAction * action)
+                            {
+                                [alert dismissViewControllerAnimated:YES completion:nil];
+                                
+                            }];
+    
+    [alert addAction:left];
+    [alert addAction:right];
+    
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 -(BOOL)shouldAutorotate

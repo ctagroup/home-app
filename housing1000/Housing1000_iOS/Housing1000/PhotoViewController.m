@@ -46,12 +46,22 @@
 
         NSLog(@"The app thinks they don't have a camera.");
         
-        UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                              message:@"Device has no camera available."
-                                                             delegate:nil
-                                                    cancelButtonTitle:@"Okay"
-                                                    otherButtonTitles: nil];
-        [myAlertView show];
+        UIAlertController* alert =  [UIAlertController
+                                     alertControllerWithTitle:@"Uh oh..."
+                                     message:@"Device has no camera available."
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* left = [UIAlertAction
+                               actionWithTitle:@"Okay"
+                               style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction * action)
+                               {
+                                   [alert dismissViewControllerAnimated:YES completion:nil];
+                               }];
+        
+        [alert addAction:left];
+        
+        [self presentViewController:alert animated:YES completion:nil];
     }
     else {
         NSLog(@"The app thinks they do have a camera.");
@@ -112,12 +122,23 @@
     NSMutableArray* savedPhotos = [ImageFileHelper getPhotoImages];
     
     if([savedPhotos count] == 0) {
-        UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                              message:@"There is no photo to delete."
-                                                             delegate:nil
-                                                    cancelButtonTitle:@"Okay"
-                                                    otherButtonTitles: nil];
-        [myAlertView show];
+        
+        UIAlertController* alert =  [UIAlertController
+                                     alertControllerWithTitle:@"Uh oh..."
+                                     message:@"There is no photo to delete."
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* left = [UIAlertAction
+                               actionWithTitle:@"Okay"
+                               style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction * action)
+                               {
+                                   [alert dismissViewControllerAnimated:YES completion:nil];
+                               }];
+        
+        [alert addAction:left];
+        
+        [self presentViewController:alert animated:YES completion:nil];
     }
     else {
         [savedPhotos removeLastObject];

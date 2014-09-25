@@ -8,19 +8,25 @@
 
 #import "GPSLocationRetriever.h"
 
-@interface GPSLocationRetriever() {
-    NSString *longitude;
-    NSString *latitude;
-}
+@interface GPSLocationRetriever()
+
+@property NSString *longitude;
+@property NSString *latitude;
+@property UIViewController *viewController;
 
 @end
+
 @implementation GPSLocationRetriever
 
+@synthesize viewController = _viewController;
+@synthesize longitude = longitude;
+@synthesize latitude = latitude;
 
 
--(id)init {
+-(id)initWithViewController:(UIViewController*)viewController {
     longitude = @"0.0";
     latitude = @"0.0";
+    _viewController = viewController;
     
     self.locationManager = [[CLLocationManager alloc] init];
     return self;
@@ -44,16 +50,27 @@
 }
 
 
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
-{
-    NSLog(@"didFailWithError: %@", error);
-    UIAlertView *errorAlert = [[UIAlertView alloc]
-                               initWithTitle:@"Error" message:@"Failed to get your location" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [errorAlert show];
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+    
+    UIAlertController* alert =  [UIAlertController
+                                 alertControllerWithTitle:@"Uh oh..."
+                                 message:@"Failed to get your GPS location"
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* left = [UIAlertAction
+                           actionWithTitle:@"Okay"
+                           style:UIAlertActionStyleDefault
+                           handler:^(UIAlertAction * action)
+                           {
+                               [alert dismissViewControllerAnimated:YES completion:nil];
+                           }];
+    
+    [alert addAction:left];
+    
+    [_viewController presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
-{
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
     NSLog(@"\n\ndidUpdateToLocation: %@", newLocation);
     CLLocation *currentLocation = newLocation;
     
@@ -68,9 +85,7 @@
     NSLog(@"Longitude and Latitude: %@ %@", longitude, latitude);
 }
 
--(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
-
-{
+-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     //location_updated = [locations lastObject];
     //NSLog(@"updated coordinate are %@",location_updated);
     NSLog(@"\n\nupdated coordinate are %@",[locations lastObject]);

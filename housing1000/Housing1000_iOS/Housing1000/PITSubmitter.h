@@ -11,6 +11,7 @@
 
 @interface PITSubmitter : NSObject
 
+-(id)initWithView:(UIViewController*)viewController;
 -(void)submitPIT;
 
 @end

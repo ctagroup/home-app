@@ -25,12 +25,12 @@
     [self.alertDisplayer showSpinnerWithMessage:@"Retrieving surveys..."];
 }
 
--(void)handleDidFailWithError {
+-(void)handleDidFailWithError:(UIViewController*)viewController {
     [self.alertDisplayer dismissSpinner];
-    [self.alertDisplayer showMessageWithCloseButton:@"There was a problem loading surveys... Please try again." closeButtonText:@"Okay"];
+    [self.alertDisplayer showMessageWithCloseButton:@"Uh oh..." message:@"There was a problem loading surveys... Please try again." closeButtonText:@"Okay" view:viewController];
 }
 
--(NSMutableArray*)handleDidFinishLoading:(NSMutableData*)responseData {
+-(NSMutableArray*)handleDidFinishLoading:(NSMutableData*)responseData viewController:(UIViewController *)viewController {
     [self.alertDisplayer dismissSpinner];
     
     // convert to JSON

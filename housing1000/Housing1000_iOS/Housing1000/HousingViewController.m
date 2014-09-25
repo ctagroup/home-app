@@ -59,7 +59,7 @@
     if(self.usernameTextField.text != nil && ![self.usernameTextField.text isEqualToString:@""]
        && self.passwordTextField.text != nil && ![self.passwordTextField.text isEqualToString:@""]) {
         
-        HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] init];
+        HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] initWithView:self];
         [httpHelper postAuthentication:^(NSMutableArray* results){
             [self performSegueWithIdentifier:@"segue.login.finished" sender:self]; //@"segue.login.finished" is specified in the storyboard
         } :self.usernameTextField.text :self.passwordTextField.text];
@@ -73,7 +73,7 @@
         else if(self.passwordTextField.text == nil || [self.passwordTextField.text isEqualToString:@""]) {
             popupText = @"Password is required.";
         }
-        [self.alertDisplayer showMessageWithCloseButton:popupText closeButtonText:@"Okay"];
+        [self.alertDisplayer showMessageWithCloseButton:@"Uh oh..." message:popupText closeButtonText:@"Okay" view:self];
         
     }
 }

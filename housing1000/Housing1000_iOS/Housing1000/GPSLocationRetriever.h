@@ -12,6 +12,7 @@
 @interface GPSLocationRetriever : NSObject <CLLocationManagerDelegate>
 @property (nonatomic , strong) CLLocationManager *locationManager;
 
+-(id)initWithViewController:(UIViewController*)viewController;
 - (NSString*)getCurrentLocation;
 
 @end

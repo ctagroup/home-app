@@ -46,25 +46,37 @@
 
 - (IBAction)logout:(id)sender {
     
-    UIAlertView *popup = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:@"Are you sure you want to logout?"
-                                                   delegate:self
-                                          cancelButtonTitle:@"Yes"
-                                          otherButtonTitles:@"Cancel", nil];
-    [popup show];
+    UIAlertController* alert =  [UIAlertController
+                                 alertControllerWithTitle:nil
+                                 message:@"Are you sure you want to logout?"
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* left = [UIAlertAction
+                           actionWithTitle:@"Yes"
+                           style:UIAlertActionStyleDefault
+                           handler:^(UIAlertAction * action)
+                           {
+                               [alert dismissViewControllerAnimated:YES completion:nil];
+                               [AuthenticationToken setAuthenticationToken:@""];
+                               [self performSegueWithIdentifier:@"segue.logout" sender:self]; //@"segue.logout" is defined in the storyboard
+                               
+                           }];
+    
+    UIAlertAction* right = [UIAlertAction
+                            actionWithTitle:@"Cancel"
+                            style:UIAlertActionStyleDefault
+                            handler:^(UIAlertAction * action)
+                            {
+                                [alert dismissViewControllerAnimated:YES completion:nil];
+                                
+                            }];
+    
+    [alert addAction:left];
+    [alert addAction:right];
+    
+    [self presentViewController:alert animated:YES completion:nil];
     
 }
-
-// The callback method for the alertView
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)index {
-    
-    if(index == 0) {    //They selected "Yes" about whether they were sure about submitting or not
-        [AuthenticationToken setAuthenticationToken:@""];
-        [self performSegueWithIdentifier:@"segue.logout" sender:self]; //@"segue.logout" is defined in the storyboard
-    }
-    
-}
-
 
 - (void)didReceiveMemoryWarning
 {

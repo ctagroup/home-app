@@ -25,17 +25,18 @@
     [self.alertDisplayer showSpinnerWithMessage:@"Submitting survey..."];
 }
 
--(void)handleDidFailWithError {
+-(void)handleDidFailWithError:(UIViewController*)viewController {
     [self.alertDisplayer dismissSpinner];
-    [self.alertDisplayer showMessageWithTwoButtons:@"There was a problem submitting... Please try again." cancelButtonText:@"Main Menu" otherButtonText:@"Return to Survey"];
+    [self.alertDisplayer showMessageWithTwoButtons:@"Uh oh..." message:@"There was a problem submitting... Please try again." leftButtonText:@"Main Menu" rightButtonText:@"Return to Survey" view:viewController];
 }
 
--(NSMutableArray*)handleDidFinishLoading:(NSMutableData*)responseData {
+-(NSMutableArray*)handleDidFinishLoading:(NSMutableData*)responseData viewController:(UIViewController *)viewController {
     NSString* dataStr = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
     NSLog(@"Response: %@", dataStr);
     
     [self.alertDisplayer dismissSpinner];
-    [self.alertDisplayer showMessageWithCloseButton:@"Submitted successfully." closeButtonText:@"Done"];
+    [self.alertDisplayer showMessageWithCloseButton:@"Success!" message:@"Submitted successfully" closeButtonText:@"Done" view:viewController];
+    
     return NULL;
 }
 

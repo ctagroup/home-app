@@ -25,6 +25,7 @@
 @property NSString* actionDescription;
 @property id<HttpHandlerProtocol> httpHandler;    //Declared like this so it can be called polymorphically
 @property NSString* apiHostname;
+@property UIViewController* viewController;
 
 @end
 
@@ -37,9 +38,11 @@
 @synthesize actionDescription = actionDescription;
 @synthesize httpHandler = httpHandler;
 @synthesize apiHostname = apiHostname;
+@synthesize viewController = _viewController;
 
 
--(id)init {
+-(id)initWithView:(UIViewController*)viewController {
+    _viewController = viewController;
     apiHostname = @"https://staging.ctagroup.org/";
     returnedJsonData = nil;
     self.responseData = [NSMutableData data];
@@ -186,7 +189,7 @@
             [connection cancel];
             NSString *errorCodeString = [NSString stringWithFormat:@"%ld", statusCode];
             NSLog(@"%@", [NSString stringWithFormat:@"%@ %@", @"Connection cancelled because of status code ", errorCodeString]);
-            [httpHandler handleDidFailWithError];
+            [httpHandler handleDidFailWithError:_viewController];
         }
     }
     NSLog(@"%@ response: %@", actionDescription, response);
@@ -198,7 +201,7 @@
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    [httpHandler handleDidFailWithError];
+    [httpHandler handleDidFailWithError:_viewController];
     NSLog(@"%@ Connection failed: %@", actionDescription, [error description]);
 }
 
@@ -206,7 +209,7 @@
     NSLog(@"%@ Finished. Received %lu bytes of data", actionDescription, (unsigned long)[self.responseData length]);
     //Uncommenting this will print the body of the response. I comment it out because I pretty-print it the HTTPHandlers, and I prefer that.
     //NSLog(@"%@ response string: %@", actionDescription, [[NSString alloc] initWithData:self.responseData encoding:NSUTF8StringEncoding]);
-    returnedJsonData = [httpHandler handleDidFinishLoading:self.responseData];
+    returnedJsonData = [httpHandler handleDidFinishLoading:self.responseData viewController:_viewController];
     callbackAction(returnedJsonData);
 }
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {

@@ -10,6 +10,7 @@
 
 @interface SurveySubmitter : NSObject
 
+-(id)initWithView:(UIViewController*)viewController;
 -(void)submitSurvey;
 
 @end

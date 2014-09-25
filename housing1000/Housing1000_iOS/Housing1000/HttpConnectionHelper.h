@@ -12,6 +12,8 @@
 
 typedef void (^CallbackToDoWhenFinished)(NSMutableArray* results);
 
+-(id)initWithView:(UIViewController*)viewController;
+
 -(NSMutableArray*)getSurveys:(CallbackToDoWhenFinished)callback;
 -(NSMutableArray*)getSingleSurvey:(CallbackToDoWhenFinished)callback :(int)surveyIndex;
 -(NSMutableArray*)getPIT:(CallbackToDoWhenFinished)callback;

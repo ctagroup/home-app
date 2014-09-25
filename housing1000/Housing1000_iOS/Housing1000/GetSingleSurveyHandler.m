@@ -25,11 +25,11 @@
     //Do nothing
 }
 
--(void)handleDidFailWithError {
-    [self.alertDisplayer showMessageWithCloseButton:@"There was a problem loading the survey... Please try again." closeButtonText:@"Okay"];
+-(void)handleDidFailWithError:(UIViewController*)viewController {
+    [self.alertDisplayer showMessageWithCloseButton:@"Uh oh..." message:@"There was a problem loading the survey... Please try again." closeButtonText:@"Okay" view:viewController];
 }
 
--(NSMutableArray*)handleDidFinishLoading:(NSMutableData*)responseData {
+-(NSMutableArray*)handleDidFinishLoading:(NSMutableData*)responseData viewController:(UIViewController *)viewController {
     [SurveyJSONParser createSurveyFromJson:responseData];
     
     return NULL;

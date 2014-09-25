@@ -8,9 +8,6 @@
 
 #import "GetPitHandler.h"
 #import "AlertViewDisplayer.h"
-#import "Question.h"
-#import "QuestionNumAnswer.h"
-#import "QuestionTextAnswer.h"
 #import "SurveyJSONParser.h"
 
 @interface GetPitHandler()
@@ -28,12 +25,13 @@
     [self.alertDisplayer showSpinnerWithMessage:@"Retrieving PIT items..."];
 }
 
--(void)handleDidFailWithError {
+-(void)handleDidFailWithError:(UIViewController*)viewController {
     [self.alertDisplayer dismissSpinner];
-    [self.alertDisplayer showMessageWithCloseButton:@"There was a problem loading PIT items... Please try again." closeButtonText:@"Okay"];
+    [self.alertDisplayer showMessageWithCloseButton:@"Uh oh..." message:@"There was a problem loading PIT items... Please try again." closeButtonText:@"Okay" view:viewController];
+    
 }
 
--(NSMutableArray*)handleDidFinishLoading:(NSMutableData*)responseData {
+-(NSMutableArray*)handleDidFinishLoading:(NSMutableData*)responseData viewController:(UIViewController *)viewController {
     
     [self.alertDisplayer dismissSpinner];
     

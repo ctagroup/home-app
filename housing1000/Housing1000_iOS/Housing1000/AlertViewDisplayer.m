@@ -32,36 +32,68 @@
     [self.spinnerAlert dismissWithClickedButtonIndex:0 animated:YES];
 }
 
--(void)showMessageWithCloseButton:(NSString*)message closeButtonText:(NSString*)buttonText {
-    UIAlertView *popup = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:message
-                                                   delegate:self
-                                          cancelButtonTitle:buttonText
-                                          otherButtonTitles:nil];
-    [popup show];
-
+-(void)showMessageWithCloseButton:(NSString*)title message:(NSString*)message  closeButtonText:(NSString*)buttonText view:(UIViewController*)viewController {
+    
+    UIAlertController* alert =  [UIAlertController
+                                  alertControllerWithTitle:title
+                                  message:message
+                                  preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* ok = [UIAlertAction
+                         actionWithTitle:buttonText
+                         style:UIAlertActionStyleDefault
+                         handler:^(UIAlertAction * action)
+                         {
+                             [alert dismissViewControllerAnimated:YES completion:nil];
+                             [self handleButtonForSegue];
+                             
+                         }];
+    
+    [alert addAction:ok];
+    
+    [viewController presentViewController:alert animated:YES completion:nil];
 }
 
--(void)showMessageWithTwoButtons:(NSString*)message cancelButtonText:(NSString*)buttonText otherButtonText:(NSString*)otherButtonText {
-    UIAlertView *popup = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:message
-                                                   delegate:self
-                                          cancelButtonTitle:buttonText
-                                          otherButtonTitles:otherButtonText, nil];
-    [popup show];
+//The left button is the only one that has a listener associated with it. The right button is like a cancel button.
+-(void)showMessageWithTwoButtons:(NSString*)title message:(NSString*)message leftButtonText:(NSString*)leftText rightButtonText:(NSString*)rightText view:(UIViewController*)viewController {
+    
+    UIAlertController* alert =  [UIAlertController
+                                 alertControllerWithTitle:title
+                                 message:message
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* left = [UIAlertAction
+                         actionWithTitle:leftText
+                         style:UIAlertActionStyleDefault
+                         handler:^(UIAlertAction * action)
+                         {
+                             [alert dismissViewControllerAnimated:YES completion:nil];
+                             [self handleButtonForSegue];
+                             
+                         }];
+    
+    UIAlertAction* right = [UIAlertAction
+                             actionWithTitle:rightText
+                             style:UIAlertActionStyleDefault
+                             handler:^(UIAlertAction * action)
+                             {
+                                 [alert dismissViewControllerAnimated:YES completion:nil];
+                                 
+                             }];
+    
+    [alert addAction:left];
+    [alert addAction:right];
+    
+    [viewController presentViewController:alert animated:YES completion:nil];
     
 }
 
-// The callback method for an alertView
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)index {
+
+- (void)handleButtonForSegue {
     
-    if(index == 0) {    //Only on an index of 0 so that the other button text in a two button message can be to return to the view
-        
-        //Add a listener that is performed in the ClientSurveyViewController
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"performSurveyFinishedSegue"
-                                                            object:nil];
-    }
-    
+    //Add a listener that is performed in the surveys
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"performSurveyFinishedSegue"
+                                                        object:nil];
 }
 
 

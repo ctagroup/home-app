@@ -26,7 +26,7 @@
 }
 
 -(void) populateWithSurveys {
-    HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] init];
+    HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] initWithView:self];
     self.surveys = [httpHelper getSurveys:^(NSMutableArray* results){
         //This block gets called once the NSURLConnection finishes loading
         self.surveys = results;
@@ -35,7 +35,7 @@
 }
 
 -(void) getSingleSurvey:(int)selectedSurvey {
-    HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] init];
+    HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] initWithView:self];
     [httpHelper getSingleSurvey:^(NSMutableArray* results){} :selectedSurvey];
 }
 //==============================================

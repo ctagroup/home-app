@@ -10,7 +10,6 @@
 #import "Survey.h"
 #import "Question.h"
 #import "SurveyQuestionTableViewCell.h"
-#import "AlertViewDisplayer.h"
 #import "SurveySubmitter.h"
 
 @interface ClientSurveyViewController ()
@@ -22,7 +21,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     
     //Give it a top margin for the navigation bar
     UIEdgeInsets inset = UIEdgeInsetsMake(19, 0, 0, 0);
@@ -37,22 +35,35 @@
 
 - (IBAction)submitSurvey:(id)sender {
     
-    UIAlertView *popup = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:@"Are you sure you want to upload the signature, photos, and survey answers?"
-                                                   delegate:self
-                                          cancelButtonTitle:@"Yes"
-                                          otherButtonTitles:@"Cancel", nil];
-    [popup show];
+    UIAlertController* alert =  [UIAlertController
+                                 alertControllerWithTitle:nil
+                                 message:@"Are you sure you want to upload the signature, photos, and survey answers?"
+                                 preferredStyle:UIAlertControllerStyleAlert];
     
-}
-
-// The callback method for the alertView
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)index {
+    UIAlertAction* left = [UIAlertAction
+                           actionWithTitle:@"Yes"
+                           style:UIAlertActionStyleDefault
+                           handler:^(UIAlertAction * action)
+                           {
+                               [alert dismissViewControllerAnimated:YES completion:nil];
+                               SurveySubmitter* submitter = [[SurveySubmitter alloc] initWithView:self];
+                               [submitter submitSurvey];
+                               
+                           }];
     
-    if(index == 0) {    //They selected "Yes" about whether they were sure about submitting or not
-        SurveySubmitter* submitter = [[SurveySubmitter alloc] init];
-        [submitter submitSurvey];
-    }
+    UIAlertAction* right = [UIAlertAction
+                            actionWithTitle:@"Cancel"
+                            style:UIAlertActionStyleDefault
+                            handler:^(UIAlertAction * action)
+                            {
+                                [alert dismissViewControllerAnimated:YES completion:nil];
+                                
+                            }];
+    
+    [alert addAction:left];
+    [alert addAction:right];
+    
+    [self presentViewController:alert animated:YES completion:nil];
     
 }
 

@@ -25,12 +25,12 @@
     [self.alertDisplayer showSpinnerWithMessage:@"Logging in..."];
 }
 
--(void)handleDidFailWithError {
+-(void)handleDidFailWithError:(UIViewController*)viewController {
     [self.alertDisplayer dismissSpinner];
-    [self.alertDisplayer showMessageWithCloseButton:@"Unable to login... Please try again." closeButtonText:@"Okay"];
+    [self.alertDisplayer showMessageWithCloseButton:@"Uh oh..." message:@"Unable to login... Please try again." closeButtonText:@"Okay" view:viewController];
 }
 
--(NSMutableArray*)handleDidFinishLoading:(NSMutableData*)responseData {
+-(NSMutableArray*)handleDidFinishLoading:(NSMutableData*)responseData viewController:(UIViewController *)viewController {
     [self.alertDisplayer dismissSpinner];
     
     // convert to JSON

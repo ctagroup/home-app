@@ -15,7 +15,19 @@
 #import "ImageUploader.h"
 #import "GPSLocationRetriever.h"
 
+@interface SurveySubmitter()
+
+@property UIViewController* viewController;
+
+@end
+
 @implementation SurveySubmitter
+
+-(id)initWithView:(UIViewController*)viewController {
+    
+    _viewController = viewController;
+    return self;
+}
 
 -(void)submitSurvey {
     
@@ -39,13 +51,13 @@
         [clientAnswers setObject:[currentQuestion getAnswerForJson] forKey:currentQuestion.parentRequiredAnswer];
     }
     
-    GPSLocationRetriever *gpsRetriever = [[GPSLocationRetriever alloc] init];
+    GPSLocationRetriever *gpsRetriever = [[GPSLocationRetriever alloc] initWithViewController:_viewController];
     [clientAnswers setObject:[gpsRetriever getCurrentLocation] forKey:@"GeoLoc"];
     
     response.Client = clientAnswers;
     
     NSLog(@"Json submission: %@", [response toDictionary]);
-    HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] init];
+    HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] initWithView:_viewController];
     [httpHelper postSurvey:^(NSMutableArray* results){
         NSString* clientSurveyId = [results objectAtIndex:0];
         [self postImages:clientSurveyId];
