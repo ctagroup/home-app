@@ -137,10 +137,12 @@
         
         NSString *textBoxFieldType = currentQuestion.textBoxDataType;
         
-        if([textBoxFieldType isEqualToString:@"DateTime"])
+        if(![textBoxFieldType isEqual:[NSNull null]] && [textBoxFieldType isEqualToString:@"DateTime"]) {
             return 250;
-        else
+        }
+        else {
             return 125;
+        }
     }
     else if([cellIdentifier isEqualToString:@"SingleSelect"]) {
         return 225;
