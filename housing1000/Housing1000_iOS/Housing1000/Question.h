@@ -22,9 +22,6 @@
 @property (strong, nonatomic) NSString<Ignore> *parentRequiredAnswer;
 @property (strong, nonatomic) NSString<Ignore> *textBoxDataType;
 @property (strong, nonatomic) NSNumber<Ignore> *surveyDataRowIndex;
-
-@property (strong, nonatomic) UIColor<Ignore> *backgroundColor;
-
 @property (strong, nonatomic) HousingBool<Ignore> *isEnabled;
 
 -(void)setEnabled:(BOOL)setEnabled;

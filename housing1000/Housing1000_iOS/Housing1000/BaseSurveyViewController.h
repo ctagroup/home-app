@@ -14,5 +14,6 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 -(void)populateDataRows;
+-(void)populateDataRowsWithRowsToAdd:(NSMutableArray*)rowsToAdd andRowsToRemove:(NSMutableArray*)rowsToRemove;
 
 @end

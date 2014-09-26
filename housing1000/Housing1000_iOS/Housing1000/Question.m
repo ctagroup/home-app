@@ -44,11 +44,6 @@
 -(void)setEnabled:(BOOL)tempIsEnabled {
     
     _isEnabled = [self getBoolObjectAs:tempIsEnabled];
-    
-    if(_isEnabled.isTrue)
-        _backgroundColor = [UIColor whiteColor];
-    else
-        _backgroundColor = [UIColor grayColor];
 }
 
 -(BOOL)getEnabled {

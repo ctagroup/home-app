@@ -35,38 +35,57 @@
     _questions = [[NSMutableArray alloc] init];
     _survey = [Survey sharedManager];
     
+    NSMutableArray *tempQuestions = [[NSMutableArray alloc] init];
+    [tempQuestions addObjectsFromArray:_survey.clientQuestions];
+    [tempQuestions addObjectsFromArray:_survey.surveyQuestions];
+    
+    for(int i = 0; i < [tempQuestions count]; i++) {
+        Question *currentQuestion = [tempQuestions objectAtIndex:i];
+        currentQuestion.surveyDataRowIndex = [NSNumber numberWithInteger:i];
+        
+        //We just assume that if it doesn't have a parentQuestionId that it shouldn't be displayed
+        if([currentQuestion.parentQuestionId intValue] <= 0) {
+            [currentQuestion setEnabled:YES];
+        }
+    }
+    
     [self populateDataRows];
 }
 
-//For creating a sort of data model for the rows in the table
+//This is for removing and adding dependent child questions
+-(void)populateDataRowsWithRowsToAdd:(NSMutableArray*)rowsToAdd andRowsToRemove:(NSMutableArray*)rowsToRemove {
+    
+    [self.tableView beginUpdates];
+    [self.tableView insertRowsAtIndexPaths:rowsToAdd withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView deleteRowsAtIndexPaths:rowsToRemove withRowAnimation:UITableViewRowAnimationFade];
+    [self populateDataRowsShouldReloadData:NO];
+    [self.tableView endUpdates];
+    
+}
+
 -(void)populateDataRows {
+    [self populateDataRowsShouldReloadData:YES];
+}
+
+//For creating a sort of data model for the rows in the table
+-(void)populateDataRowsShouldReloadData:(BOOL)shouldReloadData {
     
-    [_questions addObjectsFromArray:_survey.clientQuestions];
-    [_questions addObjectsFromArray:_survey.surveyQuestions];
+    NSMutableArray *tempQuestions = [[NSMutableArray alloc] init];
+    [tempQuestions addObjectsFromArray:_survey.clientQuestions];
+    [tempQuestions addObjectsFromArray:_survey.surveyQuestions];
+    [_questions removeAllObjects];
     
-    for(int i = 0; i < [_survey.clientQuestions count]; i++) {
-        Question *currentQuestion = [_survey.clientQuestions objectAtIndex:i];
+    for(int i = 0; i < [tempQuestions count]; i++) {
+        Question *currentQuestion = [tempQuestions objectAtIndex:i];
         
-        //Disable the cell and make the background grey if it has a parent required answer
-        if([currentQuestion.parentQuestionId intValue] > 0) {
-            [currentQuestion setEnabled:NO];
-        } else {
-            [currentQuestion setEnabled:YES];
+        if([currentQuestion getEnabled]) {
+            [_questions addObject:currentQuestion];
         }
     }
     
-    for(int i = 0; i < [_survey.surveyQuestions count]; i++) {
-        Question *currentQuestion = [_survey.surveyQuestions objectAtIndex:i];
-        
-        //Disable the cell and make the background grey if it has a parent required answer
-        if([currentQuestion.parentQuestionId intValue] > 0) {
-            [currentQuestion setEnabled:NO];
-        } else {
-            [currentQuestion setEnabled:YES];
-        }
+    if(shouldReloadData) {
+        [self.tableView reloadData];
     }
-    
-    [self.tableView reloadData];
 }
 
 //TableView functions (for displaying surveys)
@@ -97,7 +116,6 @@
         cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     }
     
-    currentQuestion.surveyDataRowIndex = [NSNumber numberWithInteger:indexPath.row];
     cell.questionText.text = currentQuestion.questionText;
     cell.questionData = currentQuestion;
     
@@ -113,18 +131,6 @@
     }
     
     return cell;
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    Question *currentQuestion = [_questions objectAtIndex:indexPath.row];
-    
-    cell.backgroundColor = currentQuestion.backgroundColor;
-    
-    BOOL isEnabled = [currentQuestion getEnabled];
-    cell.userInteractionEnabled = isEnabled;
-    cell.textLabel.enabled = isEnabled;
-    cell.detailTextLabel.enabled = isEnabled;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

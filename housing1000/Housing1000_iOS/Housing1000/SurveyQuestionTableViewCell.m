@@ -148,46 +148,63 @@
 
 //Private util functions
 //===================================================
--(void)changeChildQuestions:(NSString*)answer {
+-(void)changeChildQuestions:(NSString*)answerFromParent {
     
-    NSMutableArray *childQuestionIds = [[NSMutableArray alloc] init];
-    NSMutableArray *satisifiedChildQuestion = [[NSMutableArray alloc] init];
-    NSMutableArray *surveyDataRowIds = [[NSMutableArray alloc] init];
+    NSMutableArray *satisfiedChildRows = [[NSMutableArray alloc] init];
+    NSMutableArray *unsatisfiedChildRows = [[NSMutableArray alloc] init];
     
     Survey* survey = [Survey sharedManager];
     
     //Loop through all the survey questions to find the children...
     for(int i = 0; i < [survey.surveyQuestions count]; i++) {
-        Question *currentQuestion = [survey.surveyQuestions objectAtIndex:i];
-        if(currentQuestion.parentQuestionId == questionData.questionId) {
-            [childQuestionIds addObject:currentQuestion.questionId];
-            [surveyDataRowIds addObject:currentQuestion.surveyDataRowIndex];
+        Question *currentChildQuestion = [survey.surveyQuestions objectAtIndex:i];
+        if(currentChildQuestion.parentQuestionId == questionData.questionId) {
             //NSLog(@"Found child, row is %@", currentQuestion.surveyDataRowIndex);
             //NSLog(@"Required Answer: %@ and answer is: %@", currentQuestion.parentRequiredAnswer, answer);
             
-            if([currentQuestion.parentRequiredAnswer isEqualToString:answer]) {
-                [satisifiedChildQuestion addObject:[NSNumber numberWithInt:1]];
-            } else {
-                [satisifiedChildQuestion addObject:[NSNumber numberWithInt:0]];
+            NSArray *parentRequiredAnswers = [[NSArray alloc] init];
+            
+            if(answerFromParent != (id)[NSNull null]) {
+                parentRequiredAnswers = [answerFromParent componentsSeparatedByString:@"|"];
+            }
+            
+            BOOL childIsEnabledAlready = [currentChildQuestion getEnabled];
+            BOOL childWasSatisfied = NO;
+            for(int k = 0; k < [parentRequiredAnswers count]; k++) {
+                if([currentChildQuestion.parentRequiredAnswer isEqualToString:[parentRequiredAnswers objectAtIndex:k]]) {
+                    
+                    //We only add it to the list of things to ADD if it wasn't there before but now it should be
+                    if(!childIsEnabledAlready) {
+                        long longRowId = [currentChildQuestion.surveyDataRowIndex longValue];
+                        [satisfiedChildRows addObject:[NSIndexPath indexPathForRow:longRowId inSection:0]];
+                    }
+                    
+                    [currentChildQuestion setEnabled:YES];
+                    childWasSatisfied = YES;
+                    
+                    break;
+                }
+            }
+            
+            //If doesn't satisfy its parent required answer requirement
+            if(!childWasSatisfied) {
+                [currentChildQuestion setEnabled:NO];
+                
+                //We only add it to the list of things to REMOVE if it was there before but now it shouldn't be
+                if(childIsEnabledAlready) {
+                    long longRowId = [currentChildQuestion.surveyDataRowIndex longValue];
+                    [unsatisfiedChildRows addObject:[NSIndexPath indexPathForRow:longRowId inSection:0]];
+                }
             }
         }
     }
     
-    for(int i = 0; i < [childQuestionIds count]; i++) {
-        long surveyDataRowIndex = [[surveyDataRowIds objectAtIndex:i] integerValue];
+    if([satisfiedChildRows count] > 0 || [unsatisfiedChildRows count] > 0) {
         UITableView *tableView = (UITableView*)self.superview.superview;
-        SurveyQuestionTableViewCell *cell = (SurveyQuestionTableViewCell*)[tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:surveyDataRowIndex inSection:0]];
-        
-        if([satisifiedChildQuestion objectAtIndex:i] == [NSNumber numberWithInt:1]) {
-            [cell.questionData setEnabled:YES];
-            cell.userInteractionEnabled = cell.textLabel.enabled = cell.detailTextLabel.enabled = YES;
-            cell.backgroundColor = [UIColor whiteColor];
-        } else {
-            [cell.questionData setEnabled:NO];
-            cell.userInteractionEnabled = cell.textLabel.enabled = cell.detailTextLabel.enabled = NO;
-            cell.backgroundColor = [UIColor grayColor];
-        }
+        BaseSurveyViewController *viewController = (BaseSurveyViewController*)tableView.dataSource;
+        [viewController populateDataRowsWithRowsToAdd:satisfiedChildRows andRowsToRemove:unsatisfiedChildRows];
     }
+
 }
 
 - (IBAction)storeChangedDate:(id)sender {
