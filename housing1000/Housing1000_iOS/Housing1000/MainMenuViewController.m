@@ -13,9 +13,6 @@
 #import "HousingAppDelegate.h"
 #import "AuthenticationToken.h"
 
-@interface MainMenuViewController ()
-
-@end
 
 @implementation MainMenuViewController
 

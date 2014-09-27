@@ -5,13 +5,13 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>FAB7980F-9234-49A7-BBCA-0BBA005DE557</string>
+	<string>FCEB6690-A529-44F6-85E4-A1A882FAE135</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Housing1000</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>E271301774FCB84040E0AB75C81A13C9747F7539</key>
-		<string>https://github.com/WeberState/cs3750fall2013group3.git</string>
+		<string>https://github.com/WeberState/cs3750fall2013group3</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>housing1000/Housing1000_iOS/Housing1000.xcworkspace</string>
@@ -21,7 +21,7 @@
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/WeberState/cs3750fall2013group3.git</string>
+	<string>https://github.com/WeberState/cs3750fall2013group3</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>

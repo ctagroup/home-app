@@ -17,7 +17,13 @@
 @implementation HousingViewController
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    
     [textField resignFirstResponder];
+    
+    if(textField == _passwordTextField) {
+        [self login:nil];
+    }
+    
     return YES;
 }
 
@@ -37,7 +43,7 @@
 	// Do any additional setup after loading the view, typically from a nib.
     _usernameTextField.returnKeyType = UIReturnKeyDone;
     [_usernameTextField setDelegate:self];
-    _passwordTextField.returnKeyType = UIReturnKeyDone;
+    _passwordTextField.returnKeyType = UIReturnKeyGo;
     [_passwordTextField setDelegate:self];
     
     self.alertDisplayer = [[AlertViewDisplayer alloc] init];
@@ -120,7 +126,7 @@
     
 }
 
-//This is show that none of the text fields are ever hidden by the iOS keyboard
+//This is so that none of the text fields are ever hidden by the iOS keyboard
 - (void)keyboardWasShown:(NSNotification *)notification {
     
     NSDictionary* info = [notification userInfo];
