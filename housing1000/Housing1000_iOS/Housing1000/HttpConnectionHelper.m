@@ -16,6 +16,7 @@
 #import "PostAuthenticationHandler.h"
 #import "AuthenticationToken.h"
 #import "SearchEncampmentHandler.h"
+#import "GetNewEncampmentHandler.h"
 
 @interface HttpConnectionHelper()
 
@@ -124,6 +125,21 @@
     [httpHandler handlePreConnectionAction];
     
     NSMutableURLRequest *request = [self createHttpGetRequest:[NSString stringWithFormat:@"%@%@", apiHostname, @"survey/api/pit/"]];
+    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    NSLog(@"%@ Connection: %@", actionDescription, conn.description);
+    
+    return returnedJsonData;
+}
+
+//For getting the new Encampment questions
+-(NSMutableArray*)getNewEncampment:(CallbackToDoWhenFinished)callback {
+    httpHandler = [[GetNewEncampmentHandler alloc] init];
+    actionDescription = @"Get new encampment";
+    callbackAction = callback;
+    
+    [httpHandler handlePreConnectionAction];
+    
+    NSMutableURLRequest *request = [self createHttpGetRequest:[NSString stringWithFormat:@"%@%@", apiHostname, @"Outreach/api/EncampmentSite"]];
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     NSLog(@"%@ Connection: %@", actionDescription, conn.description);
     
