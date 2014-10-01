@@ -15,5 +15,6 @@
 
 -(void)populateDataRows;
 -(void)populateDataRowsWithRowsToAdd:(NSMutableArray*)rowsToAdd andRowsToRemove:(NSMutableArray*)rowsToRemove;
+-(void)setupChildQuestions;
 
 @end

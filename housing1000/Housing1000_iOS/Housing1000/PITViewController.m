@@ -18,6 +18,7 @@
     
     HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] initWithView:self];
     [httpHelper getPIT:^(NSMutableArray* results){
+        [self setupChildQuestions];
         [self populateDataRows];
     }];
 }

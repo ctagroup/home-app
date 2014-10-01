@@ -35,6 +35,12 @@
     _questions = [[NSMutableArray alloc] init];
     _survey = [Survey sharedManager];
     
+    [self setupChildQuestions];
+    
+    [self populateDataRows];
+}
+
+-(void)setupChildQuestions {
     NSMutableArray *tempQuestions = [[NSMutableArray alloc] init];
     [tempQuestions addObjectsFromArray:_survey.clientQuestions];
     [tempQuestions addObjectsFromArray:_survey.surveyQuestions];
@@ -48,9 +54,8 @@
             [currentQuestion setEnabled:YES];
         }
     }
-    
-    [self populateDataRows];
 }
+
 
 //This is for removing and adding dependent child questions
 -(void)populateDataRowsWithRowsToAdd:(NSMutableArray*)rowsToAdd andRowsToRemove:(NSMutableArray*)rowsToRemove {

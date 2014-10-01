@@ -17,6 +17,7 @@
     
     HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] initWithView:self];
     [httpHelper getNewEncampment:^(NSMutableArray* results){
+        [self setupChildQuestions];
         [self populateDataRows];
     }];
 }
