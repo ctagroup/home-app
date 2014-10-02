@@ -316,6 +316,7 @@
                                                 <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="xSw-lZ-GjZ">
                                                     <rect key="frame" x="206" y="39" width="94" height="29"/>
                                                     <connections>
+                                                        <action selector="pressedOnStepper:" destination="2NI-eV-7ct" eventType="touchDown" id="aYa-Ka-gb7"/>
                                                         <action selector="valueChanged:" destination="2NI-eV-7ct" eventType="valueChanged" id="td0-h4-ajf"/>
                                                     </connections>
                                                 </stepper>
@@ -397,6 +398,7 @@
                                                 <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="WOQ-t6-fmw">
                                                     <rect key="frame" x="206" y="39" width="94" height="29"/>
                                                     <connections>
+                                                        <action selector="pressedOnStepper:" destination="GoZ-C2-QIL" eventType="touchDown" id="08Y-6b-qw0"/>
                                                         <action selector="valueChanged:" destination="GoZ-C2-QIL" eventType="valueChanged" id="Jla-DT-9DL"/>
                                                     </connections>
                                                 </stepper>
@@ -595,6 +597,7 @@
                                                 <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="Dij-PQ-ile">
                                                     <rect key="frame" x="206" y="39" width="94" height="29"/>
                                                     <connections>
+                                                        <action selector="pressedOnStepper:" destination="N1n-yo-Nnc" eventType="touchDown" id="Gvi-cF-gzq"/>
                                                         <action selector="valueChanged:" destination="N1n-yo-Nnc" eventType="valueChanged" id="Jes-HD-0OV"/>
                                                     </connections>
                                                 </stepper>
@@ -634,6 +637,7 @@
                                                 <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="QPF-Rt-cpm">
                                                     <rect key="frame" x="206" y="39" width="94" height="29"/>
                                                     <connections>
+                                                        <action selector="pressedOnStepper:" destination="TK5-M1-FuS" eventType="touchDown" id="lhh-qL-bvP"/>
                                                         <action selector="valueChanged:" destination="TK5-M1-FuS" eventType="valueChanged" id="Mwy-Ul-SDg"/>
                                                     </connections>
                                                 </stepper>
@@ -883,6 +887,7 @@
                                                 <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="0lv-Za-yxo">
                                                     <rect key="frame" x="206" y="39" width="94" height="29"/>
                                                     <connections>
+                                                        <action selector="pressedOnStepper:" destination="wKr-U5-aUN" eventType="touchDown" id="KrP-U9-nfY"/>
                                                         <action selector="valueChanged:" destination="wKr-U5-aUN" eventType="valueChanged" id="f4V-rc-UOD"/>
                                                     </connections>
                                                 </stepper>
@@ -964,6 +969,7 @@
                                                 <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="WKU-sB-8tm">
                                                     <rect key="frame" x="206" y="39" width="94" height="29"/>
                                                     <connections>
+                                                        <action selector="pressedOnStepper:" destination="lkx-7w-ePf" eventType="touchDown" id="aTk-3L-6RC"/>
                                                         <action selector="valueChanged:" destination="lkx-7w-ePf" eventType="valueChanged" id="WH1-IA-FRM"/>
                                                     </connections>
                                                 </stepper>

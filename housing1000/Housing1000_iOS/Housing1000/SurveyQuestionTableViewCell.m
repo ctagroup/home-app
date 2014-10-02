@@ -12,6 +12,12 @@
 #import "ClientSurveyViewController.h"
 
 
+@interface SurveyQuestionTableViewCell()
+
+@property int stepperValueBeforeChange;
+
+@end
+
 @implementation SurveyQuestionTableViewCell
 
 @synthesize questionText, questionTextAnswer, questionSingleAnswer, questionData, questionStepperAnswer, number;
@@ -34,8 +40,11 @@
     [self.questionSingleAnswer setDelegate:self];
     [self.questionSingleAnswer setDataSource:self];
     
+    //Be very careful when changing these min and max values because it could affect the stepper's ability
+    //to decrement because of how it decides whether it was decremented (if it reaches the minimum it
+    //doesn't go further down, so it won't know that they are trying to decrement).
     self.questionStepperAnswer.maximumValue = 9999;
-    self.questionStepperAnswer.minimumValue = 0;
+    self.questionStepperAnswer.minimumValue = -9999;
     self.questionStepperAnswer.value = 0;
     
     //To make the label wrap text
@@ -218,14 +227,43 @@
     [self.questionData setAnswerForJson:stringFromDate];
 }
 
+//To find out whether the stepper was increased or decreased
+- (IBAction)pressedOnStepper:(id)sender {
+    _stepperValueBeforeChange = [(UIStepper*)sender value];
+}
+
+
 //Called when the stepper is clicked
 - (IBAction)valueChanged:(id)sender {
     
     int value = [(UIStepper*)sender value];
     
+    BOOL shouldIncrement = NO;
+    if(_stepperValueBeforeChange < value) {
+        shouldIncrement = YES;
+    }
+    
+    NSString* answerText = [self.questionData getAnswerForJson];
+    int answerValue = [answerText intValue];
+    
+    if(shouldIncrement) {
+        answerValue++;
+    }
+    else {
+        answerValue--;
+    }
+    
+    //Force min and max values
+    if(answerValue < 0) {
+        answerValue = 0;
+    }
+    else if(answerValue > 9999) {
+        answerValue = 9999;
+    }
+    
     [self.questionTextAnswer setText:@""];
-    [self.number setText:[NSString stringWithFormat:@"%d", (int)value]];
-    [self.questionData setAnswerForJson:[NSString stringWithFormat:@"%d", (int)value]];
+    [self.number setText:[NSString stringWithFormat:@"%d", (int)answerValue]];
+    [self.questionData setAnswerForJson:[NSString stringWithFormat:@"%d", (int)answerValue]];
 }
 
 
