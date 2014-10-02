@@ -29,35 +29,8 @@
 
 - (IBAction)cancelSurvey:(id)sender {
     
-    UIAlertController* alert =  [UIAlertController
-                                 alertControllerWithTitle:nil
-                                 message:@"Are you sure you want to cancel this survey?"
-                                 preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction* left = [UIAlertAction
-                           actionWithTitle:@"Yes"
-                           style:UIAlertActionStyleDefault
-                           handler:^(UIAlertAction * action)
-                           {
-                               [alert dismissViewControllerAnimated:YES completion:nil];
-                               [self performSegueWithIdentifier:@"segue.pit.finished" sender:self]; //@"segue.pit.finished" is specified in the storyboard
-                               NSLog(@"User chose to cancel the PIT survey");
-                               
-                           }];
-    
-    UIAlertAction* right = [UIAlertAction
-                            actionWithTitle:@"Cancel"
-                            style:UIAlertActionStyleDefault
-                            handler:^(UIAlertAction * action)
-                            {
-                                [alert dismissViewControllerAnimated:YES completion:nil];
-                                
-                            }];
-    
-    [alert addAction:left];
-    [alert addAction:right];
-    
-    [self presentViewController:alert animated:YES completion:nil];
+    [self performSegueWithIdentifier:@"segue.pit.finished" sender:self]; //@"segue.pit.finished" is specified in the storyboard
+    NSLog(@"User chose to cancel the PIT survey");
     
 }
 
