@@ -131,6 +131,9 @@
     //This type of cell requires special handling
     if([cellIdentifier isEqualToString:@"SinglelineTextBoxForEachOption"]) {
         
+        //This is because it isn't really needed and so that when cells get reused this isn't there
+        [cell.questionTextAnswer setText:@""];
+        
         if(currentQuestion.isFirstLineForEachOption.isTrue) {
             
             cell.clipsToBounds = YES;
