@@ -36,6 +36,7 @@
     
     self.questionStepperAnswer.maximumValue = 9999;
     self.questionStepperAnswer.minimumValue = 0;
+    self.questionStepperAnswer.value = 0;
     
     //To make the label wrap text
     self.questionText.lineBreakMode = NSLineBreakByWordWrapping;
