@@ -43,14 +43,14 @@
 
 -(void)setEnabled:(BOOL)tempIsEnabled {
     
-    _isEnabled = [self getBoolObjectAs:tempIsEnabled];
+    _isEnabled = [Question getBoolObjectAs:tempIsEnabled];
 }
 
 -(BOOL)getEnabled {
     return _isEnabled.isTrue;
 }
 
--(HousingBool*)getBoolObjectAs:(BOOL)trueOrFalse {
++(HousingBool*)getBoolObjectAs:(BOOL)trueOrFalse {
     HousingBool* boolObject = [[HousingBool alloc] init];
     boolObject.isTrue = trueOrFalse;
     return boolObject;

@@ -117,6 +117,10 @@
     if((currentQuestion.textBoxDataType != (id)[NSNull null]) && [currentQuestion.textBoxDataType isEqualToString:@"DateTime"]) {
         cell = [tableView dequeueReusableCellWithIdentifier:@"SinglelineTextBox_WithDatePicker" forIndexPath:indexPath];
     }
+    else if([cellIdentifier isEqualToString:@"SinglelineTextBoxForEachOption"] && currentQuestion.isFirstLineForEachOption.isTrue) {
+        //I have to give it its own cell identifier, or else iOS will re-use this cell and other ones that aren't the first will have the top border
+        cell = [tableView dequeueReusableCellWithIdentifier:@"SinglelineTextBoxForEachOption_First" forIndexPath:indexPath];
+    }
     else {
         cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     }
@@ -126,6 +130,20 @@
     
     //This type of cell requires special handling
     if([cellIdentifier isEqualToString:@"SinglelineTextBoxForEachOption"]) {
+        
+        if(currentQuestion.isFirstLineForEachOption.isTrue) {
+            
+            cell.clipsToBounds = YES;
+            
+            CALayer *topBorder = [CALayer layer];
+            topBorder.borderColor = [UIColor blackColor].CGColor;
+            topBorder.borderWidth = 4;
+            topBorder.frame = CGRectMake(0, -2, CGRectGetWidth(cell.frame), 4);
+            //topBorder.frame = CGRectMake(-1, -1, CGRectGetWidth(cell.frame), CGRectGetHeight(cell.frame)+2);
+            
+            [cell.layer addSublayer:topBorder];
+        }
+        
         if([currentQuestion getAnswerForJson] == [NSNull null] || [@"" isEqualToString:[currentQuestion getAnswerForJson]]) {
             cell.number.text = @"0";
         

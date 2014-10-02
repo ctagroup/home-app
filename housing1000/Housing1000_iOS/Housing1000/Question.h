@@ -23,6 +23,7 @@
 @property (strong, nonatomic) NSString<Ignore> *textBoxDataType;
 @property (strong, nonatomic) NSNumber<Ignore> *surveyDataRowIndex;
 @property (strong, nonatomic) HousingBool<Ignore> *isEnabled;
+@property (strong, nonatomic) HousingBool<Ignore> *isFirstLineForEachOption;
 
 -(void)setEnabled:(BOOL)setEnabled;
 -(BOOL)getEnabled;
@@ -30,5 +31,7 @@
 
 -(id)getAnswerForJson;
 -(void)setAnswerForJson:(id)input;
+
++(HousingBool*)getBoolObjectAs:(BOOL)trueOrFalse;
 
 @end

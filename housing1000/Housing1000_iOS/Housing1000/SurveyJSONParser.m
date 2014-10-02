@@ -44,7 +44,13 @@
             Question *tempQuestion = [self createSurveyObject:currentQuestionInJSON];
             
             for(int j = 0; j < [tempQuestion.options count]; j++) {
-                [surveyQuestions addObject:[self creatSurveyObjectFromOptions:[tempQuestion.options objectAtIndex:j] :tempQuestion]];
+                
+                BOOL isFirst = NO;
+                if(j == 0) {
+                    isFirst = YES;
+                }
+                
+                [surveyQuestions addObject:[self creatSurveyObjectFromOptions:[tempQuestion.options objectAtIndex:j] parent:tempQuestion isFirst:isFirst]];
             }
             
         }
@@ -90,7 +96,7 @@
     return question;
 }
 
-+(Question*)creatSurveyObjectFromOptions:(NSString*)questionText :(Question*)parentQuestion {
++(Question*)creatSurveyObjectFromOptions:(NSString*)questionText parent:(Question*)parentQuestion isFirst:(BOOL)isFirst {
     Question *question = [self createCorrectQuestionType:parentQuestion.textBoxDataType];
     question.jsonId = parentQuestion.jsonId;
     question.questionId = parentQuestion.questionId;
@@ -102,6 +108,13 @@
     question.parentQuestionId = parentQuestion.parentQuestionId;
     question.parentRequiredAnswer = parentQuestion.parentRequiredAnswer;
     question.textBoxDataType = parentQuestion.textBoxDataType;
+    
+    if(isFirst) {
+        question.isFirstLineForEachOption = [Question getBoolObjectAs:YES];
+    }
+    else {
+        question.isFirstLineForEachOption = [Question getBoolObjectAs:NO];
+    }
     
     return question;
 }
