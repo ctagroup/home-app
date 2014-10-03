@@ -27,10 +27,12 @@
     [super viewDidLoad];
     
     //Add a listener for when an alert view's first button is pressed
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(performSubmittedSurveySegue:)
-                                                 name:@"performSurveyFinishedSegue"
-                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(performSubmittedSurveySegue:) name:@"performSurveyFinishedSegue" object:nil];
+    
+    //Add listeners for scrolling the keyboard up if the textfield is hidden
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
     
     _questions = [[NSMutableArray alloc] init];
     _survey = [Survey sharedManager];
@@ -200,6 +202,32 @@
     else {
         return 150;
     }
+}
+
+
+//Listeners for scrolling the tableview up in case there is a textfield covered up by the keyboard
+//============================
+- (void)keyboardWillShow:(NSNotification *)sender
+{
+    CGSize kbSize = [[[sender userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    NSTimeInterval duration = [[[sender userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    [UIView animateWithDuration:duration animations:^{
+        UIEdgeInsets edgeInsets = UIEdgeInsetsMake(0, 0, kbSize.height, 0);
+        [self.tableView setContentInset:edgeInsets];
+        [self.tableView setScrollIndicatorInsets:edgeInsets];
+    }];
+}
+
+- (void)keyboardWillHide:(NSNotification *)sender
+{
+    NSTimeInterval duration = [[[sender userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    [UIView animateWithDuration:duration animations:^{
+        UIEdgeInsets edgeInsets = UIEdgeInsetsZero;
+        [self.tableView setContentInset:edgeInsets];
+        [self.tableView setScrollIndicatorInsets:edgeInsets];
+    }];
 }
 
 
