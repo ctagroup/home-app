@@ -57,7 +57,9 @@
 
 - (IBAction)clearTextFields:(id)sender {
     self.usernameTextField.text = nil;
+    [self.usernameTextField resignFirstResponder];
     self.passwordTextField.text = nil;
+    [self.passwordTextField resignFirstResponder];
 }
 
 - (IBAction)login:(id)sender {
