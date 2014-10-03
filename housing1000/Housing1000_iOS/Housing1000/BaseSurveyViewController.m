@@ -121,6 +121,12 @@
         //I have to give it its own cell identifier, or else iOS will re-use this cell and other ones that aren't the first will have the top border
         cell = [tableView dequeueReusableCellWithIdentifier:@"SinglelineTextBoxForEachOption_First" forIndexPath:indexPath];
     }
+    else if([cellIdentifier isEqualToString:@"SinglelineTextBox"] && (currentQuestion.textBoxDataType != (id)[NSNull null])
+            && [currentQuestion.textBoxDataType isEqualToString:@"int"]) {
+        //If the data type for the text field is an int, make it a number pad. Otherwise, leave it as the default
+        //I have to give it its own cell identifier, or else iOS will re-use the keyboard type and it gets mixed up when it shouldn't
+        cell = [tableView dequeueReusableCellWithIdentifier:@"SinglelineTextBox_int" forIndexPath:indexPath];
+    }
     else {
         cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     }
@@ -152,10 +158,10 @@
         
         } else {
             cell.number.text = [currentQuestion getAnswerForJson];
-            cell.questionStepperAnswer.value = [[currentQuestion getAnswerForJson] doubleValue];    //This is a problem if they ever have text boxes in the PIT section
+            cell.questionStepperAnswer.value = [[currentQuestion getAnswerForJson] doubleValue];
         }
     }
-    //So does this type of cell
+    //So does this type of cell. We set the text in the textfield to what was answered previously or else it gets jumbled up.
     else if([cellIdentifier isEqualToString:@"SinglelineTextBox"]) {
         if([currentQuestion getAnswerForJson] != [NSNull null]) {
             [cell.questionTextAnswer setText:[currentQuestion getAnswerForJson]];

@@ -306,6 +306,44 @@
                                             <outlet property="questionTextAnswer" destination="eCO-iG-0xw" id="OAu-Da-Itu"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBox_int" rowHeight="112" id="nnD-Md-J3d" customClass="SurveyQuestionTableViewCell">
+                                        <rect key="frame" x="0.0" y="86" width="320" height="112"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nnD-Md-J3d" id="1WJ-HU-V2h">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="111"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Y8z-nd-Row">
+                                                    <rect key="frame" x="20" y="61" width="280" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                </textField>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="QuestionText" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="iRC-7J-b7k">
+                                                    <rect key="frame" x="20" y="20" width="280" height="21"/>
+                                                    <color key="tintColor" red="0.19436167509999999" green="0.25783827860000003" blue="0.53804347829999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="21" id="w9A-VL-0Kq"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <color key="textColor" red="0.079030481459999996" green="0.56300849659999996" blue="0.77766262760000004" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="iRC-7J-b7k" firstAttribute="leading" secondItem="1WJ-HU-V2h" secondAttribute="leading" constant="20" symbolic="YES" id="8MK-sT-RBs"/>
+                                                <constraint firstItem="Y8z-nd-Row" firstAttribute="leading" secondItem="iRC-7J-b7k" secondAttribute="leading" id="Itd-pc-0h1"/>
+                                                <constraint firstItem="iRC-7J-b7k" firstAttribute="trailing" secondItem="Y8z-nd-Row" secondAttribute="trailing" id="QGr-Yc-juR"/>
+                                                <constraint firstItem="iRC-7J-b7k" firstAttribute="top" secondItem="1WJ-HU-V2h" secondAttribute="top" constant="20" symbolic="YES" id="SgK-sS-f6b"/>
+                                                <constraint firstAttribute="trailing" secondItem="iRC-7J-b7k" secondAttribute="trailing" constant="20" symbolic="YES" id="vvh-jR-9jy"/>
+                                                <constraint firstAttribute="bottom" secondItem="Y8z-nd-Row" secondAttribute="bottom" constant="20" symbolic="YES" id="wGL-vX-f7f"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <accessibility key="accessibilityConfiguration" label=""/>
+                                        <connections>
+                                            <outlet property="questionText" destination="iRC-7J-b7k" id="zrz-C1-eug"/>
+                                            <outlet property="questionTextAnswer" destination="Y8z-nd-Row" id="YrK-is-SJf"/>
+                                        </connections>
+                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBoxForEachOption_First" rowHeight="76" id="2NI-eV-7ct" customClass="SurveyQuestionTableViewCell">
                                         <rect key="frame" x="0.0" y="573" width="320" height="76"/>
                                         <autoresizingMask key="autoresizingMask"/>
@@ -585,6 +623,44 @@
                                         <connections>
                                             <outlet property="questionSingleAnswer" destination="ojY-n3-CEx" id="2aR-Nw-bom"/>
                                             <outlet property="questionText" destination="bO1-bN-L8C" id="uXp-UV-JRw"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBox_int" rowHeight="112" id="BNi-SC-nlc" customClass="SurveyQuestionTableViewCell">
+                                        <rect key="frame" x="0.0" y="86" width="320" height="112"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BNi-SC-nlc" id="CbG-8K-0TS">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="111"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fCa-3c-Nt8">
+                                                    <rect key="frame" x="20" y="61" width="280" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                </textField>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="QuestionText" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="abB-ji-IHo">
+                                                    <rect key="frame" x="20" y="20" width="280" height="21"/>
+                                                    <color key="tintColor" red="0.19436167509999999" green="0.25783827860000003" blue="0.53804347829999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="21" id="D04-Ia-C2L"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <color key="textColor" red="0.079030481459999996" green="0.56300849659999996" blue="0.77766262760000004" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="abB-ji-IHo" firstAttribute="trailing" secondItem="fCa-3c-Nt8" secondAttribute="trailing" id="C1K-mo-ETg"/>
+                                                <constraint firstItem="abB-ji-IHo" firstAttribute="leading" secondItem="CbG-8K-0TS" secondAttribute="leading" constant="20" symbolic="YES" id="XyI-C5-Izx"/>
+                                                <constraint firstAttribute="trailing" secondItem="abB-ji-IHo" secondAttribute="trailing" constant="20" symbolic="YES" id="dqB-GZ-rhg"/>
+                                                <constraint firstAttribute="bottom" secondItem="fCa-3c-Nt8" secondAttribute="bottom" constant="20" symbolic="YES" id="ivF-V4-GCg"/>
+                                                <constraint firstItem="abB-ji-IHo" firstAttribute="top" secondItem="CbG-8K-0TS" secondAttribute="top" constant="20" symbolic="YES" id="mcP-sW-YNa"/>
+                                                <constraint firstItem="fCa-3c-Nt8" firstAttribute="leading" secondItem="abB-ji-IHo" secondAttribute="leading" id="sOP-M3-RXb"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <accessibility key="accessibilityConfiguration" label=""/>
+                                        <connections>
+                                            <outlet property="questionText" destination="abB-ji-IHo" id="MZC-Wt-LwE"/>
+                                            <outlet property="questionTextAnswer" destination="fCa-3c-Nt8" id="y7I-g8-fe1"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBoxForEachOption" rowHeight="76" id="N1n-yo-Nnc" customClass="SurveyQuestionTableViewCell">
@@ -875,6 +951,44 @@
                                         <connections>
                                             <outlet property="questionText" destination="HIC-Fs-5DP" id="qlF-jY-Ofg"/>
                                             <outlet property="questionTextAnswer" destination="uSc-s8-xHg" id="Pty-pF-NOm"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBox_int" rowHeight="112" id="oml-3O-ZCS" customClass="SurveyQuestionTableViewCell">
+                                        <rect key="frame" x="0.0" y="86" width="320" height="112"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oml-3O-ZCS" id="vab-19-Bi6">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="111"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3VR-mq-C40">
+                                                    <rect key="frame" x="20" y="61" width="280" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                </textField>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="QuestionText" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="jsL-5z-6ga">
+                                                    <rect key="frame" x="20" y="20" width="280" height="21"/>
+                                                    <color key="tintColor" red="0.19436167509999999" green="0.25783827860000003" blue="0.53804347829999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="21" id="Q2Q-OX-tXL"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <color key="textColor" red="0.079030481459999996" green="0.56300849659999996" blue="0.77766262760000004" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="jsL-5z-6ga" firstAttribute="trailing" secondItem="3VR-mq-C40" secondAttribute="trailing" id="BRO-tJ-BPj"/>
+                                                <constraint firstItem="jsL-5z-6ga" firstAttribute="leading" secondItem="vab-19-Bi6" secondAttribute="leading" constant="20" symbolic="YES" id="NM7-U2-yVA"/>
+                                                <constraint firstAttribute="bottom" secondItem="3VR-mq-C40" secondAttribute="bottom" constant="20" symbolic="YES" id="ap5-3J-QJm"/>
+                                                <constraint firstAttribute="trailing" secondItem="jsL-5z-6ga" secondAttribute="trailing" constant="20" symbolic="YES" id="man-a9-8rb"/>
+                                                <constraint firstItem="jsL-5z-6ga" firstAttribute="top" secondItem="vab-19-Bi6" secondAttribute="top" constant="20" symbolic="YES" id="nAb-uk-zd8"/>
+                                                <constraint firstItem="3VR-mq-C40" firstAttribute="leading" secondItem="jsL-5z-6ga" secondAttribute="leading" id="wA0-Ho-GPu"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <accessibility key="accessibilityConfiguration" label=""/>
+                                        <connections>
+                                            <outlet property="questionText" destination="jsL-5z-6ga" id="prh-cV-5GB"/>
+                                            <outlet property="questionTextAnswer" destination="3VR-mq-C40" id="89E-vu-iMK"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBoxForEachOption_First" rowHeight="76" id="wKr-U5-aUN" customClass="SurveyQuestionTableViewCell">

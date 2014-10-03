@@ -30,12 +30,6 @@
     self.questionTextAnswer.returnKeyType = UIReturnKeyDone;
     [self.questionTextAnswer setDelegate:self];
     
-    //If the data type for the text field is an int, make it a number pad
-    //Otherwise, leave it as the default
-    if((self.questionData.textBoxDataType != (id)[NSNull null]) && [self.questionData.textBoxDataType isEqualToString:@"int"]) {
-        [self.questionTextAnswer setKeyboardType:UIKeyboardTypeNumberPad];
-    }
-    
     //For loading the picker values
     [self.questionSingleAnswer setDelegate:self];
     [self.questionSingleAnswer setDataSource:self];
