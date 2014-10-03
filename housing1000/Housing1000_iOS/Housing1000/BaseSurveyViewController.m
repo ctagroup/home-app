@@ -155,6 +155,15 @@
             cell.questionStepperAnswer.value = [[currentQuestion getAnswerForJson] doubleValue];    //This is a problem if they ever have text boxes in the PIT section
         }
     }
+    //So does this type of cell
+    else if([cellIdentifier isEqualToString:@"SinglelineTextBox"]) {
+        if([currentQuestion getAnswerForJson] != [NSNull null]) {
+            [cell.questionTextAnswer setText:[currentQuestion getAnswerForJson]];
+        }
+        else {
+            [cell.questionTextAnswer setText:@""];
+        }
+    }
     
     return cell;
 }
