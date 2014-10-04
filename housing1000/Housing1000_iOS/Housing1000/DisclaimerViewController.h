@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DisclaimerViewController : UIViewController
-@property (weak, nonatomic) IBOutlet UITextView *scrollableDisclaimer;
-@property (weak, nonatomic) IBOutlet UIImageView *signatureExample;
+@interface DisclaimerViewController : UIViewController <UITextViewDelegate, UIScrollViewDelegate>
+//@property (weak, nonatomic) IBOutlet UITextView *scrollableDisclaimer;
+//@property (weak, nonatomic) IBOutlet UIImageView *signatureExample;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @end
