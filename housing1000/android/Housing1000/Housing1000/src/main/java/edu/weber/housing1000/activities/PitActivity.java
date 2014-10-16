@@ -19,6 +19,7 @@ import java.io.IOException;
 
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.SurveyService;
+import edu.weber.housing1000.SurveyType;
 import edu.weber.housing1000.Utils;
 import edu.weber.housing1000.data.Survey;
 import edu.weber.housing1000.data.SurveyListing;
@@ -28,6 +29,7 @@ import edu.weber.housing1000.helpers.ErrorHelper;
 import edu.weber.housing1000.helpers.RESTHelper;
 import edu.weber.housing1000.questions.Question;
 import edu.weber.housing1000.questions.QuestionJSONDeserializer;
+import edu.weber.housing1000.sqllite.DatabaseConnector;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -166,25 +168,28 @@ public class PitActivity extends ActionBarActivity {
 
                     surveyListing = new SurveyListing(result.getSurveyId(), result.getTitle(), json);
 
-                    onGetPitSurveyTaskCompleted(true);
+                    onGetPitSurveyTaskCompleted(true, json);
                 } catch (IOException e) {
                     e.printStackTrace();
-                    onGetPitSurveyTaskCompleted(false);
+                    onGetPitSurveyTaskCompleted(false, null);
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                onGetPitSurveyTaskCompleted(false);
+                onGetPitSurveyTaskCompleted(false, null);
             }
         });
     }
 
-    public void onGetPitSurveyTaskCompleted(boolean success) {
+    public void onGetPitSurveyTaskCompleted(boolean success, String json) {
         try {
             dismissDialog();
 
             if (success) {
+                DatabaseConnector databaseConnector = new DatabaseConnector(getBaseContext());
+                databaseConnector.updateSurvey(SurveyType.PIT_SURVEY, json);
+
                 PitFragment pitFragment = (PitFragment) getSupportFragmentManager().findFragmentByTag("PIT");
 
                 if (!isFinishing()) {

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import edu.weber.housing1000.SurveyType;
 import edu.weber.housing1000.data.SurveyListing;
 import edu.weber.housing1000.fragments.ProgressDialogFragment;
 import edu.weber.housing1000.fragments.SurveyListFragment;
@@ -23,6 +25,7 @@ import edu.weber.housing1000.helpers.RESTHelper;
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.SurveyService;
 import edu.weber.housing1000.Utils;
+import edu.weber.housing1000.sqllite.DatabaseConnector;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -111,17 +114,23 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
         service.listSurveys(new Callback<ArrayList<SurveyListing>>() {
             @Override
             public void success(ArrayList<SurveyListing> surveyListings, Response response) {
-                onGetSurveyListingsTaskCompleted(surveyListings);
+                try {
+                    String json = RESTHelper.convertStreamToString(response.getBody().in());
+                    onGetSurveyListingsTaskCompleted(surveyListings, json);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    onGetSurveyListingsTaskCompleted(null, null);
+                }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                onGetSurveyListingsTaskCompleted(null);
+                onGetSurveyListingsTaskCompleted(null, null);
             }
         });
     }
 
-    public void onGetSurveyListingsTaskCompleted(ArrayList<SurveyListing> surveyListings) {
+    public void onGetSurveyListingsTaskCompleted(ArrayList<SurveyListing> surveyListings, String json) {
         dismissDialog();
 
         SurveyListFragment fragment = (SurveyListFragment) this.getSupportFragmentManager().findFragmentByTag("SurveyListFragment");
@@ -129,6 +138,12 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
         this.surveyListings = surveyListings;
 
         if (surveyListings != null && surveyListings.size() > 0) {
+
+            if(json != null) {
+                DatabaseConnector databaseConnector = new DatabaseConnector(getBaseContext());
+                databaseConnector.updateSurvey(SurveyType.SURVEY_LISTING, json);
+            }
+
             surveyAdapter = new ArrayAdapter<>(
                     SurveyListActivity.this,
                     android.R.layout.simple_list_item_1,
@@ -150,7 +165,7 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
         surveysListView.setOnItemClickListener(surveyClickListener);
 
         if (surveyListings != null && !surveyListings.isEmpty())
-            onGetSurveyListingsTaskCompleted(surveyListings);
+            onGetSurveyListingsTaskCompleted(surveyListings, null);
         else
             getSurveyList();
     }
@@ -201,6 +216,10 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
         if (dismissDialog()) {
 
             if (!surveyJson.isEmpty()) {
+
+                DatabaseConnector databaseConnector = new DatabaseConnector(getBaseContext());
+                databaseConnector.updateSurvey(SurveyType.BASIC_SURVEY, surveyJson);
+
                 chosenSurveyListing.setJson(surveyJson);
 
                 Intent launchSurvey = new Intent(SurveyListActivity.this,

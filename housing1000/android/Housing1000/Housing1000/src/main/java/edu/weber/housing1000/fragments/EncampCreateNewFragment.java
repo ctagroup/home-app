@@ -13,9 +13,11 @@ import java.io.IOException;
 
 import edu.weber.housing1000.EncampmentService;
 import edu.weber.housing1000.R;
+import edu.weber.housing1000.SurveyType;
 import edu.weber.housing1000.Utils;
 import edu.weber.housing1000.data.SurveyListing;
 import edu.weber.housing1000.helpers.RESTHelper;
+import edu.weber.housing1000.sqllite.DatabaseConnector;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -64,6 +66,8 @@ public class EncampCreateNewFragment extends BaseSurveyFragment {
                     SurveyListing encampmentSurvey = new SurveyListing();
 
                     if (!json.isEmpty()) {
+                        updateSurveyDatabase(json);
+
                         encampmentSurvey.setJson(json);
 
                         ScrollView questionUI = generateQuestionUi(encampmentSurvey);
@@ -89,6 +93,11 @@ public class EncampCreateNewFragment extends BaseSurveyFragment {
                 displayErrorMessage();
             }
         });
+    }
+
+    private void updateSurveyDatabase(String json) {
+        DatabaseConnector databaseConnector = new DatabaseConnector(this.getActivity().getBaseContext());
+        databaseConnector.updateSurvey(SurveyType.ENCAMPMENT_SURVEY, json);
     }
 
     @Override
