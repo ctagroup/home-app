@@ -12,9 +12,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import edu.weber.housing1000.SurveyType;
 import edu.weber.housing1000.data.SurveyListing;
@@ -93,14 +97,24 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
         return super.onOptionsItemSelected(item);
     }
 
-    public void getSurveyList()
-    {
+    public void getSurveyList() {
         if (surveysListView != null)
             surveysListView.setAdapter(null);
 
-        if (!Utils.isOnline(this))
-        {
-            Utils.showNoInternetDialog(this, false);
+        if (!Utils.isOnline(this)) {
+
+            DatabaseConnector databaseConnector = new DatabaseConnector(getBaseContext());
+            String surveyJson = databaseConnector.queryForSavedSurveyJson(SurveyType.SURVEY_LISTING);
+
+            if(surveyJson != null) {
+                Gson gson = new Gson();
+                ArrayList<SurveyListing> surveys = new ArrayList<>(Arrays.asList(gson.fromJson(surveyJson, SurveyListing[].class)));
+                onGetSurveyListingsTaskCompleted(surveys, null);
+            }
+            else {
+                Utils.showNoInternetDialog(this, false);
+            }
+
             return;
         }
 
@@ -183,8 +197,7 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
         } // end method onItemClick
     };
 
-    private void loadSurvey(long rowId)
-    {
+    private void loadSurvey(long rowId) {
         // Start the loading dialog
         showProgressDialog(getString(R.string.please_wait), getString(R.string.downloading_survey), "Dialog");
 
@@ -236,8 +249,7 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
         }
     }
 
-    public void showProgressDialog(String title, String message, String tag)
-    {
+    public void showProgressDialog(String title, String message, String tag) {
         progressDialogFragment = ProgressDialogFragment.newInstance(title, message);
         progressDialogFragment.show(getSupportFragmentManager(), tag);
     }

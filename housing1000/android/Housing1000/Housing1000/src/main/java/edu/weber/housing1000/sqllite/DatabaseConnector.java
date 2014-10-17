@@ -8,10 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.util.Log;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 import edu.weber.housing1000.SurveyType;
 
 /**
@@ -48,6 +44,11 @@ public class DatabaseConnector {
         }
     }
 
+    /**
+     * For the given survey, either add it if it isn't in the database or overwrite what is there
+     * @param surveyType The type of survey to update
+     * @param json The json representation of the survey
+     */
     public void updateSurvey(SurveyType surveyType, String json) {
 
         ContentValues updateSurvey = new ContentValues();
@@ -71,6 +72,35 @@ public class DatabaseConnector {
                     + ". There should only be one of each type.");
         }
         close();
+    }
+
+    /**
+     * Retrieves stored Json for the given survey type
+     * @param surveyType The type of survey to try and retrieve
+     * @return The json representation of the survey
+     */
+    public String queryForSavedSurveyJson(SurveyType surveyType) {
+        open();
+        Cursor results = database.query("RetrievedSurveys", null, "Type = '" + surveyType.toString() + "'", null, null, null, null);
+
+        String jsonToReturn = null;
+        if(results.getCount() == 1) {
+            Log.d("HOUSING1000", "There is one retrieved survey in the database of type " + surveyType.toString());
+            if(results.moveToFirst()) {
+                results.moveToFirst();
+                jsonToReturn = results.getString(3);
+            }
+        }
+        else if(results.getCount() == 0) {
+            Log.d("HOUSING1000", "There are no surveys in the database of type " + surveyType.toString());
+        }
+        else {
+            close();
+            throw new IllegalArgumentException("There is more than one survey in the RetrievedSurveys database of type " + surveyType.toString()
+                    + ". There should only be one of each type.");
+        }
+        close();
+        return jsonToReturn;
     }
 
 
