@@ -2,9 +2,9 @@ package edu.weber.housing1000.activities;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -41,7 +40,6 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
 
     private ListView surveysListView;
     private ArrayList<SurveyListing> surveyListings;
-    private ArrayAdapter<SurveyListing> surveyAdapter;
 
     private SurveyListing chosenSurveyListing;
 
@@ -104,7 +102,7 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
         if (!Utils.isOnline(this)) {
 
             DatabaseConnector databaseConnector = new DatabaseConnector(getBaseContext());
-            String surveyJson = databaseConnector.queryForSavedSurveyJson(SurveyType.SURVEY_LISTING);
+            String surveyJson = databaseConnector.queryForSavedSurveyJson(SurveyType.SURVEY_LISTING, "0");
 
             if(surveyJson != null) {
                 Gson gson = new Gson();
@@ -155,10 +153,10 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
 
             if(json != null) {
                 DatabaseConnector databaseConnector = new DatabaseConnector(getBaseContext());
-                databaseConnector.updateSurvey(SurveyType.SURVEY_LISTING, json);
+                databaseConnector.updateSurvey(SurveyType.SURVEY_LISTING, json, "0"); //The "survey listing" survey doesn't have a survey id, so we just always set it to null
             }
 
-            surveyAdapter = new ArrayAdapter<>(
+            ArrayAdapter<SurveyListing> surveyAdapter = new ArrayAdapter<>(
                     SurveyListActivity.this,
                     android.R.layout.simple_list_item_1,
                     surveyListings);
@@ -197,7 +195,27 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
         } // end method onItemClick
     };
 
-    private void loadSurvey(long rowId) {
+    private void loadSurvey(final long rowId) {
+
+        if (!Utils.isOnline(this)) {
+
+            DatabaseConnector databaseConnector = new DatabaseConnector(getBaseContext());
+            String surveyJson = databaseConnector.queryForSavedSurveyJson(SurveyType.BASIC_SURVEY, Long.toString(rowId));
+
+            if(surveyJson != null) {
+                // Start the loading dialog
+                showProgressDialog(getString(R.string.please_wait), getString(R.string.downloading_survey), "Dialog");
+
+                new GetSurveyFromDatabaseTask().execute(surveyJson, Long.toString(rowId));
+            }
+            else {
+                Utils.showNoInternetDialog(this, false);
+            }
+
+            return;
+        }
+
+
         // Start the loading dialog
         showProgressDialog(getString(R.string.please_wait), getString(R.string.downloading_survey), "Dialog");
 
@@ -210,7 +228,7 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
             public void success(String result, Response response) {
                 try {
                     String json = RESTHelper.convertStreamToString(response.getBody().in());
-                    onGetSingleSurveyTaskCompleted(json);
+                    onGetSingleSurveyTaskCompleted(json, Long.toString(rowId));
                 } catch (IOException e) {
                     e.printStackTrace();
                     onGetSingleSurveyTaskCompleted("");
@@ -225,13 +243,17 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
     }
 
     public void onGetSingleSurveyTaskCompleted(String surveyJson) {
+        onGetSingleSurveyTaskCompleted(surveyJson, null);
+    }
+
+    public void onGetSingleSurveyTaskCompleted(String surveyJson, String surveyId) {
         // If user hits back, loading will not happen
         if (dismissDialog()) {
 
             if (!surveyJson.isEmpty()) {
 
                 DatabaseConnector databaseConnector = new DatabaseConnector(getBaseContext());
-                databaseConnector.updateSurvey(SurveyType.BASIC_SURVEY, surveyJson);
+                databaseConnector.updateSurvey(SurveyType.BASIC_SURVEY, surveyJson, surveyId);
 
                 chosenSurveyListing.setJson(surveyJson);
 
@@ -246,6 +268,22 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
                 builder.setMessage(getString(R.string.error_problem_downloading_survey));
                 Utils.centerDialogMessageAndShow(builder);
             }
+        }
+    }
+
+    /**
+     * For handling when the survey json is retrieved from the database
+     */
+    private class GetSurveyFromDatabaseTask extends AsyncTask<String, Object, String[]> {
+
+        @Override
+        protected String[] doInBackground(String... params) {
+            return params;
+        }
+
+        @Override
+        protected void onPostExecute(String... params) {
+            onGetSingleSurveyTaskCompleted(params[0], params[1]);
         }
     }
 

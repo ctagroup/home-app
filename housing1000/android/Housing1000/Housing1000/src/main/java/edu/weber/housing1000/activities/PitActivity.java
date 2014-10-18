@@ -7,12 +7,14 @@ import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
@@ -77,15 +79,8 @@ public class PitActivity extends ActionBarActivity {
             Utils.setActionBarColorToDefault(this);
 
             if (savedInstanceState == null) {
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.container, PitFragment.newInstance(this), "PIT")
-                        .commit();
-
-                if (Utils.isOnline(this)) {
-                    getPitData();
-                } else {
-                    Utils.showNoInternetDialog(this, true);
-                }
+                getSupportFragmentManager().beginTransaction().add(R.id.container, PitFragment.newInstance(this), "PIT").commit();
+                getPitData();
             } else {
                 surveyListing = (SurveyListing) savedInstanceState.getSerializable("surveyListing");
             }
@@ -153,10 +148,33 @@ public class PitActivity extends ActionBarActivity {
     }
 
     public void getPitData() {
+
+        if (!Utils.isOnline(this)) {
+
+            DatabaseConnector databaseConnector = new DatabaseConnector(getBaseContext());
+            String surveyJson = databaseConnector.queryForSavedSurveyJson(SurveyType.PIT_SURVEY, "0");
+
+            if(surveyJson != null) {
+                // Start the loading dialog
+                showProgressDialog(getString(R.string.please_wait), getString(R.string.downloading_pit), "");
+
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().registerTypeAdapter(Question.class, new QuestionJSONDeserializer()).create();
+                Survey survey = gson.fromJson(surveyJson, Survey.class);
+
+                new GetSurveyFromDatabaseTask().execute(surveyJson, survey);
+            }
+            else {
+                Utils.showNoInternetDialog(this, true);
+            }
+
+            return;
+        }
+
+
         // Start the loading dialog
         showProgressDialog(getString(R.string.please_wait), getString(R.string.downloading_pit), "");
 
-        RestAdapter restAdapter = RESTHelper.setUpRestAdapter(this, new GsonBuilder().excludeFieldsWithoutExposeAnnotation().registerTypeAdapter(Question.class, new QuestionJSONDeserializer()).create());
+        RestAdapter restAdapter = RESTHelper.setUpRestAdapter(this, getGsonForDeserializingPitSurvey());
 
         SurveyService service = restAdapter.create(SurveyService.class);
 
@@ -187,8 +205,11 @@ public class PitActivity extends ActionBarActivity {
             dismissDialog();
 
             if (success) {
-                DatabaseConnector databaseConnector = new DatabaseConnector(getBaseContext());
-                databaseConnector.updateSurvey(SurveyType.PIT_SURVEY, json);
+
+                if(json != null) {
+                    DatabaseConnector databaseConnector = new DatabaseConnector(getBaseContext());
+                    databaseConnector.updateSurvey(SurveyType.PIT_SURVEY, json, "0");
+                }
 
                 PitFragment pitFragment = (PitFragment) getSupportFragmentManager().findFragmentByTag("PIT");
 
@@ -247,6 +268,32 @@ public class PitActivity extends ActionBarActivity {
                 });
 
         Utils.centerDialogMessageAndShow(builder);
+    }
+
+    private Gson getGsonForDeserializingPitSurvey() {
+        return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().registerTypeAdapter(Question.class, new QuestionJSONDeserializer()).create();
+    }
+
+    /**
+     * For handling when the survey json is retrieved from the database
+     */
+    private class GetSurveyFromDatabaseTask extends AsyncTask<Object, Object, Object[]> {
+
+        @Override
+        protected Object[] doInBackground(Object... params) {
+            return params;
+        }
+
+        @Override
+        protected void onPostExecute(Object... params) {
+
+            String surveyJson = (String)params[0];
+            Survey survey = (Survey)params[1];
+
+            surveyListing = new SurveyListing(survey.getSurveyId(), survey.getTitle(), surveyJson);
+
+            onGetPitSurveyTaskCompleted(true, null);
+        }
     }
 
     public void showProgressDialog(String title, String message, String tag) {

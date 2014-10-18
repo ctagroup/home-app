@@ -50,6 +50,30 @@ public class EncampCreateNewFragment extends BaseSurveyFragment {
 
     private void getEncampmentQuestions() {
 
+        if (!Utils.isOnline(this.getActivity())) {
+
+            DatabaseConnector databaseConnector = new DatabaseConnector(this.getActivity().getBaseContext());
+            String surveyJson = databaseConnector.queryForSavedSurveyJson(SurveyType.ENCAMPMENT_SURVEY, "0");
+
+            if(surveyJson != null) {
+
+                SurveyListing encampmentSurvey = new SurveyListing();
+                encampmentSurvey.setJson(surveyJson);
+
+                ScrollView questionUI = generateQuestionUi(encampmentSurvey);
+
+                if (questionUI != null) {
+                    rootLayout.addView(questionUI);
+                }
+
+            }
+            else {
+                Utils.showNoInternetDialog(this.getActivity(), true);
+            }
+
+            return;
+        }
+
         // Start the loading dialog
         showProgressDialog(getString(R.string.please_wait), "Downloading new encampment site questions...", "");
 
@@ -97,7 +121,7 @@ public class EncampCreateNewFragment extends BaseSurveyFragment {
 
     private void updateSurveyDatabase(String json) {
         DatabaseConnector databaseConnector = new DatabaseConnector(this.getActivity().getBaseContext());
-        databaseConnector.updateSurvey(SurveyType.ENCAMPMENT_SURVEY, json);
+        databaseConnector.updateSurvey(SurveyType.ENCAMPMENT_SURVEY, json, "0");
     }
 
     @Override

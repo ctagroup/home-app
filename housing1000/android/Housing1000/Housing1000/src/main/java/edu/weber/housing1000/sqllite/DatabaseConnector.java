@@ -49,27 +49,28 @@ public class DatabaseConnector {
      * @param surveyType The type of survey to update
      * @param json The json representation of the survey
      */
-    public void updateSurvey(SurveyType surveyType, String json) {
+    public void updateSurvey(SurveyType surveyType, String json, String surveyId) {
 
         ContentValues updateSurvey = new ContentValues();
         updateSurvey.put("Type", surveyType.toString());
         updateSurvey.put("Json", json);
+        updateSurvey.put("SurveyId", surveyId);
 
         open();
-        Cursor results = database.query("RetrievedSurveys", null, "Type = '" + surveyType.toString() + "'", null, null, null, null);
+        Cursor results = database.query("RetrievedSurveys", null, "Type = '" + surveyType.toString() + "' and SurveyId = '" + surveyId + "'", null, null, null, null);
 
         if(results.getCount() == 1) {
-            Log.d("HOUSING1000", "There is one retrieved survey in the database of type " + surveyType.toString());
+            Log.d("HOUSING1000", "There is one retrieved survey in the database of type " + surveyType.toString() + " with an ID of " + surveyId);
             database.update("RetrievedSurveys", updateSurvey, "Type = '" + surveyType.toString() + "'", null);
         }
         else if(results.getCount() == 0) {
-            Log.d("HOUSING1000", "There are no surveys in the database of type " + surveyType.toString());
+            Log.d("HOUSING1000", "There are no surveys in the database of type " + surveyType.toString() + " with an ID of " + surveyId);
             database.insert("RetrievedSurveys", null, updateSurvey);
         }
         else {
             close();
             throw new IllegalArgumentException("There is more than one survey in the RetrievedSurveys database of type " + surveyType.toString()
-                    + ". There should only be one of each type.");
+                    + " with an ID of " + surveyId + ", but there were " + results.getCount() + ". There should only be one or none.");
         }
         close();
     }
@@ -79,25 +80,25 @@ public class DatabaseConnector {
      * @param surveyType The type of survey to try and retrieve
      * @return The json representation of the survey
      */
-    public String queryForSavedSurveyJson(SurveyType surveyType) {
+    public String queryForSavedSurveyJson(SurveyType surveyType, String surveyId) {
         open();
-        Cursor results = database.query("RetrievedSurveys", null, "Type = '" + surveyType.toString() + "'", null, null, null, null);
+        Cursor results = database.query("RetrievedSurveys", null, "Type = '" + surveyType.toString() + "' and SurveyId = '" + surveyId + "'", null, null, null, null);
 
         String jsonToReturn = null;
         if(results.getCount() == 1) {
-            Log.d("HOUSING1000", "There is one retrieved survey in the database of type " + surveyType.toString());
+            Log.d("HOUSING1000", "There is one retrieved survey in the database of type " + surveyType.toString()  + " with an ID of " + surveyId);
             if(results.moveToFirst()) {
                 results.moveToFirst();
                 jsonToReturn = results.getString(3);
             }
         }
         else if(results.getCount() == 0) {
-            Log.d("HOUSING1000", "There are no surveys in the database of type " + surveyType.toString());
+            Log.d("HOUSING1000", "There are no surveys in the database of type " + surveyType.toString() + " with an ID of " + surveyId);
         }
         else {
             close();
             throw new IllegalArgumentException("There is more than one survey in the RetrievedSurveys database of type " + surveyType.toString()
-                    + ". There should only be one of each type.");
+                    + " with an ID of " + surveyId + ", but there were " + results.getCount() + ". There should only be one or none.");
         }
         close();
         return jsonToReturn;
@@ -117,7 +118,7 @@ public class DatabaseConnector {
         @Override
         public void onCreate(SQLiteDatabase db) {
             String createRetrievedQuery = "CREATE TABLE RetrievedSurveys(Id INTEGER primary key autoincrement, Type TEXT, " +
-                    "DateUpdated DATETIME DEFAULT CURRENT_TIMESTAMP, Json TEXT);";
+                    "DateUpdated DATETIME DEFAULT CURRENT_TIMESTAMP, Json TEXT, SurveyId TEXT);";
             String createSubmittedQuery = "CREATE TABLE SubmittedJson(Id INTEGER primary key autoincrement, Json TEXT);";
 
             db.execSQL(createRetrievedQuery + createSubmittedQuery); //Create the database

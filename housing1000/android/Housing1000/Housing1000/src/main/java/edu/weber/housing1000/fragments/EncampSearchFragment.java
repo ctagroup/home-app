@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import edu.weber.housing1000.EncampmentService;
 import edu.weber.housing1000.R;
+import edu.weber.housing1000.Utils;
 import edu.weber.housing1000.activities.EncampmentActivity;
 import edu.weber.housing1000.data.EncampmentSite;
 import edu.weber.housing1000.helpers.RESTHelper;
@@ -53,8 +54,13 @@ public class EncampSearchFragment extends Fragment {
         ab.setTitle("Search Results");
 
         if (savedInstanceState == null) {
-            String searchString = getArguments().getString(EncampmentActivity.ENCAMP_SEARCH_BUNDLE_TAG);
-            getSearchResults(searchString);
+            if (Utils.isOnline(this.getActivity())) {
+                String searchString = getArguments().getString(EncampmentActivity.ENCAMP_SEARCH_BUNDLE_TAG);
+                getSearchResults(searchString);
+            }
+            else {
+                Utils.showNoInternetDialog(this.getActivity(), true);
+            }
         } else {
             encampmentSites = savedInstanceState.getParcelableArrayList("encampmentSites");
 
