@@ -52,6 +52,11 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
     public abstract void saveAnswers();
 
     /**
+     * In the case of the internet being unavailable, this is to save the answers to the database
+     */
+    public abstract void saveAnswersToDatabase();
+
+    /**
      * Serializes the surveyResponse to JSON
      *
      * @return Survey response in JSON form
@@ -130,7 +135,7 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
                 }
                 else
                 {
-                    Utils.showNoInternetDialog(getActivity(), false);
+                    saveAnswersToDatabase();
                 }
 
             }

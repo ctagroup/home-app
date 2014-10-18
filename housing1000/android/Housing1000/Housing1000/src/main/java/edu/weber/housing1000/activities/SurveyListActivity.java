@@ -110,7 +110,7 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
                 onGetSurveyListingsTaskCompleted(surveys, null);
             }
             else {
-                Utils.showNoInternetDialog(this, false);
+                Utils.showNoInternetDialog(this, true);
             }
 
             return;

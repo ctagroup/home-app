@@ -12,6 +12,7 @@ import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.Path;
 import retrofit.mime.MultipartTypedOutput;
+import retrofit.mime.TypedInput;
 
 /**
  * This is used to perform our REST API calls
@@ -37,4 +38,15 @@ public interface SurveyService {
     @POST("/Survey/api/pit")
     void postPit(@Body PitResponse pitResponse, Callback<String> cb);
 
+    /**
+     * For submitting a saved PIT survey from the database
+     */
+    @POST("/Survey/api/pit")
+    void postPit(@Body TypedInput jsonToSubmit, Callback<String> cb);
+
+    /**
+     * For submitting a saved basic survey from the database
+     */
+    @POST("/Survey/api/survey/{id}")
+    void postResponse(@Path("id") String id, @Body TypedInput jsonToSubmit, Callback<String> cb);
 }

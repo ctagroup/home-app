@@ -281,6 +281,30 @@ public class SurveyFlowActivity extends ActionBarActivity {
         }
     }
 
+    public void onSaveSurveyResponsesToDatabase() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.success))
+                .setMessage(getString(R.string.message_when_survey_saved_to_database))
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        //TODO Save the images to the database
+                        setSubmittingResponse(false);
+                        finish();
+                    }
+                })
+                .setPositiveButton(getString(R.string.okay), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //TODO Save the images to the database
+                        setSubmittingResponse(false);
+                        finish();
+                    }
+                });
+
+        Utils.centerDialogMessageAndShow(builder);
+    }
+
     public void onPostPhotoTaskCompleted(Response response) {
         dismissDialog();
 

@@ -94,5 +94,7 @@ Please make sure you are connected and try again.</string>
     <string name="txt_encamp_details_visibility">Visibility to the Public:</string>
     <string name="txt_encamp_details_inactive">Inactive?</string>
     <string name="txt_encamp_details_dispatch">Dispatch ID:</string>
+    <string name="message_when_survey_saved_to_database">There seems to be no internet connection, so the survey response has been saved and
+        will be submitted when the connection returns.</string>
 
 </resources>

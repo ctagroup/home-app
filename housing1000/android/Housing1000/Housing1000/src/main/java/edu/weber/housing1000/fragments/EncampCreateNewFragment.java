@@ -125,6 +125,11 @@ public class EncampCreateNewFragment extends BaseSurveyFragment {
     }
 
     @Override
+    public void saveAnswersToDatabase() {
+        //TODO finish this. I haven't done it yet, because there is no API to submit these, so they would just sit in the DB
+    }
+
+    @Override
     public String saveSurveyResponse() {
         //TODO finish this
         return null;

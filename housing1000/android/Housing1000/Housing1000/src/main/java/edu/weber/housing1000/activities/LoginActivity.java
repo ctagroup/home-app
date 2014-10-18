@@ -17,6 +17,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import edu.weber.housing1000.ConnectivityChangeReceiver;
 import edu.weber.housing1000.authentication.AuthenticationService;
 import edu.weber.housing1000.authentication.TokenResponse;
 import edu.weber.housing1000.fragments.ProgressDialogFragment;
@@ -46,6 +47,14 @@ public class LoginActivity extends ActionBarActivity
     {
         super.onCreate(savedInstanceState);
         try {
+
+            /* This is probably overkill, but just in case the app has saved surveys and connectivity was changed while the
+             * app was dead, rather than wait for another change in connectivity, we just always check to see if there are
+             * saved surveys to submit on startup of the login screen.*/
+            if(Utils.isOnline(this)) {
+                ConnectivityChangeReceiver.submitSavedSurveys(this);
+            }
+
             setContentView(R.layout.main);
             Utils.setActionBarColorToDefault(this);
 

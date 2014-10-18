@@ -248,6 +248,28 @@ public class PitActivity extends ActionBarActivity {
         }
     }
 
+    public void onSavePitSurveyResponsesToDatabase() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.success))
+                .setMessage(getString(R.string.message_when_survey_saved_to_database))
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        setSubmittingSurvey(false);
+                        finish();
+                    }
+                })
+                .setPositiveButton(getString(R.string.okay), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setSubmittingSurvey(false);
+                        finish();
+                    }
+                });
+
+        Utils.centerDialogMessageAndShow(builder);
+    }
+
     private void showSendSuccessMessage() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.success))

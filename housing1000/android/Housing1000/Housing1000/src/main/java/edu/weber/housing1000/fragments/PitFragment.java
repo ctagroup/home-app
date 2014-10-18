@@ -14,6 +14,7 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 
+import edu.weber.housing1000.SurveyType;
 import edu.weber.housing1000.activities.PitActivity;
 import edu.weber.housing1000.data.Client;
 import edu.weber.housing1000.data.PitResponse;
@@ -22,12 +23,13 @@ import edu.weber.housing1000.data.SurveyResponse;
 import edu.weber.housing1000.helpers.RESTHelper;
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.SurveyService;
+import edu.weber.housing1000.sqllite.DatabaseConnector;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 
 /**
- * Created by Blake on 2/11/14.
+ * @author Blake
  */
 public class PitFragment extends BaseSurveyFragment {
     private PitActivity myActivity;      // Parent activity
@@ -102,6 +104,17 @@ public class PitFragment extends BaseSurveyFragment {
 
                 });
         }
+    }
+
+    @Override
+    public void saveAnswersToDatabase() {
+        saveSurveyResponse();
+        String pitJsonToSubmit = savePitResponse();
+
+        DatabaseConnector databaseConnector = new DatabaseConnector(this.getActivity().getBaseContext());
+        databaseConnector.saveSurveyToSubmitLater(pitJsonToSubmit, SurveyType.PIT_SURVEY, "0");
+
+        myActivity.onSavePitSurveyResponsesToDatabase();
     }
 
     @Override

@@ -3,6 +3,7 @@ package edu.weber.housing1000.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 
+import edu.weber.housing1000.SurveyType;
 import edu.weber.housing1000.activities.SurveyFlowActivity;
 import edu.weber.housing1000.data.Client;
 import edu.weber.housing1000.data.Response;
@@ -21,12 +23,13 @@ import edu.weber.housing1000.data.SurveyResponse;
 import edu.weber.housing1000.helpers.RESTHelper;
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.SurveyService;
+import edu.weber.housing1000.sqllite.DatabaseConnector;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 
 /**
- * Created by Blake on 2/11/14.
+ * @author Blake
  */
 public class SurveyFragment extends BaseSurveyFragment {
     private SurveyFlowActivity myActivity;      // Parent activity
@@ -126,6 +129,18 @@ public class SurveyFragment extends BaseSurveyFragment {
         } else {
             myActivity.onPostSurveyResponsesTaskCompleted(null);
         }
+    }
+
+    @Override
+    public void saveAnswersToDatabase() {
+        String surveyJsonToSubmit = saveSurveyResponse();
+
+        Log.d("HOUSING1000", "The survey ID of the saved survey: " + survey.getSurveyId());
+
+        DatabaseConnector databaseConnector = new DatabaseConnector(this.getActivity().getBaseContext());
+        databaseConnector.saveSurveyToSubmitLater(surveyJsonToSubmit, SurveyType.BASIC_SURVEY, Long.toString(survey.getSurveyId()));
+
+        myActivity.onSaveSurveyResponsesToDatabase();
     }
 
     /**

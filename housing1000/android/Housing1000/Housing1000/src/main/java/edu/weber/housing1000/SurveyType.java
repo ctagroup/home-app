@@ -21,4 +21,15 @@ public enum SurveyType {
         return this.name;
     }
 
+    public static SurveyType getTypeFromString(String value) {
+        SurveyType surveyType = null;
+        for(SurveyType type : SurveyType.values()) {
+            if(type.toString().equals(value)) {
+                surveyType = type;
+                break;
+            }
+        }
+        return surveyType;
+    }
+
 }
