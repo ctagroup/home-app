@@ -228,7 +228,7 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
             public void success(String result, Response response) {
                 try {
                     String json = RESTHelper.convertStreamToString(response.getBody().in());
-                    onGetSingleSurveyTaskCompleted(json, Long.toString(rowId));
+                    onGetSingleSurveyTaskCompleted(json, Long.toString(rowId), false);
                 } catch (IOException e) {
                     e.printStackTrace();
                     onGetSingleSurveyTaskCompleted("");
@@ -243,17 +243,19 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
     }
 
     public void onGetSingleSurveyTaskCompleted(String surveyJson) {
-        onGetSingleSurveyTaskCompleted(surveyJson, null);
+        onGetSingleSurveyTaskCompleted(surveyJson, null, true);
     }
 
-    public void onGetSingleSurveyTaskCompleted(String surveyJson, String surveyId) {
+    public void onGetSingleSurveyTaskCompleted(String surveyJson, String surveyId, boolean skipDatabaseUpdate) {
         // If user hits back, loading will not happen
         if (dismissDialog()) {
 
             if (!surveyJson.isEmpty()) {
 
-                DatabaseConnector databaseConnector = new DatabaseConnector(getBaseContext());
-                databaseConnector.updateSurvey(SurveyType.BASIC_SURVEY, surveyJson, surveyId);
+                if(!skipDatabaseUpdate) {
+                    DatabaseConnector databaseConnector = new DatabaseConnector(getBaseContext());
+                    databaseConnector.updateSurvey(SurveyType.BASIC_SURVEY, surveyJson, surveyId);
+                }
 
                 chosenSurveyListing.setJson(surveyJson);
 
@@ -283,7 +285,7 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
 
         @Override
         protected void onPostExecute(String... params) {
-            onGetSingleSurveyTaskCompleted(params[0], params[1]);
+            onGetSingleSurveyTaskCompleted(params[0], params[1], true);
         }
     }
 
