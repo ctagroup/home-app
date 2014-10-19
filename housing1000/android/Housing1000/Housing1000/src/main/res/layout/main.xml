@@ -48,7 +48,6 @@
             android:imeOptions="actionNext"
             android:imeActionLabel="Next">
 
-            <requestFocus />
         </EditText>
 
 

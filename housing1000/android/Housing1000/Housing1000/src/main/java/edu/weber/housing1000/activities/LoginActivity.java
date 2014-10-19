@@ -82,9 +82,6 @@ public class LoginActivity extends ActionBarActivity
                 }
             });
 
-            //this code is to the focus is on the username field on application start up
-            usernameField.requestFocus();
-
             //on click action to the login button
             loginButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
