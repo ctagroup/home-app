@@ -43,8 +43,7 @@ public class LoginActivity extends ActionBarActivity
      * recently supplied in onSaveInstanceState(Bundle). <b>Note: Otherwise it is null.</b>
      */
     @Override
-    public void onCreate(Bundle savedInstanceState) 
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
 
@@ -119,55 +118,59 @@ public class LoginActivity extends ActionBarActivity
 
     }//close public void
 
-    public void loginValidation()
-    {
-        try {
-            //this code will grab the fields from username and password
-            String username, password;
+    public void loginValidation() {
 
-            //declare the text boxes
+        if(Utils.isOnline(this)) {
+            try {
+                //this code will grab the fields from username and password
+                String username, password;
+
+                //declare the text boxes
 
 
-            //get the text from the boxes
-            username = usernameField.getText().toString();
-            password = passwordField.getText().toString();
-            boolean proceed = true;
+                //get the text from the boxes
+                username = usernameField.getText().toString();
+                password = passwordField.getText().toString();
+                boolean proceed = true;
 
-            //the following will color the background on failed login and will set the proceed flag
-            if (username.equals("")) {
-                usernameField.requestFocus();
-                usernameField.setBackgroundColor(Color.rgb(255, 102, 51));
-                proceed = false;
-            } else {
-                usernameField.setBackgroundColor(Color.WHITE);
-            }
-
-            if (password.equals("")) {
-                passwordField.setBackgroundColor(Color.rgb(255, 102, 51));
-                proceed = false;
-
-                if (!username.equals("")) {
-                    passwordField.requestFocus();
+                //the following will color the background on failed login and will set the proceed flag
+                if (username.equals("")) {
+                    usernameField.requestFocus();
+                    usernameField.setBackgroundColor(Color.rgb(255, 102, 51));
+                    proceed = false;
+                } else {
+                    usernameField.setBackgroundColor(Color.WHITE);
                 }
-            } else {
-                passwordField.setBackgroundColor(Color.WHITE);
-            }
 
-            //if both fields have text in them then proceed, at this time, the username check is disabled
-            if (proceed) {
-                getLoginToken(username, password);
+                if (password.equals("")) {
+                    passwordField.setBackgroundColor(Color.rgb(255, 102, 51));
+                    proceed = false;
+
+                    if (!username.equals("")) {
+                        passwordField.requestFocus();
+                    }
+                } else {
+                    passwordField.setBackgroundColor(Color.WHITE);
+                }
+
+                //if both fields have text in them then proceed, at this time, the username check is disabled
+                if (proceed) {
+                    getLoginToken(username, password);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                ErrorHelper.showError(this, ex.getMessage());
             }
-        } catch (Exception ex)
-        {
-            ex.printStackTrace();
-            ErrorHelper.showError(this, ex.getMessage());
+        }
+        else {
+            Utils.showNoInternetDialog(this, false);
         }
     }
 
     /**
      * Does a post with the username and password and parses the response to get the authentication token.
-     * @param username
-     * @param password
+     * @param username The username
+     * @param password The password
      */
     private void getLoginToken(String username, String password) {
         // Start the loading dialog
@@ -201,7 +204,7 @@ public class LoginActivity extends ActionBarActivity
 
     /**
      * Either move on or display an error message, depending on if a token was received
-     * @param successful
+     * @param successful Whether it was successful or not
      */
     private void onGetTokenTaskCompleted(final boolean successful) {
         dismissDialog();
@@ -223,7 +226,7 @@ public class LoginActivity extends ActionBarActivity
 
     /**
      * Validates that a token was received, we are inside the issue date and expired date range, and that the token type is 'bearer'
-     * @param tokenResponse
+     * @param tokenResponse The token
      * @return whether it is valid or not
      */
     private boolean isValidToken(TokenResponse tokenResponse) {
@@ -232,7 +235,7 @@ public class LoginActivity extends ActionBarActivity
         boolean successful = true;
 
         Date rightNow = new Date();
-        Date dateIssuedAsDate = null;
+        Date dateIssuedAsDate;
         Date dateExpiresAsDate = null;
         try {
             DateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
@@ -260,7 +263,7 @@ public class LoginActivity extends ActionBarActivity
             successful = false;
             Log.w("HOUSING 1000", "Authentication failed because the token has an issue date that is later than today.");
         }*/
-        if(dateExpiresAsDate.compareTo(rightNow) < 0) {
+        if(dateExpiresAsDate != null && dateExpiresAsDate.compareTo(rightNow) < 0) {
             successful = false;
             Log.w("HOUSING 1000", "Authentication failed because the token has an expires date that has already happened.");
         }
@@ -270,9 +273,9 @@ public class LoginActivity extends ActionBarActivity
 
     /**
      * Show a progress dialog for logging in.
-     * @param title
-     * @param message
-     * @param tag
+     * @param title The title
+     * @param message The message
+     * @param tag The tag
      */
     private void showProgressDialog(String title, String message, String tag) {
         progressDialogFragment = ProgressDialogFragment.newInstance(title, message);
