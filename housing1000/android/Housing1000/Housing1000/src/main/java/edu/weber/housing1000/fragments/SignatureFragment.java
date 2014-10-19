@@ -24,6 +24,7 @@ import edu.weber.housing1000.SurveyService;
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.activities.SignatureActivity;
 import edu.weber.housing1000.activities.SurveyFlowActivity;
+import edu.weber.housing1000.sqllite.DatabaseConnector;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -33,7 +34,7 @@ import retrofit.mime.MultipartTypedOutput;
 import retrofit.mime.TypedOutput;
 
 /**
- * Created by Blake on 2/11/14.
+ * @author Blake
  */
 public class SignatureFragment extends SurveyAppFragment {
     public static final int RESULT_SIGNATURE_SAVED = 1;
@@ -204,6 +205,15 @@ public class SignatureFragment extends SurveyAppFragment {
         {
             myActivity.onPostSignatureTaskCompleted(new Response("", 200, "", new ArrayList<Header>(), null));
         }
+    }
+
+    /**
+     * In the case of no internet connection on submission, save the signature path to submit later
+     * @param surveyDataId The id of the survey to go along with this signature
+     */
+    public void saveSignaturePathToDatabase(long surveyDataId) {
+        DatabaseConnector databaseConnector = new DatabaseConnector(myActivity.getBaseContext());
+        databaseConnector.saveSubmittedImagePaths(true, myActivity.getFolderHash(), surveyDataId, signaturePath);
     }
 
 }

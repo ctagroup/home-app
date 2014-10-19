@@ -281,7 +281,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
         }
     }
 
-    public void onSaveSurveyResponsesToDatabase() {
+    public void onSaveSurveyResponsesToDatabase(long surveyDataId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.success))
                 .setMessage(getString(R.string.message_when_survey_saved_to_database))
@@ -303,6 +303,14 @@ public class SurveyFlowActivity extends ActionBarActivity {
                 });
 
         Utils.centerDialogMessageAndShow(builder);
+
+        // Save the photo paths to the database
+        Fragment photoFragment = this.getSupportFragmentManager().findFragmentByTag(getFragmentTag(1));
+        ((PhotosFragment) photoFragment).savePhotoPathsToDatabase(surveyDataId);
+
+        // Save the signature path to the database
+        Fragment signatureFragment = this.getSupportFragmentManager().findFragmentByTag(getFragmentTag(0));
+        ((SignatureFragment) signatureFragment).saveSignaturePathToDatabase(surveyDataId);
     }
 
     public void onPostPhotoTaskCompleted(Response response) {

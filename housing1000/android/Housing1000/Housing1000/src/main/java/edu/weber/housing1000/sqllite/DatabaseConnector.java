@@ -11,6 +11,7 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import edu.weber.housing1000.SurveyType;
+import edu.weber.housing1000.data.ImageSavedInDB;
 import edu.weber.housing1000.data.SurveySavedInDB;
 
 /**
@@ -111,8 +112,9 @@ public class DatabaseConnector {
      * This gets called when a survey gets submitted and there is no internet connection
      * @param json The json to store
      * @param surveyType The type of the json being stored
+     * @return The database id of the newly added survey
      */
-    public void saveSurveyToSubmitLater(String json, SurveyType surveyType, String surveyId) {
+    public long saveSurveyToSubmitLater(String json, SurveyType surveyType, String surveyId) {
         ContentValues addSurvey = new ContentValues();
         addSurvey.put("Type", surveyType.toString());
         addSurvey.put("Json", json);
@@ -121,7 +123,65 @@ public class DatabaseConnector {
         Log.d("HOUSING1000", "Saving a survey of type " + surveyType.toString() + " with ID of " + surveyId
                 + " to be submitted when the internet comes back.");
         open();
-        database.insert("SubmittedJson", null, addSurvey);
+        long surveyDataId = database.insert("SubmittedJson", null, addSurvey);
+        close();
+
+        return surveyDataId;
+    }
+
+    /**
+     * Save the paths of all of the image paths relating to a specific survey
+     * @param isSignature Whether these images are signatures or not
+     * @param folderHash The sub-directory where the image is saved on the phone (saved to make it easier to delete later)
+     * @param surveyDataId The related survey database Id
+     * @param paths The paths to submit
+     */
+    public void saveSubmittedImagePaths(boolean isSignature, String folderHash, long surveyDataId, String... paths) {
+        if(paths.length > 0) {
+            open();
+            ContentValues addImage = new ContentValues();
+            addImage.put("SurveyJsonId", surveyDataId);
+            addImage.put("IsSignature", isSignature ? "Y" : "N");
+            addImage.put("FolderHash", folderHash);
+
+            for (String path : paths) {
+                addImage.put("Path", path);
+                database.insert("SubmittedImages", null, addImage);
+            }
+            close();
+        }
+    }
+
+    /**
+     * Get the paths of all images relating to a specific survey
+     * @param surveyDataId The related survey database Id
+     * @return The images tied to the survey
+     */
+    public ArrayList<ImageSavedInDB> getImagePathsToSubmit(int surveyDataId) {
+        open();
+        Cursor results = database.query("SubmittedImages", null, "SurveyJsonId = " + surveyDataId, null, null, null, null);
+        Log.d("HOUSING1000", "Number of images relating to survey with id " + surveyDataId + ": " + results.getCount());
+
+        ArrayList<ImageSavedInDB> images = new ArrayList<>();
+        while(results.moveToNext()) {
+            String isSignature = results.getString(3);
+            images.add(new ImageSavedInDB(results.getString(1), isSignature.equals("Y"), results.getInt(0), results.getString(4)));
+        }
+        close();
+
+        return images;
+    }
+
+    /**
+     * For the given image id, delete it from the SubmittedImages table
+     * @param imageDataIds A collection of the database IDs of the images to delete
+     */
+    public void deleteSubmittedImages(ArrayList<Integer> imageDataIds) {
+        open();
+        for(Integer id : imageDataIds) {
+            database.delete("SubmittedImages", "Id = " + id, null);
+            Log.d("HOUSING1000", "Deleted image with database Id #" + id);
+        }
         close();
     }
 
@@ -166,19 +226,27 @@ public class DatabaseConnector {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
+            //Create the RetrievedSurveys table
             String createRetrievedQuery = "CREATE TABLE RetrievedSurveys(Id INTEGER primary key autoincrement, Type TEXT, " +
                     "DateUpdated DATETIME DEFAULT CURRENT_TIMESTAMP, Json TEXT, SurveyId TEXT)";
             db.execSQL(createRetrievedQuery);
 
+            //Create the SubmittedJson table
             String createSubmittedQuery = "CREATE TABLE SubmittedJson(Id INTEGER primary key autoincrement, Json TEXT, Type TEXT, " +
                     "SurveyId TEXT)";
             db.execSQL(createSubmittedQuery);
+
+            //Create the SubmittedImages table
+            String createImagesQuery = "CREATE TABLE SubmittedImages(Id INTEGER primary key autoincrement, Path TEXT, SurveyJsonId INTEGER, " +
+                    "IsSignature TEXT, FolderHash TEXT, DateUpdated DATETIME DEFAULT CURRENT_TIMESTAMP)";
+            db.execSQL(createImagesQuery);
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             db.execSQL("DROP TABLE IF EXISTS RetrievedSurveys");
             db.execSQL("DROP TABLE IF EXISTS SubmittedJson");
+            db.execSQL("DROP TABLE IF EXISTS SubmittedImages");
             onCreate(db);
         }
     }

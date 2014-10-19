@@ -35,6 +35,7 @@ import edu.weber.housing1000.ImageAdapter;
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.activities.SurveyFlowActivity;
 import edu.weber.housing1000.Utils;
+import edu.weber.housing1000.sqllite.DatabaseConnector;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -228,6 +229,15 @@ public class PhotosFragment extends SurveyAppFragment {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * In the case of no internet connection on submission, save the photo paths to submit later
+     * @param surveyDataId The id of the survey to go along with these photos
+     */
+    public void savePhotoPathsToDatabase(long surveyDataId) {
+        DatabaseConnector databaseConnector = new DatabaseConnector(myActivity.getBaseContext());
+        databaseConnector.saveSubmittedImagePaths(false, myActivity.getFolderHash(), surveyDataId, imageAdapter.getImages().toArray(new String[imageAdapter.getImages().size()]));
     }
 
     public void submitPhotos() {

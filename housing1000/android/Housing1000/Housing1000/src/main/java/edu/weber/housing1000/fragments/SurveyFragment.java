@@ -138,9 +138,9 @@ public class SurveyFragment extends BaseSurveyFragment {
         Log.d("HOUSING1000", "The survey ID of the saved survey: " + survey.getSurveyId());
 
         DatabaseConnector databaseConnector = new DatabaseConnector(this.getActivity().getBaseContext());
-        databaseConnector.saveSurveyToSubmitLater(surveyJsonToSubmit, SurveyType.BASIC_SURVEY, Long.toString(survey.getSurveyId()));
+        long surveyDataId = databaseConnector.saveSurveyToSubmitLater(surveyJsonToSubmit, SurveyType.BASIC_SURVEY, Long.toString(survey.getSurveyId()));
 
-        myActivity.onSaveSurveyResponsesToDatabase();
+        myActivity.onSaveSurveyResponsesToDatabase(surveyDataId);
     }
 
     /**
