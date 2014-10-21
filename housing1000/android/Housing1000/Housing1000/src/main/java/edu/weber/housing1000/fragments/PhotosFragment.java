@@ -35,7 +35,7 @@ import edu.weber.housing1000.ImageAdapter;
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.activities.SurveyFlowActivity;
 import edu.weber.housing1000.Utils;
-import edu.weber.housing1000.sqllite.DatabaseConnector;
+import edu.weber.housing1000.sqlite.DatabaseConnector;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;

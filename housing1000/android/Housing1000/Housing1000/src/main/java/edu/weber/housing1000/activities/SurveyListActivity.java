@@ -28,7 +28,7 @@ import edu.weber.housing1000.helpers.RESTHelper;
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.SurveyService;
 import edu.weber.housing1000.Utils;
-import edu.weber.housing1000.sqllite.DatabaseConnector;
+import edu.weber.housing1000.sqlite.DatabaseConnector;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;

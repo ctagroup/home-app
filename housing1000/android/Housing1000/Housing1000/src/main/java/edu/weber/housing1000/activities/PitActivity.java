@@ -31,7 +31,7 @@ import edu.weber.housing1000.helpers.ErrorHelper;
 import edu.weber.housing1000.helpers.RESTHelper;
 import edu.weber.housing1000.questions.Question;
 import edu.weber.housing1000.questions.QuestionJSONDeserializer;
-import edu.weber.housing1000.sqllite.DatabaseConnector;
+import edu.weber.housing1000.sqlite.DatabaseConnector;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;

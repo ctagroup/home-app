@@ -1,4 +1,4 @@
-package edu.weber.housing1000.sqllite;
+package edu.weber.housing1000.sqlite;
 
 import android.content.ContentValues;
 import android.content.Context;
