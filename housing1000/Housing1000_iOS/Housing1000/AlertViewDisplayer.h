@@ -17,5 +17,7 @@
 -(void)dismissSpinner;
 -(void)showMessageWithTwoButtons:(NSString*)title message:(NSString*)message leftButtonText:(NSString*)leftText rightButtonText:(NSString*)rightText view:(UIViewController*)viewController;
 -(void)showMessageWithCloseButton:(NSString*)title message:(NSString*)message  closeButtonText:(NSString*)buttonText view:(UIViewController*)viewController;
+-(void)showSurveySavedMessage:(UIViewController*)viewController;
+-(void)showInternetUnavailableMessage:(UIViewController*)viewController;
 
 @end

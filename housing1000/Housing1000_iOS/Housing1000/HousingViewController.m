@@ -9,6 +9,7 @@
 #import "HousingViewController.h"
 #import "HttpConnectionHelper.h"
 #import "AlertViewDisplayer.h"
+#import "ConnectivityChecker.h"
 
 @interface HousingViewController ()
 @property (strong, nonatomic) AlertViewDisplayer *alertDisplayer;
@@ -67,10 +68,31 @@
     if(self.usernameTextField.text != nil && ![self.usernameTextField.text isEqualToString:@""]
        && self.passwordTextField.text != nil && ![self.passwordTextField.text isEqualToString:@""]) {
         
-        HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] initWithView:self];
-        [httpHelper postAuthentication:^(NSMutableArray* results){
-            [self performSegueWithIdentifier:@"segue.login.finished" sender:self]; //@"segue.login.finished" is specified in the storyboard
-        } :self.usernameTextField.text :self.passwordTextField.text];
+        
+        __unsafe_unretained typeof(self) weakSelf = self;
+        [ConnectivityChecker checkConnectivity:^(Reachability*reach)
+         //What to do if the internet is reachable
+         {
+             // Update the UI on the main thread
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 
+                 HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] initWithView:weakSelf];
+                 [httpHelper postAuthentication:^(NSMutableArray* results){
+                     [weakSelf performSegueWithIdentifier:@"segue.login.finished" sender:weakSelf]; //@"segue.login.finished" is specified in the storyboard
+                 } :weakSelf.usernameTextField.text :weakSelf.passwordTextField.text];
+                 
+             });
+         }:^(Reachability*reach)
+         
+         //What to do if the internet is not reachable
+         {
+             // Update the UI on the main thread
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 
+                 AlertViewDisplayer *alertDisplayer = [[AlertViewDisplayer alloc] init];
+                 [alertDisplayer showInternetUnavailableMessage:weakSelf];
+             });
+         }];
         
     } else {
         NSString *popupText = @"";

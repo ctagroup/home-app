@@ -88,6 +88,17 @@
     
 }
 
+//This message is saved when a survey is saved to the sqlite database for submission later
+-(void)showSurveySavedMessage:(UIViewController*)viewController {
+    [self showMessageWithCloseButton:@"Success!" message:@"There seems to be no internet connection, so the survey response has been saved and will be submitted when the connection returns." closeButtonText:@"Okay" view:viewController];
+}
+
+
+//This shows a generic message for when the internet is unavailable
+-(void)showInternetUnavailableMessage:(UIViewController*)viewController {
+    [self showMessageWithCloseButton:@"Uh oh..." message:@"Your device doesn\'t appear to have an internet connection. Please make sure you are connected and try again." closeButtonText:@"Okay" view:viewController];
+}
+
 
 - (void)handleButtonForSegue {
     

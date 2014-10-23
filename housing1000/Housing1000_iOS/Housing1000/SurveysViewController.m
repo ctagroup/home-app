@@ -9,6 +9,8 @@
 #import "SurveysViewController.h"
 #import "HttpConnectionHelper.h"
 #import "SurveyInfo.h"
+#import "ConnectivityChecker.h"
+#import "AlertViewDisplayer.h"
 
 @interface SurveysViewController()
 @property NSMutableArray *surveys;
@@ -26,17 +28,57 @@
 }
 
 -(void) populateWithSurveys {
-    HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] initWithView:self];
-    self.surveys = [httpHelper getSurveys:^(NSMutableArray* results){
-        //This block gets called once the NSURLConnection finishes loading
-        self.surveys = results;
-        [self.tableView reloadData];
-    }];
+    
+    __unsafe_unretained typeof(self) weakSelf = self;
+    [ConnectivityChecker checkConnectivity:^(Reachability*reach)
+     //What to do if the internet is reachable
+     {
+         // Update the UI on the main thread
+         dispatch_async(dispatch_get_main_queue(), ^{
+             HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] initWithView:weakSelf];
+             weakSelf.surveys = [httpHelper getSurveys:^(NSMutableArray* results){
+                 //This block gets called once the NSURLConnection finishes loading
+                 weakSelf.surveys = results;
+                 [weakSelf.tableView reloadData];
+             }];
+             
+         });
+     }:^(Reachability*reach)
+     
+     //What to do if the internet is not reachable
+     {
+         // Update the UI on the main thread
+         dispatch_async(dispatch_get_main_queue(), ^{
+             
+             AlertViewDisplayer *alertDisplayer = [[AlertViewDisplayer alloc] init];
+             [alertDisplayer showInternetUnavailableMessage:weakSelf];
+         });
+     }];
+    
 }
 
 -(void) getSingleSurvey:(int)selectedSurvey {
-    HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] initWithView:self];
-    [httpHelper getSingleSurvey:^(NSMutableArray* results){} :selectedSurvey];
+    __unsafe_unretained typeof(self) weakSelf = self;
+    [ConnectivityChecker checkConnectivity:^(Reachability*reach)
+     //What to do if the internet is reachable
+     {
+         // Update the UI on the main thread
+         dispatch_async(dispatch_get_main_queue(), ^{
+             HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] initWithView:weakSelf];
+             [httpHelper getSingleSurvey:^(NSMutableArray* results){} :selectedSurvey];
+             
+         });
+     }:^(Reachability*reach)
+     
+     //What to do if the internet is not reachable
+     {
+         // Update the UI on the main thread
+         dispatch_async(dispatch_get_main_queue(), ^{
+             
+             AlertViewDisplayer *alertDisplayer = [[AlertViewDisplayer alloc] init];
+             [alertDisplayer showInternetUnavailableMessage:weakSelf];
+         });
+     }];
 }
 //==============================================
 

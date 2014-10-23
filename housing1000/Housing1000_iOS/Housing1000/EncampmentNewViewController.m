@@ -9,17 +9,38 @@
 #import "EncampmentNewViewController.h"
 #import "Survey.h"
 #import "HttpConnectionHelper.h"
+#import "ConnectivityChecker.h"
+#import "AlertViewDisplayer.h"
 
 @implementation EncampmentNewViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] initWithView:self];
-    [httpHelper getNewEncampment:^(NSMutableArray* results){
-        [self setupChildQuestions];
-        [self populateDataRows];
-    }];
+    
+    __unsafe_unretained typeof(self) weakSelf = self;
+    [ConnectivityChecker checkConnectivity:^(Reachability*reach)
+     //What to do if the internet is reachable
+     {
+         // Update the UI on the main thread
+         dispatch_async(dispatch_get_main_queue(), ^{
+             HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] initWithView:self];
+             [httpHelper getNewEncampment:^(NSMutableArray* results){
+                 [weakSelf setupChildQuestions];
+                 [weakSelf populateDataRows];
+             }];
+         });
+     }:^(Reachability*reach)
+     
+     //What to do if the internet is not reachable
+     {
+         // Update the UI on the main thread
+         dispatch_async(dispatch_get_main_queue(), ^{
+             
+             AlertViewDisplayer *alertDisplayer = [[AlertViewDisplayer alloc] init];
+             [alertDisplayer showInternetUnavailableMessage:weakSelf];
+         });
+     }];
 }
 
 - (void)viewDidUnload {
@@ -73,7 +94,27 @@
                            handler:^(UIAlertAction * action)
                            {
                                [alert dismissViewControllerAnimated:YES completion:nil];
-                               //TODO have it actually do something...
+                               __unsafe_unretained typeof(self) weakSelf = self;
+                               [ConnectivityChecker checkConnectivity:^(Reachability*reach)
+                                //What to do if the internet is reachable
+                                {
+                                    // Update the UI on the main thread
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        
+                                        //TODO actually have it do something once the API is available...
+                                        
+                                    });
+                                }:^(Reachability*reach)
+                                
+                                //What to do if the internet is not reachable
+                                {
+                                    // Update the UI on the main thread
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        
+                                        AlertViewDisplayer *alertDisplayer = [[AlertViewDisplayer alloc] init];
+                                        [alertDisplayer showSurveySavedMessage:weakSelf];
+                                    });
+                                }];
                                
                            }];
     

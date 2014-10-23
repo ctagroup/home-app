@@ -58,6 +58,9 @@
 		630FB4D219CA79C70042A8B1 /* BaseSurveyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 630FB4D119CA79C70042A8B1 /* BaseSurveyViewController.m */; };
 		630FB4D819CBFB970042A8B1 /* HousingBool.m in Sources */ = {isa = PBXBuildFile; fileRef = 630FB4D719CBFB970042A8B1 /* HousingBool.m */; };
 		630FB4DB19CE13780042A8B1 /* SurveyJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 630FB4DA19CE13780042A8B1 /* SurveyJSONParser.m */; };
+		63B31D0419F89E1C00B3A188 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B31D0319F89E1C00B3A188 /* SystemConfiguration.framework */; };
+		63B31D0719F89E7C00B3A188 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B31D0619F89E7C00B3A188 /* Reachability.m */; };
+		63B31D0919F8A3E800B3A188 /* ConnectivityChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B31D0819F8A3E800B3A188 /* ConnectivityChecker.m */; };
 		63EBF60C19D73A5B008FA62F /* ios_btn_encampment.png in Resources */ = {isa = PBXBuildFile; fileRef = 63EBF60919D73A5B008FA62F /* ios_btn_encampment.png */; };
 		63EBF60D19D73A5B008FA62F /* ios_btn_pit.png in Resources */ = {isa = PBXBuildFile; fileRef = 63EBF60A19D73A5B008FA62F /* ios_btn_pit.png */; };
 		63EBF60E19D73A5B008FA62F /* ios_btn_survey.png in Resources */ = {isa = PBXBuildFile; fileRef = 63EBF60B19D73A5B008FA62F /* ios_btn_survey.png */; };
@@ -176,6 +179,11 @@
 		630FB4D719CBFB970042A8B1 /* HousingBool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HousingBool.m; sourceTree = "<group>"; };
 		630FB4D919CE13780042A8B1 /* SurveyJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyJSONParser.h; sourceTree = "<group>"; };
 		630FB4DA19CE13780042A8B1 /* SurveyJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyJSONParser.m; sourceTree = "<group>"; };
+		63B31D0319F89E1C00B3A188 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		63B31D0519F89E6C00B3A188 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		63B31D0619F89E7C00B3A188 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		63B31D0819F8A3E800B3A188 /* ConnectivityChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectivityChecker.m; sourceTree = "<group>"; };
+		63B31D0A19F8A3FB00B3A188 /* ConnectivityChecker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConnectivityChecker.h; sourceTree = "<group>"; };
 		63EBF60719D24B9C008FA62F /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		63EBF60919D73A5B008FA62F /* ios_btn_encampment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ios_btn_encampment.png; sourceTree = "<group>"; };
 		63EBF60A19D73A5B008FA62F /* ios_btn_pit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ios_btn_pit.png; sourceTree = "<group>"; };
@@ -207,6 +215,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63B31D0419F89E1C00B3A188 /* SystemConfiguration.framework in Frameworks */,
 				3F1E378F199C2C9800562EEC /* CoreLocation.framework in Frameworks */,
 				3FCD0B0E1974BFAF00F7A15E /* MobileCoreServices.framework in Frameworks */,
 				272AA48A18B5CDFE0068E023 /* Security.framework in Frameworks */,
@@ -299,30 +308,22 @@
 			name = Data;
 			sourceTree = "<group>";
 		};
-		3FFE30B918C243DF004A737D /* Helpers */ = {
+		3FFE30B918C243DF004A737D /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				63B31D0C19F8A44900B3A188 /* Connectivity */,
+				63B31D0B19F8A41100B3A188 /* Survey */,
 				3F558BC518DD2924007D531F /* HTTP */,
-				3FFE30C318C25E73004A737D /* SurveyResponseJSON.h */,
-				3FFE30C418C25E73004A737D /* SurveyResponseJSON.m */,
-				3FFE30CC18C26355004A737D /* SurveySubmitter.h */,
-				3FFE30CD18C26355004A737D /* SurveySubmitter.m */,
 				3FD109E318C95E27005E4743 /* AlertViewDisplayer.h */,
 				3FD109E418C95E27005E4743 /* AlertViewDisplayer.m */,
-				3F7ABC6118F0575D00D99525 /* PITSubmitter.h */,
-				3F7ABC6218F0575D00D99525 /* PITSubmitter.m */,
-				3F7493E918F0975900C0901E /* PITResponseJSON.h */,
-				3F7493EA18F0975900C0901E /* PITResponseJSON.m */,
 				3FA0A1F71981863B00D70A07 /* ImageFileHelper.h */,
 				3FA0A1F81981863B00D70A07 /* ImageFileHelper.m */,
 				3FA0A1FA1981881D00D70A07 /* NSData+MD5.h */,
 				3FA0A1FB1981881D00D70A07 /* NSData+MD5.m */,
 				3F1E378B199BE8CB00562EEC /* GPSLocationRetriever.h */,
 				3F1E378C199BE8CB00562EEC /* GPSLocationRetriever.m */,
-				630FB4D919CE13780042A8B1 /* SurveyJSONParser.h */,
-				630FB4DA19CE13780042A8B1 /* SurveyJSONParser.m */,
 			);
-			name = Helpers;
+			name = Util;
 			sourceTree = "<group>";
 		};
 		630FB4CD19CA78D20042A8B1 /* Survey */ = {
@@ -368,6 +369,41 @@
 			name = Encampment;
 			sourceTree = "<group>";
 		};
+		63B31D0219F5F20D00B3A188 /* Sqlite */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Sqlite;
+			sourceTree = "<group>";
+		};
+		63B31D0B19F8A41100B3A188 /* Survey */ = {
+			isa = PBXGroup;
+			children = (
+				630FB4D919CE13780042A8B1 /* SurveyJSONParser.h */,
+				630FB4DA19CE13780042A8B1 /* SurveyJSONParser.m */,
+				3FFE30C318C25E73004A737D /* SurveyResponseJSON.h */,
+				3FFE30C418C25E73004A737D /* SurveyResponseJSON.m */,
+				3FFE30CC18C26355004A737D /* SurveySubmitter.h */,
+				3FFE30CD18C26355004A737D /* SurveySubmitter.m */,
+				3F7493E918F0975900C0901E /* PITResponseJSON.h */,
+				3F7493EA18F0975900C0901E /* PITResponseJSON.m */,
+				3F7ABC6118F0575D00D99525 /* PITSubmitter.h */,
+				3F7ABC6218F0575D00D99525 /* PITSubmitter.m */,
+			);
+			name = Survey;
+			sourceTree = "<group>";
+		};
+		63B31D0C19F8A44900B3A188 /* Connectivity */ = {
+			isa = PBXGroup;
+			children = (
+				63B31D0519F89E6C00B3A188 /* Reachability.h */,
+				63B31D0619F89E7C00B3A188 /* Reachability.m */,
+				63B31D0A19F8A3FB00B3A188 /* ConnectivityChecker.h */,
+				63B31D0819F8A3E800B3A188 /* ConnectivityChecker.m */,
+			);
+			name = Connectivity;
+			sourceTree = "<group>";
+		};
 		948CBC2816FC8BA000DD4E2B = {
 			isa = PBXGroup;
 			children = (
@@ -389,6 +425,7 @@
 		948CBC3316FC8BA000DD4E2B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				63B31D0319F89E1C00B3A188 /* SystemConfiguration.framework */,
 				63EBF60719D24B9C008FA62F /* OpenGLES.framework */,
 				3F1E378E199C2C9800562EEC /* CoreLocation.framework */,
 				3FCD0B0D1974BFAF00F7A15E /* MobileCoreServices.framework */,
@@ -404,8 +441,9 @@
 		948CBC3A16FC8BA000DD4E2B /* Housing1000 */ = {
 			isa = PBXGroup;
 			children = (
+				63B31D0219F5F20D00B3A188 /* Sqlite */,
 				272AA4DE18C83AAD0068E023 /* iPad */,
-				3FFE30B918C243DF004A737D /* Helpers */,
+				3FFE30B918C243DF004A737D /* Util */,
 				3FFE30B818C23645004A737D /* Data */,
 				3FFE30B718C235D1004A737D /* UI */,
 				948CBC5916FC932500DD4E2B /* Images */,
@@ -592,6 +630,7 @@
 				3FE4FF9218F915F900E47703 /* QuestionDateAnswer.m in Sources */,
 				3F045AE5197DE968008F85E0 /* AuthenticationToken.m in Sources */,
 				948CBC4116FC8BA000DD4E2B /* main.m in Sources */,
+				63B31D0919F8A3E800B3A188 /* ConnectivityChecker.m in Sources */,
 				3F7ABC6318F0575D00D99525 /* PITSubmitter.m in Sources */,
 				3F558BAB18CBA1F5007D531F /* SurveyPageViewController.m in Sources */,
 				272AA52B18C84E580068E023 /* SigGLKViewController.m in Sources */,
@@ -605,6 +644,7 @@
 				3F7493F118F3BBEC00C0901E /* ImageUploader.m in Sources */,
 				3F045AE2197B3FCC008F85E0 /* PostAuthenticationHandler.m in Sources */,
 				3F1E378D199BE8CB00562EEC /* GPSLocationRetriever.m in Sources */,
+				63B31D0719F89E7C00B3A188 /* Reachability.m in Sources */,
 				3F72D7BF18F8E7A40090E7C3 /* QuestionNumAnswer.m in Sources */,
 				3F7ABC6618F084F400D99525 /* PostPITHandler.m in Sources */,
 				3FFE309B188E08DC004A737D /* PhotoViewController.m in Sources */,

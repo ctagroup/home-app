@@ -11,6 +11,8 @@
 #import "Question.h"
 #import "SurveyQuestionTableViewCell.h"
 #import "SurveySubmitter.h"
+#import "ConnectivityChecker.h"
+#import "AlertViewDisplayer.h"
 
 @interface ClientSurveyViewController ()
 
@@ -46,9 +48,28 @@
                            handler:^(UIAlertAction * action)
                            {
                                [alert dismissViewControllerAnimated:YES completion:nil];
-                               SurveySubmitter* submitter = [[SurveySubmitter alloc] initWithView:self];
-                               [submitter submitSurvey];
-                               
+                               __unsafe_unretained typeof(self) weakSelf = self;
+                               [ConnectivityChecker checkConnectivity:^(Reachability*reach)
+                                //What to do if the internet is reachable
+                                {
+                                    // Update the UI on the main thread
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        
+                                        SurveySubmitter* submitter = [[SurveySubmitter alloc] initWithView:weakSelf];
+                                        [submitter submitSurvey];
+                                        
+                                    });
+                                }:^(Reachability*reach)
+                                
+                                //What to do if the internet is not reachable
+                                {
+                                    // Update the UI on the main thread
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        
+                                        AlertViewDisplayer *alertDisplayer = [[AlertViewDisplayer alloc] init];
+                                        [alertDisplayer showSurveySavedMessage:weakSelf];
+                                    });
+                                }];
                            }];
     
     UIAlertAction* right = [UIAlertAction

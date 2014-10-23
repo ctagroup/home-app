@@ -10,17 +10,46 @@
 #import "Survey.h"
 #import "HttpConnectionHelper.h"
 #import "PITSubmitter.h"
+#import "Reachability.h"
+#import "ConnectivityChecker.h"
+#import "AlertViewDisplayer.h"
+
+@interface PITViewController() {
+
+Reachability *connectivityChecker;
+
+}
+@end
 
 @implementation PITViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] initWithView:self];
-    [httpHelper getPIT:^(NSMutableArray* results){
-        [self setupChildQuestions];
-        [self populateDataRows];
-    }];
+    
+    __unsafe_unretained typeof(self) weakSelf = self;
+    [ConnectivityChecker checkConnectivity:^(Reachability*reach)
+     //What to do if the internet is reachable
+     {
+         // Update the UI on the main thread
+         dispatch_async(dispatch_get_main_queue(), ^{
+             HttpConnectionHelper *httpHelper = [[HttpConnectionHelper alloc] initWithView:weakSelf];
+             [httpHelper getPIT:^(NSMutableArray* results){
+                 [weakSelf setupChildQuestions];
+                 [weakSelf populateDataRows];
+             }];
+         });
+     }:^(Reachability*reach)
+     
+     //What to do if the internet is not reachable
+     {
+         // Update the UI on the main thread
+         dispatch_async(dispatch_get_main_queue(), ^{
+             
+             AlertViewDisplayer *alertDisplayer = [[AlertViewDisplayer alloc] init];
+             [alertDisplayer showInternetUnavailableMessage:weakSelf];
+         });
+     }];
 }
 
 - (void)viewDidUnload {
@@ -46,10 +75,30 @@
                            style:UIAlertActionStyleDefault
                            handler:^(UIAlertAction * action)
                            {
-                               [alert dismissViewControllerAnimated:YES completion:nil];
-                               PITSubmitter* submitter = [[PITSubmitter alloc] initWithView:self];
-                               [submitter submitPIT];
                                
+                               [alert dismissViewControllerAnimated:YES completion:nil];
+                               __unsafe_unretained typeof(self) weakSelf = self;
+                               [ConnectivityChecker checkConnectivity:^(Reachability*reach)
+                                //What to do if the internet is reachable
+                                {
+                                    // Update the UI on the main thread
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        
+                                        PITSubmitter* submitter = [[PITSubmitter alloc] initWithView:weakSelf];
+                                        [submitter submitPIT];
+                                        
+                                    });
+                                }:^(Reachability*reach)
+                               
+                                //What to do if the internet is not reachable
+                               {
+                                    // Update the UI on the main thread
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        
+                                        AlertViewDisplayer *alertDisplayer = [[AlertViewDisplayer alloc] init];
+                                        [alertDisplayer showSurveySavedMessage:weakSelf];
+                                    });
+                                }];
                            }];
     
     UIAlertAction* right = [UIAlertAction
