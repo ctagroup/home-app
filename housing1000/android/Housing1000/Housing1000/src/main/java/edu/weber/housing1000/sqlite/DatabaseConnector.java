@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import edu.weber.housing1000.SurveyType;
 import edu.weber.housing1000.data.ImageSavedInDB;
@@ -59,13 +61,14 @@ public class DatabaseConnector {
         updateSurvey.put("Type", surveyType.toString());
         updateSurvey.put("Json", json);
         updateSurvey.put("SurveyId", surveyId);
+        updateSurvey.put("DateUpdated", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 
         open();
         Cursor results = database.query("RetrievedSurveys", null, "Type = '" + surveyType.toString() + "' and SurveyId = '" + surveyId + "'", null, null, null, null);
 
         if(results.getCount() == 1) {
             Log.d("HOUSING1000", "There is one retrieved survey in the database of type " + surveyType.toString() + " with an ID of " + surveyId);
-            database.update("RetrievedSurveys", updateSurvey, "Type = '" + surveyType.toString() + "'", null);
+            database.update("RetrievedSurveys", updateSurvey, "Type = '" + surveyType.toString() + "' and SurveyId = '" + surveyId + "'", null);
         }
         else if(results.getCount() == 0) {
             Log.d("HOUSING1000", "There are no surveys in the database of type " + surveyType.toString() + " with an ID of " + surveyId);
