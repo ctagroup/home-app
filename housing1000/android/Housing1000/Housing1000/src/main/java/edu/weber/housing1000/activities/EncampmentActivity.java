@@ -37,6 +37,8 @@ public class EncampmentActivity extends ActionBarActivity
     @Override
     public void createNewClicked() {
 
+        Utils.hideSoftKeyboard(this);
+
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.encampmentContainer, new EncampCreateNewFragment())
                 .addToBackStack(null)
@@ -45,6 +47,8 @@ public class EncampmentActivity extends ActionBarActivity
 
     @Override
     public void performSearch(String searchQuery) {
+
+        Utils.hideSoftKeyboard(this);
 
         EncampSearchFragment searchFragment = new EncampSearchFragment();
 
