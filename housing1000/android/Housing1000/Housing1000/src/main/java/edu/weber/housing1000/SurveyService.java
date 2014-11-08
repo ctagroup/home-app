@@ -20,16 +20,16 @@ import retrofit.mime.TypedInput;
  */
 public interface SurveyService {
 
-    @GET("/Survey/api/survey")
+    @GET("/SurveySite/api/survey")
     void listSurveys(Callback<ArrayList<SurveyListing>> cb);
 
-    @GET("/Survey/api/survey/{id}")
+    @GET("/SurveySite/api/survey/{id}")
     void getSurvey(@Path("id") String id, Callback<String> cb);
 
-    @POST("/Survey/api/survey/{id}")
+    @POST("/SurveySite/api/survey/{id}")
     void postResponse(@Path("id") String id, @Body SurveyResponse surveyResponse, Callback<String> cb);
 
-    @POST("/Survey/api/upload")
+    @POST("/SurveySite/api/upload")
     void postImage(@Body MultipartTypedOutput images, Callback<String> cb);
 
     @GET("/Survey/api/pit")
