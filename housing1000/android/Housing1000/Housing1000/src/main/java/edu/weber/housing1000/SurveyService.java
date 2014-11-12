@@ -32,21 +32,21 @@ public interface SurveyService {
     @POST("/SurveySite/api/upload")
     void postImage(@Body MultipartTypedOutput images, Callback<String> cb);
 
-    @GET("/Survey/api/pit")
+    @GET("/SurveySite/api/pit")
     void getPit(Callback<Survey> cb);
 
-    @POST("/Survey/api/pit")
+    @POST("/SurveySite/api/pit")
     void postPit(@Body PitResponse pitResponse, Callback<String> cb);
 
     /**
      * For submitting a saved PIT survey from the database
      */
-    @POST("/Survey/api/pit")
+    @POST("/SurveySite/api/pit")
     void postPit(@Body TypedInput jsonToSubmit, Callback<String> cb);
 
     /**
      * For submitting a saved basic survey from the database
      */
-    @POST("/Survey/api/survey/{id}")
+    @POST("/SurveySite/api/survey/{id}")
     void postResponse(@Path("id") String id, @Body TypedInput jsonToSubmit, Callback<String> cb);
 }

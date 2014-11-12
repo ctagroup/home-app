@@ -20,12 +20,12 @@ import retrofit.http.Query;
  */
 public interface EncampmentService {
 
-    @GET("/Outreach/api/EncampmentSite")
+    @GET("/SurveySite/api/EncampmentSite")
     void searchEncampment(@Query("searchStr") String searchString, Callback<ArrayList<EncampmentSite>> cb);
 
-    @GET("/Outreach/api/EncampmentSite")
+    @GET("/SurveySite/api/EncampmentSite")
     void getEncampmentQuestions(Callback<String> cb);
 
-    @POST("/Outreach/api/EncampmentSite")
+    @POST("/SurveySite/api/EncampmentSite")
     void postEncampmentResponse(@Body SurveyResponse surveyResponse, Callback<String> cb);
 }

@@ -11,6 +11,6 @@ import retrofit.http.POST;
 public interface AuthenticationService {
 
     @FormUrlEncoded
-    @POST("/Outreach/token")
+    @POST("/SurveySite/token")
     void getToken(@Field("grant_type") String grantType, @Field("username") String username, @Field("password") String password, Callback<TokenResponse> cb);
 }
