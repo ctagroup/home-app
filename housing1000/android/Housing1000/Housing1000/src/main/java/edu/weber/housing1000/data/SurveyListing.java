@@ -23,6 +23,15 @@ public class SurveyListing implements Serializable, Parcelable {
 
     private String json;
 
+    //TODO expose this as something that can be deserialized from the json
+    private boolean hasDisclaimer;
+
+    public boolean hasDisclaimer() {
+        //TODO uncomment this once hasDisclaimer actually ties to something from the json
+        //return hasDisclaimer;
+        return true;
+    }
+
     public long getSurveyId() {
         return surveyId;
     }

@@ -85,14 +85,22 @@ public class SurveyFlowActivity extends ActionBarActivity {
     }
 
     public boolean getIsSignatureCaptured() {
-        if (isSignatureCaptured && mTabs.getVisibility() != View.VISIBLE) {
-            mTabs.setVisibility(View.VISIBLE);
-        } else if (!isSignatureCaptured) {
-            mTabs.setVisibility(View.GONE);
-            mViewPager.setCurrentItem(0);
-        }
 
-        return isSignatureCaptured;
+        if(surveyListing.hasDisclaimer()) {
+            if (isSignatureCaptured && mTabs.getVisibility() != View.VISIBLE) {
+                mTabs.setVisibility(View.VISIBLE);
+            } else if (!isSignatureCaptured) {
+                mTabs.setVisibility(View.GONE);
+                mViewPager.setCurrentItem(0);
+            }
+
+            return isSignatureCaptured;
+        }
+        else {
+            mTabs.setVisibility(View.GONE);
+            mViewPager.setCurrentItem(2);
+            return false;
+        }
     }
 
     public void setIsSignatureCaptured(boolean value) {
@@ -324,11 +332,16 @@ public class SurveyFlowActivity extends ActionBarActivity {
                 e.printStackTrace();
             }
 
-            // Submit signature
-            Fragment f = this.getSupportFragmentManager().findFragmentByTag(getFragmentTag(0));
-            mViewPager.setCurrentItem(0, true);
+            if(surveyListing.hasDisclaimer()) {
+                // Submit signature
+                Fragment f = this.getSupportFragmentManager().findFragmentByTag(getFragmentTag(0));
+                mViewPager.setCurrentItem(0, true);
 
-            ((SignatureFragment) f).submitSignature();
+                ((SignatureFragment) f).submitSignature();
+            }
+            else {
+                showSendSuccessMessage();
+            }
         } else {
             setSubmittingResponse(false);
 
@@ -356,9 +369,12 @@ public class SurveyFlowActivity extends ActionBarActivity {
     }
 
     private void showSendSuccessMessage() {
+
+        final String successMessage = surveyListing.hasDisclaimer() ? getString(R.string.success_survey_response) : getString(R.string.success_pit_response);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.success))
-                .setMessage(getString(R.string.success_survey_response))
+                .setMessage(successMessage)
                 .setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialog) {
