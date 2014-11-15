@@ -3,13 +3,15 @@
     <color name="transparent">#00000000</color>
     <color name="black">#000000</color>
     <color name="grey">#4d4d4d</color>
-    <color name="action_bar">#ff46468a</color>
+    <color name="action_bar">#22215D</color>
     <!--<color name="action_bar">#2b1a60</color>-->
-    <color name="tab_selected">#f6c606</color>
-    <color name="button_positive">#f5c505</color>
-    <color name="button_positive_light">#ffffdd05</color>
-    <color name="button_positive_stroke">#ffcb9d05</color>
-    <color name="button_negative">#ff4f4494</color>
-    <color name="button_negative_light">#ff6950ba</color>
-    <color name="button_negative_stroke">#ff2c1f67</color>
+    <color name="tab_selected">#60AA4C</color>
+    <color name="button_positive">#60AA4C</color>
+    <color name="button_positive_light">#60AA4C</color>
+    <color name="button_positive_stroke">#ff448744</color>
+    <color name="button_negative">#22215D</color>
+    <color name="button_negative_light">#ff262566</color>
+    <color name="button_negative_stroke">#ff262566</color>
+    <color name="button_main_menu">#ff306630</color>
+    <color name="button_main_menu_light">#ff4e8235</color>
 </resources>
