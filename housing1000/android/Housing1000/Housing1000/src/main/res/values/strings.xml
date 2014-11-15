@@ -18,8 +18,23 @@
     <string name="ctagroup_logo">CTAGroup Logo</string>
     <string name="delete_question_mark">Delete?</string>
     <string name="delete_this_photo">Are you sure you would like to delete this photo?</string>
-    <string name="disclaimerText"><b>PLEASE READ THIS DOCUMENT CAREFULLY. YOUR SIGNATURE IS REQUIRED FOR PARTICIPATION. YOU MUST BE AT LEAST 18 YEARS OF AGE TO GIVE YOUR CONSENT TO PARTICIPATE IN RESEARCH. IF YOU DESIRE A COPY OF THIS CONSENT FORM, YOU MAY REQUEST ONE AND WE WILL PROVIDE IT.</b>
-        \nConfidentiality: You will be assigned a code number which will protect your identity. All data will be kept in secured files, in accord with the standards of the University, Federal regulations, and the American Psychological Association. All identifying information will be removed from questionnaires as soon as your participation is complete. No one will be able to know which are your questionnaire responses. Finally, remember that it is no individual person\'s responses that interest us; we are studying the usefulness of the tests in question for people in general.</string>
+    <string name="disclaimerTextTitle">
+        <b>Santa Clara County</b>\n
+        <b>Help Management Information System</b>\n
+        <b>CLIENT INFORMED CONSENT &amp; RELEASE OF INFORMATION AUTHORIZATION</b>\n
+    </string>
+    <string name="disclaimerText">
+        Community Technology Alliance is a Partner Agency in the Help Management Information System. HMIS is a shared homeless and housing database system administered by The Santa Clara County Collaborative on Affordable Housing and Homelessness and Community Technology Alliance. HMIS can improve the services and programs for homeless and low-income households by allowing authorized staff at Partner Agencies to share client information and to follow trends and service patterns over time. HMIS operates over the Internet and uses many security protections to ensure confidentiality.\n\n
+        Participation in the HMIS program is important to our community’s ability to provide you with the best services and housing possible. As you receive services, information will be collected about you, the services provided to you, and the outcomes these services help you to achieve.\n\n
+        &#8226;Your name and other identifying information <b>will not</b> be shared with any agency not participating in the system. (Unless required to do so by law.)\n
+        &#8226;Your name, gender, race, social security number and date of birth <b>may</b> be shared with Partner Agencies for identification purposes even if you elect not to share other relevant information.\n
+        &#8226;Sensitive information such as diagnosis or treatment of mental health disorders, drug or alcohol disorders, HIV-AIDS, or domestic violence concerns, <b>will not</b> be shared between Partner Agencies without specific written consent.\n
+        &#8226;A list of Partner Agencies is available on request.\n
+        &#8226;Authorizing your information to be entered into the HMIS is voluntary.\n
+        &#8226;Refusing to do so will not limit your access to shelter or services.\n\n
+        I understand that I may cancel this authorization at any time by written request. I understand that this release is valid for three years from the date of my signature below.\n\n
+        <b>****NOTE: A separate HIPAA-compliant authorization is required for disclosure of any patient health information, including mental health and drug and alcohol information protected by any State or Federal privacy law including, but not limited to, Health Insurance Portability and Accountability Act (“HIPAA”), 45 C.F.R. parts 160 and 164, California Confidentiality of Medical Information Act (“CMIA”), Civil Code sections 56-56.16, Welfare and Institutions Code section 5328, or 42 C.F.R. part 2.1, et seq.</b>
+    </string>
     <string name="downloading_pit">Downloading PIT survey…</string>
     <string name="downloading_survey">Downloading survey…</string>
     <string name="downloading_surveys_list">Downloading surveys list…</string>
