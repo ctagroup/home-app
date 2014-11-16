@@ -153,8 +153,9 @@
 //Private util functions
 //===================================================
 -(void)changeChildQuestions:(NSString*)answerFromParent {
-    
-    NSMutableArray *satisfiedChildRows = [[NSMutableArray alloc] init];
+    //TODO make it recursive so it goes through the children of children? like Android does?
+    //TODO have it only loop through its dependent children? you'll have to set it up when you parse the survey, but I think it's worth it. Do it like Android.
+    BOOL hasSatisfiedChildren = NO;
     NSMutableArray *unsatisfiedChildRows = [[NSMutableArray alloc] init];
     
     Survey* survey = [Survey sharedManager];
@@ -168,19 +169,18 @@
             
             NSArray *parentRequiredAnswers = [[NSArray alloc] init];
             
-            if(answerFromParent != (id)[NSNull null]) {
-                parentRequiredAnswers = [answerFromParent componentsSeparatedByString:@"|"];
+            if(currentChildQuestion.parentRequiredAnswer != (id)[NSNull null]) {
+                parentRequiredAnswers = [currentChildQuestion.parentRequiredAnswer componentsSeparatedByString:@"|"];
             }
             
             BOOL childIsEnabledAlready = [currentChildQuestion getEnabled];
             BOOL childWasSatisfied = NO;
             for(int k = 0; k < [parentRequiredAnswers count]; k++) {
-                if([currentChildQuestion.parentRequiredAnswer isEqualToString:[parentRequiredAnswers objectAtIndex:k]]) {
+                if([answerFromParent isEqualToString:[parentRequiredAnswers objectAtIndex:k]]) {
                     
                     //We only add it to the list of things to ADD if it wasn't there before but now it should be
                     if(!childIsEnabledAlready) {
-                        long longRowId = [currentChildQuestion.surveyDataRowIndex longValue];
-                        [satisfiedChildRows addObject:[NSIndexPath indexPathForRow:longRowId inSection:0]];
+                        hasSatisfiedChildren = YES;
                     }
                     
                     [currentChildQuestion setEnabled:YES];
@@ -203,10 +203,10 @@
         }
     }
     
-    if([satisfiedChildRows count] > 0 || [unsatisfiedChildRows count] > 0) {
+    if(hasSatisfiedChildren || [unsatisfiedChildRows count] > 0) {
         UITableView *tableView = (UITableView*)self.superview.superview;
         BaseSurveyViewController *viewController = (BaseSurveyViewController*)tableView.dataSource;
-        [viewController populateDataRowsWithRowsToAdd:satisfiedChildRows andRowsToRemove:unsatisfiedChildRows];
+        [viewController populateDataRowsWithRowsToRemove:unsatisfiedChildRows];
     }
 
 }

@@ -65,7 +65,7 @@
     
     [httpHandler handlePreConnectionAction];
     
-    NSURL *url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@", apiHostname, @"Outreach/token"]];
+    NSURL *url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@", apiHostname, @"SurveySite/token"]];
     
     NSString *bodyString = [NSString stringWithFormat:@"grant_type=password&username=%@&password=%@",username, password];
     NSData *postData = [bodyString dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
@@ -95,7 +95,7 @@
     
     [httpHandler handlePreConnectionAction];
     
-    NSMutableURLRequest *request = [self createHttpGetRequest:[NSString stringWithFormat:@"%@%@", apiHostname, @"survey/api/survey/"]];
+    NSMutableURLRequest *request = [self createHttpGetRequest:[NSString stringWithFormat:@"%@%@", apiHostname, @"SurveySite/api/survey/"]];
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     NSLog(@"%@ Connection: %@", actionDescription, conn.description);
     
@@ -109,7 +109,7 @@
     callbackAction = callback;
     
     [httpHandler handlePreConnectionAction];
-    NSMutableURLRequest *request = [self createHttpGetRequest:[NSString stringWithFormat:@"%@%@%d", apiHostname, @"survey/api/survey/", surveyIndex]];
+    NSMutableURLRequest *request = [self createHttpGetRequest:[NSString stringWithFormat:@"%@%@%d", apiHostname, @"SurveySite/api/survey/", surveyIndex]];
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     NSLog(@"%@ Connection: %@", actionDescription, conn.description);
     
@@ -124,7 +124,7 @@
     
     [httpHandler handlePreConnectionAction];
     
-    NSMutableURLRequest *request = [self createHttpGetRequest:[NSString stringWithFormat:@"%@%@", apiHostname, @"survey/api/pit/"]];
+    NSMutableURLRequest *request = [self createHttpGetRequest:[NSString stringWithFormat:@"%@%@", apiHostname, @"SurveySite/api/pit/"]];
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     NSLog(@"%@ Connection: %@", actionDescription, conn.description);
     
@@ -139,7 +139,7 @@
     
     [httpHandler handlePreConnectionAction];
     
-    NSMutableURLRequest *request = [self createHttpGetRequest:[NSString stringWithFormat:@"%@%@", apiHostname, @"Outreach/api/EncampmentSite"]];
+    NSMutableURLRequest *request = [self createHttpGetRequest:[NSString stringWithFormat:@"%@%@", apiHostname, @"SurveySite/api/EncampmentSite"]];
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     NSLog(@"%@ Connection: %@", actionDescription, conn.description);
     
@@ -154,7 +154,7 @@
     
     [httpHandler handlePreConnectionAction];
     
-    NSMutableURLRequest* request = [self createHttpPostRequest:[NSString stringWithFormat:@"%@%@", apiHostname, @"survey/api/survey/"] withJson:jsonData];
+    NSMutableURLRequest* request = [self createHttpPostRequest:[NSString stringWithFormat:@"%@%@", apiHostname, @"SurveySite/api/survey/"] withJson:jsonData];
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     NSLog(@"Connection: %@", conn.description);
     
@@ -170,7 +170,7 @@
     
     [httpHandler handlePreConnectionAction];
     
-    NSMutableURLRequest* request = [self createHttpPostRequest:[NSString stringWithFormat:@"%@%@", apiHostname, @"survey/api/pit/"] withJson:jsonData];
+    NSMutableURLRequest* request = [self createHttpPostRequest:[NSString stringWithFormat:@"%@%@", apiHostname, @"SurveySite/api/pit/"] withJson:jsonData];
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     NSLog(@"Connection: %@", conn.description);
     
@@ -185,7 +185,7 @@
     
     [httpHandler handlePreConnectionAction];
     
-    NSMutableURLRequest *request = [self createHttpGetRequest:[NSString stringWithFormat:@"%@%@%@", apiHostname, @"Outreach/api/EncampmentSite?searchStr=", searchString]];
+    NSMutableURLRequest *request = [self createHttpGetRequest:[NSString stringWithFormat:@"%@%@%@", apiHostname, @"SurveySite/api/EncampmentSite?searchStr=", searchString]];
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     NSLog(@"%@ Connection: %@", actionDescription, conn.description);
     

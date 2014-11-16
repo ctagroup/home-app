@@ -46,7 +46,7 @@ NSString* imgActionDescription;
         [imageNames addObject:[NSString stringWithFormat:@"%@_photo%d.jpg", imageFileNamePrefix, i]];
     }
     
-    NSString *urlString = @"https://staging.ctagroup.org/survey/api/upload";
+    NSString *urlString = @"https://staging.ctagroup.org/SurveySite/api/upload";
     NSURL *requestURL=[NSURL URLWithString:urlString];
     
     // create request

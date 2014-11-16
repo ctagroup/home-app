@@ -49,7 +49,6 @@
     
     for(int i = 0; i < [tempQuestions count]; i++) {
         Question *currentQuestion = [tempQuestions objectAtIndex:i];
-        currentQuestion.surveyDataRowIndex = [NSNumber numberWithInteger:i];
         
         //We just assume that if it doesn't have a parentQuestionId that it shouldn't be displayed
         if([currentQuestion.parentQuestionId intValue] <= 0) {
@@ -60,23 +59,27 @@
 
 
 //This is for removing and adding dependent child questions
--(void)populateDataRowsWithRowsToAdd:(NSMutableArray*)rowsToAdd andRowsToRemove:(NSMutableArray*)rowsToRemove {
+-(void)populateDataRowsWithRowsToRemove:(NSMutableArray*)rowsToRemove {
+    
+    [self populateDataRowsAfterChange];
+    
+    NSMutableArray *rowsToAdd = [[NSMutableArray alloc] init];
+    for(int i = 0; i < [_questions count]; i++) {
+        Question * currentQuestion = [_questions objectAtIndex:i];
+        if(currentQuestion.surveyDataRowIndex == nil) {
+            [rowsToAdd addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+        }
+        currentQuestion.surveyDataRowIndex = [NSNumber numberWithInteger:i];
+    }
     
     [self.tableView beginUpdates];
     [self.tableView insertRowsAtIndexPaths:rowsToAdd withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView deleteRowsAtIndexPaths:rowsToRemove withRowAnimation:UITableViewRowAnimationFade];
-    [self populateDataRowsShouldReloadData:NO];
     [self.tableView endUpdates];
     
 }
 
--(void)populateDataRows {
-    [self populateDataRowsShouldReloadData:YES];
-}
-
-//For creating a sort of data model for the rows in the table
--(void)populateDataRowsShouldReloadData:(BOOL)shouldReloadData {
-    
+-(void)populateDataRowsAfterChange {
     NSMutableArray *tempQuestions = [[NSMutableArray alloc] init];
     [tempQuestions addObjectsFromArray:_survey.clientQuestions];
     [tempQuestions addObjectsFromArray:_survey.surveyQuestions];
@@ -88,11 +91,31 @@
         if([currentQuestion getEnabled]) {
             [_questions addObject:currentQuestion];
         }
+        else {
+            currentQuestion.surveyDataRowIndex = nil;
+        }
+    }
+}
+
+//For creating a data model for the rows in the table
+-(void)populateDataRows {
+    NSMutableArray *tempQuestions = [[NSMutableArray alloc] init];
+    [tempQuestions addObjectsFromArray:_survey.clientQuestions];
+    [tempQuestions addObjectsFromArray:_survey.surveyQuestions];
+    [_questions removeAllObjects];
+    
+    int dataRowCounter = 0;
+    for(int i = 0; i < [tempQuestions count]; i++) {
+        Question *currentQuestion = [tempQuestions objectAtIndex:i];
+        
+        if([currentQuestion getEnabled]) {
+            currentQuestion.surveyDataRowIndex = [NSNumber numberWithInteger:dataRowCounter];
+            dataRowCounter++;
+            [_questions addObject:currentQuestion];
+        }
     }
     
-    if(shouldReloadData) {
-        [self.tableView reloadData];
-    }
+    [self.tableView reloadData];
 }
 
 //TableView functions (for displaying surveys)
