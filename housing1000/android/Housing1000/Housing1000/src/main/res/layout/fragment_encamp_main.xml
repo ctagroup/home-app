@@ -5,35 +5,48 @@
     android:layout_height="match_parent"
     android:weightSum="1">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:id="@+id/editText_encamp_search"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        android:hint="@string/editText_encamp_search_hint"/>
-
-    <LinearLayout
-        android:orientation="horizontal"
+    <EditText android:id="@+id/editText_encamp_search"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginTop="@dimen/activity_vertical_margin">
+        android:layout_height="wrap_content"
+        android:drawableStart="@android:drawable/ic_menu_search"
+        android:drawableLeft="@android:drawable/ic_menu_search"
+        android:hint="@string/editText_encamp_search_hint"
+        android:imeOptions="actionDone|flagNoExtractUi"
+        android:imeActionLabel="Search"
+        android:inputType="text"
+        android:layout_margin="@dimen/activity_horizontal_margin"/>
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_encamp_search"
-            android:id="@+id/btn_encamp_search"
-            android:layout_weight="1"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin" />
+    <Button
+        android:id="@+id/btn_encamp_search"
+        android:text="@string/btn_encamp_search"
+        android:layout_width="300dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        style="@style/ButtonText"
+        android:background="@drawable/btn_positive"/>
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_encamp_create"
-            android:id="@+id/btn_encamp_create_new"
-            android:layout_weight="1"
-            android:layout_marginRight="@dimen/activity_horizontal_margin" />
-    </LinearLayout>
+    <Button
+        android:id="@+id/btn_encamp_create_new"
+        android:text="@string/btn_encamp_create"
+        android:layout_width="300dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        style="@style/ButtonText"
+        android:background="@drawable/btn_negative"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"/>
+
+    <Button
+        android:id="@+id/btn_encamp_site_survey"
+        android:text="@string/btn_encamp_visit"
+        android:layout_width="300dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        style="@style/ButtonText"
+        android:background="@drawable/btn_negative"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"/>
+
 
 </LinearLayout>

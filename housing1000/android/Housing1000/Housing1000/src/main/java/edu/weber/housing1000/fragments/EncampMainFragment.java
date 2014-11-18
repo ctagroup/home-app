@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import edu.weber.housing1000.R;
 
@@ -29,6 +32,16 @@ public class EncampMainFragment extends Fragment {
         ab.setTitle("Encampment Sites");
 
         searchWindow = (EditText)rootView.findViewById(R.id.editText_encamp_search);
+
+        searchWindow.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_DONE) {
+                    getSearchResults();
+                }
+                return true;
+            }
+        });
 
         Button btnSearch = (Button)rootView.findViewById(R.id.btn_encamp_search);
         btnSearch.setOnClickListener(new View.OnClickListener() {
