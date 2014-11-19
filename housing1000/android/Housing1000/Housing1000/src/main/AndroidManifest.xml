@@ -24,13 +24,15 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
         </receiver>
-        <activity android:name=".activities.LoginActivity" android:windowSoftInputMode="stateHidden|adjustResize">
+
+        <activity android:name=".activities.MainLauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.LoginActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
         <activity
             android:name=".activities.SignatureActivity"
             android:configChanges="keyboardHidden|orientation"

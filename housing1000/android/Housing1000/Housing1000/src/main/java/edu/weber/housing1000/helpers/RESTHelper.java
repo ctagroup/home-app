@@ -120,7 +120,7 @@ public class RESTHelper {
      * @param needsAuthorizationToken If this is the client for requesting a token, it obviously shouldn't have the token
      * @return RestAdapter Builder
      */
-    private static RestAdapter.Builder setUpRestAdapterBuilder(Context context, boolean needsAuthorizationToken)
+    private static RestAdapter.Builder setUpRestAdapterBuilder(final Context context, final boolean needsAuthorizationToken)
     {
         OkHttpClient client = new OkHttpClient();
 
@@ -154,7 +154,7 @@ public class RESTHelper {
             builder.setRequestInterceptor(new RequestInterceptor() {
                 @Override
                 public void intercept(RequestFacade request) {
-                    request.addHeader("Authorization", "Bearer " + TokenResponse.getACCESS_TOKEN());
+                    request.addHeader("Authorization", "Bearer " + SharedPreferencesHelper.getAccessToken(context));
                 }
             });
         }

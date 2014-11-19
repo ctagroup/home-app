@@ -1,5 +1,6 @@
 package edu.weber.housing1000.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import edu.weber.housing1000.helpers.ErrorHelper;
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.Utils;
 import edu.weber.housing1000.helpers.RESTHelper;
+import edu.weber.housing1000.helpers.SharedPreferencesHelper;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -169,7 +171,7 @@ public class LoginActivity extends ActionBarActivity
      * @param username The username
      * @param password The password
      */
-    private void getLoginToken(String username, String password) {
+    private void getLoginToken(final String username, final String password) {
         // Start the loading dialog
         showProgressDialog(getString(R.string.please_wait), "Logging in...", "");
 
@@ -179,13 +181,15 @@ public class LoginActivity extends ActionBarActivity
 
         final String grantType = "password";
 
+        final Context context = this;
         service.getToken(grantType, username, password, new Callback<TokenResponse>() {
             @Override
             public void success(TokenResponse tokenResponse, Response response) {
                 Log.d("HOUSING 1000", "Callback was successful");
 
-                //Set the static field for the token so that other activities can access it
-                TokenResponse.setACCESS_TOKEN(tokenResponse.getAccessToken());
+                //Set the shared preference for the token so that other activities can access it
+                SharedPreferencesHelper.setAccessToken(context, tokenResponse.getAccessToken());
+                SharedPreferencesHelper.setUserName(context, username);
 
                 onGetTokenTaskCompleted(isValidToken(tokenResponse));
             }

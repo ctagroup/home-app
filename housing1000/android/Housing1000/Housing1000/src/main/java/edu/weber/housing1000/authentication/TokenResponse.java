@@ -10,8 +10,6 @@ import java.util.Date;
  */
 public class TokenResponse {
 
-    private static String ACCESS_TOKEN;
-
     private Date dateIssuedAsDate;
 
     private Date dateExpiresAsDate;
@@ -39,16 +37,7 @@ public class TokenResponse {
 
     @Override
     public String toString() {
-        return "Access token: " + accessToken.toString().substring(0, 30) + "..., Token type: " + tokenType + ", Expires in: " + expiresIn + ", Date issued: " + dateIssued + ", Date expires: " + dateExpires;
-    }
-
-    public static String getACCESS_TOKEN() {
-        return ACCESS_TOKEN;
-    }
-
-    public static void setACCESS_TOKEN(String ACCESS_TOKEN) {
-
-        TokenResponse.ACCESS_TOKEN = ACCESS_TOKEN;
+        return "Access token: " + accessToken.substring(0, 30) + "..., Token type: " + tokenType + ", Expires in: " + expiresIn + ", Date issued: " + dateIssued + ", Date expires: " + dateExpires;
     }
 
     public String getAccessToken() {

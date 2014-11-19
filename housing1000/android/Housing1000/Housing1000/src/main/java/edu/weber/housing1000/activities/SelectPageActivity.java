@@ -16,6 +16,7 @@ import android.view.View;
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.Utils;
 import edu.weber.housing1000.authentication.TokenResponse;
+import edu.weber.housing1000.helpers.SharedPreferencesHelper;
 
 public class SelectPageActivity extends ActionBarActivity {
     private final Context context = this;
@@ -105,7 +106,14 @@ public class SelectPageActivity extends ActionBarActivity {
         builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                TokenResponse.setACCESS_TOKEN("");
+
+                //Clear the username and token. This is how we know the user chose to logout and should be prompted to log back in before using the app
+                SharedPreferencesHelper.setAccessToken(context, "");
+                SharedPreferencesHelper.setUserName(context, "");
+
+                Intent intent = new Intent(context, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 finish();
             }
         });
