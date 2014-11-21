@@ -15,11 +15,16 @@ import android.view.View;
 
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.Utils;
-import edu.weber.housing1000.authentication.TokenResponse;
 import edu.weber.housing1000.helpers.SharedPreferencesHelper;
 
 public class SelectPageActivity extends ActionBarActivity {
     private final Context context = this;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Utils.notifyIfSavedSurveysWereSubmitted(this);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

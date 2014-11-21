@@ -18,6 +18,7 @@ import edu.weber.housing1000.data.ImageSavedInDB;
 import edu.weber.housing1000.data.SurveySavedInDB;
 import edu.weber.housing1000.helpers.FileHelper;
 import edu.weber.housing1000.helpers.RESTHelper;
+import edu.weber.housing1000.helpers.SharedPreferencesHelper;
 import edu.weber.housing1000.sqlite.DatabaseConnector;
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -75,21 +76,6 @@ public class ConnectivityChangeReceiver extends BroadcastReceiver {
 
             for (final SurveySavedInDB survey : jsonSurveysToSubmit) {
 
-                //The callback for when the survey is posted
-                Callback<String> callback = new Callback<String>() {
-                    @Override
-                    public void success(String s, Response response) {
-                        Log.d("HOUSING1000", "Successfully submitted saved survey");
-                        databaseConnector.deleteSubmittedSurvey(survey.getDatabaseId());
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        Log.d("HOUSING1000", "Un-successfully submitted saved survey...");
-                        error.printStackTrace();
-                    }
-                };
-
                 //Submit the survey to the endpoint that corresponds to the type
                 TypedInput jsonToSubmit = convertStringToTypedInput(survey.getJson());
                 switch (survey.getSurveyType()) {
@@ -99,6 +85,7 @@ public class ConnectivityChangeReceiver extends BroadcastReceiver {
                             public void success(String s, Response response) {
                                 Log.d("HOUSING1000", "Successfully submitted saved survey");
                                 databaseConnector.deleteSubmittedSurvey(survey.getDatabaseId());
+                                SharedPreferencesHelper.incrementNumberOfflineSurveysSubmitted(context);
                             }
 
                             @Override
@@ -130,6 +117,7 @@ public class ConnectivityChangeReceiver extends BroadcastReceiver {
 
                                 submitAnyRelatedImages(survey.getDatabaseId(), context, clientSurveyId);
                                 databaseConnector.deleteSubmittedSurvey(survey.getDatabaseId());
+                                SharedPreferencesHelper.incrementNumberOfflineSurveysSubmitted(context);
                             }
 
                             @Override

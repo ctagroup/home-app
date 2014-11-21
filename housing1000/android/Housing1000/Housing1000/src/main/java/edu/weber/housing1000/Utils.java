@@ -26,16 +26,19 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import edu.weber.housing1000.helpers.SharedPreferencesHelper;
+
 
 public class Utils {
     private static int viewIdCounter = 1;
 
-    public static int getNewViewId(Context context)
-    {
+    public static int getNewViewId(Context context) {
+
         return viewIdCounter++;
     }
 
     public static boolean isIntentAvailable(Context context, String action) {
+
         final PackageManager packageManager = context.getPackageManager();
         final Intent intent = new Intent(action);
         List<ResolveInfo> list =
@@ -44,6 +47,7 @@ public class Utils {
     }
 
     public static void lockScreenOrientation(Activity activity) {
+
         WindowManager windowManager = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
         Configuration configuration = activity.getResources().getConfiguration();
         int rotation = windowManager.getDefaultDisplay().getRotation();
@@ -87,8 +91,8 @@ public class Utils {
         }
     }
 
-    public static void setActionBarColorToDefault(ActionBarActivity activity)
-    {
+    public static void setActionBarColorToDefault(ActionBarActivity activity) {
+
         ActionBar actionBar = activity.getSupportActionBar();
         ColorDrawable color = new ColorDrawable(activity.getResources().getColor(R.color.action_bar));
         Drawable bottom = activity.getResources().getDrawable(R.drawable.actionbar_bottom);
@@ -97,6 +101,7 @@ public class Utils {
     }
 
     public static boolean isOnline(Context context) {
+
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
@@ -106,8 +111,8 @@ public class Utils {
         return false;
     }
 
-    public static void showNoInternetDialog(final Activity activity, boolean finishActivityAfterDismiss)
-    {
+    public static void showNoInternetDialog(final Activity activity, boolean finishActivityAfterDismiss) {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(activity.getString(R.string.no_connection));
         builder.setMessage(activity.getString(R.string.error_internet_connection));
@@ -122,16 +127,16 @@ public class Utils {
         centerDialogMessageAndShow(builder);
     }
 
-    public static void centerDialogMessageAndShow(AlertDialog.Builder builder)
-    {
+    public static void centerDialogMessageAndShow(AlertDialog.Builder builder) {
+
         Dialog dialog = builder.show();
         TextView textView = (TextView)dialog.findViewById(android.R.id.message);
         textView.setGravity(Gravity.CENTER);
         dialog.show();
     }
 
-    public static void hideSoftKeyboard(Activity activity)
-    {
+    public static void hideSoftKeyboard(Activity activity) {
+
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         View v = activity.getCurrentFocus();
@@ -140,6 +145,31 @@ public class Utils {
             return;
 
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
+
+    public static void notifyIfSavedSurveysWereSubmitted(final Context context) {
+
+        Long numberOffline = SharedPreferencesHelper.getNumberOfflineSurveysSubmitted(context);
+
+        if(numberOffline > 0) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                    .setTitle(context.getString(R.string.success))
+                    .setMessage(context.getString(R.string.message_when_saved_surveys_submitted) + " " + numberOffline)
+                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            SharedPreferencesHelper.resetNumberOfflineSurveysSubmitted(context);
+                        }
+                    })
+                    .setPositiveButton(context.getString(R.string.okay), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            SharedPreferencesHelper.resetNumberOfflineSurveysSubmitted(context);
+                        }
+                    });
+
+            Utils.centerDialogMessageAndShow(builder);
+        }
     }
 
 }

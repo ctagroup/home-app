@@ -38,6 +38,12 @@ public class LoginActivity extends ActionBarActivity
     private EditText passwordField;
     private ProgressDialogFragment progressDialogFragment;
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Utils.notifyIfSavedSurveysWereSubmitted(this);
+    }
+
     /**
      * Called when the activity is first created.
      * @param savedInstanceState If the activity is being re-initialized after

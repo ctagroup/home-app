@@ -13,6 +13,7 @@ public class SharedPreferencesHelper {
 
     private static final String PREF_USER_NAME= "CTA_USERNAME";
     private static final String PREF_TOKEN = "CTA_ACCESS_TOKEN";
+    private static final String PREF_OFFLINE_SURVEYS_COUNT = "CTA_OFFLINE_SURVEYS";
 
     private static SharedPreferences getSharedPreferences(Context ctx) {
         return PreferenceManager.getDefaultSharedPreferences(ctx);
@@ -52,6 +53,22 @@ public class SharedPreferencesHelper {
      */
     public static String getAccessToken(Context ctx) {
         return getSharedPreferences(ctx).getString(PREF_TOKEN, "");
+    }
+
+    public static Long getNumberOfflineSurveysSubmitted(Context ctx) {
+        return getSharedPreferences(ctx).getLong(PREF_OFFLINE_SURVEYS_COUNT, 0);
+    }
+
+    public static void incrementNumberOfflineSurveysSubmitted(Context ctx) {
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putLong(PREF_OFFLINE_SURVEYS_COUNT, getNumberOfflineSurveysSubmitted(ctx) + 1);
+        editor.apply();
+    }
+
+    public static void resetNumberOfflineSurveysSubmitted(Context ctx) {
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putLong(PREF_OFFLINE_SURVEYS_COUNT, 0);
+        editor.apply();
     }
 
 }
