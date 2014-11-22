@@ -10,6 +10,7 @@ import edu.weber.housing1000.data.EncampmentSite;
 import edu.weber.housing1000.fragments.EncampCreateNewFragment;
 import edu.weber.housing1000.fragments.EncampMainFragment;
 import edu.weber.housing1000.fragments.EncampSearchFragment;
+import edu.weber.housing1000.fragments.EncampSiteVisitFragment;
 
 /**
  * @author David Horton
@@ -41,6 +42,16 @@ public class EncampmentActivity extends ActionBarActivity
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.encampmentContainer, new EncampCreateNewFragment())
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void encampmentVisitClicked() {
+        Utils.hideSoftKeyboard(this);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.encampmentContainer, new EncampSiteVisitFragment())
                 .addToBackStack(null)
                 .commit();
     }

@@ -28,4 +28,7 @@ public interface EncampmentService {
 
     @POST("/SurveySite/api/EncampmentSite")
     void postEncampmentResponse(@Body SurveyResponse surveyResponse, Callback<String> cb);
+
+    @GET("/SurveySite/api/Survey/GetEncampmentSurvey")
+    void getEncampmentVisitQuestions(Callback<String> cb);
 }

@@ -59,6 +59,14 @@ public class EncampMainFragment extends Fragment {
             }
         });
 
+        Button btnSiteVisit = (Button)rootView.findViewById(R.id.btn_encamp_site_survey);
+        btnSiteVisit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.encampmentVisitClicked();
+            }
+        });
+
         return rootView;
     }
 
@@ -92,6 +100,7 @@ public class EncampMainFragment extends Fragment {
      */
     public interface EncampMainFragmentListener {
         public void createNewClicked();
+        public void encampmentVisitClicked();
         public void performSearch(String searchQuery);
     }
 

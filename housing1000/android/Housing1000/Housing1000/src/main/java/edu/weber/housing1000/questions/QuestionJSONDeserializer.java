@@ -29,22 +29,25 @@ public class QuestionJSONDeserializer implements JsonDeserializer<Question> {
 
         Question question;
 
-        switch (questionType)
+        switch (QuestionType.getTypeFromString(questionType))
         {
-            case "MultiSelect":
+            case MULTI_SELECT:
                 question = gson.fromJson(questionJson, MultiSelect.class);
                 break;
-            case "SinglelineTextBox":
+            case SINGLE_LINE_TEXT:
                 question = gson.fromJson(questionJson, SinglelineTextBox.class);
                 break;
-            case "SingleSelect":
+            case SINGLE_SELECT:
                 question = gson.fromJson(questionJson, SingleSelect.class);
                 break;
-            case "SingleSelectRadio":
+            case SINGLE_SELECT_RADIO:
                 question = gson.fromJson(questionJson, SingleSelectRadio.class);
                 break;
-            case "SinglelineTextBoxForEachOption":
+            case SINGLE_LINE_FOR_EACH_OPTION:
                 question = gson.fromJson(questionJson, SinglelineTextBoxForEachOption.class);
+                break;
+            case MULTILINE_TEXT:
+                question = gson.fromJson(questionJson, MultilineTextBox.class);
                 break;
             default:
                 question = null;

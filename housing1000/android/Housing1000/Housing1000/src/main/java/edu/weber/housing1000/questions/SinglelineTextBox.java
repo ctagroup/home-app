@@ -3,6 +3,7 @@ package edu.weber.housing1000.questions;
 import android.content.Context;
 import android.graphics.Rect;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.ActionBarActivity;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
@@ -13,10 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import edu.weber.housing1000.fragments.DatePickerFragment;
-import edu.weber.housing1000.activities.SurveyFlowActivity;
 
 /**
- * Created by Blake on 1/21/14.
+ * @author Blake
  */
 public class SinglelineTextBox extends Question {
     InputFilter[] enableInput = new InputFilter[]
@@ -171,7 +171,7 @@ public class SinglelineTextBox extends Question {
     }
 
     public void createDatePicker(View v) {
-        SurveyFlowActivity mActivity = (SurveyFlowActivity) v.getContext();
+        ActionBarActivity mActivity = (ActionBarActivity) v.getContext();
         DialogFragment newFragment = new DatePickerFragment(v);
         newFragment.show(mActivity.getSupportFragmentManager(), "datePicker");
     }
