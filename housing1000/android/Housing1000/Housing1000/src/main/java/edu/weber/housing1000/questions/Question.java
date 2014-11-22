@@ -224,7 +224,7 @@ public abstract class Question {
 
             String[] requiredAnswers = question.getParentRequiredAnswer().split("\\|");
 
-            if (this.getQuestionType().equals("SinglelineTextBox")) {
+            if (this.getQuestionType().equals(QuestionType.SINGLE_LINE_TEXT.toString())) {
                 //Make dependent questions visible if EditText is not blank
                 if (!this.getAnswer().equals("")) {
                     questionLayout.setVisibility(View.VISIBLE);
@@ -232,7 +232,7 @@ public abstract class Question {
                     questionLayout.setVisibility(View.GONE);
                     question.clearAnswer();
                 }
-            } else if (this.getQuestionType().equals("MultiSelect")) {
+            } else if (this.getQuestionType().equals(QuestionType.MULTI_SELECT.toString())) {
                 LinearLayout parentLayout = (LinearLayout) this.getView();
                 for (int k = 0; k < parentLayout.getChildCount(); k++) {
                     View child = parentLayout.getChildAt(k);
