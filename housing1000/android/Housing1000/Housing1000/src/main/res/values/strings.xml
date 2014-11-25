@@ -23,7 +23,7 @@
         <b>Help Management Information System</b>\n
         <b>CLIENT INFORMED CONSENT &amp; RELEASE OF INFORMATION AUTHORIZATION</b>\n
     </string>
-    <string name="disclaimerText">
+    <string name="disclaimerTextUpper">
         Community Technology Alliance is a Partner Agency in the Help Management Information System. HMIS is a shared homeless and housing database system administered by The Santa Clara County Collaborative on Affordable Housing and Homelessness and Community Technology Alliance. HMIS can improve the services and programs for homeless and low-income households by allowing authorized staff at Partner Agencies to share client information and to follow trends and service patterns over time. HMIS operates over the Internet and uses many security protections to ensure confidentiality.\n\n
         Participation in the HMIS program is important to our community’s ability to provide you with the best services and housing possible. As you receive services, information will be collected about you, the services provided to you, and the outcomes these services help you to achieve.\n\n
         &#8226;Your name and other identifying information <b>will not</b> be shared with any agency not participating in the system. (Unless required to do so by law.)\n
@@ -32,14 +32,21 @@
         &#8226;A list of Partner Agencies is available on request.\n
         &#8226;Authorizing your information to be entered into the HMIS is voluntary.\n
         &#8226;Refusing to do so will not limit your access to shelter or services.\n\n
+        <b>Please initial one</b> of the following levels of consent:\n
+    </string>
+    <string name="disclaimerTextLower">
         I understand that I may cancel this authorization at any time by written request. I understand that this release is valid for three years from the date of my signature below.\n\n
         <b>****NOTE: A separate HIPAA-compliant authorization is required for disclosure of any patient health information, including mental health and drug and alcohol information protected by any State or Federal privacy law including, but not limited to, Health Insurance Portability and Accountability Act (“HIPAA”), 45 C.F.R. parts 160 and 164, California Confidentiality of Medical Information Act (“CMIA”), Civil Code sections 56-56.16, Welfare and Institutions Code section 5328, or 42 C.F.R. part 2.1, et seq.</b>
     </string>
+    <string name="disclaimerTextInitial1"><b>(1)</b> I give authorization for my basic and relevant information to be entered into the HMIS and shared between Partner Agencies. I understand that I have the right to receive a copy of all information shared between the Partner Agencies.\n</string>
+    <string name="disclaimerTextInitial2"><b>(2)</b> I give authorization for my basic and relevant information to be entered into the HMIS, but not shared between Partner Agencies.\n</string>
     <string name="downloading_pit">Downloading PIT survey…</string>
     <string name="downloading_survey">Downloading survey…</string>
     <string name="downloading_surveys_list">Downloading surveys list…</string>
     <string name="error_missing_signature">The signature seems to be missing!
-        \nPlease sign the survey and resubmit.</string>
+        \nPlease sign the disclaimer and resubmit.</string>
+    <string name="error_missing_initials">The initials seem to be missing!
+        \nPlease initial the disclaimer and resubmit.</string>
     <string name="error_no_photos">There are currently no photos.
         \nTap above to take a photo.</string>
     <string name="error_no_surveys">It appears that there are no surveys. :(
@@ -66,6 +73,7 @@
     <string name="longitude">Longitude</string>
     <string name="no">No</string>
     <string name="no_signature">No Signature</string>
+    <string name="no_initials">No Initials</string>
     <string name="okay">Okay</string>
     <string name="password">Password:</string>
     <string name="please_sign_below">Please Sign below …</string>
@@ -73,6 +81,8 @@
     <string name="point_in_time">Point in Time</string>
     <string name="save">Save</string>
     <string name="signature_image">Signature Image</string>
+    <string name="initial1_image">Initial Image</string>
+    <string name="initial2_image">Initial Image</string>
     <string name="signature_x">X</string>
     <string name="submitting_photos">Submitting photo(s)…</string>
     <string name="submitting_signature">Submitting signature…</string>
@@ -83,6 +93,8 @@
     <string name="success_pit_response">The survey response has been successfully sent.</string>
     <string name="surveys">Surveys</string>
     <string name="tap_here_to_sign">Tap Here to Sign</string>
+    <string name="tap_here_to_initial">Tap Here to Initial</string>
+    <string name="tap_here_to_initial_instead">Tap to Initial Here Instead</string>
     <string name="time">Time</string>
     <string name="uh_oh">Uh oh…</string>
     <string name="user_name">Username:</string>
@@ -113,5 +125,10 @@ Please make sure you are connected and try again.</string>
     <string name="message_when_survey_saved_to_database">There seems to be no internet connection, so the survey response has been saved and
         will be submitted when the connection returns.</string>
     <string name="message_when_saved_surveys_submitted">You had some saved survey submissions that have been uploaded. \n\nHere\'s how many:</string>
+    <string name="text_view_printed_name_label"><b>Print Name of Client or Guardian:</b></string>
+    <string name="edit_text_hint_printed_name_signature">Enter name here</string>
+    <string name="text_view_date_signed"><b>Date Signed: </b></string>
+    <string name="btn_finish_disclaimer">Finish</string>
+    <string name="msg_error_changing_initials">There was a problem switching the initials. \nPlease try again.</string>
 
 </resources>

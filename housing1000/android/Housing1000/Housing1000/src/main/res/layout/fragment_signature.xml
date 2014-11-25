@@ -29,11 +29,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/disclaimerText"
+            android:text="@string/disclaimerTextUpper"
             android:layout_alignParentLeft="false"
             android:layout_alignParentRight="false"
             android:layout_alignParentStart="false"
-            android:id="@+id/disclaimerTextView"
+            android:id="@+id/disclaimerTextViewUpper"
             android:textSize="12sp"
             android:typeface="normal"
             android:gravity="start"
@@ -41,13 +41,182 @@
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/disclaimerTextViewTitle" />
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/disclaimerInitial1Row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/disclaimerTextViewUpper">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.25"
+                android:id="@+id/initial1Layout"
+                android:gravity="center_horizontal">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/initial1ImageView"
+                    android:scaleType="fitStart"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:contentDescription="@string/initial1_image"
+                    android:minHeight="40dp"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tap_here_to_initial"
+                    android:id="@+id/tapHereToInitial1TextView"
+                    android:textSize="12sp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/button_main_menu"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal"
+                    android:layout_alignBottom="@+id/initial1ImageView"
+                    android:paddingBottom="10dp" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/disclaimerTextInitial1"
+                android:id="@+id/disclaimerTextViewInitial1"
+                android:textSize="12sp"
+                android:typeface="normal"
+                android:gravity="start"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="0.7"/>
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/disclaimerInitial2Row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/disclaimerInitial1Row">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.25"
+                android:id="@+id/initial2Layout"
+                android:gravity="center_horizontal">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/initial2ImageView"
+                    android:scaleType="fitStart"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:contentDescription="@string/initial2_image"
+                    android:minHeight="40dp"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tap_here_to_initial"
+                    android:id="@+id/tapHereToInitial2TextView"
+                    android:textSize="12sp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/button_main_menu"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal"
+                    android:layout_alignBottom="@+id/initial2ImageView"
+                    android:paddingBottom="10dp" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/disclaimerTextInitial2"
+                android:id="@+id/disclaimerTextViewInitial2"
+                android:textSize="12sp"
+                android:typeface="normal"
+                android:gravity="start"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="0.7"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/disclaimerTextLower"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentRight="false"
+            android:layout_alignParentStart="false"
+            android:id="@+id/disclaimerTextViewLower"
+            android:textSize="12sp"
+            android:typeface="normal"
+            android:gravity="start"
+            android:layout_alignParentEnd="false"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/disclaimerInitial2Row" />
+
+        <TextView
+            android:id="@+id/textViewPrintedNameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_view_printed_name_label"
+            android:textColor="@color/button_main_menu"
+            android:layout_below="@+id/disclaimerTextViewLower"
+            android:textSize="16sp"
+            android:layout_marginTop="40dp"/>
+
+        <EditText
+            android:id="@+id/editTextPrintedName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/edit_text_hint_printed_name_signature"
+            android:textSize="14sp"
+            android:layout_below="@+id/textViewPrintedNameLabel"
+            android:layout_marginTop="10dp"/>
+
+        <LinearLayout
+            android:id="@+id/dateSignedLinearLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editTextPrintedName"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/textViewDateSignedLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_view_date_signed"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:textColor="@color/button_main_menu"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/textViewDateSignedDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"/>
+
+            </LinearLayout>
+
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:id="@+id/signatureLayout"
-            android:layout_alignParentBottom="true"
+            android:layout_alignParentBottom="false"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/disclaimerTextView"
+            android:layout_below="@+id/dateSignedLinearLayout"
             android:gravity="center_horizontal"
             android:paddingBottom="32dp">
 
@@ -69,6 +238,7 @@
                 android:visibility="visible"
                 android:layout_alignParentBottom="false"
                 android:layout_toRightOf="@+id/signatureXTextView"
+                android:layout_toEndOf="@+id/signatureXTextView"
                 android:layout_alignBottom="@+id/signatureImageView"
                 android:layout_alignParentRight="false"
                 android:layout_alignParentEnd="false" />
@@ -78,6 +248,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/signature_x"
                 android:id="@+id/signatureXTextView"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:textSize="30sp"
                 android:textStyle="bold"
@@ -91,10 +262,24 @@
                 android:id="@+id/tapHereToSignTextView"
                 android:textSize="30sp"
                 android:textStyle="bold"
+                android:textColor="@color/button_main_menu"
                 android:layout_centerHorizontal="true"
                 android:layout_alignBottom="@+id/signatureImageView"
                 android:paddingBottom="10dp" />
         </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_finish_disclaimer"
+            android:text="@string/btn_finish_disclaimer"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            style="@style/ButtonText"
+            android:background="@drawable/btn_positive"
+            android:layout_below="@+id/signatureLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="30dp"/>
 
     </RelativeLayout>
 

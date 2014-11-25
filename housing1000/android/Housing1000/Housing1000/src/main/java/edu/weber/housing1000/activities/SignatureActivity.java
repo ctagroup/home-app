@@ -1,10 +1,10 @@
 package edu.weber.housing1000.activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.*;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -15,7 +15,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import edu.weber.housing1000.fragments.SignatureFragment;
 import edu.weber.housing1000.helpers.EncryptionHelper;
 import edu.weber.housing1000.helpers.FileHelper;
 import edu.weber.housing1000.helpers.ImageHelper;
@@ -23,38 +22,41 @@ import edu.weber.housing1000.R;
 
 import java.io.ByteArrayOutputStream;
 
-public class SignatureActivity extends Activity {
+public class SignatureActivity extends ActionBarActivity {
 
     private LinearLayout mContent;
     private Signature mSignature;
-    private Button mClear;
     private Button mGetSign;
-    private Button mCancel;
     private Bitmap mBitmap;
     private View mView;
-    private int hmsId = -1;
+
     private String folderHash;
+    private String imageFilename;
+    private String imageBitmapExtra;
+    private String imagePathExtra;
+
+    private int resultCode;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.signature);
 
         folderHash = getIntent().getStringExtra("folderHash");
-
-        // Setting this to -1 until the RestHelper is taken off of the main thread
-        // Side note: any IO/slow operations need to be done on a separate thread
-        hmsId = -1;
+        imageFilename = getIntent().getStringExtra("imageFilename");
+        imageBitmapExtra = getIntent().getStringExtra("imageBitmapExtra");
+        imagePathExtra = getIntent().getStringExtra("imagePathExtra");
+        resultCode = getIntent().getIntExtra("resultCode", 0);
 
         mGetSign = (Button) findViewById(R.id.getsign);
         mContent = (LinearLayout) findViewById(R.id.signatureLinearLayout);
         mSignature = new Signature(this, null);
         mSignature.setBackgroundColor(Color.WHITE);
         mContent.addView(mSignature, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        mClear = (Button) findViewById(R.id.clear);
+        Button mClear = (Button) findViewById(R.id.clear);
         mGetSign.setEnabled(false);
-        mCancel = (Button) findViewById(R.id.cancel);
+        Button mCancel = (Button) findViewById(R.id.cancel);
         mView = mContent;
 
         mClear.setOnClickListener(new OnClickListener() {
@@ -113,7 +115,6 @@ public class SignatureActivity extends Activity {
             }
             Canvas canvas = new Canvas(mBitmap);
             try {
-                String encryptedName = "signature.secure";
 
                 v.draw(canvas);
                 ByteArrayOutputStream baOutputStream = new ByteArrayOutputStream();
@@ -123,14 +124,17 @@ public class SignatureActivity extends Activity {
                 byte[] encryptedImage = EncryptionHelper.encrypt(byteImage);
 
                 // Write the encrypted signature to storage
-                FileHelper.writeFileToExternalStorage(encryptedImage, folderHash, encryptedName, SignatureActivity.this);
+                FileHelper.writeFileToExternalStorage(encryptedImage, folderHash, imageFilename, SignatureActivity.this);
 
                 // Open the encrypted file, decrypt the image, write it to disk -- for testing
                 //byte[] encryptedFileBytes = FileHelper.readFileFromExternalStorage("encryptedSignature");
                 //byte[] decryptedImageBytes = EncryptionHelper.decrypt(key, encryptedFileBytes);
                 //FileHelper.writeFileToExternalStorage(decryptedImageBytes, "decryptedSignature.jpg");
 
-                setResult(SignatureFragment.RESULT_SIGNATURE_SAVED, new Intent().putExtra("bitmap", byteImage).putExtra("signaturePath", FileHelper.getAbsoluteFilePath(folderHash, encryptedName, SignatureActivity.this)));
+                setResult(resultCode,
+                        new Intent()
+                                .putExtra(imageBitmapExtra, byteImage)
+                                .putExtra(imagePathExtra, FileHelper.getAbsoluteFilePath(folderHash, imageFilename, SignatureActivity.this)));
 
             } catch (Exception e) {
                 Log.v("log_tag", e.toString());

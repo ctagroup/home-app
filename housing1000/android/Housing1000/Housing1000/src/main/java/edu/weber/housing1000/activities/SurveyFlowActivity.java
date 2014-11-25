@@ -47,7 +47,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
     private static Location currentLocation;
     private LocationManager locationmanager;
     private LocationListener locationlistener;
-    private boolean isSignatureCaptured;
+    private boolean isDisclaimerFinished;
 
     private PagerSlidingTabStrip mTabs;                         //Tabs of the view
     private SectionsPagerAdapter mSectionsPagerAdapter;         //Keeps track of the fragments
@@ -84,17 +84,17 @@ public class SurveyFlowActivity extends ActionBarActivity {
         }
     }
 
-    public boolean getIsSignatureCaptured() {
+    public boolean getIsDisclaimerFinished() {
 
         if(surveyListing.hasDisclaimer()) {
-            if (isSignatureCaptured && mTabs.getVisibility() != View.VISIBLE) {
+            if (isDisclaimerFinished && mTabs.getVisibility() != View.VISIBLE) {
                 mTabs.setVisibility(View.VISIBLE);
-            } else if (!isSignatureCaptured) {
+            } else if (!isDisclaimerFinished) {
                 mTabs.setVisibility(View.GONE);
                 mViewPager.setCurrentItem(0);
             }
 
-            return isSignatureCaptured;
+            return isDisclaimerFinished;
         }
         else {
             mTabs.setVisibility(View.GONE);
@@ -103,10 +103,10 @@ public class SurveyFlowActivity extends ActionBarActivity {
         }
     }
 
-    public void setIsSignatureCaptured(boolean value) {
-        isSignatureCaptured = value;
-
-        getIsSignatureCaptured();
+    public void setIsDisclaimerFinished(boolean value) {
+        isDisclaimerFinished = value;
+        mViewPager.setCurrentItem(1);
+        getIsDisclaimerFinished();
     }
 
     public SurveyListing getSurveyListing() {
@@ -124,7 +124,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
             surveyListing = (SurveyListing) savedInstanceState.getSerializable("surveyListing");
             folderHash = savedInstanceState.getString("folderHash");
             //currentLocation = savedInstanceState.getParcelable("currentLocation");
-            isSignatureCaptured = savedInstanceState.getBoolean("isSignatureCaptured");
+            isDisclaimerFinished = savedInstanceState.getBoolean("isSignatureCaptured");
             clientSurveyId = savedInstanceState.getString("clientSurveyId");
         } else {
             // Grab the survey listing from the extras
@@ -181,7 +181,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
             mViewPager.setCurrentItem(0);
         }
 
-        getIsSignatureCaptured();
+        getIsDisclaimerFinished();
 
         //Start Location Listener
         locationmanager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -222,7 +222,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
             outState.putString("folderHash", folderHash);
             if (currentLocation != null)
                 outState.putParcelable("currentLocation", currentLocation);
-            outState.putBoolean("isSignatureCaptured", isSignatureCaptured);
+            outState.putBoolean("isSignatureCaptured", isDisclaimerFinished);
             outState.putString("clientSurveyId", clientSurveyId);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -318,7 +318,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
 
         // Save the signature path to the database
         Fragment signatureFragment = this.getSupportFragmentManager().findFragmentByTag(getFragmentTag(0));
-        ((SignatureFragment) signatureFragment).saveSignaturePathToDatabase(surveyDataId);
+        ((SignatureFragment) signatureFragment).saveSignatureAndInitialPathsToDatabase(surveyDataId);
     }
 
     public void onPostPhotoTaskCompleted(Response response) {

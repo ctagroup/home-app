@@ -8,7 +8,7 @@ import android.view.MotionEvent;
 import edu.weber.housing1000.activities.SurveyFlowActivity;
 
 /**
- * Created by Blake on 2/20/14.
+ * @author Blake
  */
 public class CustomViewPager extends ViewPager {
     private SurveyFlowActivity myActivity;
@@ -27,12 +27,12 @@ public class CustomViewPager extends ViewPager {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent arg0) {
-        return myActivity.getIsSignatureCaptured() && super.onInterceptTouchEvent(arg0);
+        return myActivity.getIsDisclaimerFinished() && super.onInterceptTouchEvent(arg0);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (myActivity.getIsSignatureCaptured())
+        if (myActivity.getIsDisclaimerFinished())
             return super.onTouchEvent(event);
 
         return false;
