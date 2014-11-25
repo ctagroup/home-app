@@ -1,4 +1,4 @@
-package edu.weber.housing1000.authentication;
+package edu.weber.housing1000.data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

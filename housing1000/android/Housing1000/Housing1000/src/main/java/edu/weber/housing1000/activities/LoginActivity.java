@@ -19,8 +19,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import edu.weber.housing1000.ConnectivityChangeReceiver;
-import edu.weber.housing1000.authentication.AuthenticationService;
-import edu.weber.housing1000.authentication.TokenResponse;
+import edu.weber.housing1000.SurveyService;
+import edu.weber.housing1000.data.TokenResponse;
 import edu.weber.housing1000.fragments.ProgressDialogFragment;
 import edu.weber.housing1000.helpers.ErrorHelper;
 import edu.weber.housing1000.R;
@@ -183,7 +183,7 @@ public class LoginActivity extends ActionBarActivity
 
         RestAdapter restAdapter = RESTHelper.setUpRestAdapterWithoutAuthorizationToken(this, null);
 
-        AuthenticationService service = restAdapter.create(AuthenticationService.class);
+        SurveyService service = restAdapter.create(SurveyService.class);
 
         final String grantType = "password";
 

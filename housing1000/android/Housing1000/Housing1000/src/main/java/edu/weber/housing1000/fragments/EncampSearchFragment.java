@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +14,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import edu.weber.housing1000.EncampmentService;
 import edu.weber.housing1000.R;
+import edu.weber.housing1000.SurveyService;
 import edu.weber.housing1000.Utils;
 import edu.weber.housing1000.activities.EncampmentActivity;
 import edu.weber.housing1000.data.EncampmentSite;
@@ -93,7 +92,7 @@ public class EncampSearchFragment extends Fragment {
 
         RestAdapter restAdapter = RESTHelper.setUpRestAdapter(this.getActivity(), null);
 
-        EncampmentService service = restAdapter.create(EncampmentService.class);
+        SurveyService service = restAdapter.create(SurveyService.class);
 
         service.searchEncampment(searchString, new Callback<ArrayList<EncampmentSite>>() {
             @Override

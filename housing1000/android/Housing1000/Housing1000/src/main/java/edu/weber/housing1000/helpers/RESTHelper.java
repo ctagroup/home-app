@@ -25,7 +25,6 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManagerFactory;
 
 import edu.weber.housing1000.R;
-import edu.weber.housing1000.authentication.TokenResponse;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;

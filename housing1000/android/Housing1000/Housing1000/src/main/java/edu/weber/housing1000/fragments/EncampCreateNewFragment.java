@@ -11,8 +11,8 @@ import android.widget.ScrollView;
 
 import java.io.IOException;
 
-import edu.weber.housing1000.EncampmentService;
 import edu.weber.housing1000.R;
+import edu.weber.housing1000.SurveyService;
 import edu.weber.housing1000.SurveyType;
 import edu.weber.housing1000.Utils;
 import edu.weber.housing1000.data.SurveyListing;
@@ -79,7 +79,7 @@ public class EncampCreateNewFragment extends BaseSurveyFragment {
 
         RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoDeserialize(this.getActivity(), null);
 
-        EncampmentService service = restAdapter.create(EncampmentService.class);
+        SurveyService service = restAdapter.create(SurveyService.class);
 
         service.getEncampmentQuestions(new Callback<String>() {
             @Override
