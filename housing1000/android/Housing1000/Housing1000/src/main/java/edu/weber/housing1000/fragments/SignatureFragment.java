@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import edu.weber.housing1000.SurveyType;
 import edu.weber.housing1000.data.DisclaimerResponse;
 import edu.weber.housing1000.helpers.ErrorHelper;
 import edu.weber.housing1000.helpers.FileHelper;
@@ -377,15 +378,13 @@ public class SignatureFragment extends SurveyAppFragment {
         else {
             initialPath = FileHelper.getAbsoluteFilePath(myActivity.getFolderHash(), filename, myActivity);
         }
-
-        //TODO update it in the database also?
     }
 
     public void submitDisclaimerInfo() {
 
         final String printedName = editTextPrintedName.getText().toString();
 
-        DisclaimerResponse disclaimerResponse = new DisclaimerResponse(Long.valueOf(myActivity.getClientSurveyId()), 1, printedName, new Date());
+        final DisclaimerResponse disclaimerResponse = new DisclaimerResponse(Long.valueOf(myActivity.getClientSurveyId()), 1, printedName, new Date());
 
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
@@ -499,13 +498,19 @@ public class SignatureFragment extends SurveyAppFragment {
     }
 
     /**
-     * In the case of no internet connection on submission, save the signature path to submit later
+     * In the case of no internet connection on submission, save the signature and initils paths to submit later. Also the disclaimer metadata in JSON format.
      * @param surveyDataId The id of the survey to go along with this signature
      */
     public void saveSignatureAndInitialPathsToDatabase(long surveyDataId) {
         DatabaseConnector databaseConnector = new DatabaseConnector(myActivity.getBaseContext());
-        databaseConnector.saveSubmittedImagePaths(true, myActivity.getFolderHash(), surveyDataId, signaturePath);
-        databaseConnector.saveSubmittedImagePaths(true, myActivity.getFolderHash(), surveyDataId, initialPath); //TODO how to tell the database that this is an initial image?
+        databaseConnector.saveSubmittedImagePaths(true, myActivity.getFolderHash(), surveyDataId, signaturePath, initialPath);
+
+        //Save the disclaimer meta data
+        final String printedName = editTextPrintedName.getText().toString();
+        final DisclaimerResponse disclaimerResponse = new DisclaimerResponse(Long.valueOf(myActivity.getClientSurveyId()), 1, printedName, new Date());
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        final String jsonToSubmit = gson.toJson(disclaimerResponse);
+        databaseConnector.saveSurveyToSubmitLater(jsonToSubmit, SurveyType.DISCLAIMER_METADATA, "0");
     }
 
 }

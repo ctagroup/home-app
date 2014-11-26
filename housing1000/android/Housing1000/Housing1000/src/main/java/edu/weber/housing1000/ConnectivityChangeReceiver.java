@@ -127,6 +127,22 @@ public class ConnectivityChangeReceiver extends BroadcastReceiver {
                             }
                         });
                         break;
+                    case DISCLAIMER_METADATA:
+                        service.postDisclaimerData(jsonToSubmit, new Callback<String>() {
+                            @Override
+                            public void success(String s, Response response) {
+                                Log.d("HOUSING1000", "Successfully submitted saved survey");
+                                databaseConnector.deleteSubmittedSurvey(survey.getDatabaseId());
+                                SharedPreferencesHelper.incrementNumberOfflineSurveysSubmitted(context);
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Log.d("HOUSING1000", "Un-successfully submitted saved survey...");
+                                error.printStackTrace();
+                            }
+                        });
+                        break;
                 }
             }
         }

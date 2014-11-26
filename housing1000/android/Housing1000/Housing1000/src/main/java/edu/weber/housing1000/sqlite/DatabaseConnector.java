@@ -54,6 +54,7 @@ public class DatabaseConnector {
      * For the given survey, either add it if it isn't in the database or overwrite what is there
      * @param surveyType The type of survey to update
      * @param json The json representation of the survey
+     * @param surveyId The id of the survey. For some surveys (like PIT) where this is not applicable it should be set to 0.
      */
     public void updateSurvey(SurveyType surveyType, String json, String surveyId) {
 
@@ -85,6 +86,7 @@ public class DatabaseConnector {
     /**
      * Retrieves stored Json for the given survey type
      * @param surveyType The type of survey to try and retrieve
+     * @param surveyId The id of the survey. For some surveys (like PIT) where this is not applicable it should be set to 0.
      * @return The json representation of the survey
      */
     public String queryForSavedSurveyJson(SurveyType surveyType, String surveyId) {
@@ -115,6 +117,7 @@ public class DatabaseConnector {
      * This gets called when a survey gets submitted and there is no internet connection
      * @param json The json to store
      * @param surveyType The type of the json being stored
+     * @param surveyId The id of the survey. For some surveys (like PIT) where this is not applicable it should be set to 0.
      * @return The database id of the newly added survey
      */
     public long saveSurveyToSubmitLater(String json, SurveyType surveyType, String surveyId) {
