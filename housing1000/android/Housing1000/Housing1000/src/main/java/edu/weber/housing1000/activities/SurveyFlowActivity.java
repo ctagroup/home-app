@@ -296,7 +296,6 @@ public class SurveyFlowActivity extends ActionBarActivity {
                 .setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialog) {
-                        //TODO Save the images to the database
                         setSubmittingResponse(false);
                         finish();
                     }
@@ -304,7 +303,6 @@ public class SurveyFlowActivity extends ActionBarActivity {
                 .setPositiveButton(getString(R.string.okay), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //TODO Save the images to the database
                         setSubmittingResponse(false);
                         finish();
                     }
@@ -316,7 +314,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
         Fragment photoFragment = this.getSupportFragmentManager().findFragmentByTag(getFragmentTag(1));
         ((PhotosFragment) photoFragment).savePhotoPathsToDatabase(surveyDataId);
 
-        // Save the signature path to the database
+        // Save the signature and initial paths to the database
         Fragment signatureFragment = this.getSupportFragmentManager().findFragmentByTag(getFragmentTag(0));
         ((SignatureFragment) signatureFragment).saveSignatureAndInitialPathsToDatabase(surveyDataId);
     }
@@ -337,7 +335,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
                 Fragment f = this.getSupportFragmentManager().findFragmentByTag(getFragmentTag(0));
                 mViewPager.setCurrentItem(0, true);
 
-                ((SignatureFragment) f).submitSignature();
+                ((SignatureFragment) f).submitDisclaimerInfo();
             }
             else {
                 showSendSuccessMessage();

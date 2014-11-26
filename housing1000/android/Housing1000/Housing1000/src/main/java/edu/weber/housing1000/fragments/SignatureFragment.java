@@ -22,11 +22,16 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
+import edu.weber.housing1000.data.DisclaimerResponse;
 import edu.weber.housing1000.helpers.ErrorHelper;
 import edu.weber.housing1000.helpers.FileHelper;
 import edu.weber.housing1000.helpers.RESTHelper;
@@ -376,7 +381,44 @@ public class SignatureFragment extends SurveyAppFragment {
         //TODO update it in the database also?
     }
 
-    public void submitSignature() {
+    public void submitDisclaimerInfo() {
+
+        final String printedName = editTextPrintedName.getText().toString();
+
+        DisclaimerResponse disclaimerResponse = new DisclaimerResponse(Long.valueOf(myActivity.getClientSurveyId()), 1, printedName, new Date());
+
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+
+        RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoDeserialize(getActivity(), gson);
+
+        SurveyService service = restAdapter.create(SurveyService.class);
+
+        service.postDisclaimerData(disclaimerResponse, new Callback<String>() {
+            @Override
+            public void success(String s, retrofit.client.Response response) {
+                if (s != null) {
+                    Log.d("SUCCESS", s);
+                }
+
+                submitSignatureImages();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                String errorBody = (String) error.getBodyAs(String.class);
+
+                if (errorBody != null) {
+                    Log.e("FAILURE", errorBody);
+                    myActivity.onPostSignatureTaskCompleted(error.getResponse());
+                } else {
+                    myActivity.onPostSignatureTaskCompleted(error.getResponse());
+                }
+            }
+
+        });
+    }
+
+    private void submitSignatureImages() {
         if (!signatureSubmitted) {
             MultipartTypedOutput multipartTypedOutput = new MultipartTypedOutput();
 

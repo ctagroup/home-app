@@ -2,6 +2,7 @@ package edu.weber.housing1000;
 
 import java.util.ArrayList;
 
+import edu.weber.housing1000.data.DisclaimerResponse;
 import edu.weber.housing1000.data.EncampmentSite;
 import edu.weber.housing1000.data.PitResponse;
 import edu.weber.housing1000.data.Survey;
@@ -132,4 +133,14 @@ public interface SurveyService {
      */
     @GET("/SurveySite/api/Survey/GetEncampmentSurvey")
     void getEncampmentVisitQuestions(Callback<String> cb);
+
+
+    /**
+     * For submitting metadata about the disclaimer images
+     * @param disclaimerResponse The disclaimer response
+     * @param cb The callback
+     */
+    @POST("/SurveySite/Help/Api/POST-api-ROI")
+    void postDisclaimerData(@Body DisclaimerResponse disclaimerResponse, Callback<String> cb);
+
 }
