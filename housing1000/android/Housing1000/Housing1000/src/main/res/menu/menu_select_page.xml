@@ -4,7 +4,7 @@
     tools:context="edu.weber.housing1000.activities.SurveyListActivity" >
 
     <item android:id="@+id/action_logout"
-        android:title="Logout"
+        android:title="@string/action_bar_item_logout"
         android:orderInCategory="100"
         app:showAsAction="ifRoom"/>
 </menu>

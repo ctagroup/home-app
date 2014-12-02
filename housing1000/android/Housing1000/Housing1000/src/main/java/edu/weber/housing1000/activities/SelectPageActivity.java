@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.Utils;
@@ -31,6 +32,11 @@ public class SelectPageActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_page);
         Utils.setActionBarColorToDefault(this);
+
+        String userFullName = SharedPreferencesHelper.getUserFullName(this);
+        String welcomeText = userFullName != null && !"".equals(userFullName) ? "Hi, " + userFullName : "";
+        TextView textViewWelcomeMessage = (TextView) findViewById(R.id.textViewWelcomeMessage);
+        textViewWelcomeMessage.setText(welcomeText);
 
         //Check if GPS is enabled
         LocationManager locationmanager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
