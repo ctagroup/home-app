@@ -1,6 +1,5 @@
 package edu.weber.housing1000.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,6 +20,7 @@ import java.util.Date;
 import edu.weber.housing1000.ConnectivityChangeReceiver;
 import edu.weber.housing1000.SurveyService;
 import edu.weber.housing1000.data.TokenResponse;
+import edu.weber.housing1000.data.UserInfo;
 import edu.weber.housing1000.fragments.ProgressDialogFragment;
 import edu.weber.housing1000.helpers.ErrorHelper;
 import edu.weber.housing1000.R;
@@ -186,25 +186,19 @@ public class LoginActivity extends ActionBarActivity
         SurveyService service = restAdapter.create(SurveyService.class);
 
         final String grantType = "password";
-
-        final Context context = this;
         service.getToken(grantType, username, password, new Callback<TokenResponse>() {
             @Override
             public void success(TokenResponse tokenResponse, Response response) {
                 Log.d("HOUSING 1000", "Callback was successful");
 
-                //Set the shared preference for the token so that other activities can access it
-                SharedPreferencesHelper.setAccessToken(context, tokenResponse.getAccessToken());
-                SharedPreferencesHelper.setUserName(context, username);
-
-                onGetTokenTaskCompleted(isValidToken(tokenResponse));
+                onGetTokenTaskCompleted(isValidToken(tokenResponse), tokenResponse.getAccessToken());
             }
 
             @Override
             public void failure(RetrofitError error) {
                 Log.d("HOUSING 1000", "Callback failed: " + error.toString());
                 error.printStackTrace();
-                onGetTokenTaskCompleted(false);
+                onGetTokenTaskCompleted(false, null);
             }
         });
     }
@@ -213,21 +207,64 @@ public class LoginActivity extends ActionBarActivity
      * Either move on or display an error message, depending on if a token was received
      * @param successful Whether it was successful or not
      */
-    private void onGetTokenTaskCompleted(final boolean successful) {
-        dismissDialog();
+    private void onGetTokenTaskCompleted(final boolean successful, final String token) {
         usernameField.setText("");
         passwordField.setText("");
 
         if(successful) {
             Log.d("HOUSING 1000", "Successfully retrieved token.");
 
+            //Set the shared preference for the token so that other activities can access it
+            SharedPreferencesHelper.setAccessToken(this, token);
+
+            getUserInfo();
+        }
+        else {
+            Log.w("HOUSING 1000", "There was a problem retrieving the token.");
+            dismissDialog();
+            ErrorHelper.showError(this, getString(R.string.msg_error_logging_in));
+        }
+    }
+
+    private void getUserInfo() {
+
+        RestAdapter restAdapter = RESTHelper.setUpRestAdapter(this, null);
+
+        SurveyService service = restAdapter.create(SurveyService.class);
+
+        service.getUserInfo(new Callback<UserInfo>() {
+            @Override
+            public void success(UserInfo userInfo, Response response) {
+                Log.d("HOUSING 1000", "Callback was successful");
+
+                onGetUserInfoTaskCompleted(true, userInfo);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d("HOUSING 1000", "Callback failed: " + error.toString());
+                error.printStackTrace();
+                onGetUserInfoTaskCompleted(false, null);
+            }
+        });
+
+    }
+
+    private void onGetUserInfoTaskCompleted(final boolean successful, final UserInfo userInfo) {
+        dismissDialog();
+
+        if(successful) {
+            Log.d("HOUSING 1000", "Successfully retrieved user info: " + userInfo.toString());
+
+            SharedPreferencesHelper.setDataFromUserInfo(this, userInfo);
+
             Intent intent = new Intent(LoginActivity.this, SelectPageActivity.class);
             startActivityForResult(intent, 1);
         }
         else {
-            Log.w("HOUSING 1000", "There was a problem retrieving the token.");
+            Log.w("HOUSING 1000", "There was a problem retrieving user info.");
 
-            ErrorHelper.showError(this, "Incorrect username or password");
+            ErrorHelper.showError(this, getString(R.string.msg_error_logging_in));
         }
     }
 

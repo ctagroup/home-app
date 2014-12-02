@@ -130,5 +130,6 @@ Please make sure you are connected and try again.</string>
     <string name="text_view_date_signed"><b>Date Signed: </b></string>
     <string name="btn_finish_disclaimer">Finish</string>
     <string name="msg_error_changing_initials">There was a problem switching the initials. \nPlease try again.</string>
+    <string name="msg_error_logging_in">There was a problem logging in. \nPlease try again.</string>
 
 </resources>

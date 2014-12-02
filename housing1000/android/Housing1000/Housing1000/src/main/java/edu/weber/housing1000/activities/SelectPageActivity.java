@@ -112,9 +112,9 @@ public class SelectPageActivity extends ActionBarActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                //Clear the username and token. This is how we know the user chose to logout and should be prompted to log back in before using the app
+                //Clear the token and user info. This is how we know the user chose to logout and should be prompted to log back in before using the app
                 SharedPreferencesHelper.setAccessToken(context, "");
-                SharedPreferencesHelper.setUserName(context, "");
+                SharedPreferencesHelper.clearDataFromUserInfo(context);
 
                 Intent intent = new Intent(context, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

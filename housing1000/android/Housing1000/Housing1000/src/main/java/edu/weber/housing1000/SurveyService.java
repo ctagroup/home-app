@@ -9,6 +9,7 @@ import edu.weber.housing1000.data.Survey;
 import edu.weber.housing1000.data.SurveyListing;
 import edu.weber.housing1000.data.SurveyResponse;
 import edu.weber.housing1000.data.TokenResponse;
+import edu.weber.housing1000.data.UserInfo;
 import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.Field;
@@ -151,5 +152,13 @@ public interface SurveyService {
      */
     @POST("/SurveySite/Help/Api/POST-api-ROI")
     void postDisclaimerData(@Body TypedInput jsonToSubmit, Callback<String> cb);
+
+
+    /**
+     * For getting user info after logging in
+     * @param cb The callback
+     */
+    @GET("/SurveySite/api/Account/UserInfo")
+    void getUserInfo(Callback<UserInfo> cb);
 
 }

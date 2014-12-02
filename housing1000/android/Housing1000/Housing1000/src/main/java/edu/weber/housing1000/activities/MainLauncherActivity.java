@@ -19,9 +19,9 @@ public class MainLauncherActivity extends ActionBarActivity {
 
         super.onCreate(savedInstanceState);
 
-        final String username = SharedPreferencesHelper.getUserName(this);
+        final String username = SharedPreferencesHelper.getAccessToken(this);
 
-        //If the username is null or empty string then we assume that they aren't logged in
+        //If the token is null or empty string then we assume that they aren't logged in
         final boolean needsToLogin = (username == null || "".equals(username));
 
         Intent intent;
