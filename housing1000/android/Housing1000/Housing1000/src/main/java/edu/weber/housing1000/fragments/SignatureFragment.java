@@ -40,6 +40,7 @@ import edu.weber.housing1000.SurveyService;
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.activities.SignatureActivity;
 import edu.weber.housing1000.activities.SurveyFlowActivity;
+import edu.weber.housing1000.helpers.SharedPreferencesHelper;
 import edu.weber.housing1000.sqlite.DatabaseConnector;
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -141,6 +142,9 @@ public class SignatureFragment extends SurveyAppFragment {
         textViewDateSigned.setText(sdf.format(cal.getTime()));
 
         disclaimerScrollView = (ScrollView) rootView.findViewById(R.id.disclaimerScrollView);
+
+        TextView disclaimerTextViewUpper = (TextView) rootView.findViewById(R.id.disclaimerTextViewUpper);
+        disclaimerTextViewUpper.setText(String.format(myActivity.getString(R.string.disclaimerTextUpper), SharedPreferencesHelper.getUserOrganization(myActivity)));
 
         editTextPrintedName = (EditText) rootView.findViewById(R.id.editTextPrintedName);
         editTextPrintedName.addTextChangedListener(new TextWatcher() {
