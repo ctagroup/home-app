@@ -388,7 +388,7 @@ public class SignatureFragment extends SurveyAppFragment {
 
         final String printedName = editTextPrintedName.getText().toString();
 
-        final DisclaimerResponse disclaimerResponse = new DisclaimerResponse(Long.valueOf(myActivity.getClientSurveyId()), 1, printedName, new Date());
+        final DisclaimerResponse disclaimerResponse = new DisclaimerResponse(Long.valueOf(myActivity.getClientSurveyId()), SharedPreferencesHelper.getUserId(myActivity), printedName, new Date());
 
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 

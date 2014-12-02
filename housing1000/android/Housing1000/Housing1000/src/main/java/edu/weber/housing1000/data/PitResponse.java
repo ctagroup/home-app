@@ -27,9 +27,9 @@ public class PitResponse {
         return responses;
     }
 
-    public PitResponse(String geoLocation, ArrayList<Response> responses) {
-        userId = 1;
-        client = "";
+    public PitResponse(String geoLocation, ArrayList<Response> responses, long userId) {
+        this.userId = userId;
+        this.client = "";
         this.geoLocation = geoLocation;
         this.responses = responses;
     }

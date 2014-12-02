@@ -8,11 +8,11 @@ import com.google.gson.annotations.SerializedName;
 public class SurveyResponse {
     @Expose
     @SerializedName("SurveyId")
-    public long surveyId = -1;
+    public long surveyId;
 
     @Expose
     @SerializedName("SurveyBy")
-    private long surveyBy = -1;
+    private long surveyBy;
 
     @Expose
     @SerializedName("Client")
@@ -32,9 +32,9 @@ public class SurveyResponse {
         return responses;
     }
 
-    public SurveyResponse(SurveyListing surveyListing, Client client, ArrayList<Response> responses) {
-        surveyId = surveyListing.getSurveyId();
-        surveyBy = 1;
+    public SurveyResponse(SurveyListing surveyListing, Client client, ArrayList<Response> responses, long surveyBy) {
+        this.surveyId = surveyListing.getSurveyId();
+        this.surveyBy = surveyBy;
         this.client = client;
         this.responses = responses;
     }

@@ -23,6 +23,7 @@ import edu.weber.housing1000.data.SurveyResponse;
 import edu.weber.housing1000.helpers.RESTHelper;
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.SurveyService;
+import edu.weber.housing1000.helpers.SharedPreferencesHelper;
 import edu.weber.housing1000.sqlite.DatabaseConnector;
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -151,7 +152,7 @@ public class SurveyFragment extends BaseSurveyFragment {
     public String saveSurveyResponse() {
         Client client = new Client(survey.getClientQuestions(), SurveyFlowActivity.getLocation());
         ArrayList<Response> responses = generateResponses(survey.getSurveyQuestions());
-        surveyResponse = new SurveyResponse(surveyListing, client, responses);
+        surveyResponse = new SurveyResponse(surveyListing, client, responses, SharedPreferencesHelper.getUserId(myActivity));
 
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         return gson.toJson(surveyResponse);
