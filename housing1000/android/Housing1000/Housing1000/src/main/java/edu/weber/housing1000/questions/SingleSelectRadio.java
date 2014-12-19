@@ -7,7 +7,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 /**
- * Created by Blake on 1/21/14.
+ * @author Blake
  */
 public class SingleSelectRadio extends Question {
     @Override
@@ -18,6 +18,7 @@ public class SingleSelectRadio extends Question {
 
         TextView textView = new TextView(context);
         textView.setText(getText());
+        textView.setTextSize(getTextSize());
         qLayout.addView(textView);
 
         //Add potential answers

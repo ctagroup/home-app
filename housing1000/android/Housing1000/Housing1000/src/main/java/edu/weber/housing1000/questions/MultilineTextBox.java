@@ -19,6 +19,7 @@ public class MultilineTextBox extends Question {
 
         TextView textView = new TextView(context);
         textView.setText(getText());
+        textView.setTextSize(getTextSize());
         qLayout.addView(textView);
         if (textView.getText().length() >= 16)
             qLayout.setOrientation(LinearLayout.VERTICAL);

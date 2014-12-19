@@ -45,10 +45,9 @@ public class SinglelineTextBox extends Question {
 
         TextView textView = new TextView(context);
         textView.setText(getText());
+        textView.setTextSize(getTextSize());
         qLayout.addView(textView);
-        // TODO: Have the ctagroup people add a minimum character length for the SinglelineTextBox so we can wrap to the next line if it isn't big enough
-        if (textView.getText().length() >= 16)
-            qLayout.setOrientation(LinearLayout.VERTICAL);
+        qLayout.setOrientation(LinearLayout.VERTICAL);
 
         final EditText editText = new EditText(context);
         LinearLayout.LayoutParams editTextParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);

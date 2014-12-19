@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by Blake on 1/21/14.
+ * @author David Horton
  */
 public class SingleSelect extends Question {
     @Override
@@ -23,6 +23,7 @@ public class SingleSelect extends Question {
 
         TextView textView = new TextView(context);
         textView.setText(getText());
+        textView.setTextSize(getTextSize());
         qLayout.addView(textView);
 
         //Add potential answers

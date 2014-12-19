@@ -81,6 +81,10 @@ public abstract class Question {
         this.group = group;
     }
 
+    public float getTextSize() {
+        return 16;
+    }
+
     public String getText() {
         return text;
     }
@@ -150,9 +154,6 @@ public abstract class Question {
         dependents.add(dependent);
     }
 
-    //TODO the reason this doesn't work is because it is setting an onclick listener to the parent for each
-    //dependent. This means the only one that gets registered as the dependent that gets passed into toggleVisibility
-    //is the last one, because each setOnClickListener overrides what is was before
     public void hookUpDependents() {
         LinearLayout myLayout = (LinearLayout) getView();
 

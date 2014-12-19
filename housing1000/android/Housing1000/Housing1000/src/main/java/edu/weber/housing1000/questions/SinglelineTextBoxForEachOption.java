@@ -16,7 +16,7 @@ import edu.weber.housing1000.R;
 import edu.weber.housing1000.Utils;
 
 /**
- * Created by PLW on 3/1/14.
+ * @author PLW
  */
 public class SinglelineTextBoxForEachOption extends Question {
     @Override

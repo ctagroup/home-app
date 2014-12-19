@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * Created by Blake on 1/21/14.
+ * @author David Horton
  */
 public class MultiSelect extends Question {
     @Override
@@ -18,6 +18,7 @@ public class MultiSelect extends Question {
 
         TextView textView = new TextView(context);
         textView.setText(getText());
+        textView.setTextSize(getTextSize());
         qLayout.addView(textView);
 
         //Add potential answers
