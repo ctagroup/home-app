@@ -107,8 +107,8 @@ Please make sure you are connected and try again.</string>
     <string name="btn_surveys">Surveys button</string>
     <string name="logout_message">Are you sure you want to logout?</string>
     <string name="btn_encamp_search">Search</string>
-    <string name="btn_encamp_create">New Encampment Survey</string>
-    <string name="btn_encamp_visit">Encampment Site Visit Survey</string>
+    <string name="btn_encamp_create">New Encampment</string>
+    <string name="btn_encamp_visit">Encampment Site Visit</string>
     <string name="editText_encamp_search_hint">Search for an encampment site</string>
     <string name="error_field_required">This field is required</string>
     <string name="encamp_list_empty_text">Search returned no results</string>
