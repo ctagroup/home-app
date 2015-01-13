@@ -55,8 +55,8 @@ public class SinglelineTextBox extends Question {
 
         //Add question input validation
         if(getTextBoxDataType() != null) {
-            switch (getTextBoxDataType()) {
-                case "DateTime":
+            switch (getTextBoxDataType().toLowerCase()) {
+                case "datetime":
                     editText.setInputType(InputType.TYPE_NULL);
                     // Disable any text input from the keyboard by setting a filter
                     editText.setFilters(new InputFilter[]
@@ -99,13 +99,13 @@ public class SinglelineTextBox extends Question {
                     editText.setInputType(InputType.TYPE_CLASS_TEXT);
                     break;
                 default:
-                    editText.setInputType(InputType.TYPE_NULL);
+                    editText.setInputType(InputType.TYPE_CLASS_TEXT);
                     break;
             }
         }
-        //If the text box data type is null, default to TYPE_NULL
+        //If the text box data type is null, default to TYPE_CLASS_TEXT
         else {
-            editText.setInputType(InputType.TYPE_NULL);
+            editText.setInputType(InputType.TYPE_CLASS_TEXT);
         }
 
         qLayout.addView(editText);
