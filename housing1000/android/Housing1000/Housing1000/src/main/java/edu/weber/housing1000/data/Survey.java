@@ -30,6 +30,10 @@ public class Survey {
     @SerializedName("SurveyQuestions")
     private ArrayList<Question> surveyQuestions;
 
+    @Expose
+    @SerializedName("NeedsROIAndImages")
+    private boolean hasDisclaimer;
+
     public String getId() {
         return id;
     }
@@ -40,6 +44,10 @@ public class Survey {
 
     public String getTitle() {
         return title;
+    }
+
+    public boolean hasDisclaimer() {
+        return hasDisclaimer;
     }
 
     public ArrayList<Question> getClientQuestions() { return clientQuestions; }

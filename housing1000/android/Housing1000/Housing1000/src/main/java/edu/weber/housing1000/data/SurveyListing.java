@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 /**
- * Created by Blake on 11/29/13.
+ * @author David Horton
  */
 public class SurveyListing implements Serializable, Parcelable {
 
@@ -21,15 +21,12 @@ public class SurveyListing implements Serializable, Parcelable {
     @SerializedName("Title")
     private String title;
 
-    private String json;
-
-    //TODO expose this as something that can be deserialized from the json
     private boolean hasDisclaimer;
 
+    private String json;
+
     public boolean hasDisclaimer() {
-        //TODO uncomment this once hasDisclaimer actually ties to something from the json
-        //return hasDisclaimer;
-        return true;
+        return hasDisclaimer;
     }
 
     public long getSurveyId() {
@@ -44,16 +41,15 @@ public class SurveyListing implements Serializable, Parcelable {
 
     public void setJson(String json) { this.json = json; }
 
-    public SurveyListing()
-    {
-
+    public SurveyListing() {
     }
 
-    public SurveyListing(long id, String title, String json)
+    public SurveyListing(long id, String title, String json, boolean hasDisclaimer)
     {
         this.surveyId = id;
         this.title = title;
         this.json = json;
+        this.hasDisclaimer = hasDisclaimer;
     }
 
     @Override
@@ -70,6 +66,7 @@ public class SurveyListing implements Serializable, Parcelable {
         in.readStringArray(strings);
         title = strings[0];
         json = strings[1];
+        hasDisclaimer = in.readByte() != 0;     //hasDisclaimer == true if byte != 0
     }
 
     @Override
@@ -81,6 +78,7 @@ public class SurveyListing implements Serializable, Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(surveyId);
         dest.writeStringArray( new String[] {title, json} );
+        dest.writeByte((byte) (hasDisclaimer ? 1 : 0));
     }
 
     public static final Parcelable.Creator<SurveyListing> CREATOR
