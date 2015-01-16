@@ -184,7 +184,7 @@ public class PitActivity extends ActionBarActivity {
                 try {
                     String json = RESTHelper.convertStreamToString(response.getBody().in());
 
-                    surveyListing = new SurveyListing(result.getSurveyId(), result.getTitle(), json);
+                    surveyListing = new SurveyListing(result.getSurveyId(), result.getTitle(), json, result.hasDisclaimer());
 
                     onGetPitSurveyTaskCompleted(true, json);
                 } catch (IOException e) {
@@ -312,7 +312,7 @@ public class PitActivity extends ActionBarActivity {
             String surveyJson = (String)params[0];
             Survey survey = (Survey)params[1];
 
-            surveyListing = new SurveyListing(survey.getSurveyId(), survey.getTitle(), surveyJson);
+            surveyListing = new SurveyListing(survey.getSurveyId(), survey.getTitle(), surveyJson, survey.hasDisclaimer());
 
             onGetPitSurveyTaskCompleted(true, null);
         }
