@@ -38,7 +38,7 @@ import edu.weber.housing1000.Utils;
  * @author Blake
  */
 public abstract class BaseSurveyFragment extends SurveyAppFragment {
-    private ArrayList<Question> lstQuestions;   // List of all questions
+    private ArrayList<Question> lstQuestions = new ArrayList<>();   // List of all questions
     protected Survey survey;              // Current survey, questions and all
     protected RelativeLayout rootLayout;  // Root layout of the fragment
     protected SurveyListing surveyListing;
@@ -255,27 +255,7 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
     protected ScrollView generateQuestionUi(SurveyListing listing) {
         try {
 
-            lstQuestions = new ArrayList<>();
-
             survey = JSONParser.getSurveyFromListing(listing);
-            if (survey.getClientQuestions() != null) {
-                lstQuestions.addAll(survey.getClientQuestions());
-
-                // This is needed because we are displaying the client and survey questions on the same
-                // page and some of the orderIds overlap
-                for (Question q : survey.getSurveyQuestions()) {
-                    q.setOrderId(q.getOrderId() + survey.getClientQuestions().size());
-                }
-            }
-            lstQuestions.addAll(survey.getSurveyQuestions());
-
-            // Sort the questions by orderId
-            Collections.sort(lstQuestions, new Comparator<Question>() {
-                public int compare(Question q1, Question q2) {
-                    return q1.getOrderId() - q2.getOrderId();
-                }
-            });
-
 
             final ScrollView mainScrollView = new ScrollView(getActivity());
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
@@ -296,92 +276,7 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
 
             mainScrollView.addView(mainLinearLayout);
 
-            List<String> lstPanels = new ArrayList<>();
-
-            //Get panel types
-            for (Question q : lstQuestions) {
-                if (!q.getGroup().isEmpty() && !lstPanels.contains(q.getGroup()))
-                    lstPanels.add(q.getGroup());
-            }
-
-            LinearLayout[] panelViews = new LinearLayout[lstPanels.size()];
-            Button[] buttons = new Button[lstPanels.size()];
-
-            //Create buttons and panels
-            for (int k = 0; k < lstPanels.size(); k++) {
-                Button btn = new Button(getActivity());
-                btn.setId(k);
-                btn.setText(lstPanels.get(k));
-                buttons[k] = btn;
-                mainLinearLayout.addView(btn);
-
-                LinearLayout panelView = new LinearLayout(getActivity());
-                panelView.setId(k);
-                panelView.setOrientation(LinearLayout.VERTICAL);
-                panelViews[k] = panelView;
-                mainLinearLayout.addView(panelView);
-                if (k > 0)
-                    panelView.setVisibility(View.GONE);
-            }
-
-            //Set Click Events for the buttons
-            for (int k = 0; k < lstPanels.size(); k++) {
-                final int localK = k;
-                final LinearLayout[] localPanelViews = panelViews;
-                final List<String> localLstPanels = lstPanels;
-                buttons[k].setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (localPanelViews[localK].getVisibility() == View.VISIBLE) {
-                            localPanelViews[localK].setVisibility(View.GONE);
-                        } else {
-                            localPanelViews[localK].setVisibility(View.VISIBLE);
-                        }
-                        for (int l = 0; l < localLstPanels.size(); l++) {
-                            if (l != localK) {
-                                localPanelViews[l].setVisibility(View.GONE);
-                            }
-                        }
-                    }
-                });
-            }
-
-            // Create question views and add them
-            for (Question question : lstQuestions) {
-                View questionView = question.createView(getActivity());
-
-                if (questionView != null) {
-                    if (lstPanels.size() > 0) {
-                        for (int k = 0; k < panelViews.length; k++) {
-                            if (question.getGroup().equals(lstPanels.get(k))) {
-                                panelViews[k].addView(questionView);
-                            }
-                        }
-                    } else {
-                        mainLinearLayout.addView(questionView);
-                    }
-                }
-            }
-
-            // Set up question dependencies
-            Set<Question> dependencies = new HashSet<>();
-
-            for (Question question : lstQuestions) {
-                if (question.getParentQuestionId() > 0) {
-                    for (Question q : lstQuestions) {
-                        if (q.getQuestionId() == question.getParentQuestionId()) {
-                            q.addDependent(question);
-                            dependencies.add(q);
-                            break;
-                        }
-                    }
-                }
-            }
-
-            // Set click listeners on the parent questions so the answers will be compared
-            for (Question question : dependencies) {
-                question.hookUpDependents();
-            }
+            addSurveyQuestionsToLinearLayout(mainLinearLayout, survey);
 
             return mainScrollView;
         } catch (Exception e) {
@@ -389,6 +284,118 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
         }
 
         return null;
+    }
+
+    public void addSurveyQuestionsToLinearLayout(LinearLayout mainLinearLayout, Survey surveyToAddFrom) {
+
+        ArrayList<Question> questionsToAdd = new ArrayList<>();
+
+        if (surveyToAddFrom.getClientQuestions() != null) {
+            questionsToAdd.addAll(surveyToAddFrom.getClientQuestions());
+
+            // This is needed because we are displaying the client and survey questions on the same
+            // page and some of the orderIds overlap
+            for (Question q : surveyToAddFrom.getSurveyQuestions()) {
+                q.setOrderId(q.getOrderId() + surveyToAddFrom.getClientQuestions().size());
+            }
+        }
+        questionsToAdd.addAll(surveyToAddFrom.getSurveyQuestions());
+
+        lstQuestions.addAll(questionsToAdd);
+
+        // Sort the questions by orderId
+        Collections.sort(questionsToAdd, new Comparator<Question>() {
+            public int compare(Question q1, Question q2) {
+                return q1.getOrderId() - q2.getOrderId();
+            }
+        });
+
+        List<String> lstPanels = new ArrayList<>();
+
+        //Get panel types
+        for (Question q : questionsToAdd) {
+            if (!q.getGroup().isEmpty() && !lstPanels.contains(q.getGroup()))
+                lstPanels.add(q.getGroup());
+        }
+
+        LinearLayout[] panelViews = new LinearLayout[lstPanels.size()];
+        Button[] buttons = new Button[lstPanels.size()];
+
+        //Create buttons and panels
+        for (int k = 0; k < lstPanels.size(); k++) {
+            Button btn = new Button(getActivity());
+            btn.setId(k);
+            btn.setText(lstPanels.get(k));
+            buttons[k] = btn;
+            mainLinearLayout.addView(btn);
+
+            LinearLayout panelView = new LinearLayout(getActivity());
+            panelView.setId(k);
+            panelView.setOrientation(LinearLayout.VERTICAL);
+            panelViews[k] = panelView;
+            mainLinearLayout.addView(panelView);
+            if (k > 0)
+                panelView.setVisibility(View.GONE);
+        }
+
+        //Set Click Events for the buttons
+        for (int k = 0; k < lstPanels.size(); k++) {
+            final int localK = k;
+            final LinearLayout[] localPanelViews = panelViews;
+            final List<String> localLstPanels = lstPanels;
+            buttons[k].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (localPanelViews[localK].getVisibility() == View.VISIBLE) {
+                        localPanelViews[localK].setVisibility(View.GONE);
+                    } else {
+                        localPanelViews[localK].setVisibility(View.VISIBLE);
+                    }
+                    for (int l = 0; l < localLstPanels.size(); l++) {
+                        if (l != localK) {
+                            localPanelViews[l].setVisibility(View.GONE);
+                        }
+                    }
+                }
+            });
+        }
+
+        // Create question views and add them
+        for (Question question : questionsToAdd) {
+            View questionView = question.createView(getActivity());
+
+            if (questionView != null) {
+                if (lstPanels.size() > 0) {
+                    for (int k = 0; k < panelViews.length; k++) {
+                        if (question.getGroup().equals(lstPanels.get(k))) {
+                            panelViews[k].addView(questionView);
+                        }
+                    }
+                } else {
+                    mainLinearLayout.addView(questionView);
+                }
+            }
+        }
+
+        // Set up question dependencies
+        Set<Question> dependencies = new HashSet<>();
+
+        for (Question question : questionsToAdd) {
+            if (question.getParentQuestionId() > 0) {
+                for (Question q : questionsToAdd) {
+                    if (q.getQuestionId() == question.getParentQuestionId()) {
+                        q.addDependent(question);
+                        dependencies.add(q);
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Set click listeners on the parent questions so the answers will be compared
+        for (Question question : dependencies) {
+            question.hookUpDependents();
+        }
     }
 
 

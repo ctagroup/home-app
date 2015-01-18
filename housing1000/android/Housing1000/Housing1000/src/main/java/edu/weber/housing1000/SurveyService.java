@@ -77,7 +77,7 @@ public interface SurveyService {
      * @param cb The callback
      */
     @POST("/SurveySite/api/pit")
-    void postPit(@Body PitResponse pitResponse, Callback<String> cb);
+    void postPit(@Body ArrayList<PitResponse> pitResponse, Callback<String> cb);
 
 
     /**

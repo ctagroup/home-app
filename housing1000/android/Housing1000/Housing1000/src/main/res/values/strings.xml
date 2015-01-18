@@ -132,5 +132,6 @@ Please make sure you are connected and try again.</string>
     <string name="msg_error_changing_initials">There was a problem switching the initials. \nPlease try again.</string>
     <string name="msg_error_logging_in">There was a problem logging in. \nPlease try again.</string>
     <string name="action_bar_item_logout">Logout</string>
+    <string name="btn_pit_add_household_member">Add another household member</string>
 
 </resources>

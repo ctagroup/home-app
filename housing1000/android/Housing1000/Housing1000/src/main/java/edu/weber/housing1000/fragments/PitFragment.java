@@ -2,23 +2,31 @@ package edu.weber.housing1000.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 
+import edu.weber.housing1000.JSONParser;
 import edu.weber.housing1000.SurveyType;
 import edu.weber.housing1000.activities.PitActivity;
 import edu.weber.housing1000.data.Client;
 import edu.weber.housing1000.data.PitResponse;
 import edu.weber.housing1000.data.Response;
+import edu.weber.housing1000.data.Survey;
 import edu.weber.housing1000.data.SurveyResponse;
 import edu.weber.housing1000.helpers.RESTHelper;
 import edu.weber.housing1000.R;
@@ -34,7 +42,9 @@ import retrofit.RetrofitError;
  */
 public class PitFragment extends BaseSurveyFragment {
     private PitActivity myActivity;      // Parent activity
-    private PitResponse pitResponse;
+    private ArrayList<PitResponse> pitResponse = new ArrayList<>();
+    private ArrayList<Survey> surveyQuestions = new ArrayList<>();
+    private int householdMemberCount = 1;
 
     public static PitFragment newInstance(Context context)
     {
@@ -128,10 +138,12 @@ public class PitFragment extends BaseSurveyFragment {
         return gson.toJson(surveyResponse);
     }
 
-    public String savePitResponse()
-    {
-        ArrayList<Response> responses = generateResponses(survey.getSurveyQuestions());
-        pitResponse = new PitResponse(PitActivity.getLatitude() + ", " + PitActivity.getLongitude(), responses, SharedPreferencesHelper.getUserId(myActivity));
+    public String savePitResponse() {
+        for(Survey survey : surveyQuestions) {
+            ArrayList<Response> responses = generateResponses(survey.getSurveyQuestions());
+            PitResponse current = new PitResponse(PitActivity.getLatitude() + ", " + PitActivity.getLongitude(), responses, SharedPreferencesHelper.getUserId(myActivity));
+            pitResponse.add(current);
+        }
 
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
@@ -148,9 +160,50 @@ public class PitFragment extends BaseSurveyFragment {
                     surveyListing = myActivity.getSurveyListing();
             }
 
-            ScrollView questionUI = generateQuestionUi(surveyListing);
+            final ScrollView questionUI = generateQuestionUi(surveyListing);
+
+            if(surveyQuestions.size() == 0) {
+                surveyQuestions.add(survey);
+            }
 
             if (questionUI != null) {
+                final LinearLayout mainLinearLayout = (LinearLayout) questionUI.getChildAt(0);
+
+                mainLinearLayout.addView(getNewHouseholdLabelLayout(), 0);
+
+                final Button btnToAddMoreQuestions = new Button(myActivity, null, R.style.ButtonText);
+                btnToAddMoreQuestions.setText(getString(R.string.btn_pit_add_household_member));
+                btnToAddMoreQuestions.setTextSize(18);
+                btnToAddMoreQuestions.setGravity(Gravity.CENTER_HORIZONTAL);
+                btnToAddMoreQuestions.setTextColor(Color.parseColor("white"));
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    btnToAddMoreQuestions.setBackground(getResources().getDrawable(R.drawable.btn_positive));
+                }
+                else {
+                    btnToAddMoreQuestions.setBackgroundResource(R.drawable.btn_positive);
+                }
+                btnToAddMoreQuestions.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Survey newSetOfSameQuestions = JSONParser.getSurveyFromListing(surveyListing);
+                        surveyQuestions.add(newSetOfSameQuestions);
+
+                        //Remove the button to add another household member at the bottom of the survey before adding new questions
+                        mainLinearLayout.removeViewAt(mainLinearLayout.getChildCount() - 1);
+
+                        //Add a label in between sets of questions to distinguish household members
+                        mainLinearLayout.addView(getNewHouseholdLabelLayout());
+
+                        //Add the new set of questions to the survey UI
+                        addSurveyQuestionsToLinearLayout(mainLinearLayout, newSetOfSameQuestions);
+
+                        //Once the new questions are added, add the button to add more questions back onto the bottom of the survey
+                        mainLinearLayout.addView(btnToAddMoreQuestions);
+                    }
+                });
+                mainLinearLayout.addView(btnToAddMoreQuestions);
+
+
                 rootLayout.addView(questionUI);
 
                 populateAnswers();
@@ -159,6 +212,22 @@ public class PitFragment extends BaseSurveyFragment {
         {
             ex.printStackTrace();
         }
+    }
+
+    private LinearLayout getNewHouseholdLabelLayout() {
+        LinearLayout householdMemberSeparator = new LinearLayout(myActivity);
+        householdMemberSeparator.setBackgroundColor(getResources().getColor(R.color.action_bar));
+
+
+        TextView text = new TextView(myActivity);
+        text.setPadding(8, 5, 8, 5);
+        text.setTextSize(15);
+        text.setTextColor(Color.parseColor("white"));
+        text.setText("Household Member #" + householdMemberCount++);
+
+        householdMemberSeparator.addView(text);
+
+        return householdMemberSeparator;
     }
 
 }
