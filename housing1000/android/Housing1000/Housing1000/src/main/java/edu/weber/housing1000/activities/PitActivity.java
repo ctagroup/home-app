@@ -228,7 +228,7 @@ public class PitActivity extends ActionBarActivity {
     public void onPostSurveyResponsesTaskCompleted(Response response) {
         dismissDialog();
 
-        if (response != null && response.getStatus() == 201) {
+        if (response != null && (response.getStatus() == 201 || response.getStatus() == 200)) {
             String result = "";
 
             try {
