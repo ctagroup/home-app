@@ -44,7 +44,7 @@
             android:layout_width="200dip"
             android:layout_height="40dip"
             android:layout_marginTop="10dp"
-            android:inputType="textPassword"
+            android:inputType="text"
             android:imeOptions="actionNext"
             android:imeActionLabel="Next">
 
