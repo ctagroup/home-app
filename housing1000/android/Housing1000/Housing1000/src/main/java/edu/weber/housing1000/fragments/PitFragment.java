@@ -223,7 +223,7 @@ public class PitFragment extends BaseSurveyFragment {
         text.setPadding(8, 5, 8, 5);
         text.setTextSize(15);
         text.setTextColor(Color.parseColor("white"));
-        text.setText("Household Member #" + householdMemberCount++);
+        text.setText(getString(R.string.pit_family_member_label) + householdMemberCount++);
 
         householdMemberSeparator.addView(text);
 
