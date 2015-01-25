@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
+import edu.weber.housing1000.data.DisclaimerResponse;
+import edu.weber.housing1000.data.DisclaimerSavedInDB;
 import edu.weber.housing1000.data.ImageSavedInDB;
 import edu.weber.housing1000.data.SurveySavedInDB;
 import edu.weber.housing1000.helpers.FileHelper;
@@ -116,22 +118,7 @@ public class ConnectivityChangeReceiver extends BroadcastReceiver {
                                 clientSurveyId = clientSurveyId.replace("\n", "");
 
                                 submitAnyRelatedImages(survey.getDatabaseId(), context, clientSurveyId);
-                                databaseConnector.deleteSubmittedSurvey(survey.getDatabaseId());
-                                SharedPreferencesHelper.incrementNumberOfflineSurveysSubmitted(context);
-                            }
-
-                            @Override
-                            public void failure(RetrofitError error) {
-                                Log.d("HOUSING1000", "Un-successfully submitted saved survey...");
-                                error.printStackTrace();
-                            }
-                        });
-                        break;
-                    case DISCLAIMER_METADATA:
-                        service.postDisclaimerData(jsonToSubmit, new Callback<String>() {
-                            @Override
-                            public void success(String s, Response response) {
-                                Log.d("HOUSING1000", "Successfully submitted saved survey");
+                                submitROIIfThereIsOne(survey.getDatabaseId(), context, clientSurveyId);
                                 databaseConnector.deleteSubmittedSurvey(survey.getDatabaseId());
                                 SharedPreferencesHelper.incrementNumberOfflineSurveysSubmitted(context);
                             }
@@ -145,6 +132,37 @@ public class ConnectivityChangeReceiver extends BroadcastReceiver {
                         break;
                 }
             }
+        }
+    }
+
+    /**
+     * Submits the ROI that relates to this survey
+     * @param surveyDataId The ID of the survey this relates to
+     * @param context The current context
+     */
+    private static void submitROIIfThereIsOne(int surveyDataId, final Context context, String clientSurveyId) {
+        final DatabaseConnector databaseConnector = new DatabaseConnector(context);
+        final DisclaimerSavedInDB disclaimer = databaseConnector.getDisclaimerToSubmit(surveyDataId);
+
+        if(disclaimer != null) {
+            RestAdapter restAdapter = RESTHelper.setUpRestAdapterNoDeserialize(context, null);
+            SurveyService service = restAdapter.create(SurveyService.class);
+
+            DisclaimerResponse disclaimerResponse = disclaimer.getDisclaimer();
+            disclaimerResponse.clientSurveyId = Long.parseLong(clientSurveyId);
+            service.postDisclaimerData(disclaimer.getDisclaimer(), new Callback<String>() {
+                @Override
+                public void success(String s, Response response) {
+                    Log.d("HOUSING1000", "Successfully submitted saved disclaimer");
+                    databaseConnector.deleteSubmittedDisclaimer(disclaimer.getDatabaseId());
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.d("HOUSING1000", "Un-successfully submitted saved disclaimer...");
+                    error.printStackTrace();
+                }
+            });
         }
     }
 

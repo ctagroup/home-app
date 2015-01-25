@@ -146,15 +146,6 @@ public interface SurveyService {
 
 
     /**
-     * For submitting metadata about the disclaimer images from the database
-     * @param jsonToSubmit The raw json to submit
-     * @param cb The callback
-     */
-    @POST("/SurveySite/Help/Api/POST-api-ROI")
-    void postDisclaimerData(@Body TypedInput jsonToSubmit, Callback<String> cb);
-
-
-    /**
      * For getting user info after logging in
      * @param cb The callback
      */

@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import edu.weber.housing1000.SurveyType;
 import edu.weber.housing1000.data.DisclaimerResponse;
 import edu.weber.housing1000.helpers.ErrorHelper;
 import edu.weber.housing1000.helpers.FileHelper;
@@ -511,10 +510,8 @@ public class SignatureFragment extends SurveyAppFragment {
 
         //Save the disclaimer meta data
         final String printedName = editTextPrintedName.getText().toString();
-        final DisclaimerResponse disclaimerResponse = new DisclaimerResponse(Long.valueOf(myActivity.getClientSurveyId()), 1, printedName, new Date());
-        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        final String jsonToSubmit = gson.toJson(disclaimerResponse);
-        databaseConnector.saveSurveyToSubmitLater(jsonToSubmit, SurveyType.DISCLAIMER_METADATA, "0");
+        final DisclaimerResponse disclaimerResponse = new DisclaimerResponse(0, 1, printedName, new Date());
+        databaseConnector.saveSubmittedDisclaimer(disclaimerResponse, surveyDataId);
     }
 
 }

@@ -8,11 +8,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.util.Log;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import edu.weber.housing1000.SurveyType;
+import edu.weber.housing1000.data.DisclaimerResponse;
+import edu.weber.housing1000.data.DisclaimerSavedInDB;
 import edu.weber.housing1000.data.ImageSavedInDB;
 import edu.weber.housing1000.data.SurveySavedInDB;
 
@@ -159,6 +162,75 @@ public class DatabaseConnector {
     }
 
     /**
+     * Save disclaimer, or ROI, information that relates to a specified survey
+     * @param disclaimerResponse The disclaimer
+     * @param surveyDataId The related survey database Id
+     */
+    public void saveSubmittedDisclaimer(DisclaimerResponse disclaimerResponse, long surveyDataId) {
+        ContentValues addDisclaimer = new ContentValues();
+        addDisclaimer.put("ClientSurveyId", disclaimerResponse.clientSurveyId);
+        addDisclaimer.put("EnteredById", disclaimerResponse.enteredById);
+        addDisclaimer.put("Name", disclaimerResponse.name);
+        addDisclaimer.put("Date", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(disclaimerResponse.date));
+        addDisclaimer.put("SurveyJsonId", surveyDataId);
+
+        open();
+        database.insert("SubmittedDisclaimers", null, addDisclaimer);
+        close();
+    }
+
+    /**
+     * Retrieve disclaimer, or ROI, information that relates to a specified survey
+     * @param surveyDataId The related survey database Id
+     * @return The disclaimer
+     */
+    public DisclaimerSavedInDB getDisclaimerToSubmit(int surveyDataId) {
+        open();
+        Cursor results = database.query("SubmittedDisclaimers", null, "SurveyJsonId = " + surveyDataId, null, null, null, null);
+
+        DisclaimerSavedInDB disclaimer = null;
+        if(results.getCount() == 1) {
+            Log.d("HOUSING1000", "There is one disclaimer saved for survey " + surveyDataId);
+            if(results.moveToFirst()) {
+                results.moveToFirst();
+
+                Date date;
+                try {
+                    date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(results.getString(4));
+                }
+                catch(ParseException e) {
+                    throw new RuntimeException("Unable to format date signed of disclaimer from DB.", e);
+                }
+
+                DisclaimerResponse disclaimerResponse = new DisclaimerResponse(results.getInt(1), results.getInt(2), results.getString(3), date);
+                disclaimer = new DisclaimerSavedInDB(disclaimerResponse, results.getInt(0));
+            }
+        }
+        else if(results.getCount() == 0) {
+            Log.d("HOUSING1000", "There are no disclaimers saved for survey " + surveyDataId);
+        }
+        else {
+            close();
+            throw new IllegalArgumentException("There is more than one disclaimer saved for survey " + surveyDataId + ". There should only " +
+                    "be one or none, but there were " + results.getCount());
+        }
+        close();
+
+        return disclaimer;
+    }
+
+    /**
+     * Deletes a disclaimer from the DB
+     * @param id The ID of the disclaimer to delete
+     */
+    public void deleteSubmittedDisclaimer(int id) {
+        open();
+        database.delete("SubmittedDisclaimers", "Id = " + id, null);
+        close();
+        Log.d("HOUSING1000", "Deleted disclaimer with database Id #" + id);
+    }
+
+    /**
      * Get the paths of all images relating to a specific survey
      * @param surveyDataId The related survey database Id
      * @return The images tied to the survey
@@ -233,19 +305,24 @@ public class DatabaseConnector {
         @Override
         public void onCreate(SQLiteDatabase db) {
             //Create the RetrievedSurveys table
-            String createRetrievedQuery = "CREATE TABLE RetrievedSurveys(Id INTEGER primary key autoincrement, Type TEXT, " +
+            String createRetrievedSQL = "CREATE TABLE RetrievedSurveys(Id INTEGER primary key autoincrement, Type TEXT, " +
                     "DateUpdated DATETIME DEFAULT CURRENT_TIMESTAMP, Json TEXT, SurveyId TEXT)";
-            db.execSQL(createRetrievedQuery);
+            db.execSQL(createRetrievedSQL);
 
             //Create the SubmittedJson table
-            String createSubmittedQuery = "CREATE TABLE SubmittedJson(Id INTEGER primary key autoincrement, Json TEXT, Type TEXT, " +
+            String createSubmittedSQL = "CREATE TABLE SubmittedJson(Id INTEGER primary key autoincrement, Json TEXT, Type TEXT, " +
                     "SurveyId TEXT)";
-            db.execSQL(createSubmittedQuery);
+            db.execSQL(createSubmittedSQL);
 
             //Create the SubmittedImages table
-            String createImagesQuery = "CREATE TABLE SubmittedImages(Id INTEGER primary key autoincrement, Path TEXT, SurveyJsonId INTEGER, " +
+            String createImagesSQL = "CREATE TABLE SubmittedImages(Id INTEGER primary key autoincrement, Path TEXT, SurveyJsonId INTEGER, " +
                     "IsSignature TEXT, FolderHash TEXT, DateUpdated DATETIME DEFAULT CURRENT_TIMESTAMP)";
-            db.execSQL(createImagesQuery);
+            db.execSQL(createImagesSQL);
+
+            //Create the SubmittedDisclaimers table
+            String createDisclaimersSQL = "CREATE TABLE SubmittedDisclaimers(Id INTEGER primary key autoincrement, ClientSurveyId INTEGER, EnteredById INTEGER, " +
+                    "Name TEXT, Date DATETIME, SurveyJsonId INTEGER)";
+            db.execSQL(createDisclaimersSQL);
         }
 
         @Override
