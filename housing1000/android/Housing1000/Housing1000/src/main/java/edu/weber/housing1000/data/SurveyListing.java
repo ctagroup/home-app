@@ -8,8 +8,10 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+import edu.weber.housing1000.JSONParser;
+
 /**
- * @author David Horton
+ * @author Blake
  */
 public class SurveyListing implements Serializable, Parcelable {
 
@@ -22,8 +24,8 @@ public class SurveyListing implements Serializable, Parcelable {
     private String title;
 
     private boolean hasDisclaimer;
-
     private String json;
+    private Survey survey;
 
     public boolean hasDisclaimer() {
         return hasDisclaimer;
@@ -37,24 +39,40 @@ public class SurveyListing implements Serializable, Parcelable {
         return title;
     }
 
-    public String getJson() { return json; }
+    public Survey getSurvey() {
+        return survey;
+    }
 
-    public void setJson(String json) { this.json = json; }
+    public String getJson() {
+        return json;
+    }
+
+    public void setJson(String json) {
+        this.json = json;
+        this.parseJsonIntoSurvey();
+    }
 
     public SurveyListing() {
     }
 
-    public SurveyListing(long id, String title, String json, boolean hasDisclaimer)
+    public SurveyListing(String json, Survey survey)
     {
-        this.surveyId = id;
-        this.title = title;
+        this.surveyId = survey.getSurveyId();
+        this.title = survey.getTitle();
         this.json = json;
-        this.hasDisclaimer = hasDisclaimer;
+        this.hasDisclaimer = survey.hasDisclaimer();
+
+        this.parseJsonIntoSurvey();
     }
 
     @Override
     public String toString() {
         return getTitle();
+    }
+
+    private void parseJsonIntoSurvey() {
+        this.survey = JSONParser.getSurveyFromJson(this.json);
+        this.hasDisclaimer = survey.hasDisclaimer();
     }
 
     // Parcelable methods
@@ -67,6 +85,8 @@ public class SurveyListing implements Serializable, Parcelable {
         title = strings[0];
         json = strings[1];
         hasDisclaimer = in.readByte() != 0;     //hasDisclaimer == true if byte != 0
+
+        this.parseJsonIntoSurvey();
     }
 
     @Override

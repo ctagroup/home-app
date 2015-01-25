@@ -310,13 +310,15 @@ public class SurveyFlowActivity extends ActionBarActivity {
 
         Utils.centerDialogMessageAndShow(builder);
 
-        // Save the photo paths to the database
-        Fragment photoFragment = this.getSupportFragmentManager().findFragmentByTag(getFragmentTag(1));
-        ((PhotosFragment) photoFragment).savePhotoPathsToDatabase(surveyDataId);
+        if(surveyListing.hasDisclaimer()) {
+            // Save the photo paths to the database
+            Fragment photoFragment = this.getSupportFragmentManager().findFragmentByTag(getFragmentTag(1));
+            ((PhotosFragment) photoFragment).savePhotoPathsToDatabase(surveyDataId);
 
-        // Save the signature and initial paths to the database
-        Fragment signatureFragment = this.getSupportFragmentManager().findFragmentByTag(getFragmentTag(0));
-        ((SignatureFragment) signatureFragment).saveSignatureAndInitialPathsToDatabase(surveyDataId);
+            // Save the signature and initial paths to the database
+            Fragment signatureFragment = this.getSupportFragmentManager().findFragmentByTag(getFragmentTag(0));
+            ((SignatureFragment) signatureFragment).saveSignatureAndInitialPathsToDatabase(surveyDataId);
+        }
     }
 
     public void onPostPhotoTaskCompleted(Response response) {

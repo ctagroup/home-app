@@ -29,7 +29,6 @@ import edu.weber.housing1000.data.Response;
 import edu.weber.housing1000.data.Survey;
 import edu.weber.housing1000.data.SurveyListing;
 import edu.weber.housing1000.data.SurveyResponse;
-import edu.weber.housing1000.JSONParser;
 import edu.weber.housing1000.questions.Question;
 import edu.weber.housing1000.R;
 import edu.weber.housing1000.Utils;
@@ -255,7 +254,7 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
     protected ScrollView generateQuestionUi(SurveyListing listing) {
         try {
 
-            survey = JSONParser.getSurveyFromListing(listing);
+            survey = listing.getSurvey();
 
             final ScrollView mainScrollView = new ScrollView(getActivity());
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);

@@ -185,7 +185,7 @@ public class PitFragment extends BaseSurveyFragment {
                 btnToAddMoreQuestions.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Survey newSetOfSameQuestions = JSONParser.getSurveyFromListing(surveyListing);
+                        Survey newSetOfSameQuestions = JSONParser.getSurveyFromJson(surveyListing.getJson());
                         surveyQuestions.add(newSetOfSameQuestions);
 
                         //Remove the button to add another household member at the bottom of the survey before adding new questions
