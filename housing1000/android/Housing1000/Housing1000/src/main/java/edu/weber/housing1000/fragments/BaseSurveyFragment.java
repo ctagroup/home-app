@@ -204,12 +204,28 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
         ArrayList<Response> responses = new ArrayList<>();
 
         for (Question question : questions) {
-            Response response = new Response(question.getQuestionId(), question.getAnswer());
+            Response response = new Response(question.getQuestionId(), filterOutBadCharactersFromAnswer(question.getAnswer()));
 
             responses.add(response);
         }
 
         return responses;
+    }
+
+    /**
+     * TODO This is only temporary! Remove this!
+     * It looks like the back-end currently does not handle single quotes correctly (probably when trying to insert into the database),
+     * so as an emergency quick-fix, we are simply stripping out all apostrophes. Once this is fixed in the backend we should remove this function.
+     * @param answer The answer to purge of bad things
+     * @return The purified answer
+     */
+    private String filterOutBadCharactersFromAnswer(String answer) {
+        if(answer != null) {
+            return answer.replaceAll("'", "");
+        }
+        else {
+            return null;
+        }
     }
 
     /**
