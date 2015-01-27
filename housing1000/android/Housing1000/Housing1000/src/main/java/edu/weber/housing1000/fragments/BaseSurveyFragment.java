@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import edu.weber.housing1000.JSONParser;
 import edu.weber.housing1000.data.Client;
 import edu.weber.housing1000.data.Response;
 import edu.weber.housing1000.data.Survey;
@@ -254,7 +255,7 @@ public abstract class BaseSurveyFragment extends SurveyAppFragment {
     protected ScrollView generateQuestionUi(SurveyListing listing) {
         try {
 
-            survey = listing.getSurvey();
+            this.survey = JSONParser.getSurveyFromJson(listing.getJson());
 
             final ScrollView mainScrollView = new ScrollView(getActivity());
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);

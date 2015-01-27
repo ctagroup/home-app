@@ -19,7 +19,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import edu.weber.housing1000.JSONParser;
 import edu.weber.housing1000.SurveyType;
+import edu.weber.housing1000.data.Survey;
 import edu.weber.housing1000.data.SurveyListing;
 import edu.weber.housing1000.fragments.ProgressDialogFragment;
 import edu.weber.housing1000.fragments.SurveyListFragment;
@@ -258,6 +260,12 @@ public class SurveyListActivity extends ActionBarActivity implements ISurveyList
                 }
 
                 chosenSurveyListing.setJson(surveyJson);
+
+                //TODO This needs to be re-worked. We need to get the Survey from the JSON at this point because we need
+                //TODO to know whether it has a disclaimer or not, but then we do it again later on. Really it should be
+                //TODO made so that it only does it once (right here) and then passes the Survey in the intent to the next activity.
+                Survey tempSurvey = JSONParser.getSurveyFromJson(chosenSurveyListing.getJson());
+                chosenSurveyListing.setHasDisclaimer(tempSurvey.hasDisclaimer());
 
                 Intent launchSurvey = new Intent(SurveyListActivity.this,
                         SurveyFlowActivity.class);
