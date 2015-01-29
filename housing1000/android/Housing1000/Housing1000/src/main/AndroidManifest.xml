@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="edu.weber.housing1000">
+    package="org.ctagroup.homeapp">
 
     <uses-feature android:name="android.hardware.camera" />
 
@@ -19,33 +19,33 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <receiver android:name=".ConnectivityChangeReceiver">
+        <receiver android:name="org.ctagroup.homeapp.ConnectivityChangeReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activities.MainLauncherActivity">
+        <activity android:name="org.ctagroup.homeapp.activities.MainLauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.LoginActivity"
+        <activity android:name="org.ctagroup.homeapp.activities.LoginActivity"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
         <activity
-            android:name=".activities.SignatureActivity"
+            android:name="org.ctagroup.homeapp.activities.SignatureActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="landscape" />
-        <activity android:name=".activities.SelectPageActivity"/>
-        <activity android:name=".activities.SurveyListActivity" />
-        <activity android:name=".activities.SurveyFlowActivity"
+        <activity android:name="org.ctagroup.homeapp.activities.SelectPageActivity"/>
+        <activity android:name="org.ctagroup.homeapp.activities.SurveyListActivity" />
+        <activity android:name="org.ctagroup.homeapp.activities.SurveyFlowActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".activities.PitActivity"
+        <activity android:name="org.ctagroup.homeapp.activities.PitActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".activities.EncampmentActivity"
+        <activity android:name="org.ctagroup.homeapp.activities.EncampmentActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".activities.EncampmentDetailActivity"
+        <activity android:name="org.ctagroup.homeapp.activities.EncampmentDetailActivity"
             android:windowSoftInputMode="adjustResize" />
     </application>
 

@@ -7,7 +7,7 @@
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="48dip" />
-    <edu.weber.housing1000.CustomViewPager
+    <org.ctagroup.homeapp.CustomViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
