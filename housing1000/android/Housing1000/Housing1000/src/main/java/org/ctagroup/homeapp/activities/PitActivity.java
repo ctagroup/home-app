@@ -10,7 +10,6 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -28,6 +27,7 @@ import org.ctagroup.homeapp.data.SurveyListing;
 import org.ctagroup.homeapp.fragments.PitFragment;
 import org.ctagroup.homeapp.fragments.ProgressDialogFragment;
 import org.ctagroup.homeapp.helpers.ErrorHelper;
+import org.ctagroup.homeapp.helpers.Logger;
 import org.ctagroup.homeapp.helpers.RESTHelper;
 import org.ctagroup.homeapp.questions.Question;
 import org.ctagroup.homeapp.questions.QuestionJSONDeserializer;
@@ -95,7 +95,7 @@ public class PitActivity extends ActionBarActivity {
                     latitude = location.getLatitude();
                     longitude = location.getLongitude();
 
-                    Log.d("GPS Location:", latitude + "," + longitude);
+                    Logger.d("GPS Location:", latitude + "," + longitude);
                 }
 
                 @Override
@@ -238,7 +238,7 @@ public class PitActivity extends ActionBarActivity {
                 e.printStackTrace();
             }
 
-            Log.d("PIT RESPONSE", result);
+            Logger.d("PIT RESPONSE", result);
 
             showSendSuccessMessage();
         } else {

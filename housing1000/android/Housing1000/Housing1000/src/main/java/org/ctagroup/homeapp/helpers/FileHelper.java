@@ -2,14 +2,13 @@ package org.ctagroup.homeapp.helpers;
 
 import android.content.Context;
 import android.os.Environment;
-import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 /**
- * Created by Blake on 11/16/13.
+ * @author Blake
  */
 public class FileHelper {
     /**
@@ -34,7 +33,7 @@ public class FileHelper {
                 nomedia.mkdirs();
                 File file = new File(dir, filename);
 
-                Log.d("HOUSING 1000", "Saving file to " + file.getAbsolutePath());
+                Logger.d("HOUSING 1000", "Saving file to " + file.getAbsolutePath());
 
                 // Write the file
                 FileOutputStream f = new FileOutputStream(file);
@@ -65,7 +64,7 @@ public class FileHelper {
                 File dir = new File (dirPath);
                 File file = new File(dir, filename);
 
-                Log.d("HOUSING 1000", "Reading file from " + file.getAbsolutePath());
+                Logger.d("HOUSING 1000", "Reading file from " + file.getAbsolutePath());
 
                 // Write the file
                 FileInputStream f = new FileInputStream(file);
@@ -95,7 +94,7 @@ public class FileHelper {
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()))
         {
             try {
-                Log.d("HOUSING 1000", "Reading file from " + file.getAbsolutePath());
+                Logger.d("HOUSING 1000", "Reading file from " + file.getAbsolutePath());
 
                 // Write the file
                 FileInputStream f = new FileInputStream(file);
@@ -146,7 +145,7 @@ public class FileHelper {
                     for (File f : fileOrDirectory.listFiles())
                         deleteAllFiles(f);
 
-                Log.d("ATTEMPTING TO DELETE", fileOrDirectory.toString());
+                Logger.d("ATTEMPTING TO DELETE", fileOrDirectory.toString());
                 fileOrDirectory.delete();
             }
         } catch (Exception ex)

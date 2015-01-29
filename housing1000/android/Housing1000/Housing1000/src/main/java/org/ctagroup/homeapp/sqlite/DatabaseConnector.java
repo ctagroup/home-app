@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
-import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,6 +17,7 @@ import org.ctagroup.homeapp.data.DisclaimerResponse;
 import org.ctagroup.homeapp.data.DisclaimerSavedInDB;
 import org.ctagroup.homeapp.data.ImageSavedInDB;
 import org.ctagroup.homeapp.data.SurveySavedInDB;
+import org.ctagroup.homeapp.helpers.Logger;
 
 /**
  *
@@ -71,11 +71,11 @@ public class DatabaseConnector {
         Cursor results = database.query("RetrievedSurveys", null, "Type = '" + surveyType.toString() + "' and SurveyId = '" + surveyId + "'", null, null, null, null);
 
         if(results.getCount() == 1) {
-            Log.d("HOUSING1000", "There is one retrieved survey in the database of type " + surveyType.toString() + " with an ID of " + surveyId);
+            Logger.d("HOUSING1000", "There is one retrieved survey in the database of type " + surveyType.toString() + " with an ID of " + surveyId);
             database.update("RetrievedSurveys", updateSurvey, "Type = '" + surveyType.toString() + "' and SurveyId = '" + surveyId + "'", null);
         }
         else if(results.getCount() == 0) {
-            Log.d("HOUSING1000", "There are no surveys in the database of type " + surveyType.toString() + " with an ID of " + surveyId);
+            Logger.d("HOUSING1000", "There are no surveys in the database of type " + surveyType.toString() + " with an ID of " + surveyId);
             database.insert("RetrievedSurveys", null, updateSurvey);
         }
         else {
@@ -98,14 +98,14 @@ public class DatabaseConnector {
 
         String jsonToReturn = null;
         if(results.getCount() == 1) {
-            Log.d("HOUSING1000", "There is one retrieved survey in the database of type " + surveyType.toString()  + " with an ID of " + surveyId);
+            Logger.d("HOUSING1000", "There is one retrieved survey in the database of type " + surveyType.toString()  + " with an ID of " + surveyId);
             if(results.moveToFirst()) {
                 results.moveToFirst();
                 jsonToReturn = results.getString(3);
             }
         }
         else if(results.getCount() == 0) {
-            Log.d("HOUSING1000", "There are no surveys in the database of type " + surveyType.toString() + " with an ID of " + surveyId);
+            Logger.d("HOUSING1000", "There are no surveys in the database of type " + surveyType.toString() + " with an ID of " + surveyId);
         }
         else {
             close();
@@ -129,7 +129,7 @@ public class DatabaseConnector {
         addSurvey.put("Json", json);
         addSurvey.put("SurveyId", surveyId);
 
-        Log.d("HOUSING1000", "Saving a survey of type " + surveyType.toString() + " with ID of " + surveyId
+        Logger.d("HOUSING1000", "Saving a survey of type " + surveyType.toString() + " with ID of " + surveyId
                 + " to be submitted when the internet comes back.");
         open();
         long surveyDataId = database.insert("SubmittedJson", null, addSurvey);
@@ -190,7 +190,7 @@ public class DatabaseConnector {
 
         DisclaimerSavedInDB disclaimer = null;
         if(results.getCount() == 1) {
-            Log.d("HOUSING1000", "There is one disclaimer saved for survey " + surveyDataId);
+            Logger.d("HOUSING1000", "There is one disclaimer saved for survey " + surveyDataId);
             if(results.moveToFirst()) {
                 results.moveToFirst();
 
@@ -207,7 +207,7 @@ public class DatabaseConnector {
             }
         }
         else if(results.getCount() == 0) {
-            Log.d("HOUSING1000", "There are no disclaimers saved for survey " + surveyDataId);
+            Logger.d("HOUSING1000", "There are no disclaimers saved for survey " + surveyDataId);
         }
         else {
             close();
@@ -227,7 +227,7 @@ public class DatabaseConnector {
         open();
         database.delete("SubmittedDisclaimers", "Id = " + id, null);
         close();
-        Log.d("HOUSING1000", "Deleted disclaimer with database Id #" + id);
+        Logger.d("HOUSING1000", "Deleted disclaimer with database Id #" + id);
     }
 
     /**
@@ -238,7 +238,7 @@ public class DatabaseConnector {
     public ArrayList<ImageSavedInDB> getImagePathsToSubmit(int surveyDataId) {
         open();
         Cursor results = database.query("SubmittedImages", null, "SurveyJsonId = " + surveyDataId, null, null, null, null);
-        Log.d("HOUSING1000", "Number of images relating to survey with id " + surveyDataId + ": " + results.getCount());
+        Logger.d("HOUSING1000", "Number of images relating to survey with id " + surveyDataId + ": " + results.getCount());
 
         ArrayList<ImageSavedInDB> images = new ArrayList<>();
         while(results.moveToNext()) {
@@ -258,7 +258,7 @@ public class DatabaseConnector {
         open();
         for(Integer id : imageDataIds) {
             database.delete("SubmittedImages", "Id = " + id, null);
-            Log.d("HOUSING1000", "Deleted image with database Id #" + id);
+            Logger.d("HOUSING1000", "Deleted image with database Id #" + id);
         }
         close();
     }
@@ -271,7 +271,7 @@ public class DatabaseConnector {
     public ArrayList<SurveySavedInDB> getJsonToBeSubmitted() {
         open();
         Cursor results = database.query("SubmittedJson", null, null, null, null, null, null);
-        Log.d("HOUSING1000", "Number of surveys to be submitted: " + results.getCount());
+        Logger.d("HOUSING1000", "Number of surveys to be submitted: " + results.getCount());
 
         ArrayList<SurveySavedInDB> surveys = new ArrayList<>();
         while (results.moveToNext()) {
@@ -290,7 +290,7 @@ public class DatabaseConnector {
         open();
         database.delete("SubmittedJson", "Id = " + id, null);
         close();
-        Log.d("HOUSING1000", "Deleted survey with database Id #" + id);
+        Logger.d("HOUSING1000", "Deleted survey with database Id #" + id);
     }
 
     /**

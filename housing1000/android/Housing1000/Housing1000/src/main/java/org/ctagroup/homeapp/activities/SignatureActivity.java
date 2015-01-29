@@ -6,7 +6,6 @@ import android.graphics.*;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,6 +18,7 @@ import org.ctagroup.homeapp.helpers.EncryptionHelper;
 import org.ctagroup.homeapp.helpers.FileHelper;
 import org.ctagroup.homeapp.helpers.ImageHelper;
 import org.ctagroup.homeapp.R;
+import org.ctagroup.homeapp.helpers.Logger;
 
 import java.io.ByteArrayOutputStream;
 
@@ -61,7 +61,7 @@ public class SignatureActivity extends ActionBarActivity {
 
         mClear.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                Log.v("log_tag", "Panel Cleared");
+                Logger.v("log_tag", "Panel Cleared");
                 mSignature.clear();
                 mGetSign.setEnabled(false);
             }
@@ -84,7 +84,7 @@ public class SignatureActivity extends ActionBarActivity {
 
     @Override
     protected void onDestroy() {
-        Log.w("GetSignature", "onDestroy");
+        Logger.w("GetSignature", "onDestroy");
         super.onDestroy();
     }
 
@@ -108,8 +108,8 @@ public class SignatureActivity extends ActionBarActivity {
         }
 
         public void save(View v) {
-            Log.v("log_tag", "Width: " + v.getWidth());
-            Log.v("log_tag", "Height: " + v.getHeight());
+            Logger.v("log_tag", "Width: " + v.getWidth());
+            Logger.v("log_tag", "Height: " + v.getHeight());
             if (mBitmap == null) {
                 mBitmap = Bitmap.createBitmap(mContent.getWidth(), mContent.getHeight(), Bitmap.Config.RGB_565);
             }
@@ -137,7 +137,7 @@ public class SignatureActivity extends ActionBarActivity {
                                 .putExtra(imagePathExtra, FileHelper.getAbsoluteFilePath(folderHash, imageFilename, SignatureActivity.this)));
 
             } catch (Exception e) {
-                Log.v("log_tag", e.toString());
+                Logger.v("log_tag", e.toString());
             }
         }
 

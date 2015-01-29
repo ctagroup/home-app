@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +33,7 @@ import java.util.Date;
 import org.ctagroup.homeapp.data.DisclaimerResponse;
 import org.ctagroup.homeapp.helpers.ErrorHelper;
 import org.ctagroup.homeapp.helpers.FileHelper;
+import org.ctagroup.homeapp.helpers.Logger;
 import org.ctagroup.homeapp.helpers.RESTHelper;
 import org.ctagroup.homeapp.SurveyService;
 import org.ctagroup.homeapp.R;
@@ -399,7 +399,7 @@ public class SignatureFragment extends SurveyAppFragment {
             @Override
             public void success(String s, retrofit.client.Response response) {
                 if (s != null) {
-                    Log.d("SUCCESS", s);
+                    Logger.d("SUCCESS", s);
                 }
 
                 submitSignatureImages();
@@ -410,7 +410,7 @@ public class SignatureFragment extends SurveyAppFragment {
                 String errorBody = (String) error.getBodyAs(String.class);
 
                 if (errorBody != null) {
-                    Log.e("FAILURE", errorBody);
+                    Logger.e("FAILURE", errorBody);
                     myActivity.onPostSignatureTaskCompleted(error.getResponse());
                 } else {
                     myActivity.onPostSignatureTaskCompleted(error.getResponse());
@@ -424,10 +424,10 @@ public class SignatureFragment extends SurveyAppFragment {
         if (!signatureSubmitted) {
             MultipartTypedOutput multipartTypedOutput = new MultipartTypedOutput();
 
-            Log.d("Signature path:", signaturePath);
+            Logger.d("Signature path:", signaturePath);
             File signatureFile = new File(signaturePath);
 
-            Log.d("Initial path:", initialPath);
+            Logger.d("Initial path:", initialPath);
             File initialFile = new File(initialPath);
 
             myActivity.showProgressDialog(getActivity().getString(R.string.please_wait), getActivity().getString(R.string.submitting_signature), "Dialog");
@@ -457,7 +457,7 @@ public class SignatureFragment extends SurveyAppFragment {
                     @Override
                     public void success(String s, Response response) {
                         if (s != null) {
-                            Log.d("SUCCESS", s);
+                            Logger.d("SUCCESS", s);
                         }
 
                         myActivity.onPostSignatureTaskCompleted(response);
@@ -469,7 +469,7 @@ public class SignatureFragment extends SurveyAppFragment {
                         String errorBody = (String) error.getBodyAs(String.class);
 
                         if (errorBody != null) {
-                            Log.e("FAILURE", errorBody);
+                            Logger.e("FAILURE", errorBody);
                             myActivity.onPostSignatureTaskCompleted(error.getResponse());
                         } else {
                             myActivity.onPostSignatureTaskCompleted(error.getResponse());

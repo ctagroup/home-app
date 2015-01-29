@@ -3,7 +3,6 @@ package org.ctagroup.homeapp.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,7 @@ import org.ctagroup.homeapp.activities.SurveyFlowActivity;
 import org.ctagroup.homeapp.data.Client;
 import org.ctagroup.homeapp.data.Response;
 import org.ctagroup.homeapp.data.SurveyResponse;
+import org.ctagroup.homeapp.helpers.Logger;
 import org.ctagroup.homeapp.helpers.RESTHelper;
 import org.ctagroup.homeapp.R;
 import org.ctagroup.homeapp.SurveyService;
@@ -136,7 +136,7 @@ public class SurveyFragment extends BaseSurveyFragment {
     public void saveAnswersToDatabase() {
         String surveyJsonToSubmit = saveSurveyResponse();
 
-        Log.d("HOUSING1000", "The survey ID of the saved survey: " + survey.getSurveyId());
+        Logger.d("HOUSING1000", "The survey ID of the saved survey: " + survey.getSurveyId());
 
         DatabaseConnector databaseConnector = new DatabaseConnector(this.getActivity().getBaseContext());
         long surveyDataId = databaseConnector.saveSurveyToSubmitLater(surveyJsonToSubmit, SurveyType.BASIC_SURVEY, Long.toString(survey.getSurveyId()));

@@ -3,7 +3,6 @@ package org.ctagroup.homeapp;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -15,6 +14,7 @@ import java.util.ArrayList;
 
 import org.ctagroup.homeapp.helpers.EncryptionHelper;
 import org.ctagroup.homeapp.helpers.FileHelper;
+import org.ctagroup.homeapp.helpers.Logger;
 
 /**
  * Created by Blake on 2/18/14.
@@ -101,7 +101,7 @@ public class ImageAdapter extends BaseAdapter {
         try {
             File imageFile = new File(images.get(position));
 
-            Log.d("LOADING IMAGE", imageFile.getAbsolutePath());
+            Logger.d("LOADING IMAGE", imageFile.getAbsolutePath());
             if (imageFile.exists()) {
                 // Set up the stream, read the file, decrypt it
                 FileInputStream fStream = new FileInputStream(imageFile);

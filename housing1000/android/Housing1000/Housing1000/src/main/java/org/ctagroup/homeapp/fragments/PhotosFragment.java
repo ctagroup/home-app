@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,6 +28,7 @@ import java.util.ArrayList;
 import org.ctagroup.homeapp.helpers.EncryptionHelper;
 import org.ctagroup.homeapp.helpers.FileHelper;
 import org.ctagroup.homeapp.helpers.ImageHelper;
+import org.ctagroup.homeapp.helpers.Logger;
 import org.ctagroup.homeapp.helpers.RESTHelper;
 import org.ctagroup.homeapp.SurveyService;
 import org.ctagroup.homeapp.ImageAdapter;
@@ -219,8 +219,8 @@ public class PhotosFragment extends SurveyAppFragment {
                 // Add the file path to the imageAdapter
                 imageAdapter.addImagePath(FileHelper.getAbsoluteFilePath(myActivity.getFolderHash(), encryptedName, getActivity()));
 
-                Log.d("PHOTO ADDED", (String) imageAdapter.getItem(imageAdapter.getCount() - 1));
-                Log.d("PHOTO COUNT", String.valueOf(imageAdapter.getCount()));
+                Logger.d("PHOTO ADDED", (String) imageAdapter.getItem(imageAdapter.getCount() - 1));
+                Logger.d("PHOTO COUNT", String.valueOf(imageAdapter.getCount()));
 
                 imageAdapter.notifyDataSetChanged();
                 if (imageAdapter.getCount() > 0)
@@ -258,7 +258,7 @@ public class PhotosFragment extends SurveyAppFragment {
                 @Override
                 public void success(String s, Response response) {
                     if (s != null) {
-                        Log.d("SUCCESS", s);
+                        Logger.d("SUCCESS", s);
                     }
 
                     myActivity.onPostPhotoTaskCompleted(response);
@@ -270,7 +270,7 @@ public class PhotosFragment extends SurveyAppFragment {
                     String errorBody = (String) error.getBodyAs(String.class);
 
                     if (errorBody != null) {
-                        Log.e("FAILURE", errorBody);
+                        Logger.e("FAILURE", errorBody);
                         myActivity.onPostPhotoTaskCompleted(error.getResponse());
                     } else {
                         myActivity.onPostPhotoTaskCompleted(error.getResponse());
@@ -317,11 +317,11 @@ public class PhotosFragment extends SurveyAppFragment {
             switch (item.getItemId()) {
                 case R.id.action_delete_photo:
                     SparseBooleanArray selected = photosGridView.getCheckedItemPositions();
-                    Log.d("SELECTED IMAGE COUNT", String.valueOf(photosGridView.getCheckedItemCount()));
+                    Logger.d("SELECTED IMAGE COUNT", String.valueOf(photosGridView.getCheckedItemCount()));
                     if (selected != null) {
                         for (int i = 0; i < selected.size(); i++) {
                             if (selected.get(selected.keyAt(i))) {
-                                Log.d("REMOVING IMAGE", String.valueOf(selected.keyAt(i)));
+                                Logger.d("REMOVING IMAGE", String.valueOf(selected.keyAt(i)));
                                 imageAdapter.removeImage(selected.keyAt(i));
                             }
                         }

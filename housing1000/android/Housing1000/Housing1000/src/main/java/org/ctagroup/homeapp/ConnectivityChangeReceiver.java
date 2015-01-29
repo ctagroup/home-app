@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -19,6 +18,7 @@ import org.ctagroup.homeapp.data.DisclaimerSavedInDB;
 import org.ctagroup.homeapp.data.ImageSavedInDB;
 import org.ctagroup.homeapp.data.SurveySavedInDB;
 import org.ctagroup.homeapp.helpers.FileHelper;
+import org.ctagroup.homeapp.helpers.Logger;
 import org.ctagroup.homeapp.helpers.RESTHelper;
 import org.ctagroup.homeapp.helpers.SharedPreferencesHelper;
 import org.ctagroup.homeapp.sqlite.DatabaseConnector;
@@ -85,14 +85,14 @@ public class ConnectivityChangeReceiver extends BroadcastReceiver {
                         service.postPit(jsonToSubmit, new Callback<String>() {
                             @Override
                             public void success(String s, Response response) {
-                                Log.d("HOUSING1000", "Successfully submitted saved survey");
+                                Logger.d("HOUSING1000", "Successfully submitted saved survey");
                                 databaseConnector.deleteSubmittedSurvey(survey.getDatabaseId());
                                 SharedPreferencesHelper.incrementNumberOfflineSurveysSubmitted(context);
                             }
 
                             @Override
                             public void failure(RetrofitError error) {
-                                Log.d("HOUSING1000", "Un-successfully submitted saved survey...");
+                                Logger.d("HOUSING1000", "Un-successfully submitted saved survey...");
                                 error.printStackTrace();
                             }
                         });
@@ -101,7 +101,7 @@ public class ConnectivityChangeReceiver extends BroadcastReceiver {
                         service.postResponse(survey.getSurveyId(), jsonToSubmit, new Callback<String>() {
                             @Override
                             public void success(String s, Response response) {
-                                Log.d("HOUSING1000", "Successfully submitted saved survey");
+                                Logger.d("HOUSING1000", "Successfully submitted saved survey");
 
                                 String result = "";
 
@@ -111,7 +111,7 @@ public class ConnectivityChangeReceiver extends BroadcastReceiver {
                                     e.printStackTrace();
                                 }
 
-                                Log.d("SURVEY RESPONSE", result);
+                                Logger.d("SURVEY RESPONSE", result);
 
                                 String[] split = result.split("=");
                                 String clientSurveyId = split[split.length - 1];
@@ -125,7 +125,7 @@ public class ConnectivityChangeReceiver extends BroadcastReceiver {
 
                             @Override
                             public void failure(RetrofitError error) {
-                                Log.d("HOUSING1000", "Un-successfully submitted saved survey...");
+                                Logger.d("HOUSING1000", "Un-successfully submitted saved survey...");
                                 error.printStackTrace();
                             }
                         });
@@ -153,13 +153,13 @@ public class ConnectivityChangeReceiver extends BroadcastReceiver {
             service.postDisclaimerData(disclaimer.getDisclaimer(), new Callback<String>() {
                 @Override
                 public void success(String s, Response response) {
-                    Log.d("HOUSING1000", "Successfully submitted saved disclaimer");
+                    Logger.d("HOUSING1000", "Successfully submitted saved disclaimer");
                     databaseConnector.deleteSubmittedDisclaimer(disclaimer.getDatabaseId());
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    Log.d("HOUSING1000", "Un-successfully submitted saved disclaimer...");
+                    Logger.d("HOUSING1000", "Un-successfully submitted saved disclaimer...");
                     error.printStackTrace();
                 }
             });
@@ -211,13 +211,13 @@ public class ConnectivityChangeReceiver extends BroadcastReceiver {
 
                 @Override
                 public void failure(RetrofitError error) {
-                    Log.d("HOUSING1000", "Un-successfully submitted saved images...");
+                    Logger.d("HOUSING1000", "Un-successfully submitted saved images...");
                     error.printStackTrace();
 
                     String errorBody = (String) error.getBodyAs(String.class);
 
                     if (errorBody != null) {
-                        Log.e("FAILURE", errorBody);
+                        Logger.e("FAILURE", errorBody);
                     }
 
                     onPostImagesTaskCompleted(error.getResponse(), folderHash, context);
@@ -225,7 +225,7 @@ public class ConnectivityChangeReceiver extends BroadcastReceiver {
             });
         }
         else {
-            Log.d("HOUSING1000", "No images to submit.");
+            Logger.d("HOUSING1000", "No images to submit.");
         }
     }
 
@@ -234,21 +234,21 @@ public class ConnectivityChangeReceiver extends BroadcastReceiver {
         if (response != null && response.getStatus() == 200) {
             try {
                 if (response.getBody() != null)
-                    Log.d("SIGNATURE RESPONSE", RESTHelper.convertStreamToString(response.getBody().in()));
-                    Log.d("HOUSING1000", "Successfully submitted saved images");
+                    Logger.d("SIGNATURE RESPONSE", RESTHelper.convertStreamToString(response.getBody().in()));
+                    Logger.d("HOUSING1000", "Successfully submitted saved images");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
             if(response != null) {
-                Log.d("HOUSING1000", "Un-successfully submitted saved images... The status returned was " + response.getStatus());
+                Logger.d("HOUSING1000", "Un-successfully submitted saved images... The status returned was " + response.getStatus());
             }
         }
 
         //Delete all of the image files in this folder (which should be all of the images for this survey)
         File surveyDir = new File(FileHelper.getAbsoluteFilePath(folderHash, "", context));
         if (surveyDir.exists()) {
-            Log.d("DELETING SURVEY DIR", surveyDir.getAbsolutePath());
+            Logger.d("DELETING SURVEY DIR", surveyDir.getAbsolutePath());
             FileHelper.deleteAllFiles(surveyDir);
         }
     }
@@ -274,16 +274,16 @@ public class ConnectivityChangeReceiver extends BroadcastReceiver {
      * @param tag The tag for the logging
      */
     private void debugIntent(Intent intent, String tag) {
-        Log.v(tag, "action: " + intent.getAction());
-        Log.v(tag, "component: " + intent.getComponent());
+        Logger.v(tag, "action: " + intent.getAction());
+        Logger.v(tag, "component: " + intent.getComponent());
         Bundle extras = intent.getExtras();
         if (extras != null) {
             for (String key : extras.keySet()) {
-                Log.v(tag, "key [" + key + "]: " +
+                Logger.v(tag, "key [" + key + "]: " +
                         extras.get(key));
             }
         } else {
-            Log.v(tag, "no extras");
+            Logger.v(tag, "no extras");
         }
     }
 

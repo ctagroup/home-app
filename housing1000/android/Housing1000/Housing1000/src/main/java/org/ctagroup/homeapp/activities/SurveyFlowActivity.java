@@ -14,7 +14,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -37,6 +36,7 @@ import org.ctagroup.homeapp.fragments.SurveyAppFragment;
 import org.ctagroup.homeapp.fragments.SurveyFragment;
 import org.ctagroup.homeapp.helpers.ErrorHelper;
 import org.ctagroup.homeapp.helpers.FileHelper;
+import org.ctagroup.homeapp.helpers.Logger;
 import org.ctagroup.homeapp.helpers.RESTHelper;
 import retrofit.client.Response;
 
@@ -192,7 +192,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
                 longitude = location.getLongitude();
                 currentLocation = location;
 
-                Log.d("GPS Location:", latitude + "," + longitude);
+                Logger.d("GPS Location:", latitude + "," + longitude);
             }
 
             @Override
@@ -260,13 +260,13 @@ public class SurveyFlowActivity extends ActionBarActivity {
                 e.printStackTrace();
             }
 
-            Log.d("SURVEY RESPONSE", result);
+            Logger.d("SURVEY RESPONSE", result);
 
             String[] split = result.split("=");
             clientSurveyId = split[split.length - 1];
             clientSurveyId = clientSurveyId.replace("\n", "");
 
-            Log.d("clientSurveyId", clientSurveyId);
+            Logger.d("clientSurveyId", clientSurveyId);
 
             // Submit the photos
             Fragment f = this.getSupportFragmentManager().findFragmentByTag(getFragmentTag(1));
@@ -327,7 +327,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
         if (response != null && response.getStatus() == 200) {
             try {
                 if (response.getBody() != null)
-                    Log.d("PHOTOS RESPONSE", RESTHelper.convertStreamToString(response.getBody().in()));
+                    Logger.d("PHOTOS RESPONSE", RESTHelper.convertStreamToString(response.getBody().in()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -355,7 +355,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
         if (response != null && response.getStatus() == 200) {
             try {
                 if (response.getBody() != null)
-                    Log.d("SIGNATURE RESPONSE", RESTHelper.convertStreamToString(response.getBody().in()));
+                    Logger.d("SIGNATURE RESPONSE", RESTHelper.convertStreamToString(response.getBody().in()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -418,7 +418,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
 
         File surveyDir = new File(FileHelper.getAbsoluteFilePath(getFolderHash(), "", this));
         if (surveyDir.exists()) {
-            Log.d("DELETING SURVEY DIR", surveyDir.getAbsolutePath());
+            Logger.d("DELETING SURVEY DIR", surveyDir.getAbsolutePath());
             FileHelper.deleteAllFiles(surveyDir);
         }
 
@@ -431,7 +431,7 @@ public class SurveyFlowActivity extends ActionBarActivity {
 
         folderHash = hc.toString();
 
-        Log.d("FOLDER HASH", folderHash);
+        Logger.d("FOLDER HASH", folderHash);
     }
 
     public void showProgressDialog(String title, String message, String tag) {

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -25,6 +24,7 @@ import org.ctagroup.homeapp.fragments.ProgressDialogFragment;
 import org.ctagroup.homeapp.helpers.ErrorHelper;
 import org.ctagroup.homeapp.R;
 import org.ctagroup.homeapp.Utils;
+import org.ctagroup.homeapp.helpers.Logger;
 import org.ctagroup.homeapp.helpers.RESTHelper;
 import org.ctagroup.homeapp.helpers.SharedPreferencesHelper;
 import retrofit.Callback;
@@ -189,14 +189,14 @@ public class LoginActivity extends ActionBarActivity
         service.getToken(grantType, username, password, new Callback<TokenResponse>() {
             @Override
             public void success(TokenResponse tokenResponse, Response response) {
-                Log.d("HOUSING 1000", "Callback was successful");
+                Logger.d("HOUSING 1000", "Callback was successful");
 
                 onGetTokenTaskCompleted(isValidToken(tokenResponse), tokenResponse.getAccessToken());
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d("HOUSING 1000", "Callback failed: " + error.toString());
+                Logger.d("HOUSING 1000", "Callback failed: " + error.toString());
                 error.printStackTrace();
                 onGetTokenTaskCompleted(false, null);
             }
@@ -212,7 +212,7 @@ public class LoginActivity extends ActionBarActivity
         passwordField.setText("");
 
         if(successful) {
-            Log.d("HOUSING 1000", "Successfully retrieved token.");
+            Logger.d("HOUSING 1000", "Successfully retrieved token.");
 
             //Set the shared preference for the token so that other activities can access it
             SharedPreferencesHelper.setAccessToken(this, token);
@@ -220,7 +220,7 @@ public class LoginActivity extends ActionBarActivity
             getUserInfo();
         }
         else {
-            Log.w("HOUSING 1000", "There was a problem retrieving the token.");
+            Logger.w("HOUSING 1000", "There was a problem retrieving the token.");
             dismissDialog();
             ErrorHelper.showError(this, getString(R.string.msg_error_logging_in));
         }
@@ -235,14 +235,14 @@ public class LoginActivity extends ActionBarActivity
         service.getUserInfo(new Callback<UserInfo>() {
             @Override
             public void success(UserInfo userInfo, Response response) {
-                Log.d("HOUSING 1000", "Callback was successful");
+                Logger.d("HOUSING 1000", "Callback was successful");
 
                 onGetUserInfoTaskCompleted(true, userInfo);
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d("HOUSING 1000", "Callback failed: " + error.toString());
+                Logger.d("HOUSING 1000", "Callback failed: " + error.toString());
                 error.printStackTrace();
                 onGetUserInfoTaskCompleted(false, null);
             }
@@ -254,7 +254,7 @@ public class LoginActivity extends ActionBarActivity
         dismissDialog();
 
         if(successful) {
-            Log.d("HOUSING 1000", "Successfully retrieved user info: " + userInfo.toString());
+            Logger.d("HOUSING 1000", "Successfully retrieved user info: " + userInfo.toString());
 
             SharedPreferencesHelper.setDataFromUserInfo(this, userInfo);
 
@@ -262,7 +262,7 @@ public class LoginActivity extends ActionBarActivity
             startActivityForResult(intent, 1);
         }
         else {
-            Log.w("HOUSING 1000", "There was a problem retrieving user info.");
+            Logger.w("HOUSING 1000", "There was a problem retrieving user info.");
 
             ErrorHelper.showError(this, getString(R.string.msg_error_logging_in));
         }
@@ -274,7 +274,7 @@ public class LoginActivity extends ActionBarActivity
      * @return whether it is valid or not
      */
     private boolean isValidToken(TokenResponse tokenResponse) {
-        Log.d("HOUSING 1000", "Token response: " + tokenResponse.toString());
+        Logger.d("HOUSING 1000", "Token response: " + tokenResponse.toString());
 
         boolean successful = true;
 
@@ -291,17 +291,17 @@ public class LoginActivity extends ActionBarActivity
         }
         catch(ParseException e) {
             e.printStackTrace();
-            Log.w("HOUSING 1000", "Authentication failed because there was a problem parsing the token expire/issued dates.");
+            Logger.w("HOUSING 1000", "Authentication failed because there was a problem parsing the token expire/issued dates.");
             successful = true;
         }
 
         if(tokenResponse.getAccessToken() != null && "".equals(tokenResponse.getAccessToken())) {
             successful = false;
-            Log.w("HOUSING 1000", "Authentication failed because no token was received.");
+            Logger.w("HOUSING 1000", "Authentication failed because no token was received.");
         }
         if(!"bearer".equalsIgnoreCase(tokenResponse.getTokenType())) {
             successful = false;
-            Log.w("HOUSING 1000", "Authentication failed because the token is not of a 'bearer' type.");
+            Logger.w("HOUSING 1000", "Authentication failed because the token is not of a 'bearer' type.");
         }
         /*if(dateIssuedAsDate.compareTo(rightNow) > 0) {
             successful = false;
@@ -309,7 +309,7 @@ public class LoginActivity extends ActionBarActivity
         }*/
         if(dateExpiresAsDate != null && dateExpiresAsDate.compareTo(rightNow) < 0) {
             successful = false;
-            Log.w("HOUSING 1000", "Authentication failed because the token has an expires date that has already happened.");
+            Logger.w("HOUSING 1000", "Authentication failed because the token has an expires date that has already happened.");
         }
 
         return successful;

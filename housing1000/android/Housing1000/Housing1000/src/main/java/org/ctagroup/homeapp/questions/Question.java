@@ -3,7 +3,6 @@ package org.ctagroup.homeapp.questions;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -13,6 +12,8 @@ import android.widget.Spinner;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import org.ctagroup.homeapp.helpers.Logger;
 
 import java.util.ArrayList;
 
@@ -163,7 +164,7 @@ public abstract class Question {
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("TOUCHED", "TOUCHED");
+                Logger.d("TOUCHED", "TOUCHED");
                 parentQuestion.toggleChildrenVisibility();
             }
         };

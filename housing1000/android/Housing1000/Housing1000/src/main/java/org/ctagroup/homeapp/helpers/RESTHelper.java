@@ -1,7 +1,6 @@
 package org.ctagroup.homeapp.helpers;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
@@ -145,7 +144,7 @@ public class RESTHelper {
                 .setLog(new RestAdapter.Log() {
                     @Override
                     public void log(String msg) {
-                        Log.i("HOUSING 1000", msg);
+                        Logger.i("HOUSING 1000", msg);
                     }
                 });
 
@@ -268,7 +267,7 @@ public class RESTHelper {
         ArrayList<TypedOutput> result = new ArrayList<>();
 
         for (String path : paths) {
-            Log.d("Photo path:", path);
+            Logger.d("Photo path:", path);
             File photoFile = new File(path);
 
             final String photoFileName = clientSurveyId + "_" + photoFile.getName().replace(".secure", ".png");

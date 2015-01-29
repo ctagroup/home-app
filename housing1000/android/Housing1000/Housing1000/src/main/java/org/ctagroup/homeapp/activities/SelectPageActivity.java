@@ -8,7 +8,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +15,7 @@ import android.widget.TextView;
 
 import org.ctagroup.homeapp.R;
 import org.ctagroup.homeapp.Utils;
+import org.ctagroup.homeapp.helpers.Logger;
 import org.ctagroup.homeapp.helpers.SharedPreferencesHelper;
 
 public class SelectPageActivity extends ActionBarActivity {
@@ -65,7 +65,7 @@ public class SelectPageActivity extends ActionBarActivity {
                     });
 
             alertDialog.show();
-            Log.d("GPS Disabled: ", "Please Enable GPS");
+            Logger.d("GPS Disabled: ", "Please Enable GPS");
         }
 
     }
