@@ -271,7 +271,7 @@
                                             <outlet property="questionTextAnswer" destination="eCO-iG-0xw" id="KUn-ZS-SeU"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBoxForEachOption_First" rowHeight="76" id="2NI-eV-7ct" customClass="SurveyQuestionTableViewCell">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBoxForEachOption_First" rowHeight="76" id="2NI-eV-7ct" customClass="SingleLineTextBoxForEachOption">
                                         <rect key="frame" x="0.0" y="573" width="320" height="76"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2NI-eV-7ct" id="8CF-Es-dDS">
@@ -305,13 +305,13 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="number" destination="nMR-qq-rVF" id="vgx-63-EBD"/>
-                                            <outlet property="questionStepperAnswer" destination="xSw-lZ-GjZ" id="QOC-W6-zn7"/>
+                                            <outlet property="number" destination="nMR-qq-rVF" id="feU-qo-CGc"/>
+                                            <outlet property="questionStepperAnswer" destination="xSw-lZ-GjZ" id="cwA-qa-iRB"/>
                                             <outlet property="questionText" destination="0vb-9o-k0D" id="ZrH-PH-ZXB"/>
                                             <outlet property="questionTextAnswer" destination="RRy-9V-aPC" id="ZdM-1D-eNX"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBoxForEachOption" rowHeight="76" id="GoZ-C2-QIL" customClass="SurveyQuestionTableViewCell">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBoxForEachOption" rowHeight="76" id="GoZ-C2-QIL" customClass="SingleLineTextBoxForEachOption">
                                         <rect key="frame" x="0.0" y="573" width="320" height="76"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GoZ-C2-QIL" id="y6a-IY-FEh">
@@ -395,23 +395,23 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBox" rowHeight="112" id="vcE-oi-h3K" customClass="SingleLineTextBox">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBox" rowHeight="112" id="3KW-eS-VxU" customClass="SingleLineTextBox">
                                         <rect key="frame" x="0.0" y="228" width="320" height="112"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vcE-oi-h3K" id="HJd-mc-iIZ">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3KW-eS-VxU" id="Qei-NA-KZv">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="111"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qUK-PW-c8K" customClass="SurveyTextField">
+                                                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kbv-m6-lL4" customClass="SurveyTextField">
                                                     <rect key="frame" x="20" y="61" width="280" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="QuestionText" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="I26-gh-bJN">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="QuestionText" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="fzI-Za-J2U">
                                                     <rect key="frame" x="20" y="20" width="280" height="21"/>
                                                     <color key="tintColor" red="0.19436167509999999" green="0.25783827860000003" blue="0.53804347829999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="sNk-Ju-H52"/>
+                                                        <constraint firstAttribute="height" constant="21" id="DKQ-yV-1UO"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="0.079030481459999996" green="0.56300849659999996" blue="0.77766262760000004" alpha="1" colorSpace="calibratedRGB"/>
@@ -419,162 +419,47 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="qUK-PW-c8K" secondAttribute="bottom" constant="20" symbolic="YES" id="Cb2-Z3-Izc"/>
-                                                <constraint firstItem="I26-gh-bJN" firstAttribute="leading" secondItem="HJd-mc-iIZ" secondAttribute="leading" constant="20" symbolic="YES" id="Lg5-mu-Pzw"/>
-                                                <constraint firstItem="qUK-PW-c8K" firstAttribute="leading" secondItem="I26-gh-bJN" secondAttribute="leading" id="TK1-v9-a4f"/>
-                                                <constraint firstItem="I26-gh-bJN" firstAttribute="trailing" secondItem="qUK-PW-c8K" secondAttribute="trailing" id="UMh-tH-8dL"/>
-                                                <constraint firstItem="I26-gh-bJN" firstAttribute="top" secondItem="HJd-mc-iIZ" secondAttribute="top" constant="20" symbolic="YES" id="nv8-a9-vBy"/>
-                                                <constraint firstAttribute="trailing" secondItem="I26-gh-bJN" secondAttribute="trailing" constant="20" symbolic="YES" id="u77-xG-dsZ"/>
+                                                <constraint firstAttribute="trailing" secondItem="fzI-Za-J2U" secondAttribute="trailing" constant="20" symbolic="YES" id="E5c-HR-xns"/>
+                                                <constraint firstAttribute="bottom" secondItem="kbv-m6-lL4" secondAttribute="bottom" constant="20" symbolic="YES" id="Nvc-jg-Vfo"/>
+                                                <constraint firstItem="fzI-Za-J2U" firstAttribute="top" secondItem="Qei-NA-KZv" secondAttribute="top" constant="20" symbolic="YES" id="h93-XK-A2W"/>
+                                                <constraint firstItem="kbv-m6-lL4" firstAttribute="leading" secondItem="fzI-Za-J2U" secondAttribute="leading" id="iDX-op-2Fr"/>
+                                                <constraint firstItem="fzI-Za-J2U" firstAttribute="trailing" secondItem="kbv-m6-lL4" secondAttribute="trailing" id="lbl-7b-UaW"/>
+                                                <constraint firstItem="fzI-Za-J2U" firstAttribute="leading" secondItem="Qei-NA-KZv" secondAttribute="leading" constant="20" symbolic="YES" id="uNb-A1-GGp"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <accessibility key="accessibilityConfiguration" label=""/>
                                         <connections>
-                                            <outlet property="questionText" destination="I26-gh-bJN" id="Hb9-bg-kG4"/>
-                                            <outlet property="questionTextAnswer" destination="qUK-PW-c8K" id="P1d-Og-arc"/>
+                                            <outlet property="questionText" destination="fzI-Za-J2U" id="2Ok-TI-YvX"/>
+                                            <outlet property="questionTextAnswer" destination="kbv-m6-lL4" id="gR4-8V-Uhr"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBox_WithDatePicker" rowHeight="231" id="8ZN-OV-aVz" customClass="SurveyQuestionTableViewCell">
-                                        <rect key="frame" x="0.0" y="198" width="320" height="231"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8ZN-OV-aVz" id="l17-J1-lo1">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="230"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="QuestionText" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="DXj-yK-s8F">
-                                                    <rect key="frame" x="20" y="20" width="280" height="21"/>
-                                                    <color key="tintColor" red="0.19436167509999999" green="0.25783827860000003" blue="0.53804347829999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="ToW-ya-tBb"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <color key="textColor" red="0.079030481459999996" green="0.56300849659999996" blue="0.77766262760000004" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="dtp-wK-E4R">
-                                                    <rect key="frame" x="0.0" y="49" width="320" height="164"/>
-                                                    <date key="date" timeIntervalSinceReferenceDate="418785528.53974998">
-                                                        <!--2014-04-10 01:18:48 +0000-->
-                                                    </date>
-                                                    <connections>
-                                                        <action selector="storeChangedDate:" destination="8ZN-OV-aVz" eventType="valueChanged" id="tEe-Eh-qUh"/>
-                                                    </connections>
-                                                </datePicker>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="dtp-wK-E4R" firstAttribute="centerX" secondItem="DXj-yK-s8F" secondAttribute="centerX" id="Acd-06-jgC"/>
-                                                <constraint firstAttribute="trailing" secondItem="DXj-yK-s8F" secondAttribute="trailing" constant="20" symbolic="YES" id="YMp-Ml-VZD"/>
-                                                <constraint firstItem="DXj-yK-s8F" firstAttribute="leading" secondItem="l17-J1-lo1" secondAttribute="leading" constant="20" symbolic="YES" id="gYA-yR-xbx"/>
-                                                <constraint firstItem="DXj-yK-s8F" firstAttribute="top" secondItem="l17-J1-lo1" secondAttribute="top" constant="20" symbolic="YES" id="lrA-JG-2TT"/>
-                                                <constraint firstItem="dtp-wK-E4R" firstAttribute="leading" secondItem="l17-J1-lo1" secondAttribute="leading" id="nGp-YH-BrH"/>
-                                                <constraint firstItem="dtp-wK-E4R" firstAttribute="top" secondItem="DXj-yK-s8F" secondAttribute="bottom" constant="8" symbolic="YES" id="wNZ-Mi-2Mi"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <accessibility key="accessibilityConfiguration" label=""/>
-                                        <connections>
-                                            <outlet property="questionDatePicker" destination="dtp-wK-E4R" id="8bt-a7-8tg"/>
-                                            <outlet property="questionText" destination="DXj-yK-s8F" id="d1k-hp-Dbz"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SingleSelect" rowHeight="144" id="muf-xd-ona" customClass="SurveyQuestionTableViewCell">
-                                        <rect key="frame" x="0.0" y="429" width="320" height="144"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="muf-xd-ona" id="gxx-aS-mlF">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="143"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <pickerView tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ojY-n3-CEx">
-                                                    <rect key="frame" x="20" y="20" width="280" height="164"/>
-                                                </pickerView>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="QuestionText" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="bO1-bN-L8C">
-                                                    <rect key="frame" x="20" y="9" width="280" height="21"/>
-                                                    <color key="tintColor" red="0.19436167509999999" green="0.25783827860000003" blue="0.53804347829999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="TpM-VW-rOW"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <color key="textColor" red="0.079030481459999996" green="0.56300849659999996" blue="0.77766262760000004" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="bO1-bN-L8C" firstAttribute="leading" secondItem="gxx-aS-mlF" secondAttribute="leading" constant="20" symbolic="YES" id="9n9-LQ-wEb"/>
-                                                <constraint firstAttribute="trailing" secondItem="bO1-bN-L8C" secondAttribute="trailing" constant="20" symbolic="YES" id="E7i-WG-p3M"/>
-                                                <constraint firstItem="ojY-n3-CEx" firstAttribute="top" secondItem="gxx-aS-mlF" secondAttribute="top" constant="20" symbolic="YES" id="NBX-dT-qIy"/>
-                                                <constraint firstItem="ojY-n3-CEx" firstAttribute="trailing" secondItem="bO1-bN-L8C" secondAttribute="trailing" id="RyR-X9-1yI"/>
-                                                <constraint firstItem="bO1-bN-L8C" firstAttribute="top" secondItem="gxx-aS-mlF" secondAttribute="top" constant="9" id="aGm-im-i92"/>
-                                                <constraint firstItem="ojY-n3-CEx" firstAttribute="leading" secondItem="bO1-bN-L8C" secondAttribute="leading" id="rb8-A5-OZQ"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="questionSingleAnswer" destination="ojY-n3-CEx" id="2aR-Nw-bom"/>
-                                            <outlet property="questionText" destination="bO1-bN-L8C" id="uXp-UV-JRw"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBox_int" rowHeight="112" id="BNi-SC-nlc" customClass="SurveyQuestionTableViewCell">
-                                        <rect key="frame" x="0.0" y="86" width="320" height="112"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BNi-SC-nlc" id="CbG-8K-0TS">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="111"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fCa-3c-Nt8">
-                                                    <rect key="frame" x="20" y="61" width="280" height="30"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
-                                                </textField>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="QuestionText" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="abB-ji-IHo">
-                                                    <rect key="frame" x="20" y="20" width="280" height="21"/>
-                                                    <color key="tintColor" red="0.19436167509999999" green="0.25783827860000003" blue="0.53804347829999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="D04-Ia-C2L"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <color key="textColor" red="0.079030481459999996" green="0.56300849659999996" blue="0.77766262760000004" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="abB-ji-IHo" firstAttribute="trailing" secondItem="fCa-3c-Nt8" secondAttribute="trailing" id="C1K-mo-ETg"/>
-                                                <constraint firstItem="abB-ji-IHo" firstAttribute="leading" secondItem="CbG-8K-0TS" secondAttribute="leading" constant="20" symbolic="YES" id="XyI-C5-Izx"/>
-                                                <constraint firstAttribute="trailing" secondItem="abB-ji-IHo" secondAttribute="trailing" constant="20" symbolic="YES" id="dqB-GZ-rhg"/>
-                                                <constraint firstAttribute="bottom" secondItem="fCa-3c-Nt8" secondAttribute="bottom" constant="20" symbolic="YES" id="ivF-V4-GCg"/>
-                                                <constraint firstItem="abB-ji-IHo" firstAttribute="top" secondItem="CbG-8K-0TS" secondAttribute="top" constant="20" symbolic="YES" id="mcP-sW-YNa"/>
-                                                <constraint firstItem="fCa-3c-Nt8" firstAttribute="leading" secondItem="abB-ji-IHo" secondAttribute="leading" id="sOP-M3-RXb"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <accessibility key="accessibilityConfiguration" label=""/>
-                                        <connections>
-                                            <outlet property="questionText" destination="abB-ji-IHo" id="MZC-Wt-LwE"/>
-                                            <outlet property="questionTextAnswer" destination="fCa-3c-Nt8" id="y7I-g8-fe1"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBoxForEachOption" rowHeight="76" id="N1n-yo-Nnc" customClass="SurveyQuestionTableViewCell">
-                                        <rect key="frame" x="0.0" y="573" width="320" height="76"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="N1n-yo-Nnc" id="qCt-RK-CeI">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBoxForEachOption" rowHeight="76" id="ADW-Sc-v3o" customClass="SingleLineTextBoxForEachOption">
+                                        <rect key="frame" x="0.0" y="246" width="320" height="76"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ADW-Sc-v3o" id="RMb-Jz-VXt">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="75"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="Dij-PQ-ile">
+                                                <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="s05-mO-Cad">
                                                     <rect key="frame" x="206" y="39" width="94" height="29"/>
                                                     <connections>
-                                                        <action selector="pressedOnStepper:" destination="N1n-yo-Nnc" eventType="touchDown" id="Gvi-cF-gzq"/>
-                                                        <action selector="valueChanged:" destination="N1n-yo-Nnc" eventType="valueChanged" id="Jes-HD-0OV"/>
+                                                        <action selector="pressedOnStepper:" destination="ADW-Sc-v3o" eventType="touchDown" id="bMN-Ck-9fe"/>
+                                                        <action selector="valueChanged:" destination="ADW-Sc-v3o" eventType="valueChanged" id="Udo-aY-8ce"/>
                                                     </connections>
                                                 </stepper>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HF4-Gs-R1C">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gRJ-Te-BZ3">
                                                     <rect key="frame" x="44" y="38" width="72" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                 </textField>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="QuestionText" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="9Ur-qc-Gdz">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="QuestionText" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="UBy-Wd-JnC">
                                                     <rect key="frame" x="20" y="0.0" width="280" height="21"/>
                                                     <color key="tintColor" red="0.19436167509999999" green="0.25783827860000003" blue="0.53804347829999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="0.079030481459999996" green="0.56300849659999996" blue="0.77766262760000004" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e9a-GP-Mnv">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="reZ-U2-st4">
                                                     <rect key="frame" x="133" y="43" width="54" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="highlightedColor"/>
@@ -582,39 +467,39 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="number" destination="e9a-GP-Mnv" id="yfE-jz-ssa"/>
-                                            <outlet property="questionStepperAnswer" destination="Dij-PQ-ile" id="01T-wu-uaf"/>
-                                            <outlet property="questionText" destination="9Ur-qc-Gdz" id="Xiw-6Q-wsn"/>
-                                            <outlet property="questionTextAnswer" destination="HF4-Gs-R1C" id="w5q-ex-gE5"/>
+                                            <outlet property="number" destination="reZ-U2-st4" id="fSP-91-LCo"/>
+                                            <outlet property="questionStepperAnswer" destination="s05-mO-Cad" id="1DH-1c-sYN"/>
+                                            <outlet property="questionText" destination="UBy-Wd-JnC" id="NsJ-ic-7n4"/>
+                                            <outlet property="questionTextAnswer" destination="gRJ-Te-BZ3" id="9VJ-Xq-rZp"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBoxForEachOption_First" rowHeight="76" id="TK5-M1-FuS" customClass="SurveyQuestionTableViewCell">
-                                        <rect key="frame" x="0.0" y="573" width="320" height="76"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TK5-M1-FuS" id="LeI-CI-vtr">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBoxForEachOption_First" rowHeight="76" id="BSb-QK-rd2" customClass="SingleLineTextBoxForEachOption">
+                                        <rect key="frame" x="0.0" y="246" width="320" height="76"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BSb-QK-rd2" id="TZY-WJ-hyA">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="75"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="QPF-Rt-cpm">
+                                                <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="VJN-W8-7Ch">
                                                     <rect key="frame" x="206" y="39" width="94" height="29"/>
                                                     <connections>
-                                                        <action selector="pressedOnStepper:" destination="TK5-M1-FuS" eventType="touchDown" id="lhh-qL-bvP"/>
-                                                        <action selector="valueChanged:" destination="TK5-M1-FuS" eventType="valueChanged" id="Mwy-Ul-SDg"/>
+                                                        <action selector="pressedOnStepper:" destination="BSb-QK-rd2" eventType="touchDown" id="Bqi-ib-Kqn"/>
+                                                        <action selector="valueChanged:" destination="BSb-QK-rd2" eventType="valueChanged" id="DjA-91-pUg"/>
                                                     </connections>
                                                 </stepper>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SLZ-HW-J2a">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Uou-RU-VFK">
                                                     <rect key="frame" x="44" y="38" width="72" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                 </textField>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="QuestionText" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="xqv-ib-k3r">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="QuestionText" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="xLm-YW-6jc">
                                                     <rect key="frame" x="20" y="0.0" width="280" height="21"/>
                                                     <color key="tintColor" red="0.19436167509999999" green="0.25783827860000003" blue="0.53804347829999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="0.079030481459999996" green="0.56300849659999996" blue="0.77766262760000004" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QjV-2g-08e">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KN2-1k-7mz">
                                                     <rect key="frame" x="133" y="43" width="54" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="highlightedColor"/>
@@ -622,10 +507,10 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="number" destination="QjV-2g-08e" id="WGB-pF-8r4"/>
-                                            <outlet property="questionStepperAnswer" destination="QPF-Rt-cpm" id="XD4-pG-CwK"/>
-                                            <outlet property="questionText" destination="xqv-ib-k3r" id="Xmh-c9-euu"/>
-                                            <outlet property="questionTextAnswer" destination="SLZ-HW-J2a" id="nLn-ok-i5d"/>
+                                            <outlet property="number" destination="KN2-1k-7mz" id="YsF-dE-QrC"/>
+                                            <outlet property="questionStepperAnswer" destination="VJN-W8-7Ch" id="IDP-f5-wJg"/>
+                                            <outlet property="questionText" destination="xLm-YW-6jc" id="ha9-Cv-ZD7"/>
+                                            <outlet property="questionTextAnswer" destination="Uou-RU-VFK" id="9J4-S3-bwI"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -765,58 +650,63 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SingleSelect" rowHeight="144" id="6Xo-Of-Bzv" customClass="SurveyQuestionTableViewCell">
-                                        <rect key="frame" x="0.0" y="429" width="320" height="144"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6Xo-Of-Bzv" id="Gwa-q2-J5Y">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="143"/>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBoxForEachOption" rowHeight="76" id="TKG-hb-9h7" customClass="SingleLineTextBoxForEachOption">
+                                        <rect key="frame" x="0.0" y="246" width="320" height="76"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TKG-hb-9h7" id="sJn-za-gQ2">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="75"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <pickerView tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9hk-EQ-Cdv">
-                                                    <rect key="frame" x="20" y="20" width="280" height="164"/>
-                                                </pickerView>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="QuestionText" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="xP1-6R-Ciw">
-                                                    <rect key="frame" x="20" y="9" width="280" height="21"/>
+                                                <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="lrV-ja-s0O">
+                                                    <rect key="frame" x="206" y="39" width="94" height="29"/>
+                                                    <connections>
+                                                        <action selector="pressedOnStepper:" destination="TKG-hb-9h7" eventType="touchDown" id="CGD-bs-beb"/>
+                                                        <action selector="valueChanged:" destination="TKG-hb-9h7" eventType="valueChanged" id="E1s-Y6-bgA"/>
+                                                    </connections>
+                                                </stepper>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6IC-hP-xNn">
+                                                    <rect key="frame" x="44" y="38" width="72" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                </textField>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="QuestionText" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="dqy-50-H1k">
+                                                    <rect key="frame" x="20" y="0.0" width="280" height="21"/>
                                                     <color key="tintColor" red="0.19436167509999999" green="0.25783827860000003" blue="0.53804347829999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="BR4-ib-BuB"/>
-                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="0.079030481459999996" green="0.56300849659999996" blue="0.77766262760000004" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eML-1K-e2B">
+                                                    <rect key="frame" x="133" y="43" width="54" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstItem="9hk-EQ-Cdv" firstAttribute="top" secondItem="Gwa-q2-J5Y" secondAttribute="top" constant="20" symbolic="YES" id="9SV-NQ-Q6B"/>
-                                                <constraint firstAttribute="trailing" secondItem="xP1-6R-Ciw" secondAttribute="trailing" constant="20" symbolic="YES" id="B8o-l9-7PV"/>
-                                                <constraint firstItem="xP1-6R-Ciw" firstAttribute="top" secondItem="Gwa-q2-J5Y" secondAttribute="top" constant="9" id="FGx-le-gdt"/>
-                                                <constraint firstItem="xP1-6R-Ciw" firstAttribute="leading" secondItem="Gwa-q2-J5Y" secondAttribute="leading" constant="20" symbolic="YES" id="Miy-fj-yME"/>
-                                                <constraint firstItem="9hk-EQ-Cdv" firstAttribute="leading" secondItem="xP1-6R-Ciw" secondAttribute="leading" id="sdz-gQ-2cy"/>
-                                                <constraint firstItem="9hk-EQ-Cdv" firstAttribute="trailing" secondItem="xP1-6R-Ciw" secondAttribute="trailing" id="tIg-Lf-P2q"/>
-                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="questionSingleAnswer" destination="9hk-EQ-Cdv" id="KT3-rk-4kD"/>
-                                            <outlet property="questionText" destination="xP1-6R-Ciw" id="JAm-zF-WUm"/>
+                                            <outlet property="number" destination="eML-1K-e2B" id="7Gc-0y-eGP"/>
+                                            <outlet property="questionStepperAnswer" destination="lrV-ja-s0O" id="0gP-Wv-1oi"/>
+                                            <outlet property="questionText" destination="dqy-50-H1k" id="VZ7-Qc-0OO"/>
+                                            <outlet property="questionTextAnswer" destination="6IC-hP-xNn" id="NGj-zW-aim"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBox" rowHeight="112" id="Dmk-fY-TL9" customClass="SurveyQuestionTableViewCell">
-                                        <rect key="frame" x="0.0" y="86" width="320" height="112"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Dmk-fY-TL9" id="5bU-ZZ-NLs">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBox" rowHeight="112" id="QFG-cR-Jdm" customClass="SingleLineTextBox">
+                                        <rect key="frame" x="0.0" y="228" width="320" height="112"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QFG-cR-Jdm" id="Pro-bM-f4K">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="111"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uSc-s8-xHg">
+                                                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GpT-fs-zR4" customClass="SurveyTextField">
                                                     <rect key="frame" x="20" y="61" width="280" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="QuestionText" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="HIC-Fs-5DP">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="QuestionText" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="D5C-1G-wVs">
                                                     <rect key="frame" x="20" y="20" width="280" height="21"/>
                                                     <color key="tintColor" red="0.19436167509999999" green="0.25783827860000003" blue="0.53804347829999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="1b7-vg-DZI"/>
+                                                        <constraint firstAttribute="height" constant="21" id="bo0-G4-KeS"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="0.079030481459999996" green="0.56300849659999996" blue="0.77766262760000004" alpha="1" colorSpace="calibratedRGB"/>
@@ -824,85 +714,47 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="HIC-Fs-5DP" secondAttribute="trailing" constant="20" symbolic="YES" id="5mV-aX-q0Z"/>
-                                                <constraint firstItem="HIC-Fs-5DP" firstAttribute="leading" secondItem="5bU-ZZ-NLs" secondAttribute="leading" constant="20" symbolic="YES" id="K13-RD-qUg"/>
-                                                <constraint firstAttribute="bottom" secondItem="uSc-s8-xHg" secondAttribute="bottom" constant="20" symbolic="YES" id="dVd-BH-tNm"/>
-                                                <constraint firstItem="uSc-s8-xHg" firstAttribute="leading" secondItem="HIC-Fs-5DP" secondAttribute="leading" id="ekS-H9-8Mt"/>
-                                                <constraint firstItem="HIC-Fs-5DP" firstAttribute="top" secondItem="5bU-ZZ-NLs" secondAttribute="top" constant="20" symbolic="YES" id="fpy-2c-TKU"/>
-                                                <constraint firstItem="HIC-Fs-5DP" firstAttribute="trailing" secondItem="uSc-s8-xHg" secondAttribute="trailing" id="sOw-Dw-aUw"/>
+                                                <constraint firstItem="GpT-fs-zR4" firstAttribute="leading" secondItem="D5C-1G-wVs" secondAttribute="leading" id="0Xp-Qc-Js3"/>
+                                                <constraint firstAttribute="bottom" secondItem="GpT-fs-zR4" secondAttribute="bottom" constant="20" symbolic="YES" id="65m-gh-fDd"/>
+                                                <constraint firstItem="D5C-1G-wVs" firstAttribute="trailing" secondItem="GpT-fs-zR4" secondAttribute="trailing" id="EBl-gu-Qa4"/>
+                                                <constraint firstItem="D5C-1G-wVs" firstAttribute="top" secondItem="Pro-bM-f4K" secondAttribute="top" constant="20" symbolic="YES" id="LEg-cZ-pz1"/>
+                                                <constraint firstAttribute="trailing" secondItem="D5C-1G-wVs" secondAttribute="trailing" constant="20" symbolic="YES" id="osY-0h-C5r"/>
+                                                <constraint firstItem="D5C-1G-wVs" firstAttribute="leading" secondItem="Pro-bM-f4K" secondAttribute="leading" constant="20" symbolic="YES" id="tvp-6l-hsL"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <accessibility key="accessibilityConfiguration" label=""/>
                                         <connections>
-                                            <outlet property="questionText" destination="HIC-Fs-5DP" id="qlF-jY-Ofg"/>
-                                            <outlet property="questionTextAnswer" destination="uSc-s8-xHg" id="Pty-pF-NOm"/>
+                                            <outlet property="questionText" destination="D5C-1G-wVs" id="JoW-SW-rQm"/>
+                                            <outlet property="questionTextAnswer" destination="GpT-fs-zR4" id="E1n-4n-GHT"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBox_int" rowHeight="112" id="oml-3O-ZCS" customClass="SurveyQuestionTableViewCell">
-                                        <rect key="frame" x="0.0" y="86" width="320" height="112"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oml-3O-ZCS" id="vab-19-Bi6">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="111"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3VR-mq-C40">
-                                                    <rect key="frame" x="20" y="61" width="280" height="30"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
-                                                </textField>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="QuestionText" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="jsL-5z-6ga">
-                                                    <rect key="frame" x="20" y="20" width="280" height="21"/>
-                                                    <color key="tintColor" red="0.19436167509999999" green="0.25783827860000003" blue="0.53804347829999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="Q2Q-OX-tXL"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <color key="textColor" red="0.079030481459999996" green="0.56300849659999996" blue="0.77766262760000004" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="jsL-5z-6ga" firstAttribute="trailing" secondItem="3VR-mq-C40" secondAttribute="trailing" id="BRO-tJ-BPj"/>
-                                                <constraint firstItem="jsL-5z-6ga" firstAttribute="leading" secondItem="vab-19-Bi6" secondAttribute="leading" constant="20" symbolic="YES" id="NM7-U2-yVA"/>
-                                                <constraint firstAttribute="bottom" secondItem="3VR-mq-C40" secondAttribute="bottom" constant="20" symbolic="YES" id="ap5-3J-QJm"/>
-                                                <constraint firstAttribute="trailing" secondItem="jsL-5z-6ga" secondAttribute="trailing" constant="20" symbolic="YES" id="man-a9-8rb"/>
-                                                <constraint firstItem="jsL-5z-6ga" firstAttribute="top" secondItem="vab-19-Bi6" secondAttribute="top" constant="20" symbolic="YES" id="nAb-uk-zd8"/>
-                                                <constraint firstItem="3VR-mq-C40" firstAttribute="leading" secondItem="jsL-5z-6ga" secondAttribute="leading" id="wA0-Ho-GPu"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <accessibility key="accessibilityConfiguration" label=""/>
-                                        <connections>
-                                            <outlet property="questionText" destination="jsL-5z-6ga" id="prh-cV-5GB"/>
-                                            <outlet property="questionTextAnswer" destination="3VR-mq-C40" id="89E-vu-iMK"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBoxForEachOption_First" rowHeight="76" id="wKr-U5-aUN" customClass="SurveyQuestionTableViewCell">
-                                        <rect key="frame" x="0.0" y="573" width="320" height="76"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wKr-U5-aUN" id="sFs-M0-gzn">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBoxForEachOption_First" rowHeight="76" id="Fuq-Cl-ooI" customClass="SingleLineTextBoxForEachOption">
+                                        <rect key="frame" x="0.0" y="246" width="320" height="76"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Fuq-Cl-ooI" id="22d-xF-cfH">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="75"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="0lv-Za-yxo">
+                                                <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="wf8-IZ-WHu">
                                                     <rect key="frame" x="206" y="39" width="94" height="29"/>
                                                     <connections>
-                                                        <action selector="pressedOnStepper:" destination="wKr-U5-aUN" eventType="touchDown" id="KrP-U9-nfY"/>
-                                                        <action selector="valueChanged:" destination="wKr-U5-aUN" eventType="valueChanged" id="f4V-rc-UOD"/>
+                                                        <action selector="pressedOnStepper:" destination="Fuq-Cl-ooI" eventType="touchDown" id="vrh-hH-Zyi"/>
+                                                        <action selector="valueChanged:" destination="Fuq-Cl-ooI" eventType="valueChanged" id="rIX-7w-ual"/>
                                                     </connections>
                                                 </stepper>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zi9-X8-hcs">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qiD-Og-FEZ">
                                                     <rect key="frame" x="44" y="38" width="72" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                 </textField>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="QuestionText" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="igc-5N-hZY">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="QuestionText" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="ES6-Md-QYB">
                                                     <rect key="frame" x="20" y="0.0" width="280" height="21"/>
                                                     <color key="tintColor" red="0.19436167509999999" green="0.25783827860000003" blue="0.53804347829999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="0.079030481459999996" green="0.56300849659999996" blue="0.77766262760000004" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZHw-lf-Sw3">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9mr-lN-3Ak">
                                                     <rect key="frame" x="133" y="43" width="54" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="highlightedColor"/>
@@ -910,92 +762,10 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="number" destination="ZHw-lf-Sw3" id="O5B-AA-MGS"/>
-                                            <outlet property="questionStepperAnswer" destination="0lv-Za-yxo" id="OEq-yK-F3C"/>
-                                            <outlet property="questionText" destination="igc-5N-hZY" id="xKx-jb-C93"/>
-                                            <outlet property="questionTextAnswer" destination="zi9-X8-hcs" id="0hx-SX-mZI"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBox_WithDatePicker" rowHeight="231" id="TZ6-Gb-rRG" customClass="SurveyQuestionTableViewCell">
-                                        <rect key="frame" x="0.0" y="198" width="320" height="231"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TZ6-Gb-rRG" id="vTS-5u-eIg">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="230"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="QuestionText" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="GC8-Lv-E0q">
-                                                    <rect key="frame" x="20" y="20" width="280" height="21"/>
-                                                    <color key="tintColor" red="0.19436167509999999" green="0.25783827860000003" blue="0.53804347829999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="4Fc-nz-edq"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <color key="textColor" red="0.079030481459999996" green="0.56300849659999996" blue="0.77766262760000004" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="cf9-7L-hzg">
-                                                    <rect key="frame" x="0.0" y="49" width="320" height="164"/>
-                                                    <date key="date" timeIntervalSinceReferenceDate="418785528.53974998">
-                                                        <!--2014-04-10 01:18:48 +0000-->
-                                                    </date>
-                                                    <connections>
-                                                        <action selector="storeChangedDate:" destination="TZ6-Gb-rRG" eventType="valueChanged" id="gz3-14-2pv"/>
-                                                    </connections>
-                                                </datePicker>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="GC8-Lv-E0q" secondAttribute="trailing" constant="20" symbolic="YES" id="3id-bG-FxV"/>
-                                                <constraint firstItem="GC8-Lv-E0q" firstAttribute="top" secondItem="vTS-5u-eIg" secondAttribute="top" constant="20" symbolic="YES" id="4ym-xb-N8W"/>
-                                                <constraint firstItem="cf9-7L-hzg" firstAttribute="leading" secondItem="vTS-5u-eIg" secondAttribute="leading" id="Ye8-B5-Fgt"/>
-                                                <constraint firstItem="cf9-7L-hzg" firstAttribute="top" secondItem="GC8-Lv-E0q" secondAttribute="bottom" constant="8" symbolic="YES" id="ZWU-xr-QYw"/>
-                                                <constraint firstItem="GC8-Lv-E0q" firstAttribute="leading" secondItem="vTS-5u-eIg" secondAttribute="leading" constant="20" symbolic="YES" id="afD-0d-Ab2"/>
-                                                <constraint firstItem="cf9-7L-hzg" firstAttribute="centerX" secondItem="GC8-Lv-E0q" secondAttribute="centerX" id="b8V-Yk-wbQ"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <accessibility key="accessibilityConfiguration" label=""/>
-                                        <connections>
-                                            <outlet property="questionDatePicker" destination="cf9-7L-hzg" id="RjR-Z1-KiG"/>
-                                            <outlet property="questionText" destination="GC8-Lv-E0q" id="Gha-Ee-c7E"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SinglelineTextBoxForEachOption" rowHeight="76" id="lkx-7w-ePf" customClass="SurveyQuestionTableViewCell">
-                                        <rect key="frame" x="0.0" y="573" width="320" height="76"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lkx-7w-ePf" id="Mv9-0t-A0d">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="75"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="WKU-sB-8tm">
-                                                    <rect key="frame" x="206" y="39" width="94" height="29"/>
-                                                    <connections>
-                                                        <action selector="pressedOnStepper:" destination="lkx-7w-ePf" eventType="touchDown" id="aTk-3L-6RC"/>
-                                                        <action selector="valueChanged:" destination="lkx-7w-ePf" eventType="valueChanged" id="WH1-IA-FRM"/>
-                                                    </connections>
-                                                </stepper>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rYm-qP-ogO">
-                                                    <rect key="frame" x="44" y="38" width="72" height="30"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
-                                                </textField>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="QuestionText" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="uL7-O7-AcS">
-                                                    <rect key="frame" x="20" y="0.0" width="280" height="21"/>
-                                                    <color key="tintColor" red="0.19436167509999999" green="0.25783827860000003" blue="0.53804347829999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <color key="textColor" red="0.079030481459999996" green="0.56300849659999996" blue="0.77766262760000004" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tn1-RR-u64">
-                                                    <rect key="frame" x="133" y="43" width="54" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="number" destination="Tn1-RR-u64" id="6No-7O-3cz"/>
-                                            <outlet property="questionStepperAnswer" destination="WKU-sB-8tm" id="0yi-e4-kVg"/>
-                                            <outlet property="questionText" destination="uL7-O7-AcS" id="0dh-9f-Fys"/>
-                                            <outlet property="questionTextAnswer" destination="rYm-qP-ogO" id="yDt-We-iaN"/>
+                                            <outlet property="number" destination="9mr-lN-3Ak" id="HRN-2c-kTd"/>
+                                            <outlet property="questionStepperAnswer" destination="wf8-IZ-WHu" id="E0b-Rp-XJZ"/>
+                                            <outlet property="questionText" destination="ES6-Md-QYB" id="af7-Hx-vAv"/>
+                                            <outlet property="questionTextAnswer" destination="qiD-Og-FEZ" id="72Q-1P-QLd"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
