@@ -9,14 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "Question.h"
 
-@interface SurveyQuestionTableViewCell : UITableViewCell <UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate>
+@interface SurveyQuestionTableViewCell : UITableViewCell
 
 @property (strong, nonatomic) IBOutlet UILabel *questionText;
-@property (strong, nonatomic) IBOutlet UILabel *number;
-@property (strong, nonatomic) IBOutlet UITextField *questionTextAnswer;
-@property (strong, nonatomic) IBOutlet UIPickerView *questionSingleAnswer;
-@property (strong, nonatomic) IBOutlet UIDatePicker *questionDatePicker;
-@property (strong, nonatomic) IBOutlet UIStepper *questionStepperAnswer;
 @property (strong, nonatomic) Question *questionData;
+
+-(void)changeChildQuestions:(NSString*)answerFromParent;
 
 @end

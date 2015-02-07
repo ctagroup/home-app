@@ -10,6 +10,8 @@
 #import "Survey.h"
 #import "Question.h"
 #import "SurveyQuestionTableViewCell.h"
+#import "SingleLineTextBox.h"
+#import "SinglelineTextBoxForEachOption.h"
 
 @interface BaseSurveyViewController()
 
@@ -139,18 +141,21 @@
     NSString *cellIdentifier = currentQuestion.questionType;
     
     SurveyQuestionTableViewCell *cell;
-    if((currentQuestion.textBoxDataType != (id)[NSNull null]) && [currentQuestion.textBoxDataType isEqualToString:@"DateTime"]) {
+    /*if((currentQuestion.textBoxDataType != (id)[NSNull null]) && [currentQuestion.textBoxDataType isEqualToString:@"DateTime"]) {
         cell = [tableView dequeueReusableCellWithIdentifier:@"SinglelineTextBox_WithDatePicker" forIndexPath:indexPath];
-    }
-    else if([cellIdentifier isEqualToString:@"SinglelineTextBoxForEachOption"] && currentQuestion.isFirstLineForEachOption.isTrue) {
+    }*/
+    if([cellIdentifier isEqualToString:@"SinglelineTextBoxForEachOption"] && currentQuestion.isFirstLineForEachOption.isTrue) {
         //I have to give it its own cell identifier, or else iOS will re-use this cell and other ones that aren't the first will have the top border
         cell = [tableView dequeueReusableCellWithIdentifier:@"SinglelineTextBoxForEachOption_First" forIndexPath:indexPath];
     }
-    else if([cellIdentifier isEqualToString:@"SinglelineTextBox"] && (currentQuestion.textBoxDataType != (id)[NSNull null])
+    /*else if([cellIdentifier isEqualToString:@"SinglelineTextBox"] && (currentQuestion.textBoxDataType != (id)[NSNull null])
             && [currentQuestion.textBoxDataType isEqualToString:@"int"]) {
         //If the data type for the text field is an int, make it a number pad. Otherwise, leave it as the default
         //I have to give it its own cell identifier, or else iOS will re-use the keyboard type and it gets mixed up when it shouldn't
         cell = [tableView dequeueReusableCellWithIdentifier:@"SinglelineTextBox_int" forIndexPath:indexPath];
+    }*/
+    else if([cellIdentifier isEqualToString:@"SingleSelect"] || [cellIdentifier isEqualToString:@"SinglelineTextBox"]) {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"SinglelineTextBox" forIndexPath:indexPath];
     }
     else {
         cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
@@ -159,40 +164,14 @@
     cell.questionText.text = currentQuestion.questionText;
     cell.questionData = currentQuestion;
     
-    //This type of cell requires special handling
-    if([cellIdentifier isEqualToString:@"SinglelineTextBoxForEachOption"]) {
+    if([cellIdentifier isEqualToString:@"SinglelineTextBox"]) {
+        SingleLineTextBox* singleLineTextBox = (SingleLineTextBox*) cell;
         
-        //This is because it isn't really needed and so that when cells get reused this isn't there
-        [cell.questionTextAnswer setText:@""];
-        
-        if(currentQuestion.isFirstLineForEachOption.isTrue) {
-            
-            cell.clipsToBounds = YES;
-            
-            CALayer *topBorder = [CALayer layer];
-            topBorder.borderColor = [UIColor blackColor].CGColor;
-            topBorder.borderWidth = 4;
-            topBorder.frame = CGRectMake(0, -2, CGRectGetWidth(cell.frame), 4);
-            //topBorder.frame = CGRectMake(-1, -1, CGRectGetWidth(cell.frame), CGRectGetHeight(cell.frame)+2);
-            
-            [cell.layer addSublayer:topBorder];
-        }
-        
-        if([currentQuestion getAnswerForJson] == [NSNull null] || [@"" isEqualToString:[currentQuestion getAnswerForJson]]) {
-            cell.number.text = @"0";
-        
-        } else {
-            cell.number.text = [currentQuestion getAnswerForJson];
-            cell.questionStepperAnswer.value = [[currentQuestion getAnswerForJson] doubleValue];
-        }
-    }
-    //So does this type of cell. We set the text in the textfield to what was answered previously or else it gets jumbled up.
-    else if([cellIdentifier isEqualToString:@"SinglelineTextBox"]) {
         if([currentQuestion getAnswerForJson] != [NSNull null]) {
-            [cell.questionTextAnswer setText:[currentQuestion getAnswerForJson]];
+            [singleLineTextBox.questionTextAnswer setText:[currentQuestion getAnswerForJson]];
         }
         else {
-            [cell.questionTextAnswer setText:@""];
+            [singleLineTextBox.questionTextAnswer setText:@""];
         }
     }
     
@@ -205,19 +184,8 @@
     
     NSString *cellIdentifier = currentQuestion.questionType;
     
-    if([cellIdentifier isEqualToString:@"SinglelineTextBox"]) {
-        
-        NSString *textBoxFieldType = currentQuestion.textBoxDataType;
-        
-        if(![textBoxFieldType isEqual:[NSNull null]] && [textBoxFieldType isEqualToString:@"DateTime"]) {
-            return 250;
-        }
-        else {
-            return 125;
-        }
-    }
-    else if([cellIdentifier isEqualToString:@"SingleSelect"]) {
-        return 225;
+    if([cellIdentifier isEqualToString:@"SinglelineTextBox"] || [cellIdentifier isEqualToString:@"SingleSelect"]) {
+        return 125;
     }
     else if([cellIdentifier isEqualToString:@"SinglelineTextBoxForEachOption"]) {
         return 80;
@@ -247,7 +215,7 @@
     NSTimeInterval duration = [[[sender userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
     [UIView animateWithDuration:duration animations:^{
-        UIEdgeInsets edgeInsets = UIEdgeInsetsZero;
+        UIEdgeInsets edgeInsets = UIEdgeInsetsMake(50, 0, 0, 0);
         [self.tableView setContentInset:edgeInsets];
         [self.tableView setScrollIndicatorInsets:edgeInsets];
     }];

@@ -55,9 +55,12 @@
 		3FFE30CE18C26355004A737D /* SurveySubmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE30CD18C26355004A737D /* SurveySubmitter.m */; };
 		4C113FA319DB9D83007E69A5 /* GetNewEncampmentHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C113FA219DB9D83007E69A5 /* GetNewEncampmentHandler.m */; };
 		4C27910919D7827400A3544F /* EncampmentNewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C27910819D7827400A3544F /* EncampmentNewViewController.m */; };
+		63061A461A71FC65008FE4AB /* SingleLineTextBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 63061A451A71FC65008FE4AB /* SingleLineTextBox.m */; };
 		630FB4D219CA79C70042A8B1 /* BaseSurveyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 630FB4D119CA79C70042A8B1 /* BaseSurveyViewController.m */; };
 		630FB4D819CBFB970042A8B1 /* HousingBool.m in Sources */ = {isa = PBXBuildFile; fileRef = 630FB4D719CBFB970042A8B1 /* HousingBool.m */; };
 		630FB4DB19CE13780042A8B1 /* SurveyJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 630FB4DA19CE13780042A8B1 /* SurveyJSONParser.m */; };
+		63AE4C411A84728400345531 /* SurveyTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 63AE4C401A84728400345531 /* SurveyTextField.m */; };
+		63AE4C451A85B51600345531 /* SinglelineTextBoxForEachOption.m in Sources */ = {isa = PBXBuildFile; fileRef = 63AE4C441A85B51600345531 /* SinglelineTextBoxForEachOption.m */; };
 		63B31D0419F89E1C00B3A188 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B31D0319F89E1C00B3A188 /* SystemConfiguration.framework */; };
 		63B31D0719F89E7C00B3A188 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B31D0619F89E7C00B3A188 /* Reachability.m */; };
 		63B31D0919F8A3E800B3A188 /* ConnectivityChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B31D0819F8A3E800B3A188 /* ConnectivityChecker.m */; };
@@ -173,12 +176,18 @@
 		4C113FA219DB9D83007E69A5 /* GetNewEncampmentHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetNewEncampmentHandler.m; sourceTree = "<group>"; };
 		4C27910719D7826100A3544F /* EncampmentNewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EncampmentNewViewController.h; sourceTree = "<group>"; };
 		4C27910819D7827400A3544F /* EncampmentNewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncampmentNewViewController.m; sourceTree = "<group>"; };
+		63061A441A71FC0E008FE4AB /* SingleLineTextBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SingleLineTextBox.h; sourceTree = "<group>"; };
+		63061A451A71FC65008FE4AB /* SingleLineTextBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleLineTextBox.m; sourceTree = "<group>"; };
 		630FB4D019CA79C70042A8B1 /* BaseSurveyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseSurveyViewController.h; sourceTree = "<group>"; };
 		630FB4D119CA79C70042A8B1 /* BaseSurveyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseSurveyViewController.m; sourceTree = "<group>"; };
 		630FB4D619CBFB970042A8B1 /* HousingBool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HousingBool.h; sourceTree = "<group>"; };
 		630FB4D719CBFB970042A8B1 /* HousingBool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HousingBool.m; sourceTree = "<group>"; };
 		630FB4D919CE13780042A8B1 /* SurveyJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyJSONParser.h; sourceTree = "<group>"; };
 		630FB4DA19CE13780042A8B1 /* SurveyJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyJSONParser.m; sourceTree = "<group>"; };
+		63AE4C401A84728400345531 /* SurveyTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyTextField.m; sourceTree = "<group>"; };
+		63AE4C421A84729600345531 /* SurveyTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SurveyTextField.h; sourceTree = "<group>"; };
+		63AE4C431A85B50300345531 /* SinglelineTextBoxForEachOption.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SinglelineTextBoxForEachOption.h; sourceTree = "<group>"; };
+		63AE4C441A85B51600345531 /* SinglelineTextBoxForEachOption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SinglelineTextBoxForEachOption.m; sourceTree = "<group>"; };
 		63B31D0319F89E1C00B3A188 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		63B31D0519F89E6C00B3A188 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		63B31D0619F89E7C00B3A188 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
@@ -267,6 +276,7 @@
 		3FFE30B718C235D1004A737D /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				63061A431A661BD3008FE4AB /* Question */,
 				630FB4CD19CA78D20042A8B1 /* Survey */,
 				630FB4CE19CA78DF0042A8B1 /* PIT */,
 				630FB4CF19CA78E50042A8B1 /* Encampment */,
@@ -279,8 +289,6 @@
 				272AA49518C6EBCB0068E023 /* MainMenuViewController.m */,
 				630FB4D019CA79C70042A8B1 /* BaseSurveyViewController.h */,
 				630FB4D119CA79C70042A8B1 /* BaseSurveyViewController.m */,
-				3FFE30B418B091B8004A737D /* SurveyQuestionTableViewCell.h */,
-				3FFE30B518B091B8004A737D /* SurveyQuestionTableViewCell.m */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -324,6 +332,21 @@
 				3F1E378C199BE8CB00562EEC /* GPSLocationRetriever.m */,
 			);
 			name = Util;
+			sourceTree = "<group>";
+		};
+		63061A431A661BD3008FE4AB /* Question */ = {
+			isa = PBXGroup;
+			children = (
+				63AE4C421A84729600345531 /* SurveyTextField.h */,
+				63AE4C401A84728400345531 /* SurveyTextField.m */,
+				3FFE30B418B091B8004A737D /* SurveyQuestionTableViewCell.h */,
+				3FFE30B518B091B8004A737D /* SurveyQuestionTableViewCell.m */,
+				63061A441A71FC0E008FE4AB /* SingleLineTextBox.h */,
+				63061A451A71FC65008FE4AB /* SingleLineTextBox.m */,
+				63AE4C431A85B50300345531 /* SinglelineTextBoxForEachOption.h */,
+				63AE4C441A85B51600345531 /* SinglelineTextBoxForEachOption.m */,
+			);
+			name = Question;
 			sourceTree = "<group>";
 		};
 		630FB4CD19CA78D20042A8B1 /* Survey */ = {
@@ -605,16 +628,19 @@
 			files = (
 				3F558BC818DD29C4007D531F /* GetSurveysHandler.m in Sources */,
 				630FB4D819CBFB970042A8B1 /* HousingBool.m in Sources */,
+				63AE4C451A85B51600345531 /* SinglelineTextBoxForEachOption.m in Sources */,
 				3F558BC018DD26F6007D531F /* HttpConnectionHelper.m in Sources */,
 				630FB4D219CA79C70042A8B1 /* BaseSurveyViewController.m in Sources */,
 				3F558BB718D006A5007D531F /* PITViewController.m in Sources */,
 				3FFE30C518C25E73004A737D /* SurveyResponseJSON.m in Sources */,
+				63061A461A71FC65008FE4AB /* SingleLineTextBox.m in Sources */,
 				3F558BD718DE18AA007D531F /* GetPitHandler.m in Sources */,
 				4C113FA319DB9D83007E69A5 /* GetNewEncampmentHandler.m in Sources */,
 				3FFE30B618B091B8004A737D /* SurveyQuestionTableViewCell.m in Sources */,
 				27642FEB18A351C900277F24 /* SigConfrimViewController.m in Sources */,
 				272AA49318C6E77F0068E023 /* UINavigationController+Orientation.m in Sources */,
 				3F1E3792199C383500562EEC /* SearchEncampmentHandler.m in Sources */,
+				63AE4C411A84728400345531 /* SurveyTextField.m in Sources */,
 				3FD109E518C95E27005E4743 /* AlertViewDisplayer.m in Sources */,
 				3FFE30AE18A487A5004A737D /* Survey.m in Sources */,
 				4C27910919D7827400A3544F /* EncampmentNewViewController.m in Sources */,
