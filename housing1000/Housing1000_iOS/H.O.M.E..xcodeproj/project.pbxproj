@@ -212,14 +212,14 @@
 		63EBF60B19D73A5B008FA62F /* ios_btn_survey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ios_btn_survey.png; sourceTree = "<group>"; };
 		940CA4ED1702894400FA5C87 /* blue_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_button.png; sourceTree = "<group>"; };
 		940CA4EF1702895000FA5C87 /* orange_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = orange_button.png; sourceTree = "<group>"; };
-		948CBC3116FC8BA000DD4E2B /* Housing1000.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Housing1000.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		948CBC3116FC8BA000DD4E2B /* H.O.M.E..app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = H.O.M.E..app; sourceTree = BUILT_PRODUCTS_DIR; };
 		948CBC3416FC8BA000DD4E2B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		948CBC3616FC8BA000DD4E2B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		948CBC3816FC8BA000DD4E2B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		948CBC3C16FC8BA000DD4E2B /* Housing1000-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Housing1000-Info.plist"; sourceTree = "<group>"; };
+		948CBC3C16FC8BA000DD4E2B /* H.O.M.E.-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "H.O.M.E.-Info.plist"; sourceTree = "<group>"; };
 		948CBC3E16FC8BA000DD4E2B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		948CBC4016FC8BA000DD4E2B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		948CBC4216FC8BA000DD4E2B /* Housing1000-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Housing1000-Prefix.pch"; sourceTree = "<group>"; };
+		948CBC4216FC8BA000DD4E2B /* H.O.M.E.-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "H.O.M.E.-Prefix.pch"; sourceTree = "<group>"; };
 		948CBC4316FC8BA000DD4E2B /* HousingAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HousingAppDelegate.h; sourceTree = "<group>"; };
 		948CBC4416FC8BA000DD4E2B /* HousingAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HousingAppDelegate.m; sourceTree = "<group>"; };
 		948CBC4616FC8BA000DD4E2B /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -455,7 +455,7 @@
 		948CBC3216FC8BA000DD4E2B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				948CBC3116FC8BA000DD4E2B /* Housing1000.app */,
+				948CBC3116FC8BA000DD4E2B /* H.O.M.E..app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -497,10 +497,10 @@
 			children = (
 				27B8D78618FB8857001CEED1 /* Credits.rtf */,
 				94922FEB17027A3000670EB7 /* Fields.txt */,
-				948CBC3C16FC8BA000DD4E2B /* Housing1000-Info.plist */,
+				948CBC3C16FC8BA000DD4E2B /* H.O.M.E.-Info.plist */,
 				948CBC3D16FC8BA000DD4E2B /* InfoPlist.strings */,
 				948CBC4016FC8BA000DD4E2B /* main.m */,
-				948CBC4216FC8BA000DD4E2B /* Housing1000-Prefix.pch */,
+				948CBC4216FC8BA000DD4E2B /* H.O.M.E.-Prefix.pch */,
 				948CBC4616FC8BA000DD4E2B /* Default.png */,
 				948CBC4816FC8BA000DD4E2B /* Default@2x.png */,
 				948CBC4A16FC8BA000DD4E2B /* Default-568h@2x.png */,
@@ -534,9 +534,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		948CBC3016FC8BA000DD4E2B /* Housing1000 */ = {
+		948CBC3016FC8BA000DD4E2B /* H.O.M.E. */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 948CBC5416FC8BA000DD4E2B /* Build configuration list for PBXNativeTarget "Housing1000" */;
+			buildConfigurationList = 948CBC5416FC8BA000DD4E2B /* Build configuration list for PBXNativeTarget "H.O.M.E." */;
 			buildPhases = (
 				8E9B03369BE74D9099543A3F /* Check Pods Manifest.lock */,
 				948CBC2D16FC8BA000DD4E2B /* Sources */,
@@ -548,9 +548,9 @@
 			);
 			dependencies = (
 			);
-			name = Housing1000;
+			name = H.O.M.E.;
 			productName = Housing1000;
-			productReference = 948CBC3116FC8BA000DD4E2B /* Housing1000.app */;
+			productReference = 948CBC3116FC8BA000DD4E2B /* H.O.M.E..app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -563,7 +563,7 @@
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Group 3";
 			};
-			buildConfigurationList = 948CBC2C16FC8BA000DD4E2B /* Build configuration list for PBXProject "Housing1000" */;
+			buildConfigurationList = 948CBC2C16FC8BA000DD4E2B /* Build configuration list for PBXProject "H.O.M.E." */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -575,7 +575,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				948CBC3016FC8BA000DD4E2B /* Housing1000 */,
+				948CBC3016FC8BA000DD4E2B /* H.O.M.E. */,
 			);
 		};
 /* End PBXProject section */
@@ -788,10 +788,10 @@
 			baseConfigurationReference = 4488740D6DDB403186C171EA /* Pods.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Housing1000/Housing1000-Prefix.pch";
-				INFOPLIST_FILE = "Housing1000/Housing1000-Info.plist";
+				GCC_PREFIX_HEADER = "Housing1000/H.O.M.E.-Prefix.pch";
+				INFOPLIST_FILE = "Housing1000/H.O.M.E.-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = H.O.M.E.;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -802,10 +802,10 @@
 			baseConfigurationReference = 4488740D6DDB403186C171EA /* Pods.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Housing1000/Housing1000-Prefix.pch";
-				INFOPLIST_FILE = "Housing1000/Housing1000-Info.plist";
+				GCC_PREFIX_HEADER = "Housing1000/H.O.M.E.-Prefix.pch";
+				INFOPLIST_FILE = "Housing1000/H.O.M.E.-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = H.O.M.E.;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -814,7 +814,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		948CBC2C16FC8BA000DD4E2B /* Build configuration list for PBXProject "Housing1000" */ = {
+		948CBC2C16FC8BA000DD4E2B /* Build configuration list for PBXProject "H.O.M.E." */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				948CBC5216FC8BA000DD4E2B /* Debug */,
@@ -823,7 +823,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		948CBC5416FC8BA000DD4E2B /* Build configuration list for PBXNativeTarget "Housing1000" */ = {
+		948CBC5416FC8BA000DD4E2B /* Build configuration list for PBXNativeTarget "H.O.M.E." */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				948CBC5516FC8BA000DD4E2B /* Debug */,
