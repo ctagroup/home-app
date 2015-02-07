@@ -5,6 +5,8 @@
 //  Created by David Horton on 1/22/15.
 //  Copyright (c) 2015 Group 3. All rights reserved.
 //
+//  This class is configured this way to make scrolling easier. UIDatePickers and UIPickerViews are included
+//  as inputViews to the UITextField. This way the scrollable selecters only show if they select the UITextField.
 
 #import "SingleLineTextBox.h"
 #import "Question.h"
@@ -32,15 +34,19 @@
     if([@"SinglelineTextBox" isEqualToString:self.questionData.questionType]) {
         if([@"DateTime" isEqualToString:self.questionData.textBoxDataType]) {
             hasDoneToolbar = true;
+            shouldHaveCursorInTextField = false;
         
             self.questionDatePicker = [[UIDatePicker alloc] init];
+            
+            //For storing the date when it is selected
+            [self.questionDatePicker addTarget:self
+                           action:@selector(storeChangedDate:)
+                 forControlEvents:UIControlEventValueChanged];
+            
+            //Makes it so the user can only pick day, month, and year
+            self.questionDatePicker.datePickerMode = UIDatePickerModeDate;
         
-            NSString *string = [self.questionData getAnswerForJson];
-            NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-            [dateFormat setDateFormat:@"MM/dd/yyyy"];
-            NSDate *dateForPicker = [dateFormat dateFromString:string];
-            self.questionDatePicker.date = dateForPicker;
-        
+            //Makes it so the 'keyboard' that pops up is the picker view
             self.questionTextAnswer.inputView = self.questionDatePicker;
         }
         if([@"int" isEqualToString:self.questionData.textBoxDataType]) {
@@ -194,13 +200,16 @@
     
 }
 
+//Functions related to the UIDatePicker
+//===================================================
 
-- (IBAction)storeChangedDate:(id)sender {
-    //UIDatePicker *datePicker = (UIDatePicker*)sender;
+- (void)storeChangedDate:(id)sender {
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat: @"MM/dd/yyyy"];
     NSString *stringFromDate = [formatter stringFromDate:self.questionDatePicker.date];
+    
+    [self.questionTextAnswer setText:stringFromDate];
     
     [self.questionData setAnswerForJson:stringFromDate];
 }

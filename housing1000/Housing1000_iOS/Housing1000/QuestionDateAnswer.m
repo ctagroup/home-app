@@ -16,12 +16,12 @@
 
 @implementation QuestionDateAnswer
 
--(id)init {
+/*-(id)init {
     
     self.answer = @"01/01/2001";
     
     return self;
-}
+}*/
 
 -(void)setAnswerForJson:(id)input {
     if([input isKindOfClass:[NSNull class]]) {
