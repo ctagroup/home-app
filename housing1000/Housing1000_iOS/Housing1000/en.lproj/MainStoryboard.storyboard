@@ -21,7 +21,7 @@
                                 <rect key="frame" x="20" y="12" width="280" height="356"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" image="ctagroup_logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="LCo-2N-MIS">
-                                        <rect key="frame" x="20" y="20" width="240" height="128"/>
+                                        <rect key="frame" x="8" y="20" width="264" height="115"/>
                                     </imageView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" fixedFrame="YES" text="Username:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ccF-IH-Ntr">
                                         <rect key="frame" x="91" y="162" width="98" height="21"/>
@@ -51,8 +51,8 @@
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zbu-l5-paM">
                                         <rect key="frame" x="39" y="306" width="94" height="30"/>
-                                        <color key="backgroundColor" red="0.20000000000000001" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="tintColor" red="0.19436167506511662" green="0.25783827861451514" blue="0.53804347826086962" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.10980392156862745" green="0.090196078431372548" blue="0.33333333333333331" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="tintColor" red="0.16435762046262725" green="0.13517875285328257" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="Clear">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -63,8 +63,8 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OBy-MY-rLS">
                                         <rect key="frame" x="147" y="306" width="94" height="30"/>
-                                        <color key="backgroundColor" red="0.89754065688775508" green="0.56875078644142463" blue="0.02444025406384295" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="tintColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.35686274509803922" green="0.6588235294117647" blue="0.26666666666666666" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="tintColor" red="0.41996355548595565" green="0.77449193218954249" blue="0.31280205924516286" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="Login">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -112,7 +112,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" image="ctagroup_logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="h3O-Of-zmP">
-                                                    <rect key="frame" x="40" y="34" width="240" height="128"/>
+                                                    <rect key="frame" x="21" y="37" width="264" height="115"/>
                                                 </imageView>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -200,7 +200,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K3H-Jh-cJD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="965" y="557"/>
+            <point key="canvasLocation" x="965" y="554"/>
         </scene>
         <!--Client Survey View Controller-->
         <scene sceneID="7Cq-bm-Xpw">
@@ -1140,7 +1140,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ctagroup_logo.png" width="1456" height="705"/>
+        <image name="ctagroup_logo.png" width="3106" height="1275"/>
         <image name="ios_btn_encampment.png" width="288" height="288"/>
         <image name="ios_btn_pit.png" width="288" height="288"/>
         <image name="ios_btn_survey.png" width="288" height="288"/>
@@ -1152,7 +1152,7 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="62H-H5-PPI"/>
-        <segue reference="7T9-mh-0PA"/>
+        <segue reference="3QB-9R-BQI"/>
         <segue reference="0zx-xK-Hn7"/>
     </inferredMetricsTieBreakers>
 </document>
