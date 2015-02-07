@@ -34,7 +34,7 @@
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rjD-xV-waE" userLabel="usernameTextField">
                                         <rect key="frame" x="39" y="191" width="202" height="30"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                        <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" fixedFrame="YES" text="Password:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2cO-OS-9h7">
                                         <rect key="frame" x="91" y="229" width="98" height="21"/>
@@ -1153,6 +1153,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="62H-H5-PPI"/>
         <segue reference="7T9-mh-0PA"/>
-        <segue reference="fpg-Jw-mBg"/>
+        <segue reference="0zx-xK-Hn7"/>
     </inferredMetricsTieBreakers>
 </document>
