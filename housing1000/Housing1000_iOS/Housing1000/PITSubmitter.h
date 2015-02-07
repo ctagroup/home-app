@@ -7,11 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Question.h"
+#import "SurveySubmitter.h"
 
-@interface PITSubmitter : NSObject
-
--(id)initWithView:(UIViewController*)viewController;
--(void)submitPIT;
+@interface PITSubmitter : SurveySubmitter
 
 @end

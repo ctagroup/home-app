@@ -12,5 +12,6 @@
 
 -(id)initWithView:(UIViewController*)viewController;
 -(void)submitSurvey;
+-(NSMutableArray*) packageQuestionsForSending : (NSMutableArray*) questions;
 
 @end

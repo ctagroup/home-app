@@ -22,9 +22,6 @@
     //To make the label wrap text
     self.questionText.lineBreakMode = NSLineBreakByWordWrapping;
     self.questionText.numberOfLines = 0;
-    
-    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideTextFields)];
-    [self.superview.superview addGestureRecognizer:gestureRecognizer];
 }
 
 

@@ -145,9 +145,14 @@
         //I have to give it its own cell identifier, or else iOS will re-use this cell and other ones that aren't the first will have the top border
         cell = [tableView dequeueReusableCellWithIdentifier:@"SinglelineTextBoxForEachOption_First" forIndexPath:indexPath];
     }
-    else if([cellIdentifier isEqualToString:@"SingleSelect"] || [cellIdentifier isEqualToString:@"SinglelineTextBox"]) {
+    else if([cellIdentifier isEqualToString:@"SingleSelect"]) {
         cell = [tableView dequeueReusableCellWithIdentifier:@"SinglelineTextBox" forIndexPath:indexPath];
     }
+    else if([cellIdentifier isEqualToString:@"MultiSelect"] && currentQuestion.isFirstLineForEachOption.isTrue) {
+        //I have to give it its own cell identifier, or else iOS will re-use this cell and other ones that aren't the first will have the top border
+        cell = [tableView dequeueReusableCellWithIdentifier:@"MultiSelect_First" forIndexPath:indexPath];
+    }
+    //All other quesiton types besides those above should have a cell with an identifier that corresponds to its type
     else {
         cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     }
@@ -161,7 +166,6 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Question *currentQuestion = [_questions objectAtIndex:indexPath.row];
-    
     NSString *cellIdentifier = currentQuestion.questionType;
     
     if([cellIdentifier isEqualToString:@"SinglelineTextBox"] || [cellIdentifier isEqualToString:@"SingleSelect"]) {
@@ -169,6 +173,13 @@
     }
     else if([cellIdentifier isEqualToString:@"SinglelineTextBoxForEachOption"]) {
         return 80;
+    }
+    else if([cellIdentifier isEqualToString:@"MultiSelect"]) {
+        if(currentQuestion.isFirstLineForEachOption.isTrue) {
+            return 60;
+        } else {
+            return 40;
+        }
     }
     else {
         return 150;

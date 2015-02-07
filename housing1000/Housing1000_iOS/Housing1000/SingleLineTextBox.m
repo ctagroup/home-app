@@ -27,6 +27,9 @@
     
     [super layoutSubviews];
     
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideTextFields)];
+    [self.superview.superview addGestureRecognizer:gestureRecognizer];
+    
     bool hasDoneToolbar = false;
     bool shouldHaveCursorInTextField = true;
     

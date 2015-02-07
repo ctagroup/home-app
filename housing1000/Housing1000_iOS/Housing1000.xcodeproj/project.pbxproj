@@ -66,6 +66,7 @@
 		63AE4C4F1A86AC2400345531 /* ios_btn_pit_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 63AE4C4E1A86AC2400345531 /* ios_btn_pit_green.png */; };
 		63AE4C511A86AF4800345531 /* ios_btn_encampment_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 63AE4C501A86AF4800345531 /* ios_btn_encampment_green.png */; };
 		63AE4C531A86AF5100345531 /* ios_btn_survey_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 63AE4C521A86AF5100345531 /* ios_btn_survey_green.png */; };
+		63AE4C551A86BDE600345531 /* MultiSelect.m in Sources */ = {isa = PBXBuildFile; fileRef = 63AE4C541A86BDE600345531 /* MultiSelect.m */; };
 		63B31D0419F89E1C00B3A188 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B31D0319F89E1C00B3A188 /* SystemConfiguration.framework */; };
 		63B31D0719F89E7C00B3A188 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B31D0619F89E7C00B3A188 /* Reachability.m */; };
 		63B31D0919F8A3E800B3A188 /* ConnectivityChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B31D0819F8A3E800B3A188 /* ConnectivityChecker.m */; };
@@ -198,6 +199,8 @@
 		63AE4C4E1A86AC2400345531 /* ios_btn_pit_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ios_btn_pit_green.png; sourceTree = "<group>"; };
 		63AE4C501A86AF4800345531 /* ios_btn_encampment_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ios_btn_encampment_green.png; sourceTree = "<group>"; };
 		63AE4C521A86AF5100345531 /* ios_btn_survey_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ios_btn_survey_green.png; sourceTree = "<group>"; };
+		63AE4C541A86BDE600345531 /* MultiSelect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiSelect.m; sourceTree = "<group>"; };
+		63AE4C561A86BDF100345531 /* MultiSelect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MultiSelect.h; sourceTree = "<group>"; };
 		63B31D0319F89E1C00B3A188 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		63B31D0519F89E6C00B3A188 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		63B31D0619F89E7C00B3A188 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
@@ -355,6 +358,8 @@
 				63061A451A71FC65008FE4AB /* SingleLineTextBox.m */,
 				63AE4C431A85B50300345531 /* SinglelineTextBoxForEachOption.h */,
 				63AE4C441A85B51600345531 /* SinglelineTextBoxForEachOption.m */,
+				63AE4C561A86BDF100345531 /* MultiSelect.h */,
+				63AE4C541A86BDE600345531 /* MultiSelect.m */,
 			);
 			name = Question;
 			sourceTree = "<group>";
@@ -416,10 +421,10 @@
 				630FB4DA19CE13780042A8B1 /* SurveyJSONParser.m */,
 				3FFE30C318C25E73004A737D /* SurveyResponseJSON.h */,
 				3FFE30C418C25E73004A737D /* SurveyResponseJSON.m */,
-				3FFE30CC18C26355004A737D /* SurveySubmitter.h */,
-				3FFE30CD18C26355004A737D /* SurveySubmitter.m */,
 				3F7493E918F0975900C0901E /* PITResponseJSON.h */,
 				3F7493EA18F0975900C0901E /* PITResponseJSON.m */,
+				3FFE30CC18C26355004A737D /* SurveySubmitter.h */,
+				3FFE30CD18C26355004A737D /* SurveySubmitter.m */,
 				3F7ABC6118F0575D00D99525 /* PITSubmitter.h */,
 				3F7ABC6218F0575D00D99525 /* PITSubmitter.m */,
 			);
@@ -692,6 +697,7 @@
 				3F1E378D199BE8CB00562EEC /* GPSLocationRetriever.m in Sources */,
 				63B31D0719F89E7C00B3A188 /* Reachability.m in Sources */,
 				3F72D7BF18F8E7A40090E7C3 /* QuestionNumAnswer.m in Sources */,
+				63AE4C551A86BDE600345531 /* MultiSelect.m in Sources */,
 				3F7ABC6618F084F400D99525 /* PostPITHandler.m in Sources */,
 				3FFE309B188E08DC004A737D /* PhotoViewController.m in Sources */,
 				3F5BBA6D184EF87900156CAD /* SurveysViewController.m in Sources */,
