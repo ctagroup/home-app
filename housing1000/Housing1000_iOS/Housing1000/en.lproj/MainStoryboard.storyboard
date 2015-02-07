@@ -124,7 +124,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="127"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ios_btn_pit.png" translatesAutoresizingMaskIntoConstraints="NO" id="l4A-Tb-Iv4">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ios_btn_pit_green.png" translatesAutoresizingMaskIntoConstraints="NO" id="l4A-Tb-Iv4">
                                                     <rect key="frame" x="20" y="0.0" width="128" height="128"/>
                                                 </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Point in Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aUV-8o-8XW">
@@ -146,7 +146,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="127"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ios_btn_survey.png" translatesAutoresizingMaskIntoConstraints="NO" id="A6E-5N-ZM6">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ios_btn_survey_green.png" translatesAutoresizingMaskIntoConstraints="NO" id="A6E-5N-ZM6">
                                                     <rect key="frame" x="20" y="0.0" width="128" height="128"/>
                                                 </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Surveys" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AiV-SD-GuP">
@@ -168,7 +168,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="127"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ios_btn_encampment.png" translatesAutoresizingMaskIntoConstraints="NO" id="2ZV-vX-Flf">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ios_btn_encampment_green.png" translatesAutoresizingMaskIntoConstraints="NO" id="2ZV-vX-Flf">
                                                     <rect key="frame" x="20" y="0.0" width="128" height="128"/>
                                                 </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Encampment" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bka-IR-3E0">
@@ -563,11 +563,11 @@
                             </searchBar>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gJZ-XQ-DDA">
                                 <rect key="frame" x="38" y="149" width="103" height="30"/>
-                                <color key="backgroundColor" red="0.20000000000000001" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.35686274509999999" green="0.6588235294" blue="0.2666666667" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="103" id="Gu8-3w-fmd"/>
                                 </constraints>
-                                <color key="tintColor" red="0.19436167509999999" green="0.25783827860000003" blue="0.53804347829999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" red="0.41996355549999997" green="0.77449193220000001" blue="0.31280205919999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Search">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -578,11 +578,11 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I3N-DF-X38">
                                 <rect key="frame" x="176" y="149" width="103" height="30"/>
-                                <color key="backgroundColor" red="0.20000000000000001" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.35686274509999999" green="0.6588235294" blue="0.2666666667" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="103" id="aPh-Om-ldU"/>
                                 </constraints>
-                                <color key="tintColor" red="0.19436167509999999" green="0.25783827860000003" blue="0.53804347829999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" red="0.41996355549999997" green="0.77449193220000001" blue="0.31280205919999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Create New">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -996,11 +996,11 @@
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lF9-Nz-28T">
                                 <rect key="frame" x="36" y="474" width="103" height="30"/>
-                                <color key="backgroundColor" red="0.20000000000000001" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.35686274509999999" green="0.6588235294" blue="0.2666666667" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="103" id="i6u-nf-KGp"/>
                                 </constraints>
-                                <color key="tintColor" red="0.19436167509999999" green="0.25783827860000003" blue="0.53804347829999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" red="0.41996355549999997" green="0.77449193220000001" blue="0.31280205919999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Add Photo">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -1011,8 +1011,8 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jX6-d2-iOK">
                                 <rect key="frame" x="166" y="474" width="122" height="30"/>
-                                <color key="backgroundColor" red="0.20000000000000001" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="tintColor" red="0.19436167509999999" green="0.25783827860000003" blue="0.53804347829999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.35686274509999999" green="0.6588235294" blue="0.2666666667" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" red="0.41996355549999997" green="0.77449193220000001" blue="0.31280205919999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Delete Current">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -1141,9 +1141,9 @@
     </scenes>
     <resources>
         <image name="ctagroup_logo.png" width="3106" height="1275"/>
-        <image name="ios_btn_encampment.png" width="288" height="288"/>
-        <image name="ios_btn_pit.png" width="288" height="288"/>
-        <image name="ios_btn_survey.png" width="288" height="288"/>
+        <image name="ios_btn_encampment_green.png" width="288" height="288"/>
+        <image name="ios_btn_pit_green.png" width="288" height="288"/>
+        <image name="ios_btn_survey_green.png" width="288" height="288"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
