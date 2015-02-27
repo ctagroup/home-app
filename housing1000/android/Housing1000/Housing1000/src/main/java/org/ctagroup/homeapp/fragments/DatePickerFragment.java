@@ -27,12 +27,6 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
 
 
-
-//    public DatePickerFragment()
-//    {
-//       super();
-//    }
-
     public void setter(View v)
     {
         editText = (EditText) v;
@@ -41,7 +35,6 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     public DatePickerFragment()
     {
         super();
-//        editText = (EditText) v;
 
         allowAll = new InputFilter[]
                 {
