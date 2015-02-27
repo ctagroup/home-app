@@ -46,7 +46,8 @@
     for(int i = 0; i < [surveySection count]; i++) {
         NSDictionary *currentQuestionInJSON = [surveySection objectAtIndex:i];
         
-        if([@"SinglelineTextBoxForEachOption" isEqualToString:(NSString*)[currentQuestionInJSON objectForKey:@"QuestionType"]]) {
+        if([@"SinglelineTextBoxForEachOption" isEqualToString:(NSString*)[currentQuestionInJSON objectForKey:@"QuestionType"]]
+           || [@"MultiSelect" isEqualToString:(NSString*)[currentQuestionInJSON objectForKey:@"QuestionType"]]) {
             Question *tempQuestion = [self createSurveyObject:currentQuestionInJSON];
             
             for(int j = 0; j < [tempQuestion.options count]; j++) {
@@ -106,7 +107,7 @@
     Question *question = [self createCorrectQuestionType:parentQuestion.textBoxDataType];
     question.jsonId = parentQuestion.jsonId;
     question.questionId = parentQuestion.questionId;
-    question.questionText = questionText;
+    question.questionText = isFirst ? parentQuestion.questionText : questionText;
     question.questionType = parentQuestion.questionType;
     //[question setOptionsArray:(NSString*)[currentQuestionInJSON objectForKey:@"Options"]]; //This one is set in a special way because it converts the String to an array
     question.options = parentQuestion.options;

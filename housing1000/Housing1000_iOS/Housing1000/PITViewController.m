@@ -85,7 +85,7 @@ Reachability *connectivityChecker;
                                     dispatch_async(dispatch_get_main_queue(), ^{
                                         
                                         PITSubmitter* submitter = [[PITSubmitter alloc] initWithView:weakSelf];
-                                        [submitter submitPIT];
+                                        [submitter submitSurvey];
                                         
                                     });
                                 }:^(Reachability*reach)

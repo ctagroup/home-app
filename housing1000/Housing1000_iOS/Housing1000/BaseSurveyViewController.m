@@ -141,22 +141,18 @@
     NSString *cellIdentifier = currentQuestion.questionType;
     
     SurveyQuestionTableViewCell *cell;
-    /*if((currentQuestion.textBoxDataType != (id)[NSNull null]) && [currentQuestion.textBoxDataType isEqualToString:@"DateTime"]) {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"SinglelineTextBox_WithDatePicker" forIndexPath:indexPath];
-    }*/
     if([cellIdentifier isEqualToString:@"SinglelineTextBoxForEachOption"] && currentQuestion.isFirstLineForEachOption.isTrue) {
         //I have to give it its own cell identifier, or else iOS will re-use this cell and other ones that aren't the first will have the top border
         cell = [tableView dequeueReusableCellWithIdentifier:@"SinglelineTextBoxForEachOption_First" forIndexPath:indexPath];
     }
-    /*else if([cellIdentifier isEqualToString:@"SinglelineTextBox"] && (currentQuestion.textBoxDataType != (id)[NSNull null])
-            && [currentQuestion.textBoxDataType isEqualToString:@"int"]) {
-        //If the data type for the text field is an int, make it a number pad. Otherwise, leave it as the default
-        //I have to give it its own cell identifier, or else iOS will re-use the keyboard type and it gets mixed up when it shouldn't
-        cell = [tableView dequeueReusableCellWithIdentifier:@"SinglelineTextBox_int" forIndexPath:indexPath];
-    }*/
-    else if([cellIdentifier isEqualToString:@"SingleSelect"] || [cellIdentifier isEqualToString:@"SinglelineTextBox"]) {
+    else if([cellIdentifier isEqualToString:@"SingleSelect"]) {
         cell = [tableView dequeueReusableCellWithIdentifier:@"SinglelineTextBox" forIndexPath:indexPath];
     }
+    else if([cellIdentifier isEqualToString:@"MultiSelect"] && currentQuestion.isFirstLineForEachOption.isTrue) {
+        //I have to give it its own cell identifier, or else iOS will re-use this cell and other ones that aren't the first will have the top border
+        cell = [tableView dequeueReusableCellWithIdentifier:@"MultiSelect_First" forIndexPath:indexPath];
+    }
+    //All other quesiton types besides those above should have a cell with an identifier that corresponds to its type
     else {
         cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     }
@@ -164,24 +160,12 @@
     cell.questionText.text = currentQuestion.questionText;
     cell.questionData = currentQuestion;
     
-    if([cellIdentifier isEqualToString:@"SinglelineTextBox"]) {
-        SingleLineTextBox* singleLineTextBox = (SingleLineTextBox*) cell;
-        
-        if([currentQuestion getAnswerForJson] != [NSNull null]) {
-            [singleLineTextBox.questionTextAnswer setText:[currentQuestion getAnswerForJson]];
-        }
-        else {
-            [singleLineTextBox.questionTextAnswer setText:@""];
-        }
-    }
-    
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Question *currentQuestion = [_questions objectAtIndex:indexPath.row];
-    
     NSString *cellIdentifier = currentQuestion.questionType;
     
     if([cellIdentifier isEqualToString:@"SinglelineTextBox"] || [cellIdentifier isEqualToString:@"SingleSelect"]) {
@@ -189,6 +173,13 @@
     }
     else if([cellIdentifier isEqualToString:@"SinglelineTextBoxForEachOption"]) {
         return 80;
+    }
+    else if([cellIdentifier isEqualToString:@"MultiSelect"]) {
+        if(currentQuestion.isFirstLineForEachOption.isTrue) {
+            return 60;
+        } else {
+            return 40;
+        }
     }
     else {
         return 150;

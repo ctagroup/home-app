@@ -25,6 +25,11 @@
 //This is similar to viewDidLoad, but for TableViewCells
 - (void)layoutSubviews
 {
+    [super layoutSubviews];
+ 
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideTextFields)];
+    [self.superview.superview addGestureRecognizer:gestureRecognizer];
+    
     // Make it so the keyboard can be closed
     self.questionTextAnswer.returnKeyType = UIReturnKeyDone;
     [self.questionTextAnswer setDelegate:self];
