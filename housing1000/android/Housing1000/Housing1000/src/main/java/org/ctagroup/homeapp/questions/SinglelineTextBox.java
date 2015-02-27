@@ -171,8 +171,9 @@ public class SinglelineTextBox extends Question {
 
     public void createDatePicker(View v) {
         ActionBarActivity mActivity = (ActionBarActivity) v.getContext();
-        DialogFragment newFragment = new DatePickerFragment(v);
+        //DialogFragment newFragment = new DatePickerFragment();
+        DatePickerFragment newFragment = new DatePickerFragment();
+        newFragment.setter(v);
         newFragment.show(mActivity.getSupportFragmentManager(), "datePicker");
     }
-
 }

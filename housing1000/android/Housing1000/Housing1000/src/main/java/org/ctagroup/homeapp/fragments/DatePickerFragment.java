@@ -19,28 +19,35 @@ import org.ctagroup.homeapp.Utils;
 /**
  * Created by Blake on 3/23/2014.
  */
-public class DatePickerFragment extends DialogFragment
-        implements DatePickerDialog.OnDateSetListener {
+public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     EditText editText;
     InputFilter[] allowAll;
     InputFilter[] disableAll;
 
-    public DatePickerFragment() {
-        super();
 
+
+
+//    public DatePickerFragment()
+//    {
+//       super();
+//    }
+
+    public void setter(View v)
+    {
+        editText = (EditText) v;
     }
 
-    public DatePickerFragment(View v) {
+    public DatePickerFragment()
+    {
         super();
-
-        editText = (EditText) v;
+//        editText = (EditText) v;
 
         allowAll = new InputFilter[]
                 {
                         new InputFilter() {
-                            public CharSequence filter(CharSequence src, int start,
-                                                       int end, Spanned dst, int dstart, int dend) {
+                            public CharSequence filter(CharSequence src, int start, int end, Spanned dst, int dstart, int dend)
+                            {
                                 return src;
                             }
                         }
