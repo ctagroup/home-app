@@ -1,0 +1,79 @@
+﻿  @model IEnumerable<SurveyAdmin.Models.SurveyInfo.Survey>
+
+  @{
+      ViewBag.Title = "Survey";
+  }
+
+  <h2>@ViewBag.Title</h2>
+
+  <p>
+      @Html.ActionLink("Create New", "Create")
+  </p>
+  <table class="table">
+      <tr>
+          <th>
+              @Html.DisplayNameFor(model => model.Title)
+          </th>
+          <th>
+              @Html.DisplayNameFor(model => model.Description)
+          </th>
+          <th>
+              @Html.DisplayNameFor(model => model.CreatedBy)
+          </th>
+          <th>
+              @Html.DisplayNameFor(model => model.CreatedDate)
+          </th>
+          <th>
+              @Html.DisplayNameFor(model => model.UpdatedBy)
+          </th>
+          <th>
+              @Html.DisplayNameFor(model => model.UpdatedDate)
+          </th>
+          <th>
+              @Html.DisplayNameFor(model => model.ExpireOn)
+          </th>
+          <th>
+              @Html.DisplayNameFor(model => model.Active)
+          </th>
+          <th>
+              @Html.DisplayNameFor(model => model.IsPIT)
+          </th>
+          <th></th>
+      </tr>
+
+  @foreach (var item in Model) {
+      <tr>
+          <td>
+              @Html.ActionLink(item.Title, MVC.Survey.Details(item.SurveyId))
+          </td>
+          <td>
+              @Html.DisplayFor(modelItem => item.Description)
+          </td>
+          <td>
+              @Html.DisplayFor(modelItem => item.CreatedBy)
+          </td>
+          <td>
+              @Html.DisplayFor(modelItem => item.CreatedDate)
+          </td>
+          <td>
+              @Html.DisplayFor(modelItem => item.UpdatedBy)
+          </td>
+          <td>
+              @Html.DisplayFor(modelItem => item.UpdatedDate)
+          </td>
+          <td>
+              @Html.DisplayFor(modelItem => item.ExpireOn)
+          </td>
+          <td>
+              @Html.DisplayFor(modelItem => item.Active)
+          </td>
+          <td>
+              @Html.DisplayFor(modelItem => item.IsPIT)
+          </td>
+          <td>
+              @Html.ActionLink("Edit", "Edit", new { id = item.SurveyId })&nbsp;|&nbsp;@Html.ActionLink("Delete", "Delete", new { id = item.SurveyId })&nbsp;|&nbsp;@Html.ActionLink("Client Responses", MVC.ClientSurvey.ClientSurveyForSurvey(item.SurveyId))
+          </td>
+      </tr>
+  }
+
+  </table>

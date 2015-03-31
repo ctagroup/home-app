@@ -1,0 +1,61 @@
+﻿@using System.Data.Entity
+@using SurveyAdmin.Models
+@model SurveyAdmin.Models.SurveyInfo.ClientSurvey
+
+@{
+    ViewBag.Title = "The PIT Survey";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var db = new ApplicationDbContext();
+    var allQuestions = db.SurveyQuestions.Where(s => s.SurveyId == Model.SurveyId).Include(sq => sq.Question).Select(s => s.Question);
+    
+    var questions = Model.Survey.QuestionTree;
+
+    var questionIds = new List<int>();
+
+    foreach (var q in questions)
+    {
+        questionIds.Add(q.QuestionId);
+        if (q.Children.Any())
+        {
+            foreach (var ch in q.Children)
+            {
+                questionIds.Add(ch.QuestionId);
+                if (ch.Children.Any())
+                {
+                    questionIds.AddRange(ch.Children.Select(ch2 => ch2.QuestionId));
+                }
+            }
+        }
+    }
+
+    //    var questionIds = questions.Select(q => q.QuestionId).ToList();
+}
+
+<h2>The PIT Survey</h2>
+
+<dl>
+    <dt>Created Date</dt>
+    <dd>@Html.DisplayFor(m => m.SurveyDate)</dd>
+    <dt>Created By</dt>
+    <dd>@Html.DisplayFor(m => m.User.FirstName) @Html.DisplayFor(m => m.User.LastName)</dd>
+    <dt>Geographic Coordinates</dt>
+    <dd>(@Html.DisplayFor(m => m.Client.Latitude), @Html.DisplayFor(m => m.Client.Longitude))</dd>
+
+    @foreach (var qId in questionIds)
+    {
+        var csr = Model.Responses.FirstOrDefault(c => c.QuestionId == qId);
+        <dt>@allQuestions.First(q => q.QuestionId == qId).QuestionText</dt>
+        <dd>
+            @if (csr != null)
+            {
+                @csr.Value
+            }
+            else
+            {
+                @:&nbsp;
+            }
+        </dd>
+    }
+</dl>
+@Html.ActionLink("Back", MVC.Pit.TallySheets(), new {@class = "btn btn-primary"})

@@ -1,0 +1,83 @@
+﻿@model IList<SurveyAdmin.Controllers.TallySheet>
+
+@{
+    ViewBag.Title = "Tally Sheets";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="@Links.Content.DataTables_1_10_3.css.jquery_dataTables_css" rel="stylesheet" />
+<link href="@Links.Content.DataTables_1_10_3.css.dataTables_tableTools_css" rel="stylesheet" />
+
+@section Scripts {
+    <script src="@Links.Scripts.DataTables_1_10_3.jquery_dataTables_js"></script>
+    <script src="@Links.Scripts.DataTables_1_10_3.dataTables_tableTools_js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#tallySheet').dataTable({
+                "dom": 'T<"clear">lfrtip',
+                "paging": false,
+                "order": [[3, "desc"]],
+                "tableTools": {
+                    "sSwfPath": "../Content/DataTables-1.10.3/swf/copy_csv_xls_pdf.swf"
+                }
+            });
+        });
+    </script>
+}
+
+<h2>Tally Sheets</h2>
+
+@using (Html.BeginForm(MVC.Pit.SubmitResponses()))
+{
+    <table id="tallySheet" class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Notes</th>
+                <th>Created By</th>
+                <th>Created Date</th>
+                <th>Geographic Coordinates</th>
+                <th>Revised</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                var result = Model[i];
+                <tr>
+                    <td>
+                      @Html.HiddenFor(m => Model[i].IsTallySheet)
+                      @Html.HiddenFor(m => Model[i].Id)
+                        @if (result.IsTallySheet)
+                        {
+                            @Html.ActionLink("Tally Sheet", MVC.Pit.Details(result.Id))
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Survey", MVC.Pit.SurveyDetails(result.Id))
+                        }
+                    </td>
+                    <td>
+                        @Html.EditorFor(m => Model[i].Notes)
+                    </td>
+                    <td>@Html.DisplayFor(m => result.CreatedBy)</td>
+                    <td>@Html.DisplayFor(m => result.CreatedDate)</td>
+                    <td>@Html.DisplayFor(m => result.Coordinates)</td>
+                    @*<td>@Html.DisplayFor(m => result.Revised)</td>*@
+                    <td>
+                        @Html.CheckBoxFor(m => Model[i].SubmitThis)
+                    </td>
+                    <td>
+                        @(result.IsTallySheet ? Html.ActionLink("Delete", MVC.Pit.DeletePit(result.Id)) : Html.ActionLink("Delete", MVC.Pit.DeleteSurvey(result.Id)))
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+    <div class="col-md-3 col-md-offset-9">
+        <input type="submit" class="btn btn-primary btn-block" value="Submit"/>
+    </div>
+}

@@ -1,0 +1,29 @@
+﻿@model SurveyAdmin.Models.SurveyInfo.PIT
+
+@{
+    ViewBag.Title = "Tally Sheet Result";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Tally Sheet Result</h2>
+
+<dl class="dl-horizontal">
+    <dt>Created Date</dt>
+    <dd>@Html.DisplayFor(m => m.CreatedDate)</dd>
+    <dt>Created By</dt>
+    <dd>@Html.DisplayFor(m => m.User.FirstName) @Html.DisplayFor(m => m.User.LastName)</dd>
+    <dt>Geographic Coordinates</dt>
+    <dd>(@Html.DisplayFor(m => m.Latitude), @Html.DisplayFor(m => m.Longitude))</dd>
+    <dt>@Html.LabelFor(m=>m.GenderAnswer)</dt>
+    <dd>@Html.DisplayFor(m => m.GenderAnswer)</dd>
+    <dt>@Html.LabelFor(m => m.AgeAnswer)</dt>
+    <dd>@Html.DisplayFor(m => m.AgeAnswer)</dd>
+    <dt>@Html.LabelFor(m => m.FamilyAnswer)</dt>
+    <dd>@Html.DisplayFor(m => m.FamilyAnswer)</dd>
+    <dt>@Html.LabelFor(m => m.DwellingAnswer)</dt>
+    <dd>@Html.DisplayFor(m => m.DwellingAnswer)</dd>
+    <dt>@Html.LabelFor(m => m.LocationAnswer)</dt>
+    <dd>@Html.DisplayFor(m => m.LocationAnswer)</dd>
+</dl>
+
+@Html.ActionLink("Back", MVC.Pit.TallySheets(),new {@class="btn btn-primary"})

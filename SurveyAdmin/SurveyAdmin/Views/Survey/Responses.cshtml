@@ -1,0 +1,75 @@
+﻿@using SurveyAdmin.Models
+@using SurveyAdmin.Models.SurveyInfo
+@model System.Linq.IQueryable<SurveyAdmin.Models.SurveyInfo.ClientSurvey>
+
+@{
+    ViewBag.Title = "Response";
+
+    var questions = new List<Question>();
+    var questionIds = new List<int>();
+
+    var db = new ApplicationDbContext();
+
+    if (Model.Any())
+    {
+        questions = Model.First().Survey.QuestionTree;
+        questionIds = questions.Select(q => q.QuestionId).ToList();
+    }
+}
+
+<link href="@Links.Content.DataTables_1_10_3.css.jquery_dataTables_css" rel="stylesheet"/>
+<link href="@Links.Content.DataTables_1_10_3.css.dataTables_tableTools_css" rel="stylesheet" />
+
+@section Scripts {
+    <script src="@Links.Scripts.DataTables_1_10_3.jquery_dataTables_js"></script>
+    <script src="@Links.Scripts.DataTables_1_10_3.dataTables_tableTools_js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#responseTable').dataTable({
+                "dom": 'T<"clear">lfrtip',
+                "tableTools": {
+                    "sSwfPath": "../Content/DataTables-1.10.3/swf/copy_csv_xls_pdf.swf"
+                }
+            });
+        });
+    </script>
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table class="display" id="responseTable">
+    <thead>
+        <tr>
+            @foreach (var qId in questionIds)
+            {
+                <th>@questions.First(q => q.QuestionId == qId).QuestionText</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var cs in Model)
+        {
+            <tr>
+                @*@cs.Client.Birthday*@
+
+                @foreach (var qId in questionIds)
+                {
+                    <td>
+                        @{
+                            var csr = db.ClientSurveyResponses.FirstOrDefault(c => c.ClientSurveyId == cs.ClientSurveyId && c.QuestionId == qId);
+                        }
+                        @if (csr != null)
+                        {
+                            @csr.Value
+                        }
+                        else
+                        {
+                            @:&nbsp;
+                        }
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+
+</table>

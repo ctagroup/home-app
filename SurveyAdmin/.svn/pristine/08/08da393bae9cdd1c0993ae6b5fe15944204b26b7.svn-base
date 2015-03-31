@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+
+<div class="jumbotron">
+    <h1>Manage Survey</h1>
+    <p class="lead">This site make easy to customize survey and manage.</p>
+
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>User Accounts</h2>
+        <p>
+            @Html.ActionLink("Create New User", "Register", "Account", routeValues: null, htmlAttributes: new {id = "registerLink"}) <br/>
+            Manage user account, roles, and survey permission <br />
+            @Html.ActionLink("Change Password", "Manage", "Account", routeValues: null, htmlAttributes: new {id = "registerLink"}) <br />
+            
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>Surveys</h2>
+        <p>
+            @*@Html.ActionLink("Create New Survey", "Create", "Survey", routeValues: null, htmlAttributes: new {id = "surveyLink"}) <br />*@
+            @Html.ActionLink("View Surveys", MVC.Survey.Index() )  <br /><br />
+            @*@Html.ActionLink("Create New Template", "/", "Template")  <br />
+            @Html.ActionLink("View Templates", "/", "Template")  <br />*@
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3">
+        <h2>Admin</h2>
+        <p>
+            @Html.ActionLink("Create New Group", "Create", "Group", routeValues: null, htmlAttributes: new {id = "createLink"}) <br />
+            
+
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>PIT Count</h2>
+        @Html.ActionLink("Tally Sheets", MVC.Pit.TallySheets())
+    </div>
+
+</div>

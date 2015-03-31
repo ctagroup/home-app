@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "About";
+}
+<h2>@ViewBag.Title</h2>
+<h3>@ViewBag.Message</h3>
+
+<p>User must watch video training ...
+    
+    </p>
+
+<p>Sample reports ...</p>

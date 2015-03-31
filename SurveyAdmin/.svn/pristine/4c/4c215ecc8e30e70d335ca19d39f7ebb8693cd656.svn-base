@@ -1,0 +1,28 @@
+﻿@model SurveyAdmin.Models.ImportSurveyViewModel
+
+@{
+    ViewBag.Title = "Import Survey From Excel";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm(MVC.Survey.Import(), FormMethod.Post, new {enctype = "multipart/form-data"}))
+{
+    <div>
+        @Html.LabelFor(m => m.Name)
+        @Html.EditorFor(m => m.Name)
+    </div>
+    <div>
+        @Html.LabelFor(m => m.SheetName)
+        @Html.EditorFor(m => m.SheetName)
+    </div>
+    <div>
+        @Html.LabelFor(m => m.SurveyType)
+        @Html.EnumDropDownListFor(m => m.SurveyType)
+    </div>
+    <div>
+        @Html.LabelFor(m => m.ExcelDocument)
+        @Html.EditorFor(m => m.ExcelDocument)
+    </div>
+    <button type="submit">Upload</button>
+}

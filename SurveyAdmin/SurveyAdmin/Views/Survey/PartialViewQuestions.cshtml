@@ -1,0 +1,44 @@
+﻿@model IEnumerable<PartialSurveyQuestions>
+@using SurveyAdmin.Models
+  
+
+@if (Model != null)
+{
+    <div class="grid">
+        <table cellspacing="0" width="80%">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Age
+                    </th>
+                    <th>
+                        Address
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td align="left">
+                            @item.Text
+                        </td>
+                        <td align="left">
+                            @item.Options
+                        </td>
+                        <td align="left">
+                            @item.Type
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+}

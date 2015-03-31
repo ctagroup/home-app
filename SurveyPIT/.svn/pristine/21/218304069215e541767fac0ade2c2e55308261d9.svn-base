@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SurveyPIT", "SurveyPIT\SurveyPIT.csproj", "{12C92EC3-F72F-4E00-A354-E11D1D32FA73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SurveyPIT.Tests", "SurveyPIT.Tests\SurveyPIT.Tests.csproj", "{43E37DC1-9D9C-4FF9-B5B1-B728CC21C3AA}"
+EndProject
+Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{12C92EC3-F72F-4E00-A354-E11D1D32FA73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12C92EC3-F72F-4E00-A354-E11D1D32FA73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12C92EC3-F72F-4E00-A354-E11D1D32FA73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12C92EC3-F72F-4E00-A354-E11D1D32FA73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43E37DC1-9D9C-4FF9-B5B1-B728CC21C3AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43E37DC1-9D9C-4FF9-B5B1-B728CC21C3AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43E37DC1-9D9C-4FF9-B5B1-B728CC21C3AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43E37DC1-9D9C-4FF9-B5B1-B728CC21C3AA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
