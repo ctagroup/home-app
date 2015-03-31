@@ -1,7 +1,0 @@
-﻿@model SurveyAdmin.Models.SurveyInfo.ROI
-
-@{
-    ViewBag.Title = "ROI";
-}
-
-<h2>ROI</h2>
