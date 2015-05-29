@@ -2,6 +2,7 @@
 <resources>
 
     <string name="api_endpoint">https://staging.ctagroup.org</string>
+    <string name="chat_server">http://192.168.0.15:8080</string>
     <string name="notice">Notice…</string>
     <string name="action_camera">Take Picture</string>
     <string name="action_clear">Clear</string>
@@ -105,6 +106,7 @@ Please make sure you are connected and try again.</string>
     <string name="no_connection">No Connection</string>
     <string name="btn_point_in_time">Point in Time button</string>
     <string name="btn_surveys">Surveys button</string>
+    <string name="btn_chat">Chat button</string>
     <string name="logout_message">Are you sure you want to logout?</string>
     <string name="btn_encamp_search">Search</string>
     <string name="btn_encamp_create">New Encampment</string>

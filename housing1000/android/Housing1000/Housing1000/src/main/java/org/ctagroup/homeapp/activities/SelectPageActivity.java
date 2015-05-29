@@ -85,6 +85,11 @@ public class SelectPageActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
+    public void startChatActivity(View v) {
+        Intent intent = new Intent(SelectPageActivity.this, MainChatActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public void onBackPressed() {
         logoutPrompt();
