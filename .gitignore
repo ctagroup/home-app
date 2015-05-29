@@ -44,3 +44,14 @@ out/
 *.plist
 *.xcscheme
 *.xcuserdatad
+
+#Node exclusions
+node_modules
+
+#Misc excluded
+*.log
+/logs
+.DS_Store*
+ehthumbs.db
+Icon?
+Thumbs.db
