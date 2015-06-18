@@ -83,6 +83,11 @@ public class SelectPageActivity extends ActionBarActivity {
     public void startEncampmentActivity(View v) {
         Intent intent = new Intent(SelectPageActivity.this, EncampmentActivity.class);
         startActivity(intent);
+
+    }
+    public void startChatActivity(View v) {
+        Intent intent = new Intent(SelectPageActivity.this, ChatActivity.class);
+        startActivity(intent);
     }
 
     @Override

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- material theme colors
+     change these to update the activity theme colors-->
+    <color name="pt_primary">#373b58</color>
+    <color name="pt_primary_dark">#373b58</color>
+    <color name="pt_accent">#ff3136ff</color>
+
+    <!-- Toolbar user name and topic title for chat
+     peppertalk_toolbar -->
+    <color name="pt_tb_bg">@color/pt_primary_dark</color>
+    <color name="pt_tb_user_name">#ffffff</color>
+    <color name="pt_tb_topic_title">#8e93b9</color>
+    <color name="pt_tb_connecting">#ffffff</color>
+
+    <!-- chat window -->
+    <color name="pt_chat_window_bg">#ecedef</color>
+    <color name="pt_chat_msg_window_bg">#DDFFFFFF</color>
+    <color name="pt_chat_typing">#57a5f8</color>
+    <color name="pt_chat_date_section_bg">#c3ccde</color>
+    <color name="pt_chat_text_section">#000000</color>
+    <color name="pt_chat_send_icon">#333333</color>
+    <color name="pt_chat_attach_icon">#333333</color>
+
+    <!-- Message bubble right - outgoing message
+        color will be tinted on top of the bg drawable nine patch
+        Note: Drawable bubble should be a nine patch -->
+    <drawable name="pt_msg_bubble_right">@drawable/pt_bubble_right</drawable>
+    <color name="pt_msg_bubble_right">#3cabdd</color>
+    <color name="pt_msg_user_right">#ffffff</color>
+    <color name="pt_msg_time_right">#8e93b9</color>
+    <color name="pt_msg_text_right">#ffffff</color>
+    <color name="pt_msg_status_right">#ffffff</color>
+
+    <!-- chat bubble left - incoming message
+        color will be tinted on top of the bg drawable nine patch
+        Note: Drawable bubble should be a nine patch -->
+    <drawable name="pt_msg_bubble_left">@drawable/pt_bubble_left</drawable>
+    <color name="pt_msg_bubble_left">#ffffff</color>
+    <color name="pt_msg_user_left">#8e93b9</color>
+    <color name="pt_msg_time_left">#8e93b9</color>
+    <color name="pt_msg_text_left">#373b58</color>
+    <color name="pt_msg_status_left">#ffffff</color>
+
+    <!-- conversations screen -->
+    <color name="pt_tb_conv_title">#ffffff</color>
+    <color name="pt_conv_text_section">#ffffff</color>
+    <color name="pt_conv_section_bg">#3cabdd</color>
+
+
+    <!-- ################################################# -->
+
+    <!-- #  TEXT STYLES # -->
+    <!-- Set Toolbar User Name and Topic title-->
+    <style name="Toolbar.Chat.TextUser">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
+    </style>
+
+    <style name="Toolbar.Chat.TextTopicTitle">
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
+    </style>
+
+    <!-- Chat Message related styles-->
+
+    <style name="Chat.TextUser">
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
+    </style>
+
+    <style name="Chat.TextMessage">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
+    </style>
+
+    <style name="Chat.TextTime">
+        <item name="android:textSize">@dimen/text_size_xsmall</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif-condensed</item>
+    </style>
+
+    <style name="Chat.TextStatus">
+        <item name="android:textSize">@dimen/text_size_xsmall</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
+    </style>
+
+    <style name="Chat.TextDateSection">
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif-condensed</item>
+        <item name="android:background">@drawable/pt_shape_section</item>
+    </style>
+
+    <style name="Chat.TextTyping">
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
+    </style>
+
+    <style name="Chat.EditMessage">
+        <item name="android:textSize">@dimen/text_size_xmedium</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
+        <item name="android:hint">@string/pt_message</item>
+    </style>
+
+    <!-- Conversations screen Text styles -->
+
+    <style name="Toolbar.Conversation.Title">
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
+    </style>
+
+    <style name="Conversation.TextSection">
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
+    </style>
+
+    <style name="Conversation.TextUser">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
+    </style>
+
+    <style name="Conversation.TextLastSeen">
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
+    </style>
+
+    <style name="Conversation.TextCount">
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
+    </style>
+    <!-- # TEXT STYLES # -->
+</resources>

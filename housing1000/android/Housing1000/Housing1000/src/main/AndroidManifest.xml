@@ -1,52 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="org.ctagroup.homeapp">
 
-    <uses-feature android:name="android.hardware.camera" />
 
+    <!-- Network permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- GCM permissions -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <permission
+        android:name="com.example.gcm.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="com.example.gcm.permission.C2D_MESSAGE" />
+
+    <!-- Location sharing -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
+    <!-- Image sharing camera and storage -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
 
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="true"
-        android:icon="@drawable/icon"
+        android:icon="@mipmap/icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <receiver android:name="org.ctagroup.homeapp.ConnectivityChangeReceiver">
+        <receiver android:name=".ConnectivityChangeReceiver">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
 
-        <activity android:name="org.ctagroup.homeapp.activities.MainLauncherActivity">
+        <activity android:name=".activities.MainLauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="org.ctagroup.homeapp.activities.LoginActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
         <activity
-            android:name="org.ctagroup.homeapp.activities.SignatureActivity"
+            android:name=".activities.LoginActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".activities.SignatureActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="landscape" />
-        <activity android:name="org.ctagroup.homeapp.activities.SelectPageActivity"/>
-        <activity android:name="org.ctagroup.homeapp.activities.SurveyListActivity" />
-        <activity android:name="org.ctagroup.homeapp.activities.SurveyFlowActivity"
+        <activity android:name=".activities.SelectPageActivity" />
+        <activity android:name=".activities.SurveyListActivity" />
+        <activity
+            android:name=".activities.SurveyFlowActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name="org.ctagroup.homeapp.activities.PitActivity"
+        <activity
+            android:name=".activities.PitActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name="org.ctagroup.homeapp.activities.EncampmentActivity"
+        <activity
+            android:name=".activities.EncampmentActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name="org.ctagroup.homeapp.activities.EncampmentDetailActivity"
+        <activity
+            android:name=".activities.EncampmentDetailActivity"
             android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".activities.ChatActivity"
+            android:exported="true"
+            android:label="@string/title_activity_chat"></activity>
+
+        <receiver
+            android:name=".gcm.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+
+                <!-- Receives the actual messages. -->
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <!-- Receives the registration id. -->
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="com.espreccino.poleads" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".gcm.GcmIntentService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <!-- Google GCM Services -->
+
+        <provider
+            android:name="com.espreccino.peppertalk.io.TalkProvider"
+            android:authorities="${applicationId}.provider"
+            android:enabled="true"
+            android:exported="false"
+            android:label="H.O.M.E."
+            android:syncable="true"
+            tools:replace="android:authorities" />
+
+
     </application>
 
 </manifest>

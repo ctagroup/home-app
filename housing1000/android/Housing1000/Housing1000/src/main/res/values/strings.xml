@@ -135,4 +135,30 @@ Please make sure you are connected and try again.</string>
     <string name="btn_pit_add_household_member">Add new family member</string>
     <string name="pit_family_member_label">Family Member #</string>
 
+
+    <string name="pepper_talk">peppertalk</string>
+    <string name="btn_chat">Chat button</string>
+    <string name="choose_login">pick a user to login</string>
+    <string name="choose_user">pick a user to start a conversation</string>
+    <string name="hint_email_login">email</string>
+    <string name="hint_name_login">name</string>
+
+    <string name="create_group">Create Group</string>
+    <string name="update_user">Update User</string>
+    <string name="update_group">Update Group</string>
+    <string name="delete_group">Delete Group</string>
+    <string name="leave_group">Leave Group</string>
+    <string name="join_group">Join Group</string>
+    <string name="chat_with">Chat with</string>
+    <string name="send_custom">Send Custom</string>
+
+    <!-- Add your client Id and client secret
+    visit https://console.getpeppertalk.com/ for more info-->
+
+    <string name="client_id">CLIENTID</string>
+    <string name="client_secret">CLIENTSECRET</string>
+    <string name="title_activity_chat">ChatActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+
 </resources>
