@@ -1,0 +1,21 @@
+#footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 70px;
+}
+
+#footer > .container {
+	padding-right: 15px;
+	padding-left: 15px;
+}
+
+.footer-menu {
+	margin: 0;
+
+	li {
+		list-style: none;
+		display: inline-block;
+		margin: 0 5px;
+	}
+}

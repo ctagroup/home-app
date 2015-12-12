@@ -14,3 +14,6 @@ git checkout meteor
 meteor run
 ```
 
+## Meteor Components in use
+
+- Iron Router : https://github.com/iron-meteor/iron-router

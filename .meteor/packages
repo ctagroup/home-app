@@ -18,3 +18,17 @@ ecmascript              # Enable ECMAScript2015+ syntax in app code
 
 autopublish             # Publish all data to the clients (for prototyping)
 insecure                # Allow all DB writes from clients (for prototyping)
+react
+react-template-helper
+iron:router
+ewall:foundation
+fourseven:scss
+zimme:active-route
+useraccounts:foundation
+accounts-password
+useraccounts:iron-routing
+email
+accounts-google
+service-configuration
+accounts-facebook
+accounts-twitter

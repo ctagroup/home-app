@@ -1,0 +1,23 @@
+<template name="login">
+
+	<div id="content">
+		{{> appNav}}
+
+		<div class="container">
+			<div class="row">
+				<div class="large-6 small-12 medium-6 large-centered medium-centered columns">
+					{{#if atDisabled}}
+						Please wait...
+					{{/if}}
+					<div class="{{atClass}}">
+						{{> atForm}}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{{> footer}}
+
+	</div>
+
+</template>
