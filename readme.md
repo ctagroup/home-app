@@ -3,6 +3,8 @@ Home Meteor App
 
 ## Prerequisites
 
+- Node: https://nodejs.org/en/
+	- Preferred way to install: https://github.com/creationix/nvm
 - Meteor: https://www.meteor.com/install
 
 ## How to Run on local machine
