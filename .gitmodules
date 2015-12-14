@@ -1,3 +1,0 @@
-[submodule "packages/meteor-admin"]
-	path = packages/meteor-admin
-	url = https://github.com/desaiuditd/meteor-admin
