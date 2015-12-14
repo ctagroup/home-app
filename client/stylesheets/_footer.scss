@@ -1,13 +1,9 @@
 #footer {
-	position: absolute;
+	position: fixed;
 	bottom: 0;
 	width: 100%;
 	height: 70px;
-}
-
-#footer > .container {
-	padding-right: 15px;
-	padding-left: 15px;
+	background-color: #ffffff;
 }
 
 .footer-menu {

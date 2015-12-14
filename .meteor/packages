@@ -21,10 +21,10 @@ insecure                # Allow all DB writes from clients (for prototyping)
 react
 react-template-helper
 iron:router
-ewall:foundation
+twbs:bootstrap
 fourseven:scss
 zimme:active-route
-useraccounts:foundation
+useraccounts:bootstrap
 accounts-password
 useraccounts:iron-routing
 email
@@ -32,3 +32,8 @@ accounts-google
 service-configuration
 accounts-facebook
 accounts-twitter
+dburles:collection-helpers
+aldeed:collection2
+alanning:roles
+fortawesome:fontawesome
+yogiben:admin

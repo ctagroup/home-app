@@ -7,6 +7,24 @@
  */
 
 /**
+ * Public Routes without login
+ */
+var publicRoutes = [
+	'root',
+	'home',
+	'changePwd',
+	'enrollAccount',
+	'forgotPwd',
+	'resetPwd',
+	'signIn',
+	'signUp',
+	'verifyEmail',
+	'resendVerificationEmail',
+	'privacy',
+	'termsOfUse'
+];
+
+/**
  * Home Routes
  */
 Router.route( '/', {
@@ -76,43 +94,20 @@ Router.route( '/app/dashboard', {
 });
 
 /**
- * Admin Routes
- */
-Router.route( '/admin', {
-	name: 'adminRoot',
-	template: 'adminDashboard'
-} );
-Router.route( '/admin/dashboard', {
-	name: 'adminDashboard',
-	template: 'adminDashboard'
-} );
-
-/**
  * Ensure User Login for templates
  */
 Router.plugin( 'ensureSignedIn', {
-	except: [
-		'root',
-		'home',
-		'changePwd',
-		'enrollAccount',
-		'forgotPwd',
-		'resetPwd',
-		'signIn',
-		'signUp',
-		'verifyEmail',
-		'resendVerificationEmail',
-		'privacy',
-		'terms-of-use'
-	]
+	except: publicRoutes
 } );
 
 /**
  * Misc Routes
  * */
-Router.route( '/privacy', function() {
-	this.render( 'privacy' );
+Router.route( '/privacy', {
+	name: 'privacy',
+	template: 'privacy'
 } );
-Router.route( '/terms-of-use', function() {
-	this.render( 'termsOfUse' );
-} )
+Router.route( '/terms-of-use', {
+	name: 'termsOfUse',
+	template: 'termsOfUse'
+} );
