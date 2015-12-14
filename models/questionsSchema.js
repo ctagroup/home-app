@@ -1,9 +1,9 @@
 /**
  * Created by udit on 13/12/15.
  */
-Questions = new Meteor.Collection( 'questions' );
+questions = new Meteor.Collection( 'questions' );
 
-Schemas.Questions = new SimpleSchema( {
+Schemas.questions = new SimpleSchema( {
 	title: {
 		type: String,
 		max: 256
@@ -44,4 +44,4 @@ Schemas.Questions = new SimpleSchema( {
 	}
 } );
 
-Questions.attachSchema( Schemas.Questions );
+questions.attachSchema( Schemas.questions );

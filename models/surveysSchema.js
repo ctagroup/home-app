@@ -1,9 +1,9 @@
 /**
  * Created by udit on 13/12/15.
  */
-Surveys = new Meteor.Collection( 'surveys' );
+surveys = new Meteor.Collection( 'surveys' );
 
-Schemas.Surveys = new SimpleSchema( {
+Schemas.surveys = new SimpleSchema( {
 	title: {
 		type: String,
 		max: 256
@@ -44,4 +44,4 @@ Schemas.Surveys = new SimpleSchema( {
 	}
 } );
 
-Surveys.attachSchema( Schemas.Surveys );
+surveys.attachSchema( Schemas.surveys );

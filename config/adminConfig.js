@@ -11,7 +11,13 @@ AdminConfig = {
 	],
 	collections:
 	{
-		Surveys: {},
-		Questions: {}
+		surveys: {
+			icon: 'file-text',
+			label: 'Surveys'
+		},
+		questions: {
+			icon: 'question',
+			label: 'Questions'
+		}
 	}
-}
+};
