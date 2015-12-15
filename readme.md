@@ -42,8 +42,6 @@ meteor run
 	- OAuth Login for Google
 - accounts-facebook : https://atmospherejs.com/meteor/accounts-facebook
 	- OAuth Login for Facebook
-- accounts-twitter : https://atmospherejs.com/meteor/accounts-twitter
-	- OAuth Login for Twitter
 - dburles:collection-helpers
 	- Collection utility helpers for DB models
 - aldeed:collection2
@@ -52,8 +50,7 @@ meteor run
 	- User Role management
 - fortawesome:fontawesome
 	- Font Icons
-- yogiben:admin
+- desaiuditd:admin
 	- Admin Dashboard UI
 	- Clone of https://github.com/desaiuditd/meteor-admin
-	- Merge to original once the PR of missing users releases.
 
