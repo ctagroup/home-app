@@ -5,12 +5,11 @@
 //console.log(adminUsers);
 
 AdminConfig = {
-	name: 'Home',
+	name: 'H.O.M.E.',
 	adminEmails: [
 		'desaiuditd@gmail.com'
 	],
-	collections:
-	{
+	collections: {
 		surveys: {
 			icon: 'file-text',
 			label: 'Surveys'
