@@ -30,15 +30,17 @@ Meteor.startup(function() {
 		upsert: true
 	} );
 
-	// Add Facebook configuration entry
-	Accounts.loginServiceConfiguration.update( {
-		service: "twitter"
-	}, {
-		$set: {
-			consumerKey: "KEbv2Zf8iSeRmCBjw0HWPpcaL",
-			secret: "2aeO1mlXbOG0iK7gqodCSPXfP3SZocuzX5JUGN4yIBYTuma4qS"
-		}
-	}, {
-		upsert: true
-	} );
+	//Add Twitter configuration entry
+	//Accounts.loginServiceConfiguration.update( {
+	//	service: "twitter"
+	//}, {
+	//	$set: {
+	//		consumerKey: "KEbv2Zf8iSeRmCBjw0HWPpcaL",
+	//		secret: "2aeO1mlXbOG0iK7gqodCSPXfP3SZocuzX5JUGN4yIBYTuma4qS"
+	//	}
+	//}, {
+	//	upsert: true
+	//} );
+
+	//Accounts.loginServiceConfiguration.remove( { service: "twitter" } );
 } );
