@@ -4,7 +4,7 @@ Meteor.methods
 		if Roles.userIsInRole this.userId, ['admin']
 			this.unblock()
 			result = adminCollectionObject(collection).insert doc
-				
+
 			return result
 
 	adminUpdateDoc: (modifier,collection,_id)->
@@ -69,7 +69,7 @@ Meteor.methods
 	adminCheckAdmin: ->
 		check arguments, [Match.Any]
 		user = Meteor.users.findOne(_id:this.userId)
-		if this.userId and !Roles.userIsInRole(this.userId, ['admin']) and (user.emails.length > 0)
+		if this.userId and !Roles.userIsInRole(this.userId, ['admin']) and user.emails and (user.emails.length > 0)
 			email = user.emails[0].address
 			if typeof Meteor.settings.adminEmails != 'undefined'
 				adminEmails = Meteor.settings.adminEmails
