@@ -11,6 +11,7 @@ Meteor.methods
 		check arguments, [Match.Any]
 		if Roles.userIsInRole this.userId, ['admin']
 			this.unblock()
+			console.log(modifier);
 			result = adminCollectionObject(collection).update {_id:_id},modifier
 			return result
 
@@ -50,6 +51,7 @@ Meteor.methods
 		check arguments, [Match.Any]
 		if Roles.userIsInRole this.userId, ['admin']
 			this.unblock()
+			console.log(modifier);
 			result = Meteor.users.update {_id:_id}, modifier
 			return result
 

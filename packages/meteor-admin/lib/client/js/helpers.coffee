@@ -6,11 +6,6 @@ adminCollections = ->
 	if typeof AdminConfig != 'undefined'  and typeof AdminConfig.collections == 'object'
 		collections = AdminConfig.collections
 
-	collections.Users =
-		collectionObject: Meteor.users
-		icon: 'user'
-		label: 'Users'
-
 	_.map collections, (obj, key) ->
 		obj = _.extend obj, {name: key}
 		obj = _.defaults obj, {label: key, icon: 'plus', color: 'blue'}
@@ -104,10 +99,6 @@ UI.registerHelper 'adminWidgets', ->
 	if typeof AdminConfig.dashboard != 'undefined' and typeof AdminConfig.dashboard.widgets != 'undefined'
 		AdminConfig.dashboard.widgets
 
-UI.registerHelper 'adminUserEmail', (user) ->
-	if user && user.emails && user.emails[0] && user.emails[0].address
-		user.emails[0].address
-	else if user && user.services && user.services.facebook && user.services.facebook.email
-		user.services.facebook.email
-	else if user && user.services && user.services.google && user.services.google.email
-		user.services.google.email
+UI.registerHelper 'adminUserEmail', (emails) ->
+	if emails && emails[0] && emails[0].address
+		emails[0].address

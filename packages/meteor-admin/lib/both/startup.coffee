@@ -43,11 +43,14 @@ adminCreateTables = (collections) ->
 			if column.template
 				createdCell = (node, cellData, rowData) ->
 					$(node).html ''
-					Blaze.renderWithData(Template[column.template], {value: cellData, doc: rowData})
+					Blaze.renderWithData(Template[column.template], {value: cellData, doc: rowData}, node)
 
 			data: column.name
 			title: column.label
 			createdCell: createdCell
+			width: column.width if column.width?
+			searchable: column.searchable if column.searchable?
+			render: column.render if column.render?
 
 		if columns.length == 0
 			columns = defaultColumns()
@@ -57,6 +60,10 @@ adminCreateTables = (collections) ->
 		if collection.showDelColumn
 			columns.push(adminDelButton)
 
+		changeSelector = '';
+		if collection.changeSelector
+			changeSelector = collection.changeSelector
+
 		AdminTables[name] = new Tabular.Table
 			name: name
 			collection: adminCollectionObject(name)
@@ -65,6 +72,7 @@ adminCreateTables = (collections) ->
 			columns: columns
 			extraFields: collection.extraFields
 			dom: adminTablesDom
+			changeSelector: changeSelector
 
 adminCreateRoutes = (collections) ->
 	_.each collections, adminCreateRouteView
@@ -163,48 +171,3 @@ Meteor.startup ->
 	adminCreateTables AdminConfig?.collections
 	adminCreateRoutes AdminConfig?.collections
 	adminPublishTables AdminConfig?.collections if Meteor.isServer
-
-	if AdminTables.Users then return undefined
-
-	AdminTables.Users = new Tabular.Table
-		# Modify selector to allow search by email
-		changeSelector: (selector, userId) ->
-			$or = selector['$or']
-			$or and selector['$or'] = _.map $or, (exp) ->
-				if exp.emails?['$regex']?
-					emails: $elemMatch: address: exp.emails
-				else
-					exp
-			selector
-
-		name: 'Users'
-		collection: Meteor.users
-		columns: _.union [
-			{
-				data: '_id'
-				title: 'Admin'
-				# TODO: use `tmpl`
-				createdCell: (node, cellData, rowData) ->
-					$(node).html(Blaze.toHTMLWithData Template.adminUsersIsAdmin, {_id: cellData})
-				width: '40px'
-			}
-			{
-				data: 'emails'
-				title: 'Email'
-				render: (value) ->
-					# some users have no email addresses
-					if value && value.length
-						value[0].address
-				searchable: true
-			}
-			{
-				data: 'emails'
-				title: 'Mail'
-				# TODO: use `tmpl`
-				createdCell: (node, cellData, rowData) ->
-					$(node).html(Blaze.toHTMLWithData Template.adminUsersMailBtn, {emails: cellData})
-				width: '40px'
-			}
-			{ data: 'createdAt', title: 'Joined' }
-		], adminEditDelButtons
-		dom: adminTablesDom

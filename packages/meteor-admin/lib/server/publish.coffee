@@ -8,15 +8,6 @@ Meteor.publishComposite 'adminCollectionDoc', (collection, id) ->
 	else
 		@ready()
 
-Meteor.publish 'adminUsers', ->
-	if Roles.userIsInRole @userId, ['admin']
-		Meteor.users.find()
-	else
-		@ready()
-
-Meteor.publish 'adminUser', ->
-	Meteor.users.find @userId
-
 Meteor.publish 'adminCollectionsCount', ->
 	handles = []
 	self = @

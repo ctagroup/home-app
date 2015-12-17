@@ -16,9 +16,9 @@
 							{{{currentUserGravatar}}} {{currentUserFullName}} <span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu">
-							<li><a href="#">Action</a></li>
-							<li><a href="#">Another action</a></li>
-							<li><a href="#">Something else here</a></li>
+							{{#if isInRole 'admin'}}
+							<li><a href="{{pathFor 'adminDashboard'}}"><i class="fa fa-user-secret"></i> Admin</a></li>
+							{{/if}}
 							<li role="separator" class="divider"></li>
 							<li><a class="js-logout" href="#"><i class="fa fa-sign-out"></i> Logout</a></li>
 						</ul>

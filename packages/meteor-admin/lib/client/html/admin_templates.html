@@ -148,11 +148,11 @@
 </template>
 
 <template name="adminUsersIsAdmin">
-	{{#if adminIsUserInRole this._id 'admin'}}<i class="fa fa-check"></i>{{/if}}
+	{{#if adminIsUserInRole value 'admin'}}<i class="fa fa-check"></i>{{/if}}
 </template>
 
 <template name="adminUsersMailBtn">
-	<a href="mailto:{{adminUserEmail this}}" class="btn btn-default btn-xs"><i class="fa fa-envelope"></i></a>
+	<a href="mailto:{{adminUserEmail value}}" class="btn btn-default btn-xs"><i class="fa fa-envelope"></i></a>
 </template>
 
 <template name="adminEditBtn">
