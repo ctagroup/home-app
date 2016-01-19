@@ -102,3 +102,15 @@ UI.registerHelper 'adminWidgets', ->
 UI.registerHelper 'adminUserEmail', (emails) ->
 	if emails && emails[0] && emails[0].address
 		emails[0].address
+
+Template.AdminHeader.helpers( {
+	currentUserGravatar: () ->
+		user = Meteor.user();
+		#email = Email.normalize( email );
+		email = user && user.emails && user.emails[0].address;
+		return '<img class="avatar small" src="' + Gravatar.imageUrl( email ) + '" />';
+	currentUserFullName: () ->
+		user = Meteor.user();
+		email = user && user.emails && user.emails[0].address;
+		return email;
+} );

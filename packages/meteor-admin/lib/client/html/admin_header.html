@@ -17,27 +17,23 @@
             </a>
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
-                    <li>
-                        {{#if AdminConfig.dashboard.homeUrl}}
-                        <a href="{{AdminConfig.dashboard.homeUrl}}">Home</a>
-                        {{else}}
-                        <a href="/">Home</a>
-                        {{/if}}
-
-                    </li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <span>Admin<i class="caret"></i></span>
-                        </a>
+	                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+		                    {{{currentUserGravatar}}} {{currentUserFullName}} <span class="caret"></span>
+	                    </a>
                         <ul class="dropdown-menu">
+	                        <li class="">
+		                        {{#if AdminConfig.dashboard.homeUrl}}
+		                        <a href="{{AdminConfig.dashboard.homeUrl}}">Home</a>
+		                        {{else}}
+		                        <a href="/">Home</a>
+		                        {{/if}}
+	                        </li>
                             <li class="">
-                            <a href="{{pathFor 'adminDashboardusersEdit' _id=currentUser._id}}">
-                                Your profile
-                                </a>
+	                            <a href="{{pathFor 'adminDashboardusersEdit' _id=currentUser._id}}">Your profile</a>
                             </li>
                             <li class="">
-                                <a href="#" class="btn-sign-out">Sign out
-                                </a>
+                                <a href="#" class="btn-sign-out">Sign out</a>
                             </li>
                         </ul>
                     </li>
