@@ -4,6 +4,10 @@
 users = Meteor.users;
 
 Schemas.users = new SimpleSchema( {
+	services: {
+		type: Object,
+		blackbox: true
+	},
 	email: {
 		type: String,
 		label: 'Email address'
@@ -25,4 +29,4 @@ Schemas.users = new SimpleSchema( {
 	}
 } );
 
-//users.attachSchema( Schemas.users );
+users.attachSchema( Schemas.users );
