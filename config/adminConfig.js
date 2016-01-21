@@ -7,7 +7,9 @@
 AdminConfig = {
 	name: 'H.O.M.E.',
 	adminEmails: [
-		'desaiuditd@gmail.com'
+		'desaiuditd@gmail.com',
+	    'kavithamuthu14@gmail.com',
+	    'anushagovindan@gmail.com'
 	],
 	collections: {
 		surveys: {
