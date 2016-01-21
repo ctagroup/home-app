@@ -12,7 +12,17 @@ AdminConfig = {
 	collections: {
 		surveys: {
 			icon: 'file-text',
-			label: 'Surveys'
+			label: 'Surveys',
+			tableColumns: [
+				{
+					name: 'title',
+					label: 'Title',
+					render: function( value, type, doc ) {
+						var path = Router.path( "adminDashboard" + Session.get('admin_collection_name') + "Edit", {_id: doc._id} );
+						return '<a href="' + path + '"><strong>' + value + '</strong></a>';
+					}
+				}
+			]
 		},
 		questions: {
 			icon: 'question',
