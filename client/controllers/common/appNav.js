@@ -13,11 +13,12 @@ Template.appNav.helpers( {
 	currentUserGravatar: function() {
 		var user = Meteor.user();
 		var email = user && user.emails && user.emails[0].address;
-		//email = Email.normalize( email );
+		email = Email.normalize( email );
 		return '<img class="avatar small" src="' + Gravatar.imageUrl( email ) + '" />';
 	},
 	currentUserFullName: function() {
 		var user = Meteor.user();
+		// ToDo: Check for FName & LNAme / Display Name first
 		var email = user && user.emails && user.emails[0].address;
 		return email;
 	}
