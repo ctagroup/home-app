@@ -109,6 +109,21 @@ Schemas.users = new SimpleSchema({
 		optional: true,
 		blackbox: true
 	},
+	chooseOwnPassword: {
+		type: Boolean,
+		label: 'Let this user choose their own password with an email',
+		defaultValue: true
+	},
+	password: {
+		type: String,
+		label: 'Password',
+		optional: true
+	},
+	sendPassword: {
+		type: Boolean,
+		label: 'Send this user their password by email',
+		optional: true
+	},
 	createdAt: {
 		type: Date
 	},
