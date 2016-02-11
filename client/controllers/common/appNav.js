@@ -13,7 +13,7 @@ Template.appNav.helpers( {
 	currentUserGravatar: function() {
 		var user = Meteor.user();
 		var email = user && user.emails && user.emails[0].address;
-		email = Email.normalize( email );
+		//email = Email.normalize( email );
 		return '<img class="avatar small" src="' + Gravatar.imageUrl( email ) + '" />';
 	},
 	currentUserFullName: function() {

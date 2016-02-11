@@ -106,8 +106,8 @@ UI.registerHelper 'adminUserEmail', (emails) ->
 Template.AdminHeader.helpers( {
 	currentUserGravatar: () ->
 		user = Meteor.user();
-		#email = Email.normalize( email );
 		email = user && user.emails && user.emails[0].address;
+#		email = Email.normalize( email );
 		return '<img class="avatar small" src="' + Gravatar.imageUrl( email ) + '" />';
 	currentUserFullName: () ->
 		user = Meteor.user();

@@ -1,7 +1,7 @@
 Meteor.publishComposite 'adminCollectionDoc', (collection, id) ->
 	check collection, String
 	check id, Match.OneOf(String, Mongo.ObjectID)
-	if Roles.userIsInRole this.userId, ['admin']
+	if Roles.userIsInRole this.userId, ['view_admin']
 		find: ->
 			adminCollectionObject(collection).find(id)
 		children: AdminConfig?.collections?[collection]?.children or []

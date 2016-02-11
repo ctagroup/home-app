@@ -1,5 +1,5 @@
 @adminCollectionObject = (collection) ->
-	if typeof AdminConfig.collections[collection] != 'undefined' and typeof AdminConfig.collections[collection].collectionObject != 'undefined'
+	if typeof AdminConfig != 'undefined' and typeof AdminConfig.collections[collection] != 'undefined' and typeof AdminConfig.collections[collection].collectionObject != 'undefined'
 		AdminConfig.collections[collection].collectionObject
 	else
 		lookup collection
@@ -23,7 +23,7 @@
 		else
 			return ref
 	return obj
-	
+
 @parseID = (id) ->
 	if typeof id == 'string'
 		if(id.indexOf("ObjectID") > -1)

@@ -30,3 +30,7 @@ dataTableOptions = {
     "bInfo": true,
     "bAutoWidth": false
 };
+
+Template.AdminRoleManager.onRendered( function() {
+	$('.js-tooltip').tooltip();
+} );

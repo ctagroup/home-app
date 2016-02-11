@@ -16,7 +16,7 @@
 							{{{currentUserGravatar}}} {{currentUserFullName}} <span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu">
-							{{#if isInRole 'admin'}}
+							{{#if currentUserCan 'view_admin'}}
 							<li><a href="{{pathFor 'adminDashboard'}}"><i class="fa fa-user-secret"></i> Admin</a></li>
 							<li role="separator" class="divider"></li>
 							{{/if}}

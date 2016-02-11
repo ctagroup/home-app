@@ -40,7 +40,9 @@ Package.on_use(function(api){
     'lib/both/router.coffee',
     'lib/both/utils.coffee',
     'lib/both/startup.coffee',
-    'lib/both/collections.coffee'
+    'lib/both/collections.coffee',
+    'lib/both/homeRouter.js',
+    'lib/both/homeStartup.js'
     ], both);
 
   api.add_files([
@@ -52,6 +54,8 @@ Package.on_use(function(api){
     'lib/client/css/admin-custom.less',
     'lib/client/js/admin_layout.js',
     'lib/client/js/helpers.coffee',
+    'lib/client/js/homeEvents.js',
+    'lib/client/js/homeHelpers.js',
     'lib/client/js/templates.coffee',
     'lib/client/js/events.coffee',
     'lib/client/js/slim_scroll.js',
@@ -60,7 +64,9 @@ Package.on_use(function(api){
 
   api.add_files([
     'lib/server/publish.coffee',
-    'lib/server/methods.coffee'
+    'lib/server/methods.coffee',
+    'lib/server/homeMethods.js',
+    'lib/server/homePublish.js'
     ], 'server');
 
   api.export('AdminDashboard',both)

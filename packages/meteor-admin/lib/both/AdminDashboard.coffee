@@ -7,8 +7,8 @@ AdminDashboard =
 	alertFailure: (message)->
 		Session.set 'adminError', message
 
-	checkAdmin: ->
-		if not Roles.userIsInRole Meteor.userId(), ['admin']
+	canViewAdmin: ->
+		if not Roles.userIsInRole Meteor.userId(), ['view_admin']
 			Meteor.call 'adminCheckAdmin'
 			if (typeof AdminConfig?.nonAdminRedirectRoute == "string")
 			  Router.go AdminConfig.nonAdminRedirectRoute

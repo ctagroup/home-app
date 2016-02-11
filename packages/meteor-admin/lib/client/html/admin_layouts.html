@@ -1,6 +1,6 @@
 <template name="AdminLayout">
   {{#if AdminConfig}}
-  {{#if isInRole 'admin'}}
+  {{#if currentUserCan 'view_admin'}}
   <div class="admin-layout">
     {{# AdminLTE skin=admin_skin }}
       {{> AdminHeader }}
@@ -84,7 +84,7 @@
     <code>
       AdminConfig = {
         <br/>
-        adminEmails: ['	ben@code2create.com'],
+        adminEmails: ['john.doe@example.com'],
         <br/>
         collections:
         <br/>
