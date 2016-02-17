@@ -1,0 +1,91 @@
+<template name="surveyManager">
+
+    {{#if showSurveyDialog }}
+    {{>surveyForm}}
+    {{/if}}
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="page-header">
+                <br/><br/>
+                <h1>Survey <small>Manager</small></h1>
+            </div>
+            <button class="btn btn-large btn-info addSurvey">Add Survey</button>
+            <br/><br/>
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>Survey Title</th>
+                    <th>Date created</th>
+                    <th>Date updated</th>
+                    <th>Edit</th>
+                </tr>
+
+                </thead>
+                <tbody>
+                {{#each surveyList}}
+                    {{>surveyRow}}
+                {{/each}}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+</template>
+<template name="surveyRow">
+    <tr class="surveyRow">
+        <td><a href="surveyCreator">{{survey_title}}</a></td>
+        <td>{{formatDate date_created}}</td>
+        <td>{{formatDate date_update}}</td>
+        <td><button type="submit" name="edit" class="btn btn-info edit">
+          <a href="#">  <i class="icon icon-edit icon-white"></i>
+            </a>
+        </button></td>
+    </tr>
+
+</template>
+
+<template name="surveyForm">
+    <div id="example" class="modal">
+        <div class="modal-header">
+            <a href="#" class="close" data-dismiss="modal">x</a>
+            {{#if editing_surveys}}
+                <h3>Update Survey</h3>
+            {{else}}
+                <h3>Add Survey</h3>
+            {{/if}}
+        </div>
+        <div class="modal-body">
+
+            <label for="survey_title">Survey Title: </label>
+            <input type="text" class="input input-xlarge survey_title" name="survey_title" value="{{surveyManager.survey_title}}" id="survey_title">
+
+            <label class="checkbox-inline">
+                <input type="checkbox"   class="sub_survey" id="sub_survey" value={{surveyManager.sub_survey}} checked ={{surveyManager.sub_survey}} > Sub Survey
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox"  class="full_survey" id="full_survey" value={{surveyManager.full_survey}} checked ={{surveyManager.full_survey}}> Full Survey
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" class="active" id="active" value={{surveyManager.active}} checked ={{surveyManager.active}}> Active
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox"  class="skip" id="skip" value={{surveyManager.skip}} checked ={{surveyManager.skip}}> Skip
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" class="copy" id="copy" value={{surveyManager.copy}} checked ={{surveyManager.copy}}> Copy
+            </label>
+        </div>
+        <div class="modal-footer">
+            {{#if editing_surveys}}
+                <a href="#" class="btn btn-danger remove">Delete</a>
+                <a href="#" class="btn btn-warning save">Update</a>
+            {{else}}
+                <a href="#" class="btn btn-success save">Save</a>
+            {{/if}}
+            <a href="#" class="btn cancel" data-dismiss="modal">Cancel</a>
+
+        </div>
+    </div>
+</template>
