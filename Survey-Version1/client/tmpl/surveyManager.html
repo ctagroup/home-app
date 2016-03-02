@@ -35,9 +35,9 @@
 </template>
 <template name="surveyRow">
     <tr class="surveyRow">
-        <td><a href="surveyCreator">{{survey_title}}</a></td>
-        <td>{{formatDate date_created}}</td>
-        <td>{{formatDate date_update}}</td>
+        <td><a href="{{pathFor route='surveyCreator' data = getPost}}">{{survey_title}}</a></td>
+        <td>{{date_created}}</td>
+        <td>{{date_update}}</td>
         <td><button type="submit" name="edit" class="btn btn-info edit">
           <a href="#">  <i class="icon icon-edit icon-white"></i>
             </a>
@@ -61,12 +61,12 @@
             <label for="survey_title">Survey Title: </label>
             <input type="text" class="input input-xlarge survey_title" name="survey_title" value="{{surveyManager.survey_title}}" id="survey_title">
 
-            <label class="checkbox-inline">
+          <!--   <label class="checkbox-inline">
                 <input type="checkbox"   class="sub_survey" id="sub_survey" value={{surveyManager.sub_survey}} checked ={{surveyManager.sub_survey}} > Sub Survey
             </label>
             <label class="checkbox-inline">
                 <input type="checkbox"  class="full_survey" id="full_survey" value={{surveyManager.full_survey}} checked ={{surveyManager.full_survey}}> Full Survey
-            </label>
+            </label> -->
             <label class="checkbox-inline">
                 <input type="checkbox" class="active" id="active" value={{surveyManager.active}} checked ={{surveyManager.active}}> Active
             </label>
@@ -82,7 +82,7 @@
                 <a href="#" class="btn btn-danger remove">Delete</a>
                 <a href="#" class="btn btn-warning save">Update</a>
             {{else}}
-                <a href="#" class="btn btn-success save">Save</a>
+                <a href="#" class="btn btn-info save">Save</a>
             {{/if}}
             <a href="#" class="btn cancel" data-dismiss="modal">Cancel</a>
 

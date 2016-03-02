@@ -1,0 +1,125 @@
+<template name="questions">
+    {{#if showQuestionDialog}}
+        {{>questionForm}}
+    {{/if}}
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="page-header">
+                <br/><br/>
+                <h1>Questions <small>Bank</small></h1>
+            </div>
+            <button class="btn btn-large btn-info addQuestion">Add Question</button>
+            <br/><br/>
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>Question Name</th>
+                    <th>Date Created</th>
+                    <th>Date updated</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#each questionList}}
+                    {{>questionRow}}
+                {{/each}}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+</template>
+<template name="questionRow">
+    <tr class="questionRow">
+        <td>{{q_name}}</td>
+        <td>{{date_created }}</td>
+        <td>{{date_updated }}</td>
+        <td> <button class="btn btn-info edit"><span class="icon icon-edit icon-white"></span></button></td>
+        <td> <button class="btn btn-danger delete"><span class="icon icon-remove icon-white"></span></button></td>
+    </tr>
+
+</template>
+
+<template name="questionForm">
+    <div id="example" class="modal">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">x</a>
+            {{#if editing_question}}
+                <h3>Update Question</h3>
+            {{else}}
+                <h3>Add Question</h3>
+            {{/if}}
+        </div>
+        <div class="modal-body">
+
+            <!--<label for="name">Question ID: </label>-->
+            <!--<input type="text" class="input input-xlarge q_id" name="q_id" value="{{currquestion._id}}" id="q_id" readonly>-->
+
+
+            <label for="q_category">Question Category:  </label>
+            <select class="q_category" name="q_category" id="q_category" disabled={{#if currquestion.locked}} disabled {{/if}}>
+                <option value="Universal Data Elements">Universal Data Elements</option>
+                <option value="Program Specific Data Elements">Program Specific Data Elements</option>
+                <option value="Path Required Elements">Path Required Elements</option>
+                <option value="Rhy Required Elements">Rhy Required Elements</option>
+                <option value="HOPWA Required Elements">HOPWA Required Elements</option>
+                <option value="VA Required Elements">VA Required Elements</option>
+            </select>
+            {{#unless editing_question}}
+            <label class="checkbox-inline" disabled={{#if currquestion.locked}} disabled {{/if}}>
+                <input type="checkbox" checked="{{currquestion.isCopy}}" class="toggle" id="isCopy" value="isCopy" disabled={{#if currquestion.locked}} disabled {{/if}}> IsCopy
+            </label>
+            {{#if isCopySet}}
+                <label for="q_copy" >Choose a Question copy: </label>
+                <select class="q_copy" name="q_copy" id="q_copy">
+                 <option value="Choose">Choose</option>
+                    {{#each getQuestions}}
+                        <option value={{this}}>{{q_name}}</option>
+                    {{/each}}
+                </select>
+            {{/if}}
+            {{/unless}}
+            <label for="name">Question Name: </label>
+            <input type="text" class="input input-xlarge q_name" name="q_name" value="{{currquestion.q_name}}" id="q_name" disabled={{#if currquestion.locked}} disabled {{/if}}>
+            <label for="question">Display text: </label>
+            <input type="text" class="input input-xlarge question" name="question" value="{{currquestion.question}}" id="question" disabled={{#if currquestion.locked}} disabled {{/if}}>
+            <label for="q_datatype">Question Data Type: </label>
+            <select class="q_dataType" name="q_dataType" id="q_dataType" disabled={{#if currquestion.locked}} disabled {{/if}}>
+                <option value="Textbox(String)">Textbox(String)
+                </option>
+                <option value="Multiple Select">Multiple Select</option>
+                <option value="Single Select">Single Select</option>
+                <option value="Boolean">Boolean</option>
+                
+                <option value="Textbox(Integer)">TextBox(Integer)</option>
+            </select>
+
+            
+             <label for="options">Options(Enter comma separated options): </label>
+             <input type="text" class="input input-xlarge options" name="question" value="{{currquestion.options}}" id="options"
+             {{isDatatype currquestion.q_dataType}} />
+           
+
+
+            <label class="checkbox-inline" disabled={{#if currquestion.locked}} disabled {{/if}}>
+                <input type="checkbox" checked="{{currquestion.hud}}" class="toggle-checked" id="hud" value="hud" disabled={{#if currquestion.locked}} disabled {{/if}}> HUD
+            </label>
+            <label class="checkbox-inline" >
+                <input type="checkbox" checked="{{currquestion.locked}}" class="toggle-checked locked" id="locked" value="locked"> Locked
+            </label>
+
+        </div>
+        <div class="modal-footer">
+            {{#if editing_question}}
+                <a href="#" class="btn btn-danger remove">Delete</a>
+                <a href="#" class="btn btn-warning save">Update</a>
+            {{else}}
+                <a href="#" class="btn btn-info save">Save</a>
+            {{/if}}
+            <a href="#" class="btn cancel" data-dismiss="modal">Cancel</a>
+
+        </div>
+    </div>
+</template>

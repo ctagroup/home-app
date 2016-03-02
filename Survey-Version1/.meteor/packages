@@ -21,3 +21,4 @@ insecure                # Allow all DB writes from clients (for prototyping)
 bootstrap
 iron:router
 mrt:moment
+rubaxa:sortable
