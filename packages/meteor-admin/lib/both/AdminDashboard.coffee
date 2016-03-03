@@ -16,9 +16,9 @@ AdminDashboard =
 			@next()
 	adminRoutes: ['adminDashboard','adminDashboardUsersNew','adminDashboardUsersEdit','adminDashboardView','adminDashboardNew','adminDashboardEdit']
 	collectionLabel: (collection)->
-		if collection? and typeof AdminConfig.collections[collection].label == 'string'
+		if collection? and typeof AdminConfig.collections[collection] != "undefined" and typeof AdminConfig.collections[collection].label == 'string'
 			AdminConfig.collections[collection].label
-		else Session.get 'admin_collection_name'
+		else Session.get 'admin_title'
 
 	addSidebarItem: (title, url, options) ->
 		item = title: title

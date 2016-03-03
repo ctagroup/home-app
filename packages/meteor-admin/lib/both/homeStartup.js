@@ -35,5 +35,8 @@ Meteor.startup(function() {
 
 	if ( Meteor.isClient ) {
 		AdminDashboard.addSidebarItem("Role Manager", AdminDashboard.path('/roles'), { icon: 'user-secret' });
+		if ( Roles.userIsInRole( Meteor.userId(), "manage_settings" ) ) {
+			AdminDashboard.addSidebarItem("Settings", AdminDashboard.path('/settings'), { icon: 'cogs' });
+		}
 	}
 });

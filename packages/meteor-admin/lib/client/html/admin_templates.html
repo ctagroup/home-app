@@ -197,3 +197,17 @@
 		<input type="submit" class="btn btn-warning js-reset" value="Reset" />
 	</form>
 </template>
+
+<template name="AdminSettings">
+	{{> adminAlert}}
+	{{> quickForm
+		id="adminSettingsForm"
+		schema="Schemas.adminSettings"
+		type="method"
+		meteormethod="saveAdminSettings"
+		template="bootstrap3"
+		label-class="sr-only"
+		afFieldInput-placeholder="schemaLabel"
+		doc=getAdminSettings
+	}}
+</template>

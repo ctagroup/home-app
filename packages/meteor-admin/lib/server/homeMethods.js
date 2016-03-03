@@ -124,6 +124,17 @@ Meteor.methods(
 					children: collection.children
 				};
 			});
+		},
+		saveAdminSettings: function(settings) {
+			check(settings, Schemas.adminSettings);
+
+			var value = "";
+			if(typeof settings.hmisAPI != 'undefined' && typeof settings.hmisAPI.trustedAppID != 'undefined') {
+				value = settings.hmisAPI.trustedAppID;
+			}
+
+			var optionsCollection = adminCollectionObject("options");
+			optionsCollection.upsert({option_name:"trustedAppID"}, {$set: {option_name:"trustedAppID",option_value:value}});
 		}
 	}
 );

@@ -26,6 +26,25 @@ Template.AdminRoleManager.helpers( {
 	}
 } );
 
+Template.AdminSettings.helpers( {
+	getAdminSettings: function() {
+		var settings = {};
+
+		settings.hmisAPI = {};
+
+		var optionsCollection = adminCollectionObject("options");
+		var trustedAppID = optionsCollection.find({option_name:"trustedAppID"} ).fetch();
+		if(trustedAppID.length > 0 && typeof trustedAppID[0].option_value != 'undefined') {
+			settings.hmisAPI.trustedAppID = trustedAppID[0].option_value;
+		} else {
+			settings.hmisAPI.trustedAppID = "";
+		}
+
+		return settings;
+
+	}
+} );
+
 UI.registerHelper("currentUserCan", function(cap) {
 	return Roles.userIsInRole(Meteor.userId(), cap);
 });

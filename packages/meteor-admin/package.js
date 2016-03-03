@@ -56,6 +56,7 @@ Package.on_use(function(api){
     'lib/client/js/helpers.coffee',
     'lib/client/js/homeEvents.js',
     'lib/client/js/homeHelpers.js',
+    'lib/client/js/homeAutoForm.js',
     'lib/client/js/templates.coffee',
     'lib/client/js/events.coffee',
     'lib/client/js/slim_scroll.js',

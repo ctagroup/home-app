@@ -12,3 +12,9 @@ Meteor.publish(null, function () {
 		return;
 	return rolePermissions.find({});
 });
+
+Meteor.publish(null, function () {
+	if ( typeof options == "undefined")
+		return;
+	return options.find({});
+});
