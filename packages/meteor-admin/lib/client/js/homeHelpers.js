@@ -62,6 +62,24 @@ Template.surveyViewTemplate.helpers(
 	}
 );
 
+Template.questionViewTemplate.helpers(
+	{
+		questionList: function() {
+			var questionCollection = adminCollectionObject("questions");
+			return questionCollection.find({}).fetch();
+		}
+	}
+);
+
+Template.questionForm.helpers(
+	{
+		questionList: function() {
+			var questionCollection = adminCollectionObject("questions");
+			return questionCollection.find({}).fetch();
+		}
+	}
+);
+
 Template.surveyRow.helpers(
 	{
 		editSurveyPath: function(id) {

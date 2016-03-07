@@ -193,7 +193,12 @@ AdminConfig = {
 		},
 		questions: {
 			icon: 'question',
-			label: 'Questions'
+			label: 'Questions',
+			templates: {
+				view: {
+					name: 'questionViewTemplate'
+				}
+			}
 		},
 		users: {
 			icon: 'user',

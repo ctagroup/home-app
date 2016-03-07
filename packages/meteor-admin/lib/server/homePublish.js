@@ -24,3 +24,9 @@ Meteor.publish(null, function () {
 		return;
 	return surveys.find({});
 });
+
+Meteor.publish(null, function () {
+	if ( typeof questions == "undefined")
+		return;
+	return questions.find({});
+});

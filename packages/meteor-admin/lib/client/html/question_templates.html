@@ -1,0 +1,150 @@
+<template name="questionViewTemplate">
+
+	{{>questionForm}}
+
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<a href="#newQuestionModal" role="button" data-toggle="modal" class="btn btn-large btn-primary addQuestion">Add Question</a>
+			<br/><br/>
+			<table class="table table-bordered table-striped table-hover">
+				<thead>
+				<tr>
+					<th>Question Name</th>
+					<th>Date Created</th>
+					<th>Date updated</th>
+					<th>Edit</th>
+					<th>Delete</th>
+				</tr>
+				</thead>
+				<tbody>
+				{{#each questionList}}
+				{{>questionRow}}
+				{{/each}}
+				</tbody>
+
+			</table>
+		</div>
+	</div>
+
+</template>
+
+<template name="questionRow">
+	<tr class="questionRow">
+		<td>{{name}}</td>
+		<td>{{formatDate createdAt }}</td>
+		<td>{{formatDate updatedAt }}</td>
+		<td> <a href="#newQuestionModal" role="button" data-toggle="modal" class="btn btn-info edit"><span class="fa fa-edit"></span></a></td>
+		<td> <a class="btn btn-danger delete"><span class="fa fa-remove"></span></a></td>
+	</tr>
+</template>
+
+<template name="questionForm">
+	<div id="newQuestionModal" class="modal fade" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h3 class="showWhenNew">Add Question</h3>
+					<h3 class="showWhenEdit">Update Question</h3>
+				</div>
+				<div class="modal-body">
+
+					<label for="q_category">Question Category:  </label>
+					<select class="q_category" name="q_category" id="q_category">
+						<option value="Universal Data Elements">Universal Data Elements</option>
+						<option value="Program Specific Data Elements">Program Specific Data Elements</option>
+						<option value="Path Required Elements">Path Required Elements</option>
+						<option value="Rhy Required Elements">Rhy Required Elements</option>
+						<option value="HOPWA Required Elements">HOPWA Required Elements</option>
+						<option value="VA Required Elements">VA Required Elements</option>
+					</select><br />
+					<div class="showWhenNew">
+						<label class="checkbox-inline">
+						<input type="checkbox" class="toggle" id="isCopy" value="isCopy"> IsCopy
+						</label><br />
+						<!--{{#if isCopySet}}-->
+						<div class="isCopySet">
+							<label for="q_copy" >Choose a Question copy: </label>
+							<select class="q_copy" name="q_copy" id="q_copy">
+								<option value="Choose">Choose</option>
+								{{#each questionList}}
+									<option value={{this}}>{{name}}</option>
+								{{/each}}
+							</select>
+						</div>
+					</div>
+					<label for="q_name">Question Name: </label>
+					<input type="text" class="input input-xlarge q_name" name="q_name" id="q_name"><br />
+					<label for="question">Display text: </label>
+					<input type="text" class="input input-xlarge question" name="question" id="question"><br />
+					<label for="q_datatype">Question Data Type: </label>
+					<select class="q_dataType" name="q_dataType" id="q_dataType">
+						<option value="Textbox(String)">Textbox(String)</option>
+						<option value="Multiple Select">Multiple Select</option>
+						<option value="Single Select">Single Select</option>
+						<option value="Boolean">Boolean</option>
+						<option value="Textbox(Integer)">TextBox(Integer)</option>
+					</select><br />
+
+					<label for="options" id="options_label" class="hide">Options(Enter comma separated options): </label>
+					<input type="text" class="input input-xlarge options hide" name="options" id="options" /><br />
+
+					<label class="checkbox-inline">
+					<input type="checkbox" class="toggle-checked" id="hud" value="hud"> HUD
+					</label><br />
+					<label class="checkbox-inline" >
+						<input type="checkbox" class="toggle-checked locked" id="locked" value="locked"> Locked
+					</label><br />
+
+					<input type="hidden" id="isUpdate" value="0" />
+					<input type="hidden" id="questionID" value="" />
+
+				</div>
+				<div class="modal-footer">
+					<a href="#" class="btn btn-danger remove showWhenEdit" data-dismiss="modal">Delete</a>
+					<a href="#" class="btn btn-warning save showWhenEdit" data-dismiss="modal">Update</a>
+					<a href="#" class="btn btn-primary save showWhenNew" data-dismiss="modal">Save</a>
+					<a href="#" class="btn btn-default cancel" data-dismiss="modal">Cancel</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</template>
+
+<template name="selectquestions">
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="page-header">
+				<br/><br/>
+				<h1>Select<small>Questions</small></h1>
+			</div>
+			<a href="{{pathFor route='surveyCreator' data = getPost}}" class="btn btn-large btn-info selectques">Select Question</a>
+			<br/><br/>
+			<table class="table table-bordered table-striped table-hover">
+				<thead>
+				<tr>
+					<th>Select</th>
+					<th>Question Name</th>
+					<th>Display Text</th>
+					<th>Date updated</th>
+				</tr>
+				</thead>
+				<tbody>
+				{{#each questionList}}
+				{{>selectquestionRow}}
+				{{/each}}
+				</tbody>
+
+			</table>
+		</div>
+	</div>
+</template>
+
+<template name="selectquestionRow">
+	<tr class="selectquestionRow">
+		<td><input type="checkbox" class="toggle-checked" id="reportable" value={{_id}}/> </td>
+		<td>{{q_name}}</td>
+		<td>{{question}}</td>
+		<td>{{date_updated }}</td>
+	</tr>
+</template>

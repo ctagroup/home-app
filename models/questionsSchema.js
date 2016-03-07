@@ -4,15 +4,37 @@
 questions = new Meteor.Collection( 'questions' );
 
 Schemas.questions = new SimpleSchema( {
-	title: {
+	name: {
 		type: String,
 		max: 256
 	},
-	content: {
+	question: {
 		type: String,
 		autoform: {
 			rows: 5
 		}
+	},
+	category: {
+		type: String,
+		max: 256
+	},
+	options: {
+		type: String,
+		max: 256,
+		optional: true
+	},
+	dataType: {
+		type: String,
+		max: 256
+	},
+	hud: {
+		type: Boolean
+	},
+	locked: {
+		type: Boolean
+	},
+	isCopy: {
+		type: Boolean
 	},
 	createdAt: {
 		type: Date,
@@ -30,25 +52,25 @@ Schemas.questions = new SimpleSchema( {
 			return new Date();
 		}
 	},
-	author: {
-		type: String,
-		regEx: SimpleSchema.RegEx.Id,
-		autoValue: function () {
-			if ( this.isInsert ) {
-				return Meteor.userId();
-			}
-		},
-		autoform: {
-			options: function () {
-				return _.map(Meteor.users.find().fetch(), function (user) {
-					return {
-						label: user.emails[0].address,
-						value: user._id
-					};
-				} );
-			}
-		}
-	}
+	//author: {
+	//	type: String,
+	//	regEx: SimpleSchema.RegEx.Id,
+	//	autoValue: function () {
+	//		if ( this.isInsert ) {
+	//			return Meteor.userId();
+	//		}
+	//	},
+	//	autoform: {
+	//		options: function () {
+	//			return _.map(Meteor.users.find().fetch(), function (user) {
+	//				return {
+	//					label: user.emails[0].address,
+	//					value: user._id
+	//				};
+	//			} );
+	//		}
+	//	}
+	//}
 } );
 
 questions.attachSchema( Schemas.questions );
