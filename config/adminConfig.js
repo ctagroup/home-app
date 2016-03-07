@@ -8,7 +8,8 @@ AdminConfig = {
 		'desaiuditd@gmail.com',
 	    'kavithamuthu14@gmail.com',
 	    'anushagovindan@gmail.com',
-	    'javier@ctagroup.org'
+	    'javier@ctagroup.org',
+		'bob@ctagroup.org'
 	],
 	defaultHomeRoles: [
 		"Developer",
