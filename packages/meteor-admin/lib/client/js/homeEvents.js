@@ -63,10 +63,10 @@ Template.surveyForm.events(
 			resetSurveyModal();
 		},
 		'click .cancel':function(evt,tmpl){
-
+			resetSurveyModal();
 		},
 		'click .remove':function(evt,tmpl){
-			var surveyID = tmpl.data._id;
+			var surveyID = $('#surveyID').val();
 			Meteor.call("removeSurvey", surveyID, function ( error, result ) {
 				if ( error ) {
 					console.log(error);
