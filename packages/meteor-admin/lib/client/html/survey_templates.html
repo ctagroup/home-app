@@ -29,7 +29,7 @@
 
 <template name="surveyRow">
 	<tr class="surveyRow">
-		<td><a href="{{pathFor route='surveyCreator' data = getPost}}">{{title}}</a></td>
+		<td><a href="{{editSurveyPath _id}}">{{title}}</a></td>
 		<td>{{formatDate createdAt}}</td>
 		<td>{{formatDate updatedAt}}</td>
 		<td><a href="#newSurveyModal" role="button" data-toggle="modal" name="edit" class="btn btn-info edit"><i class="fa fa-edit"></i></a></td>

@@ -61,3 +61,12 @@ Template.surveyViewTemplate.helpers(
 		}
 	}
 );
+
+Template.surveyRow.helpers(
+	{
+		editSurveyPath: function(id) {
+			var path = Router.path( "adminDashboard" + Session.get('admin_collection_name') + "Edit", {_id: id} );
+			return path;
+		}
+	}
+);
