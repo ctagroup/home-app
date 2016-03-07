@@ -191,7 +191,7 @@ AdminConfig = {
 				},
 				edit: {
 					name: 'surveyEditTemplate',
-					data: Session.get('admin_doc')
+					data: Meteor.isClient && Session.get('admin_doc')
 				}
 			}
 		},
