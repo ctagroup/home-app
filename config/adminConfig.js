@@ -188,6 +188,10 @@ AdminConfig = {
 			templates: {
 				view : {
 					name: 'surveyViewTemplate'
+				},
+				edit: {
+					name: 'surveyEditTemplate',
+					data: Session.get('admin_doc')
 				}
 			}
 		},

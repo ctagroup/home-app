@@ -53,11 +53,24 @@ Template.registerHelper('formatDate', function(date) {
 	return moment(date).format('YYYY-MM-DD HH:mm:ss');
 });
 
+Template.registerHelper('my_console_log', function(data) {
+	console.log(data);
+});
+
 Template.surveyViewTemplate.helpers(
 	{
 		surveyList: function() {
 			var surveyCollection = adminCollectionObject("surveys");
 			return surveyCollection.find({}).fetch();
+		}
+	}
+);
+
+Template.surveyEditTemplate.helpers(
+	{
+		questionList: function() {
+			var questionCollection = adminCollectionObject("questions");
+			return questionCollection.find({}).fetch();
 		}
 	}
 );
