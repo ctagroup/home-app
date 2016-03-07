@@ -128,10 +128,7 @@ Template.sortableItemTarget.helpers(
 			for(var i in questionName){
 				qNames = questionName[i].name;
 			}
-			console.log(content);
-			console.log(qNames);
 			return qNames;
-
 		}
 	}
 );
