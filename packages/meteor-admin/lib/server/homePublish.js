@@ -18,3 +18,9 @@ Meteor.publish(null, function () {
 		return;
 	return options.find({});
 });
+
+Meteor.publish(null, function () {
+	if ( typeof surveys == "undefined")
+		return;
+	return surveys.find({});
+});

@@ -135,6 +135,18 @@ Meteor.methods(
 
 			var optionsCollection = adminCollectionObject("options");
 			optionsCollection.upsert({option_name:"trustedAppID"}, {$set: {option_name:"trustedAppID",option_value:value}});
+		},
+		addSurvey: function(title,active,skip,copy){
+			var surveyCollection = adminCollectionObject("surveys");
+			surveyCollection.insert({title:title,active:active,skip:skip,copy:copy});
+		},
+		updateSurvey: function(surveyID, title,active,skip,copy){
+			var surveyCollection = adminCollectionObject("surveys");
+			surveyCollection.update(surveyID, {$set: {title:title,active:active,skip:skip,copy:copy}});
+		},
+		removeSurvey: function(surveyID){
+			var surveyCollection = adminCollectionObject("surveys");
+			surveyCollection.remove({_id:surveyID});
 		}
 	}
 );

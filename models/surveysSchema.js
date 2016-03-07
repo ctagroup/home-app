@@ -8,40 +8,56 @@ Schemas.surveys = new SimpleSchema( {
 		type: String,
 		max: 256
 	},
-	content: {
-		type: String,
-		autoform: {
-			rows: 5
-		}
+	active: {
+		type: Boolean
 	},
+	skip: {
+		type: Boolean
+	},
+	copy: {
+		type: Boolean
+	},
+	//content: {
+	//	type: String,
+	//	autoform: {
+	//		rows: 5
+	//	}
+	//},
 	createdAt: {
 		type: Date,
-		label: 'Date',
+		label: 'Created At',
 		autoValue: function () {
 			if ( this.isInsert ) {
 				return new Date();
 			}
 		}
 	},
-	author: {
-		type: String,
-		regEx: SimpleSchema.RegEx.Id,
-		autoValue: function () {
-			if ( this.isInsert ) {
-				return Meteor.userId();
-			}
-		},
-		autoform: {
-			options: function () {
-				return _.map(Meteor.users.find().fetch(), function (user) {
-					return {
-						label: user.emails[0].address,
-						value: user._id
-					};
-				} );
-			}
+	updatedAt: {
+		type: Date,
+		label: 'Updated At',
+		autoValue: function() {
+			return new Date();
 		}
-	}
+	},
+	//author: {
+	//	type: String,
+	//	regEx: SimpleSchema.RegEx.Id,
+	//	autoValue: function () {
+	//		if ( this.isInsert ) {
+	//			return Meteor.userId();
+	//		}
+	//	},
+	//	autoform: {
+	//		options: function () {
+	//			return _.map(Meteor.users.find().fetch(), function (user) {
+	//				return {
+	//					label: user.emails[0].address,
+	//					value: user._id
+	//				};
+	//			} );
+	//		}
+	//	}
+	//}
 } );
 
 surveys.attachSchema( Schemas.surveys );

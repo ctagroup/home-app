@@ -16,11 +16,18 @@ Schemas.questions = new SimpleSchema( {
 	},
 	createdAt: {
 		type: Date,
-		label: 'Date',
+		label: 'Created At',
 		autoValue: function () {
 			if ( this.isInsert ) {
 				return new Date();
 			}
+		}
+	},
+	updatedAt: {
+		type: Date,
+		label: 'Updated At',
+		autoValue: function() {
+			return new Date();
 		}
 	},
 	author: {
@@ -33,7 +40,7 @@ Schemas.questions = new SimpleSchema( {
 		},
 		autoform: {
 			options: function () {
-				_.map(Meteor.users.find().fetch(), function (user) {
+				return _.map(Meteor.users.find().fetch(), function (user) {
 					return {
 						label: user.emails[0].address,
 						value: user._id

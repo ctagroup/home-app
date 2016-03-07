@@ -34,47 +34,69 @@ Template.surveyForm.events(
 
 		'click .save':function(evt,tmpl){
 
-			var date_created,date_updated;
 			var title = tmpl.find('.survey_title').value;
-			// if(Session.get('editing_surveys')){
-			//     date_updated = new Date();
-			// }else{
-			//     date_created = new Date();
-			//     date_updated = new Date();
-			// }
-			// var subSurvey = tmpl.find('.sub_survey').checked;
-			// var fullSurvey = tmpl.find('.full_survey').checked;
 			var active = tmpl.find('.active').checked;
 			var skip = tmpl.find('.skip').checked;
 			var copy = tmpl.find('.copy').checked;
-			//alert(title + " " +subSurvey + " " +fullSurvey + " " + active + " " + skip + " " + copy );
+			var isUpdate = $('#isUpdate').val();
+			var surveyID = $('#surveyID').val();
 
-			if(Session.get('editing_surveys')){
-				updateSurvey(title,active, skip, copy);
+			if(isUpdate=='1'){
+
+				Meteor.call("updateSurvey", surveyID, title, active, skip, copy, function ( error, result ) {
+					if ( error ) {
+						console.log(error);
+					} else {
+						console.log(result);
+					}
+				} );
 			}else {
-				addSurvey(title,active, skip, copy);
-			}
-			Session.set('editing_surveys',null);
 
+				Meteor.call("addSurvey", title, active, skip, copy, function ( error, result ) {
+					if ( error ) {
+						console.log(error);
+					} else {
+						console.log(result);
+					}
+				} );
+			}
+			resetSurveyModal();
 		},
 		'click .cancel':function(evt,tmpl){
-			Session.set('editing_surveys',null);
 
 		},
 		'click .remove':function(evt,tmpl){
-			removeSurvey();
-			Session.set('editing_surveys',null);
-
+			var surveyID = tmpl.data._id;
+			Meteor.call("removeSurvey", surveyID, function ( error, result ) {
+				if ( error ) {
+					console.log(error);
+				} else {
+					console.log(result);
+				}
+			} );
+			resetSurveyModal();
 		}
 
 	}
 );
 
+var resetSurveyModal = function() {
+	$('#newSurveyModal input[type=text]').val('');
+	$('#newSurveyModal input[type=checkbox]' ).attr('checked', false);
+	$('#newSurveyModal input[type=checkbox]' ).prop('checked', false);
+	$('#isUpdate').val('0');
+	$('#surveyID').val('');
+};
+
 Template.surveyViewTemplate.events(
 	{
 
 		'click .addSurvey':function(evt,tmpl){
-
+			resetSurveyModal();
+			$('#myModalLabel').html("Add Survey");
+			$('.save').removeClass('btn-warning').addClass('btn-primary');
+			$('.save').html("Save");
+			$('.remove').hide();
 		}
 	}
 );
@@ -82,27 +104,23 @@ Template.surveyRow.events(
 	{
 
 		'click .edit':function(evt,tmpl){
-			Session.set('editing_surveys', tmpl.data._id);
+			var surveyCollection = adminCollectionObject("surveys");
+			var survey = surveyCollection.findOne({_id:tmpl.data._id});
+			$('#newSurveyModal input[type=text]').val(survey.title);
+			$('#newSurveyModal input[type=checkbox]#active' ).attr('checked', survey.active);
+			$('#newSurveyModal input[type=checkbox]#active' ).prop('checked', survey.active);
+			$('#newSurveyModal input[type=checkbox]#skip' ).attr('checked', survey.skip);
+			$('#newSurveyModal input[type=checkbox]#skip' ).prop('checked', survey.skip);
+			$('#newSurveyModal input[type=checkbox]#copy' ).attr('checked', survey.copy);
+			$('#newSurveyModal input[type=checkbox]#copy' ).prop('checked', survey.copy);
 
+			$('#isUpdate').val('1');
+			$('#surveyID').val(tmpl.data._id);
+
+			$('#myModalLabel').html("Update Survey");
+			$('.save').removeClass('btn-primary').addClass('btn-warning');
+			$('.save').html("Update");
+			$('.remove').show();
 		}
-		//'dblclick .surveyRow':function(evt,tmpl) {
-		//    Session.set('editing_surveys', tmpl.data._id);
-		//    Session.set('showSurveyDialog', true);
-		//
-		//    //var res = SurveysSchema.find({_id:tmpl.data._id}, {sub_survey: 1}).fetch();
-		//    //for (var i = 0; i < res.length; i++) {
-		//    //    if(res[i].sub_survey == true){
-		//    //        alert("value is true");
-		//    //       // $("#sub_survey").checked(true);
-		//    //
-		//    //    }
-		//    //
-		//    //    else{
-		//    //        alert("value is false");
-		//    //       // $("#sub_survey").is(false);
-		//    //    }
-		//    //}
-		//
-		//}
 	}
 );
