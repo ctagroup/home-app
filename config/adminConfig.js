@@ -198,6 +198,7 @@ AdminConfig = {
 		users: {
 			icon: 'user',
 			label: 'Users',
+			addNewLink: true,
 			changeSelector: function( selector, userId ) {
 				$or = selector['$or'];
 				if ( $or ) {
