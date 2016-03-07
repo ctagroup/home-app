@@ -159,6 +159,18 @@ Meteor.methods(
 		removeQuestion: function(questionID){
 			var questionCollection = adminCollectionObject("questions");
 			questionCollection.remove({_id:questionID});
+		},
+		addSurveyQuestionMaster: function(survey_title,survey_id,content_type,content,rank) {
+			var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
+			surveyQuestionsMasterCollection.insert({surveyID:survey_id,surveyTitle:survey_title,contentType:content_type,content:content,order:rank});
+		},
+		updateSurveyQuestionMaster: function(id, content) {
+			var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
+			surveyQuestionsMasterCollection.update({_id:id}, {$set: {content: content}});
+		},
+		removeSurveyQuestionMaster: function(id) {
+			var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
+			surveyQuestionsMasterCollection.remove({_id:id});
 		}
 	}
 );

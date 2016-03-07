@@ -71,6 +71,14 @@ Template.surveyEditTemplate.helpers(
 		questionList: function() {
 			var questionCollection = adminCollectionObject("questions");
 			return questionCollection.find({}).fetch();
+		},
+		existingSelectedQuestions: function(){
+			q_ids=Session.get('selectedQuestions');
+
+			if(q_ids!=null)
+				return true;
+			else
+				return false;
 		}
 	}
 );
@@ -98,6 +106,61 @@ Template.surveyRow.helpers(
 		editSurveyPath: function(id) {
 			var path = Router.path( "adminDashboard" + Session.get('admin_collection_name') + "Edit", {_id: id} );
 			return path;
+		}
+	}
+);
+
+Template.sortableItemTarget.helpers(
+	{
+		notQuestion: function(type){
+
+			if(type == "question")
+				return false
+			else
+				return true;
+		},
+		quesNames: function(content){
+
+			var questionCollection = adminCollectionObject("questions");
+			var questionName = questionCollection.find({_id:content},{q_name:1,_id:0}).fetch();
+
+			for(var i in questionName){
+				var qNames = questionName[i].q_name;
+			}
+			return qNames;
+
+		}
+	}
+);
+
+
+Template.typeDefinition.helpers(
+	{
+		showPreview: function(){
+			var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
+			if(surveyQuestionsMasterCollection.find({surveyID:Router.current().params._id}).count()>0){
+				return true;
+			}
+			return false;
+		},
+
+		attributes: function () {
+			var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
+			return surveyQuestionsMasterCollection.find({surveyID:Router.current().params._id}, {
+				sort: { order: 1 }
+			} );
+		},
+		attributesOptions: {
+			group: {
+				name: 'typeDefinition',
+				put: true
+			},
+			// event handler for reordering attributes
+			onSort: function (event) {
+				console.log('Item %s went from #%d to #%d',
+				            event.data.name, event.oldIndex, event.newIndex
+				);
+			}
 		}
 	}
 );

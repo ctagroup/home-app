@@ -30,3 +30,9 @@ Meteor.publish(null, function () {
 		return;
 	return questions.find({});
 });
+
+Meteor.publish(null, function () {
+	if ( typeof surveyQuestionsMaster == "undefined")
+		return;
+	return surveyQuestionsMaster.find({});
+});

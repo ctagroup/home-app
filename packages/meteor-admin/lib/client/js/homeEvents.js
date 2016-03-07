@@ -119,9 +119,24 @@ var setFields=function(status){
 	$('#q_dataType').attr('disabled', status);
 };
 
+var maxRank = function(survey_id){
+
+	var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
+
+	if(surveyQuestionsMasterCollection.find({surveyID:survey_id}).count()<=0){
+		return 0;
+	} else {
+		var order = surveyQuestionsMasterCollection.find({surveyID:survey_id},{sort: {order: -1}}).fetch();
+		// ToDo - Check order.
+		//for(var i in order){
+		var maxOrder = order[0].order + 1;
+		//}
+		return maxOrder;
+	}
+}
+
 Template.surveyViewTemplate.events(
 	{
-
 		'click .addSurvey':function(evt,tmpl){
 			resetSurveyModal();
 			$('.showWhenEdit').hide();
@@ -131,7 +146,6 @@ Template.surveyViewTemplate.events(
 );
 Template.surveyRow.events(
 	{
-
 		'click .edit':function(evt,tmpl){
 			var surveyCollection = adminCollectionObject("surveys");
 			var survey = surveyCollection.findOne({_id:tmpl.data._id});
@@ -297,6 +311,148 @@ Template.questionRow.events(
 
 			resetQuestionModal();
 
+		}
+	}
+);
+
+Template.surveyEditTemplate.events(
+	{
+		'click .addSection':function(event,tmpl){
+
+			var survey_title = tmpl.data.title;
+			var survey_id = tmpl.data._id;
+			var content = tmpl.find('.sectionName').value;
+			var content_type= "section";
+
+			Meteor.call("addSurveyQuestionMaster", survey_title,survey_id,content_type,content,maxRank(survey_id), function ( error, result ) {
+				if ( error ) {
+					console.log(error);
+				} else {
+					console.log(result);
+				}
+			} );
+
+			$("#sectionName").val("");
+
+		},
+		'click .addLabel':function(event,tmpl){
+
+			var survey_title = tmpl.data.title;
+			var survey_id = tmpl.data._id;
+			var content = tmpl.find('.labelName').value;
+			var content_type= "label";
+
+			Meteor.call("addSurveyQuestionMaster", survey_title,survey_id,content_type,content,maxRank(survey_id), function ( error, result ) {
+				if ( error ) {
+					console.log(error);
+				} else {
+					console.log(result);
+				}
+			} );
+
+			$("#labelName").val("");
+		},
+
+		'submit form':function(event,tmpl){
+			event.preventDefault();
+			Session.set('showQuestions',{});
+		},
+	}
+);
+
+Template.sortableItemTarget.events(
+	{
+		'dblclick .name': function (event, template) {
+			// Make the name editable. We should use an existing component, but it's
+			// in a sorry state - https://github.com/arillo/meteor-x-editable/issues/1
+			var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
+			var cont = surveyQuestionsMasterCollection.find({_id:this._id},{content_type:1,_id:0}).fetch();
+			var contentType = '';
+			for(var i in cont){
+				var contentType = cont[i].content_type
+			}
+			if(contentType == "question"){
+				alert("Question cannot be edited");
+				input.hide();
+				template.$('.name').show();
+			}else{
+				var name = template.$('.name');
+				var input = template.$('input');
+				if (input.length) {  // jQuery never returns null - http://stackoverflow.com/questions/920236/how-can-i-detect-if-a-selector-returns-null
+					input.show();
+				} else {
+					input = $('<input class="form-control" type="text" placeholder="' + this.content + '" style="display: inline">');
+					name.after(input);
+				}
+				name.hide();
+				input.focus();
+			}
+		},
+		'blur input[type=text]': function (event, template) {
+			// var cont = SurveyQuestionsSchema.find({_id:this._id},{content_type:1,_id:0}).fetch();
+			//   for(var i in cont){
+			//         var contentType = cont[i].content_type
+			//       }
+			//   if(contentType == "question"){
+			//     alert("Question cannot be edited");
+			//     input.hide();
+			//      template.$('.name').show();
+			//   }
+			// commit the change to the name, if any
+			var input = template.$('input');
+			input.hide();
+			template.$('.name').show();
+			// TODO - what is the collection here? We'll hard-code for now.
+			// https://github.com/meteor/meteor/issues/3303
+			if (this.name !== input.val() && this.name !== ''){
+				//   var cont = SurveyQuestionsSchema.find({_id:this._id},{content_type:1,_id:0}).fetch();
+				//   for(var i in cont){
+				//         var contentType = cont[i].content_type
+				//       }
+				//   if(contentType == "question"){
+				//     alert("Question cannot be edited");
+				//   }else{
+
+				Meteor.call("updateSurveyQuestionMaster", this._id, input.val(), function ( error, result ) {
+					if ( error ) {
+						console.log(error);
+					} else {
+						console.log(result);
+					}
+				} );
+
+			}
+		},
+		'keydown input[type=text]': function (event, template) {
+			if (event.which === 27) {
+				// ESC - discard edits and keep existing value
+				template.$('input').val(this.name);
+				event.preventDefault();
+				event.target.blur();
+			} else if (event.which === 13) {
+				// ENTER
+				event.preventDefault();
+				event.target.blur();
+			}
+		},
+		'click .close': function (event, template) {
+			// `this` is the data context set by the enclosing block helper (#each, here)
+
+			Meteor.call("removeSurveyQuestionMaster", this._id, function ( error, result ) {
+				if ( error ) {
+					console.log(error);
+				} else {
+					console.log(result);
+				}
+			} );
+
+			// custom code, working on a specific collection
+			var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
+			if (surveyQuestionsMasterCollection.find({}).count() === 0) {
+				Meteor.setTimeout(function () {
+					alert('Not nice to delete the entire list! Add some attributes instead.');
+				}, 1000);
+			}
 		}
 	}
 );

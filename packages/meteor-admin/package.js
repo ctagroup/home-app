@@ -69,7 +69,8 @@ Package.on_use(function(api){
     'lib/server/publish.coffee',
     'lib/server/methods.coffee',
     'lib/server/homeMethods.js',
-    'lib/server/homePublish.js'
+    'lib/server/homePublish.js',
+    'lib/server/sortableElements.js'
     ], 'server');
 
   api.export('AdminDashboard',both)
