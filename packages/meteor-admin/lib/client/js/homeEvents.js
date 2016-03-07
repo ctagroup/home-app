@@ -127,10 +127,10 @@ var maxRank = function(survey_id){
 		return 0;
 	} else {
 		var order = surveyQuestionsMasterCollection.find({surveyID:survey_id},{sort: {order: -1}}).fetch();
-		// ToDo - Check order.
-		//for(var i in order){
-		var maxOrder = order[0].order + 1;
-		//}
+		var maxOrder = 0;
+		for(var i in order){
+			maxOrder = order[i].order + 1;
+		}
 		return maxOrder;
 	}
 }
@@ -355,7 +355,6 @@ Template.surveyEditTemplate.events(
 
 		'submit form':function(event,tmpl){
 			event.preventDefault();
-			Session.set('showQuestions',{});
 		},
 	}
 );
@@ -453,6 +452,36 @@ Template.sortableItemTarget.events(
 					alert('Not nice to delete the entire list! Add some attributes instead.');
 				}, 1000);
 			}
+		}
+	}
+);
+
+Template.selectQuestions.events(
+	{
+		'click .selectques':function(evt,tmpl){
+			evt.preventDefault();
+
+			var selected = tmpl.findAll( "input[type=checkbox]:checked");
+			var array = selected.map(function(item){ return item.value})
+			Session.set('selectedQuestions',array);
+			var survey_id = tmpl.data._id;
+			var survey_title = tmpl.data.title;
+			var arrayLength = array.length;
+			for (var i = 0; i < arrayLength; i++) {
+				array[i] = array[i].substring(0, array[i].length - 1);
+			}
+
+			for(var i =0;i<array.length;i++){
+				Meteor.call("addSurveyQuestionMaster", survey_title, survey_id, 'question', array[i], maxRank(survey_id), function ( error, result ) {
+					if ( error ) {
+						console.log(error);
+					} else {
+						console.log(result);
+					}
+				} );
+			}
+
+			Router.go('adminDashboardsurveysEdit', {_id:tmpl.data._id});
 		}
 	}
 );

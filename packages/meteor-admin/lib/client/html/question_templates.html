@@ -111,14 +111,10 @@
 	</div>
 </template>
 
-<template name="selectquestions">
+<template name="selectQuestions">
 	<div class="container-fluid">
 		<div class="row-fluid">
-			<div class="page-header">
-				<br/><br/>
-				<h1>Select<small>Questions</small></h1>
-			</div>
-			<a href="{{pathFor route='surveyCreator' data = getPost}}" class="btn btn-large btn-info selectques">Select Question</a>
+			<a href="{{pathFor route='adminDashboardsurveysEdit' data = getPost}}" class="btn btn-large btn-info selectques">Select Question</a>
 			<br/><br/>
 			<table class="table table-bordered table-striped table-hover">
 				<thead>
@@ -131,20 +127,20 @@
 				</thead>
 				<tbody>
 				{{#each questionList}}
-				{{>selectquestionRow}}
+					{{>selectQuestionRow}}
 				{{/each}}
 				</tbody>
-
 			</table>
 		</div>
 	</div>
 </template>
 
-<template name="selectquestionRow">
+<template name="selectQuestionRow">
 	<tr class="selectquestionRow">
 		<td><input type="checkbox" class="toggle-checked" id="reportable" value={{_id}}/> </td>
-		<td>{{q_name}}</td>
+		<td>{{name}}</td>
 		<td>{{question}}</td>
-		<td>{{date_updated }}</td>
+		<td>{{formatDate updatedAt}}</td>
 	</tr>
 </template>
+

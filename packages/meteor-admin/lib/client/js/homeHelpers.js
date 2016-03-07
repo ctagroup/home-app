@@ -122,11 +122,14 @@ Template.sortableItemTarget.helpers(
 		quesNames: function(content){
 
 			var questionCollection = adminCollectionObject("questions");
-			var questionName = questionCollection.find({_id:content},{q_name:1,_id:0}).fetch();
+			var questionName = questionCollection.find({_id:content},{name:1,_id:0}).fetch();
 
+			var qNames = '';
 			for(var i in questionName){
-				var qNames = questionName[i].q_name;
+				qNames = questionName[i].name;
 			}
+			console.log(content);
+			console.log(qNames);
 			return qNames;
 
 		}
@@ -161,6 +164,17 @@ Template.typeDefinition.helpers(
 				            event.data.name, event.oldIndex, event.newIndex
 				);
 			}
+		}
+	}
+);
+
+Session.setDefault('selectedQuestions',null);
+
+Template.selectQuestions.helpers(
+	{
+		questionList : function(){
+			var questionCollection = adminCollectionObject("questions");
+			return questionCollection.find({}).fetch();
 		}
 	}
 );

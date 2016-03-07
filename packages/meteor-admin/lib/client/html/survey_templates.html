@@ -99,7 +99,7 @@
 			<div class="surveySection">
 				<label for="sectionName">Section
 
-					<input type="text" class="form-control input input-xxlarge sectionName" id="sectionName" name="sectionName" placeholder="Section Name" value=" ">
+					<input type="text" class="form-control input input-xxlarge sectionName" id="sectionName" name="sectionName" placeholder="Section Name" value="" />
 
 					<button class="btn btn-medium btn-info addSection">Add Section</button>
 
@@ -108,7 +108,7 @@
 			<br/>
 			<div class="surveyLabel">
 				<label for="labelName">Label
-					<input type="text" class="form-control input input-xxlarge labelName" id="labelName" name="labelName" placeholder="Label" value=" ">
+					<input type="text" class="form-control input input-xxlarge labelName" id="labelName" name="labelName" placeholder="Label" value="" />
 
 					<button class="btn btn-medium btn-info addLabel">Add Label</button>
 				</label>
@@ -116,7 +116,7 @@
 
 			<br/>
 			<div class="addQuesButton">
-				<a href="{{pathFor route='selectquestions' data = getPost}}" class="btn btn-medium btn-info addQues">Add Questions</a>
+				<a href="{{pathFor route='selectSurveyQuestion'}}" class="btn btn-medium btn-info addQues">Add Questions</a>
 			</div>
 		</div>
 	</div>
@@ -154,10 +154,10 @@
 			<div data-id="{{order}}" class="sortable-item removable well well-sm">
 				{{{icon}}}
 				<i class="sortable-handle mdi-action-view-headline pull-right">Reorder</i>
-				{{#if notQuestion content_type}}
-				<span class="name">{{content}}</span>
+				{{#if notQuestion contentType}}
+					<span class="name">{{content}}</span>
 				{{else}}
-				<span class="name">{{quesNames content}}</span>
+					<span class="name">{{quesNames content}}</span>
 				{{/if}}
 				<span class="badge">{{order}}</span>
 				<button type="button" class="close" data-dismiss="alert">
