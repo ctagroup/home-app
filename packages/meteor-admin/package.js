@@ -47,6 +47,7 @@ Package.on_use(function(api){
 
   api.add_files([
     'lib/client/html/admin_templates.html',
+    'lib/client/html/survey_templates.html',
     'lib/client/html/admin_widgets.html',
     'lib/client/html/admin_layouts.html',
     'lib/client/html/admin_sidebar.html',

@@ -184,7 +184,12 @@ AdminConfig = {
 						return '<a href="' + path + '"><strong>' + value + '</strong></a>';
 					}
 				}
-			]
+			],
+			templates: {
+				view : {
+					name: 'surveyViewTemplate'
+				}
+			}
 		},
 		questions: {
 			icon: 'question',

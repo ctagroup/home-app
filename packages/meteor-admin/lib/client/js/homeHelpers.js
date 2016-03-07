@@ -48,3 +48,30 @@ Template.AdminSettings.helpers( {
 UI.registerHelper("currentUserCan", function(cap) {
 	return Roles.userIsInRole(Meteor.userId(), cap);
 });
+
+Session.setDefault('editing_surveys',null);
+
+Template.registerHelper('formatDate', function(date) {
+	return moment(new Date()).format('MM/DD/YYYY');
+});
+
+Template.surveyViewTemplate.helpers(
+	{
+		surveyList: function() {
+			var surveyCollection = adminCollectionObject("surveys");
+			return surveyCollection.find();
+		}
+	}
+);
+
+Template.surveyForm.helpers(
+	{
+		surveyManager: function() {
+			var surveyCollection = adminCollectionObject("surveys");
+			return surveyCollection.findOne({_id:Session.get('editing_surveys')});
+		},
+		editing_surveys: function() {
+			return Session.get('editing_surveys');
+		}
+	}
+);
