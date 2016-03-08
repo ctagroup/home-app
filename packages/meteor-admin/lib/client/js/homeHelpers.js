@@ -133,7 +133,6 @@ Template.sortableItemTarget.helpers(
 	}
 );
 
-
 Template.typeDefinition.helpers(
 	{
 		showPreview: function(){
@@ -172,6 +171,164 @@ Template.selectQuestions.helpers(
 		questionList : function(){
 			var questionCollection = adminCollectionObject("questions");
 			return questionCollection.find({}).fetch();
+		}
+	}
+);
+
+var quesContent;
+Template.previewSurvey.helpers(
+	{
+		surveyQuesContents: function(){
+			var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
+			console.log(Router.current().params._id);
+			console.log(surveyQuestionsMasterCollection.find({surveyID:Router.current().params._id}, {sort: {order: 1}}).fetch())
+			return surveyQuestionsMasterCollection.find({surveyID:Router.current().params._id}, {sort: {order: 1}}).fetch();
+		},
+		textboxString: function(data){
+
+			if(data == "Textbox(String)"){
+				return true;
+			}
+
+		},
+		displaySection: function(content_type){
+			if(content_type == "section"){
+				return true;
+			}
+		},
+		displayLabel: function(content_type){
+			if(content_type == "label"){
+				return true;
+			}
+		},
+		textboxNumber: function(data){
+			if(data == "Textbox(Integer)"){
+				return true;
+			}
+
+		},
+		booleanYN: function(data){
+			if(data == "Boolean"){
+				return true;
+			}
+		},
+		booleanTF: function(data){
+			if(data == "Boolean"){
+				return true;
+			}
+		},
+		singleSelect: function(data){
+
+			if(data == "Single Select"){
+				return true;
+			}
+		},
+		multipleSelect: function(data){
+
+			if(data == "Multiple Select"){
+				return true;
+			}
+		},
+		displayQues: function(content_type,content){
+			quesContent = content;
+
+			if(content_type == "question"){
+				return true;
+			}
+		},
+		displayQuesContents: function(contentQuesId){
+
+			var questionCollection = adminCollectionObject("questions");
+			var questions = questionCollection.find({_id:contentQuesId}).fetch();
+
+			for(var i in questions){
+				var qNames = questions[i].question;
+			}
+			return qNames;
+
+		},
+		textboxString: function(contentQuesId){
+			var questionCollection = adminCollectionObject("questions");
+			var questions = questionCollection.find({_id:contentQuesId},{dataType:1,_id:0}).fetch();
+
+			for(var i in questions){
+				var textboxString = questions[i].q_dataType;
+				if(textboxString == "Textbox(String)"){
+					return true;
+				}
+			}
+		},
+		textboxNumber: function(contentQuesId){
+			var questionCollection = adminCollectionObject("questions");
+			var questions = questionCollection.find({_id:contentQuesId},{dataType:1,_id:0}).fetch();
+
+			for(var i in questions){
+				var textboxNumber = questions[i].q_dataType;
+				if(textboxNumber == "Textbox(Integer)"){
+					return true;
+				}
+			}
+		},
+		booleanTF: function(contentQuesId){
+			var questionCollection = adminCollectionObject("questions");
+			var questions = questionCollection.find({_id:contentQuesId},{dataType:1,_id:0}).fetch();
+
+			for(var i in questions){
+				var bool = questions[i].q_dataType;
+				if(bool == "Boolean"){
+					return true;
+				}
+			}
+		},
+		singleSelect: function(contentQuesId){
+			var questionCollection = adminCollectionObject("questions");
+			var questions = questionCollection.find({_id:contentQuesId},{dataType:1,_id:0}).fetch();
+
+			for(var i in questions){
+				var singleSelect = questions[i].q_dataType;
+				if(singleSelect == "Single Select"){
+					return true;
+				}
+			}
+		},
+		singleOptions: function(contentQuesId){
+
+			var questionCollection = adminCollectionObject("questions");
+			var questions = questionCollection.find({_id:contentQuesId},{dataType:1,_id:0}).fetch();
+
+			for(var i in questions){
+				var singleSelect = questions[i].q_dataType;
+				if(singleSelect == "Single Select"){
+					console.log("SINGLE: " +questions[i].options.split(","))
+					return questions[i].options.split(",");
+				}
+			}
+
+		},
+		multipleSelect: function(contentQuesId){
+			var questionCollection = adminCollectionObject("questions");
+			var questions = questionCollection.find({_id:contentQuesId},{dataType:1,_id:0}).fetch();
+
+			for(var i in questions){
+				var multipleSelect = questions[i].q_dataType;
+				if(multipleSelect == "Multiple Select"){
+					return true;
+				}
+			}
+		},
+		multipleOptions: function(contentQuesId){
+
+			var questionCollection = adminCollectionObject("questions");
+			var questions = questionCollection.find({_id:contentQuesId},{dataType:1,_id:0}).fetch();
+
+			for(var i in questions){
+				var multipleSelect = questions[i].q_dataType;
+				if(multipleSelect == "Multiple Select"){
+					console.log("MULTIPLE: " + questions[i].options.split(","));
+					return questions[i].options.split(",");
+				}
+			}
+
 		}
 	}
 );

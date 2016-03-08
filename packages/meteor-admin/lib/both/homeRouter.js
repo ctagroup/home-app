@@ -51,3 +51,22 @@ Router.route( "selectSurveyQuestion", {
 		return surveyCollection.findOne({_id:surveyID});
 	}
 });
+
+Router.route( "previewSurvey", {
+	path: "/admin/surveys/:_id/preview",
+	template: "previewSurvey",
+	controller: "AdminController",
+	action: function() {
+		this.render();
+	},
+	onAfterAction: function() {
+		Session.set('admin_title', 'Survey Preview');
+		Session.set('admin_collection_name', 'preview');
+		Session.set('admin_collection_page', '');
+	},
+	data: function() {
+		var surveyID = this.params._id;
+		var surveyCollection = adminCollectionObject("surveys");
+		return surveyCollection.findOne({_id:surveyID});
+	}
+} );

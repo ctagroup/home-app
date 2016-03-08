@@ -48,3 +48,7 @@
 .removable:hover .close {
 	display: block;
 }
+
+#previewSurveyList li {
+	list-style: none;
+}

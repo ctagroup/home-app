@@ -54,6 +54,7 @@ Package.on_use(function(api){
     'lib/client/html/admin_sidebar.html',
     'lib/client/html/admin_header.html',
     'lib/client/css/admin-custom.less',
+    'lib/client/css/survey.css',
     'lib/client/js/admin_layout.js',
     'lib/client/js/helpers.coffee',
     'lib/client/js/homeEvents.js',

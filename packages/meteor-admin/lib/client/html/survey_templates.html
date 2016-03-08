@@ -168,3 +168,79 @@
 	</div>
 </template>
 
+<template name="previewSurvey">
+
+	<div class="container-fluid quesL">
+
+		<ul id="previewSurveyList">
+
+			<h2>{{title}}</h2>
+
+			{{#each surveyQuesContents}}
+
+				{{#if displaySection contentType}}
+					<li><h3>{{content}}</h3></li>
+				{{/if}}
+
+				{{#if displayLabel contentType}}
+					<li><h3>{{content}}</h3></li>
+				{{/if}}
+
+				{{#if displayQues contentType}}
+					<li>
+						<h5>{{displayQuesContents content}}</h5>
+					</li>
+				{{/if}}
+
+				{{#if textboxString content}}
+					<li class="quesList">
+						<input type="text" class="form-control input input-xxlarge stringType" id="stringType" name="stringType" value="">
+					</li>
+				{{/if}}
+
+				{{#if textboxNumber content}}
+					<li class="quesList">
+						<input type="number" class="form-control input input-xxlarge numberType" id="numberType" name="numberType" value="">
+					</li>
+				{{/if}}
+
+				{{#if booleanYN content}}
+					<li class="quesList">
+						<label class="boolY"><input type="radio" class="form-control boolY" id="boolY" name="boolY" value="Yes"> &nbsp;Yes</label>
+					</li>
+					<li class="quesList">
+						<label class="boolY"> <input type="radio" class="form-control boolN" id="boolY" name="boolY" value="No"> &nbsp;No</label>
+					</li>
+				{{/if}}
+
+				{{#if booleanTF content}}
+					<li class="quesList">
+						<label class="boolY"><input type="radio" class="form-control boolY" id="boolY" name="boolY" value="Yes"> &nbsp;True</label>
+					</li>
+					<li class="quesList">
+						<label class="boolY"> <input type="radio" class="form-control boolN" id="boolY" name="boolY" value="No"> &nbsp;False</label>
+					</li>
+				{{/if}}
+
+				{{#if singleSelect content}}
+					{{#each singleOptions content}}
+						<li class="quesList">
+							<label class="singleSelect"><input type="radio" class="form-control singleSelect" id="singleSelect" name="singleSelect" value={{this}}> &nbsp; {{this}}</label>
+						</li>
+					{{/each}}
+				{{/if}}
+
+				{{#if multipleSelect content}}
+					{{#each multipleOptions content}}
+						<li class="quesList">
+							<label class="multipleSelect"><input type="checkbox" class="form-control multipleSelect" id="multipleSelect" name="multipleSelect" value={{this}}> &nbsp; {{this}}</label>
+						</li>
+					{{/each}}
+				{{/if}}
+			{{/each}}
+
+		</ul>
+
+	</div>
+
+</template>
