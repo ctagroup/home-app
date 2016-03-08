@@ -32,7 +32,7 @@ surveyQuestionsMaster.attachSchema( Schemas.surveyQuestionsMaster );
 
 surveyQuestionsMaster.allow(
 	{
-		update: function updateProducts(userId, doc, fieldNames, modifier) {
+		update: function updateEntry(userId, doc, fieldNames, modifier) {
 			if (fieldNames.length !== 1 || fieldNames[0] !== 'order') return false;
 			if (!Match.test(modifier, {$set: {order: Number}})) return false;
 			if (typeof Meteor.users != 'undefined' && Meteor.users.findOne(userId, {fields:{Id:1}}).Id !== doc.Id) return false;
