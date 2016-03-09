@@ -25,15 +25,31 @@ var publicRoutes = [
 ];
 
 /**
+ * Route Controller to check on users.
+ */
+HomeAppController = RouteController.extend(
+	{
+		onBeforeAction: function() {
+			if ( Meteor.userId() && ! Roles.userIsInRole( Meteor.userId(), 'view_admin' ) ) {
+				Meteor.call( 'adminCheckAdmin' );
+			}
+			this.next();
+		}
+	}
+);
+
+/**
  * Home Routes
  */
 Router.route( '/', {
 	name: 'root',
 	template: 'home',
+	controller: 'HomeAppController'
 } );
 Router.route( '/home', {
 	name: 'home',
 	template: 'home',
+	controller: 'HomeAppController'
 } );
 
 /**
@@ -42,43 +58,51 @@ Router.route( '/home', {
 AccountsTemplates.configureRoute( 'changePwd', {
 	name: 'changePwd',
 	path: '/change-password',
-	template: 'login'
+	template: 'login',
+	controller: 'HomeAppController'
 } );
 AccountsTemplates.configureRoute( 'enrollAccount', {
 	name: 'enrollAccount',
 	path: '/enroll-account',
-	template: 'login'
+	template: 'login',
+	controller: 'HomeAppController'
 } );
 AccountsTemplates.configureRoute( 'forgotPwd', {
 	name: 'forgotPwd',
 	path: '/forgot-password',
-	template: 'login'
+	template: 'login',
+	controller: 'HomeAppController'
 } );
 AccountsTemplates.configureRoute( 'resetPwd', {
 	name: 'resetPwd',
 	path: '/reset-password',
-	template: 'login'
+	template: 'login',
+	controller: 'HomeAppController'
 } );
 AccountsTemplates.configureRoute( 'signIn', {
 	name: 'signIn',
 	path: '/login',
 	template: 'login',
-	redirect: '/app'
+	redirect: '/app',
+	controller: 'HomeAppController'
 } );
 AccountsTemplates.configureRoute( 'signUp', {
 	name: 'signUp',
 	path: '/register',
-	template: 'login'
+	template: 'login',
+	controller: 'HomeAppController'
 } );
 AccountsTemplates.configureRoute( 'verifyEmail', {
 	name: 'verifyEmail',
 	path: '/verify-email',
-	template: 'login'
+	template: 'login',
+	controller: 'HomeAppController'
 } );
 AccountsTemplates.configureRoute( 'resendVerificationEmail', {
 	name: 'resendVerificationEmail',
 	path: '/send-again',
-	template: 'login'
+	template: 'login',
+	controller: 'HomeAppController'
 } );
 
 /**
@@ -86,11 +110,13 @@ AccountsTemplates.configureRoute( 'resendVerificationEmail', {
  */
 Router.route( '/app', {
 	name: 'appRoot',
-	template: 'appDashboard'
+	template: 'appDashboard',
+	controller: 'HomeAppController'
 });
 Router.route( '/app/dashboard', {
 	name: 'appDashboard',
-	template: 'appDashboard'
+	template: 'appDashboard',
+	controller: 'HomeAppController'
 });
 
 /**
@@ -105,9 +131,11 @@ Router.plugin( 'ensureSignedIn', {
  * */
 Router.route( '/privacy', {
 	name: 'privacy',
-	template: 'privacy'
+	template: 'privacy',
+	controller: 'HomeAppController'
 } );
 Router.route( '/terms-of-use', {
 	name: 'termsOfUse',
-	template: 'termsOfUse'
+	template: 'termsOfUse',
+	controller: 'HomeAppController'
 } );
