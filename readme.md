@@ -18,6 +18,21 @@ git submodule update
 meteor run
 ```
 
+## Deploy instructions
+
+- Meteor Up is used to deploy this app.
+
+- Two configs are present in the app as of now.
+	- udit-staging
+		- This is for @desaiuditd's VPN server for development purpose.
+	- cta-home-aws
+		- This is for AWS server for http://home.ctagroup.org
+		- This server is behind firewall. Following are the user credentials.
+		- `easyengine / bLGMpn`
+		- You need to have CTA AWS server's `home.pem` key. And put the file under `~/.ssh/home.pem` path. Because it is configured this way for meteor up settings.
+
+Ref: https://github.com/arunoda/meteor-up
+
 ## Meteor Components in use
 
 - Iron Router : https://github.com/iron-meteor/iron-router
@@ -53,4 +68,29 @@ meteor run
 - desaiuditd:admin
 	- Admin Dashboard UI
 	- Clone of https://github.com/desaiuditd/meteor-admin
-
+- blaze-html-templates
+	- HTML Template system for Meteor
+- Meteor Check
+	- Check & Match module for meteor to compare patterns
+- rubaxa:sortable
+	- Sortable UI for elements
+- jparker:gravatar
+	- Gravatar support for users
+- jquery
+	- jQuery library
+- meteor-base
+	- Base components in meteor
+- mobile-experience
+	- adds mobile support for meteor app
+- mongo
+	- database support for meteor
+- mrt:moment
+	- moment.js library for time format & conversion
+- service-configuration
+	- Manage the configuration for third-party services like Google, Facebook Oauth login
+- session
+	- Session variable
+- standard-minifiers
+	- Standard minifiers used with Meteor apps by default.
+- tracker
+	- Dependency tracker to allow reactive callbacks
