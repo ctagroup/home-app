@@ -117,6 +117,9 @@ var setFields=function(status){
 	$('#question').attr('disabled', status);
 	$('#hud').attr('disabled', status);
 	$('#q_dataType').attr('disabled', status);
+	if((document.getElementById('q_dataType').value=="Multiple Select")||(document.getElementById('q_dataType').value=="Single Select")){
+			$( '#options').attr('disabled', status);
+	}
 };
 
 var maxRank = function(survey_id){
@@ -193,6 +196,23 @@ Template.questionForm.events(
 			var value = $('#q_copy').val();
 			var text = value;
 			//To be done
+				if(value!=null){
+				var question2 = questions.findOne({_id:value});
+				for(var key in question2){
+					$('#q_category').val(question2.category).change();
+					$('#q_name' ).val(question2.name);
+					$('#question' ).val(question2.question);
+					$('#q_dataType' ).val(question2.dataType ).change();
+					if((document.getElementById('q_dataType').value=="Multiple Select")||(document.getElementById('q_dataType').value=="Single Select")){
+						$( '#options,#options_label' ).removeClass('hide');
+						$('#options' ).val(question2.options );
+					}
+					$('#newQuestionModal input[type=checkbox]#hud' ).attr('checked', question2.hud);
+					$('#newQuestionModal input[type=checkbox]#hud' ).prop('checked', question2.hud);
+					
+
+				}
+			}
 
 
 		},
