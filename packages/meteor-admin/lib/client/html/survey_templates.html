@@ -29,7 +29,11 @@
 
 <template name="surveyRow">
 	<tr class="surveyRow">
+		{{#if active}}
 		<td><a href="{{editSurveyPath _id}}">{{title}}</a></td>
+		{{else}}
+		<td>{{title}}</td>
+		{{/if}}
 		<td>{{formatDate createdAt}}</td>
 		<td>{{formatDate updatedAt}}</td>
 		<td><a href="#newSurveyModal" role="button" data-toggle="modal" name="edit" class="btn btn-info edit"><i class="fa fa-edit"></i></a></td>
@@ -48,10 +52,16 @@
 				<div class="modal-body">
 
 					<label for="survey_title">Survey Title: </label>
-					<input type="text" class="input input-xlarge survey_title" name="survey_title" id="survey_title"><br />
+					<input type="text" class="input input-xlarge survey_title" name="survey_title" id="survey_title">
 
-					<label class="checkbox-inline">
-						<input type="checkbox" class="active" id="active" value="active"> Active
+			
+					<input type="text" class="input input-xlarge copyof_surveytitle" name="copyof_surveytitle" id="copyof_surveytitle" >
+
+					<br />
+
+						<label class="checkbox-inline">
+						<input type="checkbox" class="active" id="active" value="active"> 
+						<input type="checkbox" class="copy_active" id="copy_active" >Active
 					</label><br />
 					<label class="checkbox-inline">
 						<input type="checkbox"  class="skip" id="skip" value="skip"> Skip
@@ -59,6 +69,15 @@
 					<label class="checkbox-inline">
 						<input type="checkbox" class="copy" id="copy" value="copy"> Copy
 					</label><br />
+						<div class="isCopyTrue">
+					<label for="s_copy" >Choose a Survey copy: </label>
+					<select class="s_copy" name="s_copy" id="s_copy">
+				 <option value="ChooseSurvey">Choose</option>
+					{{#each surveyList}}
+						<option value={{_id}}>{{title}}</option>
+					{{/each}}
+				 </select>
+					</div>	
 
 					<input type="hidden" id="isUpdate" value="0" />
 					<input type="hidden" id="surveyID" value="" />

@@ -34,10 +34,18 @@ Template.surveyForm.events(
 
 		'click .save':function(evt,tmpl){
 
-			var title = tmpl.find('.survey_title').value;
-			var active = tmpl.find('.active').checked;
 			var skip = tmpl.find('.skip').checked;
 			var copy = tmpl.find('.copy').checked;
+			
+			if(copy){
+			var title = tmpl.find('.copyof_surveytitle').value;
+			var active = tmpl.find('.copy_active').checked;	
+
+			}else{
+			var title = tmpl.find('.survey_title').value;
+			var active = tmpl.find('.active').checked;
+			}
+
 			var isUpdate = $('#isUpdate').val();
 			var surveyID = $('#surveyID').val();
 
@@ -68,6 +76,29 @@ Template.surveyForm.events(
 		'click .close':function(evt,tmpl){
 			resetSurveyModal();
 		},
+		'click .copy': function(evt,tmpl) {
+			//resetSurveyModal();
+			var copy = $('#copy').is(':checked');
+			 if(copy){
+					
+				$('.isCopyTrue' ).show();
+				$('.copyof_surveytitle').show();
+				$('.copy_active').show();
+				$('.survey_title').hide();
+				$('.active').hide();
+
+
+			 }else{
+				
+				$('.isCopyTrue' ).hide();
+				$('.copyof_surveytitle').hide();
+				$('.copy_active').hide();
+				$('.survey_title').show();
+				$('.active').show();	
+			 }
+			
+
+		},
 		'click .remove':function(evt,tmpl){
 			var surveyID = $('#surveyID').val();
 			Meteor.call("removeSurvey", surveyID, function ( error, result ) {
@@ -78,7 +109,16 @@ Template.surveyForm.events(
 				}
 			} );
 			resetSurveyModal();
-		}
+		},
+		'change .s_copy': function (event, template) {
+     	 var surveyID_forCopy = $(event.currentTarget).val();
+      		console.log("Title:" + surveyID_forCopy);
+      		var survey_record = surveys.findOne({_id:surveyID_forCopy});
+      		for(var key in survey_record){
+      			document.getElementById('copyof_surveytitle').value = survey_record['title'];
+      			document.getElementById('copy_active').checked = survey_record['active'];
+      		}
+      	}
 
 	}
 );
@@ -87,6 +127,11 @@ var resetSurveyModal = function() {
 	$('#newSurveyModal input[type=text]').val('');
 	$('#newSurveyModal input[type=checkbox]' ).attr('checked', false);
 	$('#newSurveyModal input[type=checkbox]' ).prop('checked', false);
+	$('.isCopyTrue' ).hide();
+	$('.copyof_surveytitle').hide();
+	$('.copy_active').hide();
+	$('.survey_title').show();
+	$('.active').show();
 	$('#isUpdate').val('0');
 	$('#surveyID').val('');
 };
