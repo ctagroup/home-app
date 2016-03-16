@@ -2,9 +2,9 @@
 
 	{{>questionForm}}
 
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<a href="#newQuestionModal" role="button" data-toggle="modal" class="btn btn-large btn-primary addQuestion">Add Question</a>
+	<div class="container">
+		<div class="row">
+			<a href="#newQuestionModal" role="button" data-toggle="modal" class="btn btn-lg btn-primary addQuestion">Add Question</a>
 			<br/><br/>
 			<table class="table table-bordered table-striped table-hover">
 				<thead>
@@ -44,60 +44,68 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h3 class="showWhenNew">Add Question</h3>
-					<h3 class="showWhenEdit">Update Question</h3>
+					<h3 class="modal-title showWhenNew">Add Question</h3>
+					<h3 class="modal-title showWhenEdit">Update Question</h3>
 				</div>
 				<div class="modal-body">
 
-					<label for="q_category">Question Category:  </label>
-					<select class="q_category" name="q_category" id="q_category">
-						<option value="Universal Data Elements">Universal Data Elements</option>
-						<option value="Program Specific Data Elements">Program Specific Data Elements</option>
-						<option value="Path Required Elements">Path Required Elements</option>
-						<option value="Rhy Required Elements">Rhy Required Elements</option>
-						<option value="HOPWA Required Elements">HOPWA Required Elements</option>
-						<option value="VA Required Elements">VA Required Elements</option>
-					</select><br />
+					<div class="form-group">
+						<label for="q_category">Question Category:  </label>
+						<select class="form-control q_category" name="q_category" id="q_category">
+							<option value="Universal Data Elements">Universal Data Elements</option>
+							<option value="Program Specific Data Elements">Program Specific Data Elements</option>
+							<option value="Path Required Elements">Path Required Elements</option>
+							<option value="Rhy Required Elements">Rhy Required Elements</option>
+							<option value="HOPWA Required Elements">HOPWA Required Elements</option>
+							<option value="VA Required Elements">VA Required Elements</option>
+						</select>
+					</div>
 					<div class="showWhenNew">
-						<label class="checkbox-inline">
-						<input type="checkbox" class="toggle" id="isCopy" value="isCopy"> IsCopy
-						</label><br />
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" class="toggle" id="isCopy" value="isCopy"> IsCopy
+							</label>
+						</div>
 						<!--{{#if isCopySet}}-->
-						<div class="isCopySet">
+						<div class="form-group isCopySet">
 							<label for="q_copy" >Choose a Question copy: </label>
-							<select class="q_copy" name="q_copy" id="q_copy">
+							<select class="form-control q_copy" name="q_copy" id="q_copy">
 								<option value="Choose">Choose</option>
 								{{#each questionList}}
-									<option value={{_id}}>{{name}}</option>
+								<option value={{_id}}>{{name}}</option>
 								{{/each}}
 							</select>
 						</div>
 					</div>
 					<label for="q_name">Question Name: </label>
-					<input type="text" class="input input-xlarge q_name" name="q_name" id="q_name"><br />
+					<input type="text" class="form-control q_name" name="q_name" id="q_name"><br />
 					<label for="question">Display text: </label>
-					<input type="text" class="input input-xlarge question" name="question" id="question"><br />
+					<input type="text" class="form-control question" name="question" id="question"><br />
 					<label for="q_datatype">Question Data Type: </label>
-					<select class="q_dataType" name="q_dataType" id="q_dataType">
+					<select class="form-control q_dataType" name="q_dataType" id="q_dataType">
 						<option value="Textbox(String)">Textbox(String)</option>
 						<option value="Multiple Select">Multiple Select</option>
 						<option value="Single Select">Single Select</option>
 						<option value="Boolean">Boolean</option>
 						<option value="Textbox(Integer)">TextBox(Integer)</option>
-					</select><br />
+					</select>
 
 					<label for="options" id="options_label" class="hide">Options(Enter comma separated options): </label>
-					<input type="text" class="input input-xlarge options hide" name="options" id="options" /><br />
-
-					<label class="checkbox-inline">
-					<input type="checkbox" class="toggle-checked" id="hud" value="hud"> HUD
-					</label><br />
-					<label class="checkbox-inline" >
-						<input type="checkbox" class="toggle-checked locked" id="locked" value="locked"> Locked
-					</label><br />
+					<input type="text" class="form-control options hide" name="options" id="options" />
+					<div class="checkbox">
+						<label class="checkbox-inline">
+							<input type="checkbox" class="toggle-checked" id="hud" value="hud"> HUD
+						</label>
+					</div>
+					<div class="checkbox">
+						<label class="checkbox-inline" >
+							<input type="checkbox" class="toggle-checked locked" id="locked" value="locked"> Locked
+						</label>
+					</div>
 
 					<input type="hidden" id="isUpdate" value="0" />
 					<input type="hidden" id="questionID" value="" />
+
 
 				</div>
 				<div class="modal-footer">
@@ -112,9 +120,9 @@
 </template>
 
 <template name="selectQuestions">
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<a href="{{pathFor route='adminDashboardsurveysEdit' data = getPost}}" class="btn btn-large btn-info selectques">Select Question</a>
+	<div class="container">
+		<div class="row">
+			<a href="{{pathFor route='adminDashboardsurveysEdit' data = getPost}}" class="btn btn-lg btn-info selectques">Select Question</a>
 			<br/><br/>
 			<table class="table table-bordered table-striped table-hover">
 				<thead>
