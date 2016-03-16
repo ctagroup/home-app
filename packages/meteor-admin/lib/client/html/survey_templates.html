@@ -2,8 +2,8 @@
 
 	{{>surveyForm}}
 
-	<div class="container-fluid">
-		<div class="row-fluid">
+	<div class="container">
+		<div class="row">
 			<a href="#newSurveyModal" role="button" data-toggle="modal" class="btn btn-large btn-primary addSurvey">Add Survey</a>
 			<br/><br/>
 			<table class="table table-bordered table-striped table-hover">
@@ -36,7 +36,7 @@
 		{{/if}}
 		<td>{{formatDate createdAt}}</td>
 		<td>{{formatDate updatedAt}}</td>
-		<td><a href="#newSurveyModal" role="button" data-toggle="modal" name="edit" class="btn btn-info edit"><i class="fa fa-edit"></i></a></td>
+		<td><a href="#newSurveyModal" role="button" data-toggle="modal" name="edit" class="btn btn-primary edit"><i class="fa fa-edit"></i></a></td>
 	</tr>
 </template>
 
@@ -50,15 +50,16 @@
 					<h3 class="showWhenEdit">Update Survey</h3>
 				</div>
 				<div class="modal-body">
+				<div class="form-group">
 
 					<label for="survey_title">Survey Title: </label>
-					<input type="text" class="input input-xlarge survey_title" name="survey_title" id="survey_title">
+					<input type="text" class="form-control survey_title" name="survey_title" id="survey_title">
 
 			
-					<input type="text" class="input input-xlarge copyof_surveytitle" name="copyof_surveytitle" id="copyof_surveytitle" >
+					<input type="text" class="form-control copyof_surveytitle" name="copyof_surveytitle" id="copyof_surveytitle" >
 
 					<br />
-
+					<div class="checked">
 						<label class="checkbox-inline">
 						<input type="checkbox" class="active" id="active" value="active"> 
 						<input type="checkbox" class="copy_active" id="copy_active" >Active
@@ -66,10 +67,11 @@
 					<label class="checkbox-inline">
 						<input type="checkbox"  class="skip" id="skip" value="skip"> Skip
 					</label><br />
-					<label class="checkbox-inline">
+					<label class="checkbox-inline copylabel">
 						<input type="checkbox" class="copy" id="copy" value="copy"> Copy
 					</label><br />
-						<div class="isCopyTrue">
+					</div>
+						<div class="form-group isCopyTrue">
 					<label for="s_copy" >Choose a Survey copy: </label>
 					<select class="s_copy" name="s_copy" id="s_copy">
 				 <option value="ChooseSurvey">Choose</option>
@@ -81,6 +83,7 @@
 
 					<input type="hidden" id="isUpdate" value="0" />
 					<input type="hidden" id="surveyID" value="" />
+				</div>
 				</div>
 				<div class="modal-footer">
 					<a href="#" class="btn btn-danger remove showWhenEdit" data-dismiss="modal">Delete</a>
@@ -103,8 +106,8 @@
 		<!--</div>-->
 	<!--</div>-->
 
-	<div class="container-fluid">
-		<div class="row-fluid">
+	<div class="container">
+		<div class="row">
 			<div class="page-header">
 				<h4>Setup</h4>
 			</div>
@@ -114,28 +117,30 @@
 					<b>Survey Title:</b> {{title}}
 				</label>
 			</div>
+			<div class="form-group">
+			
+				
 
-			<div class="surveySection">
-				<label for="sectionName">Section
+					<input type="text" class="form-control  sectionName" id="sectionName" name="sectionName" placeholder="Section Name" value="" />
+					<br/>	
+					<button class="btn btn-large btn-primary addSection">Add Section</button>
 
-					<input type="text" class="form-control input input-xxlarge sectionName" id="sectionName" name="sectionName" placeholder="Section Name" value="" />
-
-					<button class="btn btn-medium btn-info addSection">Add Section</button>
-
-				</label>
+			
+		
 			</div>
 			<br/>
-			<div class="surveyLabel">
-				<label for="labelName">Label
-					<input type="text" class="form-control input input-xxlarge labelName" id="labelName" name="labelName" placeholder="Label" value="" />
-
-					<button class="btn btn-medium btn-info addLabel">Add Label</button>
-				</label>
+			<div class="form-group">
+			
+			
+					<input type="text" class="form-control  labelName" id="labelName" name="labelName" placeholder="Label" value="" />
+					<br/>
+					<button class="btn btn-large btn-primary addLabel">Add Label</button>
+			
 			</div>
 
 			<br/>
 			<div class="addQuesButton">
-				<a href="{{pathFor route='selectSurveyQuestion'}}" class="btn btn-medium btn-info addQues">Add Questions</a>
+				<a href="{{pathFor route='selectSurveyQuestion'}}" class="btn btn-large btn-primary addQues">Add Questions</a>
 			</div>
 		</div>
 	</div>
@@ -146,8 +151,8 @@
 </template>
 
 <template name="typeDefinition">
-	<div class="container-fluid">
-		<div class="row-fluid">
+	<div class="container">
+		<div class="row">
 			<div class="row">
 
 				<div class="list-pair col-sm-12">
@@ -161,7 +166,7 @@
 
 			</div>
 			{{#if showPreview}}
-			<a href="{{pathFor route='previewSurvey' data = getPost}}" class="btn btn-medium btn-info previewSurvey">Preview</a>
+			<a href="{{pathFor route='previewSurvey' data = getPost}}" class="btn btn-large btn-primary previewSurvey">Preview</a>
 			{{/if}}
 		</div>
 	</div>
@@ -189,7 +194,7 @@
 
 <template name="previewSurvey">
 
-	<div class="container-fluid quesL">
+	<div class="container quesL">
 
 		<ul id="previewSurveyList">
 

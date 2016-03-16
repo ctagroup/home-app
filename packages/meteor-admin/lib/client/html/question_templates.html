@@ -4,7 +4,7 @@
 
 	<div class="container">
 		<div class="row">
-			<a href="#newQuestionModal" role="button" data-toggle="modal" class="btn btn-lg btn-primary addQuestion">Add Question</a>
+			<a href="#newQuestionModal" role="button" data-toggle="modal" class="btn btn-large btn-primary addQuestion">Add Question</a>
 			<br/><br/>
 			<table class="table table-bordered table-striped table-hover">
 				<thead>
@@ -33,7 +33,7 @@
 		<td>{{name}}</td>
 		<td>{{formatDate createdAt }}</td>
 		<td>{{formatDate updatedAt }}</td>
-		<td> <a href="#newQuestionModal" role="button" data-toggle="modal" class="btn btn-info edit"><span class="fa fa-edit"></span></a></td>
+		<td> <a href="#newQuestionModal" role="button" data-toggle="modal" class="btn btn-primary edit"><span class="fa fa-edit"></span></a></td>
 		<td> <a class="btn btn-danger delete"><span class="fa fa-remove"></span></a></td>
 	</tr>
 </template>
@@ -89,7 +89,7 @@
 						<option value="Boolean">Boolean</option>
 						<option value="Textbox(Integer)">TextBox(Integer)</option>
 					</select>
-
+					<br/>
 					<label for="options" id="options_label" class="hide">Options(Enter comma separated options): </label>
 					<input type="text" class="form-control options hide" name="options" id="options" />
 					<div class="checkbox">
@@ -122,7 +122,7 @@
 <template name="selectQuestions">
 	<div class="container">
 		<div class="row">
-			<a href="{{pathFor route='adminDashboardsurveysEdit' data = getPost}}" class="btn btn-lg btn-info selectques">Select Question</a>
+			<a href="{{pathFor route='adminDashboardsurveysEdit' data = getPost}}" class="btn btn-large btn-primary selectques">Select Question</a>
 			<br/><br/>
 			<table class="table table-bordered table-striped table-hover">
 				<thead>
