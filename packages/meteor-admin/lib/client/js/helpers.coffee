@@ -65,8 +65,9 @@ UI.registerHelper 'adminGetSkin', ->
 	else
 		'blue'
 
-UI.registerHelper 'adminIsUserInRole', (_id,role)->
-	Roles.userIsInRole _id, role
+UI.registerHelper 'adminIsUserInRole', (_id)->
+	user = Meteor.users.findOne(_id);
+	Roles.userIsInRole user, ['Admin','System Admin','Developer']
 
 UI.registerHelper 'adminGetUsers', ->
 	Meteor.users

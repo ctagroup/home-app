@@ -46,7 +46,7 @@ Template.AdminSettings.helpers( {
 } );
 
 UI.registerHelper("currentUserCan", function(cap) {
-	return Roles.userIsInRole(Meteor.userId(), cap);
+	return Roles.userIsInRole(Meteor.user(), cap);
 });
 
 Template.registerHelper('formatDate', function(date) {
