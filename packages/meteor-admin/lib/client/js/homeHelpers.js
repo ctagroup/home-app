@@ -40,6 +40,13 @@ Template.AdminSettings.helpers( {
 			settings.hmisAPI.trustedAppID = "";
 		}
 
+		var trustedAppSecret = optionsCollection.find({option_name:"trustedAppSecret"} ).fetch();
+		if(trustedAppSecret.length > 0 && typeof trustedAppSecret[0].option_value != 'undefined') {
+			settings.hmisAPI.trustedAppSecret = trustedAppSecret[0].option_value;
+		} else {
+			settings.hmisAPI.trustedAppSecret = "";
+		}
+
 		return settings;
 
 	}

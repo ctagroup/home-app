@@ -12,5 +12,11 @@ Schemas.adminSettings = new SimpleSchema({
 		type: String,
 		optional: true,
 		max: 256
+	},
+	"hmisAPI.trustedAppSecret": {
+		label: "Trusted App Secret",
+		type: String,
+		optional: true,
+		max: 256
 	}
 });
