@@ -34,9 +34,11 @@ Meteor.startup(function() {
 	}
 
 	if ( Meteor.isClient ) {
-		AdminDashboard.addSidebarItem("Role Manager", AdminDashboard.path('/roles'), { icon: 'user-secret' });
-		if ( Roles.userIsInRole( Meteor.user(), "manage_settings" ) ) {
-			AdminDashboard.addSidebarItem("Settings", AdminDashboard.path('/settings'), { icon: 'cogs' });
-		}
+		Meteor.subscribe("users", function () {
+			AdminDashboard.addSidebarItem("Role Manager", AdminDashboard.path('/roles'), { icon: 'user-secret' });
+			if ( Roles.userIsInRole( Meteor.user(), "manage_settings" ) ) {
+				AdminDashboard.addSidebarItem("Settings", AdminDashboard.path('/settings'), { icon: 'cogs' });
+			}
+		});
 	}
 });
