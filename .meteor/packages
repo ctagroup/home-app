@@ -37,3 +37,5 @@ mrt:moment
 check
 rubaxa:sortable
 oauth2
+meteorhacks:npm
+npm-container
