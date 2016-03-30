@@ -270,6 +270,7 @@ Template.questionViewTemplate.events(
 			resetQuestionModal();
 			$('.showWhenEdit').hide();
 			$('.showWhenNew').show();
+			setFields(false);
 		}
 	}
 );
@@ -334,16 +335,36 @@ Template.questionForm.events(
 
 			var isCopy = tmpl.find('#isCopy').checked;
 
-			if((q_dataType=="Multiple Select")||(q_dataType=="Single Select"))
-				var options = tmpl.find('#options').value;
-			else
-				var options="";
+			var options,selectstatus=false;
 
+			if((q_dataType=="Multiple Select")||(q_dataType=="Single Select")){
+				options = tmpl.find('#options').value;
+				selectstatus=true;
+			}
+			else
+				options="";
+			if(q_category==""){
+				$('#error').html("<b>Please select a question category</b>");
+				$('#error').show();
+			}else if(q_name==""){
+				$('#error').html("<b>Please enter a questions name</b>");
+				$('#error').show();
+			}else if(question==""){
+				$('#error').html("<b>Please enter a display text</b>");
+				$('#error').show();
+			}else if(q_dataType==""){
+				$('#error').html("<b>Please select a datatype</b>");
+				$('#error').show();
+			}else if((selectstatus)&&(options=="")){
+				$('#error').html("<b>Please enter options separated by commas </b>");
+				$('#error').show();				
+			}else{		
+				$('#newQuestionModal').modal('hide');
+				$('#error').hide();
 			var isUpdate = $('#isUpdate').val();
 			var questionID = $('#questionID').val();
 
 			if(isUpdate=='1'){
-
 				Meteor.call("updateQuestion", questionID, q_category,q_name,question,q_dataType,options,hud,locked,isCopy, function ( error, result ) {
 					if ( error ) {
 						console.log(error);
@@ -351,9 +372,7 @@ Template.questionForm.events(
 						console.log(result);
 					}
 				} );
-
 			}else{
-
 				Meteor.call("addQuestion", q_category,q_name,question,q_dataType,options,hud,locked,isCopy, function ( error, result ) {
 					if ( error ) {
 						console.log(error);
@@ -361,10 +380,10 @@ Template.questionForm.events(
 						console.log(result);
 					}
 				} );
-
+				
 			}
-
 			resetQuestionModal();
+		}
 		},
 		'click .cancel':function(evt,tmpl){
 			resetQuestionModal();
@@ -412,6 +431,10 @@ Template.questionRow.events(
 
 			$('.showWhenEdit').show();
 			$('.showWhenNew').hide();
+			if(question.locked)
+				setFields(true);
+			else
+				setFields(false);
 		},
 		'click .delete':function(evt,tmpl){
 
