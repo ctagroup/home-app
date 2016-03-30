@@ -33,7 +33,10 @@ Template.surveyForm.events(
 	{
 
 		'click .save':function(evt,tmpl){
-			
+
+			$('.copy').show();
+			$('.copylabel').show();
+			$('.isCopyTrue' ).show();
 			
 			var surveyID = $('#surveyID').val();
 			var copy = tmpl.find('.copy').checked;
@@ -47,7 +50,7 @@ Template.surveyForm.events(
 			console.log("SURVEY_ID: " + surveyID);
 			console.log("isUpdate: " + isUpdate);
 
-			alert("T: " + title + "A: " + active + "C: " + copy);
+			//alert("T: " + title + "A: " + active + "C: " + copy);
 			
 			if(isUpdate=='1'){
 
@@ -232,7 +235,7 @@ Template.surveyRow.events(
 				$('.active').show();
 			}
 
-			alert("Copy: " + copy + "Title: " + survey.title + "Active: " + survey.active);
+			//alert("Copy: " + copy + "Title: " + survey.title + "Active: " + survey.active);
 			if(copy){
 			$('#newSurveyModal input[type=text]#copyof_surveytitle').val(survey.title);
 			$('#newSurveyModal input[type=checkbox]#copy_active' ).attr('checked', survey.active);
@@ -251,9 +254,13 @@ Template.surveyRow.events(
 			$('#surveyID').val(tmpl.data._id);
 
 			$('.showWhenEdit').show();
-			$('.showWhenNew').hide();	
+			$('.showWhenNew').hide();
+
+			resetSurveyModal();
+
 
 		}
+
 	}
 );
 

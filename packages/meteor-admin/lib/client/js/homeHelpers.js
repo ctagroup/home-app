@@ -199,13 +199,7 @@ Template.previewSurvey.helpers(
 			console.log(surveyQuestionsMasterCollection.find({surveyID:Router.current().params._id}, {sort: {order: 1}}).fetch())
 			return surveyQuestionsMasterCollection.find({surveyID:Router.current().params._id}, {sort: {order: 1}}).fetch();
 		},
-		textboxString: function(data){
 
-			if(data == "Textbox(String)"){
-				return true;
-			}
-
-		},
 		displaySection: function(content_type){
 			if(content_type == "section"){
 				return true;
@@ -216,13 +210,22 @@ Template.previewSurvey.helpers(
 				return true;
 			}
 		},
+		textboxString: function(data){
+			
+			if(data == "Textbox(String)"){
+				return true;
+			}
+
+		},
 		textboxNumber: function(data){
+			
 			if(data == "Textbox(Integer)"){
 				return true;
 			}
 
 		},
 		booleanYN: function(data){
+			
 			if(data == "Boolean"){
 				return true;
 			}
@@ -267,7 +270,7 @@ Template.previewSurvey.helpers(
 			var questions = questionCollection.find({_id:contentQuesId},{dataType:1,_id:0}).fetch();
 
 			for(var i in questions){
-				var textboxString = questions[i].q_dataType;
+				var textboxString = questions[i].dataType;
 				if(textboxString == "Textbox(String)"){
 					return true;
 				}
@@ -278,7 +281,7 @@ Template.previewSurvey.helpers(
 			var questions = questionCollection.find({_id:contentQuesId},{dataType:1,_id:0}).fetch();
 
 			for(var i in questions){
-				var textboxNumber = questions[i].q_dataType;
+				var textboxNumber = questions[i].dataType;
 				if(textboxNumber == "Textbox(Integer)"){
 					return true;
 				}
@@ -289,7 +292,7 @@ Template.previewSurvey.helpers(
 			var questions = questionCollection.find({_id:contentQuesId},{dataType:1,_id:0}).fetch();
 
 			for(var i in questions){
-				var bool = questions[i].q_dataType;
+				var bool = questions[i].dataType;
 				if(bool == "Boolean"){
 					return true;
 				}
@@ -300,7 +303,7 @@ Template.previewSurvey.helpers(
 			var questions = questionCollection.find({_id:contentQuesId},{dataType:1,_id:0}).fetch();
 
 			for(var i in questions){
-				var singleSelect = questions[i].q_dataType;
+				var singleSelect = questions[i].dataType;
 				if(singleSelect == "Single Select"){
 					return true;
 				}
@@ -312,7 +315,7 @@ Template.previewSurvey.helpers(
 			var questions = questionCollection.find({_id:contentQuesId},{dataType:1,_id:0}).fetch();
 
 			for(var i in questions){
-				var singleSelect = questions[i].q_dataType;
+				var singleSelect = questions[i].dataType;
 				if(singleSelect == "Single Select"){
 					console.log("SINGLE: " +questions[i].options.split(","))
 					return questions[i].options.split(",");
@@ -325,7 +328,7 @@ Template.previewSurvey.helpers(
 			var questions = questionCollection.find({_id:contentQuesId},{dataType:1,_id:0}).fetch();
 
 			for(var i in questions){
-				var multipleSelect = questions[i].q_dataType;
+				var multipleSelect = questions[i].dataType;
 				if(multipleSelect == "Multiple Select"){
 					return true;
 				}
@@ -337,7 +340,7 @@ Template.previewSurvey.helpers(
 			var questions = questionCollection.find({_id:contentQuesId},{dataType:1,_id:0}).fetch();
 
 			for(var i in questions){
-				var multipleSelect = questions[i].q_dataType;
+				var multipleSelect = questions[i].dataType;
 				if(multipleSelect == "Multiple Select"){
 					console.log("MULTIPLE: " + questions[i].options.split(","));
 					return questions[i].options.split(",");
