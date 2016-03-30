@@ -135,6 +135,13 @@ Meteor.methods(
 
 			var optionsCollection = adminCollectionObject("options");
 			optionsCollection.upsert({option_name:"trustedAppID"}, {$set: {option_name:"trustedAppID",option_value:value}});
+
+			value = "";
+			if(typeof settings.hmisAPI != 'undefined' && typeof settings.hmisAPI.trustedAppSecret != 'undefined') {
+				value = settings.hmisAPI.trustedAppSecret;
+			}
+
+			optionsCollection.upsert({option_name:"trustedAppSecret"}, {$set: {option_name:"trustedAppSecret",option_value:value}});
 		},
 		addSurvey: function(title,active,skip,copy){
 			var surveyCollection = adminCollectionObject("surveys");

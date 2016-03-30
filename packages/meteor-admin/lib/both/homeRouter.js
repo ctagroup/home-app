@@ -27,8 +27,8 @@ Router.route("adminSettings", {
 		this.render();
 	},
 	onAfterAction: function() {
-		Session.set('admin_title', 'Select Questions');
-		Session.set('admin_collection_name', 'selectQuestions');
+		Session.set('admin_title', 'Settings');
+		Session.set('admin_collection_name', 'settings');
 		Session.set('admin_collection_page', '');
 	}
 });
@@ -42,7 +42,7 @@ Router.route( "selectSurveyQuestion", {
 	},
 	onAfterAction: function() {
 		Session.set('admin_title', 'Select Questions');
-		Session.set('admin_collection_name', 'settings');
+		Session.set('admin_collection_name', 'selectQuestions');
 		Session.set('admin_collection_page', '');
 	},
 	data: function() {

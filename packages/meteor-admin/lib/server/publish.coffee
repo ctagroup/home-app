@@ -32,5 +32,5 @@ Meteor.publish 'adminCollectionsCount', ->
 		_.each handles, (handle) -> handle.stop()
 	self.ready()
 
-Meteor.publish null, ->
+Meteor.publish "roles", ->
 	Meteor.roles.find({})
