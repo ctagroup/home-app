@@ -31,7 +31,7 @@ Package.on_use(function(api){
     ],
     both);
 
-  api.use(['less@1.0.0 || 2.5.0','session','jquery','templating'],'client')
+  api.use(['fourseven:scss@3.4.1','session','jquery','templating'],'client')
 
   api.use(['email'],'server')
 
@@ -53,8 +53,10 @@ Package.on_use(function(api){
     'lib/client/html/admin_layouts.html',
     'lib/client/html/admin_sidebar.html',
     'lib/client/html/admin_header.html',
-    'lib/client/css/admin-custom.less',
-    'lib/client/css/survey.css',
+	'lib/client/stylesheets/style.scss',
+	'lib/client/stylesheets/_admin.scss',
+	'lib/client/stylesheets/_settings.scss',
+	'lib/client/stylesheets/_survey.scss',
     'lib/client/js/admin_layout.js',
     'lib/client/js/helpers.coffee',
     'lib/client/js/homeEvents.js',
