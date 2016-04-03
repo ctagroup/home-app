@@ -30,17 +30,25 @@ Meteor.startup(function() {
 		upsert: true
 	} );
 
-	//Add Twitter configuration entry
-	//Accounts.loginServiceConfiguration.update( {
-	//	service: "twitter"
-	//}, {
-	//	$set: {
-	//		consumerKey: "KEbv2Zf8iSeRmCBjw0HWPpcaL",
-	//		secret: "2aeO1mlXbOG0iK7gqodCSPXfP3SZocuzX5JUGN4yIBYTuma4qS"
-	//	}
-	//}, {
-	//	upsert: true
-	//} );
+	var optionsCollection = adminCollectionObject("options");
+	var trustedAppID = optionsCollection.find({option_name:"trustedAppID"} ).fetch();
+	var trustedAppSecret = optionsCollection.find({option_name:"trustedAppSecret"} ).fetch();
 
-	//Accounts.loginServiceConfiguration.remove( { service: "twitter" } );
+	if ( trustedAppID.length > 0 && typeof trustedAppID[0].option_value != 'undefined'
+	     && trustedAppSecret.length > 0 && typeof trustedAppSecret[0].option_value != 'undefined' ) {
+		ServiceConfiguration.configurations.update(
+			{
+				service: "HMIS",
+			}, {
+				$set: {
+					hmisAPIEndpoints: AdminConfig.hmisAPIEndpoints,
+					appId: trustedAppID[0].option_value,
+					appSecret: trustedAppSecret[0].option_value
+				}
+			}, {
+				upsert: true
+			}
+		);
+	}
+
 } );

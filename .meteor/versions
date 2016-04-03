@@ -34,7 +34,9 @@ ddp-common@1.2.2
 ddp-rate-limiter@1.0.0
 ddp-server@1.2.2
 deps@1.0.9
-desaiuditd:admin@1.2.3
+desaiuditd:accounts-hmis@0.0.1
+desaiuditd:hmis@0.0.1
+desaiuditd:meteor-admin@1.2.3
 diff-sequence@1.0.1
 ecmascript@0.1.6
 ecmascript-runtime@0.2.6

@@ -1,5 +1,5 @@
 Package.describe({
-  name: "desaiuditd:admin",
+  name: "desaiuditd:meteor-admin",
   summary: "A complete admin dashboard solution",
   version: "1.2.3",
   git: "https://github.com/desaiuditd/meteor-admin"

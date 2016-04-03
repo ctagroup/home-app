@@ -31,7 +31,7 @@ dburles:collection-helpers
 aldeed:collection2
 alanning:roles
 fortawesome:fontawesome
-desaiuditd:admin
+desaiuditd:meteor-admin
 jparker:gravatar
 mrt:moment
 check
@@ -39,3 +39,5 @@ rubaxa:sortable
 oauth2
 meteorhacks:npm
 npm-container
+desaiuditd:accounts-hmis
+desaiuditd:hmis
