@@ -112,6 +112,14 @@ Template.AdminHeader.helpers( {
 		return '<img class="avatar small" src="' + Gravatar.imageUrl( email ) + '" />';
 	currentUserFullName: () ->
 		user = Meteor.user();
-		email = user && user.emails && user.emails[0].address;
-		return email;
+		if ( user && user.services && user.services.HMIS && user.services.HMIS.name )
+			return user.services.HMIS.name.trim();
+
+		if ( user && user.services && user.services.HMIS && user.services.HMIS.firstName && user.services.HMIS.lastName )
+			return ( user.services.HMIS.firstName.trim() + " " + user.services.HMIS.lastName.trim() ).trim();
+
+		if ( user && user.emails && user.emails[0].address )
+			return user.emails[0].address;
+
+		return "";
 } );

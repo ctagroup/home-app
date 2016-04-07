@@ -18,8 +18,16 @@ Template.appNav.helpers( {
 	},
 	currentUserFullName: function() {
 		var user = Meteor.user();
-		// ToDo: Check for FName & LNAme / Display Name first
-		var email = user && user.emails && user.emails[0].address;
-		return email;
+
+		if ( user && user.services && user.services.HMIS && user.services.HMIS.name )
+			return user.services.HMIS.name.trim();
+
+		if ( user && user.services && user.services.HMIS && user.services.HMIS.firstName && user.services.HMIS.lastName )
+			return ( user.services.HMIS.firstName.trim() + " " + user.services.HMIS.lastName.trim() ).trim();
+
+		if ( user && user.emails && user.emails[0].address )
+			return user.emails[0].address;
+
+		return "";
 	}
 } );
