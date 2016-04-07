@@ -37,7 +37,5 @@ mrt:moment
 check
 rubaxa:sortable
 oauth2
-meteorhacks:npm
-npm-container
 desaiuditd:accounts-hmis
 desaiuditd:hmis
