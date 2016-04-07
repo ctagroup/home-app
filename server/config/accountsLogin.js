@@ -30,25 +30,17 @@ Meteor.startup(function() {
 		upsert: true
 	} );
 
-	var optionsCollection = adminCollectionObject("options");
-	var trustedAppID = optionsCollection.find({option_name:"trustedAppID"} ).fetch();
-	var trustedAppSecret = optionsCollection.find({option_name:"trustedAppSecret"} ).fetch();
-
-	if ( trustedAppID.length > 0 && typeof trustedAppID[0].option_value != 'undefined'
-	     && trustedAppSecret.length > 0 && typeof trustedAppSecret[0].option_value != 'undefined' ) {
-		ServiceConfiguration.configurations.update(
-			{
-				service: "HMIS",
-			}, {
-				$set: {
-					hmisAPIEndpoints: AdminConfig.hmisAPIEndpoints,
-					appId: trustedAppID[0].option_value,
-					appSecret: trustedAppSecret[0].option_value
-				}
-			}, {
-				upsert: true
-			}
-		);
-	}
+	// Add HMIS configuration entry
+	ServiceConfiguration.configurations.update( {
+		service: "HMIS",
+	}, {
+		$set: {
+			hmisAPIEndpoints: AdminConfig.hmisAPIEndpoints,
+			appId: "16631CFE-6909-4AC1-B4EB-57902AC7AF0A",
+			appSecret: "appSecret"
+		}
+	}, {
+		upsert: true
+	} );
 
 } );
