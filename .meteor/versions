@@ -3,10 +3,10 @@ accounts-facebook@1.0.6
 accounts-google@1.0.6
 accounts-oauth@1.1.8
 accounts-password@1.1.4
-alanning:roles@1.2.14
+alanning:roles@1.2.15
 aldeed:autoform@5.5.1
-aldeed:collection2@2.8.0
-aldeed:collection2-core@1.0.0
+aldeed:collection2@2.9.1
+aldeed:collection2-core@1.1.1
 aldeed:schema-deny@1.0.1
 aldeed:schema-index@1.0.1
 aldeed:simple-schema@1.5.3
@@ -75,9 +75,7 @@ logging@1.0.8
 mdg:validation-error@0.2.0
 meteor@1.1.10
 meteor-base@1.0.1
-meteorhacks:async@1.0.0
 meteorhacks:meteorx@1.0.2
-meteorhacks:npm@1.5.0
 meteorhacks:unblock@1.1.0
 mfactory:admin-lte@0.0.2
 minifiers@1.1.7
@@ -90,7 +88,6 @@ mongo-id@1.0.1
 mongo-livedata@1.0.9
 mrt:moment@2.8.1
 npm-bcrypt@0.7.8_2
-npm-container@1.2.0
 npm-mongo@1.4.39_1
 oauth@1.1.6
 oauth2@1.1.5
