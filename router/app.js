@@ -21,7 +21,8 @@ var publicRoutes = [
 	'verifyEmail',
 	'resendVerificationEmail',
 	'privacy',
-	'termsOfUse'
+	'termsOfUse',
+    'notEnoughPermission'
 ];
 
 /**
@@ -32,6 +33,22 @@ HomeAppController = RouteController.extend(
 		onBeforeAction: function() {
 			if ( Meteor.userId() && ! Roles.userIsInRole( Meteor.userId(), 'view_admin' ) ) {
 				Meteor.call( 'adminCheckAdmin' );
+			}
+			this.next();
+		}
+	}
+);
+
+HomeAppSurveyorController = HomeAppController.extend(
+	{
+		onBeforeAction: function () {
+			console.log(Meteor.userId());
+			console.log(Roles.userIsInRole(Meteor.userId(), 'Surveyor'));
+			if ( Meteor.userId() && Roles.userIsInRole(Meteor.userId(), 'Surveyor') ) {
+				// Allow Route for Surveyors
+			} else {
+				Router.go('notEnoughPermission');
+				return;
 			}
 			this.next();
 		}
@@ -119,10 +136,16 @@ Router.route( '/app/dashboard', {
 	controller: 'HomeAppController'
 });
 
+Router.route('/not-enough-permission', {
+	name: 'notEnoughPermission',
+	template: 'notEnoughPermission',
+	controller: 'HomeAppController'
+} );
+
 Router.route( '/app/client/single-client/', {
 	name: 'clientProfile',
 	template: 'clientProfile',
-	controller: 'HomeAppController'
+	controller: 'HomeAppSurveyorController'
 } );
 
 /**
