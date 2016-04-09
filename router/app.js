@@ -142,6 +142,12 @@ Router.route('/not-enough-permission', {
 	controller: 'HomeAppController'
 } );
 
+Router.route( '/app/client/', {
+	name: 'clientSearch',
+	template: 'clientSearch',
+	controller: 'HomeAppSurveyorController',
+} );
+
 Router.route( '/app/client/single-client/', {
 	name: 'clientProfile',
 	template: 'clientProfile',
