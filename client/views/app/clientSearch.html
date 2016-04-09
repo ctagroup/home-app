@@ -1,0 +1,27 @@
+<template name="clientSearch">
+
+	<div id="content">
+		{{> appNav}}
+
+		<div class="container">
+
+			<div class="row">
+				<div class="col-sm-12 col-md-12 col-lg-12 my-center-block">
+					<h1>Client Search</h1>
+					<form>
+						<div class="form-group">
+							<input type="text" name="client_search_keyword" id="client-search-keyword"
+							       class="form-control typeahead input-lg" data-source="clientSearch"
+							       autocomplete="off" spellcheck="off"
+							       placeholder="Search for clients. Write 3 characters." />
+						</div>
+					</form>
+				</div>
+			</div>
+
+		</div>
+
+		{{> footer}}
+
+	</div>
+</template>
