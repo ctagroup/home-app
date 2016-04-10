@@ -77,9 +77,9 @@ Template.surveyForm.helpers(
 		surveyList: function() {
 			var surveyCollection = adminCollectionObject("surveys");
 			return surveyCollection.find({}).fetch();
-		}			
+		}
 	}
-	
+
 );
 
 Template.surveyEditTemplate.helpers(

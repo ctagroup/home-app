@@ -263,6 +263,17 @@ AdminConfig = {
 				}
 			]
 		}
-	}
+	},
+	hmisAPIEndpoints: {
+		oauthBaseUrl: "https://www.hmislynk.com/hmis-authorization-service/rest",
+		authorize: "/authorize/",
+		token: "/token/",
+		revoke: "/revoke/",
+		clientBaseUrl: "https://www.hmislynk.com/hmis-clientapi/rest",
+		clients: "/clients/",
+		userServiceBaseUrl: "http://www.hmislynk.com/hmis-user-service/rest",
+		basicInfo: "/accounts/{{username}}/basicinfo",
+		selfBasicInfo: "/accounts/self/basicinfo"
+	},
 	//nonAdminRedirectRoute: ''
 };
