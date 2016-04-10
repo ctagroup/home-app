@@ -94,3 +94,6 @@ Ref: https://github.com/arunoda/meteor-up
 	- Standard minifiers used with Meteor apps by default.
 - tracker
 	- Dependency tracker to allow reactive callbacks
+- oauth2
+	- oauth 2.0 library for HMIS API
+
