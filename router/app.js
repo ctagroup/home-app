@@ -119,11 +119,11 @@ Router.route( '/app/dashboard', {
 	controller: 'HomeAppController'
 });
 
-Router.route( '/app/client/single-client/', {
-	name: 'clientProfile',
-	template: 'clientProfile',
-	controller: 'HomeAppController'
-} );
+// Router.route( '/app/client/single-client/', {
+// 	name: 'clientProfile',
+// 	template: 'clientProfile',
+// 	controller: 'HomeAppController'
+// } );
 
 /**
  * Ensure User Login for templates

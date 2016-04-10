@@ -81,6 +81,7 @@ Template.surveyForm.helpers(
 	}
 	
 );
+
 Template.surveyEditTemplate.helpers(
 	{
 		questionList: function() {

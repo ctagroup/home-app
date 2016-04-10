@@ -1,11 +1,8 @@
 <template name="clientProfile">
 
 	<div id="content">
-
-		{{> appNav}}
-
 		<div class="container">
-			<h3 class="page-header">Edit Profile</h3>
+			<h3 class="page-header">Create Profile</h3>
 			<div class="row">
 				<!-- left column -->
 				<div class="col-md-4 col-sm-6 col-xs-12">
@@ -27,67 +24,273 @@
 						<div class="form-group">
 							<label class="col-lg-3 control-label">First name:</label>
 							<div class="col-lg-8">
-								<input class="form-control" value="Jane" type="text">
+								<input class="form-control firstName" value=" " type="text">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Middle name:</label>
+							<div class="col-lg-8">
+								<input class="form-control middleName" value=" " type="text">
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-lg-3 control-label">Last name:</label>
 							<div class="col-lg-8">
-								<input class="form-control" value="Bishop" type="text">
+								<input class="form-control lastName" value=" " type="text">
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-lg-3 control-label">Company:</label>
+							<label class="col-lg-3 control-label">Suffix:</label>
 							<div class="col-lg-8">
-								<input class="form-control" value="" type="text">
+								<input class="form-control suffix" value=" " type="text">
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-lg-3 control-label">Email:</label>
+							<label class="col-lg-3 control-label">SSN:</label>
 							<div class="col-lg-8">
-								<input class="form-control" value="janesemail@gmail.com" type="text">
+								<input class="form-control ssn" value=" " type="number">
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-lg-3 control-label">Time Zone:</label>
+							<label class="col-lg-3 control-label">Date of Birth:</label>
 							<div class="col-lg-8">
-								<div class="ui-select">
-									<select id="user_time_zone" class="form-control">
-										<option value="Hawaii">(GMT-10:00) Hawaii</option>
-										<option value="Alaska">(GMT-09:00) Alaska</option>
-										<option value="Pacific Time (US &amp; Canada)">(GMT-08:00) Pacific Time (US &amp; Canada)</option>
-										<option value="Arizona">(GMT-07:00) Arizona</option>
-										<option value="Mountain Time (US &amp; Canada)">(GMT-07:00) Mountain Time (US &amp; Canada)</option>
-										<option value="Central Time (US &amp; Canada)" selected="selected">(GMT-06:00) Central Time (US &amp; Canada)</option>
-										<option value="Eastern Time (US &amp; Canada)">(GMT-05:00) Eastern Time (US &amp; Canada)</option>
-										<option value="Indiana (East)">(GMT-05:00) Indiana (East)</option>
-									</select>
-								</div>
+								<input class="form-control dob" value=" " type="date">
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-md-3 control-label">Username:</label>
-							<div class="col-md-8">
-								<input class="form-control" value="janeuser" type="text">
+							<label class="col-lg-3 control-label ">Race:</label>
+							<div class="col-lg-8">
+								<!--<input class="form-control race" value=" " type="text">-->
+								<select class="form-control race_category" name="race_category" >
+									<option value=""></option>
+									<option value="American Indian or Alaska Native">American Indian or Alaska Native</option>
+									<option value="Asian">Asian</option>
+									<option value="Black or African American">Black or African American</option>
+									<option value="Native Hawaiian or Other Pacific Islander">Native Hawaiian or Other Pacific Islander</option>
+									<option value="White">White</option>
+								</select>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-md-3 control-label">Password:</label>
-							<div class="col-md-8">
-								<input class="form-control" value="11111122333" type="password">
+							<label class="col-lg-3 control-label">Ethnicity:</label>
+							<div class="col-lg-8">
+								<!--<input class="form-control ethnicity" value=" " type="text">-->
+								<select class="form-control ethnicity_category" name="ethnicity_category" >
+									<option value=""></option>
+									<option value="Non-Hispanic/Non-Latino">Non-Hispanic/Non-Latino</option>
+									<option value="Hispanic/Latino">Hispanic/Latino</option>
+								</select>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-md-3 control-label">Confirm password:</label>
-							<div class="col-md-8">
-								<input class="form-control" value="11111122333" type="password">
+							<label class="col-lg-3 control-label">Gender:</label>
+							<div class="col-lg-8">
+								<!--<input class="form-control gender" value=" " type="text">-->
+								<select class="form-control gender_category" name="gender_category" >
+									<option value=""></option>
+									<option value="Female">Female</option>
+									<option value="Male">Male</option>
+									<option value="Transgender male to female">Transgender male to female</option>
+									<option value="Transgender female to male">Transgender female to male</option>
+									<option value="Other">Other</option>
+								</select>
 							</div>
 						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Veteran Status:</label>
+							<div class="col-lg-8">
+								<!--<input class="form-control veteran_status" value=" " type="text">-->
+								<select class="form-control veteranStatus_category" name="veteranStatus_category" >
+									<option value=""></option>
+									<option value="Yes">Yes</option>
+									<option value="No">No</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Disabling Condition:</label>
+							<div class="col-lg-8">
+								<!--<input class="form-control disabling_conditions" value=" " type="text">-->
+								<select class="form-control disablingConditions_category" name="disablingConditions_category" >
+									<option value=""></option>
+									<option value="Yes">Yes</option>
+									<option value="No">No</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Residence Prior to Project Entry:</label>
+							<div class="col-lg-8">
+								<!--<input class="form-control residence_prior" value=" " type="text">-->
+								<select class="form-control residencePrior_category" name="residencePrior_category" >
+									<option value=""></option>
+									<option value="Emergency shelter, including hotel or motel paid for with emergency shelter">Emergency shelter, including hotel or motel paid for with emergency shelter </option>
+									<option value="Foster care home or foster care group home">Foster care home or foster care group home</option>
+									<option value="Hospital or other residential non-psychiatric medical facility">Hospital or other residential non-psychiatric medical facility</option>
+									<option value="Hotel or motel paid for without emergency shelter voucher">Hotel or motel paid for without emergency shelter voucher</option>
+									<option value="Jail, prison or juvenile detention facility">Jail, prison or juvenile detention facility</option>
+									<option value="Long-term care facility or nursing home">Long-term care facility or nursing home</option>
+									<option value="Owned by client, no ongoing housing subsidy">Owned by client, no ongoing housing subsidy</option>
+									<option value="Owned by client, with ongoing housing subsidy">Owned by client, with ongoing housing subsidy</option>
+									<option value="Permanent housing for formerly homeless persons">Permanent housing for formerly homeless persons</option>
+									<option value="Place not meant for habitation">Place not meant for habitation</option>
+									<option value="Psychiatric hospital or other psychiatric facility">Psychiatric hospital or other psychiatric facility</option>
+									<option value="Rental by client, no ongoing housing subsidy">Rental by client, no ongoing housing subsidy</option>
+									<option value="Rental by client, with VASH subsidy">Rental by client, with VASH subsidy</option>
+									<option value="Rental by client, with GPD TIP subsidy">Rental by client, with GPD TIP subsidy</option>
+									<option value="Rental by client, with other ongoing housing subsidy">Rental by client, with other ongoing housing subsidy</option>
+									<option value="Residential project or halfway house with no homeless criteria">Residential project or halfway house with no homeless criteria</option>
+									<option value="Safe Haven">Safe Haven</option>
+									<option value="Staying or living in a family member’s room, apartment or house">Staying or living in a family member’s room, apartment or house</option>
+									<option value="Substance abuse treatment facility or detox center">Substance abuse treatment facility or detox center</option>
+									<option value="Transitional housing for homeless persons (including homeless youth)">Transitional housing for homeless persons (including homeless youth)</option>
+									<option value="Other">Other</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Project Entry Date:</label>
+							<div class="col-lg-8">
+								<input class="form-control entry_date" value=" " type="date">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Project Exit Date:</label>
+							<div class="col-lg-8">
+								<input class="form-control exit_date" value=" " type="date">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Destination:</label>
+							<div class="col-lg-8">
+								<!--<input class="form-control destination" value=" " type="text">-->
+								<select class="form-control destination_category" name="destination_category" >
+									<option value=""></option>
+									<option value="Emergency shelter, including hotel or motel paid for with emergency shelter">Emergency shelter, including hotel or motel paid for with emergency shelter </option>
+									<option value="Foster care home or foster care group home">Foster care home or foster care group home</option>
+									<option value="Hospital or other residential non-psychiatric medical facility">Hospital or other residential non-psychiatric medical facility</option>
+									<option value="Hotel or motel paid for without emergency shelter voucher">Hotel or motel paid for without emergency shelter voucher</option>
+									<option value="Jail, prison or juvenile detention facility">Jail, prison or juvenile detention facility</option>
+									<option value="Long-term care facility or nursing home">Long-term care facility or nursing home</option>
+									<option value="Moved from one HOPWA funded project to HOPWA PH">Moved from one HOPWA funded project to HOPWA PH</option>
+									<option value="Moved from one HOPWA funded project to HOPWA TH">Moved from one HOPWA funded project to HOPWA TH</option>
+									<option value="Owned by client, no ongoing housing subsidy">Owned by client, no ongoing housing subsidy</option>
+									<option value="Owned by client, with ongoing housing subsidy">Owned by client, with ongoing housing subsidy</option>
+									<option value="Permanent housing for formerly homeless persons">Permanent housing for formerly homeless persons</option>
+									<option value="Place not meant for habitation">Place not meant for habitation</option>
+									<option value="Psychiatric hospital or other psychiatric facility">Psychiatric hospital or other psychiatric facility</option>
+									<option value="Rental by client, no ongoing housing subsidy">Rental by client, no ongoing housing subsidy</option>
+									<option value="Rental by client, with VASH subsidy">Rental by client, with VASH subsidy</option>
+									<option value="Rental by client, with GPD TIP subsidy">Rental by client, with GPD TIP subsidy</option>
+									<option value="Rental by client, with other ongoing housing subsidy">Rental by client, with other ongoing housing subsidy</option>
+									<option value="Residential project or halfway house with no homeless criteria">Residential project or halfway house with no homeless criteria</option>
+									<option value="Safe Haven">Safe Haven</option>
+									<option value="Staying or living with family, permanent tenure">Staying or living with family, permanent tenure</option>
+									<option value="Staying or living with family, temporary tenure">Staying or living with family, temporary tenure</option>
+									<option value="Staying or living with friends, permanent tenure">Staying or living with friends, permanent tenure</option>
+									<option value="Staying or living with friends, temporary tenure">Staying or living with friends, temporary tenure</option>
+									<option value="Staying or living in a family member’s room, apartment or house">Staying or living in a family member’s room, apartment or house</option>
+									<option value="Substance abuse treatment facility or detox center">Substance abuse treatment facility or detox center</option>
+									<option value="Transitional housing for homeless persons (including homeless youth)">Transitional housing for homeless persons (including homeless youth)</option>
+									<option value="Other">Other</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Personal ID:</label>
+							<div class="col-lg-8">
+								<input class="form-control personal_id" value=" " type="text">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Housing ID:</label>
+							<div class="col-lg-8">
+								<input class="form-control housing_id" value=" " type="text">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Relationship to Head to Household:</label>
+							<div class="col-lg-8">
+								<!--<input class="form-control relationship" value=" " type="text">-->
+								<select class="form-control relationtoHoH_category" name="relationtoHoH_category" >
+									<option value=""></option>
+									<option value="Self">Self</option>
+									<option value="Head of household’s child">Head of household’s child</option>
+									<option value="Head of household’s spouse or partner">Head of household’s spouse or partner</option>
+									<option value="Head of household’s other relation member (other relation to head of household)">Head of household’s other relation member (other relation to head of household)</option>
+									<option value="Other: non-relation member">Other: non-relation member</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Client Location:</label>
+							<div class="col-lg-8">
+								<input class="form-control loc" value=" " type="text">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Time on Streets Emergency Shelter or Safe Haven:</label>
+							<div class="col-lg-8">
+								<!--<input class="form-control shelter" value=" " type="text">-->
+								<select class="form-control timeOnStreets_category" name="timeOnStreets_category" >
+									<option value=""></option>
+									<option value="Yes">Yes</option>
+									<option value="No">No</option>
+								</select>
+							</div>
+						</div>
+
+						<!--<div class="form-group">-->
+							<!--<label class="col-lg-3 control-label">Company:</label>-->
+							<!--<div class="col-lg-8">-->
+								<!--<input class="form-control" value="" type="text">-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--<div class="form-group">-->
+							<!--<label class="col-lg-3 control-label">Email:</label>-->
+							<!--<div class="col-lg-8">-->
+								<!--<input class="form-control" value="janesemail@gmail.com" type="text">-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--<div class="form-group">-->
+							<!--<label class="col-lg-3 control-label">Time Zone:</label>-->
+							<!--<div class="col-lg-8">-->
+								<!--<div class="ui-select">-->
+									<!--<select id="user_time_zone" class="form-control">-->
+										<!--<option value="Hawaii">(GMT-10:00) Hawaii</option>-->
+										<!--<option value="Alaska">(GMT-09:00) Alaska</option>-->
+										<!--<option value="Pacific Time (US &amp; Canada)">(GMT-08:00) Pacific Time (US &amp; Canada)</option>-->
+										<!--<option value="Arizona">(GMT-07:00) Arizona</option>-->
+										<!--<option value="Mountain Time (US &amp; Canada)">(GMT-07:00) Mountain Time (US &amp; Canada)</option>-->
+										<!--<option value="Central Time (US &amp; Canada)" selected="selected">(GMT-06:00) Central Time (US &amp; Canada)</option>-->
+										<!--<option value="Eastern Time (US &amp; Canada)">(GMT-05:00) Eastern Time (US &amp; Canada)</option>-->
+										<!--<option value="Indiana (East)">(GMT-05:00) Indiana (East)</option>-->
+									<!--</select>-->
+								<!--</div>-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--<div class="form-group">-->
+							<!--<label class="col-md-3 control-label">Username:</label>-->
+							<!--<div class="col-md-8">-->
+								<!--<input class="form-control" value="janeuser" type="text">-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--<div class="form-group">-->
+							<!--<label class="col-md-3 control-label">Password:</label>-->
+							<!--<div class="col-md-8">-->
+								<!--<input class="form-control" value="11111122333" type="password">-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--<div class="form-group">-->
+							<!--<label class="col-md-3 control-label">Confirm password:</label>-->
+							<!--<div class="col-md-8">-->
+								<!--<input class="form-control" value="11111122333" type="password">-->
+							<!--</div>-->
+						<!--</div>-->
 						<div class="form-group">
 							<label class="col-md-3 control-label"></label>
 							<div class="col-md-8">
-								<input class="btn btn-primary" value="Save Changes" type="button">
-								<span></span>
+								<input class="btn btn-primary save" value="Save" type="button">
 								<input class="btn btn-default" value="Cancel" type="reset">
 							</div>
 						</div>
@@ -100,3 +303,333 @@
 
 	</div>
 </template>
+
+<template name="clientProfileView">
+
+		<div class="container">
+			<!--<div class = "page-header">-->
+				<!--<h3>Client Details</h3>-->
+				<!--<h5>{{_id}}</h5>-->
+			<!--</div>-->
+			<div class="row">
+				<!-- left column -->
+				<div class="col-md-4 col-sm-6 col-xs-12">
+					<div class="text-center">
+						<img src="http://lorempixel.com/200/200/people/9/" class="avatar img-circle img-thumbnail" alt="avatar">
+					</div>
+				</div>
+				<!-- edit form column -->
+				<div class="col-md-8 col-sm-6 col-xs-12 personal-info">
+					<div class="alert alert-info alert-dismissable">
+						<a class="panel-close close" data-dismiss="alert">×</a>
+						<i class="fa fa-coffee"></i>
+						This is an <strong>.alert</strong>. Use this to show important messages to the user.
+					</div>
+					<h3>Personal info</h3>
+
+					<form class="form-horizontal" role="form">
+						<div class="form-group">
+							<label class="col-lg-3 control-label">First name:</label>
+							<div class="col-lg-8">
+								<label class="control-label" value={{firstName}}>{{firstName}}</label>
+							</div></div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Middle name:</label>
+							<div class="col-lg-8">
+								<label class="control-label" value={{middleName}}>{{middleName}}</label>
+							</div></div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Last name:</label>
+							<div class="col-lg-8">
+								<label class="control-label" value={{lastName}}>{{lastName}}</label>
+							</div> </div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Suffix:</label>
+							<div class="col-lg-8">
+								<label class="control-label" value={{suffix}}>{{suffix}}</label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">SSN:</label>
+							<div class="col-lg-8">
+								<label class="control-label" value={{ssn}}>{{ssn}}</label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Date of Birth:</label>
+							<div class="col-lg-8">
+								<label class="control-label" value={{dob}}>{{dob}}</label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Race:</label>
+							<div class="col-lg-8">
+								<label class="control-label" value={{race}}>{{race}}</label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Ethnicity:</label>
+							<div class="col-lg-8">
+								<label class="control-label" value={{ethnicity}}>{{ethnicity}} </label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Gender:</label>
+							<div class="col-lg-8">
+								<label class="control-label" value="{{gender}}">{{gender}} </label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Veteran Status:</label>
+							<div class="col-lg-8">
+								<label class="control-label" value={{veteran_status}}>{{veteran_status}} </label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Disabling Condition:</label>
+							<div class="col-lg-8">
+								<label class="control-label" value={{disabling_conditions}}>{{disabling_conditions}} </label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Residence Prior to Project Entry:</label>
+							<div class="col-lg-8">
+								<label class="control-label" value={{residence_prior}}>{{residence_prior}}</label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Project Entry Date:</label>
+							<div class="col-lg-8">
+								<label class="control-label" value={{entry_date}}>{{entry_date}} </label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Project Exit Date:</label>
+							<div class="col-lg-8">
+								<label class="control-label" value={{exit_date}}>{{exit_date}} </label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Destination:</label>
+							<div class="col-lg-8">
+								<label class="control-label" value={{destination}}>{{destination}} </label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Personal ID:</label>
+							<div class="col-lg-8">
+								<label class="control-label" value={{personal_id}}>{{personal_id}} </label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Housing ID:</label>
+							<div class="col-lg-8">
+								<label class="control-label" value={{housing_id}}>{{housing_id}} </label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Relationship to Head to Household:</label>
+							<div class="col-lg-8">
+								<label class="control-label" value={{relationship}}>{{relationship}} </label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Client Location:</label>
+							<div class="col-lg-8">
+								<label class="control-label" value={{location}}>{{location}} </label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Time on Streets Emergency Shelter or Safe Haven:</label>
+							<div class="col-lg-8">
+								<label class="control-label" value={{shelter}}>{{shelter}} </label>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-lg-8 control-label"></label><div class="col-md-8">
+							<input class="btn btn-primary edit" value="Edit" type="button">
+							<span></span></div></div>
+
+					</form></div></div> </div>
+		{{> footer}}
+
+</template>
+
+<template name="clientProfileEdit">
+		<div class="container">
+			<!--<h3 class="page-header">Edit Profile</h3>-->
+			<div class="row">
+				<!-- left column -->
+				<div class="col-md-4 col-sm-6 col-xs-12">
+					<div class="text-center">
+						<img src="http://lorempixel.com/200/200/people/9/" class="avatar img-circle img-thumbnail" alt="avatar">
+						<h6>Upload a different photo...</h6>
+						<input type="file" class="text-center center-block well well-sm">
+					</div>
+				</div>
+				<!-- edit form column -->
+				<div class="col-md-8 col-sm-6 col-xs-12 personal-info">
+					<div class="alert alert-info alert-dismissable">
+						<a class="panel-close close" data-dismiss="alert">×</a>
+						<i class="fa fa-coffee"></i>
+						This is an <strong>.alert</strong>. Use this to show important messages to the user.
+					</div>
+					<h3>Personal info</h3>
+					<form class="form-horizontal" role="form">
+						<div class="form-group">
+							<label class="col-lg-3 control-label">First name:</label>
+							<div class="col-lg-8">
+								<input class="form-control firstName" value={{firstName}} type="text">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Middle name:</label>
+							<div class="col-lg-8">
+								<input class="form-control middleName" value={{middleName}} type="text">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Last name:</label>
+							<div class="col-lg-8">
+								<input class="form-control lastName" value={{lastName}} type="text">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Suffix:</label>
+							<div class="col-lg-8">
+								<input class="form-control suffix" value={{suffix}} type="text">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">SSN:</label>
+							<div class="col-lg-8">
+								<input class="form-control ssn" value={{ssn}} type="number">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Date of Birth:</label>
+							<div class="col-lg-8">
+								<input class="form-control dob" value={{dob}} type="date">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label ">Race:</label>
+							<div class="col-lg-8">
+								<!--<input class="form-control race" value=" " type="text">-->
+								<select class="form-control race_category" name="race_category" id="race_category">
+									<option value={{race}}>{{race}}</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Ethnicity:</label>
+							<div class="col-lg-8">
+								<select class="form-control ethnicity_category" name="ethnicity_category" value={{ethnicity}} id="ethnicity_category">
+									<option value={{ethnicity}}>{{ethnicity}}</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Gender:</label>
+							<div class="col-lg-8">
+								<select class="form-control gender_category" name="gender_category" value={{gender}} id="gender_category">
+									<option value={{gender}}>{{gender}}</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Veteran Status:</label>
+							<div class="col-lg-8">
+								<select class="form-control veteranStatus_category" name="veteranStatus_category" value={{veteran_status}} id="veteranStatus_category">
+									<option value={{veteran_status}}>{{veteran_status}}</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Disabling Condition:</label>
+							<div class="col-lg-8">
+								<select class="form-control disablingConditions_category" name="disablingConditions_category" value={{disabling_conditions}} id="disablingConditions_category">
+									<option value={{disabling_conditions}}>{{disabling_conditions}}</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Residence Prior to Project Entry:</label>
+							<div class="col-lg-8">
+								<select class="form-control residencePrior_category" name="residencePrior_category" value={{residence_prior}} id="residencePrior_category" >
+									<option value={{residence_prior}}>{{residence_prior}}</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Project Entry Date:</label>
+							<div class="col-lg-8">
+								<input class="form-control entry_date" value={{entry_date}} type="date">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Project Exit Date:</label>
+							<div class="col-lg-8">
+								<input class="form-control exit_date" value={{exit_date}} type="date">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Destination:</label>
+							<div class="col-lg-8">
+								<select class="form-control destination_category" name="destination_category" value={{destination}} id="destination_category">
+									<option value={{destination}}>{{destination}}</option>
+
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Personal ID:</label>
+							<div class="col-lg-8">
+								<input class="form-control personal_id" value={{personal_id}} type="text">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Housing ID:</label>
+							<div class="col-lg-8">
+								<input class="form-control housing_id" value={{housing_id}} type="text">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Relationship to Head to Household:</label>
+							<div class="col-lg-8">
+								<select class="form-control relationtoHoH_category" name="relationtoHoH_category" value={{relationship}} id="relationtoHoH_category">
+									<option value={{relationship}}>{{relationship}}</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Client Location:</label>
+							<div class="col-lg-8">
+								<input class="form-control loc" value={{location}} type="text">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Time on Streets Emergency Shelter or Safe Haven:</label>
+							<div class="col-lg-8">
+								<select class="form-control timeOnStreets_category" name="timeOnStreets_category" value={{shelter}} id="timeOnStreets_category">
+									<option value={{shelter}}>{{shelter}}</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label"></label>
+							<div class="col-md-8">
+								<input class="btn btn-primary update" value="Update" type="button">
+								<input class="btn btn-primary delete" value="Delete" type="button">
+								<input class="btn btn-default" value="Cancel" type="reset">
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		{{> footer}}
+</template>
+

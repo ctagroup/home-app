@@ -175,9 +175,26 @@ Meteor.methods(
 			var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
 			surveyQuestionsMasterCollection.update({_id:id}, {$set: {content: content}});
 		},
+		updateSurveyQuestionMasterTitle: function(id,survey_title){
+			var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
+			surveyQuestionsMasterCollection.update({surveyID:id}, {$set: {surveyTitle:survey_title}},{multi:true});
+		},
 		removeSurveyQuestionMaster: function(id) {
 			var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
 			surveyQuestionsMasterCollection.remove({_id:id});
-		}
+		},
+		addClient: function(first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteran_status,disabling_conditions,residence_prior,entry_date,exit_date,destination,personal_id,housing_id,relationship,loc,shelter){
+			var clientInfoCollection = adminCollectionObject("clientInfo");
+			var clientRecords = clientInfoCollection.insert({firstName:first_name,middleName:middle_name,lastName:last_name,suffix:suffix,ssn:ssn,dob:dob,race:race,ethnicity:ethnicity,gender:gender,veteran_status:veteran_status,disabling_conditions:disabling_conditions,residence_prior:residence_prior,entry_date:entry_date,exit_date:exit_date,destination:destination,personal_id:personal_id,housing_id:housing_id,relationship:relationship,location:loc,shelter:shelter});
+			return clientRecords;
+		},
+		updateClient: function(clientInfoID,first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteran_status,disabling_conditions,residence_prior,entry_date,exit_date,destination,personal_id,housing_id,relationship,loc,shelter){
+			var clientInfoCollection = adminCollectionObject("clientInfo");
+			clientInfoCollection.update(clientInfoID, {$set: {firstName:first_name,middleName:middle_name,lastName:last_name,suffix:suffix,ssn:ssn,dob:dob,race:race,ethnicity:ethnicity,gender:gender,veteran_status:veteran_status,disabling_conditions:disabling_conditions,residence_prior:residence_prior,entry_date:entry_date,exit_date:exit_date,destination:destination,personal_id:personal_id,housing_id:housing_id,relationship:relationship,location:loc,shelter:shelter}});
+		},
+		removeClient: function(clientInfoID){
+			var questionCollection = adminCollectionObject("clientInfo");
+			questionCollection.remove({_id:clientInfoID});
+		},
 	}
 );

@@ -67,10 +67,9 @@
 					<label class="checkbox-inline">
 						<input type="checkbox"  class="skip" id="skip" value="skip"> Skip
 					</label><br />
-					<div class="copyLabel">
 					<label class="checkbox-inline copylabel">
 						<input type="checkbox" class="copy" id="copy" value="copy"> Copy
-					</label></div><br/>
+					</label><br />
 					</div>
 						<div class="form-group isCopyTrue">
 					<label for="s_copy" >Choose a Survey copy: </label>
@@ -119,17 +118,23 @@
 				</label>
 			</div>
 			<div class="form-group">
-
+			
+			
 					<input type="text" class="form-control  sectionName" id="sectionName" name="sectionName" placeholder="Section Name" value="" />
 					<br/>	
 					<button class="btn btn-large btn-primary addSection">Add Section</button>
 
+			
+		
 			</div>
 			<br/>
 			<div class="form-group">
+			
+			
 					<input type="text" class="form-control  labelName" id="labelName" name="labelName" placeholder="Label" value="" />
 					<br/>
 					<button class="btn btn-large btn-primary addLabel">Add Label</button>
+			
 			</div>
 
 			<br/>
@@ -189,7 +194,7 @@
 <template name="previewSurvey">
 
 	<div class="container quesL">
-		<div class = "row">
+
 		<ul id="previewSurveyList">
 
 			<h2>{{title}}</h2>
@@ -211,46 +216,46 @@
 				{{/if}}
 
 				{{#if textboxString content}}
-					<li>
+					<li class="quesList">
 						<input type="text" class="form-control input input-xxlarge stringType" id="stringType" name="stringType" value="">
 					</li>
 				{{/if}}
 
 				{{#if textboxNumber content}}
-					<li>
+					<li class="quesList">
 						<input type="number" class="form-control input input-xxlarge numberType" id="numberType" name="numberType" value="">
 					</li>
 				{{/if}}
 
 				{{#if booleanYN content}}
-					<li>
+					<li class="quesList">
 						<label class="boolY"><input type="radio" class="boolY" id="boolY" name="boolY" value="Yes"> &nbsp;Yes</label>
 					</li>
 					<li class="quesList">
-						<label class="boolY"><input type="radio" class="boolN" id="boolY" name="boolY" value="No"> &nbsp;No</label>
+						<label class="boolY"> <input type="radio" class="boolN" id="boolY" name="boolY" value="No"> &nbsp;No</label>
 					</li>
 				{{/if}}
 
 				{{#if booleanTF content}}
-					<li>
+					<li class="quesList">
 						<label class="boolY"><input type="radio" class="boolY" id="boolY" name="boolY" value="Yes"> &nbsp;True</label>
 					</li>
 					<li class="quesList">
-						<label class="boolY"><input type="radio" class="boolN" id="boolY" name="boolY" value="No"> &nbsp;False</label>
+						<label class="boolY"> <input type="radio" class="boolN" id="boolY" name="boolY" value="No"> &nbsp;False</label>
 					</li>
 				{{/if}}
 
 				{{#if singleSelect content}}
 					{{#each singleOptions content}}
-						<li>
-							<label class="singleSelect"><input type="radio" class="form-control singleSelect" id="singleSelect" name="singleSelect" value={{this}}> &nbsp; {{this}}</label>
+						<li class="quesList">
+							<label class="singleSelect"><input type="radio" class="singleSelect" id="singleSelect" name="singleSelect" value={{this}}> &nbsp; {{this}}</label>
 						</li>
 					{{/each}}
 				{{/if}}
 
 				{{#if multipleSelect content}}
 					{{#each multipleOptions content}}
-						<li>
+						<li class="quesList">
 							<label class="multipleSelect"><input type="checkbox" class="multipleSelect" id="multipleSelect" name="multipleSelect" value={{this}}> &nbsp; {{this}}</label>
 						</li>
 					{{/each}}
@@ -258,7 +263,7 @@
 			{{/each}}
 
 		</ul>
-		</div>
+
 	</div>
 
 </template>

@@ -41,4 +41,9 @@ Meteor.publish("users", function () {
 	if ( typeof users == "undefined")
 		return;
 	return users.find({});
+});
+Meteor.publish("clientInfo", function () {
+	if ( typeof clientInfo == "undefined")
+		return;
+	return clientInfo.find({});
 })

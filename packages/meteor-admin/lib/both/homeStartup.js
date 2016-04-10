@@ -39,6 +39,7 @@ Meteor.startup(function() {
 			if ( Roles.userIsInRole( Meteor.user(), "manage_settings" ) ) {
 				AdminDashboard.addSidebarItem("Settings", AdminDashboard.path('/settings'), { icon: 'cogs' });
 			}
+			AdminDashboard.addSidebarItem("Client Profile", AdminDashboard.path('/clientProfile'),{icon: 'user'});
 		});
 
 		Meteor.subscribe("roles");
@@ -48,5 +49,6 @@ Meteor.startup(function() {
 		Meteor.subscribe("surveys");
 		Meteor.subscribe("questions");
 		Meteor.subscribe("surveyQuestionsMaster");
+		Meteor.subscribe("clientInfo");
 	}
 });

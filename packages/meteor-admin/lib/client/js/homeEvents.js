@@ -34,33 +34,28 @@ Template.surveyForm.events(
 
 		'click .save':function(evt,tmpl){
 
-			$('.copy').show();
-			$('.copylabel').show();
-			$('.isCopyTrue' ).show();
-			
 			var surveyID = $('#surveyID').val();
 			var copy = tmpl.find('.copy').checked;
 			var skip = tmpl.find('.skip').checked;
 			var title = tmpl.find('.survey_title').value;
 			var active = tmpl.find('.active').checked;
-		
 
-			var isUpdate = $('#isUpdate').val();
-		
-			console.log("SURVEY_ID: " + surveyID);
-			console.log("isUpdate: " + isUpdate);
+			Meteor.call("addSurvey", title, active, skip, copy, function ( error, result ) {
+				if ( error ) {
+					console.log(error);
+				} else {
+					console.log(result);
+				}
+			} );
 
-			//alert("T: " + title + "A: " + active + "C: " + copy);
-			
-			if(isUpdate=='1'){
-
+			var surveyID = $('#surveyID').val();
 			var surveyCollection = adminCollectionObject("surveys");
 			var survey = surveyCollection.findOne({_id:surveyID});
 			var update_copy = survey.copy;
 
 			if(update_copy){
 				var title = tmpl.find('.copyof_surveytitle').value;
-				var active = tmpl.find('.copy_active').checked;	
+				var active = tmpl.find('.copy_active').checked;
 				var skip = tmpl.find('.skip').checked;
 				var copy = update_copy;
 			}else{
@@ -69,6 +64,10 @@ Template.surveyForm.events(
 				var active = tmpl.find('.active').checked;
 				var copy = update_copy;
 			}
+
+			var isUpdate = $('#isUpdate').val();
+			if(isUpdate=='1'){
+
 				Meteor.call("updateSurvey", surveyID, title, active, skip, copy, function ( error, result ) {
 					if ( error ) {
 						console.log(error);
@@ -76,16 +75,16 @@ Template.surveyForm.events(
 						console.log(result);
 					}
 				} );
-			}else {
+				Meteor.call("updateSurveyQuestionMasterTitle",surveyID,title,function( error, result){
 
-				Meteor.call("addSurvey", title, active, skip, copy, function ( error, result ) {
 					if ( error ) {
 						console.log(error);
 					} else {
 						console.log(result);
 					}
-				} );
+				});
 			}
+
 			resetSurveyModal();
 		},
 		'click .cancel':function(evt,tmpl){
@@ -95,7 +94,7 @@ Template.surveyForm.events(
 			resetSurveyModal();
 		},
 		'click .copy': function(evt,tmpl) {
-			//resetSurveyModal();
+
 			var copy = $('#copy').is(':checked');
 			 if(copy){
 					
@@ -130,7 +129,7 @@ Template.surveyForm.events(
 		},
 		'change .s_copy': function (event, template) {
      	 var surveyID_forCopy = $(event.currentTarget).val();
-      		console.log("Title:" + surveyID_forCopy);
+
       		var survey_record = surveys.findOne({_id:surveyID_forCopy});
       		for(var key in survey_record){
       			document.getElementById('copyof_surveytitle').value = survey_record['title'];
@@ -205,6 +204,8 @@ Template.surveyViewTemplate.events(
 	{
 		'click .addSurvey':function(evt,tmpl){
 			resetSurveyModal();
+			$('.copy').show();
+			$('.copylabel').show();
 			$('.showWhenEdit').hide();
 			$('.showWhenNew').show();
 		}
@@ -235,7 +236,6 @@ Template.surveyRow.events(
 				$('.active').show();
 			}
 
-			//alert("Copy: " + copy + "Title: " + survey.title + "Active: " + survey.active);
 			if(copy){
 			$('#newSurveyModal input[type=text]#copyof_surveytitle').val(survey.title);
 			$('#newSurveyModal input[type=checkbox]#copy_active' ).attr('checked', survey.active);
@@ -255,9 +255,6 @@ Template.surveyRow.events(
 
 			$('.showWhenEdit').show();
 			$('.showWhenNew').hide();
-
-			resetSurveyModal();
-
 
 		}
 
