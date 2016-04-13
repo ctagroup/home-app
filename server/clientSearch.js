@@ -13,12 +13,7 @@ Meteor.methods(
 				options.limit = 50;
 			}
 
-			// TODO fix regexp to support multiple tokens
-			var regex = new RegExp("^" + query);
-
 			return HMISAPI.getAllClients(query);
-
-			return BigCollection.find({name: {$regex:  regex}}, options).fetch();
 		}
 	}
 );
