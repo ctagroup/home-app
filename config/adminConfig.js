@@ -61,6 +61,11 @@ AdminConfig = {
 	defaultRolePermissions: {
 		"Developer": [
 			"Developer",
+			"System Admin",
+			"Admin",
+			"Program Manager",
+			"Case Manager",
+			"Surveyor",
 			"view_admin",
 			"view_organization",
 			"create_organization",
@@ -95,6 +100,10 @@ AdminConfig = {
 		],
 		"System Admin": [
 			"System Admin",
+			"Admin",
+			"Program Manager",
+			"Case Manager",
+			"Surveyor",
 			"view_admin",
 			"view_organization",
 			"create_organization",
@@ -129,6 +138,9 @@ AdminConfig = {
 		],
 		"Admin": [
 			"Admin",
+			"Program Manager",
+			"Case Manager",
+			"Surveyor",
 			"view_admin",
 			"view_user",
 			"create_user",
@@ -147,6 +159,8 @@ AdminConfig = {
 		],
 		"Program Manager": [
 			"Program Manager",
+			"Case Manager",
+			"Surveyor",
 			"view_admin",
 			"view_user",
 			"view_reports",
@@ -155,6 +169,7 @@ AdminConfig = {
 		],
 		"Case Manager": [
 			"Case Manager",
+			"Surveyor",
 			"view_admin",
 			"update_referral",
 			"view_inventory",
