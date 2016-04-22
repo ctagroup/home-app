@@ -2,6 +2,10 @@
  * Created by Kavi on 4/9/16.
  */
 var gender_categories,veteran_status,ethnicity_categories,race_categories,residence_prior,destination_category,relationship_categories,times_Homeless,disabling_cond;
+Template.registerHelper('formatDate', function(date) {
+	return moment(date).format('MM/DD/YYYY');
+	//return new Date(timestamp).toString('MM/dd/yyyy')
+});
 Template.clientProfile.helpers(
     {
         clientInfoList: function() {

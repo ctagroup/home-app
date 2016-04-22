@@ -154,6 +154,34 @@ Router.route( '/app/client/', {
 // 	controller: 'HomeAppSurveyorController'
 // } );
 
+Router.route('/app/client/single-client/',{
+	name:'clientProfile',
+	template: 'clientProfile',
+	controller: 'HomeAppController',
+});
+Router.route('/app/client/single-client/:_id/view',{
+	name: 'clientProfileView',
+	template: 'clientProfileView',
+	controller: 'HomeAppController',
+	data: function(){
+		var clientInfoID = this.params._id;
+		var clientInfoCollection = adminCollectionObject("clientInfo");
+		return clientInfoCollection.findOne({_id:clientInfoID});
+
+	}
+});
+ Router.route('/app/client/single-client/:_id/edit',{
+	name:'clientProfileEdit',
+	template: 'clientProfileEdit',
+	controller: 'HomeAppController',
+	data: function(){
+		var clientInfoID = this.params._id;
+		var clientInfoCollection = adminCollectionObject("clientInfo");
+		return clientInfoCollection.findOne({_id:clientInfoID});
+
+	}
+})
+
 /**
  * Ensure User Login for templates
  */

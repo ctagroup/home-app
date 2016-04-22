@@ -70,51 +70,51 @@ Router.route( "previewSurvey", {
 		return surveyCollection.findOne({_id:surveyID});
 	}
 } );
-Router.route("clientProfile",{
-	path:'/admin/clientProfile',
-	template: 'clientProfile',
-	controller: 'AdminController',
-	action: function() {
-		this.render();
-	}
-
-});
-Router.route("clientProfileView",{
-	path:'/admin/clientProfileView/:_id/view',
-	template: 'clientProfileView',
-	controller: 'AdminController',
-	action: function() {
-		this.render();
-	},
-	onAfterAction: function() {
-		Session.set('admin_title', 'Client Profile');
-		Session.set('admin_collection_name', 'clientProfileView');
-		Session.set('admin_collection_page', '');
-	},
-	data: function(){
-		var clientInfoID = this.params._id;
-		var clientInfoCollection = adminCollectionObject("clientInfo");
-		return clientInfoCollection.findOne({_id:clientInfoID});
-
-	}
-});
-Router.route("clientProfileEdit",{
-	path:'/admin/clientProfileEdit/:_id/edit',
-	template: 'clientProfileEdit',
-	controller: 'AdminController',
-	action: function() {
-		this.render();
-	},
-	onAfterAction: function() {
-		Session.set('admin_title', 'Edit Profile');
-		Session.set('admin_collection_name', 'clientProfileEdit');
-		Session.set('admin_collection_page', '');
-	},
-	data: function(){
-		var clientInfoID = this.params._id;
-		var clientInfoCollection = adminCollectionObject("clientInfo");
-		return clientInfoCollection.findOne({_id:clientInfoID});
-
-	}
-})
+// Router.route("clientProfile",{
+// 	path:'/admin/clientProfile',
+// 	template: 'clientProfile',
+// 	controller: 'AdminController',
+// 	action: function() {
+// 		this.render();
+// 	}
+//
+// });
+// Router.route("clientProfileView",{
+// 	path:'/admin/clientProfileView/:_id/view',
+// 	template: 'clientProfileView',
+// 	controller: 'AdminController',
+// 	action: function() {
+// 		this.render();
+// 	},
+// 	onAfterAction: function() {
+// 		Session.set('admin_title', 'Client Profile');
+// 		Session.set('admin_collection_name', 'clientProfileView');
+// 		Session.set('admin_collection_page', '');
+// 	},
+// 	data: function(){
+// 		var clientInfoID = this.params._id;
+// 		var clientInfoCollection = adminCollectionObject("clientInfo");
+// 		return clientInfoCollection.findOne({_id:clientInfoID});
+//
+// 	}
+// });
+// Router.route("clientProfileEdit",{
+// 	path:'/admin/clientProfileEdit/:_id/edit',
+// 	template: 'clientProfileEdit',
+// 	controller: 'AdminController',
+// 	action: function() {
+// 		this.render();
+// 	},
+// 	onAfterAction: function() {
+// 		Session.set('admin_title', 'Edit Profile');
+// 		Session.set('admin_collection_name', 'clientProfileEdit');
+// 		Session.set('admin_collection_page', '');
+// 	},
+// 	data: function(){
+// 		var clientInfoID = this.params._id;
+// 		var clientInfoCollection = adminCollectionObject("clientInfo");
+// 		return clientInfoCollection.findOne({_id:clientInfoID});
+//
+// 	}
+// })
 

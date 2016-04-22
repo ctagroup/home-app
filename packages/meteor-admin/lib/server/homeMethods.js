@@ -143,13 +143,13 @@ Meteor.methods(
 
 			optionsCollection.upsert({option_name:"trustedAppSecret"}, {$set: {option_name:"trustedAppSecret",option_value:value}});
 		},
-		addSurvey: function(title,active,skip,copy){
+		addSurvey: function(title,active,copy){
 			var surveyCollection = adminCollectionObject("surveys");
-			surveyCollection.insert({title:title,active:active,skip:skip,copy:copy});
+			surveyCollection.insert({title:title,active:active,copy:copy});
 		},
-		updateSurvey: function(surveyID, title,active,skip,copy){
+		updateSurvey: function(surveyID, title,active,copy){
 			var surveyCollection = adminCollectionObject("surveys");
-			surveyCollection.update(surveyID, {$set: {title:title,active:active,skip:skip,copy:copy}});
+			surveyCollection.update(surveyID, {$set: {title:title,active:active,copy:copy}});
 		},
 		removeSurvey: function(surveyID){
 			var surveyCollection = adminCollectionObject("surveys");
@@ -167,9 +167,10 @@ Meteor.methods(
 			var questionCollection = adminCollectionObject("questions");
 			questionCollection.remove({_id:questionID});
 		},
-		addSurveyQuestionMaster: function(survey_title,survey_id,content_type,content,rank) {
+		addSurveyQuestionMaster: function(survey_title,survey_id,section_id,skip,content_type,content,rank) {
 			var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
-			surveyQuestionsMasterCollection.insert({surveyID:survey_id,surveyTitle:survey_title,contentType:content_type,content:content,order:rank});
+			var surveyQues = surveyQuestionsMasterCollection.insert({surveyTitle:survey_title,surveyID:survey_id,sectionID:section_id,allowSkip:skip,contentType:content_type,content:content,order:rank});
+			return surveyQues;
 		},
 		updateSurveyQuestionMaster: function(id, content) {
 			var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
@@ -195,6 +196,6 @@ Meteor.methods(
 		removeClient: function(clientInfoID){
 			var questionCollection = adminCollectionObject("clientInfo");
 			questionCollection.remove({_id:clientInfoID});
-		},
+		}
 	}
 );

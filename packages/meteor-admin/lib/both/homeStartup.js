@@ -39,7 +39,7 @@ Meteor.startup(function() {
 			if ( Roles.userIsInRole( Meteor.user(), "manage_settings" ) ) {
 				AdminDashboard.addSidebarItem("Settings", AdminDashboard.path('/settings'), { icon: 'cogs' });
 			}
-			AdminDashboard.addSidebarItem("Client Profile", AdminDashboard.path('/clientProfile'),{icon: 'user'});
+			AdminDashboard.addSidebarItem("Client Profile", AdminDashboard.path('/app/client/single-client'),{icon: 'user'});
 		});
 
 		Meteor.subscribe("roles");
