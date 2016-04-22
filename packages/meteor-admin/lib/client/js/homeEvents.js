@@ -36,11 +36,10 @@ Template.surveyForm.events(
 
 			var surveyID = $('#surveyID').val();
 			var copy = tmpl.find('.copy').checked;
-			var skip = tmpl.find('.skip').checked;
 			var title = tmpl.find('.survey_title').value;
 			var active = tmpl.find('.active').checked;
 
-			Meteor.call("addSurvey", title, active, skip, copy, function ( error, result ) {
+			Meteor.call("addSurvey", title, active, copy, function ( error, result ) {
 				if ( error ) {
 					console.log(error);
 				} else {
@@ -56,10 +55,8 @@ Template.surveyForm.events(
 			if(update_copy){
 				var title = tmpl.find('.copyof_surveytitle').value;
 				var active = tmpl.find('.copy_active').checked;
-				var skip = tmpl.find('.skip').checked;
 				var copy = update_copy;
 			}else{
-				var skip = tmpl.find('.skip').checked;
 				var title = tmpl.find('.survey_title').value;
 				var active = tmpl.find('.active').checked;
 				var copy = update_copy;
@@ -68,7 +65,7 @@ Template.surveyForm.events(
 			var isUpdate = $('#isUpdate').val();
 			if(isUpdate=='1'){
 
-				Meteor.call("updateSurvey", surveyID, title, active, skip, copy, function ( error, result ) {
+				Meteor.call("updateSurvey", surveyID, title, active, copy, function ( error, result ) {
 					if ( error ) {
 						console.log(error);
 					} else {
@@ -245,8 +242,8 @@ Template.surveyRow.events(
 			$('#newSurveyModal input[type=text]#survey_title').val(survey.title);
 			$('#newSurveyModal input[type=checkbox]#active' ).attr('checked', survey.active);
 			$('#newSurveyModal input[type=checkbox]#active' ).prop('checked', survey.active);
-			$('#newSurveyModal input[type=checkbox]#skip' ).attr('checked', survey.skip);
-			$('#newSurveyModal input[type=checkbox]#skip' ).prop('checked', survey.skip);
+			// $('#newSurveyModal input[type=checkbox]#skip' ).attr('checked', survey.skip);
+			// $('#newSurveyModal input[type=checkbox]#skip' ).prop('checked', survey.skip);
 			$('#newSurveyModal input[type=checkbox]#copy' ).attr('checked', survey.copy);
 			$('#newSurveyModal input[type=checkbox]#copy' ).prop('checked', survey.copy);
 			}
@@ -448,7 +445,8 @@ Template.questionRow.events(
 		}
 	}
 );
-
+Session.setDefault('section_id',null);
+var section_id,skip_val;
 Template.surveyEditTemplate.events(
 	{
 		'click .addSection':function(event,tmpl){
@@ -457,12 +455,16 @@ Template.surveyEditTemplate.events(
 			var survey_id = tmpl.data._id;
 			var content = tmpl.find('.sectionName').value;
 			var content_type= "section";
-
-			Meteor.call("addSurveyQuestionMaster", survey_title,survey_id,content_type,content,maxRank(survey_id), function ( error, result ) {
+			var section_id = ' ';
+			skip_val = tmpl.find('.showskip').checked;
+			//survey_title,survey_id,section_id,content_type,content,rank
+			Meteor.call("addSurveyQuestionMaster", survey_title,survey_id,section_id,skip_val,content_type,content,maxRank(survey_id), function ( error, result ) {
 				if ( error ) {
 					console.log(error);
 				} else {
 					console.log(result);
+					Session.set('section_id', result);
+					console.log("section_id: " + Session.get('section_id'));
 				}
 			} );
 
@@ -476,7 +478,9 @@ Template.surveyEditTemplate.events(
 			var content = tmpl.find('.labelName').value;
 			var content_type= "label";
 
-			Meteor.call("addSurveyQuestionMaster", survey_title,survey_id,content_type,content,maxRank(survey_id), function ( error, result ) {
+			console.log("SEC_ID: " + Session.get('section_id'));
+
+			Meteor.call("addSurveyQuestionMaster", survey_title,survey_id,Session.get('section_id'),skip_val,content_type,content,maxRank(survey_id), function ( error, result ) {
 				if ( error ) {
 					console.log(error);
 				} else {
@@ -606,7 +610,7 @@ Template.selectQuestions.events(
 			}
 
 			for(var i =0;i<array.length;i++){
-				Meteor.call("addSurveyQuestionMaster", survey_title, survey_id, 'question', array[i], maxRank(survey_id), function ( error, result ) {
+				Meteor.call("addSurveyQuestionMaster", survey_title, survey_id,Session.get('section_id'),skip_val,'question', array[i], maxRank(survey_id), function ( error, result ) {
 					if ( error ) {
 						console.log(error);
 					} else {

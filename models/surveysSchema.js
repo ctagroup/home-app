@@ -11,9 +11,9 @@ Schemas.surveys = new SimpleSchema( {
 	active: {
 		type: Boolean
 	},
-	skip: {
-		type: Boolean
-	},
+	// skip: {
+	// 	type: Boolean
+	// },
 	copy: {
 		type: Boolean
 	},

@@ -14,6 +14,15 @@ Schemas.surveyQuestionsMaster = new SimpleSchema(
 			type: String,
 			max: 256
 		},
+		sectionID:{
+			type:String,
+			optional:true,
+			max:256
+		},
+		allowSkip:{
+			type:String,
+			max:256
+		},
 		contentType: {
 			type: String,
 			max: 256

@@ -57,7 +57,7 @@ UI.registerHelper("currentUserCan", function(cap) {
 });
 
 Template.registerHelper('formatDate', function(date) {
-	return moment(date).format('YYYY-MM-DD HH:mm:ss');
+	return moment(date).format('mm/dd/yyyy');
 });
 
 Template.registerHelper('my_console_log', function(data) {
@@ -200,7 +200,6 @@ Template.previewSurvey.helpers(
 			console.log(surveyQuestionsMasterCollection.find({surveyID:Router.current().params._id}, {sort: {order: 1}}).fetch())
 			return surveyQuestionsMasterCollection.find({surveyID:Router.current().params._id}, {sort: {order: 1}}).fetch();
 		},
-
 		displaySection: function(content_type){
 			if(content_type == "section"){
 				return true;
@@ -208,6 +207,12 @@ Template.previewSurvey.helpers(
 		},
 		displayLabel: function(content_type){
 			if(content_type == "label"){
+				return true;
+			}
+		},
+		displaySkipButton:function(content_type, allow_skip){
+			console.log("allow_skip: " + allow_skip);
+			if(content_type == "section" && allow_skip == "true"){
 				return true;
 			}
 		},
@@ -349,5 +354,7 @@ Template.previewSurvey.helpers(
 			}
 
 		}
+
 	}
 );
+

@@ -64,9 +64,6 @@
 						<input type="checkbox" class="active" id="active" value="active"> 
 						<input type="checkbox" class="copy_active" id="copy_active" >Active
 					</label><br />
-					<label class="checkbox-inline">
-						<input type="checkbox"  class="skip" id="skip" value="skip"> Skip
-					</label><br />
 					<label class="checkbox-inline copylabel">
 						<input type="checkbox" class="copy" id="copy" value="copy"> Copy
 					</label><br />
@@ -121,11 +118,13 @@
 			
 			
 					<input type="text" class="form-control  sectionName" id="sectionName" name="sectionName" placeholder="Section Name" value="" />
-					<br/>	
+					<br/>
+					<label class="checkbox-inline skipLabel">
+						<input type="checkbox" class="showskip" id="skip_id" value="skip"><b> Skip </b>
+					</label>
+					<br/>
+					<br/>
 					<button class="btn btn-large btn-primary addSection">Add Section</button>
-
-			
-		
 			</div>
 			<br/>
 			<div class="form-group">
@@ -203,6 +202,9 @@
 
 				{{#if displaySection contentType}}
 					<li><h3>{{content}}</h3></li>
+					{{#if displaySkipButton contentType allowSkip}}
+					<button type="button" class="btn btn-large btn-primary showWhenSkip">Skip</button>
+					{{/if}}
 				{{/if}}
 
 				{{#if displayLabel contentType}}
