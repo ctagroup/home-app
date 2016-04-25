@@ -476,7 +476,7 @@ Template.surveyEditTemplate.events(
 			var survey_title = tmpl.data.title;
 			var survey_id = tmpl.data._id;
 			var content = tmpl.find('.labelName').value;
-			var content_type= "label";
+			var content_type= "labels";
 
 			console.log("SEC_ID: " + Session.get('section_id'));
 
@@ -623,3 +623,34 @@ Template.selectQuestions.events(
 		}
 	}
 );
+var skip_value,contents,sec_id;
+Template.previewSurvey.events({
+
+	'change .hideWhenSkipped':function (evt,tmpl) {
+
+		var toggleSkip = $('.hideWhenSkipped').is(':checked');
+		if(toggleSkip){
+			
+			var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
+			var masterSectionID = surveyQuestionsMasterCollection.findOne({_id:this._id},{allowSkip:1,_id:0});
+			var masterSkip_val = masterSectionID.allowSkip;
+
+			var skipValForSection = surveyQuestionsMasterCollection.find({sectionID:this._id}).fetch();
+			for(var i in skipValForSection){
+
+				sec_id = skipValForSection[i].sectionID;
+
+			}
+			if(masterSkip_val == "true" ){
+
+					$('.' + sec_id).hide();
+
+			}
+		}else{
+			$('.' + sec_id).show();
+		}
+
+
+	}
+	
+});

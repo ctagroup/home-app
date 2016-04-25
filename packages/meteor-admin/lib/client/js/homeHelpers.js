@@ -206,12 +206,11 @@ Template.previewSurvey.helpers(
 			}
 		},
 		displayLabel: function(content_type){
-			if(content_type == "label"){
+			if(content_type == "labels"){
 				return true;
 			}
 		},
 		displaySkipButton:function(content_type, allow_skip){
-			console.log("allow_skip: " + allow_skip);
 			if(content_type == "section" && allow_skip == "true"){
 				return true;
 			}
