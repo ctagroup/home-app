@@ -199,18 +199,21 @@
 			<h2>{{title}}</h2>
 
 			{{#each surveyQuesContents}}
-
+			<div class="{{sectionID}}">
+			 <div class="section">
 				{{#if displaySection contentType}}
-					<li><h3>{{content}}</h3></li>
+					<li><h3 style="color: #1b6d85">{{content}}</h3></li>
 					{{#if displaySkipButton contentType allowSkip}}
-					<button type="button" class="btn btn-large btn-primary showWhenSkip">Skip</button>
+				 	<input type="checkbox" class="hideWhenSkipped" value="skip"> &nbsp; <label style="color: #A00000">Skip</label>
 					{{/if}}
 				{{/if}}
-
+			 </div>
+			<div class="labels">
 				{{#if displayLabel contentType}}
-					<li><h3>{{content}}</h3></li>
+					<li><h4>{{content}}</h4></li>
 				{{/if}}
-
+			</div>
+			<div class="question">
 				{{#if displayQues contentType}}
 					<li>
 						<h5>{{displayQuesContents content}}</h5>
@@ -231,19 +234,19 @@
 
 				{{#if booleanYN content}}
 					<li class="quesList">
-						<label class="boolY"><input type="radio" class="boolY" id="boolY" name="boolY" value="Yes"> &nbsp;Yes</label>
+						<label class="boolY"><input type="radio" class="boolY"  name="boolY" value="Yes"> &nbsp;Yes</label>
 					</li>
 					<li class="quesList">
-						<label class="boolY"> <input type="radio" class="boolN" id="boolY" name="boolY" value="No"> &nbsp;No</label>
+						<label class="boolY"> <input type="radio" class="boolN"  name="boolY" value="No"> &nbsp;No</label>
 					</li>
 				{{/if}}
 
 				{{#if booleanTF content}}
 					<li class="quesList">
-						<label class="boolY"><input type="radio" class="boolY" id="boolY" name="boolY" value="Yes"> &nbsp;True</label>
+						<label class="boolY"><input type="radio" class="boolY"  name="boolY" value="Yes"> &nbsp;True</label>
 					</li>
 					<li class="quesList">
-						<label class="boolY"> <input type="radio" class="boolN" id="boolY" name="boolY" value="No"> &nbsp;False</label>
+						<label class="boolY"> <input type="radio" class="boolN"  name="boolY" value="No"> &nbsp;False</label>
 					</li>
 				{{/if}}
 
@@ -262,6 +265,8 @@
 						</li>
 					{{/each}}
 				{{/if}}
+			</div>
+			</div>
 			{{/each}}
 
 		</ul>
