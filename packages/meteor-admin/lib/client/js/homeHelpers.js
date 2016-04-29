@@ -113,6 +113,13 @@ Template.questionForm.helpers(
 		questionList: function() {
 			var questionCollection = adminCollectionObject("questions");
 			return questionCollection.find({}).fetch();
+		},
+		getQuestionCategory:function(){
+			var questionCollection = adminCollectionObject("questions");
+			var distinctEntries = _.uniq(questionCollection.find({}, {sort: {category:1}, fields: {category:true}}).fetch().map(function(x) {
+				return x.category;
+			}), true);
+			return distinctEntries;
 		}
 	}
 );
@@ -216,21 +223,21 @@ Template.previewSurvey.helpers(
 			}
 		},
 		textboxString: function(data){
-			
+
 			if(data == "Textbox(String)"){
 				return true;
 			}
 
 		},
 		textboxNumber: function(data){
-			
+
 			if(data == "Textbox(Integer)"){
 				return true;
 			}
 
 		},
 		booleanYN: function(data){
-			
+
 			if(data == "Boolean"){
 				return true;
 			}

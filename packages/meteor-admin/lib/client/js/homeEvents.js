@@ -3,28 +3,28 @@
  */
 Template.AdminRoleManager.events(
 	{
-		'click .js-update': function(e) {
+		'click .js-update': function (e) {
 			e.preventDefault();
-			var serializeInput = $("#js-frm-role-manager" ).serializeArray();
-			$("#js-frm-role-manager :input" ).attr("disabled", true);
-			Meteor.call("updateRolePermissions", serializeInput, function ( error, result ) {
-				if ( error ) {
+			var serializeInput = $("#js-frm-role-manager").serializeArray();
+			$("#js-frm-role-manager :input").attr("disabled", true);
+			Meteor.call("updateRolePermissions", serializeInput, function (error, result) {
+				if (error) {
 					console.log(error);
 				} else {
 					console.log(result);
 				}
-				$("#js-frm-role-manager :input" ).attr("disabled", false);
-			} );
+				$("#js-frm-role-manager :input").attr("disabled", false);
+			});
 		},
-		'click .js-reset': function(e) {
+		'click .js-reset': function (e) {
 			e.preventDefault();
-			Meteor.call("resetRolePermissions", function ( error, result ) {
-				if ( error ) {
+			Meteor.call("resetRolePermissions", function (error, result) {
+				if (error) {
 					console.log(error);
 				} else {
 					console.log(result);
 				}
-			} );
+			});
 		}
 	}
 );
@@ -32,7 +32,7 @@ var surveyCopyID,surveyID_forCopy,sectionArray,copyOf_surveyID,surveyID,surveyTi
 Template.surveyForm.events(
 	{
 		'change .s_copy': function (event, template) {
-		 	surveyID_forCopy = $(event.target).val();
+			surveyID_forCopy = $(event.target).val();
 
 
 			var survey_record = surveys.findOne({_id:surveyID_forCopy});
@@ -58,12 +58,12 @@ Template.surveyForm.events(
 				var active = tmpl.find('.copy_active').checked;
 				surveyCopyId = $('#surveyID').val();
 				// sectionArray = new Array();
-                //
+				//
 				// var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
 				// var records_forCopy = surveyQuestionsMasterCollection.find({surveyID:surveyID_forCopy},{sectionID:1}).fetch();
-                //
+				//
 				// for(var i in records_forCopy){
-                //
+				//
 				// 	surveyTitle = title;
 				// 	originalSurvey_id = surveyID_forCopy;
 				// 	originalSurvey_uniqueIDs = records_forCopy[i]._id;
@@ -72,7 +72,7 @@ Template.surveyForm.events(
 				// 	surveyCopy_contentType = records_forCopy[i].contentType;
 				// 	surveyCopy_content = records_forCopy[i].content;
 				// 	surveyCopy_rank = records_forCopy[i].order;
-                //
+				//
 				// 	if(surveyCopy_sectionID == null) {
 				// 		masterSectionIDs = originalSurvey_uniqueIDs;
 				// 		for(var j in masterSectionIDs){
@@ -143,22 +143,22 @@ Template.surveyForm.events(
 		'click .copy': function(evt,tmpl) {
 
 			var copy = $('#copy').is(':checked');
-			 if(copy){
-					
+			if(copy){
+
 				$('.isCopyTrue' ).show();
 				$('.copyof_surveytitle').show();
 				$('.copy_active').show();
 				$('.survey_title').hide();
 				$('.active').hide();
 
-			 }else{
-				
+			}else{
+
 				$('.isCopyTrue' ).hide();
 				$('.copyof_surveytitle').hide();
 				$('.copy_active').hide();
 				$('.survey_title').show();
-				$('.active').show();	
-			 }
+				$('.active').show();
+			}
 		},
 		'click .remove':function(evt,tmpl){
 			var surveyID = $('#surveyID').val();
@@ -207,8 +207,8 @@ var recordsForCopy = function(surveyID){
 			masterSectionIDs = originalSurvey_uniqueIDs;
 			// for(var j in masterSectionIDs){
 			// 	sectionArray[j] = masterSectionIDs;
-			 	console.log("main section: " + masterSectionIDs + "new survey ID: " + new_SurveyID);
-				mainSection(masterSectionIDs,new_SurveyID);
+			console.log("main section: " + masterSectionIDs + "new survey ID: " + new_SurveyID);
+			mainSection(masterSectionIDs,new_SurveyID);
 			// }
 		}else{
 			sectionComponentsID = originalSurvey_uniqueIDs;
@@ -236,19 +236,19 @@ var mainSection = function(mainSectionIDs,surveyID){
 		surveyCopy_content = mainSections[i].content;
 		surveyCopy_rank = mainSections[i].order;
 
-		 Meteor.call("addSurveyQuestionMaster", surveyTitle,surveyID,' ',surveyCopy_skipValue,surveyCopy_contentType,surveyCopy_content,surveyCopy_rank, function ( error, result ) {
-					if ( error ) {
-						console.log(error);
-					} else {
-						Session.set('SectionID', result)
-						for(var j in componentsIDs){
+		Meteor.call("addSurveyQuestionMaster", surveyTitle,surveyID,' ',surveyCopy_skipValue,surveyCopy_contentType,surveyCopy_content,surveyCopy_rank, function ( error, result ) {
+			if ( error ) {
+				console.log(error);
+			} else {
+				Session.set('SectionID', result)
+				for(var j in componentsIDs){
 
-							compIDs[j] = componentsIDs[j]._id;
-							sectionComponents(compIDs[j],Session.get('SectionID'),surveyID);
-						}
+					compIDs[j] = componentsIDs[j]._id;
+					sectionComponents(compIDs[j],Session.get('SectionID'),surveyID);
+				}
 
-					}
-				} );
+			}
+		} );
 		resetSurveyModal();
 	}
 };
@@ -258,34 +258,34 @@ var sectionComponents = function(originalSurvey_componentIDs, newsurvey_sectionI
 	console.log("Sub sections: " + originalSurvey_componentIDs);
 	console.log("new section ID: " + newsurvey_sectionIDs);
 
-	    var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
-		var section_components = surveyQuestionsMasterCollection.find({_id:originalSurvey_componentIDs}).fetch();
+	var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
+	var section_components = surveyQuestionsMasterCollection.find({_id:originalSurvey_componentIDs}).fetch();
 
-		for(var i in section_components){
+	for(var i in section_components){
 
-			surveyTitle = surveyCopy_title;
-			originalSurvey_id = surveyID_forCopy;
-			surveyCopy_skipValue = section_components[i].allowSkip;
-			surveyCopy_contentType = section_components[i].contentType;
-			surveyCopy_content = section_components[i].content;
-			surveyCopy_rank = section_components[i].order;
+		surveyTitle = surveyCopy_title;
+		originalSurvey_id = surveyID_forCopy;
+		surveyCopy_skipValue = section_components[i].allowSkip;
+		surveyCopy_contentType = section_components[i].contentType;
+		surveyCopy_content = section_components[i].content;
+		surveyCopy_rank = section_components[i].order;
 
-			Meteor.call("addSurveyQuestionMaster", surveyTitle,new_surveyID,newsurvey_sectionIDs,surveyCopy_skipValue,surveyCopy_contentType,surveyCopy_content,surveyCopy_rank, function ( error, result ) {
-				if ( error ) {
-					console.log(error);
-				} else {
-					console.log(result);
-				}
-			} );
-			resetSurveyModal();
-		}
+		Meteor.call("addSurveyQuestionMaster", surveyTitle,new_surveyID,newsurvey_sectionIDs,surveyCopy_skipValue,surveyCopy_contentType,surveyCopy_content,surveyCopy_rank, function ( error, result ) {
+			if ( error ) {
+				console.log(error);
+			} else {
+				console.log(result);
+			}
+		} );
+		resetSurveyModal();
+	}
 };
 
-var resetSurveyModal = function() {
+var resetSurveyModal = function () {
 	$('#newSurveyModal input[type=text]').val('');
-	$('#newSurveyModal input[type=checkbox]' ).attr('checked', false);
-	$('#newSurveyModal input[type=checkbox]' ).prop('checked', false);
-	$('.isCopyTrue' ).hide();
+	$('#newSurveyModal input[type=checkbox]').attr('checked', false);
+	$('#newSurveyModal input[type=checkbox]').prop('checked', false);
+	$('.isCopyTrue').hide();
 	$('.copyof_surveytitle').hide();
 	$('.copy_active').hide();
 	$('.survey_title').show();
@@ -294,25 +294,25 @@ var resetSurveyModal = function() {
 	$('#surveyID').val('');
 };
 
-var resetQuestionModal = function() {
+var resetQuestionModal = function () {
 	$('#newQuestionModal input[type=text]').val('');
-	$('#newQuestionModal select').val('' ).change();
-	$('#newQuestionModal input[type=checkbox]' ).attr('checked', false);
-	$('#newQuestionModal input[type=checkbox]' ).prop('checked', false);
-	$('.isCopySet' ).hide();
+	$('#newQuestionModal select').val('').change();
+	$('#newQuestionModal input[type=checkbox]').attr('checked', false);
+	$('#newQuestionModal input[type=checkbox]').prop('checked', false);
+	$('.isCopySet').hide();
 	$('#isUpdate').val('0');
 	$('#questionID').val('');
-}
+};
 
-var checkLocked=function(){
-	var toggle = $( '#locked' ).is(':checked');
-	if(toggle){
+var checkLocked = function () {
+	var toggle = $('#locked').is(':checked');
+	if (toggle) {
 		setFields(true);
-	}else{
+	} else {
 		setFields(false);
 	}
 };
-var setFields=function(status){
+var setFields = function (status) {
 	$('#isCopy').attr('disabled', status);
 	$('#q_copy').attr('disabled', status);
 	$('#q_category').attr('disabled', status);
@@ -320,21 +320,31 @@ var setFields=function(status){
 	$('#question').attr('disabled', status);
 	$('#hud').attr('disabled', status);
 	$('#q_dataType').attr('disabled', status);
-	if((document.getElementById('q_dataType').value=="Multiple Select")||(document.getElementById('q_dataType').value=="Single Select")){
-			$( '#options').attr('disabled', status);
+	if ((document.getElementById('q_dataType').value == "Multiple Select") || (document.getElementById('q_dataType').value == "Single Select")) {
+		//$('#options').attr('disabled', status);
+		$('#aoptions :input').attr('disabled', status);
+		if(status==false){
+			$('.optionadd').unbind('click', false);
+			$('.optionremove').unbind('click', false);
+		}
+		else{
+			$('.optionadd').bind('click', false);
+			$('.optionremove').bind('click', false);
+		}
+
 	}
 };
 
-var maxRank = function(survey_id){
+var maxRank = function (survey_id) {
 
 	var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
 
-	if(surveyQuestionsMasterCollection.find({surveyID:survey_id}).count()<=0){
+	if (surveyQuestionsMasterCollection.find({surveyID: survey_id}).count() <= 0) {
 		return 0;
 	} else {
-		var order = surveyQuestionsMasterCollection.find({surveyID:survey_id},{sort: {order: -1}}).fetch();
+		var order = surveyQuestionsMasterCollection.find({surveyID: survey_id}, {sort: {order: -1}}).fetch();
 		var maxOrder = 0;
-		for(var i in order){
+		for (var i in order) {
 			maxOrder = order[i].order + 1;
 		}
 		return maxOrder;
@@ -343,7 +353,7 @@ var maxRank = function(survey_id){
 
 Template.surveyViewTemplate.events(
 	{
-		'click .addSurvey':function(evt,tmpl){
+		'click .addSurvey': function (evt, tmpl) {
 			resetSurveyModal();
 			$('.copy').show();
 			$('.copylabel').show();
@@ -354,34 +364,35 @@ Template.surveyViewTemplate.events(
 );
 Template.surveyRow.events(
 	{
-		'click .edit':function(evt,tmpl){
-			
+		'click .edit': function (evt, tmpl) {
+
 
 			var surveyCollection = adminCollectionObject("surveys");
-			var survey = surveyCollection.findOne({_id:tmpl.data._id});
+			var survey = surveyCollection.findOne({_id: tmpl.data._id});
 			var copy = survey.copy;
 
 			$('.copy').hide();
 			$('.copylabel').hide();
-			$('.isCopyTrue' ).hide();
+			$('.isCopyTrue').hide();
 
-			if(copy){
+			if (copy) {
 				$('.copyof_surveytitle').show();
 				$('.copy_active').show();
 				$('.survey_title').hide();
 				$('.active').hide();
-			}else{
+			} else {
 				$('.copyof_surveytitle').hide();
 				$('.copy_active').hide();
 				$('.survey_title').show();
 				$('.active').show();
 			}
 
-			if(copy){
-			$('#newSurveyModal input[type=text]#copyof_surveytitle').val(survey.title);
-			$('#newSurveyModal input[type=checkbox]#copy_active' ).attr('checked', survey.active);
-			$('#newSurveyModal input[type=checkbox]#copy_active' ).prop('checked', survey.active);
+			if (copy) {
+				$('#newSurveyModal input[type=text]#copyof_surveytitle').val(survey.title);
+				$('#newSurveyModal input[type=checkbox]#copy_active').attr('checked', survey.active);
+				$('#newSurveyModal input[type=checkbox]#copy_active').prop('checked', survey.active);
 			}
+
 			else{
 			$('#newSurveyModal input[type=text]#survey_title').val(survey.title);
 			$('#newSurveyModal input[type=checkbox]#active' ).attr('checked', survey.active);
@@ -402,7 +413,8 @@ Template.surveyRow.events(
 
 Template.questionViewTemplate.events(
 	{
-		'click .addQuestion':function(evt,tmpl){
+		'click .addQuestion': function (evt, tmpl) {
+			$('#aoptions').empty();
 			resetQuestionModal();
 			$('.showWhenEdit').hide();
 			$('.showWhenNew').show();
@@ -413,55 +425,77 @@ Template.questionViewTemplate.events(
 
 Template.questionForm.events(
 	{
-		'click .toggle': function(evt,tmpl) {
+		'click .optionadd': function (evt, tmpl) {
+			var optionLength = $('#aoptions').children().length;
+			optionLength = optionLength + 1;
+			optionsTag = "<tr  id='" + optionLength + "' class='questionRow'><td><input type='number' id='" + optionLength + ".value' class='value' value=''/></td>";
+			optionsTag += "<td><textarea rows='1' cols='40' id='" + optionLength + ".description' class='description' value=''></textarea></td>";
+
+			optionsTag += "<td><a id='delete." + optionLength + "' class='btn btn-primary optionremove'><span class='fa fa-remove'></span></a></td></tr>";
+			$('#aoptions').append(optionsTag);
+			$('#aoptions').on("click", "a.optionremove", function () {
+				var row_id = $(this).attr('id');
+				var i = row_id.split('.');
+				var i1 = i[1];
+				$('#' + i1).remove();
+			});
+		},
+		'click .toggle': function (evt, tmpl) {
 			var isCopy = $('#isCopy').is(':checked');
-			if(isCopy){
-				$('.isCopySet' ).show();
-			}else{
-				$('.isCopySet' ).hide();
+			if (isCopy) {
+				$('.isCopySet').show();
+			} else {
+				$('.isCopySet').hide();
 			}
 
 		},
-		'change .q_copy' : function(evt,tmpl){
+		'change .q_copy': function (evt, tmpl) {
 
 			var value = $('#q_copy').val();
 			var text = value;
 			//To be done
-				if(value!=null){
-				var question2 = questions.findOne({_id:value});
-				for(var key in question2){
-					$('#q_category').val(question2.category).change();
-					$('#q_name' ).val(question2.name);
-					$('#question' ).val(question2.question);
-					$('#q_dataType' ).val(question2.dataType ).change();
-					if((document.getElementById('q_dataType').value=="Multiple Select")||(document.getElementById('q_dataType').value=="Single Select")){
-						$( '#options,#options_label' ).removeClass('hide');
-						$('#options' ).val(question2.options );
-					}
-					$('#newQuestionModal input[type=checkbox]#hud' ).attr('checked', question2.hud);
-					$('#newQuestionModal input[type=checkbox]#hud' ).prop('checked', question2.hud);
-					
-
+			if (value != null) {
+				var question2 = questions.findOne({_id: value});
+				$('#q_category').val(question2.category).change();
+				$('#q_name').val(question2.name);
+				$('#question').val(question2.question);
+				$('#q_dataType').val(question2.dataType).change();
+				if ((document.getElementById('q_dataType').value == "Multiple Select") || (document.getElementById('q_dataType').value == "Single Select")) {
+					$('#options,#options_label').removeClass('hide');
+					// $('#options' ).val(question2.options );
+					populateOptions(question2);
 				}
+				$('#newQuestionModal input[type=checkbox]#hud').attr('checked', question2.hud);
+				$('#newQuestionModal input[type=checkbox]#hud').prop('checked', question2.hud);
+
 			}
-
-
 		},
-		'change .q_dataType' : function(evt,tmpl){
+		'change .q_dataType': function (evt, tmpl) {
 			var datatype = $(evt.target).val();
-			if(datatype=="Multiple Select" || datatype=="Single Select" ) {
-				$( '#options,#options_label' ).removeClass('hide');
+			if (datatype == "Multiple Select" || datatype == "Single Select") {
+				$('#options,#options_label').removeClass('hide');
 			} else {
-				$( '#options,#options_label' ).addClass('hide');
+				$('#options,#options_label').addClass('hide');
 			}
 
 		},
-		'change .locked' : function(evt,tmpl){
+		'change .q_category': function (evt, tmpl) {
+			var datatype = $(evt.target).val();
+			if (datatype == "Other") {
+				$('#category').removeClass('hide');
+			} else {
+				$('#category').addClass('hide');
+			}
+
+		},
+		'change .locked': function (evt, tmpl) {
 			checkLocked();
 		},
-		'click .save':function(evt,tmpl){
+		'click .save': function (evt, tmpl) {
 
-			var q_category=tmpl.find('.q_category').value;
+			var q_category = tmpl.find('.q_category').value;
+			if (q_category == "Other")
+				q_category = tmpl.find('.category').value;
 			var q_name = tmpl.find('.q_name').value;
 			var question = tmpl.find('.question').value;
 
@@ -471,72 +505,79 @@ Template.questionForm.events(
 
 			var isCopy = tmpl.find('#isCopy').checked;
 
-			var options,selectstatus=false;
-
-			if((q_dataType=="Multiple Select")||(q_dataType=="Single Select")){
-				options = tmpl.find('#options').value;
-				selectstatus=true;
+			var options, selectstatus = false,option_array;
+			options = [];
+			if ((q_dataType == "Multiple Select") || (q_dataType == "Single Select")) {
+				// options = tmpl.find('#options').value;
+				// selectstatus=true;
+				$("#aoptions").find("tr").each(function () {
+						option_array = {};
+						option_array["value"] = $(this).find(".value").val();
+						option_array["description"] = $(this).find(".description").val();
+						options.push(option_array);
+					}
+				);
 			}
 			else
-				options="";
-			if(q_category==""){
+				options = "";
+			if (q_category == "") {
 				$('#error').html("<b>Please select a question category</b>");
 				$('#error').show();
-			}else if(q_name==""){
+			} else if (q_name == "") {
 				$('#error').html("<b>Please enter a questions name</b>");
 				$('#error').show();
-			}else if(question==""){
+			} else if (question == "") {
 				$('#error').html("<b>Please enter a display text</b>");
 				$('#error').show();
-			}else if(q_dataType==""){
+			} else if (q_dataType == "") {
 				$('#error').html("<b>Please select a datatype</b>");
 				$('#error').show();
-			}else if((selectstatus)&&(options=="")){
+			} else if ((selectstatus) && (options == "")) {
 				$('#error').html("<b>Please enter options separated by commas </b>");
-				$('#error').show();				
-			}else{		
+				$('#error').show();
+			} else {
 				$('#newQuestionModal').modal('hide');
 				$('#error').hide();
-			var isUpdate = $('#isUpdate').val();
-			var questionID = $('#questionID').val();
+				var isUpdate = $('#isUpdate').val();
+				var questionID = $('#questionID').val();
 
-			if(isUpdate=='1'){
-				Meteor.call("updateQuestion", questionID, q_category,q_name,question,q_dataType,options,hud,locked,isCopy, function ( error, result ) {
-					if ( error ) {
-						console.log(error);
-					} else {
-						console.log(result);
-					}
-				} );
-			}else{
-				Meteor.call("addQuestion", q_category,q_name,question,q_dataType,options,hud,locked,isCopy, function ( error, result ) {
-					if ( error ) {
-						console.log(error);
-					} else {
-						console.log(result);
-					}
-				} );
-				
+				if (isUpdate == '1') {
+					Meteor.call("updateQuestion", questionID, q_category, q_name, question, q_dataType, options, hud, locked, isCopy, function (error, result) {
+						if (error) {
+							console.log(error);
+						} else {
+							console.log(result);
+						}
+					});
+				} else {
+					Meteor.call("addQuestion", q_category, q_name, question, q_dataType, options, hud, locked, isCopy, function (error, result) {
+						if (error) {
+							console.log(error);
+						} else {
+							console.log(result);
+						}
+					});
+
+				}
+				resetQuestionModal();
 			}
-			resetQuestionModal();
-		}
 		},
-		'click .cancel':function(evt,tmpl){
+		'click .cancel': function (evt, tmpl) {
 			resetQuestionModal();
 		},
-		'click .close':function(evt,tmpl){
+		'click .close': function (evt, tmpl) {
 			resetQuestionModal();
 		},
-		'click .remove':function(evt,tmpl){
+		'click .remove': function (evt, tmpl) {
 
 			var questionID = $('#questionID').val();
-			Meteor.call("removeQuestion", questionID, function ( error, result ) {
-				if ( error ) {
+			Meteor.call("removeQuestion", questionID, function (error, result) {
+				if (error) {
 					console.log(error);
 				} else {
 					console.log(result);
 				}
-			} );
+			});
 
 			resetQuestionModal();
 		}
@@ -545,42 +586,49 @@ Template.questionForm.events(
 
 Template.questionRow.events(
 	{
-		'click .edit':function(evt,tmpl){
+		'click .edit': function (evt, tmpl) {
+			evt.preventDefault();
+			$('#aoptions').empty();
+			var txt1;
 			var questionsCollection = adminCollectionObject("questions");
-			var question = questionsCollection.findOne({_id:tmpl.data._id});
+			var question = questionsCollection.findOne({_id: tmpl.data._id});
 
 			$('#q_category').val(question.category).change();
-			$('#q_name' ).val(question.name);
-			$('#question' ).val(question.question);
-			$('#q_dataType' ).val(question.dataType ).change();
-			$('#options' ).val(question.options );
+			$('#q_name').val(question.name);
+			$('#question').val(question.question);
+			$('#q_dataType').val(question.dataType).change();
+			if (question.options != null) {
+				optionsTag = "";
+				populateOptions(question);
 
-			$('#newQuestionModal input[type=checkbox]#isCopy' ).attr('checked', question.isCopy);
-			$('#newQuestionModal input[type=checkbox]#isCopy' ).prop('checked', question.isCopy);
-			$('#newQuestionModal input[type=checkbox]#hud' ).attr('checked', question.hud);
-			$('#newQuestionModal input[type=checkbox]#hud' ).prop('checked', question.hud);
-			$('#newQuestionModal input[type=checkbox]#locked' ).attr('checked', question.locked);
-			$('#newQuestionModal input[type=checkbox]#locked' ).prop('checked', question.locked);
+			}
+
+			$('#newQuestionModal input[type=checkbox]#isCopy').attr('checked', question.isCopy);
+			$('#newQuestionModal input[type=checkbox]#isCopy').prop('checked', question.isCopy);
+			$('#newQuestionModal input[type=checkbox]#hud').attr('checked', question.hud);
+			$('#newQuestionModal input[type=checkbox]#hud').prop('checked', question.hud);
+			$('#newQuestionModal input[type=checkbox]#locked').attr('checked', question.locked);
+			$('#newQuestionModal input[type=checkbox]#locked').prop('checked', question.locked);
 
 			$('#isUpdate').val('1');
 			$('#questionID').val(tmpl.data._id);
 
 			$('.showWhenEdit').show();
 			$('.showWhenNew').hide();
-			if(question.locked)
+			if (question.locked)
 				setFields(true);
 			else
 				setFields(false);
 		},
-		'click .delete':function(evt,tmpl){
+		'click .delete': function (evt, tmpl) {
 
-			Meteor.call("removeQuestion", tmpl.data._id, function ( error, result ) {
-				if ( error ) {
+			Meteor.call("removeQuestion", tmpl.data._id, function (error, result) {
+				if (error) {
 					console.log(error);
 				} else {
 					console.log(result);
 				}
-			} );
+			});
 
 			resetQuestionModal();
 
@@ -645,16 +693,16 @@ Template.sortableItemTarget.events(
 			// Make the name editable. We should use an existing component, but it's
 			// in a sorry state - https://github.com/arillo/meteor-x-editable/issues/1
 			var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
-			var cont = surveyQuestionsMasterCollection.find({_id:this._id},{content_type:1,_id:0}).fetch();
+			var cont = surveyQuestionsMasterCollection.find({_id: this._id}, {content_type: 1, _id: 0}).fetch();
 			var contentType = '';
-			for(var i in cont){
+			for (var i in cont) {
 				var contentType = cont[i].content_type
 			}
-			if(contentType == "question"){
+			if (contentType == "question") {
 				alert("Question cannot be edited");
 				input.hide();
 				template.$('.name').show();
-			}else{
+			} else {
 				var name = template.$('.name');
 				var input = template.$('input');
 				if (input.length) {  // jQuery never returns null - http://stackoverflow.com/questions/920236/how-can-i-detect-if-a-selector-returns-null
@@ -683,7 +731,7 @@ Template.sortableItemTarget.events(
 			template.$('.name').show();
 			// TODO - what is the collection here? We'll hard-code for now.
 			// https://github.com/meteor/meteor/issues/3303
-			if (this.name !== input.val() && this.name !== ''){
+			if (this.name !== input.val() && this.name !== '') {
 				//   var cont = SurveyQuestionsSchema.find({_id:this._id},{content_type:1,_id:0}).fetch();
 				//   for(var i in cont){
 				//         var contentType = cont[i].content_type
@@ -692,13 +740,13 @@ Template.sortableItemTarget.events(
 				//     alert("Question cannot be edited");
 				//   }else{
 
-				Meteor.call("updateSurveyQuestionMaster", this._id, input.val(), function ( error, result ) {
-					if ( error ) {
+				Meteor.call("updateSurveyQuestionMaster", this._id, input.val(), function (error, result) {
+					if (error) {
 						console.log(error);
 					} else {
 						console.log(result);
 					}
-				} );
+				});
 
 			}
 		},
@@ -717,13 +765,13 @@ Template.sortableItemTarget.events(
 		'click .close': function (event, template) {
 			// `this` is the data context set by the enclosing block helper (#each, here)
 
-			Meteor.call("removeSurveyQuestionMaster", this._id, function ( error, result ) {
-				if ( error ) {
+			Meteor.call("removeSurveyQuestionMaster", this._id, function (error, result) {
+				if (error) {
 					console.log(error);
 				} else {
 					console.log(result);
 				}
-			} );
+			});
 
 			// custom code, working on a specific collection
 			var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
@@ -765,6 +813,8 @@ Template.selectQuestions.events(
 		}
 	}
 );
+
+
 var skip_value,contents,sec_id;
 Template.previewSurvey.events({
 
@@ -786,13 +836,33 @@ Template.previewSurvey.events({
 			if(masterSkip_val == "true" ){
 
 					$('.' + sec_id).hide();
-
 			}
 		}else{
 			$('.' + sec_id).show();
 		}
-
-
 	}
-	
 });
+
+var populateOptions = function (question) {
+	var optionsTag;
+	for (var i in question.options) {
+		if (question.options[i].description != null) {
+			optionsTag = "<tr  id='" + i + "' class='questionRow'><td><input type='number' id='" + i + ".value' class='value' value='" + question.options[i].value + "'/></td>";
+			optionsTag += "<td><textarea rows='1' cols='40' id='" + i + ".description' class='description'>" + question.options[i].description + "</textarea></td>";
+
+			optionsTag += "<td><a id='delete." + i + "' class='btn btn-primary optionremove'><span class='fa fa-remove'></span></a></td></tr>";
+			$('#aoptions').append(optionsTag);
+			registerDeleteOption();
+		}
+	}
+
+};
+var registerDeleteOption=function(){
+	$('#aoptions').on("click", "a.optionremove", function () {
+		var row_id = $(this).attr('id');
+		var i = row_id.split('.');
+		var i1 = i[1];
+		$('#' + i1).remove();
+	});
+};
+

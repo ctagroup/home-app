@@ -18,7 +18,17 @@ Schemas.questions = new SimpleSchema( {
 		type: String,
 		max: 256
 	},
-	options: {
+	'options.$': {
+		type: Object,
+		max: 256,
+		optional: true
+	},
+	'options.$.value': {
+		type: Number,
+		max: 256,
+		optional: true
+	},
+	'options.$.description': {
 		type: String,
 		max: 256,
 		optional: true
