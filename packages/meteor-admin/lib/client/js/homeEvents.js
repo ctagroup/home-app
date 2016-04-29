@@ -28,44 +28,95 @@ Template.AdminRoleManager.events(
 		}
 	}
 );
-
+var surveyCopyID,surveyID_forCopy,sectionArray,copyOf_surveyID,surveyID,surveyTitle,newSurveySectionID,masterSectionIDs,originalSurvey_id,sectionComponentsID,originalSurvey_uniqueIDs,surveyCopy_sectionID,surveyCopy_skipValue,surveyCopy_contentType,surveyCopy_content,surveyCopy_rank,surveyCopy_title;
 Template.surveyForm.events(
 	{
+		'change .s_copy': function (event, template) {
+		 	surveyID_forCopy = $(event.target).val();
 
+
+			var survey_record = surveys.findOne({_id:surveyID_forCopy});
+			for(var key in survey_record){
+				document.getElementById('copyof_surveytitle').value = survey_record['title'];
+				document.getElementById('copy_active').checked = survey_record['active'];
+			}
+
+			$('.s_copy').val('Choose');
+
+		},
 		'click .save':function(evt,tmpl){
 
-			var surveyID = $('#surveyID').val();
-			var copy = tmpl.find('.copy').checked;
-			var title = tmpl.find('.survey_title').value;
-			var active = tmpl.find('.active').checked;
+			var isUpdate = $('#isUpdate').val();
 
-			Meteor.call("addSurvey", title, active, copy, function ( error, result ) {
+			surveyID = $('#surveyID').val();
+			var copy = tmpl.find('.copy').checked;
+
+			if(copy){
+
+				var title = tmpl.find('.copyof_surveytitle').value;
+				surveyCopy_title = title;
+				var active = tmpl.find('.copy_active').checked;
+				surveyCopyId = $('#surveyID').val();
+				// sectionArray = new Array();
+                //
+				// var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
+				// var records_forCopy = surveyQuestionsMasterCollection.find({surveyID:surveyID_forCopy},{sectionID:1}).fetch();
+                //
+				// for(var i in records_forCopy){
+                //
+				// 	surveyTitle = title;
+				// 	originalSurvey_id = surveyID_forCopy;
+				// 	originalSurvey_uniqueIDs = records_forCopy[i]._id;
+				// 	surveyCopy_sectionID = records_forCopy[i].sectionID;
+				// 	surveyCopy_skipValue = records_forCopy[i].allowSkip;
+				// 	surveyCopy_contentType = records_forCopy[i].contentType;
+				// 	surveyCopy_content = records_forCopy[i].content;
+				// 	surveyCopy_rank = records_forCopy[i].order;
+                //
+				// 	if(surveyCopy_sectionID == null) {
+				// 		masterSectionIDs = originalSurvey_uniqueIDs;
+				// 		for(var j in masterSectionIDs){
+				// 			sectionArray[j] = masterSectionIDs;
+				// 			console.log("main section: " + sectionArray[j]);
+				// 			mainSection(sectionArray[j]);
+				// 		}
+				// 	}else{
+				// 		sectionComponentsID = originalSurvey_uniqueIDs;
+				// 	}
+				// }
+
+			}else {
+				var title = tmpl.find('.survey_title').value;
+				var active = tmpl.find('.active').checked;
+				surveyCopyId = ' ';
+			}
+			Meteor.call("addSurvey", title, active, copy, surveyID,function ( error, result ) {
 				if ( error ) {
 					console.log(error);
 				} else {
-					console.log(result);
+					if(result!=null) {
+						if(copy) {
+							recordsForCopy(result);
+						}else{
+							console.log(result);
+						}
+					}
 				}
 			} );
+			// copyOf_surveyID = $('#newsurveyID').val();
+			// console.log("CopyID: " + copyOf_surveyID);
+			resetSurveyModal();
+		},
+		'click .update':function(evt,tmpl){
 
-			var surveyID = $('#surveyID').val();
-			var surveyCollection = adminCollectionObject("surveys");
-			var survey = surveyCollection.findOne({_id:surveyID});
-			var update_copy = survey.copy;
-
-			if(update_copy){
-				var title = tmpl.find('.copyof_surveytitle').value;
-				var active = tmpl.find('.copy_active').checked;
-				var copy = update_copy;
-			}else{
-				var title = tmpl.find('.survey_title').value;
-				var active = tmpl.find('.active').checked;
-				var copy = update_copy;
-			}
+			surveyID = $('#surveyID').val();
+			var title = tmpl.find('.survey_title').value;
+			var active = tmpl.find('.active').checked;
 
 			var isUpdate = $('#isUpdate').val();
 			if(isUpdate=='1'){
 
-				Meteor.call("updateSurvey", surveyID, title, active, copy, function ( error, result ) {
+				Meteor.call("updateSurvey", surveyID, title, active, function ( error, result ) {
 					if ( error ) {
 						console.log(error);
 					} else {
@@ -81,7 +132,6 @@ Template.surveyForm.events(
 					}
 				});
 			}
-
 			resetSurveyModal();
 		},
 		'click .cancel':function(evt,tmpl){
@@ -101,7 +151,6 @@ Template.surveyForm.events(
 				$('.survey_title').hide();
 				$('.active').hide();
 
-
 			 }else{
 				
 				$('.isCopyTrue' ).hide();
@@ -110,8 +159,6 @@ Template.surveyForm.events(
 				$('.survey_title').show();
 				$('.active').show();	
 			 }
-			
-
 		},
 		'click .remove':function(evt,tmpl){
 			var surveyID = $('#surveyID').val();
@@ -122,20 +169,117 @@ Template.surveyForm.events(
 					console.log(result);
 				}
 			} );
+			Meteor.call("removeSurveyCopyQuestionMaster", surveyTitle, function ( error, result ) {
+
+				if ( error ) {
+					console.log(error);
+				} else {
+					console.log(result);
+				}
+			} );
 			resetSurveyModal();
 		},
-		'change .s_copy': function (event, template) {
-     	 var surveyID_forCopy = $(event.currentTarget).val();
-
-      		var survey_record = surveys.findOne({_id:surveyID_forCopy});
-      		for(var key in survey_record){
-      			document.getElementById('copyof_surveytitle').value = survey_record['title'];
-      			document.getElementById('copy_active').checked = survey_record['active'];
-      		}
-      	}
 
 	}
 );
+var new_SurveyID
+var recordsForCopy = function(surveyID){
+
+	// console.log("new survey ID: " + surveyID);
+	new_SurveyID = surveyID;
+	sectionArray = new Array();
+
+	var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
+	var records_forCopy = surveyQuestionsMasterCollection.find({surveyID:surveyID_forCopy},{sectionID:1}).fetch();
+
+	for(var i in records_forCopy){
+
+		// surveyTitle = title;
+		//originalSurvey_id = surveyID_forCopy;
+		originalSurvey_uniqueIDs = records_forCopy[i]._id;
+		surveyCopy_sectionID = records_forCopy[i].sectionID;
+		// surveyCopy_skipValue = records_forCopy[i].allowSkip;
+		// surveyCopy_contentType = records_forCopy[i].contentType;
+		// surveyCopy_content = records_forCopy[i].content;
+		// surveyCopy_rank = records_forCopy[i].order;
+
+		if(surveyCopy_sectionID == null) {
+			masterSectionIDs = originalSurvey_uniqueIDs;
+			// for(var j in masterSectionIDs){
+			// 	sectionArray[j] = masterSectionIDs;
+			 	console.log("main section: " + masterSectionIDs + "new survey ID: " + new_SurveyID);
+				mainSection(masterSectionIDs,new_SurveyID);
+			// }
+		}else{
+			sectionComponentsID = originalSurvey_uniqueIDs;
+		}
+	}
+}
+var compIDs;
+var mainSection = function(mainSectionIDs,surveyID){
+
+	// console.log("copyID: " + surveyID);
+	// console.log("Main Section: " + mainSectionIDs);
+
+	var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
+	var mainSections = surveyQuestionsMasterCollection.find({_id:mainSectionIDs}).fetch();
+
+	var componentsIDs = surveyQuestionsMasterCollection.find({sectionID:mainSectionIDs},{_id:1}).fetch();
+	var compIDs = new Array();
+
+	for (var i in mainSections){
+
+		surveyTitle = surveyCopy_title;
+		originalSurvey_id = surveyID_forCopy;
+		surveyCopy_skipValue = mainSections[i].allowSkip;
+		surveyCopy_contentType = mainSections[i].contentType;
+		surveyCopy_content = mainSections[i].content;
+		surveyCopy_rank = mainSections[i].order;
+
+		 Meteor.call("addSurveyQuestionMaster", surveyTitle,surveyID,' ',surveyCopy_skipValue,surveyCopy_contentType,surveyCopy_content,surveyCopy_rank, function ( error, result ) {
+					if ( error ) {
+						console.log(error);
+					} else {
+						Session.set('SectionID', result)
+						for(var j in componentsIDs){
+
+							compIDs[j] = componentsIDs[j]._id;
+							sectionComponents(compIDs[j],Session.get('SectionID'),surveyID);
+						}
+
+					}
+				} );
+		resetSurveyModal();
+	}
+};
+var sectionComponents = function(originalSurvey_componentIDs, newsurvey_sectionIDs,new_surveyID){
+
+	console.log("new survey ID: " + new_surveyID);
+	console.log("Sub sections: " + originalSurvey_componentIDs);
+	console.log("new section ID: " + newsurvey_sectionIDs);
+
+	    var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
+		var section_components = surveyQuestionsMasterCollection.find({_id:originalSurvey_componentIDs}).fetch();
+
+		for(var i in section_components){
+
+			surveyTitle = surveyCopy_title;
+			originalSurvey_id = surveyID_forCopy;
+			surveyCopy_skipValue = section_components[i].allowSkip;
+			surveyCopy_contentType = section_components[i].contentType;
+			surveyCopy_content = section_components[i].content;
+			surveyCopy_rank = section_components[i].order;
+
+			Meteor.call("addSurveyQuestionMaster", surveyTitle,new_surveyID,newsurvey_sectionIDs,surveyCopy_skipValue,surveyCopy_contentType,surveyCopy_content,surveyCopy_rank, function ( error, result ) {
+				if ( error ) {
+					console.log(error);
+				} else {
+					console.log(result);
+				}
+			} );
+			resetSurveyModal();
+		}
+};
 
 var resetSurveyModal = function() {
 	$('#newSurveyModal input[type=text]').val('');
@@ -242,8 +386,6 @@ Template.surveyRow.events(
 			$('#newSurveyModal input[type=text]#survey_title').val(survey.title);
 			$('#newSurveyModal input[type=checkbox]#active' ).attr('checked', survey.active);
 			$('#newSurveyModal input[type=checkbox]#active' ).prop('checked', survey.active);
-			// $('#newSurveyModal input[type=checkbox]#skip' ).attr('checked', survey.skip);
-			// $('#newSurveyModal input[type=checkbox]#skip' ).prop('checked', survey.skip);
 			$('#newSurveyModal input[type=checkbox]#copy' ).attr('checked', survey.copy);
 			$('#newSurveyModal input[type=checkbox]#copy' ).prop('checked', survey.copy);
 			}
@@ -630,7 +772,7 @@ Template.previewSurvey.events({
 
 		var toggleSkip = $('.hideWhenSkipped').is(':checked');
 		if(toggleSkip){
-			
+
 			var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
 			var masterSectionID = surveyQuestionsMasterCollection.findOne({_id:this._id},{allowSkip:1,_id:0});
 			var masterSkip_val = masterSectionID.allowSkip;
