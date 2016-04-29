@@ -51,14 +51,26 @@
 					<div class="alert alert-danger" id="error" style="display: none;"></div>
 					<div class="form-group">
 						<label for="q_category">Question Category:  </label>
-						<select class="form-control q_category" name="q_category" id="q_category">
-							<option value="Universal Data Elements">Universal Data Elements</option>
-							<option value="Program Specific Data Elements">Program Specific Data Elements</option>
-							<option value="Path Required Elements">Path Required Elements</option>
-							<option value="Rhy Required Elements">Rhy Required Elements</option>
-							<option value="HOPWA Required Elements">HOPWA Required Elements</option>
-							<option value="VA Required Elements">VA Required Elements</option>
-						</select>
+                        <div class="row">
+                            <div class="col-sm-6" >
+                                <select class="form-control q_category" name="q_category" id="q_category">
+									{{#each getQuestionCategory}}
+                                        <option value={{this}}>{{this}}</option>
+									{{/each}}
+                                    <option value="Other">Others</option>
+                                    <!--<option value="Universal Data Elements">Universal Data Elements</option>-->
+                                    <!--<option value="Program Specific Data Elements">Program Specific Data Elements</option>-->
+                                    <!--<option value="Path Required Elements">Path Required Elements</option>-->
+                                    <!--<option value="Rhy Required Elements">Rhy Required Elements</option>-->
+                                    <!--<option value="HOPWA Required Elements">HOPWA Required Elements</option>-->
+                                    <!--<option value="VA Required Elements">VA Required Elements</option>-->
+                                </select>
+                            </div>
+                            <div class="col-sm-6">
+                                <!--<label for="category">Specify:  </label>-->
+                                <input type="text" class="form-control hide category" name="category" id="category">
+                            </div>
+                        </div>
 					</div>
 					<div class="showWhenNew">
 						<div class="checkbox">
@@ -66,7 +78,6 @@
 								<input type="checkbox" class="toggle" id="isCopy" value="isCopy"> IsCopy
 							</label>
 						</div>
-						<!--{{#if isCopySet}}-->
 						<div class="form-group isCopySet">
 							<label for="q_copy" >Choose a Question copy: </label>
 							<select class="form-control q_copy" name="q_copy" id="q_copy">
@@ -91,7 +102,23 @@
 					</select>
 					<br/>
 					<label for="options" id="options_label" class="hide">Options(Enter comma separated options): </label>
-					<input type="text" class="form-control options hide" name="options" id="options" />
+					<!--<input type="text" class="form-control options hide" name="options" id="options" />-->
+					<div id="options">
+						<table  class="table table-bordered table-striped table-hover">
+							<thead>
+							<tr>
+								<th>Value</th>
+								<th>Description</th>
+								<th>Delete</th>
+							</tr>
+							<tr id='oadd' class='optionRow'><td><a class='btn btn-primary optionadd'><span class='fa fa-plus'></span></a></td></tr>
+							</thead>
+							<tbody id="aoptions">
+
+
+							</tbody>
+						</table>
+					</div>
 					<div class="checkbox">
 						<label class="checkbox-inline">
 							<input type="checkbox" class="toggle-checked" id="hud" value="hud"> HUD
