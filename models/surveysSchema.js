@@ -11,18 +11,14 @@ Schemas.surveys = new SimpleSchema( {
 	active: {
 		type: Boolean
 	},
-	// skip: {
-	// 	type: Boolean
-	// },
 	copy: {
 		type: Boolean
 	},
-	//content: {
-	//	type: String,
-	//	autoform: {
-	//		rows: 5
-	//	}
-	//},
+	surveyCopyID:{
+		type: String,
+		optional:true,
+		max: 256
+	},
 	createdAt: {
 		type: Date,
 		label: 'Created At',

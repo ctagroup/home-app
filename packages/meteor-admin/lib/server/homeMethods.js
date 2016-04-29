@@ -143,13 +143,14 @@ Meteor.methods(
 
 			optionsCollection.upsert({option_name:"trustedAppSecret"}, {$set: {option_name:"trustedAppSecret",option_value:value}});
 		},
-		addSurvey: function(title,active,copy){
+		addSurvey: function(title,active,copy,surveyCopyID){
 			var surveyCollection = adminCollectionObject("surveys");
-			surveyCollection.insert({title:title,active:active,copy:copy});
+			var surveyID = surveyCollection.insert({title:title,active:active,copy:copy,surveyCopyID:surveyCopyID});
+			return surveyID;
 		},
-		updateSurvey: function(surveyID, title,active,copy){
+		updateSurvey: function(surveyID, title,active){
 			var surveyCollection = adminCollectionObject("surveys");
-			surveyCollection.update(surveyID, {$set: {title:title,active:active,copy:copy}});
+			surveyCollection.update(surveyID, {$set: {title:title,active:active}});
 		},
 		removeSurvey: function(surveyID){
 			var surveyCollection = adminCollectionObject("surveys");
@@ -196,6 +197,10 @@ Meteor.methods(
 		removeClient: function(clientInfoID){
 			var questionCollection = adminCollectionObject("clientInfo");
 			questionCollection.remove({_id:clientInfoID});
+		},
+		removeSurveyCopyQuestionMaster:function(surveyCopyTitle){
+			var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
+			surveyQuestionsMasterCollection.remove({surveyTitle:surveyCopyTitle});
 		}
 	}
 );
