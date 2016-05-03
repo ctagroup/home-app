@@ -88,22 +88,25 @@
 	<div class="box box-default">
 		<div class="box-body">
 			{{> adminAlert}}
-			{{#if adminGetUserSchema}}
-			{{> quickForm id="adminUpdateUser" buttonContent="Update" buttonClasses="btn btn-primary btn-sm" collection=adminGetUsers schema=adminGetUserSchema doc=admin_current_doc omitFields="roles,services"}}
-			<hr/>
-			{{/if}}
 
 			<h4>User Roles</h4>
-			{{#each roles}}
-			<button class="btn btn-primary btn-xs btn-remove-role" role="{{this}}" user="{{admin_current_id}}">{{this}}</button>
+			<img class="home-spinner hide" alt="spinner" src="/imgs/spinner.gif" />
+			{{#each getUserRoles admin_current_id}}
+			<button class="btn btn-primary btn-xs {{#if isInRole 'manage_user_role' }}btn-remove-role{{/if}}" role="{{this}}" user="{{admin_current_id}}">{{this}}</button>
 			{{/each}}
-			{{#each otherRoles}}
-			<button class="btn btn-default btn-xs btn-add-role" role="{{this}}" user="{{admin_current_id}}">{{this}}</button>
-			{{/each}}
-			{{#if roles}}
-			<p style="margin-top:5px;">Click a role to toggle it.</p>
+			{{#if isInRole 'manage_user_role'}}
+				{{#each getOtherRoles admin_current_id}}
+				<button class="btn btn-default btn-xs btn-add-role" role="{{this}}" user="{{admin_current_id}}">{{this}}</button>
+				{{/each}}
+				{{#if getUserRoles admin_current_id}}
+				<p style="margin-top:5px;">Click a role to toggle it.</p>
+				{{else}}
+				<p>User not in any roles. Click a role to add it to a user.</p>
+				{{/if}}
 			{{else}}
-			<p>User not in any roles. Click a role to add it to a user.</p>
+				{{#unless getUserRoles admin_current_id}}
+					<p style="margin-top:5px;">User not in any roles.</p>
+				{{/unless}}
 			{{/if}}
 
 			<hr/>
@@ -145,10 +148,6 @@
 		{{$.Session.get 'adminError'}}
 	</div>
 	{{/if}}
-</template>
-
-<template name="adminUsersIsAdmin">
-	{{#if adminIsUserInRole value}}<i class="fa fa-check"></i>{{/if}}
 </template>
 
 <template name="adminUsersMailBtn">

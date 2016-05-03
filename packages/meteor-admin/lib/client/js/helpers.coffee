@@ -65,10 +65,6 @@ UI.registerHelper 'adminGetSkin', ->
 	else
 		'blue'
 
-UI.registerHelper 'adminIsUserInRole', (_id)->
-	user = Meteor.users.findOne(_id);
-	Roles.userIsInRole user, ['Admin','System Admin','Developer']
-
 UI.registerHelper 'adminGetUsers', ->
 	Meteor.users
 
@@ -90,7 +86,7 @@ UI.registerHelper 'adminCollectionCount', (collection)->
 		AdminCollectionsCount.findOne({collection: collection})?.count
 
 UI.registerHelper 'adminTemplate', (collection, mode)->
-	if collection?.toLowerCase() != 'users' && typeof AdminConfig?.collections?[collection]?.templates != 'undefined'
+	if typeof AdminConfig?.collections?[collection]?.templates != 'undefined'
 		AdminConfig.collections[collection].templates[mode]
 
 UI.registerHelper 'adminGetCollection', (collection)->

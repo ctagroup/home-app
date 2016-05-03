@@ -18,10 +18,14 @@ Template.AdminDeleteModal.events
 Template.AdminDashboardusersEdit.events
 	'click .btn-add-role': (e,t) ->
 		console.log 'adding user'
-		Meteor.call 'adminAddUserToRole', $(e.target).attr('user'), $(e.target).attr('role')
+		$('.home-spinner').removeClass("hide").addClass('show');
+		Meteor.call 'addUserToRole', $(e.target).attr('user'), $(e.target).attr('role'), (error, result) ->
+			$('.home-spinner').removeClass("show").addClass('hide');
 	'click .btn-remove-role': (e,t) ->
 		console.log 'removing user'
-		Meteor.call 'adminRemoveUserToRole', $(e.target).attr('user'), $(e.target).attr('role')
+		$('.home-spinner').removeClass("hide").addClass('show');
+		Meteor.call 'removeUserFromRole', $(e.target).attr('user'), $(e.target).attr('role'), (error, result) ->
+			$('.home-spinner').removeClass("show").addClass('hide');
 
 Template.AdminHeader.events
 	'click .btn-sign-out': () ->

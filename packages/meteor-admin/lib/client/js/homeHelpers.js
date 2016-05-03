@@ -364,3 +364,14 @@ Template.previewSurvey.helpers(
 	}
 );
 
+
+Template.AdminDashboardusersEdit.helpers(
+	{
+		getOtherRoles: function ( userId ) {
+			return HomeHelpers.getOtherRoles(userId);
+		},
+		getUserRoles: function (userId) {
+			return HomeHelpers.getUserRoles(userId);
+		}
+	}
+);

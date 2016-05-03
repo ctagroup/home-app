@@ -43,14 +43,50 @@ Meteor.methods(
 			});
 		},
 		addUserToRole: function ( userID, role ) {
-			if(AdminConfig && AdminConfig.defaultRolePermissions && AdminConfig.defaultRolePermissions[role]) {
-				var rolePermissions = AdminConfig.defaultRolePermissions[role];
+
+			check(arguments, [Match.Any]);
+			var rolePermissionsCollection = adminCollectionObject("rolePermissions");
+			var rolePermissions = rolePermissionsCollection.find({role:role, value:true}).fetch();
+
+			rolePermissions = _.map(rolePermissions, function ( permission ) {
+				return permission.permission;
+			});
+
+			if(rolePermissions && rolePermissions.length > 0) {
 				Roles.addUsersToRoles(userID, rolePermissions, Roles.GLOBAL_GROUP);
 			}
 		},
 		removeUserFromRole: function ( userID, role ) {
-			if(AdminConfig && AdminConfig.defaultRolePermissions && AdminConfig.defaultRolePermissions[role]) {
-				var rolePermissions = AdminConfig.defaultRolePermissions[role];
+
+			check(arguments, [Match.Any]);
+			var rolePermissionsCollection = adminCollectionObject("rolePermissions");
+			var rolePermissions = rolePermissionsCollection.find({role:role, value:true}).fetch();
+
+			rolePermissions = _.map(rolePermissions, function ( permission ) {
+				return permission.permission;
+			});
+
+			rolePermissions = _.filter(rolePermissions, function(permission) {
+
+				var userRoles = HomeHelpers.getUserRoles(userID);
+				userRoles = _.filter(userRoles, function ( userRole ) {
+					if(userRole == role) {
+						return false;
+					}
+					return true;
+				});
+
+				if ( userRoles && userRoles.length > 0 ) {
+					otherRolesWithPermission = rolePermissionsCollection.find({permission:permission, role:{$in:userRoles}, value: true}).fetch();
+					if(otherRolesWithPermission.length > 0) {
+						return false;
+					}
+				}
+
+				return true;
+			});
+
+			if(rolePermissions && rolePermissions.length > 0) {
 				Roles.removeUsersFromRoles(userID, rolePermissions, Roles.GLOBAL_GROUP);
 			}
 		},
