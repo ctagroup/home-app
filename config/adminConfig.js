@@ -227,6 +227,11 @@ AdminConfig = {
 			icon: 'user',
 			label: 'Users',
 			addNewLink: true,
+			templates: {
+				edit: {
+					name: 'AdminDashboardusersEdit'
+				}
+			},
 			changeSelector: function( selector, userId ) {
 				$or = selector['$or'];
 				if ( $or ) {
@@ -248,12 +253,6 @@ AdminConfig = {
 				return selector;
 			},
 			tableColumns: [
-				{
-					name: '_id',
-					label: 'Admin',
-					template: 'adminUsersIsAdmin',
-					width: '55px'
-				},
 				{
 					name: 'emails',
 					label: 'Email',
