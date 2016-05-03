@@ -135,12 +135,17 @@ adminCreateRouteEditOptions = (collection, collectionName) ->
 		action: ->
 			@render()
 		onAfterAction: ->
+			doc = adminCollectionObject(collectionName).findOne _id : parseID(@params._id)
+			if ( collectionName == 'users' )
+				subtitle = doc.emails[0].address
+			else
+				subtitle = @params._id
 			Session.set 'admin_title', AdminDashboard.collectionLabel collectionName
-			Session.set 'admin_subtitle', 'Edit ' + @params._id
+			Session.set 'admin_subtitle', 'Edit: ' + subtitle
 			Session.set 'admin_collection_page', 'edit'
 			Session.set 'admin_collection_name', collectionName
 			Session.set 'admin_id', parseID(@params._id)
-			Session.set 'admin_doc', adminCollectionObject(collectionName).findOne _id : parseID(@params._id)
+			Session.set 'admin_doc', doc
 			collection.routes?.edit?.onAfterAction
 		data: ->
 			admin_collection: adminCollectionObject collectionName
