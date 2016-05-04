@@ -641,7 +641,7 @@ var section_id,skip_val;
 Template.surveyEditTemplate.events(
 	{
 		'click .addQues':function(event,tmpl){
-			if(tmpl.find('.section').value!="Other") {
+			if(tmpl.find('.section').value!="Other" || tmpl.find('.section').value!="sectionSelect") {
 				Session.set('section_id', tmpl.find('.section').value);
 				return;
 			}
@@ -658,17 +658,28 @@ Template.surveyEditTemplate.events(
 			var content = tmpl.find('.sectionName').value;
 			var content_type= "section";
 			var section_id = ' ';
+			console.log("content: " + content);
+
 			skip_val = tmpl.find('.showskip').checked;
-			//survey_title,survey_id,section_id,content_type,content,rank
+			
 			Meteor.call("addSurveyQuestionMaster", survey_title,survey_id,section_id,skip_val,content_type,content,maxRank(survey_id), function ( error, result ) {
 				if ( error ) {
 					console.log(error);
 				} else {
 					console.log(result);
-					// Session.set('section_id', "");
-					// console.log("section_id: " + Session.get('section_id'));
+					section_id = result;
+
+					var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
+					var section_name = surveyQuestionsMasterCollection.find({_id: section_id},{content:1,_id:0}).fetch();
+
+					for(var i in section_name){
+
+						console.log("sec_name: " + section_name[i].content);
+						$('#section').val(section_name[i].content);
+					}
 					delete Session.keys['section_id'];
 				}
+
 			} );
 
 			$("#sectionName").val("");

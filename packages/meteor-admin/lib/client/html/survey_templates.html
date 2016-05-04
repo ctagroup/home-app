@@ -116,9 +116,11 @@
                 <div class="row">
                     <div class="col-sm-6" >
                         <select class="form-control section" name="section" id="section">
+
 							{{#each getSection}}
                                 <option value={{_id}}>{{content}}</option>
 							{{/each}}
+							<option value="sectionSelect">Select Section</option>
                             <option value="Other">Add New Section</option>
                         </select>
 					</div>

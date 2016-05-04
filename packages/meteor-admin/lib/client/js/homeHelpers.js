@@ -98,7 +98,7 @@ Template.surveyEditTemplate.helpers(
 		},
 		getSection:function(){
 			var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
-			var distinctEntries = _.uniq(surveyQuestionsMasterCollection.find({contentType:'section'}, {sort: {content:1}, fields: {content:true}}).fetch());
+			var distinctEntries = _.uniq(surveyQuestionsMasterCollection.find({contentType:'section', surveyID:Router.current().params._id}, {sort: {content:1}, fields: {content:true}}).fetch());
 			return distinctEntries;
 		}
 	}
