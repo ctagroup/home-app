@@ -59,7 +59,7 @@
 					<br/>
 					<div class="checked">
 						<label class="checkbox-inline">
-						<input type="checkbox" class="active" id="active" value="active"> 
+						<input type="checkbox" class="active" id="active" value="active">
 						<input type="checkbox" class="copy_active" id="copy_active" >Active
 					</label><br />
 					<label class="checkbox-inline copylabel">
@@ -74,7 +74,7 @@
 						<option value={{_id}}>{{title}}</option>
 					{{/each}}
 				 </select>
-					</div>	
+					</div>
 
 					<input type="hidden" id="isUpdate" value="0" />
 					<input type="hidden" id="surveyID" value="" />
@@ -113,9 +113,20 @@
 				</label>
 			</div>
 			<div class="form-group">
-			
-			
-					<input type="text" class="form-control  sectionName" id="sectionName" name="sectionName" placeholder="Section Name" value="" />
+                <div class="row">
+                    <div class="col-sm-6" >
+                        <select class="form-control section" name="section" id="section">
+							{{#each getSection}}
+                                <option value={{_id}}>{{content}}</option>
+							{{/each}}
+                            <option value="Other">Add New Section</option>
+                        </select>
+					</div>
+                    <div class="col-sm-6">
+                        <!--<label for="category">Specify:  </label>-->
+                        <input type="text" class="form-control hide sectionName" id="sectionName" name="sectionName" placeholder="Section Name" value="" />
+					</div>
+                </div>
 					<br/>
 					<label class="checkbox-inline skipLabel">
 						<input type="checkbox" class="showskip" id="skip_id" value="skip"><b> Skip </b>
@@ -126,17 +137,17 @@
 			</div>
 			<br/>
 			<div class="form-group">
-			
-			
+
+
 					<input type="text" class="form-control  labelName" id="labelName" name="labelName" placeholder="Label" value="" />
 					<br/>
 					<button class="btn btn-large btn-primary addLabel">Add Label</button>
-			
+
 			</div>
 
 			<br/>
 			<div class="addQuesButton">
-				<a href="{{pathFor route='selectSurveyQuestion'}}" class="btn btn-large btn-primary addQues">Add Questions</a>
+				<a  href="{{pathFor route='selectSurveyQuestion'}}" class="btn btn-large btn-primary addQues">Add Questions</a>
 			</div>
 		</div>
 	</div>
@@ -251,15 +262,15 @@
 				{{#if singleSelect content}}
 					{{#each singleOptions content}}
 						<li class="quesList">
-							<label class="singleSelect"><input type="radio" class="singleSelect" id="singleSelect" name="singleSelect" value={{this}}> &nbsp; {{this}}</label>
+							<label class="singleSelect"><input type="radio" class="singleSelect" id="singleSelect" name="singleSelect" value={{this.description}}> &nbsp; {{this.description}}</label>
 						</li>
 					{{/each}}
 				{{/if}}
 
 				{{#if multipleSelect content}}
-					{{#each multipleOptions content}}
+					{{#each singleOptions content}}
 						<li class="quesList">
-							<label class="multipleSelect"><input type="checkbox" class="multipleSelect" id="multipleSelect" name="multipleSelect" value={{this}}> &nbsp; {{this}}</label>
+							<label class="multipleSelect"><input type="checkbox" class="multipleSelect" id="multipleSelect" name="multipleSelect" value={{this.description}}> &nbsp; {{this.description}}</label>
 						</li>
 					{{/each}}
 				{{/if}}
