@@ -36,7 +36,7 @@ Meteor Up is used to deploy this app. Ref: https://github.com/arunoda/meteor-up
 
 #### Deploy steps
 
-- Go to directory `./deploy/cta-home-aws`.
+- Go to directory `./deploy/<server-dir>`.
 - Run `mup deploy`. This command will initiate the deployment of the current version of project in your filesystem.
 
 ## Meteor Components in use
