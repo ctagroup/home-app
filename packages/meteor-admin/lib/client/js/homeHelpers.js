@@ -95,6 +95,11 @@ Template.surveyEditTemplate.helpers(
 				return true;
 			else
 				return false;
+		},
+		getSection:function(){
+			var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
+			var distinctEntries = _.uniq(surveyQuestionsMasterCollection.find({contentType:'section'}, {sort: {content:1}, fields: {content:true}}).fetch());
+			return distinctEntries;
 		}
 	}
 );
@@ -326,13 +331,14 @@ Template.previewSurvey.helpers(
 			var questionCollection = adminCollectionObject("questions");
 			var questions = questionCollection.find({_id:contentQuesId},{dataType:1,_id:0}).fetch();
 
-			for(var i in questions){
-				var singleSelect = questions[i].dataType;
-				if(singleSelect == "Single Select"){
-					console.log("SINGLE: " +questions[i].options.split(","))
-					return questions[i].options.split(",");
-				}
-			}
+			return questions[0].options;
+			// for(var i in questions){
+			// 	var singleSelect = questions[i].dataType;
+			// 	if(singleSelect == "Single Select"){
+			// 		console.log("SINGLE: " +questions[i].options.split(","))
+			// 		return questions[i].options.split(",");
+			// 	}
+			// }
 
 		},
 		multipleSelect: function(contentQuesId){
@@ -345,21 +351,21 @@ Template.previewSurvey.helpers(
 					return true;
 				}
 			}
-		},
-		multipleOptions: function(contentQuesId){
-
-			var questionCollection = adminCollectionObject("questions");
-			var questions = questionCollection.find({_id:contentQuesId},{dataType:1,_id:0}).fetch();
-
-			for(var i in questions){
-				var multipleSelect = questions[i].dataType;
-				if(multipleSelect == "Multiple Select"){
-					console.log("MULTIPLE: " + questions[i].options.split(","));
-					return questions[i].options.split(",");
-				}
-			}
-
 		}
+		// multipleOptions: function(contentQuesId){
+        //
+		// 	var questionCollection = adminCollectionObject("questions");
+		// 	var questions = questionCollection.find({_id:contentQuesId},{dataType:1,_id:0}).fetch();
+		//
+		// 	// for(var i in questions){
+		// 	// 	var multipleSelect = questions[i].dataType;
+		// 	// 	if(multipleSelect == "Multiple Select"){
+		// 	// 		console.log("MULTIPLE: " + questions[i].options.split(","));
+		// 	// 		return questions[i].options.split(",");
+		// 	// 	}
+		// 	// }
+        //
+		// }
 
 	}
 );
