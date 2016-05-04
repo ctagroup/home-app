@@ -18,25 +18,21 @@ meteor run
 
 ## Deploy instructions
 
-- Meteor Up is used to deploy this app.
+Meteor Up is used to deploy this app. Ref: https://github.com/arunoda/meteor-up
 
-- Deploy configs are present in the app as of now.
-	- `./deploy/cta-home-aws`
-		- This is for AWS server for http://home.ctagroup.org
-		- This server is behind firewall. Following are the user credentials.
-		- `easyengine / bLGMpn`
-		- You need to have CTA AWS server's `home.pem` key. And put the file under `~/.ssh/home.pem` path. Because it is configured this way for meteor up settings.
+#### Deploy configs
 
-Ref: https://github.com/arunoda/meteor-up
-
-### How to deploy
+- `./deploy/cta-home-aws`
+	- This is for AWS server for http://home.ctagroup.org
+	- This server is behind firewall. Following are the user credentials.
+	- `easyengine / bLGMpn`
+	- You need to have CTA AWS server's `home.pem` key.
+	- Once you have it, rename it and put the file under `~/.ssh/home.pem` path. Because it is configured this way for deploy config.
+	- Change file permissions of `home.pem`. `chmod 400 ~/.ssh/home.pem`
 
 #### First time steps
 
 - Install meteor-up. `npm install -g mup`
-- You need to have the pem key of AWS instance for http://home.ctagroup.org server.
-	- Rename the file to `home.pem`. Because this filename is configured in the deploy config file and will be needed to access the AWS server.
-	- Change file permissions of `home.pem`. `chmod 400 home.pem`
 
 #### Deploy steps
 
