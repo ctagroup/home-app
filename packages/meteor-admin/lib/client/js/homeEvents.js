@@ -1,6 +1,7 @@
 /**
  * Created by udit on 10/02/16.
  */
+var SectionName;
 Template.AdminRoleManager.events(
 	{
 		'click .js-update': function (e) {
@@ -639,6 +640,17 @@ Session.setDefault('section_id',null);
 var section_id,skip_val;
 Template.surveyEditTemplate.events(
 	{
+		'click .addQues':function(event,tmpl){
+			if(tmpl.find('.section').value!="Other") {
+				Session.set('section_id', tmpl.find('.section').value);
+				return;
+			}
+			else {
+				alert('Select a Section');
+				return false;
+			}
+
+		},
 		'click .addSection':function(event,tmpl){
 
 			var survey_title = tmpl.data.title;
@@ -653,8 +665,9 @@ Template.surveyEditTemplate.events(
 					console.log(error);
 				} else {
 					console.log(result);
-					Session.set('section_id', result);
-					console.log("section_id: " + Session.get('section_id'));
+					// Session.set('section_id', "");
+					// console.log("section_id: " + Session.get('section_id'));
+					delete Session.keys['section_id'];
 				}
 			} );
 
@@ -667,10 +680,12 @@ Template.surveyEditTemplate.events(
 			var survey_id = tmpl.data._id;
 			var content = tmpl.find('.labelName').value;
 			var content_type= "labels";
-
+			var section_id=tmpl.find('.section').value;
+			console.log('section id:'+section_id);
 			console.log("SEC_ID: " + Session.get('section_id'));
+			var skip_val=tmpl.find('.showskip').value;
 
-			Meteor.call("addSurveyQuestionMaster", survey_title,survey_id,Session.get('section_id'),skip_val,content_type,content,maxRank(survey_id), function ( error, result ) {
+			Meteor.call("addSurveyQuestionMaster", survey_title,survey_id,section_id,skip_val,content_type,content,maxRank(survey_id), function ( error, result ) {
 				if ( error ) {
 					console.log(error);
 				} else {
@@ -684,6 +699,14 @@ Template.surveyEditTemplate.events(
 		'submit form':function(event,tmpl){
 			event.preventDefault();
 		},
+		'change .section': function(event,tmp){
+			var section = $(event.target).val();
+			if (section == "Other") {
+				$('#sectionName').removeClass('hide');
+			} else {
+				$('#sectionName').addClass('hide');
+			}
+		}
 	}
 );
 
