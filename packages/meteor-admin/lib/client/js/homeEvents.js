@@ -797,8 +797,11 @@ Template.selectQuestions.events(
 			var arrayLength = array.length;
 			for (var i = 0; i < arrayLength; i++) {
 				array[i] = array[i].substring(0, array[i].length - 1);
-			}
 
+			}
+			console.log("Ques: " + array);
+			console.log("skip val: " + skip_val);
+			
 			for(var i =0;i<array.length;i++){
 				Meteor.call("addSurveyQuestionMaster", survey_title, survey_id,Session.get('section_id'),skip_val,'question', array[i], maxRank(survey_id), function ( error, result ) {
 					if ( error ) {
