@@ -13,8 +13,6 @@ Home Meteor App
 git clone git@github.com:ctagroup/home-app.git
 cd home-app
 git checkout meteor
-git submodule init
-git submodule update
 meteor run
 ```
 
@@ -22,16 +20,28 @@ meteor run
 
 - Meteor Up is used to deploy this app.
 
-- Two configs are present in the app as of now.
-	- udit-staging
-		- This is for @desaiuditd's VPN server for development purpose.
-	- cta-home-aws
+- Deploy configs are present in the app as of now.
+	- `./deploy/cta-home-aws`
 		- This is for AWS server for http://home.ctagroup.org
 		- This server is behind firewall. Following are the user credentials.
 		- `easyengine / bLGMpn`
 		- You need to have CTA AWS server's `home.pem` key. And put the file under `~/.ssh/home.pem` path. Because it is configured this way for meteor up settings.
 
 Ref: https://github.com/arunoda/meteor-up
+
+### How to deploy
+
+#### First time steps
+
+- Install meteor-up. `npm install -g mup`
+- You need to have the pem key of AWS instance for http://home.ctagroup.org server.
+	- Rename the file to `home.pem`. Because this filename is configured in the deploy config file and will be needed to access the AWS server.
+	- Change file permissions of `home.pem`. `chmod 400 home.pem`
+
+#### Deploy steps
+
+- Go to directory `./deploy/cta-home-aws`.
+- Run `mup deploy`. This command will initiate the deployment of the current version of project in your filesystem.
 
 ## Meteor Components in use
 
@@ -96,4 +106,3 @@ Ref: https://github.com/arunoda/meteor-up
 	- Dependency tracker to allow reactive callbacks
 - oauth2
 	- oauth 2.0 library for HMIS API
-
