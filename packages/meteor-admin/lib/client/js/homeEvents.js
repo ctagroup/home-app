@@ -293,6 +293,7 @@ var resetSurveyModal = function () {
 	$('.active').show();
 	$('#isUpdate').val('0');
 	$('#surveyID').val('');
+	$('.othersSpecify').hide();
 };
 
 var resetQuestionModal = function () {
@@ -303,6 +304,7 @@ var resetQuestionModal = function () {
 	$('.isCopySet').hide();
 	$('#isUpdate').val('0');
 	$('#questionID').val('');
+
 };
 
 var checkLocked = function () {
@@ -877,8 +879,35 @@ Template.previewSurvey.events({
 		}else{
 			$('.' + sec_id).show();
 		}
+	},
+	'change .singleSelect':function (evt,tmpl) {
+
+		var element = tmpl.find('input:radio[name=singleSelect]:checked');
+		var optionValue = $(element).val();
+		console.log("value: " + optionValue);
+
+		if(optionValue == 'others' || optionValue == 'Others'){
+			console.log("Others, please specify");
+			$('.othersSpecify_single').removeClass('hide');
+		}else{
+			$('.othersSpecify_single').addClass('hide');
+		}
+	},
+	'change .multipleSelect':function (evt,tmpl) {
+
+		var element = tmpl.find('input:checkbox[name=multipleSelect]:checked');
+		var optionValue = $(element).val();
+		console.log("value: " + optionValue);
+
+		if(optionValue == 'others' || optionValue == 'Others'){
+			console.log("Others, please specify");
+			$('.othersSpecify_multiple').removeClass('hide');
+		}else{
+			$('.othersSpecify_multiple').addClass('hide');
+		}
 	}
-});
+	
+	});
 
 var populateOptions = function (question) {
 	var optionsTag;
