@@ -267,6 +267,10 @@
 							<label class="singleSelect"><input type="radio" class="singleSelect" id="singleSelect" name="singleSelect" value={{this.description}}> &nbsp; {{this.description}}</label>
 						</li>
 					{{/each}}
+					<li class="othersSpecify_single hide">
+						<label class="othersSpecifyLabel">Please specify</label>
+						<input type="text" class="form-control input input-xxlarge othersSpecify_single" id="othersSpecify_single" name="othersSpecify_single" value="">
+					</li>
 				{{/if}}
 
 				{{#if multipleSelect content}}
@@ -275,7 +279,13 @@
 							<label class="multipleSelect"><input type="checkbox" class="multipleSelect" id="multipleSelect" name="multipleSelect" value={{this.description}}> &nbsp; {{this.description}}</label>
 						</li>
 					{{/each}}
+					<li class="othersSpecify_multiple hide">
+						<label class="othersSpecify_multipleLabel">Please specify</label>
+						<input type="text" class="form-control input input-xxlarge othersSpecify_multiple" id="othersSpecify_multiple" name="othersSpecify_multiple" value="">
+					</li>
 				{{/if}}
+
+
 			</div>
 			</div>
 			{{/each}}
