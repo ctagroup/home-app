@@ -125,9 +125,9 @@ HMISAPI = {
 
 		var clientsReponse = response.Clients.clients;
 		for (client in clientsReponse) {
-			console.log(clientsReponse[client]);
+			clients.push(clientsReponse[client]);
 		}
 
-		return [{name:"John Doe", lname: 'Doe'}];
+		return clients;
 	}
 };
