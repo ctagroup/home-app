@@ -42,8 +42,6 @@ HomeAppController = RouteController.extend(
 HomeAppSurveyorController = HomeAppController.extend(
 	{
 		onBeforeAction: function () {
-			console.log(Meteor.userId());
-			console.log(Roles.userIsInRole(Meteor.userId(), 'Surveyor'));
 			if ( Meteor.userId() && Roles.userIsInRole(Meteor.userId(), 'Surveyor') ) {
 				// Allow Route for Surveyors
 			} else {
