@@ -129,5 +129,29 @@ HMISAPI = {
 		}
 
 		return clients;
+	},
+	postQuestionAnswer: function(category, data){
+	var config = ServiceConfiguration.configurations.findOne({service: 'HMIS'});
+	if (!config)
+		throw new ServiceConfiguration.ConfigError();
+
+	var accessToken = this.getCurrentAccessToken();
+
+	try {
+		var response = HTTP.post( config.hmisAPIEndpoints.clientBaseUrl + config.hmisAPIEndpoints[category], {
+			headers: {
+				"X-HMIS-TrustedApp-Id": config.appId,
+				"Authorization": "HMISUserAuth session_token="+accessToken,
+				"Accept": "application/json",
+				"Content-Type": "application/json"
+			},
+			npmRequestOptions: {
+				rejectUnauthorized: false // TODO remove when deploy
+			}
+		} ).data;
+	} catch(err) {
+		throw _.extend(new Error("Failed to post answers to HMIS. " + err.message),
+		               {response: err.response});
 	}
+}
 };
