@@ -202,3 +202,13 @@ Router.route( '/terms-of-use', {
 	template: 'termsOfUse',
 	controller: 'HomeAppController'
 } );
+
+/**
+ * Chat Routes
+ */
+
+ Router.route( '/app/chat/', {
+	name: 'chat',
+	template: 'chat',
+	controller: 'HomeAppSurveyorController',
+} );
