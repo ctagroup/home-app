@@ -10,7 +10,8 @@ AdminConfig = {
 	    'anushagovindan@gmail.com',
 	    'javier@ctagroup.org',
 		'bob@ctagroup.org',
-	    'kgautam@scu.edu'
+	    'kgautam@scu.edu',
+		'kghate@scu.edu'
 	],
 	defaultHomeRoles: [
 		"Developer",
