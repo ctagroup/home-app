@@ -1,0 +1,67 @@
+.sidebar {
+    width: 20%;
+    position: absolute;
+    top: 45px;
+    left: 0;
+    bottom: 0;
+    background: linear-gradient(rgb(71,57,129), rgb(18,114,184));
+    padding: 24px 16px;
+}
+
+.sidebar .room-label {
+    font-family: "Open Sans";
+    color: white;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+.main-container {
+    width: 80%;
+    top: 37px;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    box-sizing: border-box;
+    background-color: rgb(242,243,247);
+}
+
+.main-container .main-header {
+    background-color: white;
+    padding: 24px;
+    font-family: "Open Sans";
+    color: rgb(126,128,144);
+    font-weight: 900;
+}
+
+.message-list {
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    overflow-y: scroll;
+    padding-right: 36px;
+    padding-left: 36px;
+    box-sizing: border-box;
+}
+
+.message-item {
+    position: relative;
+    width: 100%;
+    border-bottom: 1px solid rgb(227,229,232);
+}
+
+.message-item .message-sender {
+    font-family: "Open Sans";
+    color: rgb(50,51,54);
+    font-size: 14px;
+    font-weight: 700;
+    margin-top: 16px;
+    margin-bottom: 12px;
+}
+
+.message-item .message-content {
+    font-family: "Open Sans";
+    color: rgb(89,90,92);
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
