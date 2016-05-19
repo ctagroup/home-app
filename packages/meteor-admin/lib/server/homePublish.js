@@ -46,4 +46,6 @@ Meteor.publish("clientInfo", function () {
 	if ( typeof clientInfo == "undefined")
 		return;
 	return clientInfo.find({});
-})
+});
+
+

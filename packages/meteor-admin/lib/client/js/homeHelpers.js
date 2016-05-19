@@ -26,6 +26,7 @@ Template.AdminRoleManager.helpers( {
 	}
 } );
 
+
 Template.AdminSettings.helpers( {
 	getAdminSettings: function() {
 		var settings = {};
@@ -381,3 +382,4 @@ Template.AdminDashboardusersEdit.helpers(
 		}
 	}
 );
+
