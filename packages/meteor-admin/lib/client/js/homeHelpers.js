@@ -98,7 +98,7 @@ Template.surveyEditTemplate.helpers(
 		},
 		getSection:function(){
 			var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
-			var distinctEntries = _.uniq(surveyQuestionsMasterCollection.find({contentType:'section', surveyID:Router.current().params._id}, {sort: {content:1}, fields: {content:true}}).fetch());
+			var distinctEntries = _.uniq(surveyQuestionsMasterCollection.find({contentType:'section', surveyID:Router.current().params._id}, {sort: {content:1}, fields: {content:true}}).fetch().reverse());
 			return distinctEntries;
 		}
 	}
@@ -352,20 +352,6 @@ Template.previewSurvey.helpers(
 				}
 			}
 		}
-		// multipleOptions: function(contentQuesId){
-        //
-		// 	var questionCollection = adminCollectionObject("questions");
-		// 	var questions = questionCollection.find({_id:contentQuesId},{dataType:1,_id:0}).fetch();
-		//
-		// 	// for(var i in questions){
-		// 	// 	var multipleSelect = questions[i].dataType;
-		// 	// 	if(multipleSelect == "Multiple Select"){
-		// 	// 		console.log("MULTIPLE: " + questions[i].options.split(","));
-		// 	// 		return questions[i].options.split(",");
-		// 	// 	}
-		// 	// }
-        //
-		// }
 
 	}
 );

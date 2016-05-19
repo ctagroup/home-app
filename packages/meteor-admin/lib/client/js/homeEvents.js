@@ -29,7 +29,7 @@ Template.AdminRoleManager.events(
 		}
 	}
 );
-var surveyCopyID,surveyID_forCopy,sectionArray,copyOf_surveyID,surveyID,surveyTitle,newSurveySectionID,masterSectionIDs,originalSurvey_id,sectionComponentsID,originalSurvey_uniqueIDs,surveyCopy_sectionID,surveyCopy_skipValue,surveyCopy_contentType,surveyCopy_content,surveyCopy_rank,surveyCopy_title;
+var surveyCopyID,surveyID_forCopy,surveyID,surveyTitle,masterSectionIDs,originalSurvey_id,sectionComponentsID,originalSurvey_uniqueIDs,surveyCopy_sectionID,surveyCopy_title;
 Template.surveyForm.events(
 	{
 		'change .s_copy': function (event, template) {
@@ -48,7 +48,7 @@ Template.surveyForm.events(
 		'click .save':function(evt,tmpl){
 
 			var isUpdate = $('#isUpdate').val();
-
+			var created = false;
 			surveyID = $('#surveyID').val();
 			var copy = tmpl.find('.copy').checked;
 
@@ -58,40 +58,13 @@ Template.surveyForm.events(
 				surveyCopy_title = title;
 				var active = tmpl.find('.copy_active').checked;
 				surveyCopyId = $('#surveyID').val();
-				// sectionArray = new Array();
-				//
-				// var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
-				// var records_forCopy = surveyQuestionsMasterCollection.find({surveyID:surveyID_forCopy},{sectionID:1}).fetch();
-				//
-				// for(var i in records_forCopy){
-				//
-				// 	surveyTitle = title;
-				// 	originalSurvey_id = surveyID_forCopy;
-				// 	originalSurvey_uniqueIDs = records_forCopy[i]._id;
-				// 	surveyCopy_sectionID = records_forCopy[i].sectionID;
-				// 	surveyCopy_skipValue = records_forCopy[i].allowSkip;
-				// 	surveyCopy_contentType = records_forCopy[i].contentType;
-				// 	surveyCopy_content = records_forCopy[i].content;
-				// 	surveyCopy_rank = records_forCopy[i].order;
-				//
-				// 	if(surveyCopy_sectionID == null) {
-				// 		masterSectionIDs = originalSurvey_uniqueIDs;
-				// 		for(var j in masterSectionIDs){
-				// 			sectionArray[j] = masterSectionIDs;
-				// 			console.log("main section: " + sectionArray[j]);
-				// 			mainSection(sectionArray[j]);
-				// 		}
-				// 	}else{
-				// 		sectionComponentsID = originalSurvey_uniqueIDs;
-				// 	}
-				// }
 
 			}else {
 				var title = tmpl.find('.survey_title').value;
 				var active = tmpl.find('.active').checked;
 				surveyCopyId = ' ';
 			}
-			Meteor.call("addSurvey", title, active, copy, surveyID,function ( error, result ) {
+			Meteor.call("addSurvey", title, active, copy, surveyID,created,function ( error, result ) {
 				if ( error ) {
 					console.log(error);
 				} else {
@@ -104,8 +77,7 @@ Template.surveyForm.events(
 					}
 				}
 			} );
-			// copyOf_surveyID = $('#newsurveyID').val();
-			// console.log("CopyID: " + copyOf_surveyID);
+
 			resetSurveyModal();
 		},
 		'click .update':function(evt,tmpl){
@@ -188,29 +160,20 @@ var recordsForCopy = function(surveyID){
 
 	// console.log("new survey ID: " + surveyID);
 	new_SurveyID = surveyID;
-	sectionArray = new Array();
+	var sectionArray = new Array();
 
 	var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
 	var records_forCopy = surveyQuestionsMasterCollection.find({surveyID:surveyID_forCopy},{sectionID:1}).fetch();
 
 	for(var i in records_forCopy){
 
-		// surveyTitle = title;
-		//originalSurvey_id = surveyID_forCopy;
 		originalSurvey_uniqueIDs = records_forCopy[i]._id;
 		surveyCopy_sectionID = records_forCopy[i].sectionID;
-		// surveyCopy_skipValue = records_forCopy[i].allowSkip;
-		// surveyCopy_contentType = records_forCopy[i].contentType;
-		// surveyCopy_content = records_forCopy[i].content;
-		// surveyCopy_rank = records_forCopy[i].order;
 
 		if(surveyCopy_sectionID == null) {
 			masterSectionIDs = originalSurvey_uniqueIDs;
-			// for(var j in masterSectionIDs){
-			// 	sectionArray[j] = masterSectionIDs;
-			console.log("main section: " + masterSectionIDs + "new survey ID: " + new_SurveyID);
 			mainSection(masterSectionIDs,new_SurveyID);
-			// }
+
 		}else{
 			sectionComponentsID = originalSurvey_uniqueIDs;
 		}
@@ -219,8 +182,6 @@ var recordsForCopy = function(surveyID){
 var compIDs;
 var mainSection = function(mainSectionIDs,surveyID){
 
-	// console.log("copyID: " + surveyID);
-	// console.log("Main Section: " + mainSectionIDs);
 
 	var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
 	var mainSections = surveyQuestionsMasterCollection.find({_id:mainSectionIDs}).fetch();
@@ -232,10 +193,10 @@ var mainSection = function(mainSectionIDs,surveyID){
 
 		surveyTitle = surveyCopy_title;
 		originalSurvey_id = surveyID_forCopy;
-		surveyCopy_skipValue = mainSections[i].allowSkip;
-		surveyCopy_contentType = mainSections[i].contentType;
-		surveyCopy_content = mainSections[i].content;
-		surveyCopy_rank = mainSections[i].order;
+		var surveyCopy_skipValue = mainSections[i].allowSkip;
+		var surveyCopy_contentType = mainSections[i].contentType;
+		var surveyCopy_content = mainSections[i].content;
+		var surveyCopy_rank = mainSections[i].order;
 
 		Meteor.call("addSurveyQuestionMaster", surveyTitle,surveyID,' ',surveyCopy_skipValue,surveyCopy_contentType,surveyCopy_content,surveyCopy_rank, function ( error, result ) {
 			if ( error ) {
@@ -669,16 +630,31 @@ Template.surveyEditTemplate.events(
 					console.log(error);
 				} else {
 					console.log(result);
+				
 					section_id = result;
 
-					var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
-					var section_name = surveyQuestionsMasterCollection.find({_id: section_id},{content:1,_id:0}).fetch();
-
-					for(var i in section_name){
-
-						console.log("sec_name: " + section_name[i].content);
-						$('#section').val(section_name[i].content);
+					if(section_id!=null){
+						$("#section_val option[value='sectionSelect']").remove();
+					}else{
+						$("#section_val option[value='sectionSelect']").val('Select a Section');
 					}
+
+					$('#section_val').val(section_id);
+					// if(section_id!=null){
+					// 	$('.sectionSelect').removeClass('hide');
+					// } else {
+					// 	$('.sectionSelect').addClass('hide');
+					// }
+					
+					
+					// var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
+					// var section_name = surveyQuestionsMasterCollection.find({_id: section_id},{content:1,_id:0}).fetch();
+                    //
+					// for(var i in section_name){
+					// 	console.log("sec_name: " + section_id);
+					// 	$('#section_val').val(section_id);
+                    //
+					// }
 					delete Session.keys['section_id'];
 				}
 
@@ -706,7 +682,10 @@ Template.surveyEditTemplate.events(
 				}
 			} );
 
+
 			$("#labelName").val("");
+			// $("#skip_id").attr('checked',false);
+			$("#section_val option[value='sectionSelect']").val('Select a Section');
 		},
 
 		'submit form':function(event,tmpl){
@@ -714,7 +693,7 @@ Template.surveyEditTemplate.events(
 		},
 		'change .section': function(event,tmp){
 			var section = $(event.target).val();
-			if (section == "Other") {
+			if (section == "Other" || section=="sectionSelect") {
 				$('#sectionName').removeClass('hide');
 			} else {
 				$('#sectionName').addClass('hide');
@@ -905,6 +884,25 @@ Template.previewSurvey.events({
 		}else{
 			$('.othersSpecify_multiple').addClass('hide');
 		}
+	},
+	'click .createSurvey':function(evt,tmpl){
+
+		evt.preventDefault();
+		$('#confirmationModal').modal('show');
+	},
+	'click .save_survey':function(evt,tmpl){
+
+		//alert("save clicked: " + tmpl.data._id );
+		var surveyID = tmpl.data._id;
+		var created = true;
+
+		Meteor.call("updateCreatedSurvey",surveyID,created,function ( error, result ) {
+			if ( error ) {
+				console.log(error);
+			} else {
+				console.log(result);
+			}
+		} );
 	}
 	
 	});

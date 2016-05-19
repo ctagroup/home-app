@@ -179,14 +179,18 @@ Meteor.methods(
 
 			optionsCollection.upsert({option_name:"trustedAppSecret"}, {$set: {option_name:"trustedAppSecret",option_value:value}});
 		},
-		addSurvey: function(title,active,copy,surveyCopyID){
+		addSurvey: function(title,active,copy,surveyCopyID,created){
 			var surveyCollection = adminCollectionObject("surveys");
-			var surveyID = surveyCollection.insert({title:title,active:active,copy:copy,surveyCopyID:surveyCopyID});
+			var surveyID = surveyCollection.insert({title:title,active:active,copy:copy,surveyCopyID:surveyCopyID,created:created});
 			return surveyID;
 		},
 		updateSurvey: function(surveyID, title,active){
 			var surveyCollection = adminCollectionObject("surveys");
 			surveyCollection.update(surveyID, {$set: {title:title,active:active}});
+		},
+		updateCreatedSurvey: function(surveyID,created){
+			var surveyCollection = adminCollectionObject("surveys");
+			surveyCollection.update(surveyID, {$set: {created:created}});
 		},
 		removeSurvey: function(surveyID){
 			var surveyCollection = adminCollectionObject("surveys");
