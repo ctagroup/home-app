@@ -17,6 +17,7 @@ var messageData = [
     }
 ];
 
+
 if (Messages.find().count() === 0) {
     for (var i = 0; i < messageData.length; i++) {
         Messages.insert({
@@ -25,3 +26,10 @@ if (Messages.find().count() === 0) {
         });
     }
 }
+
+Meteor.publish("messages", function () {
+    if (typeof Messages == "undefined")
+        return;
+    console.log("from inside packages");
+    return Messages.find({})
+});
