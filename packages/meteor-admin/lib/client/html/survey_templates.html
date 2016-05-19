@@ -115,12 +115,11 @@
 			<div class="form-group">
                 <div class="row">
                     <div class="col-sm-6" >
-                        <select class="form-control section" name="section" id="section">
-
+                        <select class="form-control section" name="section" id="section_val">
 							{{#each getSection}}
                                 <option value={{_id}}>{{content}}</option>
 							{{/each}}
-							<option value="sectionSelect">Select Section</option>
+							<option value="sectionSelect" class="sectionSelect"></option>
                             <option value="Other">Add New Section</option>
                         </select>
 					</div>
@@ -285,13 +284,33 @@
 					</li>
 				{{/if}}
 
-
 			</div>
 			</div>
 			{{/each}}
-
+			<button class="btn btn-large btn-primary createSurvey">Create Survey</button>
 		</ul>
 
 	</div>
 
+	{{> confirmationModalTemplate}}
+
+</template>
+
+<template name="confirmationModalTemplate">
+	<div class="modal fade" id="confirmationModal">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<h4 class="modal-title">Are you sure you want to save the survey</h4>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary save_survey" id="save_survey" data-dismiss="modal">Save</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
 </template>

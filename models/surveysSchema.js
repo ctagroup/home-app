@@ -35,6 +35,9 @@ Schemas.surveys = new SimpleSchema( {
 			return new Date();
 		}
 	},
+	created:{
+		type: Boolean
+	}
 	//author: {
 	//	type: String,
 	//	regEx: SimpleSchema.RegEx.Id,
