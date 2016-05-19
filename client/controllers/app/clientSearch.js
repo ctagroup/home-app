@@ -14,7 +14,7 @@ Template.clientSearch.helpers(
 					return;
 				}
 				callback( res.map( function( v ) {
-					return { value: v.name };
+					return { value: v.firstName.trim() + ' ' + v.lastName.trim() };
 				} ) );
 			});
 		}
