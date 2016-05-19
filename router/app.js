@@ -145,6 +145,23 @@ Router.route( '/app/client/', {
 	template: 'clientSearch',
 	controller: 'HomeAppController',
 } );
+Router.route('/app/LogSurvey/',{
+	name:'LogSurvey',
+	template: 'LogSurvey',
+	controller: 'HomeAppController'
+});
+Router.route('/app/LogSurvey/:_id',{
+	name:'LogSurveyResponse',
+	template: 'LogSurveyResponse',
+	controller: 'HomeAppController',
+	data: function(){
+		var surveyID = this.params._id;
+		console.log("suvey"+surveyID);
+		var surveysCollection = adminCollectionObject("surveys");
+		return surveysCollection.findOne({_id:surveyID});
+
+	}
+});
 
 // Router.route( '/app/client/single-client/', {
 // 	name: 'clientProfile',
