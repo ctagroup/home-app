@@ -100,13 +100,11 @@ Template.LogSurveyResponse.helpers({
 	},
 	displayQues: function(content_type,content){
 		quesContent = content;
-
 		if(content_type == "question"){
 			return true;
 		}
 	},
 	displayQuesContents: function(contentQuesId){
-
 		var questionCollection = adminCollectionObject("questions");
 		var questions = questionCollection.find({_id:contentQuesId}).fetch();
 
@@ -187,16 +185,16 @@ Template.LogSurveyResponse.helpers({
 		}
 	},
 	getQuesName:function(getQuesName){
-		var questionCollection = adminCollectionObject("questions");
-		var questions = questionCollection.find({_id:getQuesName},{dataType:1,_id:0}).fetch();
-
-		for(var i in questions){
-			return questions[i].name;
-
-		}
-
-
+		return getQName(getQuesName);
 	}
 
-
 });
+
+var getQName=function(getQuesName){
+	console.log("from loggin events");
+	var questionCollection = adminCollectionObject("questions");
+	var questions = questionCollection.find({_id:getQuesName},{name:1,_id:0}).fetch();
+	for(var i in questions){
+		return questions[i].name;
+	}
+};
