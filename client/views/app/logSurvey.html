@@ -13,7 +13,7 @@
                             <!--class="form-control typeahead input-lg" data-source="clientSearch"-->
                             <!--autocomplete="off" spellcheck="off"-->
                             <!--placeholder="Search for clients. Write 3 characters." />-->
-							<label for="surveyList">Published Surveys:</label>
+                            <label for="surveyList">Published Surveys:</label>
                             <select class="form-control surveyList" name="surveyList" id="surveyList">
                                 <option value="Choose" selected>Choose a survey</option>
 								{{#each getCreatedSurvey}}
@@ -45,90 +45,101 @@
 
         <div class="container quesL">
             <h3 class="page-header">{{clientName}}</h3>
-            <ul id="previewSurveyList">
+            <ul id="responseSurveyList">
 
                 <h2>{{title}}</h2>
 
 				{{#each surveyQuesContents}}
-                    <div class="{{sectionID}}">
-                        <div class="section">
-							{{#if displaySection contentType}}
-                                <li><h3 style="color: #1b6d85">{{content}}</h3></li>
-								{{#if displaySkipButton contentType allowSkip}}
-                                    <input type="checkbox" class="hideWhenSkipped" value="skip"> &nbsp; <label style="color: #A00000">Skip</label>
+                    <div class="responseSection">
+                        <div class="{{sectionID}}">
+                            <div class="section">
+								{{#if displaySection contentType}}
+                                    <li><h3 style="color: #1b6d85">{{content}}</h3></li>
+									{{#if displaySkipButton contentType allowSkip}}
+                                        <input type="checkbox" class="hideWhenSkipped" id={{_id}} value="skip"> &nbsp;
+                                        <label style="color: #A00000">Skip</label>
+									{{/if}}
 								{{/if}}
-							{{/if}}
-                        </div>
-                        <div class="labels">
-							{{#if displayLabel contentType}}
-                                <li><h4>{{content}}</h4></li>
-							{{/if}}
-                        </div>
-                        <div class="question">
-							{{#if displayQues contentType}}
-                                <li>
-                                    <h5>{{displayQuesContents content}}</h5>
-                                </li>
-
-
-							{{#if textboxString content}}
-                                <li class="quesList">
-                                    <input type="text" class="form-control input input-xxlarge stringType" id={{getQuesName content}} name="stringType" value="">
-                                </li>
-							{{/if}}
-
-							{{#if textboxNumber content}}
-                                <li class="quesList">
-                                    <input type="number" class="form-control input input-xxlarge numberType" id={{getQuesName content}} name="numberType" value="">
-                                </li>
-							{{/if}}
-
-							{{#if booleanYN content}}
-                                <li class="quesList">
-                                    <label class="boolY"><input type="radio" class="boolY"  id={{getQuesName content}} name="boolY" value="Yes"> &nbsp;Yes</label>
-                                </li>
-                                <li class="quesList">
-                                    <label class="boolY"> <input type="radio" class="boolN"  id={{getQuesName content}} name="boolY" value="No"> &nbsp;No</label>
-                                </li>
-							{{/if}}
-
-							{{#if booleanTF content}}
-                                <li class="quesList">
-                                    <label class="boolY"><input type="radio" class="boolY"  id={{getQuesName content}} name="boolY" value="Yes"> &nbsp;True</label>
-                                </li>
-                                <li class="quesList">
-                                    <label class="boolY"> <input type="radio" class="boolN"  id={{getQuesName content}} name="boolY" value="No"> &nbsp;False</label>
-                                </li>
-							{{/if}}
-
-							{{#if singleSelect content}}
-								{{#each singleOptions content}}
-                                    <li class="quesList">
-                                        <label class="singleSelect"><input type="radio" class="singleSelect" id={{getQuesName content}} name="singleSelect" value={{this.description}}> &nbsp; {{this.description}}</label>
+                            </div>
+                            <div class="labels">
+								{{#if displayLabel contentType}}
+                                    <li><h4>{{content}}</h4></li>
+								{{/if}}
+                            </div>
+                            <div class="question">
+								{{#if displayQues contentType}}
+                                    <li>
+                                        <h5>{{displayQuesContents content}}</h5>
                                     </li>
-								{{/each}}
-                                <li class="othersSpecify_single hide">
-                                    <label class="othersSpecifyLabel">Please specify</label>
-                                    <input type="text" class="form-control input input-xxlarge othersSpecify_single" id="othersSpecify_single" name="othersSpecify_single" value="">
-                                </li>
-							{{/if}}
 
-							{{#if multipleSelect content}}
-								{{#each singleOptions content}}
-                                    <li class="quesList">
-                                        <label class="multipleSelect" id={{getQuesName content}}><input type="checkbox" class="multipleSelect" id={{getQuesName content}} name="multipleSelect" value={{this.description}}> &nbsp; {{this.description}}</label>
-                                    </li>
-								{{/each}}
-                                <li class="othersSpecify_multiple hide">
-                                    <label class="othersSpecify_multipleLabel">Please specify</label>
-                                    <input type="text" class="form-control input input-xxlarge othersSpecify_multiple" id="othersSpecify_multiple" name="othersSpecify_multiple" value="">
-                                </li>
-							{{/if}}
-                            {{/if}}
+
+									{{#if textboxString content}}
+                                        <li class="quesList">
+                                            <input type="text" class="form-control input input-xxlarge stringType"
+                                                   id={{content}} name={{content}} value="">
+                                        </li>
+									{{/if}}
+
+									{{#if textboxNumber content}}
+                                        <li class="quesList">
+                                            <input type="number" class="form-control input input-xxlarge numberType"
+                                                   id={{content}} name={{content}} value="">
+                                        </li>
+									{{/if}}
+
+									{{#if booleanTF content}}
+                                        <li class="quesList">
+                                            <label class="boolY"><input type="radio" class="boolY"
+                                                                        id={{content}} name={{content}}
+                                                                        value="true"> &nbsp;True</label>
+                                        </li>
+                                        <li class="quesList">
+                                            <label class="boolY"> <input type="radio" class="boolN"
+                                                                         id={{content}} name={{content}}
+                                                                         value="false"> &nbsp;False</label>
+                                        </li>
+									{{/if}}
+
+									{{#if singleSelect content}}
+										{{#each singleOptions content}}
+                                            <li class="quesList">
+                                                <label class="singleSelect"><input type="radio" class="singleSelect"
+                                                                                   id={{../content}}  name={{../content}}  value={{this.value}} >
+                                                    &nbsp; {{this.description}}</label>
+                                            </li>
+										{{/each}}
+                                        <li class="othersSpecify_single hide">
+                                            <label class="othersSpecifyLabel">Please specify</label>
+                                            <input type="text"
+                                                   class="form-control input input-xxlarge othersSpecify_single"
+                                                   id="othersSpecify_single" name="othersSpecify_single" value="">
+                                        </li>
+									{{/if}}
+
+									{{#if multipleSelect content}}
+										{{#each singleOptions content}}
+                                            <li class="quesList">
+                                                <label class="multipleSelect" id={{../content}}><input
+                                                        type="checkbox" class="multipleSelect"
+                                                        id={{../content}} name={{../content}}
+                                                        value={{this.value}}> &nbsp; {{this.description}}</label>
+                                            </li>
+										{{/each}}
+                                        <li class="othersSpecify_multiple hide">
+                                            <label class="othersSpecify_multipleLabel">Please specify</label>
+                                            <input type="text"
+                                                   class="form-control input input-xxlarge othersSpecify_multiple"
+                                                   id="othersSpecify_multiple" name="othersSpecify_multiple" value="">
+                                        </li>
+									{{/if}}
+								{{/if}}
+                            </div>
                         </div>
                     </div>
 				{{/each}}
                 <button class="btn btn-large btn-primary save_survey">Save Survey</button>
+                <button class="btn btn-large btn-primary pause_survey">Pause Survey</button>
+                <button class="btn btn-large btn-primary cancel_survey">Cancel Survey</button>
             </ul>
         </div>
     </div>
