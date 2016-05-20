@@ -225,5 +225,5 @@ Router.route( '/terms-of-use', {
  Router.route( '/app/chat/', {
 	name: 'chat',
 	template: 'chat',
-	controller: 'HomeAppSurveyorController',
+	controller: 'HomeAppController'
 } );
