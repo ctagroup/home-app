@@ -1,0 +1,40 @@
+<template name="surveyStatus">
+    <div id="content">
+        {{> appNav}}
+        <div class="container">
+            <h3 class="page-header">Survey Status </h3>
+            <div class="row">
+
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>Survey</th>
+                        <th>Client</th>
+                        <th>User</th>
+                        <th>Status</th>
+                    </tr>
+
+                    </thead>
+                    <tbody>
+                    {{#each surveyStatusList}}
+                    {{>surveyStatusRow}}
+                    {{/each}}
+                    </tbody>
+
+                </table>
+            </div>
+            </div>
+
+        {{> footer}}
+
+    </div>
+</template>
+
+<template name="surveyStatusRow">
+    <tr class="surveyStatusRow">
+        <td>{{surveyName surveyID}}</td>
+        <td>{{clientName clientID}}</td>
+        <td>{{userName userID}}</td>
+        <td>{{responseStatus}}</td>
+    </tr>
+</template>
