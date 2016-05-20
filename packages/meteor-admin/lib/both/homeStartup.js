@@ -49,5 +49,6 @@ Meteor.startup(function() {
 		Meteor.subscribe("questions");
 		Meteor.subscribe("surveyQuestionsMaster");
 		Meteor.subscribe("clientInfo");
+		Meteor.subscribe("responses");
 	}
 });

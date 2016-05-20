@@ -139,19 +139,14 @@ Router.route('/not-enough-permission', {
 	template: 'notEnoughPermission',
 	controller: 'HomeAppController'
 } );
-
+/**
+ * Client Routes
+ */
 Router.route( '/app/client/', {
 	name: 'clientSearch',
 	template: 'clientSearch',
 	controller: 'HomeAppController',
 } );
-
-// Router.route( '/app/client/single-client/', {
-// 	name: 'clientProfile',
-// 	template: 'clientProfile',
-// 	controller: 'HomeAppSurveyorController'
-// } );
-
 Router.route('/app/client/single-client/',{
 	name:'clientProfile',
 	template: 'clientProfile',
@@ -179,7 +174,14 @@ Router.route('/app/client/single-client/:_id/view',{
 
 	}
 })
-
+/**
+ * Survey status Routes
+ */
+Router.route( '/app/surveyStatus/', {
+	name: 'surveyStatus',
+	template: 'surveyStatus',
+	controller: 'HomeAppController',
+} );
 /**
  * Ensure User Login for templates
  */
