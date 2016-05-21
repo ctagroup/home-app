@@ -13,7 +13,9 @@ Meteor.methods(
 				options.limit = 50;
 			}
 
-			return HMISAPI.getAllClients(query);
+			//return HMISAPI.getAllClients(query);
+			return clientInfo.find().fetch({firstName : query});
 		}
 	}
 );
+
