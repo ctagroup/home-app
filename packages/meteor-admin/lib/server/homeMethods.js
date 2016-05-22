@@ -242,9 +242,11 @@ Meteor.methods(
 			var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
 			surveyQuestionsMasterCollection.remove({surveyTitle:surveyCopyTitle});
 		},
-		addResponses: function(surveyID,clientID,userID,responseStatus){
+
+		addSurveyResponse:function(surveyID,clientID,userID,mainSectionObject,status){
 			var responsesCollection = adminCollectionObject("responses");
-			responsesCollection.insert({surveyID:surveyID,clientID:clientID,userID:userID,responseStatus:responseStatus});
+			responsesCollection.insert({clientID:clientID, surveyID:surveyID,userID:userID,responsestatus:status,section:mainSectionObject});
+
 		}
 	}
 );
