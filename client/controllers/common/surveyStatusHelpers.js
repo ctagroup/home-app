@@ -10,6 +10,7 @@ Template.surveyStatus.helpers(
 
     }
 );
+
 Template.surveyStatusRow.helpers({
 
     surveyName: function(surveyID){
@@ -19,6 +20,7 @@ Template.surveyStatusRow.helpers({
         for(var i in survey_Name){
 
             var survey_name = survey_Name[i].title;
+          
         }
         return survey_name;
     },
@@ -31,6 +33,7 @@ Template.surveyStatusRow.helpers({
             var client_firstName = client_name[i].firstName;
             var client_middleName = client_name[i].middleName;
             var client_lastName = client_name[i].lastName;
+
         }
         return client_firstName + " " + client_middleName + " " + client_lastName;
     },
@@ -48,5 +51,6 @@ Template.surveyStatusRow.helpers({
             }
         }
         return uname;
-    }
+    },
+   
 });

@@ -53,4 +53,8 @@ Meteor.publish("responses", function () {
 	return responses.find({});
 });
 
-
+Meteor.publish("responses", function () {
+	if ( typeof responses == "undefined")
+		return;
+	return responses.find({});
+});

@@ -1,25 +1,86 @@
 /**
+<<<<<<< HEAD
  * Created by Kavi on 5/19/16.
+=======
+ * Created by Anush-PC on 5/19/2016.
+ */
+/**
+ * Created by udit on 13/12/15.
+>>>>>>> 843e7e7ab3fa9e648e40239537f57fd7108db550
  */
 responses = new Meteor.Collection( 'responses' );
 
 Schemas.responses = new SimpleSchema( {
-    surveyID:{
-        type: String,
-        max: 256
-    },
-    clientID:{
-        type: String,
-        max: 256
-    },
-    userID: {
-        type: String,
-        max: 256
-    },
-    responseStatus: {
-        type: String,
-        max: 256
-    }
+
+	clientID: {
+		type: String,
+		max: 256
+	},
+	surveyID: {
+		type: String,
+		max: 256
+	},
+	userID: {
+		type: String,
+		max: 256
+	},
+	responsestatus: {
+		type: String,
+		max: 256
+	},
+	timestamp: {
+		type: Date,
+		label: 'Timestamp',
+		autoValue: function () {
+			if ( this.isInsert ) {
+				return new Date();
+			}
+		}
+	},
+	'section.$': {
+		type: [Object],
+		max: 256,
+		optional: true
+	},
+	'section.$.name': {
+		type: String,
+		max: 256,
+		optional: true
+	},
+	'section.$.response': {
+		type: [Object],
+		max: 256,
+		optional: true
+	},
+	'section.$.response.$.questionID': {
+		type: String,
+		max: 256
+	},
+	'section.$.response.$.answer': {
+		type: String,
+		max: 256
+	}
+
+	//author: {
+	//	type: String,
+	//	regEx: SimpleSchema.RegEx.Id,
+	//	autoValue: function () {
+	//		if ( this.isInsert ) {
+	//			return Meteor.userId();
+	//		}
+	//	},
+	//	autoform: {
+	//		options: function () {
+	//			return _.map(Meteor.users.find().fetch(), function (user) {
+	//				return {
+	//					label: user.emails[0].address,
+	//					value: user._id
+	//				};
+	//			} );
+	//		}
+	//	}
+	//}
+
 } );
 
 responses.attachSchema( Schemas.responses );
