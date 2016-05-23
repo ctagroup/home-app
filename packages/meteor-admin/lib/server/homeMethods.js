@@ -245,7 +245,12 @@ Meteor.methods(
 
 		addSurveyResponse:function(surveyID,clientID,userID,mainSectionObject,status){
 			var responsesCollection = adminCollectionObject("responses");
-			responsesCollection.insert({clientID:clientID, surveyID:surveyID,userID:userID,responsestatus:status,section:mainSectionObject});
+			var responseRecords = responsesCollection.insert({clientID:clientID, surveyID:surveyID,userID:userID,responsestatus:status,section:mainSectionObject});
+			return responseRecords;
+		},
+		updateSurveyResponse:function(responseID,surveyID,clientID,userID,mainSectionObject,status){
+			var responsesCollection = adminCollectionObject("responses");
+			responsesCollection.update({_id:responseID},{$set:{clientID:clientID, surveyID:surveyID,userID:userID,responsestatus:status,section:mainSectionObject}});
 
 		}
 	}
