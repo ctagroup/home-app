@@ -13,15 +13,17 @@ Template.surveyStatusRow.events({
 
             var surveyID = response_records[i].surveyID;
             var clientID = response_records[i].clientID;
-            var responsestatus = response_records[i].responsestatus;
+            
             console.log("SID: " + surveyID);
             console.log("CID: " + clientID);
-            
-            if(responsestatus=="Completed") {
-                Router.go('LogSurveyView', {_id: surveyID}, {query: 'clientID=' + clientID});
-            }else{
-                Router.go('LogSurveyResponse', {_id: surveyID}, {query: 'clientID=' + clientID});
-            }
+
+            Router.go('LogSurveyView', {_id: surveyID}, {query: 'clientID=' + clientID});
+
+            // if(responsestatus=="Completed") {
+            //     Router.go('LogSurveyView', {_id: surveyID}, {query: 'clientID=' + clientID});
+            // }else{
+            //     Router.go('LogSurveyResponse', {_id: surveyID}, {query: 'clientID=' + clientID});
+            // }
         }
 
     }
