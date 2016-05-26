@@ -86,7 +86,7 @@ adminCreateRouteView = (collection, collectionName) ->
 adminCreateRouteViewOptions = (collection, collectionName) ->
 	options =
 		path: "/admin/#{collectionName}"
-		template: "AdminDashboardViewWrapper"
+		template: "AdminDashboardView"
 		controller: "AdminController"
 		data: ->
   		admin_table: AdminTables[collectionName]
