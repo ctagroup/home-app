@@ -18,7 +18,7 @@ meteor run
 
 ## Deploy instructions
 
-Meteor Up is used to deploy this app. Ref: https://github.com/arunoda/meteor-up
+Meteor Up is used to deploy this app. Ref: https://github.com/arunoda/meteor-up/tree/mupx
 
 #### Deploy configs
 
@@ -32,12 +32,12 @@ Meteor Up is used to deploy this app. Ref: https://github.com/arunoda/meteor-up
 
 #### First time steps
 
-- Install meteor-up. `npm install -g mup`
+- Install meteor-up. `npm install -g mupx`
 
 #### Deploy steps
 
 - Go to directory `./deploy/<server-dir>`.
-- Run `mup deploy`. This command will initiate the deployment of the current version of project in your filesystem.
+- Run `mupx deploy`. This command will initiate the deployment of the current version of project in your filesystem.
 
 ## Meteor Components in use
 
