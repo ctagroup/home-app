@@ -179,14 +179,14 @@ Meteor.methods(
 
 			optionsCollection.upsert({option_name:"trustedAppSecret"}, {$set: {option_name:"trustedAppSecret",option_value:value}});
 		},
-		addSurvey: function(title,active,copy,surveyCopyID,created){
+		addSurvey: function(title,active,copy,surveyCopyID,stype,created){
 			var surveyCollection = adminCollectionObject("surveys");
-			var surveyID = surveyCollection.insert({title:title,active:active,copy:copy,surveyCopyID:surveyCopyID,created:created});
+			var surveyID = surveyCollection.insert({title:title,active:active,copy:copy,surveyCopyID:surveyCopyID,stype:stype,created:created});
 			return surveyID;
 		},
-		updateSurvey: function(surveyID, title,active){
+		updateSurvey: function(surveyID, title,stype,active){
 			var surveyCollection = adminCollectionObject("surveys");
-			surveyCollection.update(surveyID, {$set: {title:title,active:active}});
+			surveyCollection.update(surveyID, {$set: {title:title,stype:stype,active:active}});
 		},
 		updateCreatedSurvey: function(surveyID,created){
 			var surveyCollection = adminCollectionObject("surveys");
@@ -196,13 +196,13 @@ Meteor.methods(
 			var surveyCollection = adminCollectionObject("surveys");
 			surveyCollection.remove({_id:surveyID});
 		},
-		addQuestion: function(q_category,q_name,question,q_dataType,options,hud,locked,isCopy){
+		addQuestion: function(q_category,q_name,question,q_dataType,options,qtype,audience,locked,isCopy){
 			var questionCollection = adminCollectionObject("questions");
-			questionCollection.insert({category:q_category,name:q_name,question:question,options:options,dataType:q_dataType,hud:hud,locked:locked,isCopy:isCopy});
+			questionCollection.insert({category:q_category,name:q_name,question:question,options:options,dataType:q_dataType,qtype:qtype,audience:audience,locked:locked,isCopy:isCopy});
 		},
-		updateQuestion: function(questionID, q_category,q_name,question,q_dataType,options,hud,locked,isCopy){
+		updateQuestion: function(questionID, q_category,q_name,question,q_dataType,options,qtype,audience,locked,isCopy){
 			var questionCollection = adminCollectionObject("questions");
-			questionCollection.update(questionID, {$set: {category:q_category,name:q_name,question:question,options:options,dataType:q_dataType,hud:hud,locked:locked,isCopy:isCopy}});
+			questionCollection.update(questionID, {$set: {category:q_category,name:q_name,question:question,options:options,dataType:q_dataType,qtype:qtype,audience:audience,locked:locked,isCopy:isCopy}});
 		},
 		removeQuestion: function(questionID){
 			var questionCollection = adminCollectionObject("questions");

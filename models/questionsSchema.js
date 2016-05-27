@@ -37,8 +37,13 @@ Schemas.questions = new SimpleSchema( {
 		type: String,
 		max: 256
 	},
-	hud: {
-		type: Boolean
+	qtype: {
+		type: String,
+		max: 256
+	},
+	audience: {
+		type: String,
+		max: 256
 	},
 	locked: {
 		type: Boolean
