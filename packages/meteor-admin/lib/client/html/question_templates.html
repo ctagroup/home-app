@@ -2,57 +2,59 @@
 
 	{{>questionForm}}
 
-	<div class="container">
-		<div class="row">
-			<a href="#newQuestionModal" role="button" data-toggle="modal" class="btn btn-large btn-primary addQuestion">Add Question</a>
-			<br/><br/>
-			<table class="table table-bordered table-striped table-hover">
-				<thead>
-				<tr>
-					<th>Question Name</th>
-					<th>Date Created</th>
-					<th>Date updated</th>
-					<th>Edit</th>
-					<th>Delete</th>
-				</tr>
-				</thead>
-				<tbody>
+    <div class="container">
+        <div class="row">
+            <a href="#newQuestionModal" role="button" data-toggle="modal" class="btn btn-large btn-primary addQuestion">Add
+                Question</a>
+            <br/><br/>
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>Question Name</th>
+                    <th>Date Created</th>
+                    <th>Date updated</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
 				{{#each questionList}}
-				{{>questionRow}}
+					{{>questionRow}}
 				{{/each}}
-				</tbody>
+                </tbody>
 
-			</table>
-		</div>
-	</div>
+            </table>
+        </div>
+    </div>
 
 </template>
 
 <template name="questionRow">
-	<tr class="questionRow">
-		<td>{{name}}</td>
-		<td>{{formatDate createdAt }}</td>
-		<td>{{formatDate updatedAt }}</td>
-		<td> <a href="#newQuestionModal" role="button" data-toggle="modal" class="btn btn-primary edit"><span class="fa fa-edit"></span></a></td>
-		<td> <a class="btn btn-danger delete"><span class="fa fa-remove"></span></a></td>
-	</tr>
+    <tr class="questionRow">
+        <td>{{name}}</td>
+        <td>{{formatDate createdAt }}</td>
+        <td>{{formatDate updatedAt }}</td>
+        <td><a href="#newQuestionModal" role="button" data-toggle="modal" class="btn btn-primary edit"><span
+                class="fa fa-edit"></span></a></td>
+        <td><a class="btn btn-danger delete"><span class="fa fa-remove"></span></a></td>
+    </tr>
 </template>
 
 <template name="questionForm">
-	<div id="newQuestionModal" class="modal fade" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h3 class="modal-title showWhenNew">Add Question</h3>
-					<h3 class="modal-title showWhenEdit">Update Question</h3>
-				</div>
-				<div class="modal-body">
-					<div class="alert alert-danger" id="error" style="display: none;"></div>
-					<div class="form-group">
-						<label for="q_category">Question Category:  </label>
+    <div id="newQuestionModal" class="modal fade" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 class="modal-title showWhenNew">Add Question</h3>
+                    <h3 class="modal-title showWhenEdit">Update Question</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger" id="error" style="display: none;"></div>
+                    <div class="form-group">
+                        <label for="q_category">Question Category: </label>
                         <div class="row">
-                            <div class="col-sm-6" >
+                            <div class="col-sm-6">
                                 <select class="form-control q_category" name="q_category" id="q_category">
 									{{#each getQuestionCategory}}
                                         <option value={{this}}>{{this}}</option>
@@ -71,111 +73,132 @@
                                 <input type="text" class="form-control hide category" name="category" id="category">
                             </div>
                         </div>
-					</div>
-					<div class="showWhenNew">
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" class="toggle" id="isCopy" value="isCopy"> IsCopy
-							</label>
-						</div>
-						<div class="form-group isCopySet">
-							<label for="q_copy" >Choose a Question copy: </label>
-							<select class="form-control q_copy" name="q_copy" id="q_copy">
-								<option value="Choose">Choose</option>
+                    </div>
+                    <div class="showWhenNew">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" class="toggle" id="isCopy" value="isCopy"> IsCopy
+                            </label>
+                        </div>
+                        <div class="form-group isCopySet">
+                            <label for="q_copy">Choose a Question copy: </label>
+                            <select class="form-control q_copy" name="q_copy" id="q_copy">
+                                <option value="Choose">Choose</option>
 								{{#each questionList}}
-								<option value={{_id}}>{{name}}</option>
+                                    <option value={{_id}}>{{name}}</option>
 								{{/each}}
-							</select>
-						</div>
-					</div>
-					<label for="q_name">Question Name: </label>
-					<input type="text" class="form-control q_name" name="q_name" id="q_name"><br />
-					<label for="question">Display text: </label>
-					<input type="text" class="form-control question" name="question" id="question"><br />
-					<label for="q_datatype">Question Data Type: </label>
-					<select class="form-control q_dataType" name="q_dataType" id="q_dataType">
-						<option value="Textbox(String)">Textbox(String)</option>
-						<option value="Multiple Select">Multiple Select</option>
-						<option value="Single Select">Single Select</option>
-						<option value="Boolean">Boolean</option>
-						<option value="Textbox(Integer)">TextBox(Integer)</option>
-					</select>
-					<br/>
-					<label for="options" id="options_label" class="hide">Options(Enter comma separated options): </label>
-					<!--<input type="text" class="form-control options hide" name="options" id="options" />-->
-					<div id="options">
-						<table  class="table table-bordered table-striped table-hover">
-							<thead>
-							<tr>
-								<th>Value</th>
-								<th>Description</th>
-								<th>Delete</th>
-							</tr>
-							<tr id='oadd' class='optionRow'><td><a class='btn btn-primary optionadd'><span class='fa fa-plus'></span></a></td></tr>
-							</thead>
-							<tbody id="aoptions">
+                            </select>
+                        </div>
+                    </div>
+                    <label for="q_name">Question Name: </label>
+                    <input type="text" class="form-control q_name" name="q_name" id="q_name"><br/>
+                    <label for="question">Display text: </label>
+                    <input type="text" class="form-control question" name="question" id="question"><br/>
+                    <label for="q_datatype">Question Data Type: </label>
+                    <select class="form-control q_dataType" name="q_dataType" id="q_dataType">
+                        <option value="Textbox(String)">Textbox(String)</option>
+                        <option value="Multiple Select">Multiple Select</option>
+                        <option value="Single Select">Single Select</option>
+                        <option value="Boolean">Boolean</option>
+                        <option value="Textbox(Integer)">TextBox(Integer)</option>
+                    </select>
+                    <br/>
+                    <label for="options" id="options_label" class="hide">Options(Enter comma separated
+                        options): </label>
+                    <!--<input type="text" class="form-control options hide" name="options" id="options" />-->
+                    <div id="options">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>Value</th>
+                                <th>Description</th>
+                                <th>Delete</th>
+                            </tr>
+                            <tr id='oadd' class='optionRow'>
+                                <td><a class='btn btn-primary optionadd'><span class='fa fa-plus'></span></a></td>
+                            </tr>
+                            </thead>
+                            <tbody id="aoptions">
 
 
-							</tbody>
-						</table>
-					</div>
-					<div class="checkbox">
-						<label class="checkbox-inline">
-							<input type="checkbox" class="toggle-checked" id="hud" value="hud"> HUD
-						</label>
-					</div>
-					<div class="checkbox">
-						<label class="checkbox-inline" >
-							<input type="checkbox" class="toggle-checked locked" id="locked" value="locked"> Locked
-						</label>
-					</div>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form-group">
 
-					<input type="hidden" id="isUpdate" value="0" />
-					<input type="hidden" id="questionID" value="" />
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label for="q_type">Question Type: </label>
+                                <select class="form-control q_type" name="q_type" id="q_type">
+                                    <option value="hud">HUD</option>
+                                    <option value="spdat">SPDAT</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="q_audience">Audience: </label>
+                                <select class="form-control q_audience" name="q_audience" id="q_audience">
+                                    <option value="adult">Adult</option>
+                                    <option value="hoh"> Head of household</option>
+                                    <option value="bothadultsandhoh">Adults and Head of Household</option>
+                                    <option value="child">Child</option>
+                                    <option value="everyone">Everyone</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="checkbox">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="toggle-checked locked" id="locked" value="locked"> Locked
+                        </label>
+                    </div>
+
+                    <input type="hidden" id="isUpdate" value="0"/>
+                    <input type="hidden" id="questionID" value=""/>
 
 
-				</div>
-				<div class="modal-footer">
-					<a href="#" class="btn btn-danger remove showWhenEdit" data-dismiss="modal">Delete</a>
-					<a href="#" class="btn btn-warning save showWhenEdit" >Update</a>
-					<a href="#" class="btn btn-primary save showWhenNew">Save</a>
-					<a href="#" class="btn btn-default cancel" data-dismiss="modal">Cancel</a>
-				</div>
-			</div>
-		</div>
-	</div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-danger remove showWhenEdit" data-dismiss="modal">Delete</a>
+                    <a href="#" class="btn btn-warning save showWhenEdit">Update</a>
+                    <a href="#" class="btn btn-primary save showWhenNew">Save</a>
+                    <a href="#" class="btn btn-default cancel" data-dismiss="modal">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <template name="selectQuestions">
-	<div class="container">
-		<div class="row">
-			<a href="{{pathFor route='adminDashboardsurveysEdit' data = getPost}}" class="btn btn-large btn-primary selectques">Select Question</a>
-			<br/><br/>
-			<table class="table table-bordered table-striped table-hover">
-				<thead>
-				<tr>
-					<th>Select</th>
-					<th>Question Name</th>
-					<th>Display Text</th>
-					<th>Date updated</th>
-				</tr>
-				</thead>
-				<tbody>
+    <div class="container">
+        <div class="row">
+            <a href="{{pathFor route='adminDashboardsurveysEdit' data = getPost}}"
+               class="btn btn-large btn-primary selectques">Select Question</a>
+            <br/><br/>
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>Select</th>
+                    <th>Question Name</th>
+                    <th>Display Text</th>
+                    <th>Date updated</th>
+                </tr>
+                </thead>
+                <tbody>
 				{{#each questionList}}
 					{{>selectQuestionRow}}
 				{{/each}}
-				</tbody>
-			</table>
-		</div>
-	</div>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </template>
 
 <template name="selectQuestionRow">
-	<tr class="selectquestionRow">
-		<td><input type="checkbox" class="toggle-checked" id="reportable" value={{_id}}/> </td>
-		<td>{{name}}</td>
-		<td>{{question}}</td>
-		<td>{{formatDate updatedAt}}</td>
-	</tr>
+    <tr class="selectquestionRow">
+        <td><input type="checkbox" class="toggle-checked" id="reportable" value={{_id}}/></td>
+        <td>{{name}}</td>
+        <td>{{question}}</td>
+        <td>{{formatDate updatedAt}}</td>
+    </tr>
 </template>
 

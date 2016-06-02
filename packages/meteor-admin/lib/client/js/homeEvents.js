@@ -51,10 +51,11 @@ Template.surveyForm.events(
 			var created = false;
 			surveyID = $('#surveyID').val();
 			var copy = tmpl.find('.copy').checked;
-
+			var stype=tmpl.find(".s_type").value;
 			if(copy){
 
 				var title = tmpl.find('.copyof_surveytitle').value;
+
 				surveyCopy_title = title;
 				var active = tmpl.find('.copy_active').checked;
 				surveyCopyId = $('#surveyID').val();
@@ -64,7 +65,7 @@ Template.surveyForm.events(
 				var active = tmpl.find('.active').checked;
 				surveyCopyId = ' ';
 			}
-			Meteor.call("addSurvey", title, active, copy, surveyID,created,function ( error, result ) {
+			Meteor.call("addSurvey", title, active, copy, surveyID,stype,created,function ( error, result ) {
 				if ( error ) {
 					console.log(error);
 				} else {
@@ -85,11 +86,12 @@ Template.surveyForm.events(
 			surveyID = $('#surveyID').val();
 			var title = tmpl.find('.survey_title').value;
 			var active = tmpl.find('.active').checked;
+			var stype=tmpl.find(".s_type").value;
 
 			var isUpdate = $('#isUpdate').val();
 			if(isUpdate=='1'){
 
-				Meteor.call("updateSurvey", surveyID, title, active, function ( error, result ) {
+				Meteor.call("updateSurvey", surveyID, title, stype,active, function ( error, result ) {
 					if ( error ) {
 						console.log(error);
 					} else {
@@ -430,8 +432,8 @@ Template.questionForm.events(
 					// $('#options' ).val(question2.options );
 					populateOptions(question2);
 				}
-				$('#newQuestionModal input[type=checkbox]#hud').attr('checked', question2.hud);
-				$('#newQuestionModal input[type=checkbox]#hud').prop('checked', question2.hud);
+				$('#q_type').val(question2.qtype);
+				$('#q_audience').val(question2.audience);
 
 			}
 		},
@@ -465,13 +467,16 @@ Template.questionForm.events(
 			var question = tmpl.find('.question').value;
 
 			var q_dataType = tmpl.find('.q_dataType').value;
-			var hud = tmpl.find('#hud').checked;
+			var qtype = tmpl.find('#q_type').value;
+			var audience = tmpl.find('#q_audience').value;
 			var locked = tmpl.find('#locked').checked;
 
 			var isCopy = tmpl.find('#isCopy').checked;
 
 			var options, selectstatus = false,option_array;
 			options = [];
+			console.log("qtype="+qtype);
+			console.log("audience="+audience);
 			if ((q_dataType == "Multiple Select") || (q_dataType == "Single Select")) {
 				// options = tmpl.find('#options').value;
 				// selectstatus=true;
@@ -505,9 +510,8 @@ Template.questionForm.events(
 				$('#error').hide();
 				var isUpdate = $('#isUpdate').val();
 				var questionID = $('#questionID').val();
-
 				if (isUpdate == '1') {
-					Meteor.call("updateQuestion", questionID, q_category, q_name, question, q_dataType, options, hud, locked, isCopy, function (error, result) {
+					Meteor.call("updateQuestion", questionID, q_category, q_name, question, q_dataType, options, qtype,audience, locked, isCopy, function (error, result) {
 						if (error) {
 							console.log(error);
 						} else {
@@ -515,7 +519,7 @@ Template.questionForm.events(
 						}
 					});
 				} else {
-					Meteor.call("addQuestion", q_category, q_name, question, q_dataType, options, hud, locked, isCopy, function (error, result) {
+					Meteor.call("addQuestion", q_category, q_name, question, q_dataType, options, qtype, audience,locked, isCopy, function (error, result) {
 						if (error) {
 							console.log(error);
 						} else {
@@ -562,6 +566,8 @@ Template.questionRow.events(
 			$('#q_name').val(question.name);
 			$('#question').val(question.question);
 			$('#q_dataType').val(question.dataType).change();
+			$('#q_type').val(question.qtype).change();
+			$('#q_audience').val(question.audience).change();
 			if (question.options != null) {
 				optionsTag = "";
 				populateOptions(question);
@@ -570,8 +576,6 @@ Template.questionRow.events(
 
 			$('#newQuestionModal input[type=checkbox]#isCopy').attr('checked', question.isCopy);
 			$('#newQuestionModal input[type=checkbox]#isCopy').prop('checked', question.isCopy);
-			$('#newQuestionModal input[type=checkbox]#hud').attr('checked', question.hud);
-			$('#newQuestionModal input[type=checkbox]#hud').prop('checked', question.hud);
 			$('#newQuestionModal input[type=checkbox]#locked').attr('checked', question.locked);
 			$('#newQuestionModal input[type=checkbox]#locked').prop('checked', question.locked);
 
@@ -632,13 +636,13 @@ Template.surveyEditTemplate.events(
 			console.log("content: " + content);
 
 			skip_val = tmpl.find('.showskip').checked;
-			
+
 			Meteor.call("addSurveyQuestionMaster", survey_title,survey_id,section_id,skip_val,content_type,content,maxRank(survey_id), function ( error, result ) {
 				if ( error ) {
 					console.log(error);
 				} else {
 					console.log(result);
-				
+
 					section_id = result;
 
 					if(section_id!=null){
@@ -653,8 +657,8 @@ Template.surveyEditTemplate.events(
 					// } else {
 					// 	$('.sectionSelect').addClass('hide');
 					// }
-					
-					
+
+
 					// var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
 					// var section_name = surveyQuestionsMasterCollection.find({_id: section_id},{content:1,_id:0}).fetch();
                     //
@@ -824,7 +828,7 @@ Template.selectQuestions.events(
 			}
 			console.log("Ques: " + array);
 			console.log("skip val: " + skip_val);
-			
+
 			for(var i =0;i<array.length;i++){
 				Meteor.call("addSurveyQuestionMaster", survey_title, survey_id,Session.get('section_id'),skip_val,'question', array[i], maxRank(survey_id), function ( error, result ) {
 					if ( error ) {
@@ -912,7 +916,7 @@ Template.previewSurvey.events({
 			}
 		} );
 	}
-	
+
 	});
 
 var populateOptions = function (question) {

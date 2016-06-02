@@ -199,7 +199,11 @@ Template.selectQuestions.helpers(
 	{
 		questionList : function(){
 			var questionCollection = adminCollectionObject("questions");
-			return questionCollection.find({}).fetch();
+			var surveysCollection = adminCollectionObject("surveys");
+			var stype=surveysCollection.find({_id:Router.current().params._id}).fetch();
+			console.log("survey type="+stype[0].stype);
+			console.log("survey id to select questions="+Router.current().params._id);
+			return questionCollection.find({qtype:stype[0].stype}).fetch();
 		}
 	}
 );
