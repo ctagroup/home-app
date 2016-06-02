@@ -14,6 +14,10 @@ Schemas.surveys = new SimpleSchema( {
 	copy: {
 		type: Boolean
 	},
+	stype: {
+		type: String,
+		max: 256
+	},
 	surveyCopyID:{
 		type: String,
 		optional:true,
