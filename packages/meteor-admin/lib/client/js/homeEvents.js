@@ -378,6 +378,7 @@ Template.surveyRow.events(
 Template.questionViewTemplate.events(
 	{
 		'click .addQuestion': function (evt, tmpl) {
+
 			$('#aoptions').empty();
 			resetQuestionModal();
 			$('.showWhenEdit').hide();
@@ -604,12 +605,19 @@ var section_id,skip_val;
 Template.surveyEditTemplate.events(
 	{
 		'click .addQues':function(event,tmpl){
-			if(tmpl.find('.section').value!="Other" || tmpl.find('.section').value!="sectionSelect") {
-				Session.set('section_id', tmpl.find('.section').value);
-				return;
-			}
-			else {
-				alert('Select a Section');
+			// if(tmpl.find('.section').value!="Other" || tmpl.find('.section').value!="sectionSelect") {
+			// 	Session.set('section_id', tmpl.find('.section').value);
+			// 	return;
+			// }
+			// else {
+			// 	alert('Select a Section');
+			// 	return false;
+			// }
+
+			var secValue = tmpl.find('.section').value;
+			console.log("section value: " + secValue);
+			if(secValue == 'sectionSelect'){
+				alert("Please select/enter a section");
 				return false;
 			}
 
