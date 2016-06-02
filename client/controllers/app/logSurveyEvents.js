@@ -167,20 +167,31 @@ var getQuestionName = function (getQuesName) {
 Template.LogSurveyView.events({
 
 	'click .savePaused_survey':function(evt,tmpl){
-		//alert("Paused Survey Saved !" );
+		console.log("1");
 		savePausedSurvey("Pause_Submit",tmpl);
 
 	},
 	'click .pausePaused_survey':function(evt,tmpl){
 		//alert("Paused Survey Paused !");
+		console.log("2");
 		savePausedSurvey("Pause_Paused",tmpl);
 	},
 
 });
 var savePausedSurvey=function(status,tmpl){
 
+	console.log("Pause status: " + status);
+	var responsesCollection = adminCollectionObject("responses");
+	var responseDocument = responsesCollection.find({_id:tmpl.data._id }).fetch();
+	for(var i in responseDocument){
+
+		var survey_id = responseDocument[i].surveyID;
+		var client_id = responseDocument[i].clientID;
+		console.log("Survey ID: " + survey_id + " " + "Client ID: " + client_id);
+	}
+
 	var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
-	var surveyDocument = surveyQuestionsMasterCollection.find({surveyID:tmpl.data._id }).fetch();
+	var surveyDocument = surveyQuestionsMasterCollection.find({surveyID:survey_id }).fetch();
 	var mainSectionObject = [];
 	for (var i in surveyDocument) {
 		var type = surveyDocument[i].contentType;
@@ -238,25 +249,25 @@ var savePausedSurvey=function(status,tmpl){
 		}
 	}
 	if(status=="Pause_Submit") {
-		//console.log("RES_ID 1: " + response_id);
-		Meteor.call("updateSurveyResponse",response_id, tmpl.data._id, Router.current().params.query.clientID, Meteor.userId(), mainSectionObject, "Completed", function (error, result) {
+
+		Meteor.call("updateSurveyResponse",tmpl.data._id,survey_id ,client_id, Meteor.userId(), mainSectionObject, "Completed", function (error, result) {
 			if (error) {
 				console.log(error);
 			} else {
 				console.log(result);
-
+        
 			}
 		});
 		alert("Survey Saved!");
 	}else if(status=="Pause_Paused"){
-		//console.log("RES_ID 2: " + response_id);
-		Meteor.call("updateSurveyResponse",response_id,tmpl.data._id, Router.current().params.query.clientID, Meteor.userId(), mainSectionObject, "Paused", function (error, result) {
 
+		Meteor.call("updateSurveyResponse",tmpl.data._id,survey_id, client_id, Meteor.userId(), mainSectionObject, "Paused", function (error, result) {
+        
 			if (error) {
 				console.log(error);
 			} else {
 				console.log(result);
-
+        
 			}
 		});
 		alert("Survey Paused!");

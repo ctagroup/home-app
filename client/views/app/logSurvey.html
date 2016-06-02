@@ -244,11 +244,11 @@
         {{> appNav}}
 
         <div class="container quesL">
-            <h3 class="page-header">{{title}}</h3>
+            <h3 class="page-header">{{surveyTitle surveyID}}</h3>
             <ul id="responseSurveyList">
 
-                {{#each surveyQuesContents}}
-                {{#if surveyCompleted surveyID}}
+                {{#each surveyQuesContents surveyID}}
+                {{#if surveyCompleted}}
                 <div class="responseSection">
                     <div class="{{sectionID}}">
 
@@ -355,10 +355,10 @@
                             {{#if multipleSelect content}}
                             {{#each singleOptions content}}
                             <li class="quesList">
-                                <label class="multipleSelect" id={{../content}}><input
-                                    type="checkbox" class="multipleSelect"
+                                <label class="multipleSelect" id={{this.value}}><input
+                                    type="checkbox" class='multipleSelect {{this.value}}'
                                      name={{../content}}
-                                    value={{this.value}} id={{../content}} {{isSelected this.value}}> &nbsp; {{this.description}} </label>
+                                    value={{this.value}} id={{../content}} {{isSelectedMultiple this.value}}> &nbsp; {{this.description}} </label>
                             </li>
                             {{/each}}
                             <li class="othersSpecify_multiple hide">
@@ -376,15 +376,56 @@
 
                 {{/if}}
                 {{/each}}
-
-                <a href='/app/surveyStatus/'><button class="btn btn-large btn-primary savePaused_survey hide" id="savePaused_survey">Save</button></a>
-                <a href='/app/surveyStatus/'><button class="btn btn-large btn-primary pausePaused_survey hide" id = "pausePaused_survey">Pause</button></a>
-                <button class="btn btn-large btn-primary cancelPaused_survey hide" id="cancelPaused_survey">Cancel</button>
-
-
+                {{#if paused}}
+                <div id="pauseSurvey">
+                <a href='/app/surveyStatus/'><button class="btn btn-large btn-primary  savePaused_survey">Save</button></a>
+                <a href='/app/surveyStatus/'><button class="btn btn-large btn-primary  pausePaused_survey">Pause</button></a>
+                </div>
+                {{/if}}
             </ul>
         </div>
     </div>
+
 </template>
+
+<!--<template name="surveySaveModalTemplate">-->
+    <!--<div class="modal fade" id="surveySaveModal">-->
+        <!--<div class="modal-dialog modal-sm">-->
+            <!--<div class="modal-content">-->
+
+                <!--<div class="modal-header">-->
+                    <!--<h6 class="modal-title">Survey status</h6>-->
+                <!--</div>-->
+                <!--<div class="modal-body">-->
+                   <!--<h4>Survey saved</h4>-->
+                <!--</div>-->
+                <!--<div class="modal-footer">-->
+                    <!--<button type="button" class="btn btn-primary survey_save" id="survey_save">Ok</button>-->
+                    <!--<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>-->
+                <!--</div>-->
+
+
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</template>-->
+
+<!--<template name="surveyPauseModalTemplate">-->
+    <!--<div class="modal fade" id="surveyPauseModal">-->
+        <!--<div class="modal-dialog modal-sm">-->
+            <!--<div class="modal-content">-->
+
+                <!--<div class="modal-header">-->
+                    <!--<h6 class="modal-title">Survey status</h6>-->
+                <!--</div>-->
+                <!--<div class="modal-footer">-->
+                    <!--<button type="button" class="btn btn-primary survey_save" id="survey_pause" >Ok</button>-->
+                    <!--<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>-->
+                <!--</div>-->
+
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</template>-->
 
 

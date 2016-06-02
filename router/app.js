@@ -170,9 +170,9 @@ Router.route('/app/LogSurveyView/:_id',{
 	template: 'LogSurveyView',
 	controller: 'HomeAppController',
 	data: function(){
-		var surveyID = this.params._id;
-		var surveysCollection = adminCollectionObject("surveys");
-		return surveysCollection.findOne({_id:surveyID});
+		var responseID = this.params._id;
+		var responsesCollection = adminCollectionObject("responses");
+		return responsesCollection.findOne({_id:responseID});
 
 	}
 });

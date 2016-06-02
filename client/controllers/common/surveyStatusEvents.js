@@ -10,20 +10,10 @@ Template.surveyStatusRow.events({
         var response_records = responseCollection.find({_id:response_id}).fetch();
 
         for(var i in response_records){
-
-            var surveyID = response_records[i].surveyID;
-            var clientID = response_records[i].clientID;
             
-            console.log("SID: " + surveyID);
-            console.log("CID: " + clientID);
-
-            Router.go('LogSurveyView', {_id: surveyID}, {query: 'clientID=' + clientID});
-
-            // if(responsestatus=="Completed") {
-            //     Router.go('LogSurveyView', {_id: surveyID}, {query: 'clientID=' + clientID});
-            // }else{
-            //     Router.go('LogSurveyResponse', {_id: surveyID}, {query: 'clientID=' + clientID});
-            // }
+            var id = response_records[i]._id;
+            Router.go('LogSurveyView', {_id: id});
+            
         }
 
     }

@@ -231,7 +231,7 @@ Template.LogSurveyResponse.helpers({
 					var questions_ids = responses[k].questionID;
 					var answers = responses[k].answer;
 					//console.log("QUES_ID: " + questions_ids + "ANS: " + answers);
-					
+
 					return answers;
 					//$("#" + questions_ids).val("answers");
 					//$('input[name="f9MkQxitqNfDxEAeGANS"]').val('ls');
@@ -253,67 +253,77 @@ var getQName=function(getQuesName){
 	}
 	
 };
-var qIDs, sections;
+var qIDs, sections, survey_id,multiple_responses;
 Template.LogSurveyView.helpers({
 
-	surveyQuesContents: function () {
+	surveyQuesContents: function (survey_id) {
+		console.log("Sur_ID: " + survey_id);
 		var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
 		//console.log(Router.current().params._id);
-		//console.log(surveyQuestionsMasterCollection.find({surveyID: Router.current().params._id}, {sort: {order: 1}}).fetch())
-		return surveyQuestionsMasterCollection.find({surveyID: Router.current().params._id}, {sort: {order: 1}}).fetch();
+		//console.log(surveyQuestionsMasterCollection.find({surveyID:Router.current().params._id}, {sort: {order: 1}}).fetch())
+		return surveyQuestionsMasterCollection.find({surveyID:survey_id}, {sort: {order: 1}}).fetch();
 	},
-	surveyCompleted: function (status) {
-		//console.log("Survey ID: " + status);
+	surveyTitle:function(surveyID){
+		//console.log("Survey_ID: " + surveyID);
+		var surveyCollection = adminCollectionObject("surveys");
+		var surveys = surveyCollection.find({_id: surveyID}).fetch();
+
+		for (var i in surveys) {
+			survey_id = surveys[i]._id;
+			var survey_title = surveys[i].title;
+		}
+		return survey_title;
+
+	},
+	surveyCompleted: function () {
+
+		
 		var responseCollection = adminCollectionObject("responses");
-		var responseRecords = responseCollection.find({surveyID: status}).fetch();
-		var responseVal;
+		var responseRecords = responseCollection.find({_id: Router.current().params._id}).fetch();
+
 		for (var i in responseRecords) {
-
+    
 			var status = responseRecords[i].responsestatus;
-			if (status == 'Completed') {
-				//console.log("Stat: " + status);
-				$('.savePaused_survey').addClass('hide');
-				$('.pausePaused_survey ').addClass('hide');
-				$('.cancelPaused_survey ').addClass('hide');
-				return true;
+			//console.log("Stat: " + status);
 
-			}else{
-				$('.savePaused_survey').removeClass('hide');
-				$('.pausePaused_survey ').removeClass('hide');
-				$('.cancelPaused_survey ').removeClass('hide');
+			if (status == 'Completed') {
+				$('.savePaused_survey').hide();
+				$('.pausePaused_survey ').hide();
+				$('.cancelPaused_survey ').hide();
+				$('#pauseSurvey').hide();
+				return true;
 				
 			}
-
+    
 		}
 	},
-	paused:function(status){
+	paused:function(){
 		var responseCollection = adminCollectionObject("responses");
-		var responseRecords = responseCollection.find({surveyID: status}).fetch();
-		var responseVal;
+		var responseRecords = responseCollection.find({_id: Router.current().params._id}).fetch();
+
 		for (var i in responseRecords) {
 
 			var status = responseRecords[i].responsestatus;
+			//console.log("Stat: " + status);
+
 			if (status == 'Paused') {
-				//console.log("Stat: " + status);
-				$('.savePaused_survey').removeClass('hide');
-				$('.pausePaused_survey ').removeClass('hide');
-				$('.cancelPaused_survey ').removeClass('hide');
-
-			}else{
-				$('.savePaused_survey').addClass('hide');
-				$('.pausePaused_survey ').addClass('hide');
-				$('.cancelPaused_survey ').addClass('hide');
-
+				$('.savePaused_survey').show();
+				$('.pausePaused_survey ').show();
+				$('.cancelPaused_survey ').show();
+				$('#pauseSurvey').show();
+				return true;
 
 			}
 
 		}
 
 	},
-	displaySection: function (content_type) {
-		if (content_type == "section") {
-			return true;
-		}
+	displaySection: function (survey_id) {
+		//
+		// console.log("S_ID: " + survey_id);
+		// if (content_type == "section") {
+		// 	return true;
+		// }
 	},
 	displayLabel: function (content_type) {
 		if (content_type == "labels") {
@@ -429,13 +439,6 @@ Template.LogSurveyView.helpers({
 		var questions = questionCollection.find({_id: contentQuesId}, {dataType: 1, _id: 0}).fetch();
 
 		return questions[0].options;
-		// for(var i in questions){
-		// 	var singleSelect = questions[i].dataType;
-		// 	if(singleSelect == "Single Select"){
-		// 		console.log("SINGLE: " +questions[i].options.split(","))
-		// 		return questions[i].options.split(",");
-		// 	}
-		// }
 
 	},
 	multipleSelect: function (contentQuesId) {
@@ -453,74 +456,45 @@ Template.LogSurveyView.helpers({
 		return getQName(getQuesName);
 	},
 	surveyTextResponse: function (id) {
-
-		//console.log("id: " + id);
+		
 		var responseCollection = adminCollectionObject("responses");
-		var responseSections = responseCollection.find({surveyID: Router.current().params._id}).fetch();
+		var responseSections = responseCollection.find({_id: Router.current().params._id}).fetch();
 		var responseVal;
-		//console.log("ID123: " + Router.current().params._id);
 		for (var i in responseSections) {
 
 			sections = responseSections[i].section;
-			//console.log("Sections: " + sections);
 			for (var j in sections) {
-				//console.log("Sec: " + sections);
 				var response = sections[j].response;
-				//console.log("response: " + response);
 				for (var k in response) {
 
 					var quesIDs = response[k].questionID;
-					//console.log("Ques ID: " + quesIDs);
-					//console.log("QID: " + qid + " " + "response: " + responseVal);
 					if (id == quesIDs) {
 						responseVal = response[k].answer;
-						//console.log("ans: " + responseVal);
 						var questionCollection = adminCollectionObject("questions");
 						var questions = questionCollection.find({_id: quesIDs}, {dataType: 1, _id: 0}).fetch();
 
 						for (var i in questions) {
 							var dataType = questions[i].dataType;
 							var qid = questions[i]._id;
-							// if(dataType == "Boolean"){
-							// 	$('#' + id).prop('checked',responseVal);
-                            //
-							// }
-							//console.log(qid + " " + "type: " + dataType + "res: " + responseVal);
+							
 							if (dataType == "Single Select") {
-
-								//$('#' + id).prop('checked',responseVal);
-								//console.log("QID: " + qid + " " + "response: " + responseVal);
+								
 								var options = questions[i].options;
-								// //console.log("options: " + options);
 								for (var s in options) {
-
 									responseVal = options[s].description;
-									//console.log("DESC: " + responseVal);
-									// $("label[for='singleSelect']").text(responseVal);
 									return responseVal;
 
 								}
 							}
 							else if (dataType == "Multiple Select") {
-
-								//console.log("QID: " + qid + " " + "response: " + responseVal + "DT: " + dataType);
+								
 								var options = questions[i].options;
-								//var responseSplit = responseVal.split("|");
 								var answer="";
-								//var vals ="";
 								for(var s in options){
 									answer +=  options[s].description + '|';
-									//vals = 	options[s].value;
-									//console.log("ANSWERS: " + vals);
-									//console.log("RES: " + answer);
-									//$('#' + id).prop('checked',vals);
 
 								}
-								//console.log("AAAAA: " + answer);
-
 								return answer.split("|");
-						
-
 							}
 							else{
 								return responseVal;
@@ -538,38 +512,26 @@ Template.LogSurveyView.helpers({
 		}
 	},
 	isChecked:function(type){
-
-		//console.log("XYZZZid: " + type);
+		
 		var responseCollection = adminCollectionObject("responses");
-		var responseSections = responseCollection.find({surveyID: Router.current().params._id}).fetch();
+		var responseSections = responseCollection.find({_id: Router.current().params._id}).fetch();
 		var responseVal;
-		//console.log("ID123: " + Router.current().params._id);
 		for (var i in responseSections) {
 
 			sections = responseSections[i].section;
-			//console.log("Sections: " + sections);
 			for (var j in sections) {
-				//console.log("Sec: " + sections);
 				var response = sections[j].response;
-				//console.log("response: " + response);
 				for (var k in response) {
 
 					var quesIDs = response[k].questionID;
-					//console.log("Ques ID: " + quesIDs);
-					//console.log("QID: " + qid + " " + "response: " + responseVal);
-
 						responseVal = response[k].answer;
-						//console.log("ans: " + responseVal);
 						var questionCollection = adminCollectionObject("questions");
 						var questions = questionCollection.find({_id: quesIDs}, {dataType: 1, _id: 0}).fetch();
 
 						for (var i in questions) {
 							var dataType = questions[i].dataType;
-							//var qid = questions[i]._id;
-
+						
 								if (dataType == "Boolean") {
-									//console.log(responseVal + " " + type);
-									//console.log("TRUE_VALUE: " + ( responseVal === type) ? 'checked' : null);
 									return ( responseVal === type) ? 'checked' : null;
 
 								}
@@ -589,55 +551,78 @@ Template.LogSurveyView.helpers({
 
 		},
 	isSelected:function(value){
-		console.log("VAl: " + value);
+		
 		var responseCollection = adminCollectionObject("responses");
-		var responseSections = responseCollection.find({surveyID: Router.current().params._id}).fetch();
+		var responseSections = responseCollection.find({_id: Router.current().params._id}).fetch();
 		var responseVal;
-		//console.log("ID123: " + Router.current().params._id);
+		
 		for (var i in responseSections) {
 
 			sections = responseSections[i].section;
-			//console.log("Sections: " + sections);
+			
 			for (var j in sections) {
-				//console.log("Sec: " + sections);
 				var response = sections[j].response;
-				//console.log("response: " + response);
 				for (var k in response) {
-
 					var quesIDs = response[k].questionID;
-					//console.log("Ques ID: " + quesIDs);
-					//console.log("QID: " + qid + " " + "response: " + responseVal);
-
 					responseVal = response[k].answer;
-					//console.log("ans: " + responseVal);
 					var questionCollection = adminCollectionObject("questions");
 					var questions = questionCollection.find({_id: quesIDs}, {dataType: 1, _id: 0}).fetch();
 
 					for (var i in questions) {
 						var dataType = questions[i].dataType;
-						//var qid = questions[i]._id;
-
 						if (dataType == "Single Select") {
-							console.log("res:  " + responseVal + " " + "val: " + value);
-							//console.log("TRUE_VALUE: " + ( responseVal === value) ? 'checked' : null);
 							return ( responseVal == value) ? 'checked' : null;
 
 						}
-						else if (dataType == "Multiple Select") {
-							console.log("res:  " + responseVal + " " + "val: " + value);
-							console.log("TRUE_VALUE: " + ( responseVal === value) ? 'checked' : null);
-							return ( responseVal == value) ? 'checked' : null;
-
-						}
-
-
 
 					}
 
-
 				}
 
+			}
 
+		}
+
+	},
+
+	isSelectedMultiple:function(value){
+		
+		var responseCollection = adminCollectionObject("responses");
+		var responseSections = responseCollection.find({_id: Router.current().params._id}).fetch();
+		var responseVal;
+		
+		for (var i in responseSections) {
+			sections = responseSections[i].section;
+			for (var j in sections) {
+				var response = sections[j].response;
+				for (var k in response) {
+
+					var quesIDs = response[k].questionID;
+
+					responseVal = response[k].answer.split("|");
+
+					var questionCollection = adminCollectionObject("questions");
+					var questions = questionCollection.find({_id: quesIDs}, {dataType: 1, _id: 0}).fetch();
+
+					for (var i in questions) {
+						var dataType = questions[i].dataType;
+
+							if (dataType == "Multiple Select") {
+								// console.log("multiple_result:  " + responseVal);
+								for(var i=0;i<responseVal.length;i++) {
+									// console.log("response: " + responseVal[i]+" "+value);
+									if(value==responseVal[i])
+										return "checked";
+
+								}
+								return;
+						
+						}
+
+					}
+					
+
+				}
 
 			}
 
@@ -645,6 +630,4 @@ Template.LogSurveyView.helpers({
 
 	}
 
-
-	
 });
