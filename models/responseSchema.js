@@ -1,12 +1,5 @@
 /**
-<<<<<<< HEAD
- * Created by Kavi on 5/19/16.
-=======
  * Created by Anush-PC on 5/19/2016.
- */
-/**
- * Created by udit on 13/12/15.
->>>>>>> 843e7e7ab3fa9e648e40239537f57fd7108db550
  */
 responses = new Meteor.Collection( 'responses' );
 
@@ -42,10 +35,19 @@ Schemas.responses = new SimpleSchema( {
 		max: 256,
 		optional: true
 	},
+	'section.$.sectionID': {
+		type: String,
+		max: 256,
+		optional: true
+	},
 	'section.$.name': {
 		type: String,
 		max: 256,
 		optional: true
+	},
+	'section.$.skip': {
+		type:Boolean,
+		optional:true
 	},
 	'section.$.response': {
 		type: [Object],
