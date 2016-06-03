@@ -250,8 +250,8 @@ Meteor.methods(
 		},
 		updateSurveyResponse:function(responseID,surveyID,clientID,userID,mainSectionObject,status){
 			var responsesCollection = adminCollectionObject("responses");
-			responsesCollection.update({_id:responseID},{$set:{clientID:clientID, surveyID:surveyID,userID:userID,responsestatus:status,section:mainSectionObject}});
-
+			var responseRecords =responsesCollection.update({_id:responseID},{$set:{clientID:clientID, surveyID:surveyID,userID:userID,responsestatus:status,section:mainSectionObject}});
+			return responseRecords;
 		}
 	}
 );

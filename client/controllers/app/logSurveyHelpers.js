@@ -28,8 +28,6 @@ var sects;
 Template.LogSurveyResponse.helpers({
 	surveyQuesContents: function(){
 		var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
-		//console.log(Router.current().params._id);
-		//console.log(surveyQuestionsMasterCollection.find({surveyID:Router.current().params._id}, {sort: {order: 1}}).fetch())
 		return surveyQuestionsMasterCollection.find({surveyID:Router.current().params._id}, {sort: {order: 1}}).fetch();
 	},
 	clientName:function(){
@@ -41,7 +39,6 @@ Template.LogSurveyResponse.helpers({
 			var middle_name = client_name[i].middleName;
 			var last_name = client_name[i].lastName;
 		}
-		//console.log("client name: " + id);
 		return first_name + " " + middle_name + " " + last_name;
 
 
@@ -164,13 +161,6 @@ Template.LogSurveyResponse.helpers({
 		var questions = questionCollection.find({_id:contentQuesId},{dataType:1,_id:0}).fetch();
 
 		return questions[0].options;
-		// for(var i in questions){
-		// 	var singleSelect = questions[i].dataType;
-		// 	if(singleSelect == "Single Select"){
-		// 		console.log("SINGLE: " +questions[i].options.split(","))
-		// 		return questions[i].options.split(",");
-		// 	}
-		// }
 
 	},
 	multipleSelect: function(contentQuesId){
@@ -191,18 +181,13 @@ Template.LogSurveyResponse.helpers({
 
 		var responseCollection = adminCollectionObject("responses");
 		var responseRecords = responseCollection.find({surveyID: Router.current().params._id}).fetch();
-		//console.log("ID123: " + responseSections);
 		for(var i in responseRecords){
 			var sections = responseRecords[i].section;
-			//console.log("SECTIONS: " + sections);
 			for(var j in sections){
 				var responses = sections[j].response;
-				//console.log("RESPONSES: " + responses);
 				for(var k in responses){
 					var questions_ids = responses[k].questionID;
 					var answers = responses[k].answer;
-					//console.log("QUES_IDZZZZ: " + questions_ids + "ANS: " + answers);
-
 					if(answers!=null){
 						return true;
 					}else{
@@ -216,25 +201,16 @@ Template.LogSurveyResponse.helpers({
 		}
 	},
 	surveyContents:function() {
-		//console.log("id: " + Router.current().params._id);
 		var responseCollection = adminCollectionObject("responses");
 		var responseSections = responseCollection.find({surveyID: Router.current().params._id}).fetch();
-
-		//console.log("ID123: " + responseSections);
 		for(var i in responseSections){
 			var sections = responseSections[i].section;
-			//console.log("SECTIONS: " + sections);
 			for(var j in sections){
 				var responses = sections[j].response;
-				//console.log("RESPONSES: " + responses);
 				for(var k in responses){
 					var questions_ids = responses[k].questionID;
 					var answers = responses[k].answer;
-					//console.log("QUES_ID: " + questions_ids + "ANS: " + answers);
-
 					return answers;
-					//$("#" + questions_ids).val("answers");
-					//$('input[name="f9MkQxitqNfDxEAeGANS"]').val('ls');
 
 				}
 
@@ -245,26 +221,21 @@ Template.LogSurveyResponse.helpers({
 });
 
 var getQName=function(getQuesName){
-	console.log("from loggin events");
 	var questionCollection = adminCollectionObject("questions");
 	var questions = questionCollection.find({_id:getQuesName},{name:1,_id:0}).fetch();
 	for(var i in questions){
 		return questions[i].name;
 	}
-	
+
 };
 var qIDs, sections, survey_id,multiple_responses;
 Template.LogSurveyView.helpers({
 
 	surveyQuesContents: function (survey_id) {
-		console.log("Sur_ID: " + survey_id);
 		var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
-		//console.log(Router.current().params._id);
-		//console.log(surveyQuestionsMasterCollection.find({surveyID:Router.current().params._id}, {sort: {order: 1}}).fetch())
 		return surveyQuestionsMasterCollection.find({surveyID:survey_id}, {sort: {order: 1}}).fetch();
 	},
 	surveyTitle:function(surveyID){
-		//console.log("Survey_ID: " + surveyID);
 		var surveyCollection = adminCollectionObject("surveys");
 		var surveys = surveyCollection.find({_id: surveyID}).fetch();
 
@@ -277,24 +248,22 @@ Template.LogSurveyView.helpers({
 	},
 	surveyCompleted: function () {
 
-		
+
 		var responseCollection = adminCollectionObject("responses");
 		var responseRecords = responseCollection.find({_id: Router.current().params._id}).fetch();
 
 		for (var i in responseRecords) {
-    
-			var status = responseRecords[i].responsestatus;
-			//console.log("Stat: " + status);
 
+			var status = responseRecords[i].responsestatus;
 			if (status == 'Completed') {
 				$('.savePaused_survey').hide();
 				$('.pausePaused_survey ').hide();
 				$('.cancelPaused_survey ').hide();
 				$('#pauseSurvey').hide();
 				return true;
-				
+
 			}
-    
+
 		}
 	},
 	paused:function(){
@@ -304,7 +273,6 @@ Template.LogSurveyView.helpers({
 		for (var i in responseRecords) {
 
 			var status = responseRecords[i].responsestatus;
-			//console.log("Stat: " + status);
 
 			if (status == 'Paused') {
 				$('.savePaused_survey').show();
@@ -318,12 +286,10 @@ Template.LogSurveyView.helpers({
 		}
 
 	},
-	displaySection: function (survey_id) {
-		//
-		// console.log("S_ID: " + survey_id);
-		// if (content_type == "section") {
-		// 	return true;
-		// }
+	displaySection: function (content_type) {
+		if (content_type == "section") {
+			return true;
+		}
 	},
 	displayLabel: function (content_type) {
 		if (content_type == "labels") {
@@ -455,8 +421,21 @@ Template.LogSurveyView.helpers({
 	getQuesName: function (getQuesName) {
 		return getQName(getQuesName);
 	},
+	checkSkipped:function(sectionID){
+		if(isSkipped(sectionID))
+			return "checked";
+	},
+	hideIfSkipped:function(sectionID){
+		if((sectionID!=null)&&(($( '#'+sectionID).length)))	 {
+			var toggleSkip = $('#'+sectionID).is(':checked');
+			if (toggleSkip)
+				return "hidden";
+			else
+				return "";
+		}
+	},
 	surveyTextResponse: function (id) {
-		
+
 		var responseCollection = adminCollectionObject("responses");
 		var responseSections = responseCollection.find({_id: Router.current().params._id}).fetch();
 		var responseVal;
@@ -476,9 +455,9 @@ Template.LogSurveyView.helpers({
 						for (var i in questions) {
 							var dataType = questions[i].dataType;
 							var qid = questions[i]._id;
-							
+
 							if (dataType == "Single Select") {
-								
+
 								var options = questions[i].options;
 								for (var s in options) {
 									responseVal = options[s].description;
@@ -487,7 +466,7 @@ Template.LogSurveyView.helpers({
 								}
 							}
 							else if (dataType == "Multiple Select") {
-								
+
 								var options = questions[i].options;
 								var answer="";
 								for(var s in options){
@@ -500,19 +479,19 @@ Template.LogSurveyView.helpers({
 								return responseVal;
 
 							}
-							
+
 						}
 					}
-			
+
 
 				}
-			
+
 			}
 
 		}
 	},
 	isChecked:function(type){
-		
+
 		var responseCollection = adminCollectionObject("responses");
 		var responseSections = responseCollection.find({_id: Router.current().params._id}).fetch();
 		var responseVal;
@@ -530,7 +509,7 @@ Template.LogSurveyView.helpers({
 
 						for (var i in questions) {
 							var dataType = questions[i].dataType;
-						
+
 								if (dataType == "Boolean") {
 									return ( responseVal === type) ? 'checked' : null;
 
@@ -551,15 +530,15 @@ Template.LogSurveyView.helpers({
 
 		},
 	isSelected:function(value){
-		
+
 		var responseCollection = adminCollectionObject("responses");
 		var responseSections = responseCollection.find({_id: Router.current().params._id}).fetch();
 		var responseVal;
-		
+
 		for (var i in responseSections) {
 
 			sections = responseSections[i].section;
-			
+
 			for (var j in sections) {
 				var response = sections[j].response;
 				for (var k in response) {
@@ -586,11 +565,11 @@ Template.LogSurveyView.helpers({
 	},
 
 	isSelectedMultiple:function(value){
-		
+
 		var responseCollection = adminCollectionObject("responses");
 		var responseSections = responseCollection.find({_id: Router.current().params._id}).fetch();
 		var responseVal;
-		
+
 		for (var i in responseSections) {
 			sections = responseSections[i].section;
 			for (var j in sections) {
@@ -608,19 +587,18 @@ Template.LogSurveyView.helpers({
 						var dataType = questions[i].dataType;
 
 							if (dataType == "Multiple Select") {
-								// console.log("multiple_result:  " + responseVal);
+
 								for(var i=0;i<responseVal.length;i++) {
-									// console.log("response: " + responseVal[i]+" "+value);
 									if(value==responseVal[i])
 										return "checked";
 
 								}
 								return;
-						
+
 						}
 
 					}
-					
+
 
 				}
 
@@ -628,6 +606,28 @@ Template.LogSurveyView.helpers({
 
 		}
 
+	},
+	sectionSkipped:function(sectionID){
+		if(isSkipped(sectionID)){
+			return false;
+		}else
+			return true;
+
 	}
 
 });
+
+var isSkipped=function(sectionID){
+	var status=false;
+	var responseCollection = adminCollectionObject("responses");
+	var responseSections = responseCollection.find({_id: Router.current().params._id}).fetch().map( function( v ) {
+		for(var i in v.section){
+			if(v.section[i].sectionID==sectionID){
+				if(v.section[i].skip)
+					status=true;
+
+			}
+		}
+	} );
+	return status;
+};
