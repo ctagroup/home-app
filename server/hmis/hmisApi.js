@@ -1,6 +1,8 @@
 /**
  * Created by udit on 08/04/16.
  */
+var querystring = require('querystring');
+
 HMISAPI = {
 	isJSON: function (str) {
 		try {
@@ -94,7 +96,7 @@ HMISAPI = {
 		}
 		return accessToken;
 	},
-	getAllClients: function( query ) {
+	searchClient: function( query, limit ) {
 
 		var config = ServiceConfiguration.configurations.findOne({service: 'HMIS'});
 		if (!config)
@@ -104,10 +106,15 @@ HMISAPI = {
 
 		var accessToken = this.getCurrentAccessToken();
 
+		var params = {
+			q: query,
+			maxItems: limit
+		};
+
 		try {
 			var response = HTTP.get(
-				config.hmisAPIEndpoints.clientBaseUrl + config.hmisAPIEndpoints.clients +
-				"?FirstName=" + query, {
+				config.hmisAPIEndpoints.clientBaseUrl + config.hmisAPIEndpoints.clientSearch +
+				"?"+querystring.stringify(params), {
 					headers: {
 						"X-HMIS-TrustedApp-Id": config.appId,
 						"Authorization": "HMISUserAuth session_token="+accessToken,
@@ -119,11 +126,11 @@ HMISAPI = {
 					}
 				}).data;
 		} catch (err) {
-			throw _.extend(new Error("Failed to fetch identity from HMIS. " + err.message),
+			throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
 			               {response: err.response});
 		}
 
-		var clientsReponse = response.Clients.clients;
+		var clientsReponse = response.Clients.items;
 		for (client in clientsReponse) {
 			clients.push(clientsReponse[client]);
 		}

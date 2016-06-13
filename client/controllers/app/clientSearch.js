@@ -14,9 +14,15 @@ Template.clientSearch.helpers(
 					return;
 				}
 				callback( res.map( function( v ) {
-					return { value: v.firstName.trim() + ' ' + v.lastName.trim() };
+					v.value = v.firstName.trim() + ' ' + v.lastName.trim();
+					return v;
 				} ) );
 			});
+		},
+		clientSelected: function (event, value, datasetName) {
+			console.log(event);
+			console.log(value);
+			console.log(datasetName);
 		}
 	}
 );
