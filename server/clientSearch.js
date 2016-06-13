@@ -38,16 +38,14 @@ Meteor.methods(
 
 			var mergedClients = [];
 
-			if ( localClients.length == 0 ) {
-				mergedClients.push({firstName: "Create New", lastName: "Client", clientNotFound: true});
+			if ( localClients.length == 0 && hmisClients.length == 0 ) {
+				mergedClients.push({firstName: "Create New", lastName: "Client", query: query, clientNotFound: true});
 			} else {
 				mergedClients = localClients.map(function ( client ) {
 					client.isLocalClient = true;
 					return client;
 				}).concat(hmisClients);
 			}
-
-			console.log(mergedClients);
 
 			return mergedClients;
 		}
