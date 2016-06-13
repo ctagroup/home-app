@@ -142,7 +142,7 @@ Router.route('/not-enough-permission', {
 /**
  * Client Routes
  */
-Router.route( '/app/client/', {
+Router.route( '/app/clients/', {
 	name: 'clientSearch',
 	template: 'clientSearch',
 	controller: 'HomeAppController',
