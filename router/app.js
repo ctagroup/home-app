@@ -176,9 +176,9 @@ Router.route('/app/LogSurveyView/:_id',{
 
 	}
 });
-Router.route('/app/client/single-client/',{
-	name:'clientProfile',
-	template: 'clientProfile',
+Router.route('/app/clients/new/',{
+	name:'createClient',
+	template: 'createClient',
 	controller: 'HomeAppController',
 });
 Router.route('/app/client/single-client/:_id/view',{

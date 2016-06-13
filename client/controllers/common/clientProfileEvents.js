@@ -3,7 +3,7 @@
  */
 ClientProfileSchema = new Meteor.Collection('clientInfoSchema');
 var clientInfoId;
-Template.clientProfile.events({
+Template.createClient.events({
 
 
     'click .save':function(evt,tmpl){
@@ -28,8 +28,8 @@ Template.clientProfile.events({
         var relationship = tmpl.find('.relationtoHoH_category').value;
         var loc = tmpl.find('.destination_category').value;
         var shelter = tmpl.find('.timeOnStreets_category').value;
-       
-        
+
+
         Meteor.call("addClient", first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteran_status,disabling_conditions,residence_prior,entry_date,exit_date,destination,personal_id,housing_id,relationship,loc,shelter, function ( error, result ) {
             if ( error ) {
                 console.log(error);
@@ -39,11 +39,11 @@ Template.clientProfile.events({
                 console.log(result);
             }
         } );
-        
+
     }
-    
+
 });
-Template.clientProfile.clientInfoList = function(evt,tmpl){
+Template.createClient.clientInfoList = function(evt,tmpl){
 
     var clientInfoCollection = adminCollectionObject("clientInfo");
     return clientInfoCollection.find({}).fetch();
@@ -97,11 +97,11 @@ Template.clientProfileEdit.events({
                 alert("Client profile is deleted");
             }
         } );
-        
+
     }
-    
+
 })
 
 
 
- 
+

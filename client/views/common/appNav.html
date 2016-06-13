@@ -16,8 +16,14 @@
 
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li class="{{isActiveRoute 'clientSearch'}}"><a href="{{pathFor 'clientSearch'}}">Clients</a></li>
-					<li class="{{isActiveRoute 'clientProfile'}}"><a href="{{pathFor 'clientProfile'}}">Client Profile</a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+						   aria-haspopup="true" aria-expanded="false">Clients <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li class="{{isActiveRoute 'clientSearch'}}"><a href="{{pathFor 'clientSearch'}}">Clients</a></li>
+							<li class="{{isActiveRoute 'createClient'}}"><a href="{{pathFor 'createClient'}}">New Client</a></li>
+						</ul>
+					</li>
                     <li class="{{isActiveRoute 'chat'}}"><a href="{{pathFor 'chat'}}">Chat</a></li>
 					<li class="{{isActiveRoute 'surveyStatus'}}"><a href="{{pathFor 'surveyStatus'}}">Survey Status</a></li>
                     <li class="{{isActiveRoute 'LogSurvey'}}"><a href="{{pathFor 'LogSurvey'}}">Log Survey</a></li>

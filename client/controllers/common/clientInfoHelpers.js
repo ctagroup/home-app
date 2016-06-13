@@ -6,7 +6,7 @@ Template.registerHelper('formatDate', function(date) {
 	return moment(date).format('MM/DD/YYYY');
 	//return new Date(timestamp).toString('MM/dd/yyyy')
 });
-Template.clientProfile.helpers(
+Template.createClient.helpers(
     {
         clientInfoList: function() {
             var clientInfoCollection = adminCollectionObject("clientInfo");
