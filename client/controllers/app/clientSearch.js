@@ -19,10 +19,15 @@ Template.clientSearch.helpers(
 				} ) );
 			});
 		},
-		clientSelected: function (event, value, datasetName) {
-			console.log(event);
-			console.log(value);
-			console.log(datasetName);
+		clientSelected: function (event, dataObject) {
+			if ( dataObject.clientNotFound ) {
+				console.log("create new client with "+dataObject.query.trim());
+				$('#client-search-keyword').val(dataObject.query).change();
+				Router.go('/app/clients/new?firstName='+dataObject.query);
+			} else {
+				console.log("existing client");
+				console.log(dataObject);
+			}
 		}
 	}
 );
