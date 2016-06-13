@@ -126,8 +126,11 @@ HMISAPI = {
 					}
 				}).data;
 		} catch (err) {
-			throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
-			               {response: err.response});
+			// throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
+			//                {response: err.response});
+			console.log("Failed to search clients in HMIS. " + err.message);
+			console.log(err.response);
+			return [];
 		}
 
 		var clientsReponse = response.Clients.items;
