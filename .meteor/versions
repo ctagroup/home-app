@@ -28,7 +28,7 @@ callback-hook@1.0.8
 check@1.2.1
 coffeescript@1.0.17
 dburles:collection-helpers@1.0.4
-dburles:mongo-collection-instances@0.3.5
+dburles:mongo-collection-instances@0.3.4
 ddp@1.2.5
 ddp-client@1.2.7
 ddp-common@1.2.5
@@ -62,13 +62,13 @@ iron:dynamic-template@1.0.12
 iron:layout@1.0.12
 iron:location@1.0.11
 iron:middleware-stack@1.1.0
-iron:router@1.0.12
+iron:router@1.0.13
 iron:url@1.0.11
 jparker:crypto-core@0.1.0
 jparker:crypto-md5@0.1.1
 jparker:gravatar@0.4.1
 jquery@1.11.8
-lai:collection-extensions@0.2.1_1
+lai:collection-extensions@0.1.4
 launch-screen@1.0.11
 livedata@1.0.18
 localstorage@1.0.9
@@ -90,7 +90,7 @@ momentjs:moment@2.13.1
 mongo@1.1.7
 mongo-id@1.0.4
 mrt:moment@2.8.1
-npm-bcrypt@0.8.5
+npm-bcrypt@0.8.6_1
 npm-mongo@1.4.43
 oauth@1.1.10
 oauth2@1.1.9
@@ -108,7 +108,7 @@ retry@1.0.7
 reywood:publish-composite@1.4.2
 routepolicy@1.0.10
 rubaxa:sortable@1.3.0
-sergeyt:typeahead@0.11.1_8
+sergeyt:typeahead@0.11.1_9
 service-configuration@1.0.9
 session@1.1.5
 sha@1.0.7

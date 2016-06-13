@@ -13,6 +13,7 @@ Home Meteor App
 git clone git@github.com:ctagroup/home-app.git
 cd home-app
 git checkout meteor
+meteor npm install
 meteor run
 ```
 
@@ -59,6 +60,7 @@ Meteor Up is used to deploy this app. Ref: https://github.com/arunoda/meteor-up/
 	- Email utility for meteor
 - service-configuration : https://atmospherejs.com/meteor/service-configuration
 	- OAuth Utility for service configurations
+	- Manage the configuration for third-party services like Google, Facebook Oauth login
 - accounts-google : https://atmospherejs.com/meteor/accounts-google
 	- OAuth Login for Google
 - accounts-facebook : https://atmospherejs.com/meteor/accounts-facebook
@@ -92,8 +94,6 @@ Meteor Up is used to deploy this app. Ref: https://github.com/arunoda/meteor-up/
 	- database support for meteor
 - mrt:moment
 	- moment.js library for time format & conversion
-- service-configuration
-	- Manage the configuration for third-party services like Google, Facebook Oauth login
 - session
 	- Session variable
 - standard-minifiers
