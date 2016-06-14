@@ -14,7 +14,7 @@ Template.clientSearch.events({
 			if(clientRecord){
 				var clientID = clientRecord._id;
 				console.log(clientID);
-				Router.go('clientProfileView', {_id: clientID});
+				Router.go('viewClient', {_id: clientID});
 			}
 			else{
 				console.log("The entered name is not in the local MongoDB");

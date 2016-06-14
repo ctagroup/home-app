@@ -35,7 +35,7 @@ Template.createClient.events({
                 console.log(error);
             } else {
                 clientInfoId = result;
-                Router.go('clientProfileView', {_id:clientInfoId});
+                Router.go('viewClient', {_id:clientInfoId});
                 console.log(result);
             }
         } );
@@ -48,7 +48,7 @@ Template.createClient.clientInfoList = function(evt,tmpl){
     var clientInfoCollection = adminCollectionObject("clientInfo");
     return clientInfoCollection.find({}).fetch();
 }
-Template.clientProfileView.events({
+Template.viewClient.events({
     'click .edit':function(evt,tmpl){
         Router.go('clientProfileEdit', {_id:clientInfoId});
     }
