@@ -29,6 +29,12 @@ Template.searchClient.helpers(
 		},
 		getRecentClients: function () {
 			return Session.get("recentClients") || [];
+		},
+		alertMessages: function () {
+			var params = Router.current().params;
+			if ( params && params.query && params.query.deleted ) {
+				return "<p class='notice bg-success text-success'>Client is removed successfully.</p>";
+			}
 		}
 	}
 );
