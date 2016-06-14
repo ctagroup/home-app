@@ -133,7 +133,7 @@ HMISAPI = {
 			return [];
 		}
 
-		var clientsReponse = response.Clients.items;
+		var clientsReponse = response.searchResults.items;
 		for (client in clientsReponse) {
 			clients.push(clientsReponse[client]);
 		}
