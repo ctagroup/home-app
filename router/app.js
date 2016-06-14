@@ -148,6 +148,36 @@ Router.route( '/app/clients/', {
 	controller: 'HomeAppController',
 } );
 
+Router.route('/app/clients/new/',{
+	name:'createClient',
+	template: 'createClient',
+	controller: 'HomeAppController',
+});
+
+Router.route('/app/clients/:_id/',{
+	name: 'viewClient',
+	template: 'viewClient',
+	controller: 'HomeAppController',
+	data: function(){
+		var clientInfoID = this.params._id;
+		var clientInfoCollection = adminCollectionObject("clientInfo");
+		return clientInfoCollection.findOne({_id:clientInfoID});
+
+	}
+});
+
+Router.route('/app/client/single-client/:_id/edit',{
+	name:'clientProfileEdit',
+	template: 'clientProfileEdit',
+	controller: 'HomeAppController',
+	data: function(){
+		var clientInfoID = this.params._id;
+		var clientInfoCollection = adminCollectionObject("clientInfo");
+		return clientInfoCollection.findOne({_id:clientInfoID});
+
+	}
+})
+
 Router.route('/app/LogSurvey/',{
 	name:'LogSurvey',
 	template: 'LogSurvey',
@@ -176,33 +206,6 @@ Router.route('/app/LogSurveyView/:_id',{
 
 	}
 });
-Router.route('/app/clients/new/',{
-	name:'createClient',
-	template: 'createClient',
-	controller: 'HomeAppController',
-});
-Router.route('/app/client/single-client/:_id/view',{
-	name: 'clientProfileView',
-	template: 'clientProfileView',
-	controller: 'HomeAppController',
-	data: function(){
-		var clientInfoID = this.params._id;
-		var clientInfoCollection = adminCollectionObject("clientInfo");
-		return clientInfoCollection.findOne({_id:clientInfoID});
-
-	}
-});
- Router.route('/app/client/single-client/:_id/edit',{
-	name:'clientProfileEdit',
-	template: 'clientProfileEdit',
-	controller: 'HomeAppController',
-	data: function(){
-		var clientInfoID = this.params._id;
-		var clientInfoCollection = adminCollectionObject("clientInfo");
-		return clientInfoCollection.findOne({_id:clientInfoID});
-
-	}
-})
 /**
  * Survey status Routes
  */
