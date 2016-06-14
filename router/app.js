@@ -142,19 +142,17 @@ Router.route('/not-enough-permission', {
 /**
  * Client Routes
  */
-Router.route( '/app/clients/', {
+Router.route( '/app/clients', {
 	name: 'searchClient',
 	template: 'searchClient',
 	controller: 'HomeAppController',
 } );
-
-Router.route('/app/clients/new/',{
+Router.route('/app/clients/new',{
 	name:'createClient',
 	template: 'createClient',
 	controller: 'HomeAppController',
 });
-
-Router.route('/app/clients/:_id/',{
+Router.route('/app/clients/:_id',{
 	name: 'viewClient',
 	template: 'viewClient',
 	controller: 'HomeAppController',
@@ -165,7 +163,6 @@ Router.route('/app/clients/:_id/',{
 
 	}
 });
-
 Router.onBeforeAction(function () {
 	var recentClients = Session.get("recentClients") || [];
 	var clientInfoCollection = adminCollectionObject("clientInfo");
@@ -177,10 +174,11 @@ Router.onBeforeAction(function () {
 		});
 
 		if ( recentClientsIDs.indexOf(this.params._id) == -1 ) {
+			var route = Router.routes["viewClient"];
 			var data = {
 				_id: this.params._id,
 				name: clientInfo.firstName.trim() + ' ' + clientInfo.lastName.trim(),
-				url: "/app/clients/"+this.params._id
+				url: route.path({_id: this.params._id})
 			};
 			recentClients.push(data);
 			recentClients = $.unique(recentClients);
@@ -191,13 +189,10 @@ Router.onBeforeAction(function () {
 	this.next();
 }, {
 	only: ['viewClient']
-	// or except: ['routeOne', 'routeTwo']
 });
-
-
-Router.route('/app/client/single-client/:_id/edit',{
-	name:'clientProfileEdit',
-	template: 'clientProfileEdit',
+Router.route('/app/clients/:_id/edit',{
+	name:'editClient',
+	template: 'editClient',
 	controller: 'HomeAppController',
 	data: function(){
 		var clientInfoID = this.params._id;

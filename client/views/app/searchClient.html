@@ -8,6 +8,7 @@
 			<div class="row">
 				<div class="col-sm-12 col-md-12 col-lg-12 my-center-block">
 					<h1>Client Search</h1>
+					<a href="{{pathFor 'createClient'}}" class="btn btn-primary pull-right">New Client</a>
 					<form>
 						<div class="form-group">
 							<input type="text" id="search-client-keyword"
@@ -17,12 +18,14 @@
 							       placeholder="Search for clients ..." />
 						</div>
 					</form>
-					<h4>Recent Clients</h4>
-					<ul>
-						{{#each getRecentClients}}
-							<li><a href="{{this.url}}">{{this.name}}</a></li>
-						{{/each}}
-					</ul>
+					{{#if getRecentClients}}
+						<h4>Recent Clients</h4>
+						<ul>
+							{{#each getRecentClients}}
+								<li><a href="{{this.url}}">{{this.name}}</a></li>
+							{{/each}}
+						</ul>
+					{{/if}}
 				</div>
 			</div>
 
