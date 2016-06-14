@@ -23,7 +23,7 @@ Template.clientSearch.helpers(
 			if ( dataObject.clientNotFound ) {
 				console.log("create new client with "+dataObject.query.trim());
 				$('#client-search-keyword').val(dataObject.query).change();
-				Router.go('createClient', { query : 'firstName='+dataObject.query } );
+				Router.go('createClient', {}, { query : 'firstName='+dataObject.query } );
 			} else {
 				console.log("existing client");
 				console.log(dataObject);
