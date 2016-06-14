@@ -15,26 +15,27 @@ Meteor.methods(
 
 			var hmisClients = HMISAPI.searchClient(query, options.limit);
 
-			var localClients = clientInfo.find(
-				{
-					$or: [
-						{
-							firstName : {
-								$regex: new RegExp( query, "i" )
-							}
-						}, {
-							lastName : {
-								$regex: new RegExp( query, "i" )
+			var localClients = clientInfo.aggregate(
+				[
+					{
+						$project: {
+							firstName: "$firstName",
+							lastName: "$lastName",
+							fullName: {
+								$concat: [ "$firstName", " ", "$lastName" ]
 							}
 						}
-					]
-				}, {
-					limit: options.limit,
-					sort: {
-						firstName: 1
+					}, {
+						$match: {
+							fullName: new RegExp(query, "i")
+						}
+					}, {
+						$sort: {
+							firstName: 1
+						}
 					}
-				}
-			).fetch();
+				]
+			);
 
 			var mergedClients = [];
 
