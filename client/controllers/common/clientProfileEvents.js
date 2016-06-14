@@ -92,7 +92,7 @@ Template.editClient.events({
                 console.log(error);
             } else {
                 console.log(result);
-                alert("Client profile is deleted");
+	            Router.go("searchClient", {}, { query: "deleted=1" } );
             }
         } );
 
