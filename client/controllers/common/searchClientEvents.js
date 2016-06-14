@@ -1,7 +1,7 @@
 /**
  * Created by kavyagautam on 5/20/16.
  */
-Template.clientSearch.events({
+Template.searchClient.events({
 	'click .search-btn': function(event, template){
 		event.preventDefault();
 		var fullname = template.find('input.typeahead.tt-input').value;
@@ -22,4 +22,3 @@ Template.clientSearch.events({
 		}
 	}
 });
-

@@ -3,17 +3,6 @@
  */
 Template.LogSurvey.helpers(
 	{
-		clientSearch: function ( query, sync, callback ) {
-			Meteor.call('clientSearch', query, {}, function(err, res) {
-				if (err) {
-					console.log(err);
-					return;
-				}
-				callback( res.map( function( v ) {
-					return { value: v.name };
-				} ) );
-			});
-		},
 		getCreatedSurvey:function () {
 			var surveyCollections=adminCollectionObject('surveys');
 			return surveyCollections.find({'created':true}).fetch();

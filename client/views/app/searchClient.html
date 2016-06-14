@@ -1,4 +1,4 @@
-<template name="clientSearch">
+<template name="searchClient">
 
 	<div id="content">
 		{{> appNav}}
@@ -10,8 +10,8 @@
 					<h1>Client Search</h1>
 					<form>
 						<div class="form-group">
-							<input type="text" name="client_search_keyword" id="client-search-keyword"
-							       class="form-control typeahead input-lg" data-source="clientSearch"
+							<input type="text" id="search-client-keyword"
+							       class="form-control typeahead input-lg" data-source="searchClient"
 							       data-select="clientSelected" data-highlight="true"
 							       autocomplete="off" spellcheck="off"
 							       placeholder="Search for clients ..." />

@@ -1,14 +1,14 @@
 /**
  * Created by udit on 07/04/16.
  */
-Template.clientSearch.onRendered( function() {
+Template.searchClient.onRendered( function() {
 	Meteor.typeahead.inject();
 } );
 
-Template.clientSearch.helpers(
+Template.searchClient.helpers(
 	{
-		clientSearch: function ( query, sync, callback ) {
-			Meteor.call('clientSearch', query, {}, function(err, res) {
+		searchClient: function ( query, sync, callback ) {
+			Meteor.call('searchClient', query, {}, function(err, res) {
 				if (err) {
 					console.log(err);
 					return;
@@ -22,7 +22,7 @@ Template.clientSearch.helpers(
 		clientSelected: function (event, dataObject) {
 			if ( dataObject.clientNotFound ) {
 				console.log("create new client with "+dataObject.query.trim());
-				$('#client-search-keyword').val(dataObject.query).change();
+				$('#search-client-keyword').val(dataObject.query).change();
 				Router.go('createClient', {}, { query : 'firstName='+dataObject.query } );
 			} else {
 				console.log("existing client");

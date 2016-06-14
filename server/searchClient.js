@@ -3,7 +3,7 @@
  */
 Meteor.methods(
 	{
-		clientSearch: function ( query, options ) {
+		searchClient: function ( query, options ) {
 			options = options || {};
 
 			// guard against client-side DOS: hard limit to 50
