@@ -113,7 +113,7 @@ HMISAPI = {
 
 		try {
 			var response = HTTP.get(
-				config.hmisAPIEndpoints.clientBaseUrl + config.hmisAPIEndpoints.clientSearch +
+				config.hmisAPIEndpoints.clientBaseUrl + config.hmisAPIEndpoints.searchClient +
 				"?"+querystring.stringify(params), {
 					headers: {
 						"X-HMIS-TrustedApp-Id": config.appId,

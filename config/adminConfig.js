@@ -291,6 +291,6 @@ AdminConfig = {
 		userServiceBaseUrl: "http://www.hmislynk.com/hmis-user-service/rest",
 		basicInfo: "/accounts/{{username}}/basicinfo",
 		selfBasicInfo: "/accounts/self/basicinfo",
-		clientSearch: "/search/client"
+		searchClient: "/search/client"
 	}
 };
