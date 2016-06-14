@@ -1,10 +1,8 @@
 /**
  * Created by Kavi on 4/5/16.
  */
-ClientProfileSchema = new Meteor.Collection('clientInfoSchema');
-var clientInfoId;
-Template.createClient.events({
 
+Template.createClient.events({
 
     'click .save':function(evt,tmpl){
 
@@ -34,26 +32,26 @@ Template.createClient.events({
             if ( error ) {
                 console.log(error);
             } else {
-                clientInfoId = result;
+                var clientInfoId = result;
+	            console.log(result);
                 Router.go('viewClient', {_id:clientInfoId});
-                console.log(result);
             }
         } );
 
     }
 
 });
-Template.createClient.clientInfoList = function(evt,tmpl){
 
-    var clientInfoCollection = adminCollectionObject("clientInfo");
-    return clientInfoCollection.find({}).fetch();
-}
 Template.viewClient.events({
     'click .edit':function(evt,tmpl){
-        Router.go( 'clientProfileEdit', { _id: tmpl.data._id } );
-    }
+        Router.go( 'editClient', { _id: tmpl.data._id } );
+    },
+    'click .back':function(evt,tmpl){
+        Router.go( 'searchClient' );
+    },
 });
-Template.clientProfileEdit.events({
+
+Template.editClient.events({
 
     'click .update':function(evt,tmpl){
 
@@ -78,18 +76,18 @@ Template.clientProfileEdit.events({
         var loc = tmpl.find('.destination_category').value;
         var shelter = tmpl.find('.timeOnStreets_category').value;
 
-        Meteor.call("updateClient", clientInfoId, first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteran_status,disabling_conditions,residence_prior,entry_date,exit_date,destination,personal_id,housing_id,relationship,loc,shelter,function ( error, result ) {
+        Meteor.call("updateClient", tmpl.data._id, first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteran_status,disabling_conditions,residence_prior,entry_date,exit_date,destination,personal_id,housing_id,relationship,loc,shelter,function ( error, result ) {
             if ( error ) {
                 console.log(error);
             } else {
                 console.log(result);
-                alert("Client profile has been updated");
+                Router.go("viewClient", { _id: tmpl.data._id }, { query: "updated=1" } );
             }
         } );
     },
-    'click .delete':function(){
+    'click .delete':function(evt, tmpl){
 
-        Meteor.call("removeClient", clientInfoId, function ( error, result ) {
+        Meteor.call("removeClient", tmpl.data._id, function ( error, result ) {
             if ( error ) {
                 console.log(error);
             } else {
@@ -98,7 +96,10 @@ Template.clientProfileEdit.events({
             }
         } );
 
-    }
+    },
+	'click .back':function(evt,tmpl){
+		Router.go( 'viewClient', { _id: tmpl.data._id } );
+	},
 
 })
 

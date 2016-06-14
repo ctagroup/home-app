@@ -2,10 +2,12 @@
 	<div id="viewClient_content">
 		{{> appNav}}
 		<div class="container">
+			<h3 class="page-header">{{firstName}} {{lastName}}</h3>
 			<div class="row">
 				<!-- edit form column -->
 				<div class="col-md-8 col-sm-6 col-xs-12 personal-info">
-					<h3>Personal info</h3>
+
+					{{{alertMessages}}}
 
 					<form class="form-horizontal" role="form">
 						<div class="form-group">
@@ -128,7 +130,8 @@
 
 						<div class="form-group">
 							<label class="col-lg-8 control-label"></label><div class="col-md-8">
-							<input class="btn btn-primary edit" value="Edit" type="button">
+							<input class="btn btn-warning edit" value="Edit" type="button">
+							<input class="btn btn-default back" value="Back" type="button">
 							<span></span></div></div>
 
 					</form></div></div> </div></div>
