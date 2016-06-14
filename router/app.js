@@ -171,19 +171,21 @@ Router.onBeforeAction(function () {
 	var clientInfoCollection = adminCollectionObject("clientInfo");
 	var clientInfo = clientInfoCollection.findOne({_id:this.params._id});
 
-	var recentClientsIDs = recentClients.map(function (client) {
-		return client._id;
-	});
+	if ( clientInfo && clientInfo._id ) {
+		var recentClientsIDs = recentClients.map(function (client) {
+			return client._id;
+		});
 
-	if ( recentClientsIDs.indexOf(this.params._id) == -1 ) {
-		var data = {
-			_id: this.params._id,
-			name: clientInfo.firstName.trim() + ' ' + clientInfo.lastName.trim(),
-			url: "/app/clients/"+this.params._id
-		};
-		recentClients.push(data);
-		recentClients = $.unique(recentClients);
-		Session.set("recentClients", recentClients);
+		if ( recentClientsIDs.indexOf(this.params._id) == -1 ) {
+			var data = {
+				_id: this.params._id,
+				name: clientInfo.firstName.trim() + ' ' + clientInfo.lastName.trim(),
+				url: "/app/clients/"+this.params._id
+			};
+			recentClients.push(data);
+			recentClients = $.unique(recentClients);
+			Session.set("recentClients", recentClients);
+		}
 	}
 
 	this.next();
