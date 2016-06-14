@@ -17,6 +17,12 @@
 							       placeholder="Search for clients ..." />
 						</div>
 					</form>
+					<h4>Recent Clients</h4>
+					<ul>
+						{{#each getRecentClients}}
+							<li><a href="{{this.url}}">{{this.name}}</a></li>
+						{{/each}}
+					</ul>
 				</div>
 			</div>
 
