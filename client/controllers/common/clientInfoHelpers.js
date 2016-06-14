@@ -8,6 +8,12 @@ Template.registerHelper('formatDate', function(date) {
 });
 Template.createClient.helpers(
     {
+	    getSearchTerm: function () {
+		    if ( Router.current().params.query && Router.current().params.query.firstName ) {
+				return Router.current().params.query.firstName;
+		    }
+		    return "";
+	    },
         clientInfoList: function() {
             var clientInfoCollection = adminCollectionObject("clientInfo");
             return clientInfoCollection.findOne({_id:Router.current().params._id}).fetch();
