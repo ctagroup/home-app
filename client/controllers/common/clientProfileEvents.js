@@ -50,7 +50,7 @@ Template.createClient.clientInfoList = function(evt,tmpl){
 }
 Template.viewClient.events({
     'click .edit':function(evt,tmpl){
-        Router.go('clientProfileEdit', {_id:clientInfoId});
+        Router.go( 'clientProfileEdit', { _id: tmpl.data._id } );
     }
 });
 Template.clientProfileEdit.events({
