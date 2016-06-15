@@ -52,8 +52,6 @@ Meteor Up is used to deploy this app. Ref: https://github.com/arunoda/meteor-up/
 	- Utility component to detect active menu item in navigation
 - useraccounts:bootstrap : https://atmospherejs.com/useraccounts/bootstrap
 	- This provides User login UI for accounts component
-- accounts-password : https://atmospherejs.com/meteor/accounts-password
-	- Provides password based login
 - useraccounts:iron-routing : https://atmospherejs.com/useraccounts/iron-routing
 	- Provides custom routes for User login related templates
 - email : https://atmospherejs.com/meteor/email
