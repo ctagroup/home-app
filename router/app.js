@@ -70,30 +70,6 @@ Router.route( '/home', {
 /**
  * Accounts Routes
  */
-AccountsTemplates.configureRoute( 'changePwd', {
-	name: 'changePwd',
-	path: '/change-password',
-	template: 'login',
-	controller: 'HomeAppController'
-} );
-AccountsTemplates.configureRoute( 'enrollAccount', {
-	name: 'enrollAccount',
-	path: '/enroll-account',
-	template: 'login',
-	controller: 'HomeAppController'
-} );
-AccountsTemplates.configureRoute( 'forgotPwd', {
-	name: 'forgotPwd',
-	path: '/forgot-password',
-	template: 'login',
-	controller: 'HomeAppController'
-} );
-AccountsTemplates.configureRoute( 'resetPwd', {
-	name: 'resetPwd',
-	path: '/reset-password',
-	template: 'login',
-	controller: 'HomeAppController'
-} );
 AccountsTemplates.configureRoute( 'signIn', {
 	name: 'signIn',
 	path: '/login',
@@ -104,18 +80,6 @@ AccountsTemplates.configureRoute( 'signIn', {
 AccountsTemplates.configureRoute( 'signUp', {
 	name: 'signUp',
 	path: '/register',
-	template: 'login',
-	controller: 'HomeAppController'
-} );
-AccountsTemplates.configureRoute( 'verifyEmail', {
-	name: 'verifyEmail',
-	path: '/verify-email',
-	template: 'login',
-	controller: 'HomeAppController'
-} );
-AccountsTemplates.configureRoute( 'resendVerificationEmail', {
-	name: 'resendVerificationEmail',
-	path: '/send-again',
 	template: 'login',
 	controller: 'HomeAppController'
 } );
