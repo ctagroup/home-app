@@ -22,7 +22,6 @@ twbs:bootstrap
 fourseven:scss
 zimme:active-route
 useraccounts:bootstrap
-accounts-password
 useraccounts:iron-routing
 email
 accounts-google
