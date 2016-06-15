@@ -184,11 +184,14 @@ Router.onBeforeAction(function () {
 			recentClients = $.unique(recentClients);
 			Session.set("recentClients", recentClients);
 		}
+	} else {
+		this.render('clientNotFound');
+		return;
 	}
 
 	this.next();
 }, {
-	only: ['viewClient']
+	only: ['viewClient', 'editClient']
 });
 Router.route('/app/clients/:_id/edit',{
 	name:'editClient',
