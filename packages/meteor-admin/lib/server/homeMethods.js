@@ -260,8 +260,7 @@ Meteor.methods(
 			var personalId = HMISAPI.createClient(client);
 
 			if ( personalId ) {
-				clientInfoCollection.update({$set:{personalId:personalId}},{_id:client._id});
-
+				clientInfoCollection.update({_id:client._id}, {$set:{personalId:personalId}});
 				return true;
 			} else {
 				return false;

@@ -92,19 +92,19 @@ Template.clientForm.helpers(
 		getDefaultRace: function () {
 			return [
 				{
-					value: 'American Indian or Alaska Native',
+					value: '1',
 					description: 'American Indian or Alaska Native'
 				}, {
-					value: 'Asian',
+					value: '2',
 					description: 'Asian'
 				}, {
-					value: 'Black or African American',
+					value: '3',
 					description: 'Black or African American'
 				}, {
-					value: 'Native Hawaiian or Other Pacific Islander',
+					value: '4',
 					description: 'American Indian or Alaska Native'
 				}, {
-					value: 'White',
+					value: '5',
 					description: 'White'
 				}
 			];
@@ -115,10 +115,10 @@ Template.clientForm.helpers(
 		getDefaultEthnicity: function () {
 			return [
 				{
-					value: 'Non-Hispanic/Non-Latino',
+					value: '0',
 					description: 'Non-Hispanic/Non-Latino'
 				}, {
-					value: 'Hispanic/Latino',
+					value: '1',
 					description: 'Hispanic/Latino'
 				}
 			];
@@ -129,19 +129,19 @@ Template.clientForm.helpers(
 		getDefaultGender:function () {
 			return [
 				{
-					value: 'Female',
+					value: '0',
 					description: 'Female'
 				}, {
-					value: 'Male',
+					value: '1',
 					description: 'Male'
 				}, {
-					value: 'Transgender male to female',
+					value: '2',
 					description: 'Transgender male to female'
 				}, {
-					value: 'Transgender female to male',
+					value: '3',
 					description: 'Transgender female to male'
 				}, {
-					value: 'Other',
+					value: '4',
 					description: 'Other'
 				}
 			];
@@ -152,11 +152,11 @@ Template.clientForm.helpers(
 		getDefaultVeteranStatus: function () {
 			return [
 				{
-					value: 'Yes',
-					description: 'Yes'
-				}, {
-					value: 'No',
+					value: '0',
 					description: 'No'
+				}, {
+					value: '1',
+					description: 'Yes'
 				}
 			];
 		},
@@ -166,11 +166,11 @@ Template.clientForm.helpers(
 		getDefaultDisablingCondition: function () {
 			return [
 				{
-					value: 'Yes',
-					description: 'Yes'
-				}, {
-					value: 'No',
+					value: '0',
 					description: 'No'
+				}, {
+					value: '1',
+					description: 'Yes'
 				}
 			];
 		},
@@ -180,64 +180,67 @@ Template.clientForm.helpers(
 		getDefaultResidencePrior: function () {
 			return [
 				{
-					value: 'Emergency shelter, including hotel or motel paid for with emergency shelter',
+					value: '1',
 					description: 'Emergency shelter, including hotel or motel paid for with emergency shelter'
 				}, {
-					value: 'Foster care home or foster care group home',
+					value: '15',
 					description: 'Foster care home or foster care group home'
 				}, {
-					value: 'Hospital or other residential non-psychiatric medical facility',
+					value: '6',
 					description: 'Hospital or other residential non-psychiatric medical facility'
 				}, {
-					value: 'Hotel or motel paid for without emergency shelter voucher',
+					value: '14',
 					description: 'Hotel or motel paid for without emergency shelter voucher'
 				}, {
-					value: 'Jail, prison or juvenile detention facility',
+					value: '7',
 					description: 'Jail, prison or juvenile detention facility'
 				}, {
-					value: 'Long-term care facility or nursing home',
+					value: '24',
 					description: 'Long-term care facility or nursing home'
 				}, {
-					value: 'Owned by client, no ongoing housing subsidy',
+					value: '23',
 					description: 'Owned by client, no ongoing housing subsidy'
 				}, {
-					value: 'Owned by client, with ongoing housing subsidy',
+					value: '21',
 					description: 'Owned by client, with ongoing housing subsidy'
 				}, {
-					value: 'Permanent housing for formerly homeless persons',
+					value: '3',
 					description: 'Permanent housing for formerly homeless persons'
 				}, {
-					value: 'Place not meant for habitation',
+					value: '16',
 					description: 'Place not meant for habitation'
 				}, {
-					value: 'Psychiatric hospital or other psychiatric facility',
+					value: '4',
 					description: 'Psychiatric hospital or other psychiatric facility'
 				}, {
-					value: 'Rental by client, no ongoing housing subsidy',
+					value: '22',
 					description: 'Rental by client, no ongoing housing subsidy'
 				}, {
-					value: 'Rental by client, with VASH subsidy',
+					value: '19',
 					description: 'Rental by client, with VASH subsidy'
 				}, {
-					value: 'Rental by client, with GPD TIP subsidy',
+					value: '25',
 					description: 'Rental by client, with GPD TIP subsidy'
 				}, {
-					value: 'Rental by client, with other ongoing housing subsidy',
+					value: '20',
 					description: 'Rental by client, with other ongoing housing subsidy'
 				}, {
-					value: 'Residential project or halfway house with no homeless criteria',
+					value: '26',
 					description: 'Residential project or halfway house with no homeless criteria'
 				}, {
-					value: 'Safe Haven',
+					value: '18',
 					description: 'Safe Haven'
 				}, {
-					value: 'Staying or living in a family member’s room, apartment or house',
+					value: '12',
 					description: 'Staying or living in a family member’s room, apartment or house'
 				}, {
-					value: 'Substance abuse treatment facility or detox center',
+					value: '13',
+					description: 'Staying or living in a friend’s room, apartment or house'
+				}, {
+					value: '5',
 					description: 'Substance abuse treatment facility or detox center'
 				}, {
-					value: 'Transitional housing for homeless persons (including homeless youth)',
+					value: '2',
 					description: 'Transitional housing for homeless persons (including homeless youth)'
 				}, {
 					value: 'Other',
@@ -265,85 +268,85 @@ Template.clientForm.helpers(
 		getDefaultDestination:function () {
 			return [
 				{
-					value: 'Emergency shelter, including hotel or motel paid for with emergency shelter',
+					value: '24',
+					description: 'Deceased'
+				}, {
+					value: '1',
 					description: 'Emergency shelter, including hotel or motel paid for with emergency shelter'
 				}, {
-					value: 'Foster care home or foster care group home',
+					value: '15',
 					description: 'Foster care home or foster care group home'
 				}, {
-					value: 'Hospital or other residential non-psychiatric medical facility',
+					value: '6',
 					description: 'Hospital or other residential non-psychiatric medical facility'
 				}, {
-					value: 'Hotel or motel paid for without emergency shelter voucher',
+					value: '14',
 					description: 'Hotel or motel paid for without emergency shelter voucher'
 				}, {
-					value: 'Jail, prison or juvenile detention facility',
+					value: '7',
 					description: 'Jail, prison or juvenile detention facility'
 				}, {
-					value: 'Long-term care facility or nursing home',
+					value: '25',
 					description: 'Long-term care facility or nursing home'
 				}, {
-					value: 'Moved from one HOPWA funded project to HOPWA PH',
+					value: '26',
 					description: 'Moved from one HOPWA funded project to HOPWA PH'
 				}, {
-					value: 'Moved from one HOPWA funded project to HOPWA TH',
+					value: '27',
 					description: 'Moved from one HOPWA funded project to HOPWA TH'
 				}, {
-					value: 'Owned by client, no ongoing housing subsidy',
+					value: '11',
 					description: 'Owned by client, no ongoing housing subsidy'
 				}, {
-					value: 'Owned by client, with ongoing housing subsidy',
+					value: '21',
 					description: 'Owned by client, with ongoing housing subsidy'
 				}, {
-					value: 'Permanent housing for formerly homeless persons',
+					value: '3',
 					description: 'Permanent housing for formerly homeless persons'
 				}, {
-					value: 'Place not meant for habitation',
+					value: '16',
 					description: 'Place not meant for habitation'
 				}, {
-					value: 'Psychiatric hospital or other psychiatric facility',
+					value: '4',
 					description: 'Psychiatric hospital or other psychiatric facility'
 				}, {
-					value: 'Rental by client, no ongoing housing subsidy',
+					value: '10',
 					description: 'Rental by client, no ongoing housing subsidy'
 				}, {
-					value: 'Rental by client, with VASH subsidy',
+					value: '19',
 					description: 'Rental by client, with VASH subsidy'
 				}, {
-					value: 'Rental by client, with GPD TIP subsidy',
+					value: '28',
 					description: 'Rental by client, with GPD TIP subsidy'
 				}, {
-					value: 'Rental by client, with other ongoing housing subsidy',
+					value: '20',
 					description: 'Rental by client, with other ongoing housing subsidy'
 				}, {
-					value: 'Residential project or halfway house with no homeless criteria',
+					value: '29',
 					description: 'Residential project or halfway house with no homeless criteria'
 				}, {
-					value: 'Safe Haven',
+					value: '18',
 					description: 'Safe Haven'
 				}, {
-					value: 'Staying or living with family, permanent tenure',
+					value: '22',
 					description: 'Staying or living with family, permanent tenure'
 				}, {
-					value: 'Staying or living with family, temporary tenure',
+					value: '12',
 					description: 'Staying or living with family, temporary tenure'
 				}, {
-					value: 'Staying or living with friends, permanent tenure',
+					value: '23',
 					description: 'Staying or living with friends, permanent tenure'
 				}, {
-					value: 'Staying or living with friends, temporary tenure',
+					value: '13',
 					description: 'Staying or living with friends, temporary tenure'
 				}, {
-					value: 'Staying or living in a family member’s room, apartment or house',
-					description: 'Staying or living in a family member’s room, apartment or house'
-				}, {
-					value: 'Substance abuse treatment facility or detox center',
+					value: '5',
 					description: 'Substance abuse treatment facility or detox center'
 				}, {
-					value: 'Transitional housing for homeless persons (including homeless youth)',
+					value: '2',
 					description: 'Transitional housing for homeless persons (including homeless youth)'
 				}, {
-					value: 'Other',
+					value: '17',
 					description: 'Other'
 				}
 			];
@@ -354,19 +357,19 @@ Template.clientForm.helpers(
 		getDefaultRelationshipToHoh:function () {
 			return [
 				{
-					value: 'Self',
+					value: '1',
 					description: 'Self'
 				}, {
-					value: 'Head of household’s child',
+					value: '2',
 					description: 'Head of household’s child'
 				}, {
-					value: 'Head of household’s spouse or partner',
+					value: '3',
 					description: 'Head of household’s spouse or partner'
 				}, {
-					value: 'Head of household’s other relation member (other relation to head of household)',
+					value: '4',
 					description: 'Head of household’s other relation member (other relation to head of household)'
 				}, {
-					value: 'Other: non-relation member',
+					value: '5',
 					description: 'Other: non-relation member'
 				}
 			];
@@ -377,11 +380,11 @@ Template.clientForm.helpers(
 		getDefaultTimesHomeless:function () {
 			return [
 				{
-					value: 'Yes',
-					description: 'Yes'
-				}, {
-					value: 'No',
+					value: '0',
 					description: 'No'
+				}, {
+					value: '1',
+					description: 'Yes'
 				}
 			];
 		},
