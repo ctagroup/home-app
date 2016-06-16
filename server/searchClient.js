@@ -20,14 +20,15 @@ Meteor.methods(
 					{
 						$project: {
 							firstName: "$firstName",
+							middleName: "$middleName",
 							lastName: "$lastName",
 							fullName: {
-								$concat: [ "$firstName", " ", "$lastName" ]
+								$concat: [ "$firstName", " ", "$middleName", " ", "$lastName" ]
 							}
 						}
 					}, {
 						$match: {
-							fullName: new RegExp(query, "i")
+							fullName: new RegExp(query.split(' ').join('(.*)'), "i")
 						}
 					}, {
 						$sort: {
