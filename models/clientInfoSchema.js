@@ -25,7 +25,7 @@ Schemas.clientInfo = new SimpleSchema(
             max: 50
         },
         ssn: {
-            type: Number
+            type: String
         },
         dob: {
             type: Date
