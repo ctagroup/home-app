@@ -64,31 +64,31 @@
 						<div class="form-group">
 							<label class="col-lg-3 control-label">Veteran Status:</label>
 							<div class="col-lg-8">
-								<label class="control-label" value={{veteran_status}}>{{veteran_status}} </label>
+								<label class="control-label" value={{veteranStatus}}>{{veteranStatus}} </label>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-lg-3 control-label">Disabling Condition:</label>
 							<div class="col-lg-8">
-								<label class="control-label" value={{disabling_conditions}}>{{disabling_conditions}} </label>
+								<label class="control-label" value={{disablingConditions}}>{{disablingConditions}} </label>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-lg-3 control-label">Residence Prior to Project Entry:</label>
 							<div class="col-lg-8">
-								<label class="control-label" value={{residence_prior}}>{{residence_prior}}</label>
+								<label class="control-label" value={{residencePrior}}>{{residencePrior}}</label>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-lg-3 control-label">Project Entry Date:</label>
 							<div class="col-lg-8">
-								<label class="control-label" value={{entry_date}}>{{entry_date}} </label>
+								<label class="control-label" value={{entryDate}}>{{entryDate}} </label>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-lg-3 control-label">Project Exit Date:</label>
 							<div class="col-lg-8">
-								<label class="control-label" value={{exit_date}}>{{exit_date}} </label>
+								<label class="control-label" value={{entryDate}}>{{entryDate}} </label>
 							</div>
 						</div>
 						<div class="form-group">
@@ -100,13 +100,13 @@
 						<div class="form-group">
 							<label class="col-lg-3 control-label">Personal ID:</label>
 							<div class="col-lg-8">
-								<label class="control-label" value={{personal_id}}>{{personal_id}} </label>
+								<label class="control-label" value={{personalId}}>{{personalId}} </label>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-lg-3 control-label">Housing ID:</label>
+							<label class="col-lg-3 control-label">Household ID:</label>
 							<div class="col-lg-8">
-								<label class="control-label" value={{housing_id}}>{{housing_id}} </label>
+								<label class="control-label" value={{householdId}}>{{householdId}} </label>
 							</div>
 						</div>
 						<div class="form-group">
@@ -129,12 +129,21 @@
 						</div>
 
 						<div class="form-group">
-							<label class="col-lg-8 control-label"></label><div class="col-md-8">
-							<input class="btn btn-warning edit" value="Edit" type="button">
-							<input class="btn btn-default back" value="Back" type="button">
-							<span></span></div></div>
+							<div class="col-md-8">
+								<input class="btn btn-default back" value="Back" type="button">
+								{{#unless hmis_client_id}}
+									<input class="btn btn-success add-to-hmis" value="Add to HMIS" type="button">
+								{{/unless}}
+								<input class="btn btn-warning edit" value="Edit" type="button">
+							</div>
+						</div>
 
-					</form></div></div> </div></div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	{{> footer}}
 
 </template>

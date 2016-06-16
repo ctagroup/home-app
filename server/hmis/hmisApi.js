@@ -96,6 +96,59 @@ HMISAPI = {
 		}
 		return accessToken;
 	},
+	createClient: function ( client ) {
+		var config = ServiceConfiguration.configurations.findOne({service: 'HMIS'});
+		if (!config)
+			throw new ServiceConfiguration.ConfigError();
+
+		var accessToken = this.getCurrentAccessToken();
+
+		var body = {
+			"client": {
+				"firstName": client.firstName,
+				"middleName": client.middleName,
+				"lastName": client.lastName,
+				"nameSuffix": client.suffix,
+				"nameDataQuality": 1,
+				"ssn": client.ssn,
+				"ssnDataQuality": 1,
+				"dob": moment(client.dob).format('x'),
+				"dobDataQuality": 1,
+				"race": client.race,
+				"ethnicity": client.ethnicity,
+				"gender": client.gender,
+				"otherGender": "Test",
+				"veteranStatus": client.veteranStatus
+			}
+		};
+
+		try {
+			var response = HTTP.post(
+				config.hmisAPIEndpoints.clientBaseUrl + config.hmisAPIEndpoints.clients, {
+					data: body,
+					headers: {
+						"X-HMIS-TrustedApp-Id": config.appId,
+						"Authorization": "HMISUserAuth session_token="+accessToken,
+						"Accept": "application/json",
+						"Content-Type": "application/json"
+					},
+					npmRequestOptions: {
+						rejectUnauthorized: false // TODO remove when deploy
+					}
+				}).data;
+
+			console.log(response);
+
+			return response.client.clientId;
+		} catch (err) {
+			// throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
+			//                {response: err.response});
+			console.log("Failed to create client in HMIS. " + err.message);
+			console.log(err.response);
+			return false;
+		}
+
+	},
 	searchClient: function( query, limit ) {
 
 		var config = ServiceConfiguration.configurations.findOne({service: 'HMIS'});
