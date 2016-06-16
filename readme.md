@@ -1,6 +1,8 @@
 Home Meteor App
 ===============
 
+[![Build Status](https://travis-ci.org/desaiuditd/home-app.svg?branch=meteor)](https://travis-ci.org/desaiuditd/home-app)
+
 ## Prerequisites
 
 - Node: https://nodejs.org/en/
