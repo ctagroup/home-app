@@ -15,20 +15,20 @@ Template.createClient.events({
         var race = tmpl.find('.race_category').value;
         var ethnicity = tmpl.find('.ethnicity_category').value;
         var gender = tmpl.find('.gender_category').value;
-        var veteran_status = tmpl.find('.veteranStatus_category').value;
-        var disabling_conditions = tmpl.find('.disablingConditions_category').value;
-        var residence_prior = tmpl.find('.residencePrior_category').value;
-        var entry_date = tmpl.find('.entry_date').value;
-        var exit_date = tmpl.find('.exit_date').value;
+        var veteranStatus = tmpl.find('.veteranStatus_category').value;
+        var disablingConditions = tmpl.find('.disablingConditions_category').value;
+        var residencePrior = tmpl.find('.residencePrior_category').value;
+        var entryDate = tmpl.find('.entryDate').value;
+        var entryDate = tmpl.find('.entryDate').value;
         var destination = tmpl.find('.destination_category').value;
-        var personal_id = tmpl.find('.personal_id').value;
-        var housing_id = tmpl.find('.housing_id').value;
+        var personalId = tmpl.find('.personalId').value;
+        var householdId = tmpl.find('.householdId').value;
         var relationship = tmpl.find('.relationtoHoH_category').value;
         var loc = tmpl.find('.destination_category').value;
         var shelter = tmpl.find('.timeOnStreets_category').value;
 
 
-        Meteor.call("addClient", first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteran_status,disabling_conditions,residence_prior,entry_date,exit_date,destination,personal_id,housing_id,relationship,loc,shelter, function ( error, result ) {
+        Meteor.call("addClient", first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteranStatus,disablingConditions,residencePrior,entryDate,entryDate,destination,personalId,householdId,relationship,loc,shelter, function ( error, result ) {
             if ( error ) {
                 console.log(error);
             } else {
@@ -42,14 +42,26 @@ Template.createClient.events({
 
 });
 
-Template.viewClient.events({
-    'click .edit':function(evt,tmpl){
-        Router.go( 'editClient', { _id: tmpl.data._id } );
-    },
-    'click .back':function(evt,tmpl){
-        Router.go( 'searchClient' );
-    },
-});
+Template.viewClient.events(
+	{
+	    'click .edit':function(evt,tmpl){
+	        Router.go( 'editClient', { _id: tmpl.data._id } );
+	    },
+	    'click .back':function(evt,tmpl){
+	        Router.go( 'searchClient' );
+	    },
+	   'click .add-to-hmis': function (evt, tmpl) {
+		   Meteor.call( 'addClientToHMIS', tmpl.data._id, function ( error, result ) {
+			   if ( error ) {
+				   console.log(error);
+			   } else {
+				   var query = (result) ? "addedToHMIS=1" : "addClientToHMISError=1";
+				   Router.go("viewClient", { _id: tmpl.data._id }, { query: query } );
+			   }
+		   } );
+	   }
+	}
+);
 
 Template.editClient.events({
 
@@ -64,19 +76,19 @@ Template.editClient.events({
         var race = tmpl.find('.race_category').value;
         var ethnicity = tmpl.find('.ethnicity_category').value;
         var gender = tmpl.find('.gender_category').value;
-        var veteran_status = tmpl.find('.veteranStatus_category').value;
-        var disabling_conditions = tmpl.find('.disablingConditions_category').value;
-        var residence_prior = tmpl.find('.residencePrior_category').value;
-        var entry_date = tmpl.find('.entry_date').value;
-        var exit_date = tmpl.find('.exit_date').value;
+        var veteranStatus = tmpl.find('.veteranStatus_category').value;
+        var disablingConditions = tmpl.find('.disablingConditions_category').value;
+        var residencePrior = tmpl.find('.residencePrior_category').value;
+        var entryDate = tmpl.find('.entryDate').value;
+        var entryDate = tmpl.find('.entryDate').value;
         var destination = tmpl.find('.destination_category').value;
-        var personal_id = tmpl.find('.personal_id').value;
-        var housing_id = tmpl.find('.housing_id').value;
+        var personalId = tmpl.find('.personalId').value;
+        var householdId = tmpl.find('.householdId').value;
         var relationship = tmpl.find('.relationtoHoH_category').value;
         var loc = tmpl.find('.destination_category').value;
         var shelter = tmpl.find('.timeOnStreets_category').value;
 
-        Meteor.call("updateClient", tmpl.data._id, first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteran_status,disabling_conditions,residence_prior,entry_date,exit_date,destination,personal_id,housing_id,relationship,loc,shelter,function ( error, result ) {
+        Meteor.call("updateClient", tmpl.data._id, first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteranStatus,disablingConditions,residencePrior,entryDate,entryDate,destination,personalId,householdId,relationship,loc,shelter,function ( error, result ) {
             if ( error ) {
                 console.log(error);
             } else {

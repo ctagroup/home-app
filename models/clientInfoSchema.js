@@ -7,7 +7,7 @@ clientInfo = new Meteor.Collection("clientInfo");
 Schemas.clientInfo = new SimpleSchema(
     {
         //survey_id,survey_title,content_type,content,order
-        //first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteran_status,disabling_conditions,residence_prior,entry_date,exit_date,destination,personal_id,relationship,loc,shelter
+        //first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteranStatus,disablingConditions,residencePrior,entryDate,entryDate,destination,personalId,relationship,loc,shelter
         firstName: {
             type: String,
             max: 256
@@ -42,33 +42,34 @@ Schemas.clientInfo = new SimpleSchema(
             type: String,
             max: 256
         },
-        veteran_status: {
+        veteranStatus: {
             type: String,
             max: 256
         },
-        disabling_conditions: {
+        disablingConditions: {
             type: String,
             max: 256
         },
-        residence_prior: {
+        residencePrior: {
             type: String,
             max: 256
         },
-        entry_date: {
+        entryDate: {
             type: Date
         },
-        exit_date: {
+        entryDate: {
             type: Date
         },
         destination: {
             type: String,
             max: 256
         },
-        personal_id: {
+        personalId: {
             type: String,
-            max: 256
+            max: 256,
+	        optional: true
         },
-        housing_id: {
+	    householdId: {
             type: String,
             max: 256
         },

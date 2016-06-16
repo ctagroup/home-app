@@ -1,7 +1,7 @@
 /**
  * Created by Kavi on 4/9/16.
  */
-var gender_categories,veteran_status,ethnicity_categories,race_categories,residence_prior,destination_category,relationship_categories,times_Homeless,disabling_cond;
+var gender_categories,veteranStatus,ethnicity_categories,race_categories,residencePrior,destination_category,relationship_categories,times_Homeless,disabling_cond;
 
 var getUniversalElements=function(){
 	var questionsCollection = adminCollectionObject("questions");
@@ -15,8 +15,8 @@ var getUniversalElements=function(){
 			case "gender":
 				gender_categories = universalElements[i].options;
 				break;
-			case "veteran_status":
-				veteran_status = universalElements[i].options;
+			case "veteranStatus":
+				veteranStatus = universalElements[i].options;
 				break;
 			case "ethnicity":
 				ethnicity_categories = universalElements[i].options;
@@ -24,8 +24,8 @@ var getUniversalElements=function(){
 			case "race":
 				race_categories=universalElements[i].options;
 				break;
-			case "residence_prior_to_entry":
-				residence_prior = universalElements[i].options;
+			case "residencePrior_to_entry":
+				residencePrior = universalElements[i].options;
 				break;
 			case "destination":
 				destination_category = universalElements[i].options;
@@ -51,6 +51,14 @@ Template.viewClient.helpers(
 			var params = Router.current().params;
 			if ( params && params.query && params.query.updated ) {
 				return "<p class='notice bg-success text-success'>Client is updated successfully.</p>";
+			}
+
+			if ( params && params.query && params.query.addedToHMIS ) {
+				return "<p class='notice bg-success text-success'>Client is added to HMIS successfully.</p>";
+			}
+
+			if ( params && params.query && params.query.addClientToHMISError ) {
+				return "<p class='notice bg-danger text-danger'>Something went wrong while adding the client to HMIS. Please contact the administrator.</p>";
 			}
 		}
 	}
@@ -153,7 +161,7 @@ Template.clientForm.helpers(
 			];
 		},
 		getExtraVeteranStatusOptions:function () {
-			return veteran_status;
+			return veteranStatus;
 		},
 		getDefaultDisablingCondition: function () {
 			return [
@@ -238,18 +246,18 @@ Template.clientForm.helpers(
 			];
 		},
 		getExtraResidencePrior:function () {
-			return residence_prior;
+			return residencePrior;
 		},
 		getEntryDate: function () {
-			if ( this && this.entry_date ) {
-				return moment(this.entry_date).format('MM/DD/YYYY');
+			if ( this && this.entryDate ) {
+				return moment(this.entryDate).format('MM/DD/YYYY');
 			}
 
 			return "";
 		},
 		getExitDate: function () {
-			if ( this && this.exit_date ) {
-				return moment(this.exit_date).format('MM/DD/YYYY');
+			if ( this && this.entryDate ) {
+				return moment(this.entryDate).format('MM/DD/YYYY');
 			}
 
 			return "";

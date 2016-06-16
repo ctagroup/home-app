@@ -225,14 +225,14 @@ Meteor.methods(
 			var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
 			surveyQuestionsMasterCollection.remove({_id:id});
 		},
-		addClient: function(first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteran_status,disabling_conditions,residence_prior,entry_date,exit_date,destination,personal_id,housing_id,relationship,loc,shelter){
+		addClient: function(first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteranStatus,disablingConditions,residencePrior,entryDate,entryDate,destination,personalId,householdId,relationship,loc,shelter){
 			var clientInfoCollection = adminCollectionObject("clientInfo");
-			var clientRecords = clientInfoCollection.insert({firstName:first_name,middleName:middle_name,lastName:last_name,suffix:suffix,ssn:ssn,dob:dob,race:race,ethnicity:ethnicity,gender:gender,veteran_status:veteran_status,disabling_conditions:disabling_conditions,residence_prior:residence_prior,entry_date:entry_date,exit_date:exit_date,destination:destination,personal_id:personal_id,housing_id:housing_id,relationship:relationship,location:loc,shelter:shelter});
+			var clientRecords = clientInfoCollection.insert({firstName:first_name,middleName:middle_name,lastName:last_name,suffix:suffix,ssn:ssn,dob:dob,race:race,ethnicity:ethnicity,gender:gender,veteranStatus:veteranStatus,disablingConditions:disablingConditions,residencePrior:residencePrior,entryDate:entryDate,entryDate:entryDate,destination:destination,personalId:personalId,householdId:householdId,relationship:relationship,location:loc,shelter:shelter});
 			return clientRecords;
 		},
-		updateClient: function(clientInfoID,first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteran_status,disabling_conditions,residence_prior,entry_date,exit_date,destination,personal_id,housing_id,relationship,loc,shelter){
+		updateClient: function(clientInfoID,first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteranStatus,disablingConditions,residencePrior,entryDate,entryDate,destination,personalId,householdId,relationship,loc,shelter){
 			var clientInfoCollection = adminCollectionObject("clientInfo");
-			clientInfoCollection.update(clientInfoID, {$set: {firstName:first_name,middleName:middle_name,lastName:last_name,suffix:suffix,ssn:ssn,dob:dob,race:race,ethnicity:ethnicity,gender:gender,veteran_status:veteran_status,disabling_conditions:disabling_conditions,residence_prior:residence_prior,entry_date:entry_date,exit_date:exit_date,destination:destination,personal_id:personal_id,housing_id:housing_id,relationship:relationship,location:loc,shelter:shelter}});
+			clientInfoCollection.update(clientInfoID, {$set: {firstName:first_name,middleName:middle_name,lastName:last_name,suffix:suffix,ssn:ssn,dob:dob,race:race,ethnicity:ethnicity,gender:gender,veteranStatus:veteranStatus,disablingConditions:disablingConditions,residencePrior:residencePrior,entryDate:entryDate,entryDate:entryDate,destination:destination,personalId:personalId,householdId:householdId,relationship:relationship,location:loc,shelter:shelter}});
 		},
 		removeClient: function(clientInfoID){
 			var questionCollection = adminCollectionObject("clientInfo");
@@ -252,6 +252,20 @@ Meteor.methods(
 			var responsesCollection = adminCollectionObject("responses");
 			var responseRecords =responsesCollection.update({_id:responseID},{$set:{clientID:clientID, surveyID:surveyID,userID:userID,responsestatus:status,section:mainSectionObject}});
 			return responseRecords;
+		},
+		addClientToHMIS: function ( clientID ) {
+			var clientInfoCollection = adminCollectionObject("clientInfo");
+			var client = clientInfoCollection.findOne({_id:clientID});
+
+			var personalId = HMISAPI.createClient(client);
+
+			if ( personalId ) {
+				clientInfoCollection.update({$set:{personalId:personalId}},{_id:client._id});
+
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
 );
