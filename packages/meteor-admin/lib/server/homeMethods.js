@@ -225,14 +225,14 @@ Meteor.methods(
 			var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
 			surveyQuestionsMasterCollection.remove({_id:id});
 		},
-		addClient: function(first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteranStatus,disablingConditions,residencePrior,entryDate,entryDate,destination,personalId,householdId,relationship,loc,shelter){
+		addClient: function(first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteranStatus,disablingConditions,residencePrior,entryDate,exitDate,destination,personalId,householdId,relationship,loc,shelter){
 			var clientInfoCollection = adminCollectionObject("clientInfo");
-			var clientRecords = clientInfoCollection.insert({firstName:first_name,middleName:middle_name,lastName:last_name,suffix:suffix,ssn:ssn,dob:dob,race:race,ethnicity:ethnicity,gender:gender,veteranStatus:veteranStatus,disablingConditions:disablingConditions,residencePrior:residencePrior,entryDate:entryDate,entryDate:entryDate,destination:destination,personalId:personalId,householdId:householdId,relationship:relationship,location:loc,shelter:shelter});
+			var clientRecords = clientInfoCollection.insert({firstName:first_name,middleName:middle_name,lastName:last_name,suffix:suffix,ssn:ssn,dob:dob,race:race,ethnicity:ethnicity,gender:gender,veteranStatus:veteranStatus,disablingConditions:disablingConditions,residencePrior:residencePrior,entryDate:entryDate,exitDate:exitDate,destination:destination,personalId:personalId,householdId:householdId,relationship:relationship,location:loc,shelter:shelter});
 			return clientRecords;
 		},
-		updateClient: function(clientInfoID,first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteranStatus,disablingConditions,residencePrior,entryDate,entryDate,destination,personalId,householdId,relationship,loc,shelter){
+		updateClient: function(clientInfoID,first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteranStatus,disablingConditions,residencePrior,entryDate,exitDate,destination,personalId,householdId,relationship,loc,shelter){
 			var clientInfoCollection = adminCollectionObject("clientInfo");
-			clientInfoCollection.update(clientInfoID, {$set: {firstName:first_name,middleName:middle_name,lastName:last_name,suffix:suffix,ssn:ssn,dob:dob,race:race,ethnicity:ethnicity,gender:gender,veteranStatus:veteranStatus,disablingConditions:disablingConditions,residencePrior:residencePrior,entryDate:entryDate,entryDate:entryDate,destination:destination,personalId:personalId,householdId:householdId,relationship:relationship,location:loc,shelter:shelter}});
+			clientInfoCollection.update(clientInfoID, {$set: {firstName:first_name,middleName:middle_name,lastName:last_name,suffix:suffix,ssn:ssn,dob:dob,race:race,ethnicity:ethnicity,gender:gender,veteranStatus:veteranStatus,disablingConditions:disablingConditions,residencePrior:residencePrior,entryDate:entryDate,exitDate:exitDate,destination:destination,personalId:personalId,householdId:householdId,relationship:relationship,location:loc,shelter:shelter}});
 		},
 		removeClient: function(clientInfoID){
 			var questionCollection = adminCollectionObject("clientInfo");

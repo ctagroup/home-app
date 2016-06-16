@@ -19,7 +19,7 @@ Template.createClient.events({
         var disablingConditions = tmpl.find('.disablingConditions_category').value;
         var residencePrior = tmpl.find('.residencePrior_category').value;
         var entryDate = tmpl.find('.entryDate').value;
-        var entryDate = tmpl.find('.entryDate').value;
+        var exitDate = tmpl.find('.exitDate').value;
         var destination = tmpl.find('.destination_category').value;
         var personalId = tmpl.find('.personalId').value;
         var householdId = tmpl.find('.householdId').value;
@@ -28,7 +28,7 @@ Template.createClient.events({
         var shelter = tmpl.find('.timeOnStreets_category').value;
 
 
-        Meteor.call("addClient", first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteranStatus,disablingConditions,residencePrior,entryDate,entryDate,destination,personalId,householdId,relationship,loc,shelter, function ( error, result ) {
+        Meteor.call("addClient", first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteranStatus,disablingConditions,residencePrior,entryDate,exitDate,destination,personalId,householdId,relationship,loc,shelter, function ( error, result ) {
             if ( error ) {
                 console.log(error);
             } else {
@@ -80,7 +80,7 @@ Template.editClient.events({
         var disablingConditions = tmpl.find('.disablingConditions_category').value;
         var residencePrior = tmpl.find('.residencePrior_category').value;
         var entryDate = tmpl.find('.entryDate').value;
-        var entryDate = tmpl.find('.entryDate').value;
+        var exitDate = tmpl.find('.exitDate').value;
         var destination = tmpl.find('.destination_category').value;
         var personalId = tmpl.find('.personalId').value;
         var householdId = tmpl.find('.householdId').value;
@@ -88,7 +88,7 @@ Template.editClient.events({
         var loc = tmpl.find('.destination_category').value;
         var shelter = tmpl.find('.timeOnStreets_category').value;
 
-        Meteor.call("updateClient", tmpl.data._id, first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteranStatus,disablingConditions,residencePrior,entryDate,entryDate,destination,personalId,householdId,relationship,loc,shelter,function ( error, result ) {
+        Meteor.call("updateClient", tmpl.data._id, first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteranStatus,disablingConditions,residencePrior,entryDate,exitDate,destination,personalId,householdId,relationship,loc,shelter,function ( error, result ) {
             if ( error ) {
                 console.log(error);
             } else {

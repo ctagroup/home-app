@@ -256,8 +256,8 @@ Template.clientForm.helpers(
 			return "";
 		},
 		getExitDate: function () {
-			if ( this && this.entryDate ) {
-				return moment(this.entryDate).format('MM/DD/YYYY');
+			if ( this && this.exitDate ) {
+				return moment(this.exitDate).format('MM/DD/YYYY');
 			}
 
 			return "";
