@@ -57,7 +57,7 @@ Schemas.clientInfo = new SimpleSchema(
         entryDate: {
             type: Date
         },
-        entryDate: {
+        exitDate: {
             type: Date
         },
         destination: {
