@@ -14,7 +14,11 @@ Template.searchClient.helpers(
 					return;
 				}
 				callback( res.map( function( v ) {
-					v.value = v.firstName.trim() + ' ' + v.lastName.trim();
+					var fn = (v && v.firstName) ? v.firstName.trim() : '';
+					var mn = (v && v.middleName) ? v.middleName.trim() : '';
+					var ln = (v && v.lastName) ? v.lastName.trim() : '';
+					v.value = fn + " " + mn + " " + ln;
+					v.value = v.value.trim();
 					return v;
 				} ) );
 			});
