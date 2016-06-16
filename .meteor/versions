@@ -91,7 +91,6 @@ momentjs:moment@2.13.1
 mongo@1.1.8
 mongo-id@1.0.5
 mongo-livedata@1.0.12
-mrt:moment@2.8.1
 npm-mongo@1.4.44
 oauth@1.1.11
 oauth2@1.1.10

@@ -33,7 +33,6 @@ alanning:roles
 fortawesome:fontawesome
 desaiuditd:meteor-admin
 jparker:gravatar
-mrt:moment
 check
 rubaxa:sortable
 oauth2
@@ -45,3 +44,4 @@ sergeyt:typeahead
 http
 oauth
 meteorhacks:aggregate
+momentjs:moment
