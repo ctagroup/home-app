@@ -1,9 +1,6 @@
 /**
  * Created by udit on 07/04/16.
  */
-Template.searchClient.onRendered( function() {
-	Meteor.typeahead.inject();
-} );
 
 Template.searchClient.helpers(
 	{

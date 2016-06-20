@@ -19,4 +19,44 @@ We are following [Airbnb JavaScript Style Guide](http://airbnb.io/javascript/).
 
 # Directory Structure
 
-
+```
+- client - Code that will run on client side i.e., Browser
+|
+--- events - All JS DOM events and their callback methods
+|
+--- helpers - All helper methods for Meteor templates
+|
+--- lib - Any third-party JS library
+|
+--- stylesheets - All the CSS/SCSS for the project.
+|
+--- views - All the templates for the project.
+|
+- config - Any code related to project configuration. E.g., UserAccounts configuration (Stays on client)
+|
+- deploy - Multiple deploy configurations for this project.
+|
+--- cta-home-aws - Deploy config for CTA's AWS server.
+|
+- lib - Common code that's not a part of meteor architecture. Common JS code is to be put in this folder. This will be available on both, server side & client side.
+|
+- models - Database models for Meteor Collections and their schemas.
+|
+- packages - Any third-party meteor packages.
+|
+- public - Public assets such as images, fevicons, css etc.
+|
+--- imgs - All the publis images for the project. E.g., logo, spinner etc.
+|
+- router - All the routes for this app.
+|
+- server - Code that will run on server side.
+|
+--- config - Server side config code. E.g., UserAccounts services such as Google, Facebook, HMIS etc.
+|
+--- lib - Server side plain JS code common to the project like HMIS API wrappers.
+|
+--- methods - Meteor methods to be run on server side.
+|
+--- publish - Meteor code to publish collection data to client side.
+```
