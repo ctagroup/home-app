@@ -26,7 +26,6 @@ useraccounts:iron-routing
 email
 accounts-google
 service-configuration
-accounts-facebook
 dburles:collection-helpers
 aldeed:collection2
 alanning:roles
