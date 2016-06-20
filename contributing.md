@@ -5,7 +5,7 @@ We are following [Airbnb JavaScript Style Guide](http://airbnb.io/javascript/).
 # How to follow Coding Standards in this project
 
 - First go through the Airbnb Style Guide thoroughly.
-- Install [ESLint](http://eslint.org/).
+- Install [ESLint](http://eslint.org/) with this command `npm install -g eslint`.
 - Run `npm run lint` command to check the coding standards everytime before `git commit`.
 - Setup [Git Pre Commit Hook](#git-pre-commit-hook).
 	- This will automatically check for coding standards in changed files when developer does `git commit`.
