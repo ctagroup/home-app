@@ -22,6 +22,14 @@
 								{{#each getSurveyedClient}}
                                     <option value={{_id}}>{{firstName}}&nbsp;{{middleName}}&nbsp;{{lastName}}</option>
 								{{/each}}
+                            </select><br/>
+                            <label for="q_audience">Audience: </label>
+                            <select class="form-control q_audience" name="q_audience" id="q_audience">
+                                <option value="adult">Adult</option>
+                                <option value="hoh"> Head of household</option>
+                                <option value="bothadultsandhoh">Adults and Head of Household</option>
+                                <option value="child">Child</option>
+                                <option value="everyone">Everyone</option>
                             </select><br/><br/>
                             <input class="btn btn-primary nextLogSurvey" value="Next" type="button">
                         </div>
@@ -67,6 +75,7 @@
                                 </div>
                                 <div class="question">
 									{{#if displayQues contentType}}
+										{{#if checkAudience content}}
                                         <li>
                                             <h5>{{displayQuesContents content}}</h5>
                                         </li>
@@ -131,6 +140,7 @@
                                                        value="">
                                             </li>
 										{{/if}}
+											{{/if}}
 									{{/if}}
 
                                 </div>
@@ -161,6 +171,7 @@
                                 </div>
                                 <div class="question">
 									{{#if displayQues contentType}}
+										{{#if checkAudience content}}
                                         <li>
                                             <h5>{{displayQuesContents content}}</h5>
                                         </li>
@@ -225,6 +236,7 @@
                                                        value="">
                                             </li>
 										{{/if}}
+											{{/if}}
 									{{/if}}
 
                                 </div>

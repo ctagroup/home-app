@@ -91,6 +91,7 @@ Template.LogSurveyResponse.helpers({
 		}
 	},
 	displayQuesContents: function(contentQuesId){
+		console.log("ho");
 		var questionCollection = adminCollectionObject("questions");
 		var questions = questionCollection.find({_id:contentQuesId}).fetch();
 
@@ -99,6 +100,18 @@ Template.LogSurveyResponse.helpers({
 		}
 		return qNames;
 
+	},
+	checkAudience:function(content){
+		var questionCollection = adminCollectionObject("questions");
+		var questions = questionCollection.find({_id:content}).fetch();
+		console.log("dfsfsdFS"+Router.current().params.query.audience);
+		for(var i in questions){
+			if(Router.current().params.query.audience==questions[i].audience)
+				return true;
+			else
+				return false
+		}
+		return false;
 	},
 	textboxString: function(contentQuesId){
 		var questionCollection = adminCollectionObject("questions");
