@@ -11,7 +11,7 @@ We are following [Airbnb JavaScript Style Guide](http://airbnb.io/javascript/).
 	- This will automatically check for coding standards in changed files when developer does `git commit`.
 	- If there are any errors/warnings then `git commit` will automatically fail.
 	- When all the errors are resolved then only it will allow developer to commit.
-- When you push new commits to remote repo, Travis CI will again check for coding standards.
+- When you push new commits to remote repo, [Travis CI](https://travis-ci.org/ctagroup/home-app) will again check for coding standards.
 	- It will notify the developer if anything goes wrong.
 
 # Git Pre Commit Hook
