@@ -121,36 +121,65 @@ Router.route('/app/clients/:_id',{
 	template: 'viewClient',
 	controller: 'HomeAppController',
 	data: function(){
-		var clientInfoID = this.params._id;
-		var clientInfoCollection = adminCollectionObject("clientInfo");
-		return clientInfoCollection.findOne({_id:clientInfoID});
+
+		if ( this.params.query && this.params.query.isHMISClient ) {
+			var client = Session.get( 'currentHMISClient' ) || false;
+			if ( client ) {
+				client.personalId = client.clientId;
+				client._id = client.clientId;
+				client.isHMISClient = true;
+			}
+			return client;
+		} else {
+			var clientInfoID = this.params._id;
+			var clientInfoCollection = adminCollectionObject("clientInfo");
+			return clientInfoCollection.findOne({_id:clientInfoID});
+		}
 
 	}
 });
 Router.onBeforeAction(function () {
 	var recentClients = Session.get("recentClients") || [];
-	var clientInfoCollection = adminCollectionObject("clientInfo");
-	var clientInfo = clientInfoCollection.findOne({_id:this.params._id});
+	var that = this;
 
-	if ( clientInfo && clientInfo._id ) {
-		var recentClientsIDs = recentClients.map(function (client) {
-			return client._id;
-		});
+	if ( this.params.query && this.params.query.isHMISClient ) {
+		Meteor.call('getHMISClient', this.params._id, function ( err, res ) {
+			if ( err ) {
+				console.log(err);
+				that.render('clientNotFound');
+				return;
+			}
 
-		if ( recentClientsIDs.indexOf(this.params._id) == -1 ) {
-			var route = Router.routes["viewClient"];
-			var data = {
-				_id: this.params._id,
-				name: clientInfo.firstName.trim() + ' ' + clientInfo.lastName.trim(),
-				url: route.path({_id: this.params._id})
-			};
-			recentClients.push(data);
-			recentClients = $.unique(recentClients);
-			Session.set("recentClients", recentClients);
-		}
+			if ( res ) {
+				Session.set( "currentHMISClient", res );
+			} else {
+				that.render('clientNotFound');
+			}
+		} );
 	} else {
-		this.render('clientNotFound');
-		return;
+		var clientInfoCollection = adminCollectionObject("clientInfo");
+		var clientInfo = clientInfoCollection.findOne({_id:this.params._id});
+
+		if ( clientInfo && clientInfo._id ) {
+			var recentClientsIDs = recentClients.map(function (client) {
+				return client._id;
+			});
+
+			if ( recentClientsIDs.indexOf(this.params._id) == -1 ) {
+				var route = Router.routes["viewClient"];
+				var data = {
+					_id: this.params._id,
+					name: clientInfo.firstName.trim() + ' ' + clientInfo.lastName.trim(),
+					url: route.path({_id: this.params._id})
+				};
+				recentClients.push(data);
+				recentClients = $.unique(recentClients);
+				Session.set("recentClients", recentClients);
+			}
+		} else {
+			this.render('clientNotFound');
+			return;
+		}
 	}
 
 	this.next();
