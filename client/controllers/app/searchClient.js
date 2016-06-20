@@ -28,7 +28,11 @@ Template.searchClient.helpers(
 				$('#search-client-keyword').val(dataObject.query).change();
 				Router.go('createClient', {}, { query : 'firstName='+dataObject.query } );
 			} else {
-				Router.go('viewClient', { _id: dataObject._id } );
+				var query = {};
+				if ( dataObject.isHMISClient ) {
+					query.query = 'isHMISClient=true';
+				}
+				Router.go('viewClient', { _id: dataObject._id }, query );
 			}
 		},
 		getRecentClients: function () {

@@ -46,7 +46,11 @@ Meteor.methods(
 				mergedClients = localClients.map(function ( client ) {
 					client.isLocalClient = true;
 					return client;
-				}).concat(hmisClients);
+				}).concat( hmisClients.map( function( client ) {
+					client._id = client.clientId;
+					client.isHMISClient = true;
+					return client;
+				} ) );
 			}
 
 			return mergedClients;

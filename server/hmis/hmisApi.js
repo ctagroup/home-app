@@ -137,8 +137,6 @@ HMISAPI = {
 					}
 				}).data;
 
-			console.log(response);
-
 			return response.client.clientId;
 		} catch (err) {
 			// throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
@@ -148,6 +146,36 @@ HMISAPI = {
 			return false;
 		}
 
+	},
+	getClient: function ( clientId ) {
+		var config = ServiceConfiguration.configurations.findOne({service: 'HMIS'});
+		if (!config)
+			throw new ServiceConfiguration.ConfigError();
+
+		var accessToken = this.getCurrentAccessToken();
+
+		try {
+			var response = HTTP.get(
+				config.hmisAPIEndpoints.clientBaseUrl + config.hmisAPIEndpoints.clients + clientId, {
+					headers: {
+						"X-HMIS-TrustedApp-Id": config.appId,
+						"Authorization": "HMISUserAuth session_token="+accessToken,
+						"Accept": "application/json",
+						"Content-Type": "application/json"
+					},
+					npmRequestOptions: {
+						rejectUnauthorized: false // TODO remove when deploy
+					}
+				}).data;
+
+			return response.client;
+		} catch (err) {
+			// throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
+			//                {response: err.response});
+			console.log("Failed to get client info from HMIS. " + err.message);
+			console.log(err.response);
+			return false;
+		}
 	},
 	searchClient: function( query, limit ) {
 

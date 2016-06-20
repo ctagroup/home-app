@@ -45,7 +45,11 @@ Template.createClient.events({
 Template.viewClient.events(
 	{
 	    'click .edit':function(evt,tmpl){
-	        Router.go( 'editClient', { _id: tmpl.data._id } );
+		    var query = {};
+		    if ( tmpl.data.isHMISClient ) {
+			    query.query = 'isHMISClient=true';
+		    }
+	        Router.go( 'editClient', { _id: tmpl.data._id }, query );
 	    },
 	    'click .back':function(evt,tmpl){
 	        Router.go( 'searchClient' );
