@@ -5,7 +5,7 @@
 Meteor.methods(
   {
     getHMISClient(clientId) {
-      const client = HMISAPI.getClient(clientId);
+      let client = HMISAPI.getClient(clientId);
       return client;
     },
   }

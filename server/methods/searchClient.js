@@ -2,8 +2,8 @@
  * Created by udit on 07/04/16.
  */
 Meteor.methods(
-	{
-		searchClient: function ( query, options ) {
+  {
+    searchClient(query, options) {
 			options = options || {};
 
 			// guard against client-side DOS: hard limit to 50
@@ -13,9 +13,9 @@ Meteor.methods(
 				options.limit = 50;
 			}
 
-			var hmisClients = HMISAPI.searchClient(query, options.limit);
+			let hmisClients = HMISAPI.searchClient(query, options.limit);
 
-			var localClients = clientInfo.aggregate(
+			let localClients = clientInfo.aggregate(
 				[
 					{
 						$project: {
@@ -23,38 +23,44 @@ Meteor.methods(
 							middleName: "$middleName",
 							lastName: "$lastName",
 							fullName: {
-								$concat: [ "$firstName", " ", "$middleName", " ", "$lastName" ]
+								$concat: ["$firstName", " ", "$middleName", " ", "$lastName"]
 							}
 						}
 					}, {
 						$match: {
 							fullName: new RegExp(query.split(' ').join('(.*)'), "i")
-						}
+						},
 					}, {
 						$sort: {
 							firstName: 1
-						}
-					}
+						},
+					},
 				]
 			);
 
-			var mergedClients = [];
+			let mergedClients = [];
 
-			if ( localClients.length == 0 && hmisClients.length == 0 ) {
-				mergedClients.push({firstName: "Create New", lastName: "Client", query: query, clientNotFound: true});
+			if (localClients.length == 0 && hmisClients.length == 0) {
+				mergedClients.push(
+          {
+            firstName: "Create New",
+            lastName: "Client",
+            query: query,
+            clientNotFound: true,
+          }
+        );
 			} else {
-				mergedClients = localClients.map(function ( client ) {
+				mergedClients = localClients.map((client) => {
 					client.isLocalClient = true;
 					return client;
-				}).concat( hmisClients.map( function( client ) {
+				}).concat(hmisClients.map((client) => {
 					client._id = client.clientId;
 					client.isHMISClient = true;
 					return client;
-				} ) );
+				}));
 			}
 
 			return mergedClients;
 		}
 	}
 );
-
