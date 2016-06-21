@@ -123,12 +123,7 @@ Router.route('/app/clients/:_id',{
 	data: function(){
 
 		if ( this.params.query && this.params.query.isHMISClient ) {
-			var client = Session.get( 'currentHMISClient' ) || false;
-			if ( client ) {
-				client.personalId = client.clientId;
-				client._id = client.clientId;
-				client.isHMISClient = true;
-			}
+			const client = Session.get( 'currentHMISClient' ) || false;
 			return client;
 		} else {
 			var clientInfoID = this.params._id;
@@ -151,7 +146,27 @@ Router.onBeforeAction(function () {
 			}
 
 			if ( res ) {
+        res.personalId = res.clientId;
+        res._id = res.clientId;
+        res.isHMISClient = true;
 				Session.set( "currentHMISClient", res );
+
+        var recentClientsIDs = recentClients.map(function (client) {
+          return client._id;
+        });
+
+        if ( recentClientsIDs.indexOf(that.params._id) == -1 ) {
+          var route = Router.routes["viewClient"];
+          var data = {
+            _id: that.params._id,
+            name: res.firstName.trim() + ' ' + res.lastName.trim(),
+            url: route.path({_id: that.params._id}, {query: 'isHMISClient=true'})
+          };
+          recentClients.push(data);
+          recentClients = $.unique(recentClients);
+          Session.set("recentClients", recentClients);
+        }
+
 			} else {
 				that.render('clientNotFound');
 			}

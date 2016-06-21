@@ -67,11 +67,12 @@ Schemas.clientInfo = new SimpleSchema(
         personalId: {
             type: String,
             max: 256,
-	        optional: true
+	          optional: true
         },
 	    householdId: {
             type: String,
-            max: 256
+            max: 256,
+            optional: true
         },
         relationship: {
             type: String,
