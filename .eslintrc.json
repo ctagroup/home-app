@@ -13,14 +13,19 @@
   "globals": {
     "Messages": true,
     "HMISAPI": true,
-    "clientInfo": true
+    "clientInfo": true,
+    "Sortable": true,
+    "OAuth": true,
+    "logger": true,
+    "moment": true
   },
   "rules": {
     "no-underscore-dangle": [
       "error",
       {
         "allow": [
-          "_id"
+          "_id",
+          "_redirectUri"
         ]
       }
     ]
