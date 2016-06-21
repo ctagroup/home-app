@@ -3,279 +3,309 @@
  */
 
 /**
- * Application Routes
- */
-
-/**
  * Public Routes without login
  */
-var publicRoutes = [
-	'root',
-	'home',
-	'changePwd',
-	'enrollAccount',
-	'forgotPwd',
-	'resetPwd',
-	'signIn',
-	'signUp',
-	'verifyEmail',
-	'resendVerificationEmail',
-	'privacy',
-	'termsOfUse',
-    'notEnoughPermission'
+const publicRoutes = [
+  'root',
+  'home',
+  'changePwd',
+  'enrollAccount',
+  'forgotPwd',
+  'resetPwd',
+  'signIn',
+  'signUp',
+  'verifyEmail',
+  'resendVerificationEmail',
+  'privacy',
+  'termsOfUse',
+  'notEnoughPermission',
 ];
 
 /**
  * Route Controller to check on users.
  */
 HomeAppController = RouteController.extend(
-	{
-		onBeforeAction: function() {
-			if ( Meteor.userId() && ! Roles.userIsInRole( Meteor.userId(), 'view_admin' ) ) {
-				Meteor.call( 'adminCheckAdmin' );
-			}
-			this.next();
-		}
-	}
+  {
+    onBeforeAction() {
+      if (Meteor.userId() && ! Roles.userIsInRole(Meteor.userId(), 'view_admin')) {
+        Meteor.call('adminCheckAdmin');
+      }
+      this.next();
+    },
+  }
 );
 
 HomeAppSurveyorController = HomeAppController.extend(
-	{
-		onBeforeAction: function () {
-			if ( Meteor.userId() && Roles.userIsInRole(Meteor.userId(), 'Surveyor') ) {
-				// Allow Route for Surveyors
-			} else {
-				Router.go('notEnoughPermission');
-				return;
-			}
-			this.next();
-		}
-	}
+  {
+    onBeforeAction() {
+      if (Meteor.userId() && Roles.userIsInRole(Meteor.userId(), 'Surveyor')) {
+        // Allow Route for Surveyors
+      } else {
+        Router.go('notEnoughPermission');
+        return;
+      }
+      this.next();
+    },
+  }
 );
 
 /**
  * Home Routes
  */
-Router.route( '/', {
-	name: 'root',
-	template: 'home',
-	controller: 'HomeAppController'
-} );
-Router.route( '/home', {
-	name: 'home',
-	template: 'home',
-	controller: 'HomeAppController'
-} );
+Router.route(
+  '/', {
+    name: 'root',
+    template: 'home',
+    controller: 'HomeAppController',
+  }
+);
+Router.route(
+  '/home', {
+    name: 'home',
+    template: 'home',
+    controller: 'HomeAppController',
+  }
+);
 
 /**
  * Accounts Routes
  */
-AccountsTemplates.configureRoute( 'signIn', {
-	name: 'signIn',
-	path: '/login',
-	template: 'login',
-	redirect: '/app',
-	controller: 'HomeAppController'
-} );
-AccountsTemplates.configureRoute( 'signUp', {
-	name: 'signUp',
-	path: '/register',
-	template: 'login',
-	controller: 'HomeAppController'
-} );
+AccountsTemplates.configureRoute(
+  'signIn', {
+    name: 'signIn',
+    path: '/login',
+    template: 'login',
+    redirect: '/app',
+    controller: 'HomeAppController',
+  }
+);
+AccountsTemplates.configureRoute(
+  'signUp', {
+    name: 'signUp',
+    path: '/register',
+    template: 'login',
+    controller: 'HomeAppController',
+  }
+);
 
 /**
  * App Routes
  */
-Router.route( '/app', {
-	name: 'appRoot',
-	template: 'appDashboard',
-	controller: 'HomeAppController'
-});
-Router.route( '/app/dashboard', {
-	name: 'appDashboard',
-	template: 'appDashboard',
-	controller: 'HomeAppController'
-});
+Router.route(
+  '/app', {
+    name: 'appRoot',
+    template: 'appDashboard',
+    controller: 'HomeAppController',
+  }
+);
+Router.route(
+  '/app/dashboard', {
+    name: 'appDashboard',
+    template: 'appDashboard',
+    controller: 'HomeAppController',
+  }
+);
 
-Router.route('/not-enough-permission', {
-	name: 'notEnoughPermission',
-	template: 'notEnoughPermission',
-	controller: 'HomeAppController'
-} );
+Router.route(
+  '/not-enough-permission', {
+    name: 'notEnoughPermission',
+    template: 'notEnoughPermission',
+    controller: 'HomeAppController',
+  }
+);
 /**
  * Client Routes
  */
-Router.route( '/app/clients', {
-	name: 'searchClient',
-	template: 'searchClient',
-	controller: 'HomeAppController',
-} );
-Router.route('/app/clients/new',{
-	name:'createClient',
-	template: 'createClient',
-	controller: 'HomeAppController',
-});
-Router.route('/app/clients/:_id',{
-	name: 'viewClient',
-	template: 'viewClient',
-	controller: 'HomeAppController',
-	data: function(){
+Router.route(
+  '/app/clients', {
+    name: 'searchClient',
+    template: 'searchClient',
+    controller: 'HomeAppController',
+  }
+);
+Router.route(
+  '/app/clients/new', {
+    name: 'createClient',
+    template: 'createClient',
+    controller: 'HomeAppController',
+  }
+);
+Router.route(
+  '/app/clients/:_id', {
+    name: 'viewClient',
+    template: 'viewClient',
+    controller: 'HomeAppController',
+    data() {
+      let client = '';
+      if (this.params.query && this.params.query.isHMISClient) {
+        client = Session.get('currentHMISClient') || false;
+      } else {
+        const clientInfoID = this.params._id;
+        const clientInfoCollection = adminCollectionObject('clientInfo');
+        client = clientInfoCollection.findOne({ _id: clientInfoID });
+      }
+      return client;
+    },
+  }
+);
+Router.onBeforeAction(
+  function clientAction() {
+    let recentClients = Session.get('recentClients') || [];
+    const that = this;
 
-		if ( this.params.query && this.params.query.isHMISClient ) {
-			const client = Session.get( 'currentHMISClient' ) || false;
-			return client;
-		} else {
-			var clientInfoID = this.params._id;
-			var clientInfoCollection = adminCollectionObject("clientInfo");
-			return clientInfoCollection.findOne({_id:clientInfoID});
-		}
+    if (this.params.query && this.params.query.isHMISClient) {
+      Meteor.call(
+        'getHMISClient', this.params._id, (err, res) => {
+          const rez = res;
+          if (err) {
+            logger.log(err);
+            that.render('clientNotFound');
+            return;
+          }
 
-	}
-});
-Router.onBeforeAction(function () {
-	var recentClients = Session.get("recentClients") || [];
-	var that = this;
+          if (rez) {
+            rez.personalId = rez.clientId;
+            rez._id = rez.clientId;
+            rez.isHMISClient = true;
+            Session.set('currentHMISClient', rez);
 
-	if ( this.params.query && this.params.query.isHMISClient ) {
-		Meteor.call('getHMISClient', this.params._id, function ( err, res ) {
-			if ( err ) {
-				console.log(err);
-				that.render('clientNotFound');
-				return;
-			}
+            const recentClientsIDs = recentClients.map((client) => client._id);
 
-			if ( res ) {
-        res.personalId = res.clientId;
-        res._id = res.clientId;
-        res.isHMISClient = true;
-				Session.set( "currentHMISClient", res );
+            if (recentClientsIDs.indexOf(that.params._id) === - 1) {
+              const route = Router.routes.viewClient;
+              const data = {
+                _id: that.params._id,
+                name: `${rez.firstName.trim()} ${rez.lastName.trim()}`,
+                url: route.path({ _id: that.params._id }, { query: 'isHMISClient=true' }),
+              };
+              recentClients.push(data);
+              recentClients = $.unique(recentClients);
+              Session.set('recentClients', recentClients);
+            }
+          } else {
+            that.render('clientNotFound');
+          }
+        }
+      );
+    } else {
+      const clientInfoCollection = adminCollectionObject('clientInfo');
+      const clientInfo = clientInfoCollection.findOne({ _id: this.params._id });
 
-        var recentClientsIDs = recentClients.map(function (client) {
-          return client._id;
-        });
+      if (clientInfo && clientInfo._id) {
+        const recentClientsIDs = recentClients.map((client) => client._id);
 
-        if ( recentClientsIDs.indexOf(that.params._id) == -1 ) {
-          var route = Router.routes["viewClient"];
-          var data = {
-            _id: that.params._id,
-            name: res.firstName.trim() + ' ' + res.lastName.trim(),
-            url: route.path({_id: that.params._id}, {query: 'isHMISClient=true'})
+        if (recentClientsIDs.indexOf(this.params._id) === - 1) {
+          const route = Router.routes.viewClient;
+          const data = {
+            _id: this.params._id,
+            name: `${clientInfo.firstName.trim()} ${clientInfo.lastName.trim()}`,
+            url: route.path({ _id: this.params._id }),
           };
           recentClients.push(data);
           recentClients = $.unique(recentClients);
-          Session.set("recentClients", recentClients);
+          Session.set('recentClients', recentClients);
         }
+      } else {
+        this.render('clientNotFound');
+        return;
+      }
+    }
 
-			} else {
-				that.render('clientNotFound');
-			}
-		} );
-	} else {
-		var clientInfoCollection = adminCollectionObject("clientInfo");
-		var clientInfo = clientInfoCollection.findOne({_id:this.params._id});
+    this.next();
+  }, {
+    only: ['viewClient', 'editClient'],
+  }
+);
+Router.route(
+  '/app/clients/:_id/edit', {
+    name: 'editClient',
+    template: 'editClient',
+    controller: 'HomeAppController',
+    data() {
+      const clientInfoID = this.params._id;
+      const clientInfoCollection = adminCollectionObject('clientInfo');
+      return clientInfoCollection.findOne({ _id: clientInfoID });
+    },
+  }
+);
 
-		if ( clientInfo && clientInfo._id ) {
-			var recentClientsIDs = recentClients.map(function (client) {
-				return client._id;
-			});
-
-			if ( recentClientsIDs.indexOf(this.params._id) == -1 ) {
-				var route = Router.routes["viewClient"];
-				var data = {
-					_id: this.params._id,
-					name: clientInfo.firstName.trim() + ' ' + clientInfo.lastName.trim(),
-					url: route.path({_id: this.params._id})
-				};
-				recentClients.push(data);
-				recentClients = $.unique(recentClients);
-				Session.set("recentClients", recentClients);
-			}
-		} else {
-			this.render('clientNotFound');
-			return;
-		}
-	}
-
-	this.next();
-}, {
-	only: ['viewClient', 'editClient']
-});
-Router.route('/app/clients/:_id/edit',{
-	name:'editClient',
-	template: 'editClient',
-	controller: 'HomeAppController',
-	data: function(){
-		var clientInfoID = this.params._id;
-		var clientInfoCollection = adminCollectionObject("clientInfo");
-		return clientInfoCollection.findOne({_id:clientInfoID});
-
-	}
-});
-
-Router.route('/app/LogSurvey/',{
-	name:'LogSurvey',
-	template: 'LogSurvey',
-	controller: 'HomeAppController'
-});
-Router.route('/app/LogSurvey/:_id',{
-	name:'LogSurveyResponse',
-	template: 'LogSurveyResponse',
-	controller: 'HomeAppController',
-	data: function(){
-		var surveyID = this.params._id;
-		console.log("suvey"+surveyID);
-		var surveysCollection = adminCollectionObject("surveys");
-		return surveysCollection.findOne({_id:surveyID});
-
-	}
-});
-Router.route('/app/LogSurveyView/:_id',{
-	name:'LogSurveyView',
-	template: 'LogSurveyView',
-	controller: 'HomeAppController',
-	data: function(){
-		var responseID = this.params._id;
-		var responsesCollection = adminCollectionObject("responses");
-		return responsesCollection.findOne({_id:responseID});
-
-	}
-});
+Router.route(
+  '/app/LogSurvey/', {
+    name: 'LogSurvey',
+    template: 'LogSurvey',
+    controller: 'HomeAppController',
+  }
+);
+Router.route(
+  '/app/LogSurvey/:_id', {
+    name: 'LogSurveyResponse',
+    template: 'LogSurveyResponse',
+    controller: 'HomeAppController',
+    data() {
+      const surveyID = this.params._id;
+      logger.log(`suvey ${surveyID}`);
+      const surveysCollection = adminCollectionObject('surveys');
+      return surveysCollection.findOne({ _id: surveyID });
+    },
+  }
+);
+Router.route(
+  '/app/LogSurveyView/:_id', {
+    name: 'LogSurveyView',
+    template: 'LogSurveyView',
+    controller: 'HomeAppController',
+    data() {
+      const responseID = this.params._id;
+      const responsesCollection = adminCollectionObject('responses');
+      return responsesCollection.findOne({ _id: responseID });
+    },
+  }
+);
 /**
  * Survey status Routes
  */
-Router.route( '/app/surveyStatus/', {
-	name: 'surveyStatus',
-	template: 'surveyStatus',
-	controller: 'HomeAppController',
-} );
+Router.route(
+  '/app/surveyStatus/', {
+    name: 'surveyStatus',
+    template: 'surveyStatus',
+    controller: 'HomeAppController',
+  }
+);
 /**
  * Ensure User Login for templates
  */
-Router.plugin( 'ensureSignedIn', {
-	except: publicRoutes
-} );
+Router.plugin(
+  'ensureSignedIn', {
+    except: publicRoutes,
+  }
+);
 
 /**
  * Misc Routes
  * */
-Router.route( '/privacy', {
-	name: 'privacy',
-	template: 'privacy',
-	controller: 'HomeAppController'
-} );
-Router.route( '/terms-of-use', {
-	name: 'termsOfUse',
-	template: 'termsOfUse',
-	controller: 'HomeAppController'
-} );
+Router.route(
+  '/privacy', {
+    name: 'privacy',
+    template: 'privacy',
+    controller: 'HomeAppController',
+  }
+);
+Router.route(
+  '/terms-of-use', {
+    name: 'termsOfUse',
+    template: 'termsOfUse',
+    controller: 'HomeAppController',
+  }
+);
 
 /**
  * Chat Routes
  */
 
- Router.route( '/app/chat/', {
-	name: 'chat',
-	template: 'chat',
-	controller: 'HomeAppController'
-} );
+Router.route(
+  '/app/chat/', {
+    name: 'chat',
+    template: 'chat',
+    controller: 'HomeAppController',
+  }
+);
