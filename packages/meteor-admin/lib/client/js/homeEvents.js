@@ -610,7 +610,6 @@ Template.surveyEditTemplate.events(
 	{
 		'click .addQues':function(event,tmpl){
 			// if(tmpl.find('.section').value!="Other" || tmpl.find('.section').value!="sectionSelect") {
-			// 	Session.set('section_id', tmpl.find('.section').value);
 			// 	return;
 			// }
 			// else {
@@ -623,8 +622,8 @@ Template.surveyEditTemplate.events(
 			if(secValue == 'sectionSelect'){
 				alert("Please select/enter a section");
 				return false;
-			}
-
+			}else
+				Session.set('section_id', tmpl.find('.section').value);
 		},
 		'click .addSection':function(event,tmpl){
 
