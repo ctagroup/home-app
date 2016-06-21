@@ -76,71 +76,76 @@
                                 <div class="question">
 									{{#if displayQues contentType}}
 										{{#if checkAudience content}}
-                                        <li>
-                                            <h5>{{displayQuesContents content}}</h5>
-                                        </li>
-										{{#if textboxString content}}
-                                            <li class="quesList">
-                                                <input type="text" class="form-control input input-xxlarge stringType"
-                                                       id={{content}} name={{content}} value="">
+                                            <li>
+                                                <h5>{{displayQuesContents content}}</h5>
                                             </li>
-										{{/if}}
-
-										{{#if textboxNumber content}}
-                                            <li class="quesList">
-                                                <input type="number" class="form-control input input-xxlarge numberType"
-                                                       id={{content}} name={{content}} value="">
-                                            </li>
-										{{/if}}
-
-										{{#if booleanTF content}}
-                                            <li class="quesList">
-                                                <label class="boolY"><input type="radio" class="boolY"
-                                                                            id={{content}} name={{content}}
-                                                                            value="true"> &nbsp;True</label>
-                                            </li>
-                                            <li class="quesList">
-                                                <label class="boolY"> <input type="radio" class="boolN"
-                                                                             id={{content}} name={{content}}
-                                                                             value="false"> &nbsp;False</label>
-                                            </li>
-										{{/if}}
-
-										{{#if singleSelect content}}
-											{{#each singleOptions content}}
+											{{#if textboxString content}}
                                                 <li class="quesList">
-                                                    <label class="singleSelect"><input type="radio" class="singleSelect"
-                                                                                       id={{../content}}  name={{../content}}
-                                                                                       value={{this.value}}>
-                                                        &nbsp; {{this.description}}</label>
+                                                    <input type="text"
+                                                           class="form-control input input-xxlarge stringType"
+                                                           id={{content}} name={{content}} value="">
                                                 </li>
-											{{/each}}
-                                            <li class="othersSpecify_single hide">
-                                                <label class="othersSpecifyLabel">Please specify</label>
-                                                <input type="text"
-                                                       class="form-control input input-xxlarge othersSpecify_single"
-                                                       id="othersSpecify_single" name="othersSpecify_single" value="">
-                                            </li>
-										{{/if}}
-
-										{{#if multipleSelect content}}
-											{{#each singleOptions content}}
-                                                <li class="quesList">
-                                                    <label class="multipleSelect" id={{../content}}><input
-                                                            type="checkbox" class="multipleSelect"
-                                                            id={{../content}} name={{../content}}
-                                                            value={{this.value}}> &nbsp; {{this.description}}</label>
-                                                </li>
-											{{/each}}
-                                            <li class="othersSpecify_multiple hide">
-                                                <label class="othersSpecify_multipleLabel">Please specify</label>
-                                                <input type="text"
-                                                       class="form-control input input-xxlarge othersSpecify_multiple"
-                                                       id="othersSpecify_multiple" name="othersSpecify_multiple"
-                                                       value="">
-                                            </li>
-										{{/if}}
 											{{/if}}
+
+											{{#if textboxNumber content}}
+                                                <li class="quesList">
+                                                    <input type="number"
+                                                           class="form-control input input-xxlarge numberType"
+                                                           id={{content}} name={{content}} value="">
+                                                </li>
+											{{/if}}
+
+											{{#if booleanTF content}}
+                                                <li class="quesList">
+                                                    <label class="boolY"><input type="radio" class="boolY"
+                                                                                id={{content}} name={{content}}
+                                                                                value="true"> &nbsp;True</label>
+                                                </li>
+                                                <li class="quesList">
+                                                    <label class="boolY"> <input type="radio" class="boolN"
+                                                                                 id={{content}} name={{content}}
+                                                                                 value="false"> &nbsp;False</label>
+                                                </li>
+											{{/if}}
+
+											{{#if singleSelect content}}
+												{{#each singleOptions content}}
+                                                    <li class="quesList">
+                                                        <label class="singleSelect"><input type="radio"
+                                                                                           class="singleSelect"
+                                                                                           id={{../content}}  name={{../content}}
+                                                                                           value={{this.value}}>
+                                                            &nbsp; {{this.description}}</label>
+                                                    </li>
+												{{/each}}
+                                                <li class="othersSpecify_single hide">
+                                                    <label class="othersSpecifyLabel">Please specify</label>
+                                                    <input type="text"
+                                                           class="form-control input input-xxlarge othersSpecify_single"
+                                                           id="othersSpecify_single" name="othersSpecify_single"
+                                                           value="">
+                                                </li>
+											{{/if}}
+
+											{{#if multipleSelect content}}
+												{{#each singleOptions content}}
+                                                    <li class="quesList">
+                                                        <label class="multipleSelect" id={{../content}}><input
+                                                                type="checkbox" class="multipleSelect"
+                                                                id={{../content}} name={{../content}}
+                                                                value={{this.value}}> &nbsp; {{this.description}}
+                                                        </label>
+                                                    </li>
+												{{/each}}
+                                                <li class="othersSpecify_multiple hide">
+                                                    <label class="othersSpecify_multipleLabel">Please specify</label>
+                                                    <input type="text"
+                                                           class="form-control input input-xxlarge othersSpecify_multiple"
+                                                           id="othersSpecify_multiple" name="othersSpecify_multiple"
+                                                           value="">
+                                                </li>
+											{{/if}}
+										{{/if}}
 									{{/if}}
 
                                 </div>
@@ -172,71 +177,76 @@
                                 <div class="question">
 									{{#if displayQues contentType}}
 										{{#if checkAudience content}}
-                                        <li>
-                                            <h5>{{displayQuesContents content}}</h5>
-                                        </li>
-										{{#if textboxString content}}
-                                            <li class="quesList">
-                                                <input type="text" class="form-control input input-xxlarge stringType"
-                                                       id={{content}} name={{content}} value="">
+                                            <li>
+                                                <h5>{{displayQuesContents content}}</h5>
                                             </li>
-										{{/if}}
-
-										{{#if textboxNumber content}}
-                                            <li class="quesList">
-                                                <input type="number" class="form-control input input-xxlarge numberType"
-                                                       id={{content}} name={{content}} value="">
-                                            </li>
-										{{/if}}
-
-										{{#if booleanTF content}}
-                                            <li class="quesList">
-                                                <label class="boolY"><input type="radio" class="boolY"
-                                                                            id={{content}} name={{content}}
-                                                                            value="true"> &nbsp;True</label>
-                                            </li>
-                                            <li class="quesList">
-                                                <label class="boolY"> <input type="radio" class="boolN"
-                                                                             id={{content}} name={{content}}
-                                                                             value="false"> &nbsp;False</label>
-                                            </li>
-										{{/if}}
-
-										{{#if singleSelect content}}
-											{{#each singleOptions content}}
+											{{#if textboxString content}}
                                                 <li class="quesList">
-                                                    <label class="singleSelect"><input type="radio" class="singleSelect"
-                                                                                       id={{../content}}  name={{../content}}
-                                                                                       value={{this.value}}>
-                                                        &nbsp; {{this.description}}</label>
+                                                    <input type="text"
+                                                           class="form-control input input-xxlarge stringType"
+                                                           id={{content}} name={{content}} value="">
                                                 </li>
-											{{/each}}
-                                            <li class="othersSpecify_single hide">
-                                                <label class="othersSpecifyLabel">Please specify</label>
-                                                <input type="text"
-                                                       class="form-control input input-xxlarge othersSpecify_single"
-                                                       id="othersSpecify_single" name="othersSpecify_single" value="">
-                                            </li>
-										{{/if}}
-
-										{{#if multipleSelect content}}
-											{{#each singleOptions content}}
-                                                <li class="quesList">
-                                                    <label class="multipleSelect" id={{../content}}><input
-                                                            type="checkbox" class="multipleSelect"
-                                                            id={{../content}} name={{../content}}
-                                                            value={{this.value}}> &nbsp; {{this.description}}</label>
-                                                </li>
-											{{/each}}
-                                            <li class="othersSpecify_multiple hide">
-                                                <label class="othersSpecify_multipleLabel">Please specify</label>
-                                                <input type="text"
-                                                       class="form-control input input-xxlarge othersSpecify_multiple"
-                                                       id="othersSpecify_multiple" name="othersSpecify_multiple"
-                                                       value="">
-                                            </li>
-										{{/if}}
 											{{/if}}
+
+											{{#if textboxNumber content}}
+                                                <li class="quesList">
+                                                    <input type="number"
+                                                           class="form-control input input-xxlarge numberType"
+                                                           id={{content}} name={{content}} value="">
+                                                </li>
+											{{/if}}
+
+											{{#if booleanTF content}}
+                                                <li class="quesList">
+                                                    <label class="boolY"><input type="radio" class="boolY"
+                                                                                id={{content}} name={{content}}
+                                                                                value="true"> &nbsp;True</label>
+                                                </li>
+                                                <li class="quesList">
+                                                    <label class="boolY"> <input type="radio" class="boolN"
+                                                                                 id={{content}} name={{content}}
+                                                                                 value="false"> &nbsp;False</label>
+                                                </li>
+											{{/if}}
+
+											{{#if singleSelect content}}
+												{{#each singleOptions content}}
+                                                    <li class="quesList">
+                                                        <label class="singleSelect"><input type="radio"
+                                                                                           class="singleSelect"
+                                                                                           id={{../content}}  name={{../content}}
+                                                                                           value={{this.value}}>
+                                                            &nbsp; {{this.description}}</label>
+                                                    </li>
+												{{/each}}
+                                                <li class="othersSpecify_single hide">
+                                                    <label class="othersSpecifyLabel">Please specify</label>
+                                                    <input type="text"
+                                                           class="form-control input input-xxlarge othersSpecify_single"
+                                                           id="othersSpecify_single" name="othersSpecify_single"
+                                                           value="">
+                                                </li>
+											{{/if}}
+
+											{{#if multipleSelect content}}
+												{{#each singleOptions content}}
+                                                    <li class="quesList">
+                                                        <label class="multipleSelect" id={{../content}}><input
+                                                                type="checkbox" class="multipleSelect"
+                                                                id={{../content}} name={{../content}}
+                                                                value={{this.value}}> &nbsp; {{this.description}}
+                                                        </label>
+                                                    </li>
+												{{/each}}
+                                                <li class="othersSpecify_multiple hide">
+                                                    <label class="othersSpecify_multipleLabel">Please specify</label>
+                                                    <input type="text"
+                                                           class="form-control input input-xxlarge othersSpecify_multiple"
+                                                           id="othersSpecify_multiple" name="othersSpecify_multiple"
+                                                           value="">
+                                                </li>
+											{{/if}}
+										{{/if}}
 									{{/if}}
 
                                 </div>
@@ -283,12 +293,13 @@
                                         </div>
                                         <div class="question">
 											{{#if displayQues contentType}}
-                                                <li class="question_content">
-                                                    <strong>{{displayQuesContents content}} :</strong>
+												{{#if checkAudience content}}
+                                                    <li class="question_content">
+                                                        <strong>{{displayQuesContents content}} :</strong>
 
-                                                </li>
-												{{surveyTextResponse content}}
-
+                                                    </li>
+													{{surveyTextResponse content}}
+												{{/if}}
 											{{/if}}
                                         </div>
                                     </div>
@@ -321,83 +332,87 @@
                                     </div>
                                     <div class="question">
 										{{#if displayQues contentType}}
-                                            <li>
-                                                <h5>{{displayQuesContents content}}</h5>
-                                            </li>
-
-
-											{{#if textboxString content}}
-                                                <li class="quesList">
-                                                    <input type="text"
-                                                           class="form-control input input-xxlarge stringType"
-                                                           id={{content}} name={{content}}
-                                                           value="{{surveyTextResponse content}}">
+											{{#if checkAudience content}}
+                                                <li>
+                                                    <h5>{{displayQuesContents content}}</h5>
                                                 </li>
-											{{/if}}
 
-											{{#if textboxNumber content}}
-                                                <li class="quesList">
-                                                    <input type="number"
-                                                           class="form-control input input-xxlarge numberType"
-                                                           id={{content}} name={{content}}
-                                                           value="{{surveyTextResponse content}}">
-                                                </li>
-											{{/if}}
 
-											{{#if booleanTF content}}
-                                                <li class="quesList">
-                                                    <label class="boolY"><input type="radio" class="bool"
-                                                                                id={{content}} name={{content}}
-                                                                                value="true" {{isChecked 'true'}}>
-                                                        &nbsp;True</label>
-                                                </li>
-                                                <li class="quesList">
-                                                    <label class="boolY"> <input type="radio" class="bool"
-                                                                                 id={{content}} name={{content}}
-                                                                                 value="false" {{isChecked 'false'}}>
-                                                        &nbsp;False</label>
-                                                </li>
-											{{/if}}
-
-											{{#if singleSelect content}}
-												{{#each singleOptions content}}
+												{{#if textboxString content}}
                                                     <li class="quesList">
-                                                        <label class="singleSelect" id={{../content}}><input
-                                                                type="radio" class="singleSelect"
-                                                                id={{../content}}  name={{../content}}
-                                                                value={{this.value}} {{isSelected this.value}}>
-                                                            &nbsp; {{this.description}} </label>
+                                                        <input type="text"
+                                                               class="form-control input input-xxlarge stringType"
+                                                               id={{content}} name={{content}}
+                                                               value="{{surveyTextResponse content}}">
                                                     </li>
-												{{/each}}
+												{{/if}}
 
-                                                <li class="othersSpecify_single hide">
-                                                    <label class="othersSpecifyLabel">Please specify</label>
-                                                    <input type="text"
-                                                           class="form-control input input-xxlarge othersSpecify_single"
-                                                           id="othersSpecify_single" name="othersSpecify_single"
-                                                           value="">
-                                                </li>
-												{{surveyTextResponse ../content}}
-											{{/if}}
-
-											{{#if multipleSelect content}}
-												{{#each singleOptions content}}
+												{{#if textboxNumber content}}
                                                     <li class="quesList">
-                                                        <label class="multipleSelect" id={{this.value}}><input
-                                                                type="checkbox" class='multipleSelect {{this.value}}'
-                                                                name={{../content}}
-                                                                        value={{this.value}}
-                                                                id={{../content}} {{isSelectedMultiple this.value}}>
-                                                            &nbsp; {{this.description}} </label>
+                                                        <input type="number"
+                                                               class="form-control input input-xxlarge numberType"
+                                                               id={{content}} name={{content}}
+                                                               value="{{surveyTextResponse content}}">
                                                     </li>
-												{{/each}}
-                                                <li class="othersSpecify_multiple hide">
-                                                    <label class="othersSpecify_multipleLabel">Please specify</label>
-                                                    <input type="text"
-                                                           class="form-control input input-xxlarge othersSpecify_multiple"
-                                                           id="othersSpecify_multiple" name="othersSpecify_multiple"
-                                                           value="">
-                                                </li>
+												{{/if}}
+
+												{{#if booleanTF content}}
+                                                    <li class="quesList">
+                                                        <label class="boolY"><input type="radio" class="bool"
+                                                                                    id={{content}} name={{content}}
+                                                                                    value="true" {{isChecked 'true'}}>
+                                                            &nbsp;True</label>
+                                                    </li>
+                                                    <li class="quesList">
+                                                        <label class="boolY"> <input type="radio" class="bool"
+                                                                                     id={{content}} name={{content}}
+                                                                                     value="false" {{isChecked 'false'}}>
+                                                            &nbsp;False</label>
+                                                    </li>
+												{{/if}}
+
+												{{#if singleSelect content}}
+													{{#each singleOptions content}}
+                                                        <li class="quesList">
+                                                            <label class="singleSelect" id={{../content}}><input
+                                                                    type="radio" class="singleSelect"
+                                                                    id={{../content}}  name={{../content}}
+                                                                    value={{this.value}} {{isSelected this.value}}>
+                                                                &nbsp; {{this.description}} </label>
+                                                        </li>
+													{{/each}}
+
+                                                    <li class="othersSpecify_single hide">
+                                                        <label class="othersSpecifyLabel">Please specify</label>
+                                                        <input type="text"
+                                                               class="form-control input input-xxlarge othersSpecify_single"
+                                                               id="othersSpecify_single" name="othersSpecify_single"
+                                                               value="">
+                                                    </li>
+													{{surveyTextResponse ../content}}
+												{{/if}}
+
+												{{#if multipleSelect content}}
+													{{#each singleOptions content}}
+                                                        <li class="quesList">
+                                                            <label class="multipleSelect" id={{this.value}}><input
+                                                                    type="checkbox"
+                                                                    class='multipleSelect {{this.value}}'
+                                                                    name={{../content}}
+                                                                            value={{this.value}}
+                                                                    id={{../content}} {{isSelectedMultiple this.value}}>
+                                                                &nbsp; {{this.description}} </label>
+                                                        </li>
+													{{/each}}
+                                                    <li class="othersSpecify_multiple hide">
+                                                        <label class="othersSpecify_multipleLabel">Please
+                                                            specify</label>
+                                                        <input type="text"
+                                                               class="form-control input input-xxlarge othersSpecify_multiple"
+                                                               id="othersSpecify_multiple" name="othersSpecify_multiple"
+                                                               value="">
+                                                    </li>
+												{{/if}}
 											{{/if}}
 										{{/if}}
                                     </div>
