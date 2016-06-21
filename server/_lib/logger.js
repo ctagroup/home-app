@@ -7,20 +7,20 @@ import winston from 'winston';
 logger = winston;
 Meteor.methods(
   {
-    logToServerConsoleLog: function(msg) {
-      logger.log("(CLIENT) "+msg);
+    logToServerConsoleLog(msg) {
+      logger.log(`(CLIENT) ${msg}`);
     },
-    logToServerConsoleDebug: function(msg) {
-      logger.debug("(CLIENT) "+msg);
+    logToServerConsoleDebug(msg) {
+      logger.debug(`(CLIENT) ${msg}`);
     },
-    logToServerConsoleInfo: function(msg) {
-      logger.info("(CLIENT) "+msg);
+    logToServerConsoleInfo(msg) {
+      logger.info(`(CLIENT) ${msg}`);
     },
-    logToServerConsoleWarn: function(msg) {
-      logger.warn("(CLIENT) "+msg);
+    logToServerConsoleWarn(msg) {
+      logger.warn(`(CLIENT) ${msg}`);
     },
-    logToServerConsoleError: function(msg) {
-      logger.error("(CLIENT) "+msg);
+    logToServerConsoleError(msg) {
+      logger.error(`(CLIENT) ${msg}`);
     },
   }
 );
