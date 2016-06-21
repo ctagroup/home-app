@@ -1,59 +1,76 @@
 /**
  * Created by udit on 14/12/15.
  */
-if ( typeof Accounts.onCreateUser != 'undefined' ) {
+if (typeof Accounts.onCreateUser !== 'undefined') {
+  Accounts.onCreateUser(
+    (options, user) => {
+      const userz = user;
 
-	Accounts.onCreateUser( function ( options, user ) {
+      if (userz.services) {
+        const service = _.keys(userz.services)[0];
+        let email;
+        switch (service) {
+          case 'password':
+            email = (userz.emails !== undefined) ? userz.emails.address : '';
+            break;
+          default:
+            email = userz.services[service].email;
+            break;
+        }
 
-		if ( user.services ) {
+        if (! email) {
+          return userz;
+        }
 
-			var service = _.keys( user.services )[0];
-			var email;
-			switch ( service ) {
-				case 'password':
-					email = ( user.emails != undefined ) ? user.emails.address : '';
-					break;
-				default:
-					email = user.services[service].email;
-					break;
-			}
+        // see if any existing user has this email address, otherwise create new
+        const existingUser = Meteor.users.findOne({ 'emails.address': email });
 
-			if ( ! email ) {
-				return user;
-			}
+        if (! existingUser) {
+          if (! userz.emails) {
+            userz.emails = [
+              {
+                address: email,
+                verified: true,
+              },
+            ];
+          }
+          return userz;
+        }
 
-			// see if any existing user has this email address, otherwise create new
-			var existingUser = Meteor.users.findOne( {'emails.address': email} );
+        // precaution, these will exist from accounts-password if used
+        if (! existingUser.services) {
+          existingUser.services = {
+            resume: {
+              loginTokens: [],
+            },
+          };
+        }
+        if (! existingUser.services.resume) {
+          existingUser.services.resume = { loginTokens: [] };
+        }
 
-			if ( ! existingUser ) {
-				if ( ! user.emails ) {
-					user.emails = [ { address: email, verified: true } ];
-				}
-				return user;
-			}
+        if (! existingUser.emails) {
+          existingUser.emails = [
+            {
+              address: email,
+              verified: true,
+            },
+          ];
+        }
 
-			// precaution, these will exist from accounts-password if used
-			if ( ! existingUser.services ) {
-				existingUser.services = {resume: {loginTokens: []}};
-			}
-			if ( ! existingUser.services.resume ) {
-				existingUser.services.resume = {loginTokens: []};
-			}
+        // copy accross new service info
+        existingUser.services[service] = userz.services[service];
+        if (userz.services.resume
+            && userz.services.resume.loginTokens && userz.services.resume.loginTokens[0]) {
+          existingUser.services.resume.loginTokens.push(userz.services.resume.loginTokens[0]);
+        }
 
-			if ( ! existingUser.emails ) {
-				existingUser.emails = [ { address: email, verified: true } ];
-			}
+        // even worse hackery
+        Meteor.users.remove({ _id: existingUser._id }); // remove existing record
+        return existingUser;                          // record is re-inserted
+      }
 
-			// copy accross new service info
-			existingUser.services[service] = user.services[service];
-			if ( user.services.resume && user.services.resume.loginTokens && user.services.resume.loginTokens[0] ) {
-				existingUser.services.resume.loginTokens.push( user.services.resume.loginTokens[0] );
-			}
-
-			// even worse hackery
-			Meteor.users.remove( {_id: existingUser._id} ); // remove existing record
-			return existingUser;                          // record is re-inserted
-		}
-	} );
-
+      return userz;
+    }
+  );
 }
