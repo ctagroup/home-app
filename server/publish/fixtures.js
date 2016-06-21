@@ -2,36 +2,33 @@
  * Created by kavyagautam on 5/18/16.
  */
 
-Meteor.startup(function() {
-	var messageData = [
-		{
-			name: "Joe Lipper",
-			content:  "Wow building a chat app with Meteor is so easy!"
-		},
-		{
-			name: "Mike Jewett",
-			content:  "Yeah wow! What a great framework. I can't wait to keep building this thing out!"
-		},
-		{
-			name: "Joe Lipper",
-			content:  "Hang in there -- we've only scratched the surface on this thing."
-		}
-	];
+Meteor.startup(() => {
+  const messageData = [{
+    name: 'Joe Lipper',
+    content: 'Wow building a chat app with Meteor is so easy!',
+  }, {
+    name: 'Mike Jewett',
+    content: 'Yeah wow! What a great framework. I can\'t wait to keep building this thing out!',
+  }, {
+    name: 'Joe Lipper',
+    content: 'Hang in there -- we\'ve only scratched the surface on this thing.',
+  }];
 
 
-	if (Messages.find().count() === 0) {
-		for (var i = 0; i < messageData.length; i++) {
-			Messages.insert({
-				                name: messageData[i].name,
-				                content:  messageData[i].content
-			                });
-		}
-	}
-} );
+  if (Messages.find().count() === 0) {
+    for (let i = 0; i < messageData.length; i ++) {
+      Messages.insert({
+        name: messageData[i].name,
+        content: messageData[i].content,
+      });
+    }
+  }
+});
 
-Meteor.publish("messages", function () {
-    if (typeof Messages == "undefined")
-        return;
-    console.log("from inside packages");
-    return Messages.find({})
+Meteor.publish('messages', () => {
+  if (typeof Messages === 'undefined') {
+    return null;
+  }
+
+  return Messages.find({});
 });

@@ -1,13 +1,16 @@
 {
-    "extends": "airbnb",
-    "installedESLint": true,
-    "plugins": [
-        "react"
-    ],
-	"env": {
-		"browser": true,
-		"es6": true,
-		"jquery": true,
-		"meteor": true
-	}
+  "extends": "airbnb",
+  "installedESLint": true,
+  "plugins": [
+    "react"
+  ],
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jquery": true,
+    "meteor": true
+  },
+  "globals": {
+    "Messages": true
+  }
 }
