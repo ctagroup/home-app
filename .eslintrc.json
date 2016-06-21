@@ -17,7 +17,8 @@
     "Sortable": true,
     "OAuth": true,
     "logger": true,
-    "moment": true
+    "moment": true,
+    "AdminConfig": true
   },
   "rules": {
     "no-underscore-dangle": [
