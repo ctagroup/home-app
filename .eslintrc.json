@@ -18,7 +18,13 @@
     "OAuth": true,
     "logger": true,
     "moment": true,
-    "AdminConfig": true
+    "AdminConfig": true,
+    "adminCollectionObject": true,
+    "AccountsTemplates": true,
+    "Roles": true,
+    "RouteController": true,
+    "HomeAppController": true,
+    "HomeAppSurveyorController": true
   },
   "rules": {
     "no-underscore-dangle": [
