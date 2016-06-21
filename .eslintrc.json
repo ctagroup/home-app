@@ -12,6 +12,17 @@
   },
   "globals": {
     "Messages": true,
-    "HMISAPI": true
+    "HMISAPI": true,
+    "clientInfo": true
+  },
+  "rules": {
+    "no-underscore-dangle": [
+      "error",
+      {
+        "allow": [
+          "_id"
+        ]
+      }
+    ]
   }
 }
