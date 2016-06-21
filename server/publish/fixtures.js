@@ -3,7 +3,7 @@
  */
 
 Meteor.startup(() => {
-  let messageData = [
+  const messageData = [
     {
       name: 'Joe Lipper',
       content: 'Wow building a chat app with Meteor is so easy!',
