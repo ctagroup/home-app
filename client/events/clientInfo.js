@@ -21,14 +21,13 @@ Template.createClient.events({
         var entryDate = tmpl.find('.entryDate').value;
         var exitDate = tmpl.find('.exitDate').value;
         var destination = tmpl.find('.destination_category').value;
-        var personalId = tmpl.find('.personalId').value;
         var householdId = tmpl.find('.householdId').value;
         var relationship = tmpl.find('.relationtoHoH_category').value;
         var loc = tmpl.find('.destination_category').value;
         var shelter = tmpl.find('.timeOnStreets_category').value;
 
 
-        Meteor.call("addClient", first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteranStatus,disablingConditions,residencePrior,entryDate,exitDate,destination,personalId,householdId,relationship,loc,shelter, function ( error, result ) {
+        Meteor.call("addClient", first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteranStatus,disablingConditions,residencePrior,entryDate,exitDate,destination,householdId,relationship,loc,shelter, function ( error, result ) {
             if ( error ) {
                 console.log(error);
             } else {
@@ -86,13 +85,12 @@ Template.editClient.events({
         var entryDate = tmpl.find('.entryDate').value;
         var exitDate = tmpl.find('.exitDate').value;
         var destination = tmpl.find('.destination_category').value;
-        var personalId = tmpl.find('.personalId').value;
         var householdId = tmpl.find('.householdId').value;
         var relationship = tmpl.find('.relationtoHoH_category').value;
         var loc = tmpl.find('.destination_category').value;
         var shelter = tmpl.find('.timeOnStreets_category').value;
 
-        Meteor.call("updateClient", tmpl.data._id, first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteranStatus,disablingConditions,residencePrior,entryDate,exitDate,destination,personalId,householdId,relationship,loc,shelter,function ( error, result ) {
+        Meteor.call("updateClient", tmpl.data._id, first_name,middle_name,last_name,suffix,ssn,dob,race,ethnicity,gender,veteranStatus,disablingConditions,residencePrior,entryDate,exitDate,destination,householdId,relationship,loc,shelter,function ( error, result ) {
             if ( error ) {
                 console.log(error);
             } else {
