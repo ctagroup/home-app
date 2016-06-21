@@ -9,6 +9,10 @@ Schemas.responses = new SimpleSchema( {
 		type: String,
 		max: 256
 	},
+	audience: {
+		type: String,
+		max: 256
+	},
 	surveyID: {
 		type: String,
 		max: 256

@@ -102,16 +102,7 @@ Template.LogSurveyResponse.helpers({
 
 	},
 	checkAudience:function(content){
-		var questionCollection = adminCollectionObject("questions");
-		var questions = questionCollection.find({_id:content}).fetch();
-		console.log("dfsfsdFS"+Router.current().params.query.audience);
-		for(var i in questions){
-			if(Router.current().params.query.audience==questions[i].audience)
-				return true;
-			else
-				return false
-		}
-		return false;
+		return chkAudience(content);
 	},
 	textboxString: function(contentQuesId){
 		var questionCollection = adminCollectionObject("questions");
@@ -232,7 +223,9 @@ var getQName=function(getQuesName){
 };
 var qIDs, sections, survey_id,multiple_responses;
 Template.LogSurveyView.helpers({
-
+	checkAudience:function(content){
+		return chkAudience(content);
+	},
 	surveyQuesContents: function (survey_id) {
 		var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
 		return surveyQuestionsMasterCollection.find({surveyID:survey_id}, {sort: {order: 1}}).fetch();
@@ -632,4 +625,15 @@ var isSkipped=function(sectionID){
 		}
 	} );
 	return status;
+};
+var chkAudience=function(content){
+	var questionCollection = adminCollectionObject("questions");
+	var questions = questionCollection.find({_id:content}).fetch();
+	for(var i in questions){
+		if(Router.current().params.query.audience==questions[i].audience)
+			return true;
+		else
+			return false
+	}
+	return false;
 };

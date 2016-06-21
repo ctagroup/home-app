@@ -123,30 +123,30 @@ var saveSurvey = function (status, tmpl) {
 			}
 		}
 	}
-	// if (status == "Submit") {
-	// 	Meteor.call("addSurveyResponse", tmpl.data._id, Router.current().params.query.clientID, Meteor.userId(), mainSectionObject, "Completed", function (error, result) {
-	// 		if (error) {
-	// 			console.log(error);
-	// 		} else {
-	// 			console.log(result);
-	//
-	// 		}
-	// 	});
-	// 	alert("Survey Saved!");
-	// } else if (status == "Paused") {
-	// 	Meteor.call("addSurveyResponse", tmpl.data._id, Router.current().params.query.clientID, Meteor.userId(), mainSectionObject, "Paused", function (error, result) {
-	//
-	// 		if (error) {
-	// 			console.log(error);
-	// 		} else {
-	// 			console.log(result);
-	// 			response_id = result;
-	// 			console.log("RID: " + response_id);
-	//
-	// 		}
-	// 	});
-	// 	alert("Survey Paused!");
-	// }
+	if (status == "Submit") {
+		Meteor.call("addSurveyResponse", tmpl.data._id, Router.current().params.query.clientID, Router.current().params.query.audience, Meteor.userId(), mainSectionObject, "Completed", function (error, result) {
+			if (error) {
+				console.log(error);
+			} else {
+				console.log(result);
+
+			}
+		});
+		alert("Survey Saved!");
+	} else if (status == "Paused") {
+		Meteor.call("addSurveyResponse", tmpl.data._id, Router.current().params.query.clientID,Router.current().params.query.audience, Meteor.userId(), mainSectionObject, "Paused", function (error, result) {
+
+			if (error) {
+				console.log(error);
+			} else {
+				console.log(result);
+				response_id = result;
+				console.log("RID: " + response_id);
+
+			}
+		});
+		alert("Survey Paused!");
+	}
 	Router.go('surveyStatus');
 };
 var getQuestionName = function (getQuesName) {
@@ -214,37 +214,39 @@ var savePausedSurvey = function (status, tmpl) {
 				for (var j in sectionQuestions) {
 					var stype = sectionQuestions[j].contentType;
 					if (stype != "labels") {
-						var question = getQuestionName(sectionQuestions[j].content);
-						var questionObject = {};
-						var answer = "";
-						if ((question.dataType == "Single Select") || (question.dataType == "Boolean")) {
-							answer = $('input:radio[name=' + question._id + ']:checked').val();
-						}
-						else if (question.dataType == "Multiple Select") {
-							$("input:checkbox[name=" + question._id + "]:checked").each(function () {
-								answer += $(this).val() + '|';
-							});
-							answer = answer.substr(0, answer.length - 1);
-						} else {
-							answer = tmpl.find('#' + question._id).value;
-						}
-
-						if ((answer == null) || (answer == "")) {
-							if (status == "Pause_Submit") {
-								if ($('#' + sectionQuestions[j].sectionID).is(':checked')) {
-									questionObject["questionID"] = question._id;
-									questionObject["answer"] = answer;
-									answerObject.push(questionObject);
-								}
-								else {
-									alert(surveyDocument[i].content + " section is incomplete.Please fill all the fields in this section");
-									return;
-								}
+						if(checkAudience(sectionQuestions[j].content)) {
+							var question = getQuestionName(sectionQuestions[j].content);
+							var questionObject = {};
+							var answer = "";
+							if ((question.dataType == "Single Select") || (question.dataType == "Boolean")) {
+								answer = $('input:radio[name=' + question._id + ']:checked').val();
 							}
-						} else {
-							questionObject["questionID"] = question._id;
-							questionObject["answer"] = answer;
-							answerObject.push(questionObject);
+							else if (question.dataType == "Multiple Select") {
+								$("input:checkbox[name=" + question._id + "]:checked").each(function () {
+									answer += $(this).val() + '|';
+								});
+								answer = answer.substr(0, answer.length - 1);
+							} else {
+								answer = tmpl.find('#' + question._id).value;
+							}
+
+							if ((answer == null) || (answer == "")) {
+								if (status == "Pause_Submit") {
+									if ($('#' + sectionQuestions[j].sectionID).is(':checked')) {
+										questionObject["questionID"] = question._id;
+										questionObject["answer"] = answer;
+										answerObject.push(questionObject);
+									}
+									else {
+										alert(surveyDocument[i].content + " section is incomplete.Please fill all the fields in this section");
+										return;
+									}
+								}
+							} else {
+								questionObject["questionID"] = question._id;
+								questionObject["answer"] = answer;
+								answerObject.push(questionObject);
+							}
 						}
 					}
 				}
