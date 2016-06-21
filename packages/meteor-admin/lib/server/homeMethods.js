@@ -243,9 +243,9 @@ Meteor.methods(
 			surveyQuestionsMasterCollection.remove({surveyTitle:surveyCopyTitle});
 		},
 
-		addSurveyResponse:function(surveyID,clientID,userID,mainSectionObject,status){
+		addSurveyResponse:function(surveyID,clientID,audience,userID,mainSectionObject,status){
 			var responsesCollection = adminCollectionObject("responses");
-			var responseRecords = responsesCollection.insert({clientID:clientID, surveyID:surveyID,userID:userID,responsestatus:status,section:mainSectionObject});
+			var responseRecords = responsesCollection.insert({clientID:clientID,audience:audience, surveyID:surveyID,userID:userID,responsestatus:status,section:mainSectionObject});
 			return responseRecords;
 		},
 		updateSurveyResponse:function(responseID,surveyID,clientID,userID,mainSectionObject,status){

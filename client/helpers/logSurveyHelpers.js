@@ -17,7 +17,8 @@ var sects;
 Template.LogSurveyResponse.helpers({
 	surveyQuesContents: function(){
 		var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
-		return surveyQuestionsMasterCollection.find({surveyID:Router.current().params._id}, {sort: {order: 1}}).fetch();
+		var surveyElements= surveyQuestionsMasterCollection.find({surveyID:Router.current().params._id}, {sort: {order: 1}}).fetch();
+		return surveyContents(surveyElements,null);
 	},
 	clientName:function(){
 		var clientCollections=adminCollectionObject('clientInfo');
@@ -99,6 +100,9 @@ Template.LogSurveyResponse.helpers({
 		}
 		return qNames;
 
+	},
+	checkAudience:function(content){
+		return chkAudience(content);
 	},
 	textboxString: function(contentQuesId){
 		var questionCollection = adminCollectionObject("questions");
@@ -219,10 +223,17 @@ var getQName=function(getQuesName){
 };
 var qIDs, sections, survey_id,multiple_responses;
 Template.LogSurveyView.helpers({
-
+	checkAudience:function(content){
+		return chkAudience(content);
+	},
 	surveyQuesContents: function (survey_id) {
+		var responseCollection = adminCollectionObject("responses");
+		var responseRecords = responseCollection.find({_id: Router.current().params._id}).fetch();
+		for(var i in responseRecords)
+			var surveyid=responseRecords[i].surveyID;
 		var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
-		return surveyQuestionsMasterCollection.find({surveyID:survey_id}, {sort: {order: 1}}).fetch();
+		var surveyElements=surveyQuestionsMasterCollection.find({surveyID:surveyid}, {sort: {order: 1}}).fetch();
+		return surveyContents(surveyElements,surveyid);
 	},
 	surveyTitle:function(surveyID){
 		var surveyCollection = adminCollectionObject("surveys");
@@ -619,4 +630,49 @@ var isSkipped=function(sectionID){
 		}
 	} );
 	return status;
+};
+var chkAudience=function(content){
+	var questionCollection = adminCollectionObject("questions");
+	var questions = questionCollection.find({_id:content}).fetch();
+	for(var i in questions){
+		if(Router.current().params.query.audience==questions[i].audience)
+			return true;
+		else
+			return false
+	}
+	return false;
+};
+var checkSectionAudience=function(sid,status){
+	var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
+	var questionCollection = adminCollectionObject("questions");
+	if(status==null)
+		var surveyElements= surveyQuestionsMasterCollection.find({surveyID:Router.current().params._id,sectionID:sid,contentType:"question"}).fetch();
+	else{
+		var surveyElements= surveyQuestionsMasterCollection.find({surveyID:status,sectionID:sid,contentType:"question"}).fetch();
+	}
+
+	var count=0;
+	for(var i in surveyElements){
+		var question=questionCollection.find({_id:surveyElements[i].content}).fetch();
+		for(var j in question)
+		if(question[j].audience==Router.current().params.query.audience)
+			count++;
+	}
+	return (count>0)?true:false;
+
+};
+var surveyContents=function(surveyElements,status){
+	var sectionID=[];
+	for(var i in surveyElements){
+		if(surveyElements[i].contentType=="section"){
+			if(checkSectionAudience(surveyElements[i]._id,status)){
+				sectionID.push(surveyElements[i]);
+			}
+		}else{
+			if(checkSectionAudience(surveyElements[i].sectionID,status)){
+				sectionID.push(surveyElements[i]);
+			}
+		}
+	}
+	return sectionID;
 };
