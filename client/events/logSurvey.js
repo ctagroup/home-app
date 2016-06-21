@@ -5,7 +5,12 @@ Template.LogSurvey.events({
 	'click .nextLogSurvey': function (evt, tmpl) {
 		var surveyID = tmpl.find('.surveyList').value;
 		var clientID = tmpl.find('.clientList').value;
-		Router.go('LogSurveyResponse', {_id: surveyID}, {query: 'clientID=' + clientID});
+		Router.go('LogSurveyResponse', {_id: surveyID}, {
+			query: {
+				'clientID': clientID,
+				'audience': tmpl.find('#q_audience').value
+			}
+		});
 	}
 });
 var sec_id, response_id;
@@ -71,37 +76,38 @@ var saveSurvey = function (status, tmpl) {
 				for (var j in sectionQuestions) {
 					var stype = sectionQuestions[j].contentType;
 					if (stype != "labels") {
-						var question = getQuestionName(sectionQuestions[j].content);
-						var questionObject = {};
-						var answer = "";
-						if ((question.dataType == "Single Select") || (question.dataType == "Boolean")) {
-							answer = $('input:radio[name=' + question._id + ']:checked').val();
-						}
-						else if (question.dataType == "Multiple Select") {
-							$("input:checkbox[name=" + question._id + "]:checked").each(function () {
-								answer += $(this).val() + '|';
-							});
-							answer = answer.substr(0, answer.length - 1);
-						} else {
-							answer = tmpl.find('#' + question._id).value;
-						}
-
-						if ((answer == null) || (answer == "")) {
-							if (status == "Submit") {
-								if ($('#' + sectionQuestions[j].sectionID).is(':checked')) {
-									questionObject["questionID"] = question._id;
-									questionObject["answer"] = answer;
-									answerObject.push(questionObject);
-								}
-								else {
-									alert(surveyDocument[i].content + " section is incomplete.Please fill all the fields in this section");
-									return;
-								}
+						if (checkAudience(sectionQuestions[j].content)) {
+							var question = getQuestionName(sectionQuestions[j].content);
+							var questionObject = {};
+							var answer = "";
+							if ((question.dataType == "Single Select") || (question.dataType == "Boolean")) {
+								answer = $('input:radio[name=' + question._id + ']:checked').val();
 							}
-						} else {
-							questionObject["questionID"] = question._id;
-							questionObject["answer"] = answer;
-							answerObject.push(questionObject);
+							else if (question.dataType == "Multiple Select") {
+								$("input:checkbox[name=" + question._id + "]:checked").each(function () {
+									answer += $(this).val() + '|';
+								});
+								answer = answer.substr(0, answer.length - 1);
+							} else {
+								answer = tmpl.find('#' + question._id).value;
+							}
+							if ((answer == null) || (answer == "")) {
+								if (status == "Submit") {
+									if ($('#' + sectionQuestions[j].sectionID).is(':checked')) {
+										questionObject["questionID"] = question._id;
+										questionObject["answer"] = answer;
+										answerObject.push(questionObject);
+									}
+									else {
+										alert(surveyDocument[i].content + " section is incomplete.Please fill all the fields in this section");
+										return;
+									}
+								}
+							} else {
+								questionObject["questionID"] = question._id;
+								questionObject["answer"] = answer;
+								answerObject.push(questionObject);
+							}
 						}
 					}
 				}
@@ -117,7 +123,7 @@ var saveSurvey = function (status, tmpl) {
 		}
 	}
 	if (status == "Submit") {
-		Meteor.call("addSurveyResponse", tmpl.data._id, Router.current().params.query.clientID, Meteor.userId(), mainSectionObject, "Completed", function (error, result) {
+		Meteor.call("addSurveyResponse", tmpl.data._id, Router.current().params.query.clientID, Router.current().params.query.audience, Meteor.userId(), mainSectionObject, "Completed", function (error, result) {
 			if (error) {
 				console.log(error);
 			} else {
@@ -127,7 +133,7 @@ var saveSurvey = function (status, tmpl) {
 		});
 		alert("Survey Saved!");
 	} else if (status == "Paused") {
-		Meteor.call("addSurveyResponse", tmpl.data._id, Router.current().params.query.clientID, Meteor.userId(), mainSectionObject, "Paused", function (error, result) {
+		Meteor.call("addSurveyResponse", tmpl.data._id, Router.current().params.query.clientID,Router.current().params.query.audience, Meteor.userId(), mainSectionObject, "Paused", function (error, result) {
 
 			if (error) {
 				console.log(error);
@@ -147,6 +153,13 @@ var getQuestionName = function (getQuesName) {
 	var questions = questionCollection.find({_id: getQuesName}, {name: 1, _id: 0}).fetch();
 	for (var k in questions) {
 		return questions[k];
+	}
+};
+var checkAudience = function (qid) {
+	var questionCollection = adminCollectionObject("questions");
+	var questions = questionCollection.find({_id: qid}, {audience: 1, _id: 0}).fetch();
+	for (var k in questions) {
+		return questions[k].audience == Router.current().params.query.audience;
 	}
 };
 
@@ -200,37 +213,39 @@ var savePausedSurvey = function (status, tmpl) {
 				for (var j in sectionQuestions) {
 					var stype = sectionQuestions[j].contentType;
 					if (stype != "labels") {
-						var question = getQuestionName(sectionQuestions[j].content);
-						var questionObject = {};
-						var answer = "";
-						if ((question.dataType == "Single Select") || (question.dataType == "Boolean")) {
-							answer = $('input:radio[name=' + question._id + ']:checked').val();
-						}
-						else if (question.dataType == "Multiple Select") {
-							$("input:checkbox[name=" + question._id + "]:checked").each(function () {
-								answer += $(this).val() + '|';
-							});
-							answer = answer.substr(0, answer.length - 1);
-						} else {
-							answer = tmpl.find('#' + question._id).value;
-						}
-
-						if ((answer == null) || (answer == "")) {
-							if (status == "Pause_Submit") {
-								if ($('#' + sectionQuestions[j].sectionID).is(':checked')) {
-									questionObject["questionID"] = question._id;
-									questionObject["answer"] = answer;
-									answerObject.push(questionObject);
-								}
-								else {
-									alert(surveyDocument[i].content + " section is incomplete.Please fill all the fields in this section");
-									return;
-								}
+						if(checkAudience(sectionQuestions[j].content)) {
+							var question = getQuestionName(sectionQuestions[j].content);
+							var questionObject = {};
+							var answer = "";
+							if ((question.dataType == "Single Select") || (question.dataType == "Boolean")) {
+								answer = $('input:radio[name=' + question._id + ']:checked').val();
 							}
-						} else {
-							questionObject["questionID"] = question._id;
-							questionObject["answer"] = answer;
-							answerObject.push(questionObject);
+							else if (question.dataType == "Multiple Select") {
+								$("input:checkbox[name=" + question._id + "]:checked").each(function () {
+									answer += $(this).val() + '|';
+								});
+								answer = answer.substr(0, answer.length - 1);
+							} else {
+								answer = tmpl.find('#' + question._id).value;
+							}
+
+							if ((answer == null) || (answer == "")) {
+								if (status == "Pause_Submit") {
+									if ($('#' + sectionQuestions[j].sectionID).is(':checked')) {
+										questionObject["questionID"] = question._id;
+										questionObject["answer"] = answer;
+										answerObject.push(questionObject);
+									}
+									else {
+										alert(surveyDocument[i].content + " section is incomplete.Please fill all the fields in this section");
+										return;
+									}
+								}
+							} else {
+								questionObject["questionID"] = question._id;
+								questionObject["answer"] = answer;
+								answerObject.push(questionObject);
+							}
 						}
 					}
 				}
@@ -269,4 +284,5 @@ var savePausedSurvey = function (status, tmpl) {
 		});
 		alert("Survey Paused!");
 	}
+	Router.go('surveyStatus');
 };
