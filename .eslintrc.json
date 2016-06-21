@@ -11,6 +11,7 @@
     "meteor": true
   },
   "globals": {
-    "Messages": true
+    "Messages": true,
+    "HMISAPI": true
   }
 }

@@ -3,10 +3,10 @@
  */
 
 Meteor.methods(
-	{
-		getHMISClient: function ( clientId ) {
-			var client = HMISAPI.getClient(clientId);
-			return client;
-		}
-	}
+  {
+    getHMISClient(clientId) {
+      const client = HMISAPI.getClient(clientId);
+      return client;
+    },
+  }
 );
