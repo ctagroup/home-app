@@ -27,7 +27,7 @@ Meteor Up is used to deploy this app. Ref: https://github.com/arunoda/meteor-up/
 
 - `./deploy/cta-home-aws`
 	- This is for AWS server for http://home.ctagroup.org
-	- This server is behind firewall. Following are the user credentials.
+	- This server is behind http auth. Following are the user credentials.
 	- `easyengine / bLGMpn`
 	- You need to have CTA AWS server's `home.pem` key.
 	- Once you have it, rename it and put the file under `~/.ssh/home.pem` path. Because it is configured this way for deploy config.
