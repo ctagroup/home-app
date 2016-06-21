@@ -1,248 +1,274 @@
 /**
  * Created by udit on 08/04/16.
  */
-var querystring = require('querystring');
+const querystring = require('querystring');
 
 HMISAPI = {
-	isJSON: function (str) {
-		try {
-			JSON.parse(str);
-			return true;
-		} catch (e) {
-			return false;
-		}
-	},
-	renewAccessToken: function (refreshToken) {
+  isJSON(str) {
+    try {
+      JSON.parse(str);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  },
+  renewAccessToken(refreshToken) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
 
-		var config = ServiceConfiguration.configurations.findOne({service: 'HMIS'});
-		if (!config)
-			throw new ServiceConfiguration.ConfigError();
+    let responseContent = '';
+    try {
+      // Request an access token
+      const urlPath = `${config.hmisAPIEndpoints.oauthBaseUrl}${config.hmisAPIEndpoints.token}`;
+      const queryParams = {
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken,
+        redirect_uri: OAuth._redirectUri('HMIS', config),
+      };
 
-		var responseContent = '';
-		try {
-			// Request an access token
-			responseContent = HTTP.post(
-				config.hmisAPIEndpoints.oauthBaseUrl + config.hmisAPIEndpoints.token +
-				"?grant_type=refresh_token" +
-				"&refresh_token=" + refreshToken +
-				"&redirect_uri=" + OAuth._redirectUri('HMIS', config), {
-					headers: {
-						"X-HMIS-TrustedApp-Id": config.appId,
-						"Authorization": new Buffer(config.appId+":"+config.appSecret || '').toString('base64'),
-						"Accept": "application/json",
-						"Content-Type": "application/json"
-					},
-					npmRequestOptions: {
-						rejectUnauthorized: false // TODO remove when deploy
-					}
-				}).content;
-		} catch (err) {
-			throw _.extend(new Error("Failed to complete OAuth handshake with HMIS. " + err.message),
-			               {response: err.response});
-		}
+      const url = `${urlPath}?${querystring.stringify(queryParams)}`;
+      const authorization = new Buffer(`${config.appId}:${config.appSecret}` || '');
 
-		// If 'responseContent' parses as JSON, it is an error.
-		// XXX which hmis error causes this behvaior?
-		if (!this.isJSON(responseContent)) {
-			throw new Error("Failed to complete OAuth handshake with HMIS. " + responseContent);
-		}
+      responseContent = HTTP.post(url, {
+        headers: {
+          'X-HMIS-TrustedApp-Id': config.appId,
+          Authorization: authorization.toString('base64'),
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        npmRequestOptions: {
+          rejectUnauthorized: false, // TODO remove when deploy
+        },
+      }).content;
+    } catch (err) {
+      throw _.extend(
+        new Error(`Failed to complete OAuth handshake with HMIS. ${err.message}`),
+        { response: err.response }
+      );
+    }
 
-		// Success!  Extract the hmis access token and expiration
-		// time from the response
-		var parsedResponse = JSON.parse(responseContent);
-		var hmisAccessToken = parsedResponse.oAuthAuthorization.accessToken;
-		var hmisExpires = parsedResponse.oAuthAuthorization.expiresIn;
-		var hmisRefreshToken = parsedResponse.oAuthAuthorization.refreshToken;
+    // If 'responseContent' parses as JSON, it is an error.
+    // XXX which hmis error causes this behvaior?
+    if (! this.isJSON(responseContent)) {
+      throw new Error(`Failed to complete OAuth handshake with HMIS. ${responseContent}`);
+    }
 
-		if (!hmisAccessToken) {
-			throw new Error("Failed to complete OAuth handshake with hmis " +
-			                "-- can't find access token in HTTP response. " + responseContent);
-		}
-		return {
-			accessToken: hmisAccessToken,
-			expiresAt: hmisExpires,
-			refreshToken: hmisRefreshToken
-		};
-	},
-	getCurrentAccessToken: function () {
-		var user = Meteor.user();
-		var accessToken = '';
-		if ( user && user.services && user.services.HMIS && user.services.HMIS.accessToken && user.services.HMIS.expiresAt ) {
-			var expiresAt = user.services.HMIS.expiresAt;
-			var currentTimestamp = new Date().getTime();
+    // Success!  Extract the hmis access token and expiration
+    // time from the response
+    const parsedResponse = JSON.parse(responseContent);
+    const hmisAccessToken = parsedResponse.oAuthAuthorization.accessToken;
+    const hmisExpires = parsedResponse.oAuthAuthorization.expiresIn;
+    const hmisRefreshToken = parsedResponse.oAuthAuthorization.refreshToken;
 
-			if ( expiresAt > currentTimestamp ) {
-				accessToken = user.services.HMIS.accessToken;
-			} else if ( user.services.HMIS.refreshToken ) {
-				var newTokens = this.renewAccessToken( user.services.HMIS.refreshToken );
-				Meteor.users.update(
-					{
-						_id: user._id
-					},
-					{
-						$set: {
-							'services.HMIS.accessToken': newTokens.accessToken,
-							'services.HMIS.expiresAt': newTokens.expiresAt,
-							'services.HMIS.refreshToken': newTokens.refreshToken
-						}
-					}
-				);
-				accessToken = newTokens.accessToken;
-			} else {
-				throw _.extend( new Error( "No valid refresh token for HMIS." ) );
-			}
-		} else {
-			throw _.extend( new Error( "No valid access token for HMIS." ) );
-		}
-		return accessToken;
-	},
-	createClient: function ( client ) {
-		var config = ServiceConfiguration.configurations.findOne({service: 'HMIS'});
-		if (!config)
-			throw new ServiceConfiguration.ConfigError();
+    if (! hmisAccessToken) {
+      throw new Error(
+        /* eslint-disable */
+        `Failed to complete OAuth handshake with hmis -- can\'t find access token in HTTP response. ${responseContent}`
+        /* eslint-enable */
+      );
+    }
+    return {
+      accessToken: hmisAccessToken,
+      expiresAt: hmisExpires,
+      refreshToken: hmisRefreshToken,
+    };
+  },
+  getCurrentAccessToken() {
+    const user = Meteor.user();
+    let accessToken = '';
+    if (user && user.services && user.services.HMIS
+        && user.services.HMIS.accessToken && user.services.HMIS.expiresAt) {
+      const expiresAt = user.services.HMIS.expiresAt;
+      const currentTimestamp = new Date().getTime();
 
-		var accessToken = this.getCurrentAccessToken();
+      if (expiresAt > currentTimestamp) {
+        accessToken = user.services.HMIS.accessToken;
+      } else if (user.services.HMIS.refreshToken) {
+        const newTokens = this.renewAccessToken(user.services.HMIS.refreshToken);
+        Meteor.users.update(
+          {
+            _id: user._id,
+          },
+          {
+            $set: {
+              'services.HMIS.accessToken': newTokens.accessToken,
+              'services.HMIS.expiresAt': newTokens.expiresAt,
+              'services.HMIS.refreshToken': newTokens.refreshToken,
+            },
+          }
+        );
+        accessToken = newTokens.accessToken;
+      } else {
+        throw _.extend(new Error('No valid refresh token for HMIS.'));
+      }
+    } else {
+      throw _.extend(new Error('No valid access token for HMIS.'));
+    }
+    return accessToken;
+  },
+  createClient(client) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
 
-		var body = {
-			"client": {
-				"firstName": client.firstName,
-				"middleName": client.middleName,
-				"lastName": client.lastName,
-				"nameSuffix": client.suffix,
-				"nameDataQuality": 1,
-				"ssn": client.ssn,
-				"ssnDataQuality": 1,
-				"dob": moment(client.dob).format('x'),
-				"dobDataQuality": 1,
-				"race": client.race,
-				"ethnicity": client.ethnicity,
-				"gender": client.gender,
-				"otherGender": "Test",
-				"veteranStatus": client.veteranStatus
-			}
-		};
+    const accessToken = this.getCurrentAccessToken();
 
-		try {
-			var response = HTTP.post(
-				config.hmisAPIEndpoints.clientBaseUrl + config.hmisAPIEndpoints.clients, {
-					data: body,
-					headers: {
-						"X-HMIS-TrustedApp-Id": config.appId,
-						"Authorization": "HMISUserAuth session_token="+accessToken,
-						"Accept": "application/json",
-						"Content-Type": "application/json"
-					},
-					npmRequestOptions: {
-						rejectUnauthorized: false // TODO remove when deploy
-					}
-				}).data;
+    const body = {
+      client: {
+        firstName: client.firstName,
+        middleName: client.middleName,
+        lastName: client.lastName,
+        nameSuffix: client.suffix,
+        nameDataQuality: 1,
+        ssn: client.ssn,
+        ssnDataQuality: 1,
+        dob: moment(client.dob).format('x'),
+        dobDataQuality: 1,
+        race: client.race,
+        ethnicity: client.ethnicity,
+        gender: client.gender,
+        otherGender: 'Test', // TODO - check with Javier for what to pass in Other Gender
+        veteranStatus: client.veteranStatus,
+      },
+    };
 
-			return response.client.clientId;
-		} catch (err) {
-			// throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
-			//                {response: err.response});
-			console.log("Failed to create client in HMIS. " + err.message);
-			console.log(err.response);
-			return false;
-		}
+    try {
+      const response = HTTP.post(
+        config.hmisAPIEndpoints.clientBaseUrl + config.hmisAPIEndpoints.clients, {
+          data: body,
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          npmRequestOptions: {
+            rejectUnauthorized: false, // TODO remove when deploy
+          },
+        }
+      ).data;
 
-	},
-	getClient: function ( clientId ) {
-		var config = ServiceConfiguration.configurations.findOne({service: 'HMIS'});
-		if (!config)
-			throw new ServiceConfiguration.ConfigError();
+      return response.client.clientId;
+    } catch (err) {
+      // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
+      //                {response: err.response});
+      logger.log(`Failed to create client in HMIS. ${err.message}`);
+      logger.log(err.response);
+      return false;
+    }
+  },
+  getClient(clientId) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
 
-		var accessToken = this.getCurrentAccessToken();
+    const accessToken = this.getCurrentAccessToken();
 
-		try {
-			var response = HTTP.get(
-				config.hmisAPIEndpoints.clientBaseUrl + config.hmisAPIEndpoints.clients + clientId, {
-					headers: {
-						"X-HMIS-TrustedApp-Id": config.appId,
-						"Authorization": "HMISUserAuth session_token="+accessToken,
-						"Accept": "application/json",
-						"Content-Type": "application/json"
-					},
-					npmRequestOptions: {
-						rejectUnauthorized: false // TODO remove when deploy
-					}
-				}).data;
+    try {
+      const response = HTTP.get(
+        config.hmisAPIEndpoints.clientBaseUrl + config.hmisAPIEndpoints.clients + clientId, {
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          npmRequestOptions: {
+            rejectUnauthorized: false, // TODO remove when deploy
+          },
+        }
+      ).data;
 
-			return response.client;
-		} catch (err) {
-			// throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
-			//                {response: err.response});
-			console.log("Failed to get client info from HMIS. " + err.message);
-			console.log(err.response);
-			return false;
-		}
-	},
-	searchClient: function( query, limit ) {
+      return response.client;
+    } catch (err) {
+      // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
+      //                {response: err.response});
+      logger.log(`Failed to get client info from HMIS. ${err.message}`);
+      logger.log(err.response);
+      return false;
+    }
+  },
+  searchClient(query, limit) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
 
-		var config = ServiceConfiguration.configurations.findOne({service: 'HMIS'});
-		if (!config)
-			throw new ServiceConfiguration.ConfigError();
+    const accessToken = this.getCurrentAccessToken();
 
-		var clients = new Array();
+    const params = {
+      q: query,
+      maxItems: limit,
+    };
 
-		var accessToken = this.getCurrentAccessToken();
+    const baseUrl = config.hmisAPIEndpoints.clientBaseUrl;
+    const searchClientPath = config.hmisAPIEndpoints.searchClient;
+    const urlPah = `${baseUrl}${searchClientPath}`;
+    const url = `${urlPah}?${querystring.stringify(params)}`;
 
-		var params = {
-			q: query,
-			maxItems: limit
-		};
+    try {
+      const clients = [];
+      const response = HTTP.get(url, {
+        headers: {
+          'X-HMIS-TrustedApp-Id': config.appId,
+          Authorization: `HMISUserAuth session_token=${accessToken}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        npmRequestOptions: {
+          rejectUnauthorized: false, // TODO remove when deploy
+        },
+      }).data;
 
-		try {
-			var response = HTTP.get(
-				config.hmisAPIEndpoints.clientBaseUrl + config.hmisAPIEndpoints.searchClient +
-				"?"+querystring.stringify(params), {
-					headers: {
-						"X-HMIS-TrustedApp-Id": config.appId,
-						"Authorization": "HMISUserAuth session_token="+accessToken,
-						"Accept": "application/json",
-						"Content-Type": "application/json"
-					},
-					npmRequestOptions: {
-						rejectUnauthorized: false // TODO remove when deploy
-					}
-				}).data;
-		} catch (err) {
-			// throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
-			//                {response: err.response});
-			console.log("Failed to search clients in HMIS. " + err.message);
-			console.log(err.response);
-			return [];
-		}
+      const clientsReponse = response.searchResults.items;
+      for (let i = 0; i < clientsReponse.length; i++) {
+        clients.push(clientsReponse[i]);
+      }
 
-		var clientsReponse = response.searchResults.items;
-		for (client in clientsReponse) {
-			clients.push(clientsReponse[client]);
-		}
+      return clients;
+    } catch (err) {
+      // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
+      //                {response: err.response});
+      logger.log(`Failed to search clients in HMIS. ${err.message}`);
+      logger.log(err.response);
+      return [];
+    }
+  },
+  postQuestionAnswer(category, data) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
 
-		return clients;
-	},
-	postQuestionAnswer: function(category, data){
-		var config = ServiceConfiguration.configurations.findOne({service: 'HMIS'});
-		if (!config)
-			throw new ServiceConfiguration.ConfigError();
+    const accessToken = this.getCurrentAccessToken();
+    let response = '';
 
-		var accessToken = this.getCurrentAccessToken();
+    try {
+      response = HTTP.post(
+        config.hmisAPIEndpoints.clientBaseUrl + config.hmisAPIEndpoints[category], {
+          data,
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          npmRequestOptions: {
+            rejectUnauthorized: false, // TODO remove when deploy
+          },
+        }
+      ).data;
+    } catch (err) {
+      throw _.extend(
+        new Error(`Failed to post answers to HMIS. ${err.message}`),
+        { response: err.response }
+      );
+    }
 
-		try {
-			var response = HTTP.post( config.hmisAPIEndpoints.clientBaseUrl + config.hmisAPIEndpoints[category], {
-				headers: {
-					"X-HMIS-TrustedApp-Id": config.appId,
-					"Authorization": "HMISUserAuth session_token="+accessToken,
-					"Accept": "application/json",
-					"Content-Type": "application/json"
-				},
-				npmRequestOptions: {
-					rejectUnauthorized: false // TODO remove when deploy
-				}
-			} ).data;
-		} catch(err) {
-			throw _.extend(new Error("Failed to post answers to HMIS. " + err.message),
-			               {response: err.response});
-		}
-	}
+    return response;
+  },
 };
