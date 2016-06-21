@@ -76,7 +76,6 @@ var saveSurvey = function (status, tmpl) {
 				for (var j in sectionQuestions) {
 					var stype = sectionQuestions[j].contentType;
 					if (stype != "labels") {
-						console.log(sectionQuestions[j].content);
 						if (checkAudience(sectionQuestions[j].content)) {
 							var question = getQuestionName(sectionQuestions[j].content);
 							var questionObject = {};
@@ -285,4 +284,5 @@ var savePausedSurvey = function (status, tmpl) {
 		});
 		alert("Survey Paused!");
 	}
+	Router.go('surveyStatus');
 };
