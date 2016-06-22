@@ -5,17 +5,16 @@
 Messages = new Meteor.Collection('messages');
 
 Schemas.Messages = new SimpleSchema(
-    {
-        name: {
-            type: String,
-            max: 256
-        },
-        content: {
-            type: String,
-            optional: true
-        },
-
-    }
+  {
+    name: {
+      type: String,
+      max: 256,
+    },
+    content: {
+      type: String,
+      optional: true,
+    },
+  }
 );
 
-Messages.attachSchema( Schemas.Messages );
+Messages.attachSchema(Schemas.Messages);
