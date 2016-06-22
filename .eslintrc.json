@@ -24,7 +24,17 @@
     "Roles": true,
     "RouteController": true,
     "HomeAppController": true,
-    "HomeAppSurveyorController": true
+    "HomeAppSurveyorController": true,
+    "responses": true,
+    "users": true,
+    "surveyQuestionsMaster": true,
+    "questions": true,
+    "surveys": true,
+    "options": true,
+    "rolePermissions": true,
+    "homeRoles": true,
+    "Schemas": true,
+    "HomeHelpers": true
   },
   "rules": {
     "no-underscore-dangle": [
