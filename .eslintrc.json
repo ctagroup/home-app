@@ -34,7 +34,9 @@
     "rolePermissions": true,
     "homeRoles": true,
     "Schemas": true,
-    "HomeHelpers": true
+    "HomeHelpers": true,
+    "AdminDashboard": true,
+    "AutoForm": true
   },
   "rules": {
     "no-underscore-dangle": [
