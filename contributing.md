@@ -181,7 +181,7 @@ We are following [Airbnb JavaScript Style Guide](http://airbnb.io/javascript/).
 - ./packages/meteor-admin/lib/client/html/admin_widgets.html
 - ./packages/meteor-admin/lib/client/html/question_templates.html
 - ./packages/meteor-admin/lib/client/html/survey_templates.html
-- ./packages/meteor-admin/lib/client/js/admin_layout.js
+- ./packages/meteor-admin/lib/client/js/adminLayout.js
 - ./packages/meteor-admin/lib/client/js/autoForm.coffee
 - ./packages/meteor-admin/lib/client/js/events.coffee
 - ./packages/meteor-admin/lib/client/js/helpers.coffee

@@ -48,8 +48,6 @@ Package.on_use(
         'lib/both/utils.coffee',
         'lib/both/startup.coffee',
         'lib/both/collections.coffee',
-        'lib/both/homeRouter.js',
-        'lib/both/homeStartup.js',
       ], both
     );
 
@@ -66,11 +64,7 @@ Package.on_use(
         'lib/client/stylesheets/_admin.scss',
         'lib/client/stylesheets/_settings.scss',
         'lib/client/stylesheets/_survey.scss',
-        'lib/client/js/admin_layout.js',
         'lib/client/js/helpers.coffee',
-        'lib/client/js/homeEvents.js',
-        'lib/client/js/homeHelpers.js',
-        'lib/client/js/homeAutoForm.js',
         'lib/client/js/templates.coffee',
         'lib/client/js/events.coffee',
         'lib/client/js/slim_scroll.js',
