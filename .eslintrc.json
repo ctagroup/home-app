@@ -36,7 +36,8 @@
     "Schemas": true,
     "HomeHelpers": true,
     "AdminDashboard": true,
-    "AutoForm": true
+    "AutoForm": true,
+    "SimpleSchema": true
   },
   "rules": {
     "no-underscore-dangle": [
