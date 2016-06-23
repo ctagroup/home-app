@@ -298,84 +298,71 @@ Template.LogSurveyResponse.helpers(
 
 Template.LogSurveyView.helpers(
   {
-    checkAudience: function (content) {
+    checkAudience(content) {
       return chkAudience(content);
     },
-    surveyQuesContents: function (survey_id) {
-      var responseCollection = adminCollectionObject("responses");
-      var responseRecords = responseCollection.find({ _id: Router.current().params._id }).fetch();
-      for (var i in responseRecords) {
-        var surveyid = responseRecords[i].surveyID;
-      }
-      var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
-      var surveyElements = surveyQuestionsMasterCollection.find({ surveyID: surveyid }, { sort: { order: 1 } }).fetch();
+    surveyQuesContents() {
+      const responseCollection = adminCollectionObject('responses');
+      const responseRecord = responseCollection.findOne({ _id: Router.current().params._id });
+
+      const surveyid = responseRecord.surveyID;
+
+      const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
+      const surveyElements = surveyQuestionsMasterCollection.find(
+        { surveyID: surveyid }, { sort: { order: 1 } }
+      ).fetch();
       return surveyContents(surveyElements, surveyid);
     },
-    surveyTitle: function (surveyID) {
-      var surveyCollection = adminCollectionObject("surveys");
-      var surveys = surveyCollection.find({ _id: surveyID }).fetch();
+    surveyTitle(surveyID) {
+      const surveyCollection = adminCollectionObject('surveys');
+      const survey = surveyCollection.findOne({ _id: surveyID });
 
-      for (var i in surveys) {
-        survey_id = surveys[i]._id;
-        var survey_title = surveys[i].title;
-      }
-      return survey_title;
-
+      survey_id = survey._id;
+      return survey.title;
     },
-    surveyCompleted: function () {
-      var responseCollection = adminCollectionObject("responses");
-      var responseRecords = responseCollection.find({ _id: Router.current().params._id }).fetch();
+    surveyCompleted() {
+      const responseCollection = adminCollectionObject('responses');
+      const responseRecord = responseCollection.findOne({ _id: Router.current().params._id });
 
-      for (var i in responseRecords) {
+      let flag = false;
 
-        var status = responseRecords[i].responsestatus;
-        if (status == 'Completed') {
-          $('.savePaused_survey').hide();
-          $('.pausePaused_survey ').hide();
-          $('.cancelPaused_survey ').hide();
-          $('#pauseSurvey').hide();
-          return true;
-
-        }
-
+      const status = responseRecord.responsestatus;
+      if (status === 'Completed') {
+        $('.savePaused_survey').hide();
+        $('.pausePaused_survey').hide();
+        $('.cancelPaused_survey').hide();
+        $('#pauseSurvey').hide();
+        flag = true;
       }
+      return flag;
     },
-    paused: function () {
-      var responseCollection = adminCollectionObject("responses");
-      var responseRecords = responseCollection.find({ _id: Router.current().params._id }).fetch();
+    paused() {
+      const responseCollection = adminCollectionObject('responses');
+      const responseRecord = responseCollection.findOne({ _id: Router.current().params._id });
 
-      for (var i in responseRecords) {
+      const status = responseRecord.responsestatus;
 
-        var status = responseRecords[i].responsestatus;
+      let flag = false;
 
-        if (status == 'Paused') {
-          $('.savePaused_survey').show();
-          $('.pausePaused_survey ').show();
-          $('.cancelPaused_survey ').show();
-          $('#pauseSurvey').show();
-          return true;
-
-        }
-
+      if (status === 'Paused') {
+        $('.savePaused_survey').show();
+        $('.pausePaused_survey').show();
+        $('.cancelPaused_survey').show();
+        $('#pauseSurvey').show();
+        flag = true;
       }
-
+      return flag;
     },
-    displaySection: function (content_type) {
-      if (content_type == "section") {
-        return true;
-      }
+    displaySection(contentType) {
+      return contentType === 'section';
     },
-    displayLabel: function (content_type) {
-      if (content_type == "labels") {
-        return true;
-      }
+    displayLabel(contentType) {
+      return contentType === 'labels';
     },
-    displaySkipButton(content_type, allow_skip) {
-      if (content_type == 'section' && allow_skip === 'true') {
-        return true;
-      }
+    displaySkipButton(contentType, allowSkip) {
+      return contentType === 'section' && allowSkip === 'true';
     },
-    displayQues(contentType, content) {
+    displayQues(contentType) {
       // quesContent = content;
       return contentType === 'question';
     },
