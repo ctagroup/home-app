@@ -81,8 +81,8 @@ We are following [Airbnb JavaScript Style Guide](http://airbnb.io/javascript/).
 - ./client/helpers/login.js
 - ./client/helpers/message_list.js
 - ./client/helpers/searchClient.js
-- ./client/helpers/surveyStatus.js
-- ./client/lib/logger.js
+- ~~./client/helpers/surveyStatus.js~~
+- ~~./client/lib/logger.js~~
 - ~~./client/stylesheets/_avatar.scss~~
 - ~~./client/stylesheets/_chat.css~~
 - ~~./client/stylesheets/_footer.scss~~
