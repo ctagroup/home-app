@@ -142,36 +142,6 @@ Template.LogSurveyResponse.helpers(
       }
 
     },
-    textboxNumber: function (data) {
-
-      if (data == "Textbox(Integer)") {
-        return true;
-      }
-
-    },
-    booleanYN: function (data) {
-
-      if (data == "Boolean") {
-        return true;
-      }
-    },
-    booleanTF: function (data) {
-      if (data == "Boolean") {
-        return true;
-      }
-    },
-    singleSelect: function (data) {
-
-      if (data == "Single Select") {
-        return true;
-      }
-    },
-    multipleSelect: function (data) {
-
-      if (data == "Multiple Select") {
-        return true;
-      }
-    },
     displayQues: function (content_type, content) {
       quesContent = content;
       if (content_type == "question") {
@@ -202,57 +172,82 @@ Template.LogSurveyResponse.helpers(
         }
       }
     },
-    textboxNumber: function (contentQuesId) {
-      var questionCollection = adminCollectionObject("questions");
-      var questions = questionCollection.find({ _id: contentQuesId }, { dataType: 1, _id: 0 }).fetch();
+    textboxNumber(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const questions = questionCollection.find(
+        { _id: contentQuesId }, { dataType: 1, _id: 0 }
+      ).fetch();
 
-      for (var i in questions) {
-        var textboxNumber = questions[i].dataType;
-        if (textboxNumber == "Textbox(Integer)") {
-          return true;
+      let flag = false;
+
+      for (let i = 0; i < questions.length; i++) {
+        const type = questions[i].dataType;
+        if (type === 'Textbox(Integer)') {
+          flag = true;
+          break;
         }
       }
+      return flag;
     },
-    booleanTF: function (contentQuesId) {
-      var questionCollection = adminCollectionObject("questions");
-      var questions = questionCollection.find({ _id: contentQuesId }, { dataType: 1, _id: 0 }).fetch();
+    booleanTF(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const questions = questionCollection.find(
+        { _id: contentQuesId }, { dataType: 1, _id: 0 }
+      ).fetch();
 
-      for (var i in questions) {
-        var bool = questions[i].dataType;
-        if (bool == "Boolean") {
-          return true;
+      let flag = false;
+
+      for (let i = 0; i < questions.length; i++) {
+        const type = questions[i].dataType;
+        if (type == 'Boolean') {
+          flag = true;
+          break;
         }
       }
+      return flag;
     },
-    singleSelect: function (contentQuesId) {
-      var questionCollection = adminCollectionObject("questions");
-      var questions = questionCollection.find({ _id: contentQuesId }, { dataType: 1, _id: 0 }).fetch();
+    singleSelect(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const questions = questionCollection.find(
+        { _id: contentQuesId }, { dataType: 1, _id: 0 }
+      ).fetch();
 
-      for (var i in questions) {
-        var singleSelect = questions[i].dataType;
-        if (singleSelect == "Single Select") {
-          return true;
+      let flag = false;
+
+      for (let i = 0; i < questions.length; i++) {
+        const type = questions[i].dataType;
+        if (type === 'Single Select') {
+          flag = true;
+          break;
         }
       }
+      return flag;
     },
-    singleOptions: function (contentQuesId) {
+    singleOptions(contentQuesId) {
 
-      var questionCollection = adminCollectionObject("questions");
-      var questions = questionCollection.find({ _id: contentQuesId }, { dataType: 1, _id: 0 }).fetch();
+      const questionCollection = adminCollectionObject('questions');
+      const questions = questionCollection.find(
+        { _id: contentQuesId }, { dataType: 1, _id: 0 }
+      ).fetch();
 
       return questions[0].options;
-
     },
-    multipleSelect: function (contentQuesId) {
-      var questionCollection = adminCollectionObject("questions");
-      var questions = questionCollection.find({ _id: contentQuesId }, { dataType: 1, _id: 0 }).fetch();
+    multipleSelect(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const questions = questionCollection.find(
+        { _id: contentQuesId }, { dataType: 1, _id: 0 }
+      ).fetch();
 
-      for (var i in questions) {
-        var multipleSelect = questions[i].dataType;
-        if (multipleSelect == "Multiple Select") {
-          return true;
+      let flag = false;
+
+      for (let i = 0; i < questions.length; i++) {
+        const type = questions[i].dataType;
+        if (type === 'Multiple Select') {
+          flag = true;
+          break;
         }
       }
+      return flag;
     },
     getQuesName: function (getQuesName) {
       return getQName(getQuesName);
@@ -380,189 +375,172 @@ Template.LogSurveyView.helpers(
         return true;
       }
     },
-    textboxString: function (data) {
-
-      if (data == "Textbox(String)") {
-        return true;
-      }
-
-    },
-    textboxNumber: function (data) {
-
-      if (data == "Textbox(Integer)") {
-        return true;
-      }
-
-    },
-    booleanYN: function (data) {
-
-      if (data == "Boolean") {
-        return true;
-      }
-    },
-    booleanTF: function (data) {
-      if (data == "Boolean") {
-        return true;
-      }
-    },
-    singleSelect: function (data) {
-
-      if (data == "Single Select") {
-        return true;
-      }
-    },
-    multipleSelect: function (data) {
-
-      if (data == "Multiple Select") {
-        return true;
-      }
-    },
-
-    displayQues: function (content_type, content) {
+    displayQues(content_type, content) {
       quesContent = content;
       if (content_type == "question") {
         return true;
       }
     },
-    displayQuesContents: function (contentQuesId) {
-      var questionCollection = adminCollectionObject("questions");
-      var questions = questionCollection.find({ _id: contentQuesId }).fetch();
+    displayQuesContents(contentQuesId) {
+      const questionCollection = adminCollectionObject("questions");
+      const question = questionCollection.findOne({ _id: contentQuesId });
 
-      for (var i in questions) {
-        var qNames = questions[i].question;
-      }
-      return qNames;
-
+      return question.question;
     },
-    textboxString: function (contentQuesId) {
-      var questionCollection = adminCollectionObject("questions");
-      var questions = questionCollection.find({ _id: contentQuesId }, { dataType: 1, _id: 0 }).fetch();
+    textboxString(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const questions = questionCollection.find(
+        { _id: contentQuesId }, { dataType: 1, _id: 0 }
+      ).fetch();
 
-      for (var i in questions) {
-        var textboxString = questions[i].dataType;
-        if (textboxString == "Textbox(String)") {
-          return true;
+      let flag = false;
+
+      for (let i = 0; i < questions.length; i++) {
+        const type = questions[i].dataType;
+        if (type === 'Textbox(String)') {
+          flag = true;
+          break;
         }
       }
+      return flag;
     },
-    textboxNumber: function (contentQuesId) {
-      var questionCollection = adminCollectionObject("questions");
-      var questions = questionCollection.find({ _id: contentQuesId }, { dataType: 1, _id: 0 }).fetch();
+    textboxNumber(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const questions = questionCollection.find(
+        { _id: contentQuesId }, { dataType: 1, _id: 0 }
+      ).fetch();
 
-      for (var i in questions) {
-        var textboxNumber = questions[i].dataType;
-        if (textboxNumber == "Textbox(Integer)") {
-          return true;
+      let flag = false;
+
+      for (let i = 0; i < questions.length; i++) {
+        const type = questions[i].dataType;
+        if (type === 'Textbox(Integer)') {
+          flag = true;
+          break;
         }
       }
+      return flag;
     },
-    booleanTF: function (contentQuesId) {
-      var questionCollection = adminCollectionObject("questions");
-      var questions = questionCollection.find({ _id: contentQuesId }, { dataType: 1, _id: 0 }).fetch();
+    booleanTF(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const questions = questionCollection.find(
+        { _id: contentQuesId }, { dataType: 1, _id: 0 }
+      ).fetch();
 
-      for (var i in questions) {
-        var bool = questions[i].dataType;
-        if (bool == "Boolean") {
-          return true;
+      let flag = false;
+
+      for (let i = 0; i < questions.length; i++) {
+        const type = questions[i].dataType;
+        if (type === 'Boolean') {
+          flag = true;
+          break;
         }
       }
+      return flag;
     },
-    singleSelect: function (contentQuesId) {
-      var questionCollection = adminCollectionObject("questions");
-      var questions = questionCollection.find({ _id: contentQuesId }, { dataType: 1, _id: 0 }).fetch();
+    singleSelect(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const questions = questionCollection.find(
+        { _id: contentQuesId }, { dataType: 1, _id: 0 }
+      ).fetch();
 
-      for (var i in questions) {
-        var singleSelect = questions[i].dataType;
-        if (singleSelect == "Single Select") {
-          return true;
+      let flag = false;
+
+      for (let i = 0; i < questions.length; i++) {
+        const type = questions[i].dataType;
+        if (type === 'Single Select') {
+          flag = true;
+          break;
         }
       }
+      return flag;
     },
-    singleOptions: function (contentQuesId) {
-
-      var questionCollection = adminCollectionObject("questions");
-      var questions = questionCollection.find({ _id: contentQuesId }, { dataType: 1, _id: 0 }).fetch();
+    singleOptions(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const questions = questionCollection.find(
+        { _id: contentQuesId }, { dataType: 1, _id: 0 }
+      ).fetch();
 
       return questions[0].options;
-
     },
-    multipleSelect: function (contentQuesId) {
-      var questionCollection = adminCollectionObject("questions");
-      var questions = questionCollection.find({ _id: contentQuesId }, { dataType: 1, _id: 0 }).fetch();
+    multipleSelect(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const questions = questionCollection.find(
+        { _id: contentQuesId }, { dataType: 1, _id: 0 }
+      ).fetch();
 
-      for (var i in questions) {
-        var multipleSelect = questions[i].dataType;
-        if (multipleSelect == "Multiple Select") {
-          return true;
+      let flag = false;
+
+      for (let i = 0; i < questions.length; i++) {
+        const multipleSelect = questions[i].dataType;
+        if (multipleSelect === 'Multiple Select') {
+          flag = true;
+          break;
         }
       }
+
+      return flag;
     },
-    getQuesName: function (getQuesName) {
+    getQuesName(getQuesName) {
       return getQName(getQuesName);
     },
-    checkSkipped: function (sectionID) {
+    checkSkipped(sectionID) {
+      let skipVal = '';
       if (isSkipped(sectionID)) {
-        return "checked";
+        skipVal = 'checked';
       }
+      return skipVal;
     },
-    hideIfSkipped: function (sectionID) {
-      if ((
-            sectionID != null
-          ) &&
-          (
-            (
-              $('#' + sectionID).length
-            )
-          )) {
-        var toggleSkip = $('#' + sectionID).is(':checked');
+    hideIfSkipped(sectionID) {
+      let toggleVal = '';
+      if ((sectionID != null) && (($(`#${sectionID}`).length))) {
+        const toggleSkip = $(`#${sectionID}`).is(':checked');
         if (toggleSkip) {
-          return "hidden";
-        } else {
-          return "";
+          toggleVal = 'hidden';
         }
       }
+      return toggleVal;
     },
     surveyTextResponse(id) {
       const responseCollection = adminCollectionObject('responses');
-      const responseSections = responseCollection.find({ _id: Router.current().params._id }).fetch();
-      var responseVal;
-      for (var i in responseSections) {
+      const responseSection = responseCollection.findOne({ _id: Router.current().params._id });
 
-        sections = responseSections[i].section;
-        for (var j in sections) {
-          var response = sections[j].response;
-          for (var k in response) {
-            var quesIDs = response[k].questionID;
-            if (id == quesIDs) {
-              responseVal = response[k].answer;
-              var questionCollection = adminCollectionObject('questions');
-              var questions = questionCollection.find({ _id: quesIDs }, { dataType: 1, _id: 0 }).fetch();
+      sections = responseSection.section;
+      for (let j = 0; j < sections.length; j++) {
+        const response = sections[j].response;
+        for (let k = 0; k < response.length; k++) {
+          const quesIDs = response[k].questionID;
+          if (id === quesIDs) {
+            let responseVal = response[k].answer;
+            const questionCollection = adminCollectionObject('questions');
+            const questions = questionCollection.find(
+              { _id: quesIDs }, { dataType: 1, _id: 0 }
+            ).fetch();
 
-              for (var i in questions) {
-                var dataType = questions[i].dataType;
-                var qid = questions[i]._id;
+            for (let i = 0; i < questions.length; i++) {
+              const dataType = questions[i].dataType;
 
-                if (dataType === 'Single Select') {
-                  var options = questions[i].options;
-                  for (var s in options) {
-                    responseVal = options[s].description;
-                    return responseVal;
-                  }
-                } else if (dataType === 'Multiple Select') {
-                  var options = questions[i].options;
-                  let answer = '';
-                  for (var s in options) {
-                    answer += options[s].description + '|';
-                  }
-                  return answer.split('|');
-                } else {
+              if (dataType === 'Single Select') {
+                const options = questions[i].options;
+                for (let l = 0; l < options.length; l++) {
+                  responseVal = options[l].description;
                   return responseVal;
                 }
+              } else if (dataType === 'Multiple Select') {
+                const options = questions[i].options;
+                let answer = '';
+                for (let l = 0; l < options.length; l++) {
+                  answer += `${options[l].description}|`;
+                }
+                return answer.split('|');
+              } else {
+                return responseVal;
               }
             }
           }
         }
       }
+      return '';
     },
     isChecked(type) {
       const responseCollection = adminCollectionObject('responses');
