@@ -37,7 +37,8 @@
     "HomeHelpers": true,
     "AdminDashboard": true,
     "AutoForm": true,
-    "SimpleSchema": true
+    "SimpleSchema": true,
+    "Gravatar": true
   },
   "rules": {
     "no-underscore-dangle": [

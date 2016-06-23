@@ -10,7 +10,6 @@ Template.AdminLayout.onCreated(() => {
       self.minHeight.set($(window).height() - $('.main-header').height());
     }
   );
-
 });
 
 Template.AdminLayout.destroyed = () => {
