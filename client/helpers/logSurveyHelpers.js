@@ -523,8 +523,8 @@ Template.LogSurveyView.helpers(
       }
     },
     surveyTextResponse(id) {
-      var responseCollection = adminCollectionObject("responses");
-      var responseSections = responseCollection.find({ _id: Router.current().params._id }).fetch();
+      const responseCollection = adminCollectionObject('responses');
+      const responseSections = responseCollection.find({ _id: Router.current().params._id }).fetch();
       var responseVal;
       for (var i in responseSections) {
 
@@ -535,26 +535,26 @@ Template.LogSurveyView.helpers(
             var quesIDs = response[k].questionID;
             if (id == quesIDs) {
               responseVal = response[k].answer;
-              var questionCollection = adminCollectionObject("questions");
+              var questionCollection = adminCollectionObject('questions');
               var questions = questionCollection.find({ _id: quesIDs }, { dataType: 1, _id: 0 }).fetch();
 
               for (var i in questions) {
                 var dataType = questions[i].dataType;
                 var qid = questions[i]._id;
 
-                if (dataType == "Single Select") {
+                if (dataType === 'Single Select') {
                   var options = questions[i].options;
                   for (var s in options) {
                     responseVal = options[s].description;
                     return responseVal;
                   }
-                } else if (dataType == "Multiple Select") {
+                } else if (dataType === 'Multiple Select') {
                   var options = questions[i].options;
-                  var answer = "";
+                  let answer = '';
                   for (var s in options) {
                     answer += options[s].description + '|';
                   }
-                  return answer.split("|");
+                  return answer.split('|');
                 } else {
                   return responseVal;
                 }
