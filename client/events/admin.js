@@ -986,7 +986,7 @@ Template.selectQuestions.events(
 );
 
 
-var skip_value, contents, sec_id;
+var skip_value, contents;
 Template.previewSurvey.events(
   {
 
