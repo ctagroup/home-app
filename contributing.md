@@ -79,7 +79,7 @@ We are following [Airbnb JavaScript Style Guide](http://airbnb.io/javascript/).
 - ./client/helpers/footer.js
 - ./client/helpers/logSurveyHelpers.js
 - ./client/helpers/login.js
-- ./client/helpers/message_list.js
+- ~~./client/helpers/messageList.js~~
 - ~~./client/helpers/searchClient.js``
 - ~~./client/helpers/surveyStatus.js~~
 - ~~./client/lib/logger.js~~
