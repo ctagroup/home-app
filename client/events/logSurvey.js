@@ -159,139 +159,125 @@ function saveSurvey(status, tmpl) {
 function savePausedSurvey(status, tmpl) {
   const responsesCollection = adminCollectionObject('responses');
   const responseDocument = responsesCollection.find({ _id: tmpl.data._id }).fetch();
-  for (var i in responseDocument) {
 
-    var survey_id = responseDocument[i].surveyID;
-    var client_id = responseDocument[i].clientID;
+  let surveyId = '';
+  let clientId = '';
+
+  for (let i = 0; i < responseDocument.length; i++) {
+    surveyId = responseDocument[i].surveyID;
+    clientId = responseDocument[i].clientID;
   }
 
-  var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
-  var surveyDocument = surveyQuestionsMasterCollection.find({ surveyID: survey_id }).fetch();
-  var mainSectionObject = [];
-  var mainSectionObject = [];
-  for (var i in surveyDocument) {
-    var type = surveyDocument[i].contentType;
-    if (type == "section") {
-      var sectionObject = {};
-      var answerObject = [];
-      var sectionQuestions = surveyQuestionsMasterCollection.find({ sectionID: surveyDocument[i]._id }).fetch();
-      if ($('#' + surveyDocument[i]._id).is(':checked')) {
-        sectionObject["sectionID"] = surveyDocument[i]._id;
-        sectionObject["name"] = surveyDocument[i].content;
-        sectionObject['skip'] = true;
+  const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
+  const surveyDocument = surveyQuestionsMasterCollection.find({ surveyID: surveyId }).fetch();
+  const mainSectionObject = [];
+  for (let i = 0; i < surveyDocument.length; i++) {
+    const type = surveyDocument[i].contentType;
+    if (type === 'section') {
+      const sectionObject = {};
+      const answerObject = [];
+      const sectionQuestions = surveyQuestionsMasterCollection.find(
+        { sectionID: surveyDocument[i]._id }
+      ).fetch();
+      if ($(`#${surveyDocument[i]._id}`).is(':checked')) {
+        sectionObject.sectionID = surveyDocument[i]._id;
+        sectionObject.name = surveyDocument[i].content;
+        sectionObject.skip = true;
         mainSectionObject.push(sectionObject);
         continue;
-      }
-      else {
-        for (var j in sectionQuestions) {
-          var stype = sectionQuestions[j].contentType;
-          if (stype != "labels") {
+      } else {
+        for (let j = 0; j < sectionQuestions.length; j++) {
+          const stype = sectionQuestions[j].contentType;
+          if (stype !== 'labels') {
             if (checkAudience(sectionQuestions[j].content)) {
-              var question = getQuestionName(sectionQuestions[j].content);
-              var questionObject = {};
-              var answer = "";
-              if ((
-                    question.dataType == "Single Select"
-                  ) ||
-                  (
-                    question.dataType == "Boolean"
-                  )) {
-                answer = $('input:radio[name=' + question._id + ']:checked').val();
-              }
-              else if (question.dataType == "Multiple Select") {
-                $("input:checkbox[name=" + question._id + "]:checked").each(
-                  function () {
-                    answer += $(this).val() + '|';
+              const question = getQuestionName(sectionQuestions[j].content);
+              const questionObject = {};
+              let answer = '';
+              if ((question.dataType === 'Single Select') || (question.dataType === 'Boolean')) {
+                answer = $(`input:radio[name=${question._id}]:checked`).val();
+              } else if (question.dataType === 'Multiple Select') {
+                $(`input:checkbox[name=${question._id}]:checked`).each(
+                  () => {
+                    answer += `${$(this).val()}|`;
                   }
                 );
                 answer = answer.substr(0, answer.length - 1);
               } else {
-                answer = tmpl.find('#' + question._id).value;
+                answer = tmpl.find(`#${question._id}`).value;
               }
 
-              if ((
-                    answer == null
-                  ) ||
-                  (
-                    answer == ""
-                  )) {
-                if (status == "Pause_Submit") {
-                  if ($('#' + sectionQuestions[j].sectionID).is(':checked')) {
-                    questionObject["questionID"] = question._id;
-                    questionObject["answer"] = answer;
+              if ((answer === null) || (answer === '')) {
+                if (status === 'Pause_Submit') {
+                  if ($(`#${sectionQuestions[j].sectionID}`).is(':checked')) {
+                    questionObject.questionID = question._id;
+                    questionObject.answer = answer;
                     answerObject.push(questionObject);
-                  }
-                  else {
+                  } else {
                     alert(
-                      surveyDocument[i].content +
-                      " section is incomplete.Please fill all the fields in this section"
+                      /* eslint-disable */
+                      `${surveyDocument[i].content} section is incomplete.Please fill all the fields in this section`
+                      /* eslint-enable */
                     );
                     return;
                   }
                 }
               } else {
-                questionObject["questionID"] = question._id;
-                questionObject["answer"] = answer;
+                questionObject.questionID = question._id;
+                questionObject.answer = answer;
                 answerObject.push(questionObject);
               }
             }
           }
         }
-        if (answerObject.length != 0) {
-
-          sectionObject["sectionID"] = surveyDocument[i]._id;
-          sectionObject["name"] = surveyDocument[i].content;
-          sectionObject['skip'] = false;
-          sectionObject["response"] = answerObject;
+        if (answerObject.length !== 0) {
+          sectionObject.sectionID = surveyDocument[i]._id;
+          sectionObject.name = surveyDocument[i].content;
+          sectionObject.skip = false;
+          sectionObject.response = answerObject;
           mainSectionObject.push(sectionObject);
         }
       }
     }
   }
-  if (status == "Pause_Submit") {
-
+  if (status === 'Pause_Submit') {
     Meteor.call(
-      "updateSurveyResponse",
+      'updateSurveyResponse',
       tmpl.data._id,
-      survey_id,
-      client_id,
+      surveyId,
+      clientId,
       Meteor.userId(),
       mainSectionObject,
-      "Completed",
-      function (error, result) {
+      'Completed',
+      (error, result) => {
         if (error) {
-          console.log(error);
+          logger.log(error);
         } else {
-          console.log(result);
-
+          logger.log(result);
         }
       }
     );
-    alert("Survey Saved!");
-  } else if (status == "Pause_Paused") {
-
+    alert('Survey Saved!');
+  } else if (status === 'Pause_Paused') {
     Meteor.call(
-      "updateSurveyResponse",
+      'updateSurveyResponse',
       tmpl.data._id,
-      survey_id,
-      client_id,
+      surveyId,
+      clientId,
       Meteor.userId(),
       mainSectionObject,
-      "Paused",
-      function (error, result) {
-
+      'Paused',
+      (error, result) => {
         if (error) {
-          console.log(error);
+          logger.log(error);
         } else {
-          console.log(result);
-
+          logger.log(result);
         }
       }
     );
-    alert("Survey Paused!");
+    alert('Survey Paused!');
   }
   Router.go('surveyStatus');
-};
+}
 
 Template.LogSurveyResponse.events(
   {
@@ -334,7 +320,7 @@ Template.LogSurveyResponse.events(
 
 Template.LogSurveyView.events(
   {
-    'change .hideWhenSkipped': (evt, tmpl) => {
+    'change .hideWhenSkipped': (evt) => {
       const toggleSkip = $(`#${evt.target.id}`).is(':checked');
       if (toggleSkip) {
         $(`.${evt.target.id}`).hide();
@@ -346,9 +332,9 @@ Template.LogSurveyView.events(
     'click .savePaused_survey': (evt, tmpl) => {
       savePausedSurvey('Pause_Submit', tmpl);
     },
-    'click .pausePaused_survey': function (evt, tmpl) {
-      //alert("Paused Survey Paused !");
-      savePausedSurvey("Pause_Paused", tmpl);
+    'click .pausePaused_survey': (evt, tmpl) => {
+      alert('Paused Survey Paused !');
+      savePausedSurvey('Pause_Paused', tmpl);
     },
 
   }
