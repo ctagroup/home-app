@@ -15,7 +15,10 @@ We are following [Airbnb JavaScript Style Guide](http://airbnb.io/javascript/).
 	- It will notify the developer if anything goes wrong.
 
 # Git Pre Commit Hook
-- Run this command to add pre commit hook for this git repository. `ln -s .eslint-pre-commit .git/hooks/pre-commit`
+- Run following commands to add pre commit hook for this git repository.
+    - `cd .git/hooks`
+    - `ln -s ../../.eslint-pre-commit pre-commit`
+    - `cd ../../`
 
 # Directory Structure
 
