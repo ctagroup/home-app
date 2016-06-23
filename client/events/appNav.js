@@ -3,11 +3,11 @@
  */
 
 Template.appNav.events(
-	{
-		'click .js-logout': function() {
-			if ( Meteor.userId() ) {
-				AccountsTemplates.logout();
-			}
-		}
-	}
+  {
+    'click .js-logout'() {
+      if (Meteor.userId()) {
+        AccountsTemplates.logout();
+      }
+    },
+  }
 );
