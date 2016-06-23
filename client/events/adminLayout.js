@@ -11,7 +11,6 @@ Template.AdminLayout.onCreated(() => {
     }
   );
 
-  $('body').addClass('fixed');
 });
 
 Template.AdminLayout.destroyed = () => {
