@@ -28,6 +28,7 @@ accounts-google
 service-configuration
 dburles:collection-helpers
 aldeed:collection2
+aldeed:autoform
 alanning:roles
 fortawesome:fontawesome
 desaiuditd:meteor-admin
