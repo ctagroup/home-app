@@ -1,5 +1,5 @@
-Template.AdminLayout.created = () => {
-  const self = this;
+Template.AdminLayout.onCreated(() => {
+  const self = Template.instance();
 
   self.minHeight = new ReactiveVar(
     $(window).height() - $('.main-header').height()
@@ -12,7 +12,7 @@ Template.AdminLayout.created = () => {
   );
 
   $('body').addClass('fixed');
-};
+});
 
 Template.AdminLayout.destroyed = () => {
   $('body').removeClass('fixed');
@@ -21,7 +21,9 @@ Template.AdminLayout.destroyed = () => {
 Template.AdminLayout.helpers(
   {
     minHeight() {
-      return `${Template.instance().minHeight.get()}px`;
+      const height = (Template.instance().minHeight) ?
+                     `${Template.instance().minHeight.get()}px` : '100%';
+      return height;
     },
   }
 );
