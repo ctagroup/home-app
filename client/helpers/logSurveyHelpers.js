@@ -370,19 +370,17 @@ Template.LogSurveyView.helpers(
         return true;
       }
     },
-    displaySkipButton: function (content_type, allow_skip) {
-      if (content_type == "section" && allow_skip == "true") {
+    displaySkipButton(content_type, allow_skip) {
+      if (content_type == 'section' && allow_skip === 'true') {
         return true;
       }
     },
-    displayQues(content_type, content) {
-      quesContent = content;
-      if (content_type == "question") {
-        return true;
-      }
+    displayQues(contentType, content) {
+      // quesContent = content;
+      return contentType === 'question';
     },
     displayQuesContents(contentQuesId) {
-      const questionCollection = adminCollectionObject("questions");
+      const questionCollection = adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
 
       return question.question;
