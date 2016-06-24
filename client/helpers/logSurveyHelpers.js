@@ -120,7 +120,6 @@ Template.LogSurveyResponse.helpers(
       return contentType === 'section' && allowSkip === 'true';
     },
     displayQues(contentType) {
-      // quesContent = content;
       return contentType === 'question';
     },
     displayQuesContents(contentQuesId) {
@@ -334,7 +333,6 @@ Template.LogSurveyView.helpers(
       return contentType === 'section' && allowSkip === 'true';
     },
     displayQues(contentType) {
-      // quesContent = content;
       return contentType === 'question';
     },
     displayQuesContents(contentQuesId) {
