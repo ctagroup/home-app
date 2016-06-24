@@ -3,226 +3,205 @@
  */
 Template.AdminRoleManager.helpers(
   {
-    getHomeRoles: function () {
+    getHomeRoles() {
       return homeRoles.find({}).fetch();
     },
-    getPermissions: function () {
-      var permissions = Roles.getAllRoles().fetch();
-      var roles = homeRoles.find({}).fetch();
+    getPermissions() {
+      let permissions = Roles.getAllRoles().fetch();
+      let roles = homeRoles.find({}).fetch();
       roles = $.map(
-        roles, function (role, i) {
-          return role.title;
-        }
+        roles, (role) => role.title
       );
       permissions = $.grep(
-        permissions, function (p) {
-          return $.inArray(p.name, roles) < 0;
-        }
+        permissions, (p) => $.inArray(p.name, roles) < 0
       );
       return permissions;
     },
-    isPermissionInRole: function (permission) {
-      var rolePermissionsCollection = adminCollectionObject("rolePermissions");
-      var result = rolePermissionsCollection.find({ role: this.title, permission: permission, value: true }).fetch();
+    isPermissionInRole(permission) {
+      const rolePermissionsCollection = adminCollectionObject('rolePermissions');
+      const result = rolePermissionsCollection.find(
+        { role: this.title, permission, value: true }
+      ).fetch();
       if (result.length > 0) {
         return 'checked';
       }
-      return "";
-    }
+      return '';
+    },
   }
 );
 
 
 Template.AdminSettings.helpers(
   {
-    getAdminSettings: function () {
-      var settings = {};
+    getAdminSettings() {
+      const settings = {};
 
       settings.hmisAPI = {};
 
-      var optionsCollection = adminCollectionObject("options");
-      var trustedAppID = optionsCollection.find({ option_name: "trustedAppID" }).fetch();
-      if (trustedAppID.length > 0 && typeof trustedAppID[0].option_value != 'undefined') {
+      const optionsCollection = adminCollectionObject('options');
+      const trustedAppID = optionsCollection.find({ option_name: 'trustedAppID' }).fetch();
+      if (trustedAppID.length > 0 && typeof trustedAppID[0].option_value !== 'undefined') {
         settings.hmisAPI.trustedAppID = trustedAppID[0].option_value;
       } else {
-        settings.hmisAPI.trustedAppID = "";
+        settings.hmisAPI.trustedAppID = '';
       }
 
-      var trustedAppSecret = optionsCollection.find({ option_name: "trustedAppSecret" }).fetch();
-      if (trustedAppSecret.length > 0 && typeof trustedAppSecret[0].option_value != 'undefined') {
+      const trustedAppSecret = optionsCollection.find({ option_name: 'trustedAppSecret' }).fetch();
+      if (trustedAppSecret.length > 0 && typeof trustedAppSecret[0].option_value !== 'undefined') {
         settings.hmisAPI.trustedAppSecret = trustedAppSecret[0].option_value;
       } else {
-        settings.hmisAPI.trustedAppSecret = "";
+        settings.hmisAPI.trustedAppSecret = '';
       }
 
       return settings;
-
-    }
+    },
   }
 );
 
 UI.registerHelper(
-  "currentUserCan", function (cap) {
-    return Roles.userIsInRole(Meteor.user(), cap);
-  }
+  'currentUserCan', (cap) => Roles.userIsInRole(Meteor.user(), cap)
 );
 
 Template.registerHelper(
-  'formatDate', function (date) {
-    return moment(date).format('mm/dd/yyyy');
-  }
+  'formatDate', (date) => moment(date).format('mm/dd/yyyy')
 );
 
 Template.registerHelper(
-  'my_console_log', function (data) {
-    console.log(data);
+  'my_console_log', (data) => {
+    logger.log(data);
   }
 );
 
 Template.surveyViewTemplate.helpers(
   {
-    surveyList: function () {
-      var surveyCollection = adminCollectionObject("surveys");
+    surveyList() {
+      const surveyCollection = adminCollectionObject('surveys');
       return surveyCollection.find({}).fetch();
-    }
+    },
   }
 );
 Template.surveyForm.helpers(
   {
-    surveyList: function () {
-      var surveyCollection = adminCollectionObject("surveys");
+    surveyList() {
+      const surveyCollection = adminCollectionObject('surveys');
       return surveyCollection.find({}).fetch();
-    }
+    },
   }
 );
 
 Template.surveyEditTemplate.helpers(
   {
-    questionList: function () {
-      var questionCollection = adminCollectionObject("questions");
+    questionList() {
+      const questionCollection = adminCollectionObject('questions');
       return questionCollection.find({}).fetch();
     },
-    existingSelectedQuestions: function () {
-      q_ids = Session.get('selectedQuestions');
-
-      if (q_ids != null) {
-        return true;
-      } else {
-        return false;
-      }
+    existingSelectedQuestions() {
+      const qIds = Session.get('selectedQuestions');
+      return qIds != null;
     },
-    getSection: function () {
-      var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
-      var distinctEntries = _.uniq(
+    getSection() {
+      const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
+      const distinctEntries = _.uniq(
         surveyQuestionsMasterCollection.find(
           {
             contentType: 'section',
-            surveyID: Router.current().params._id
+            surveyID: Router.current().params._id,
           },
           {
             sort: { content: 1 },
-            fields: { content: true }
+            fields: { content: true },
           }
         ).fetch().reverse()
       );
       return distinctEntries;
-    }
+    },
   }
 );
 
 Template.questionViewTemplate.helpers(
   {
-    questionList: function () {
-      var questionCollection = adminCollectionObject("questions");
+    questionList() {
+      const questionCollection = adminCollectionObject('questions');
       return questionCollection.find({}).fetch();
-    }
+    },
   }
 );
 
 Template.questionForm.helpers(
   {
-    questionList: function () {
-      var questionCollection = adminCollectionObject("questions");
+    questionList() {
+      const questionCollection = adminCollectionObject('questions');
       return questionCollection.find({}).fetch();
     },
-    getQuestionCategory: function () {
-      var questionCollection = adminCollectionObject("questions");
-      var distinctEntries = _.uniq(
-        questionCollection.find({}, { sort: { category: 1 }, fields: { category: true } }).fetch().map(
-          function (x) {
-            return x.category;
-          }
+    getQuestionCategory() {
+      const questionCollection = adminCollectionObject('questions');
+      const distinctEntries = _.uniq(
+        questionCollection.find(
+          {},
+          { sort: { category: 1 }, fields: { category: true } }
+        ).fetch().map(
+          (x) => x.category
         ), true
       );
       return distinctEntries;
-    }
+    },
   }
 );
 
 Template.surveyRow.helpers(
   {
-    editSurveyPath: function (id) {
-      var path = Router.path("adminDashboard" + Session.get('admin_collection_name') + "Edit", { _id: id });
-      return path;
-    }
+    editSurveyPath(id) {
+      return Router.path(`adminDashboard${Session.get('admin_collection_name')}Edit`, { _id: id });
+    },
   }
 );
 
 Template.sortableItemTarget.helpers(
   {
-    notQuestion: function (type) {
-
-      if (type == "question") {
-        return false
-      } else {
-        return true;
-      }
+    notQuestion(type) {
+      return ! type === 'question';
     },
-    quesNames: function (content) {
+    quesNames(qId) {
+      const questionCollection = adminCollectionObject('questions');
+      const question = questionCollection.findOne({ _id: qId });
 
-      var questionCollection = adminCollectionObject("questions");
-      var questionName = questionCollection.find({ _id: content }, { name: 1, _id: 0 }).fetch();
-
-      var qNames = '';
-      for (var i in questionName) {
-        qNames = questionName[i].name;
-      }
-      return qNames;
-    }
+      return question.name;
+    },
   }
 );
 
 Template.typeDefinition.helpers(
   {
-    showPreview: function () {
-      var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
-      if (surveyQuestionsMasterCollection.find({ surveyID: Router.current().params._id }).count() > 0) {
+    showPreview() {
+      const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
+      if (
+        surveyQuestionsMasterCollection.find(
+          { surveyID: Router.current().params._id }
+        ).count()
+        > 0
+      ) {
         return true;
       }
       return false;
     },
-
-    attributes: function () {
-      var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
+    attributes() {
+      const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
       return surveyQuestionsMasterCollection.find(
         { surveyID: Router.current().params._id }, {
-          sort: { order: 1 }
+          sort: { order: 1 },
         }
       );
     },
     attributesOptions: {
       group: {
         name: 'typeDefinition',
-        put: true
+        put: true,
       },
       // event handler for reordering attributes
-      onSort: function (event) {
-        console.log(
-          'Item %s went from #%d to #%d',
-          event.data.name, event.oldIndex, event.newIndex
-        );
-      }
-    }
+      onSort(event) {
+        logger.log(`Item ${event.data.name} went from #${event.oldIndex} to #${event.newIndex}`);
+      },
+    },
   }
 );
 
@@ -230,187 +209,101 @@ Session.setDefault('selectedQuestions', null);
 
 Template.selectQuestions.helpers(
   {
-    questionList: function () {
-      var questionCollection = adminCollectionObject("questions");
-      var surveysCollection = adminCollectionObject("surveys");
-      var stype = surveysCollection.find({ _id: Router.current().params._id }).fetch();
-      console.log("survey type=" + stype[0].stype);
-      console.log("survey id to select questions=" + Router.current().params._id);
-      return questionCollection.find({ qtype: stype[0].stype }).fetch();
-    }
+    questionList() {
+      const questionCollection = adminCollectionObject('questions');
+      const surveysCollection = adminCollectionObject('surveys');
+      const survey = surveysCollection.findOne({ _id: Router.current().params._id });
+      logger.log(`survey type=${survey.stype}`);
+      logger.log(`survey id to select questions=${Router.current().params._id}`);
+      return questionCollection.find({ qtype: survey.stype }).fetch();
+    },
   }
 );
 
-var quesContent;
 Template.previewSurvey.helpers(
   {
-    surveyQuesContents: function () {
-      var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
-      console.log(Router.current().params._id);
-      console.log(
+    surveyQuesContents() {
+      const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
+      logger.log(Router.current().params._id);
+      logger.log(
         surveyQuestionsMasterCollection.find(
           { surveyID: Router.current().params._id },
           { sort: { order: 1 } }
         ).fetch()
-      )
+      );
       return surveyQuestionsMasterCollection.find(
         { surveyID: Router.current().params._id },
         { sort: { order: 1 } }
       ).fetch();
     },
-    displaySection: function (content_type) {
-      if (content_type == "section") {
-        return true;
-      }
+    displaySection(contentType) {
+      return contentType === 'section';
     },
-    displayLabel: function (content_type) {
-      if (content_type == "labels") {
-        return true;
-      }
+    displayLabel(contentType) {
+      return contentType === 'labels';
     },
-    displaySkipButton: function (content_type, allow_skip) {
-      if (content_type == "section" && allow_skip == "true") {
-        return true;
-      }
+    displaySkipButton(contentType, allowSkip) {
+      return contentType === 'section' && allowSkip === 'true';
     },
-    textboxString: function (data) {
-
-      if (data == "Textbox(String)") {
-        return true;
-      }
-
+    booleanYN(data) {
+      return data === 'Boolean';
     },
-    textboxNumber: function (data) {
-
-      if (data == "Textbox(Integer)") {
-        return true;
-      }
-
+    displayQues(contentType) {
+      return contentType === 'question';
     },
-    booleanYN: function (data) {
+    displayQuesContents(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const question = questionCollection.findOne({ _id: contentQuesId });
 
-      if (data == "Boolean") {
-        return true;
-      }
+      return question.question;
     },
-    booleanTF: function (data) {
-      if (data == "Boolean") {
-        return true;
-      }
+    textboxString(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const question = questionCollection.findOne({ _id: contentQuesId });
+
+      return question.dataType === 'Textbox(String)';
     },
-    singleSelect: function (data) {
+    textboxNumber(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const question = questionCollection.findOne({ _id: contentQuesId });
 
-      if (data == "Single Select") {
-        return true;
-      }
+      return question.dataType === 'Textbox(Integer)';
     },
-    multipleSelect: function (data) {
+    booleanTF(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const question = questionCollection.findOne({ _id: contentQuesId });
 
-      if (data == "Multiple Select") {
-        return true;
-      }
+      return question.dataType === 'Boolean';
     },
-    displayQues: function (content_type, content) {
-      quesContent = content;
+    singleSelect(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const question = questionCollection.findOne({ _id: contentQuesId }).fetch();
 
-      if (content_type == "question") {
-        return true;
-      }
+      return question.dataType === 'Single Select';
     },
-    displayQuesContents: function (contentQuesId) {
+    singleOptions(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const question = questionCollection.findOne({ _id: contentQuesId });
 
-      var questionCollection = adminCollectionObject("questions");
-      var questions = questionCollection.find({ _id: contentQuesId }).fetch();
-
-      for (var i in questions) {
-        var qNames = questions[i].question;
-      }
-      return qNames;
-
+      return question.options;
     },
-    textboxString: function (contentQuesId) {
-      var questionCollection = adminCollectionObject("questions");
-      var questions = questionCollection.find({ _id: contentQuesId }, { dataType: 1, _id: 0 }).fetch();
+    multipleSelect(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const question = questionCollection.findOne({ _id: contentQuesId });
 
-      for (var i in questions) {
-        var textboxString = questions[i].dataType;
-        if (textboxString == "Textbox(String)") {
-          return true;
-        }
-      }
+      return question.dataType === 'Multiple Select';
     },
-    textboxNumber: function (contentQuesId) {
-      var questionCollection = adminCollectionObject("questions");
-      var questions = questionCollection.find({ _id: contentQuesId }, { dataType: 1, _id: 0 }).fetch();
-
-      for (var i in questions) {
-        var textboxNumber = questions[i].dataType;
-        if (textboxNumber == "Textbox(Integer)") {
-          return true;
-        }
-      }
-    },
-    booleanTF: function (contentQuesId) {
-      var questionCollection = adminCollectionObject("questions");
-      var questions = questionCollection.find({ _id: contentQuesId }, { dataType: 1, _id: 0 }).fetch();
-
-      for (var i in questions) {
-        var bool = questions[i].dataType;
-        if (bool == "Boolean") {
-          return true;
-        }
-      }
-    },
-    singleSelect: function (contentQuesId) {
-      var questionCollection = adminCollectionObject("questions");
-      var questions = questionCollection.find({ _id: contentQuesId }, { dataType: 1, _id: 0 }).fetch();
-
-      for (var i in questions) {
-        var singleSelect = questions[i].dataType;
-        if (singleSelect == "Single Select") {
-          return true;
-        }
-      }
-    },
-    singleOptions: function (contentQuesId) {
-
-      var questionCollection = adminCollectionObject("questions");
-      var questions = questionCollection.find({ _id: contentQuesId }, { dataType: 1, _id: 0 }).fetch();
-
-      return questions[0].options;
-      // for(var i in questions){
-      // 	var singleSelect = questions[i].dataType;
-      // 	if(singleSelect == "Single Select"){
-      // 		console.log("SINGLE: " +questions[i].options.split(","))
-      // 		return questions[i].options.split(",");
-      // 	}
-      // }
-
-    },
-    multipleSelect: function (contentQuesId) {
-      var questionCollection = adminCollectionObject("questions");
-      var questions = questionCollection.find({ _id: contentQuesId }, { dataType: 1, _id: 0 }).fetch();
-
-      for (var i in questions) {
-        var multipleSelect = questions[i].dataType;
-        if (multipleSelect == "Multiple Select") {
-          return true;
-        }
-      }
-    }
-
   }
 );
 
-
 Template.AdminDashboardusersEdit.helpers(
   {
-    getOtherRoles: function (userId) {
+    getOtherRoles(userId) {
       return HomeHelpers.getOtherRoles(userId);
     },
-    getUserRoles: function (userId) {
+    getUserRoles(userId) {
       return HomeHelpers.getUserRoles(userId);
-    }
+    },
   }
 );
 
