@@ -5,7 +5,6 @@ surveyQuestionsMaster = new Meteor.Collection('surveyQuestionsMaster');
 
 Schemas.surveyQuestionsMaster = new SimpleSchema(
   {
-    // survey_id,survey_title,content_type,content,order
     surveyID: {
       type: String,
       max: 256,
