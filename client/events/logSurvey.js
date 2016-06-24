@@ -333,7 +333,6 @@ Template.LogSurveyView.events(
       savePausedSurvey('Pause_Submit', tmpl);
     },
     'click .pausePaused_survey': (evt, tmpl) => {
-      alert('Paused Survey Paused !');
       savePausedSurvey('Pause_Paused', tmpl);
     },
 

@@ -1,84 +1,89 @@
 /**
  * Created by udit on 10/02/16.
  */
-var SectionName;
 Template.AdminRoleManager.events(
   {
-    'click .js-update': function (e) {
+    'click .js-update': (e) => {
       e.preventDefault();
-      var serializeInput = $("#js-frm-role-manager").serializeArray();
-      $("#js-frm-role-manager :input").attr("disabled", true);
+      const serializeInput = $('#js-frm-role-manager').serializeArray();
+      $('#js-frm-role-manager :input').attr('disabled', true);
       Meteor.call(
-        "updateRolePermissions", serializeInput, function (error, result) {
+        'updateRolePermissions', serializeInput, (error, result) => {
           if (error) {
-            console.log(error);
+            logger.log(error);
           } else {
-            console.log(result);
+            logger.log(result);
           }
-          $("#js-frm-role-manager :input").attr("disabled", false);
+          $('#js-frm-role-manager :input').attr('disabled', false);
         }
       );
     },
-    'click .js-reset': function (e) {
+    'click .js-reset': (e) => {
       e.preventDefault();
       Meteor.call(
-        "resetRolePermissions", function (error, result) {
+        'resetRolePermissions', (error, result) => {
           if (error) {
-            console.log(error);
+            logger.log(error);
           } else {
-            console.log(result);
+            logger.log(result);
           }
         }
       );
-    }
+    },
   }
 );
-var surveyCopyID, surveyID_forCopy, surveyID, surveyTitle, masterSectionIDs, originalSurvey_id, sectionComponentsID, originalSurvey_uniqueIDs, surveyCopy_sectionID, surveyCopy_title;
+
+let surveyCopyId;
+let surveyIDForCopy;
+let surveyID;
+let surveyTitle;
+let masterSectionIDs;
+let originalSurveyId;
+let sectionComponentsID;
+let originalSurveyUniqueIDs;
+let surveyCopySectionID;
+let surveyCopyTitle;
+
 Template.surveyForm.events(
   {
-    'change .s_copy': function (event, template) {
-      surveyID_forCopy = $(event.target).val();
+    'change .s_copy': (event) => {
+      surveyIDForCopy = $(event.target).val();
 
+      const surveyRecord = surveys.findOne({ _id: surveyIDForCopy });
 
-      var survey_record = surveys.findOne({ _id: surveyID_forCopy });
-      for (var key in survey_record) {
-        document.getElementById('copyof_surveytitle').value = survey_record['title'];
-        document.getElementById('copy_active').checked = survey_record['active'];
-      }
+      document.getElementById('copyof_surveytitle').value = surveyRecord.title;
+      document.getElementById('copy_active').checked = surveyRecord.active;
 
       $('.s_copy').val('Choose');
-
     },
-    'click .save': function (evt, tmpl) {
-
-      var isUpdate = $('#isUpdate').val();
-      var created = false;
+    'click .save': (evt, tmpl) => {
+      const isUpdate = $('#isUpdate').val();
+      const created = false;
       surveyID = $('#surveyID').val();
-      var copy = tmpl.find('.copy').checked;
-      var stype = tmpl.find(".s_type").value;
+      const copy = tmpl.find('.copy').checked;
+      const stype = tmpl.find('.s_type').value;
+
+      let title = tmpl.find('.survey_title').value;
+      let active = tmpl.find('.active').checked;
+
       if (copy) {
+        title = tmpl.find('.copyof_surveytitle').value;
+        surveyCopyTitle = title;
 
-        var title = tmpl.find('.copyof_surveytitle').value;
-
-        surveyCopy_title = title;
-        var active = tmpl.find('.copy_active').checked;
+        active = tmpl.find('.copy_active').checked;
         surveyCopyId = $('#surveyID').val();
-
-      } else {
-        var title = tmpl.find('.survey_title').value;
-        var active = tmpl.find('.active').checked;
-        surveyCopyId = ' ';
       }
+
       Meteor.call(
-        "addSurvey", title, active, copy, surveyID, stype, created, function (error, result) {
+        'addSurvey', title, active, copy, surveyID, stype, created, (error, result) => {
           if (error) {
-            console.log(error);
+            logger.log(error);
           } else {
             if (result != null) {
               if (copy) {
                 recordsForCopy(result);
               } else {
-                console.log(result);
+                logger.log(result);
               }
             }
           }
@@ -87,7 +92,7 @@ Template.surveyForm.events(
 
       resetSurveyModal();
     },
-    'click .update': function (evt, tmpl) {
+    'click .update': (evt, tmpl) => {
 
       surveyID = $('#surveyID').val();
       var title = tmpl.find('.survey_title').value;
@@ -179,19 +184,19 @@ var recordsForCopy = function (surveyID) {
   var sectionArray = new Array();
 
   var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
-  var records_forCopy = surveyQuestionsMasterCollection.find({ surveyID: surveyID_forCopy }, { sectionID: 1 }).fetch();
+  var records_forCopy = surveyQuestionsMasterCollection.find({ surveyID: surveyIDForCopy }, { sectionID: 1 }).fetch();
 
   for (var i in records_forCopy) {
 
-    originalSurvey_uniqueIDs = records_forCopy[i]._id;
-    surveyCopy_sectionID = records_forCopy[i].sectionID;
+    originalSurveyUniqueIDs = records_forCopy[i]._id;
+    surveyCopySectionID = records_forCopy[i].sectionID;
 
-    if (surveyCopy_sectionID == null) {
-      masterSectionIDs = originalSurvey_uniqueIDs;
+    if (surveyCopySectionID == null) {
+      masterSectionIDs = originalSurveyUniqueIDs;
       mainSection(masterSectionIDs, new_SurveyID);
 
     } else {
-      sectionComponentsID = originalSurvey_uniqueIDs;
+      sectionComponentsID = originalSurveyUniqueIDs;
     }
   }
 }
@@ -207,8 +212,8 @@ var mainSection = function (mainSectionIDs, surveyID) {
 
   for (var i in mainSections) {
 
-    surveyTitle = surveyCopy_title;
-    originalSurvey_id = surveyID_forCopy;
+    surveyTitle = surveyCopyTitle;
+    originalSurveyId = surveyIDForCopy;
     var surveyCopy_skipValue = mainSections[i].allowSkip;
     var surveyCopy_contentType = mainSections[i].contentType;
     var surveyCopy_content = mainSections[i].content;
@@ -251,8 +256,8 @@ var sectionComponents = function (originalSurvey_componentIDs, newsurvey_section
 
   for (var i in section_components) {
 
-    surveyTitle = surveyCopy_title;
-    originalSurvey_id = surveyID_forCopy;
+    surveyTitle = surveyCopyTitle;
+    originalSurveyId = surveyIDForCopy;
     surveyCopy_skipValue = section_components[i].allowSkip;
     surveyCopy_contentType = section_components[i].contentType;
     surveyCopy_content = section_components[i].content;
