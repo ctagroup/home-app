@@ -104,11 +104,11 @@ Template.LogSurveyResponse.helpers(
       return surveyContents(surveyElements, null);
     },
     clientName() {
-      const clientCollections = adminCollectionObject('clientInfo');
-      const id = Router.current().params.query.clientID;
-      const client = clientCollections.findOne({ _id: id });
-
-      return `${client.firstName} ${client.middleName} ${client.lastName}`;
+      // const clientCollections = adminCollectionObject('clientInfo');
+      const name = Router.current().params.query.name;
+      // const client = clientCollections.findOne({ _id: id });
+      console.log(name);
+      return name;
     },
     displaySection(contentType) {
       return contentType === 'section';

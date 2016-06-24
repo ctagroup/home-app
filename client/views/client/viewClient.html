@@ -13,17 +13,17 @@
 						<div class="form-group">
 							<label class="col-lg-3 control-label">First name:</label>
 							<div class="col-lg-8">
-								<label class="control-label" value={{firstName}}>{{firstName}}</label>
+								<label class="control-label fName" value={{firstName}}>{{firstName}}</label>
 							</div></div>
 						<div class="form-group">
 							<label class="col-lg-3 control-label">Middle name:</label>
 							<div class="col-lg-8">
-								<label class="control-label" value={{middleName}}>{{middleName}}</label>
+								<label class="control-label mName" value={{middleName}}>{{middleName}}</label>
 							</div></div>
 						<div class="form-group">
 							<label class="col-lg-3 control-label">Last name:</label>
 							<div class="col-lg-8">
-								<label class="control-label" value={{lastName}}>{{lastName}}</label>
+								<label class="control-label lName" value={{lastName}}>{{lastName}}</label>
 							</div> </div>
 						<div class="form-group">
 							<label class="col-lg-3 control-label">Suffix:</label>
@@ -40,7 +40,7 @@
 						<div class="form-group">
 							<label class="col-lg-3 control-label">Date of Birth:</label>
 							<div class="col-lg-8">
-								<label class="control-label" value={{dob}}>{{dob}}</label>
+								<label class="control-label dob" value={{dob}}>{{dob}}</label>
 							</div>
 						</div>
 						<div class="form-group">
@@ -100,7 +100,7 @@
 						<div class="form-group">
 							<label class="col-lg-3 control-label">Personal ID:</label>
 							<div class="col-lg-8">
-								<label class="control-label" value={{personalId}}>{{personalId}} </label>
+								<label class="control-label clientID" value={{personalId}}>{{personalId}} </label>
 							</div>
 						</div>
 						<div class="form-group">
@@ -112,7 +112,7 @@
 						<div class="form-group">
 							<label class="col-lg-3 control-label">Relationship to Head to Household:</label>
 							<div class="col-lg-8">
-								<label class="control-label" value={{relationship}}>{{relationship}} </label>
+								<label class="control-label reltohoh" value={{relationship}}>{{relationship}} </label>
 							</div>
 						</div>
 						<div class="form-group">
@@ -131,6 +131,7 @@
 						<div class="form-group">
 							<div class="col-md-8">
 								<input class="btn btn-default back" value="Back" type="button">
+                  <input class="btn btn-success takeSurvey" value="Survey" type="button">
 								{{#unless personalId}}
 									<input class="btn btn-success add-to-hmis" value="Add to HMIS" type="button">
 									<input class="btn btn-warning edit" value="Edit" type="button">
