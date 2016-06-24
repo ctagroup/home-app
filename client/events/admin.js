@@ -177,7 +177,7 @@ Template.surveyForm.events(
   }
 );
 var new_SurveyID;
-var recordsForCopy = function (surveyID) {
+function recordsForCopy(surveyID) {
 
   // console.log("new survey ID: " + surveyID);
   new_SurveyID = surveyID;
@@ -201,7 +201,7 @@ var recordsForCopy = function (surveyID) {
   }
 }
 var compIDs;
-var mainSection = function (mainSectionIDs, surveyID) {
+function mainSection(mainSectionIDs, surveyID) {
 
 
   var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
@@ -244,8 +244,9 @@ var mainSection = function (mainSectionIDs, surveyID) {
     );
     resetSurveyModal();
   }
-};
-var sectionComponents = function (originalSurvey_componentIDs, newsurvey_sectionIDs, new_surveyID) {
+}
+
+function sectionComponents(originalSurvey_componentIDs, newsurvey_sectionIDs, new_surveyID) {
 
   console.log("new survey ID: " + new_surveyID);
   console.log("Sub sections: " + originalSurvey_componentIDs);
@@ -282,9 +283,9 @@ var sectionComponents = function (originalSurvey_componentIDs, newsurvey_section
     );
     resetSurveyModal();
   }
-};
+}
 
-var resetSurveyModal = function () {
+function resetSurveyModal() {
   $('#newSurveyModal input[type=text]').val('');
   $('#newSurveyModal input[type=checkbox]').attr('checked', false);
   $('#newSurveyModal input[type=checkbox]').prop('checked', false);
@@ -296,9 +297,9 @@ var resetSurveyModal = function () {
   $('#isUpdate').val('0');
   $('#surveyID').val('');
   $('.othersSpecify').hide();
-};
+}
 
-var resetQuestionModal = function () {
+function resetQuestionModal() {
   $('#newQuestionModal input[type=text]').val('');
   $('#newQuestionModal select').val('').change();
   $('#newQuestionModal input[type=checkbox]').attr('checked', false);
@@ -307,17 +308,18 @@ var resetQuestionModal = function () {
   $('#isUpdate').val('0');
   $('#questionID').val('');
 
-};
+}
 
-var checkLocked = function () {
+function checkLocked() {
   var toggle = $('#locked').is(':checked');
   if (toggle) {
     setFields(true);
   } else {
     setFields(false);
   }
-};
-var setFields = function (status) {
+}
+
+function setFields(status) {
   $('#isCopy').attr('disabled', status);
   $('#q_copy').attr('disabled', status);
   $('#q_category').attr('disabled', status);
@@ -326,27 +328,24 @@ var setFields = function (status) {
   $('#hud').attr('disabled', status);
   $('#q_dataType').attr('disabled', status);
   if ((
-        document.getElementById('q_dataType').value == "Multiple Select"
+        document.getElementById('q_dataType').value === 'Multiple Select'
       ) ||
       (
-        document.getElementById('q_dataType').value == "Single Select"
+        document.getElementById('q_dataType').value === 'Single Select'
       )) {
-    //$('#options').attr('disabled', status);
+    // $('#options').attr('disabled', status);
     $('#aoptions :input').attr('disabled', status);
-    if (status == false) {
+    if (status === false) {
       $('.optionadd').unbind('click', false);
       $('.optionremove').unbind('click', false);
-    }
-    else {
+    } else {
       $('.optionadd').bind('click', false);
       $('.optionremove').bind('click', false);
     }
-
   }
-};
+}
 
-var maxRank = function (survey_id) {
-
+function maxRank(survey_id) {
   var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
 
   if (surveyQuestionsMasterCollection.find({ surveyID: survey_id }).count() <= 0) {
@@ -1083,14 +1082,14 @@ var populateOptions = function (question) {
   }
 
 };
-var registerDeleteOption = function () {
+
+function registerDeleteOption() {
   $('#aoptions').on(
-    "click", "a.optionremove", function () {
-      var row_id = $(this).attr('id');
-      var i = row_id.split('.');
-      var i1 = i[1];
-      $('#' + i1).remove();
+    'click', 'a.optionremove', function () {
+      const rowId = $(this).attr('id');
+      const i = rowId.split('.');
+      const i1 = i[1];
+      $(`#${i1}`).remove();
     }
   );
-};
-
+}
