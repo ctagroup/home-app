@@ -1,6 +1,6 @@
 <template name="LogSurvey">
     <div id="content">
-		{{> appNav}}
+        {{> appNav}}
 
         <div class="container">
 
@@ -12,24 +12,9 @@
                             <label for="surveyList">Published Surveys:</label>
                             <select class="form-control surveyList" name="surveyList" id="surveyList">
                                 <option value="Choose" selected>Choose a survey</option>
-								{{#each getCreatedSurvey}}
+                                {{#each getCreatedSurvey}}
                                     <option value={{_id}}>{{title}}</option>
-								{{/each}}
-                            </select><br/>
-                            <label for="clientList">Published Clients:</label>
-                            <select class="form-control clientList" name="clientList" id="clientList">
-                                <option value="Choose" selected>Choose a client</option>
-								{{#each getSurveyedClient}}
-                                    <option value={{_id}}>{{firstName}}&nbsp;{{middleName}}&nbsp;{{lastName}}</option>
-								{{/each}}
-                            </select><br/>
-                            <label for="q_audience">Audience: </label>
-                            <select class="form-control q_audience" name="q_audience" id="q_audience">
-                                <option value="adult">Adult</option>
-                                <option value="hoh"> Head of household</option>
-                                <option value="bothadultsandhoh">Adults and Head of Household</option>
-                                <option value="child">Child</option>
-                                <option value="everyone">Everyone</option>
+                                {{/each}}
                             </select><br/><br/>
                             <input class="btn btn-primary nextLogSurvey" value="Next" type="button">
                         </div>
@@ -39,13 +24,13 @@
 
         </div>
 
-		{{> footer}}
+        {{> footer}}
 
     </div>
 </template>
 <template name="LogSurveyResponse">
     <div id="content">
-		{{> appNav}}
+        {{> appNav}}
 
         <div class="container quesL">
             <h3 class="page-header">{{clientName}}</h3>
@@ -53,49 +38,49 @@
 
                 <h2>{{title}}</h2>
                 <!--<input type="hidden" id="newsurveyID" value={{resID}} />-->
-				{{#if responseExists}}
+                {{#if responseExists}}
 
-					{{#each surveyQuesContents}}
+                    {{#each surveyQuesContents}}
                         <div class="responseSection">
                             <div class="section">
 
-								{{#if displaySection contentType}}
+                                {{#if displaySection contentType}}
                                     <li><h3 style="color: #1b6d85">{{content}}</h3></li>
-									{{#if displaySkipButton contentType allowSkip}}
+                                    {{#if displaySkipButton contentType allowSkip}}
                                         <input type="checkbox" class="hideWhenSkipped" id={{_id}} value="skip"> &nbsp;
                                         <label style="color: #A00000">Skip</label>
-									{{/if}}
-								{{/if}}
+                                    {{/if}}
+                                {{/if}}
                             </div>
                             <div class="{{sectionID}}">
                                 <div class="labels">
-									{{#if displayLabel contentType}}
+                                    {{#if displayLabel contentType}}
                                         <li><h4>{{content}}</h4></li>
-									{{/if}}
+                                    {{/if}}
                                 </div>
                                 <div class="question">
-									{{#if displayQues contentType}}
-										{{#if checkAudience content}}
+                                    {{#if displayQues contentType}}
+                                        {{#if checkAudience content}}
                                             <li>
                                                 <h5>{{displayQuesContents content}}</h5>
                                             </li>
-											{{#if textboxString content}}
+                                            {{#if textboxString content}}
                                                 <li class="quesList">
                                                     <input type="text"
                                                            class="form-control input input-xxlarge stringType"
                                                            id={{content}} name={{content}} value="">
                                                 </li>
-											{{/if}}
+                                            {{/if}}
 
-											{{#if textboxNumber content}}
+                                            {{#if textboxNumber content}}
                                                 <li class="quesList">
                                                     <input type="number"
                                                            class="form-control input input-xxlarge numberType"
                                                            id={{content}} name={{content}} value="">
                                                 </li>
-											{{/if}}
+                                            {{/if}}
 
-											{{#if booleanTF content}}
+                                            {{#if booleanTF content}}
                                                 <li class="quesList">
                                                     <label class="boolY"><input type="radio" class="boolY"
                                                                                 id={{content}} name={{content}}
@@ -106,10 +91,10 @@
                                                                                  id={{content}} name={{content}}
                                                                                  value="false"> &nbsp;False</label>
                                                 </li>
-											{{/if}}
+                                            {{/if}}
 
-											{{#if singleSelect content}}
-												{{#each singleOptions content}}
+                                            {{#if singleSelect content}}
+                                                {{#each singleOptions content}}
                                                     <li class="quesList">
                                                         <label class="singleSelect"><input type="radio"
                                                                                            class="singleSelect"
@@ -117,7 +102,7 @@
                                                                                            value={{this.value}}>
                                                             &nbsp; {{this.description}}</label>
                                                     </li>
-												{{/each}}
+                                                {{/each}}
                                                 <li class="othersSpecify_single hide">
                                                     <label class="othersSpecifyLabel">Please specify</label>
                                                     <input type="text"
@@ -125,10 +110,10 @@
                                                            id="othersSpecify_single" name="othersSpecify_single"
                                                            value="">
                                                 </li>
-											{{/if}}
+                                            {{/if}}
 
-											{{#if multipleSelect content}}
-												{{#each singleOptions content}}
+                                            {{#if multipleSelect content}}
+                                                {{#each singleOptions content}}
                                                     <li class="quesList">
                                                         <label class="multipleSelect" id={{../content}}><input
                                                                 type="checkbox" class="multipleSelect"
@@ -136,7 +121,7 @@
                                                                 value={{this.value}}> &nbsp; {{this.description}}
                                                         </label>
                                                     </li>
-												{{/each}}
+                                                {{/each}}
                                                 <li class="othersSpecify_multiple hide">
                                                     <label class="othersSpecify_multipleLabel">Please specify</label>
                                                     <input type="text"
@@ -144,59 +129,59 @@
                                                            id="othersSpecify_multiple" name="othersSpecify_multiple"
                                                            value="">
                                                 </li>
-											{{/if}}
-										{{/if}}
-									{{/if}}
+                                            {{/if}}
+                                        {{/if}}
+                                    {{/if}}
 
                                 </div>
                             </div>
                         </div>
 
-					{{/each}}
-				{{else}}
+                    {{/each}}
+                {{else}}
 
-					{{#each surveyQuesContents}}
+                    {{#each surveyQuesContents}}
                         <div class="responseSection">
                             <div class="{{sectionID}}">
                                 <div class="section">
 
-									{{#if displaySection contentType}}
+                                    {{#if displaySection contentType}}
                                         <li><h3 style="color: #1b6d85">{{content}}</h3></li>
-										{{#if displaySkipButton contentType allowSkip}}
+                                        {{#if displaySkipButton contentType allowSkip}}
                                             <input type="checkbox" class="hideWhenSkipped" id={{_id}} value="skip">
                                             &nbsp;
                                             <label style="color: #A00000">Skip</label>
-										{{/if}}
-									{{/if}}
+                                        {{/if}}
+                                    {{/if}}
                                 </div>
                                 <div class="labels">
-									{{#if displayLabel contentType}}
+                                    {{#if displayLabel contentType}}
                                         <li><h4>{{content}}</h4></li>
-									{{/if}}
+                                    {{/if}}
                                 </div>
                                 <div class="question">
-									{{#if displayQues contentType}}
-										{{#if checkAudience content}}
+                                    {{#if displayQues contentType}}
+                                        {{#if checkAudience content}}
                                             <li>
                                                 <h5>{{displayQuesContents content}}</h5>
                                             </li>
-											{{#if textboxString content}}
+                                            {{#if textboxString content}}
                                                 <li class="quesList">
                                                     <input type="text"
                                                            class="form-control input input-xxlarge stringType"
                                                            id={{content}} name={{content}} value="">
                                                 </li>
-											{{/if}}
+                                            {{/if}}
 
-											{{#if textboxNumber content}}
+                                            {{#if textboxNumber content}}
                                                 <li class="quesList">
                                                     <input type="number"
                                                            class="form-control input input-xxlarge numberType"
                                                            id={{content}} name={{content}} value="">
                                                 </li>
-											{{/if}}
+                                            {{/if}}
 
-											{{#if booleanTF content}}
+                                            {{#if booleanTF content}}
                                                 <li class="quesList">
                                                     <label class="boolY"><input type="radio" class="boolY"
                                                                                 id={{content}} name={{content}}
@@ -207,10 +192,10 @@
                                                                                  id={{content}} name={{content}}
                                                                                  value="false"> &nbsp;False</label>
                                                 </li>
-											{{/if}}
+                                            {{/if}}
 
-											{{#if singleSelect content}}
-												{{#each singleOptions content}}
+                                            {{#if singleSelect content}}
+                                                {{#each singleOptions content}}
                                                     <li class="quesList">
                                                         <label class="singleSelect"><input type="radio"
                                                                                            class="singleSelect"
@@ -218,7 +203,7 @@
                                                                                            value={{this.value}}>
                                                             &nbsp; {{this.description}}</label>
                                                     </li>
-												{{/each}}
+                                                {{/each}}
                                                 <li class="othersSpecify_single hide">
                                                     <label class="othersSpecifyLabel">Please specify</label>
                                                     <input type="text"
@@ -226,10 +211,10 @@
                                                            id="othersSpecify_single" name="othersSpecify_single"
                                                            value="">
                                                 </li>
-											{{/if}}
+                                            {{/if}}
 
-											{{#if multipleSelect content}}
-												{{#each singleOptions content}}
+                                            {{#if multipleSelect content}}
+                                                {{#each singleOptions content}}
                                                     <li class="quesList">
                                                         <label class="multipleSelect" id={{../content}}><input
                                                                 type="checkbox" class="multipleSelect"
@@ -237,7 +222,7 @@
                                                                 value={{this.value}}> &nbsp; {{this.description}}
                                                         </label>
                                                     </li>
-												{{/each}}
+                                                {{/each}}
                                                 <li class="othersSpecify_multiple hide">
                                                     <label class="othersSpecify_multipleLabel">Please specify</label>
                                                     <input type="text"
@@ -245,16 +230,16 @@
                                                            id="othersSpecify_multiple" name="othersSpecify_multiple"
                                                            value="">
                                                 </li>
-											{{/if}}
-										{{/if}}
-									{{/if}}
+                                            {{/if}}
+                                        {{/if}}
+                                    {{/if}}
 
                                 </div>
                             </div>
                         </div>
 
-					{{/each}}
-				{{/if}}
+                    {{/each}}
+                {{/if}}
                 <button class="btn btn-large btn-primary save_survey">Save</button>
                 <button class="btn btn-large btn-primary pause_survey">Pause</button>
                 <button class="btn btn-large btn-primary cancel_survey">Cancel</button>
@@ -264,17 +249,17 @@
 </template>
 <template name="LogSurveyView">
     <div id="content">
-		{{> appNav}}
+        {{> appNav}}
 
         <div class="container quesL">
             <h3 class="page-header">{{surveyTitle surveyID}}</h3>
             <ul id="responseSurveyList">
 
-				{{#each surveyQuesContents surveyID}}
-					{{#if surveyCompleted}}
+                {{#each surveyQuesContents surveyID}}
+                    {{#if surveyCompleted}}
                         <div class="responseSection">
-							{{#if displaySection contentType}}
-								{{#if sectionSkipped _id}}
+                            {{#if displaySection contentType}}
+                                {{#if sectionSkipped _id}}
                                     <div class="section">
                                         <li><h3 style="color: #1b6d85">{{content}}</h3></li>
                                             <!--{{#if displaySkipButton contentType allowSkip}}-->
@@ -282,81 +267,81 @@
                                         <!--<label style="color: #A00000">Skip</label>-->
                                             <!--{{/if}}-->
                                     </div>
-								{{/if}}
-							{{else}}
-								{{#if sectionSkipped sectionID}}
+                                {{/if}}
+                            {{else}}
+                                {{#if sectionSkipped sectionID}}
                                     <div class="{{sectionID}}">
                                         <div class="labels">
-											{{#if displayLabel contentType}}
+                                            {{#if displayLabel contentType}}
                                                 <li><h4>{{content}}</h4></li>
-											{{/if}}
+                                            {{/if}}
                                         </div>
                                         <div class="question">
-											{{#if displayQues contentType}}
-												{{#if checkAudience content}}
+                                            {{#if displayQues contentType}}
+                                                {{#if checkAudience content}}
                                                     <li class="question_content">
                                                         <strong>{{displayQuesContents content}} :</strong>
 
                                                     </li>
-													{{surveyTextResponse content}}
-												{{/if}}
-											{{/if}}
+                                                    {{surveyTextResponse content}}
+                                                {{/if}}
+                                            {{/if}}
                                         </div>
                                     </div>
-								{{/if}}
-							{{/if}}
+                                {{/if}}
+                            {{/if}}
                         </div>
-					{{else}}
+                    {{else}}
 
                         <div class="responseSection">
 
 
                             <h5></h5>
-							{{#if displaySection contentType}}
+                            {{#if displaySection contentType}}
                                 <div class="section">
 
                                     <li><h3 style="color: #1b6d85">{{content}}</h3></li>
-									{{#if displaySkipButton contentType allowSkip}}
+                                    {{#if displaySkipButton contentType allowSkip}}
                                         <input type="checkbox" class="hideWhenSkipped"
                                                id={{_id}} value="skip" {{checkSkipped _id}}> &nbsp;
                                         <label style="color: #A00000">Skip</label>
-									{{/if}}
+                                    {{/if}}
 
                                 </div>
-							{{else}}
+                            {{else}}
                                 <div class="{{sectionID}}" {{ hideIfSkipped sectionID}}>
                                     <div class="labels">
-										{{#if displayLabel contentType}}
+                                        {{#if displayLabel contentType}}
                                             <li><h4>{{content}}</h4></li>
-										{{/if}}
+                                        {{/if}}
                                     </div>
                                     <div class="question">
-										{{#if displayQues contentType}}
-											{{#if checkAudience content}}
+                                        {{#if displayQues contentType}}
+                                            {{#if checkAudience content}}
                                                 <li>
                                                     <h5>{{displayQuesContents content}}</h5>
                                                 </li>
 
 
-												{{#if textboxString content}}
+                                                {{#if textboxString content}}
                                                     <li class="quesList">
                                                         <input type="text"
                                                                class="form-control input input-xxlarge stringType"
                                                                id={{content}} name={{content}}
                                                                value="{{surveyTextResponse content}}">
                                                     </li>
-												{{/if}}
+                                                {{/if}}
 
-												{{#if textboxNumber content}}
+                                                {{#if textboxNumber content}}
                                                     <li class="quesList">
                                                         <input type="number"
                                                                class="form-control input input-xxlarge numberType"
                                                                id={{content}} name={{content}}
                                                                value="{{surveyTextResponse content}}">
                                                     </li>
-												{{/if}}
+                                                {{/if}}
 
-												{{#if booleanTF content}}
+                                                {{#if booleanTF content}}
                                                     <li class="quesList">
                                                         <label class="boolY"><input type="radio" class="bool"
                                                                                     id={{content}} name={{content}}
@@ -369,10 +354,10 @@
                                                                                      value="false" {{isChecked 'false'}}>
                                                             &nbsp;False</label>
                                                     </li>
-												{{/if}}
+                                                {{/if}}
 
-												{{#if singleSelect content}}
-													{{#each singleOptions content}}
+                                                {{#if singleSelect content}}
+                                                    {{#each singleOptions content}}
                                                         <li class="quesList">
                                                             <label class="singleSelect" id={{../content}}><input
                                                                     type="radio" class="singleSelect"
@@ -380,7 +365,7 @@
                                                                     value={{this.value}} {{isSelected this.value}}>
                                                                 &nbsp; {{this.description}} </label>
                                                         </li>
-													{{/each}}
+                                                    {{/each}}
 
                                                     <li class="othersSpecify_single hide">
                                                         <label class="othersSpecifyLabel">Please specify</label>
@@ -389,11 +374,11 @@
                                                                id="othersSpecify_single" name="othersSpecify_single"
                                                                value="">
                                                     </li>
-													{{surveyTextResponse ../content}}
-												{{/if}}
+                                                    {{surveyTextResponse ../content}}
+                                                {{/if}}
 
-												{{#if multipleSelect content}}
-													{{#each singleOptions content}}
+                                                {{#if multipleSelect content}}
+                                                    {{#each singleOptions content}}
                                                         <li class="quesList">
                                                             <label class="multipleSelect" id={{this.value}}><input
                                                                     type="checkbox"
@@ -403,7 +388,7 @@
                                                                     id={{../content}} {{isSelectedMultiple this.value}}>
                                                                 &nbsp; {{this.description}} </label>
                                                         </li>
-													{{/each}}
+                                                    {{/each}}
                                                     <li class="othersSpecify_multiple hide">
                                                         <label class="othersSpecify_multipleLabel">Please
                                                             specify</label>
@@ -412,18 +397,18 @@
                                                                id="othersSpecify_multiple" name="othersSpecify_multiple"
                                                                value="">
                                                     </li>
-												{{/if}}
-											{{/if}}
-										{{/if}}
+                                                {{/if}}
+                                            {{/if}}
+                                        {{/if}}
                                     </div>
                                 </div>
-							{{/if}}
+                            {{/if}}
                         </div>
 
 
-					{{/if}}
-				{{/each}}
-				{{#if paused}}
+                    {{/if}}
+                {{/each}}
+                {{#if paused}}
                     <div id="pauseSurvey">
                         <a>
                             <button class="btn btn-large btn-primary  savePaused_survey">Save</button>
@@ -432,7 +417,7 @@
                             <button class="btn btn-large btn-primary  pausePaused_survey">Pause</button>
                         </a>
                     </div>
-				{{/if}}
+                {{/if}}
             </ul>
         </div>
     </div>

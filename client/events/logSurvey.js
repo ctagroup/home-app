@@ -5,12 +5,13 @@ Template.LogSurvey.events(
   {
     'click .nextLogSurvey': (evt, tmpl) => {
       const surveyID = tmpl.find('.surveyList').value;
-      const clientID = tmpl.find('.clientList').value;
+      const clientID = Router.current().params._id;
       Router.go(
         'LogSurveyResponse', { _id: surveyID }, {
           query: {
             clientID,
-            audience: tmpl.find('#q_audience').value,
+            audience: Router.current().params.query.audience,
+            name: Router.current().params.query.name,
           },
         }
       );
