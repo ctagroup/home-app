@@ -19,10 +19,10 @@ Template.createClient.events(
       const residencePrior = tmpl.find('.residencePrior_category').value;
       const entryDate = tmpl.find('.entryDate').value;
       const exitDate = tmpl.find('.exitDate').value;
-      const destination = tmpl.find('.destination_category').value;
+      const destination = tmpl.find('.destinationCategory').value;
       const householdId = tmpl.find('.householdId').value;
       const relationship = tmpl.find('.relationtoHoH_category').value;
-      const loc = tmpl.find('.destination_category').value;
+      const loc = tmpl.find('.loc').value;
       const shelter = tmpl.find('.timeOnStreets_category').value;
       Meteor.call(
         'addClient', firstName, middleName, lastName, suffix, ssn,
@@ -87,10 +87,10 @@ Template.editClient.events(
       const residencePrior = tmpl.find('.residencePrior_category').value;
       const entryDate = tmpl.find('.entryDate').value;
       const exitDate = tmpl.find('.exitDate').value;
-      const destination = tmpl.find('.destination_category').value;
+      const destination = tmpl.find('.destinationCategory').value;
       const householdId = tmpl.find('.householdId').value;
       const relationship = tmpl.find('.relationtoHoH_category').value;
-      const loc = tmpl.find('.destination_category').value;
+      const loc = tmpl.find('.loc').value;
       const shelter = tmpl.find('.timeOnStreets_category').value;
       Meteor.call(
         'updateClient', tmpl.data._id, firstName, middleName, lastName,
