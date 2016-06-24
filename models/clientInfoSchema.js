@@ -6,11 +6,6 @@ clientInfo = new Meteor.Collection('clientInfo');
 
 Schemas.clientInfo = new SimpleSchema(
   {
-    // survey_id,survey_title,content_type,content,order
-    // first_name,middle_name,last_name,suffix,ssn,dob,
-    // race,ethnicity,gender,veteranStatus,disablingConditions,
-    // residencePrior,entryDate,entryDate,destination,personalId,
-    // relationship,loc,shelter
     firstName: {
       type: String,
       max: 256,

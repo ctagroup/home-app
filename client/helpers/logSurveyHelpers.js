@@ -72,105 +72,81 @@ function surveyContents(surveyElements, status) {
   return sectionID;
 }
 
-function getQName(getQuesName) {
-  var questionCollection = adminCollectionObject("questions");
-  var questions = questionCollection.find({ _id: getQuesName }, { name: 1, _id: 0 }).fetch();
-  for (var i in questions) {
-    return questions[i].name;
-  }
-
+function getQName(qID) {
+  const questionCollection = adminCollectionObject('questions');
+  const question = questionCollection.findOne({ _id: qID });
+  return question.name;
 }
 
-var qIDs, sections, survey_id, multiple_responses;
-var sects;
+let sections;
 
 Template.LogSurvey.helpers(
   {
-    getCreatedSurvey: function () {
-      var surveyCollections = adminCollectionObject('surveys');
-      return surveyCollections.find({ 'created': true }).fetch();
+    getCreatedSurvey() {
+      const surveyCollections = adminCollectionObject('surveys');
+      return surveyCollections.find({ created: true }).fetch();
     },
-    getSurveyedClient: function () {
-      var clientCollections = adminCollectionObject('clientInfo');
+    getSurveyedClient() {
+      const clientCollections = adminCollectionObject('clientInfo');
       return clientCollections.find().fetch();
-    }
+    },
   }
 );
 
 Template.LogSurveyResponse.helpers(
   {
-    surveyQuesContents: function () {
-      var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
-      var surveyElements = surveyQuestionsMasterCollection.find(
+    surveyQuesContents() {
+      const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
+      const surveyElements = surveyQuestionsMasterCollection.find(
         { surveyID: Router.current().params._id },
         { sort: { order: 1 } }
       ).fetch();
       return surveyContents(surveyElements, null);
     },
-    clientName: function () {
-      var clientCollections = adminCollectionObject('clientInfo');
-      var id = Router.current().params.query.clientID;
-      var client_name = clientCollections.find({ _id: id }).fetch();
-      for (var i in client_name) {
-        var first_name = client_name[i].firstName;
-        var middle_name = client_name[i].middleName;
-        var last_name = client_name[i].lastName;
-      }
-      return first_name + " " + middle_name + " " + last_name;
+    clientName() {
+      const clientCollections = adminCollectionObject('clientInfo');
+      const id = Router.current().params.query.clientID;
+      const client = clientCollections.findOne({ _id: id });
 
-
+      return `${client.firstName} ${client.middleName} ${client.lastName}`;
     },
-    displaySection: function (content_type) {
-      if (content_type == "section") {
-        return true;
-      }
+    displaySection(contentType) {
+      return contentType === 'section';
     },
-    displayLabel: function (content_type) {
-      if (content_type == "labels") {
-        return true;
-      }
+    displayLabel(contentType) {
+      return contentType === 'labels';
     },
-    displaySkipButton: function (content_type, allow_skip) {
-      if (content_type == "section" && allow_skip == "true") {
-        return true;
-      }
+    displaySkipButton(contentType, allowSkip) {
+      return contentType === 'section' && allowSkip === 'true';
     },
-    textboxString: function (data) {
-
-      if (data == "Textbox(String)") {
-        return true;
-      }
-
+    displayQues(contentType) {
+      // quesContent = content;
+      return contentType === 'question';
     },
-    displayQues: function (content_type, content) {
-      quesContent = content;
-      if (content_type == "question") {
-        return true;
-      }
+    displayQuesContents(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const question = questionCollection.findOne({ _id: contentQuesId });
+      return question.question;
     },
-    displayQuesContents: function (contentQuesId) {
-      var questionCollection = adminCollectionObject("questions");
-      var questions = questionCollection.find({ _id: contentQuesId }).fetch();
-
-      for (var i in questions) {
-        var qNames = questions[i].question;
-      }
-      return qNames;
-
-    },
-    checkAudience: function (content) {
+    checkAudience(content) {
       return chkAudience(content);
     },
-    textboxString: function (contentQuesId) {
-      var questionCollection = adminCollectionObject("questions");
-      var questions = questionCollection.find({ _id: contentQuesId }, { dataType: 1, _id: 0 }).fetch();
+    textboxString(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const questions = questionCollection.find(
+        { _id: contentQuesId }, { dataType: 1, _id: 0 }
+      ).fetch();
 
-      for (var i in questions) {
-        var textboxString = questions[i].dataType;
-        if (textboxString == "Textbox(String)") {
-          return true;
+      let flag = false;
+
+      for (let i = 0; i < questions.length; i++) {
+        const type = questions[i].dataType;
+        if (type === 'Textbox(String)') {
+          flag = true;
+          break;
         }
       }
+      return flag;
     },
     textboxNumber(contentQuesId) {
       const questionCollection = adminCollectionObject('questions');
@@ -199,7 +175,7 @@ Template.LogSurveyResponse.helpers(
 
       for (let i = 0; i < questions.length; i++) {
         const type = questions[i].dataType;
-        if (type == 'Boolean') {
+        if (type === 'Boolean') {
           flag = true;
           break;
         }
@@ -224,7 +200,6 @@ Template.LogSurveyResponse.helpers(
       return flag;
     },
     singleOptions(contentQuesId) {
-
       const questionCollection = adminCollectionObject('questions');
       const questions = questionCollection.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
@@ -249,50 +224,46 @@ Template.LogSurveyResponse.helpers(
       }
       return flag;
     },
-    getQuesName: function (getQuesName) {
+    getQuesName(getQuesName) {
       return getQName(getQuesName);
     },
-    responseExists: function () {
+    responseExists() {
+      let flag = false;
 
-      var responseCollection = adminCollectionObject("responses");
-      var responseRecords = responseCollection.find({ surveyID: Router.current().params._id }).fetch();
-      for (var i in responseRecords) {
-        var sections = responseRecords[i].section;
-        for (var j in sections) {
-          var responses = sections[j].response;
-          for (var k in responses) {
-            var questions_ids = responses[k].questionID;
-            var answers = responses[k].answer;
-            if (answers != null) {
-              return true;
-            } else {
-              return false;
-            }
-
+      const responseCollection = adminCollectionObject('responses');
+      const responseRecords = responseCollection.find(
+        { surveyID: Router.current().params._id }
+      ).fetch();
+      for (let i = 0; i < responseRecords.length; i++) {
+        const sectionz = responseRecords[i].section;
+        for (let j = 0; j < sectionz.length; j++) {
+          const responses = sectionz[j].response;
+          for (let k = 0; k < responses.length; k++) {
+            const answers = responses[k].answer;
+            flag = answers != null;
+            break;
           }
-
         }
-
       }
+      return flag;
     },
-    surveyContents: function () {
-      var responseCollection = adminCollectionObject("responses");
-      var responseSections = responseCollection.find({ surveyID: Router.current().params._id }).fetch();
-      for (var i in responseSections) {
-        var sections = responseSections[i].section;
-        for (var j in sections) {
-          var responses = sections[j].response;
-          for (var k in responses) {
-            var questions_ids = responses[k].questionID;
-            var answers = responses[k].answer;
+    surveyContents() {
+      const responseCollection = adminCollectionObject('responses');
+      const responseSections = responseCollection.find(
+        { surveyID: Router.current().params._id }
+      ).fetch();
+      for (let i = 0; i < responseSections.length; i++) {
+        const sectionz = responseSections[i].section;
+        for (let j = 0; j < sectionz.length; j++) {
+          const responses = sectionz[j].response;
+          for (let k = 0; k < responses.length; k++) {
+            const answers = responses[k].answer;
             return answers;
-
           }
-
         }
-
       }
-    }
+      return [];
+    },
   }
 );
 
@@ -317,7 +288,7 @@ Template.LogSurveyView.helpers(
       const surveyCollection = adminCollectionObject('surveys');
       const survey = surveyCollection.findOne({ _id: surveyID });
 
-      survey_id = survey._id;
+      // surveyId = survey._id;
       return survey.title;
     },
     surveyCompleted() {
