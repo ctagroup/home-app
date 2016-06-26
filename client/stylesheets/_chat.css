@@ -1,5 +1,5 @@
-/*
-.sidebar {
+
+.chat-sidebar {
     width: 20%;
     position: absolute;
     top: 45px;
@@ -8,16 +8,16 @@
     background: linear-gradient(rgb(71,57,129), rgb(18,114,184));;
     padding: 24px 16px;
 }
-*/
-/*
-.sidebar .room-label {
+
+
+.chat-sidebar .room-label {
     font-family: "Open Sans";
     color: white;
     font-weight: 300;
     letter-spacing: 1px;
 }
-*/
-/*
+
+
 .main-container {
     width: 80%;
     top: 56px;
@@ -27,8 +27,8 @@
     box-sizing: border-box;
     background-color: rgb(242,243,247);
 }
-*/
-/*
+
+
 .main-container .main-header {
     background-color: transparent;
     padding: 24px;
@@ -36,7 +36,7 @@
     color: rgb(126,128,144);
     font-weight: 900;
 }
-*/
+
 .message-list {
     position: absolute;
     top: 70px;
@@ -81,57 +81,57 @@
 }
 
 .new-message .new-message-input, .new-message .new-message-submit {
-  display: table-cell;
-  vertical-align: middle;
+    display: table-cell;
+    vertical-align: middle;
 }
 
 .new-message .new-message-input {
-  border: 1px solid transparent;
-  width: 85%;
-  padding: 16px;
-  height: 45px;
-  background-color: rgb(242,243,247);
-  font-family: "Open Sans";
-  font-size: 14px;
-  transition: all 0.25s ease-in;
-  -webkit-transition: all 0.25s ease-in;
+    border: 1px solid transparent;
+    width: 85%;
+    padding: 16px;
+    height: 45px;
+    background-color: rgb(242,243,247);
+    font-family: "Open Sans";
+    font-size: 14px;
+    transition: all 0.25s ease-in;
+    -webkit-transition: all 0.25s ease-in;
 }
 
 .new-message .new-message-input:focus {
-  outline: none;
-  border: 1px solid rgb(18,114,184);
+    outline: none;
+    border: 1px solid rgb(18,114,184);
 }
 
 .new-message .new-message-submit {
-  border: 0;
-  padding: 16px 24px;
-  margin-left: 16px;
-  color: white;
-  height: 60px;
-  border-radius: 6px;
-  background-color: rgb(18,114,184);
-  font-weight: 700;
-  text-transform: uppercase;
+    border: 0;
+    padding: 16px 24px;
+    margin-left: 16px;
+    color: white;
+    height: 60px;
+    border-radius: 6px;
+    background-color: rgb(18,114,184);
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
 /* Make our placeholder styling the same as our input text */
 
 ::-webkit-input-placeholder {
-   font-family: "Open Sans";
-   font-size: 14px;
+    font-family: "Open Sans";
+    font-size: 14px;
 }
 
 :-moz-placeholder { /* Firefox 18- */
-   font-family: "Open Sans";
-   font-size: 14px;
+    font-family: "Open Sans";
+    font-size: 14px;
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
-   font-family: "Open Sans";
-   font-size: 14px;
+    font-family: "Open Sans";
+    font-size: 14px;
 }
 
 :-ms-input-placeholder {
-   font-family: "Open Sans";
-   font-size: 14px;
+    font-family: "Open Sans";
+    font-size: 14px;
 }

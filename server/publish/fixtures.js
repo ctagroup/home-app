@@ -7,18 +7,23 @@ Meteor.startup(() => {
     {
       name: 'Joe Lipper',
       content: 'Wow building a chat app with Meteor is so easy!',
-    }, {
+      timestamp: Date.now(),
+    },
+    {
       name: 'Mike Jewett',
-      content: 'Yeah wow! What a great framework. I can\'t wait to keep building this thing out!',
-    }, {
+      content: 'Yeah wow! What a great framework. I cant wait to keep building this thing out!',
+      timestamp: Date.now(),
+    },
+    {
       name: 'Joe Lipper',
-      content: 'Hang in there -- we\'ve only scratched the surface on this thing.',
+      content: 'Hang in there -- we have only scratched the surface on this thing.',
+      timestamp: Date.now(),
     },
   ];
 
-  if (Messages.find().count() === 0) {
+  if (messages.find().count() === 0) {
     for (let i = 0; i < messageData.length; i ++) {
-      Messages.insert(
+      messages.insert(
         {
           name: messageData[i].name,
           content: messageData[i].content,
@@ -26,12 +31,14 @@ Meteor.startup(() => {
       );
     }
   }
-});
+}
+);
 
 Meteor.publish('messages', () => {
-  if (typeof Messages === 'undefined') {
+  if (typeof messages === 'undefined') {
     return null;
   }
-
-  return Messages.find({});
-});
+  console.log('from inside packages');
+  return messages.find({});
+}
+);
