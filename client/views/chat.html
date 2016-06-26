@@ -1,34 +1,30 @@
-
 <template name="chat">
-
     <div id="content">
         {{> appNav}}
-
-        <head>
-            <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.17.2/build/cssreset/cssreset-min.css">
-            <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,700">
-            <link rel="stylesheet" type="text/css" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
-        </head>
-        <body>
-            <aside class="sidebar">
+        <div class="container">
+            <head>
+                <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.17.2/build/cssreset/cssreset-min.css">
+                <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+                <link rel="stylesheet" type="text/css" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
+            </head>
+            <body>
+            <aside class="chat-sidebar">
                 <h5 class="room-label"> Case Managers <i class="ion-person-stalker"></i></h5>
             </aside>
             <section class="main-container">
                 <header class="main-header">Intra-Chat Application</header>
-                {{> messageList}}
-                {{> newMessage}}
-                    {{#if currentUser}}
-                        {{> messageList}}
-                        {{> newMessage}}
-                    {{/if}}
+                {{#if currentUser}}
+                    {{> messageList}}
+                    {{> newMessage}}
+                {{/if}}
             </section>
-        </body>
+            </body>
+        </div>
 
         {{> footer}}
 
     </div>
 </template>
-
 
 <template name="messageList">
     <div class="message-list">

@@ -2,9 +2,9 @@
  * Created by kavyagautam on 5/18/16.
  */
 
-Messages = new Meteor.Collection('messages');
+messages = new Meteor.Collection('messages');
 
-Schemas.Messages = new SimpleSchema(
+Schemas.messages = new SimpleSchema(
   {
     name: {
       type: String,
@@ -17,4 +17,4 @@ Schemas.Messages = new SimpleSchema(
   }
 );
 
-Messages.attachSchema(Schemas.Messages);
+messages.attachSchema(Schemas.messages);

@@ -5,7 +5,12 @@
 Template.messageList.helpers(
   {
     messages() {
-      return Messages.find().fetch();
+      console.log('Hi');
+      console.log(messages.find().fetch());
+      return messages.find().fetch();
     },
   }
 );
+
+
+Meteor.subscribe('messages');
