@@ -14,25 +14,17 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand brand-primary" href="{{pathFor 'root'}}">
+				<a class="navbar-brand" href="{{pathFor 'root'}}">
             H O M E
 				</a>
 			</div>
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-						   aria-haspopup="true" aria-expanded="false">Clients <span class="caret"></span></a>
-						<ul class="dropdown-menu">
-							<li class="{{isActiveRoute 'searchClient'}}"><a href="{{pathFor 'searchClient'}}">Clients</a></li>
-							<li class="{{isActiveRoute 'createClient'}}"><a href="{{pathFor 'createClient'}}">New Client</a></li>
-						</ul>
-					</li>
-                    <li class="{{isActiveRoute 'chat'}}"><a href="{{pathFor 'chat'}}">Chat</a></li>
-					<li class="{{isActiveRoute 'surveyStatus'}}"><a href="{{pathFor 'surveyStatus'}}">Survey Status</a></li>
-
-                </ul>
+          <li class="{{isClientsRoute}}"><a href="{{pathFor 'searchClient'}}">Clients</a></li>
+          <li class="{{isSurveysRoute}}"><a href="{{pathFor 'surveyStatus'}}">Surveys</a></li>
+          <li class="{{isChatRoute}}"><a href="{{pathFor 'chat'}}">Chat</a></li>
+        </ul>
 				{{#if currentUser}}
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown">

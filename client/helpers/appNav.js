@@ -30,5 +30,14 @@ Template.appNav.helpers(
 
       return '';
     },
+    isClientsRoute() {
+      return $.inArray(Router.current().route.getName(), ['searchClient']) !== -1 ? 'active' : '';
+    },
+    isSurveysRoute() {
+      return $.inArray(Router.current().route.getName(), ['surveyStatus']) !== -1 ? 'active' : '';
+    },
+    isChatRoute() {
+      return $.inArray(Router.current().route.getName(), ['chat']) !== -1 ? 'active' : '';
+    },
   }
 );
