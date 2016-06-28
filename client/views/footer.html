@@ -1,16 +1,13 @@
 <template name="footer">
-	<div id="footer">
-		<div class="col-sm-12 col-md-10 col-lg-10 my-center-block">
-			<hr>
-			<footer>
-				<div class="pull-left">
-					<p class="text-muted">© {{ currentYear }} - Community Technology Alliance. All Rights Reserved.</p>
-				</div>
-				<ul class="pull-right footer-menu">
-					<li><a href="{{pathFor 'privacy'}}">Privacy</a></li>
-					<li><a href="{{pathFor 'termsOfUse'}}">Terms Of Use</a></li>
-				</ul>
-			</footer>
-		</div>
-	</div>
+    <nav class="navbar navbar-default navbar-static-bottom">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="#">© {{ currentYear }} - Community Technology Alliance. All Rights Reserved.</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="{{isActivePath 'privacy'}}"><a href="{{pathFor 'privacy'}}">Privacy</a></li>
+                <li class="{{isActivePath 'termsOfUse'}}"><a href="{{pathFor 'termsOfUse'}}">Terms Of Use</a></li>
+            </ul>
+        </div>
+    </nav>
 </template>
