@@ -25,8 +25,9 @@
           <li class="{{isSurveysRoute}}"><a href="{{pathFor 'surveyStatus'}}">Surveys</a></li>
           <li class="{{isChatRoute}}"><a href="{{pathFor 'chat'}}">Chat</a></li>
         </ul>
-				{{#if currentUser}}
-				<ul class="nav navbar-nav navbar-right">
+
+				<ul class="nav navbar-nav navbar-right hidden-xs">
+          {{#if currentUser}}
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 							{{{currentUserGravatar}}} {{currentUserFullName}} <span class="caret"></span>
@@ -34,17 +35,15 @@
 						<ul class="dropdown-menu">
 							{{#if currentUserCan 'view_admin'}}
 							<li><a href="{{pathFor 'adminDashboard'}}"><i class="fa fa-user-secret"></i> Admin</a></li>
-							<li role="separator" class="divider"></li>
 							{{/if}}
+              <li><a href="{{pathFor 'adminDashboardusersEdit' _id=currentUser._id}}"><i class="fa fa-user"></i> My Profile</a></li>
 							<li><a class="js-logout" href="#"><i class="fa fa-sign-out"></i> Logout</a></li>
 						</ul>
-					</li>
+          </li>
+          {{else}}
+            <li class="isActiveRoute 'signIn'"><a href="{{pathFor 'signIn'}}">Sign In</a></li>
+          {{/if}}
 				</ul>
-				{{else}}
-				<div class="account-button navbar-right">
-					{{> atNavButton}}
-				</div>
-				{{/if}}
 			</div>
 
 		</div>

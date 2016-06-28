@@ -1,5 +1,40 @@
-.navbar {
-	.account-button {
-		margin-right: 5px;
-	}
+.navbar .navbar-nav {
+  display: inline-block;
+  float: none;
+  vertical-align: top;
+}
+
+.navbar .navbar-collapse {
+  text-align: center;
+}
+
+// Dropdown menu items
+.navbar-nav.navbar-right {
+  // Remove background color from open dropdown
+  > .open > a {
+    &,
+    &:hover,
+    &:focus {
+      background-color: @brand-primary;
+      color: white;
+    }
+  }
+}
+
+// The dropdown menu (ul)
+.dropdown-menu {
+
+  padding: 0px 0;
+
+  // Links within the dropdown menu
+  > li > a {
+    padding: 0px 20px;
+  }
+}
+
+.nav-divider(@color: #e5e5e5) {
+  height: 1px;
+  margin: ((floor((@font-size-base * 1.428571429)) / 2) - 1) 0;
+  overflow: hidden;
+  background-color: @color;
 }
