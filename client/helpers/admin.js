@@ -277,7 +277,7 @@ Template.previewSurvey.helpers(
     },
     singleSelect(contentQuesId) {
       const questionCollection = adminCollectionObject('questions');
-      const question = questionCollection.findOne({ _id: contentQuesId }).fetch();
+      const question = questionCollection.findOne({ _id: contentQuesId });
 
       return question.dataType === 'Single Select';
     },

@@ -1,322 +1,346 @@
 <template name="surveyViewTemplate">
 
-	{{>surveyForm}}
+    {{>surveyForm}}
 
-	<div class="container">
-		<div class="row">
-			<a href="#newSurveyModal" role="button" data-toggle="modal" class="btn btn-large btn-primary addSurvey">Add Survey</a>
-			<br/><br/>
-			<table class="table table-bordered table-striped table-hover">
-				<thead>
-				<tr>
-					<th>Survey Title</th>
-					<th>Date created</th>
-					<th>Date updated</th>
-					<th>Edit</th>
-				</tr>
+    <div class="container">
+        <div class="row">
+            <a href="#newSurveyModal" role="button" data-toggle="modal" class="btn btn-large btn-primary addSurvey">Add
+                Survey</a>
+            <br/><br/>
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>Survey Title</th>
+                    <th>Date created</th>
+                    <th>Date updated</th>
+                    <th>Edit</th>
+                </tr>
 
-				</thead>
-				<tbody>
-				{{#each surveyList}}
-				{{>surveyRow}}
-				{{/each}}
-				</tbody>
+                </thead>
+                <tbody>
+                {{#each surveyList}}
+                    {{>surveyRow}}
+                {{/each}}
+                </tbody>
 
-			</table>
-		</div>
-	</div>
+            </table>
+        </div>
+    </div>
 </template>
 
 <template name="surveyRow">
-	<tr class="surveyRow">
-		{{#if active}}
-		<td><a href="{{editSurveyPath _id}}">{{title}}</a></td>
-		{{else}}
-		<td>{{title}}</td>
-		{{/if}}
-		<td>{{formatDate createdAt}}</td>
-		<td>{{formatDate updatedAt}}</td>
-		<td><a href="#newSurveyModal" role="button" data-toggle="modal" name="edit" class="btn btn-primary edit"><i class="fa fa-edit"></i></a></td>
-	</tr>
-	<input type="hidden" id="newsurveyID" value={{_id}} />
+    <tr class="surveyRow">
+        {{#if active}}
+            <td><a href="{{editSurveyPath _id}}">{{title}}</a></td>
+        {{else}}
+            <td>{{title}}</td>
+        {{/if}}
+        <td>{{formatDate createdAt}}</td>
+        <td>{{formatDate updatedAt}}</td>
+        <td><a href="#newSurveyModal" role="button" data-toggle="modal" name="edit" class="btn btn-primary edit"><i
+                class="fa fa-edit"></i></a></td>
+    </tr>
+    <input type="hidden" id="newsurveyID" value={{_id}}/>
 </template>
 
 <template name="surveyForm">
-	<div id="newSurveyModal" class="modal fade" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h3 class="showWhenNew">Add Survey</h3>
-					<h3 class="showWhenEdit">Update Survey</h3>
-				</div>
-				<div class="modal-body">
-				<div class="form-group">
+    <div id="newSurveyModal" class="modal fade" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 class="showWhenNew">Add Survey</h3>
+                    <h3 class="showWhenEdit">Update Survey</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
 
-					<label for="survey_title">Survey Title: </label>
-					<input type="text" class="form-control survey_title" name="survey_title" id="survey_title">
-					<input type="text" class="form-control copyof_surveytitle" name="copyof_surveytitle" id="copyof_surveytitle" >
-					<br/>
-					<div class="checked">
-						<label class="checkbox-inline">
-						<input type="checkbox" class="active" id="active" value="active">
-						<input type="checkbox" class="copy_active" id="copy_active" >Active
-					</label><br />
-					<label class="checkbox-inline copylabel">
-						<input type="checkbox" class="copy" id="copy" value="copy"> Copy
-					</label><br />
-					</div>
-						<div class="form-group isCopyTrue">
-					<label for="s_copy" >Choose a Survey copy: </label>
-					<select class="s_copy" name="s_copy" id="s_copy">
-				 <option value="ChooseSurvey">Choose</option>
-					{{#each surveyList}}
-						<option value={{_id}}>{{title}}</option>
-					{{/each}}
-				 </select>
-					</div>
-					<br/>
-                    <label for="s_type">Survey Type: </label>
-                    <select class="form-control s_type" name="s_type" id="s_type">
-                        <option value="hud">HUD</option>
-                        <option value="spdat">SPDAT</option>
-                    </select>
+                        <label for="survey_title">Survey Title: </label>
+                        <input type="text" class="form-control survey_title" name="survey_title" id="survey_title">
+                        <input type="text" class="form-control copyof_surveytitle" name="copyof_surveytitle"
+                               id="copyof_surveytitle">
+                        <br/>
+                        <div class="checked">
+                            <label class="checkbox-inline">
+                                <input type="checkbox" class="active" id="active" value="active">
+                                <input type="checkbox" class="copy_active" id="copy_active">Active
+                            </label><br/>
+                            <label class="checkbox-inline copylabel">
+                                <input type="checkbox" class="copy" id="copy" value="copy"> Copy
+                            </label><br/>
+                        </div>
+                        <div class="form-group isCopyTrue">
+                            <label for="s_copy">Choose a Survey copy: </label>
+                            <select class="s_copy" name="s_copy" id="s_copy">
+                                <option value="ChooseSurvey">Choose</option>
+                                {{#each surveyList}}
+                                    <option value={{_id}}>{{title}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <br/>
+                        <label for="s_type">Survey Type: </label>
+                        <select class="form-control s_type" name="s_type" id="s_type">
+                            <option value="hud">HUD</option>
+                            <option value="spdat">SPDAT</option>
+                        </select>
 
-					<input type="hidden" id="isUpdate" value="0" />
-					<input type="hidden" id="surveyID" value="" />
-				</div>
-				</div>
-				<div class="modal-footer">
-					<a href="#" class="btn btn-danger remove showWhenEdit" data-dismiss="modal">Delete</a>
-					<a href="#" class="btn btn-warning update showWhenEdit" data-dismiss="modal">Update</a>
-					<a href="#" class="btn btn-primary save showWhenNew" data-dismiss="modal">Save</a>
-					<a href="#" class="btn btn-default cancel" data-dismiss="modal">Cancel</a>
-				</div>
-			</div>
-		</div>
-	</div>
+                        <input type="hidden" id="isUpdate" value="0"/>
+                        <input type="hidden" id="surveyID" value=""/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-danger remove showWhenEdit" data-dismiss="modal">Delete</a>
+                    <a href="#" class="btn btn-warning update showWhenEdit" data-dismiss="modal">Update</a>
+                    <a href="#" class="btn btn-primary save showWhenNew" data-dismiss="modal">Save</a>
+                    <a href="#" class="btn btn-default cancel" data-dismiss="modal">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <template name="surveyEditTemplate">
-	<!--This is default template. Might be useful later on.-->
-	<!--<div class="box box-default">-->
-		<!--<div class="box-body">-->
-			<!--{{#if admin_current_doc}}-->
-			<!--{{> quickForm id="admin_update" collection=admin_collection doc=admin_current_doc fields=admin_fields omitFields=admin_omit_fields buttonContent='Update'}}-->
-			<!--{{/if}}-->
-		<!--</div>-->
-	<!--</div>-->
+    <!--This is default template. Might be useful later on.-->
+    <!--<div class="box box-default">-->
+    <!--<div class="box-body">-->
+        <!--{{#if admin_current_doc}}-->
+    <!--{{> quickForm id="admin_update" collection=admin_collection doc=admin_current_doc fields=admin_fields omitFields=admin_omit_fields buttonContent='Update'}}-->
+        <!--{{/if}}-->
+    <!--</div>-->
+    <!--</div>-->
 
-	<div class="container">
-		<div class="row">
-			<div class="page-header">
-				<h4>Setup</h4>
-			</div>
+    <div class="container">
+        <div class="row">
+            <div class="page-header">
+                <h4>Setup</h4>
+            </div>
 
-			<div class="form-group">
-				<label for="survey_title1" id ="survey_title1" name ="survey_title" value={{title}}>
-					<b>Survey Title:</b> {{title}}
-				</label>
-			</div>
-			<div class="form-group">
+            <div class="form-group">
+                <label for="survey_title1" id="survey_title1" name="survey_title" value={{title}}>
+                    <b>Survey Title:</b> {{title}}
+                </label>
+            </div>
+            <div class="form-group">
                 <div class="row">
-                    <div class="col-sm-6" >
+                    <div class="col-sm-6">
                         <select class="form-control section" name="section" id="section_val">
-							{{#each getSection}}
+                            {{#each getSection}}
                                 <option value={{_id}}>{{content}}</option>
-							{{/each}}
-							<option value="sectionSelect" class="sectionSelect"></option>
+                            {{/each}}
+                            <option value="sectionSelect" class="sectionSelect"></option>
                             <option value="Other">Add New Section</option>
                         </select>
-					</div>
+                    </div>
                     <div class="col-sm-6">
                         <!--<label for="category">Specify:  </label>-->
-                        <input type="text" class="form-control hide sectionName" id="sectionName" name="sectionName" placeholder="Section Name" value="" />
-					</div>
+                        <input type="text" class="form-control hide sectionName" id="sectionName" name="sectionName"
+                               placeholder="Section Name" value=""/>
+                    </div>
                 </div>
-					<br/>
-					<label class="checkbox-inline skipLabel">
-						<input type="checkbox" class="showskip" id="skip_id" value="skip"><b> Skip </b>
-					</label>
-					<br/>
-					<br/>
-					<button class="btn btn-large btn-primary addSection">Add Section</button>
-			</div>
-			<br/>
-			<div class="form-group">
+                <br/>
+                <label class="checkbox-inline skipLabel">
+                    <input type="checkbox" class="showskip" id="skip_id" value="skip"><b> Skip </b>
+                </label>
+                <br/>
+                <br/>
+                <button class="btn btn-large btn-primary addSection">Add Section</button>
+            </div>
+            <br/>
+            <div class="form-group">
 
 
-					<input type="text" class="form-control  labelName" id="labelName" name="labelName" placeholder="Label" value="" />
-					<br/>
-					<button class="btn btn-large btn-primary addLabel">Add Label</button>
+                <input type="text" class="form-control  labelName" id="labelName" name="labelName" placeholder="Label"
+                       value=""/>
+                <br/>
+                <button class="btn btn-large btn-primary addLabel">Add Label</button>
 
-			</div>
+            </div>
 
-			<br/>
-			<div class="addQuesButton">
-				<a  href="{{pathFor route='selectSurveyQuestion'}}" class="btn btn-large btn-primary addQues">Add Questions</a>
-			</div>
-		</div>
-	</div>
-	<br/>
+            <br/>
+            <div class="addQuesButton">
+                <a href="{{pathFor route='selectSurveyQuestion'}}" class="btn btn-large btn-primary addQues">Add
+                    Questions</a>
+            </div>
+        </div>
+    </div>
+    <br/>
 
-	{{> typeDefinition}}
+    {{> typeDefinition}}
 
 </template>
 
 <template name="typeDefinition">
-	<div class="container">
-		<div class="row">
-			<div class="row">
+    <div class="container">
+        <div class="row">
+            <div class="row">
 
-				<div class="list-pair col-sm-12">
+                <div class="list-pair col-sm-12">
 
-					<div class="sortable target" id="object">
-						{{#sortable items=attributes animation="100" handle=".sortable-handle" ghostClass="sortable-ghost" options=attributesOptions}}
-							{{> sortableItemTarget}}
-						{{/sortable}}
-					</div>
-				</div>
+                    <div class="sortable target" id="object">
+                        {{#sortable items=attributes animation="100" handle=".sortable-handle" ghostClass="sortable-ghost" options=attributesOptions}}
+                            {{> sortableItemTarget}}
+                        {{/sortable}}
+                    </div>
+                </div>
 
-			</div>
-			{{#if showPreview}}
-			<a href="{{pathFor route='previewSurvey' data = getPost}}" class="btn btn-large btn-primary previewSurvey">Preview</a>
-			{{/if}}
-		</div>
-	</div>
+            </div>
+            {{#if showPreview}}
+                <a href="{{pathFor route='previewSurvey' data = getPost}}"
+                   class="btn btn-large btn-primary previewSurvey">Preview</a>
+            {{/if}}
+        </div>
+    </div>
 </template>
 
 <template name="sortableItemTarget">
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<div data-id="{{order}}" class="sortable-item removable well well-sm">
-				{{{icon}}}
-				<i class="sortable-handle mdi-action-view-headline pull-right">Reorder</i>
-				{{#if notQuestion contentType}}
-					<span class="name">{{content}}</span>
-				{{else}}
-					<span class="name">{{quesNames content}}</span>
-				{{/if}}
-				<span class="badge">{{order}}</span>
-				<button type="button" class="close" data-dismiss="alert">
-					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-				</button>
-			</div>
-		</div>
-	</div>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div data-id="{{order}}" class="sortable-item removable well well-sm">
+                {{{icon}}}
+                <i class="sortable-handle mdi-action-view-headline pull-right">Reorder</i>
+                {{#if notQuestion contentType}}
+                    <span class="name">{{content}}</span>
+                {{else}}
+                    <span class="name">{{quesNames content}}</span>
+                {{/if}}
+                <span class="badge">{{order}}</span>
+                <button type="button" class="close" data-dismiss="alert">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+            </div>
+        </div>
+    </div>
 </template>
 
 <template name="previewSurvey">
 
-	<div class="container quesL">
+    <div class="container quesL">
 
-		<ul id="previewSurveyList">
+        <ul id="previewSurveyList">
 
-			<h2>{{title}}</h2>
+            <h2>{{title}}</h2>
 
-			{{#each surveyQuesContents}}
-			<div class="{{sectionID}}">
-			 <div class="section">
-				{{#if displaySection contentType}}
-					<li><h3 style="color: #1b6d85">{{content}}</h3></li>
-					{{#if displaySkipButton contentType allowSkip}}
-				 	<input type="checkbox" class="hideWhenSkipped" id={{_id}} value="skip"> &nbsp; <label style="color: #A00000">Skip</label>
-					{{/if}}
-				{{/if}}
-			 </div>
-			<div class="labels">
-				{{#if displayLabel contentType}}
-					<li><h4>{{content}}</h4></li>
-				{{/if}}
-			</div>
-			<div class="question">
-				{{#if displayQues contentType}}
-					<li>
-						<h5>{{displayQuesContents content}}</h5>
-					</li>
-				{{/if}}
+            {{#each surveyQuesContents}}
+                <div class="{{sectionID}}">
+                    <div class="section">
+                        {{#if displaySection contentType}}
+                            <li><h3 style="color: #1b6d85">{{content}}</h3></li>
+                            {{#if displaySkipButton contentType allowSkip}}
+                                <input type="checkbox" class="hideWhenSkipped" id={{_id}} value="skip"> &nbsp; <label
+                                    style="color: #A00000">Skip</label>
+                            {{/if}}
+                        {{/if}}
+                    </div>
+                    <div class="labels">
+                        {{#if displayLabel contentType}}
+                            <li><h4>{{content}}</h4></li>
+                        {{/if}}
+                    </div>
+                    <div class="question">
+                        {{#if displayQues contentType}}
+                            <li>
+                                <h5>{{displayQuesContents content}}</h5>
+                            </li>
 
-				{{#if textboxString content}}
-					<li class="quesList">
-						<input type="text" class="form-control input input-xxlarge stringType" id="stringType" name="stringType" value="">
-					</li>
-				{{/if}}
 
-				{{#if textboxNumber content}}
-					<li class="quesList">
-						<input type="number" class="form-control input input-xxlarge numberType" id="numberType" name="numberType" value="">
-					</li>
-				{{/if}}
+                            {{#if textboxString content}}
+                                <li class="quesList">
+                                    <input type="text" class="form-control input input-xxlarge stringType"
+                                           id="stringType" name="stringType" value="">
+                                </li>
+                            {{/if}}
 
-				{{#if booleanYN content}}
-					<li class="quesList">
-						<label class="boolY"><input type="radio" class="boolY"  name="boolY" value="Yes"> &nbsp;Yes</label>
-					</li>
-					<li class="quesList">
-						<label class="boolY"> <input type="radio" class="boolN"  name="boolY" value="No"> &nbsp;No</label>
-					</li>
-				{{/if}}
+                            {{#if textboxNumber content}}
+                                <li class="quesList">
+                                    <input type="number" class="form-control input input-xxlarge numberType"
+                                           id="numberType" name="numberType" value="">
+                                </li>
+                            {{/if}}
 
-				{{#if booleanTF content}}
-					<li class="quesList">
-						<label class="boolY"><input type="radio" class="boolY"  name="boolY" value="Yes"> &nbsp;True</label>
-					</li>
-					<li class="quesList">
-						<label class="boolY"> <input type="radio" class="boolN"  name="boolY" value="No"> &nbsp;False</label>
-					</li>
-				{{/if}}
+                            {{#if booleanYN content}}
+                                <li class="quesList">
+                                    <label class="boolY"><input type="radio" class="boolY" name="boolY" value="Yes">
+                                        &nbsp;Yes</label>
+                                </li>
+                                <li class="quesList">
+                                    <label class="boolY"> <input type="radio" class="boolN" name="boolY" value="No">
+                                        &nbsp;No</label>
+                                </li>
+                            {{/if}}
 
-				{{#if singleSelect content}}
-					{{#each singleOptions content}}
-						<li class="quesList">
-							<label class="singleSelect"><input type="radio" class="singleSelect" id="singleSelect" name="singleSelect" value={{this.description}}> &nbsp; {{this.description}}</label>
-						</li>
-					{{/each}}
-					<li class="othersSpecify_single hide">
-						<label class="othersSpecifyLabel">Please specify</label>
-						<input type="text" class="form-control input input-xxlarge othersSpecify_single" id="othersSpecify_single" name="othersSpecify_single" value="">
-					</li>
-				{{/if}}
+                            {{#if booleanTF content}}
+                                <li class="quesList">
+                                    <label class="boolY"><input type="radio" class="boolY" name="boolY" value="Yes">
+                                        &nbsp;True</label>
+                                </li>
+                                <li class="quesList">
+                                    <label class="boolY"> <input type="radio" class="boolN" name="boolY" value="No">
+                                        &nbsp;False</label>
+                                </li>
+                            {{/if}}
 
-				{{#if multipleSelect content}}
-					{{#each singleOptions content}}
-						<li class="quesList">
-							<label class="multipleSelect"><input type="checkbox" class="multipleSelect" id="multipleSelect" name="multipleSelect" value={{this.description}}> &nbsp; {{this.description}}</label>
-						</li>
-					{{/each}}
-					<li class="othersSpecify_multiple hide">
-						<label class="othersSpecify_multipleLabel">Please specify</label>
-						<input type="text" class="form-control input input-xxlarge othersSpecify_multiple" id="othersSpecify_multiple" name="othersSpecify_multiple" value="">
-					</li>
-				{{/if}}
+                            {{#if singleSelect content}}
+                                {{#each singleOptions content}}
+                                    <li class="quesList">
+                                        <label class="singleSelect"><input type="radio" class="singleSelect"
+                                                                           id="singleSelect" name="singleSelect"
+                                                                           value={{this.description}}>
+                                            &nbsp; {{this.description}}</label>
+                                    </li>
+                                {{/each}}
+                                <li class="othersSpecify_single hide">
+                                    <label class="othersSpecifyLabel">Please specify</label>
+                                    <input type="text" class="form-control input input-xxlarge othersSpecify_single"
+                                           id="othersSpecify_single" name="othersSpecify_single" value="">
+                                </li>
+                            {{/if}}
 
-			</div>
-			</div>
-			{{/each}}
-			<button class="btn btn-large btn-primary createSurvey">Create Survey</button>
-		</ul>
+                            {{#if multipleSelect content}}
+                                {{#each singleOptions content}}
+                                    <li class="quesList">
+                                        <label class="multipleSelect"><input type="checkbox" class="multipleSelect"
+                                                                             id="multipleSelect" name="multipleSelect"
+                                                                             value={{this.description}}>
+                                            &nbsp; {{this.description}}</label>
+                                    </li>
+                                {{/each}}
+                                <li class="othersSpecify_multiple hide">
+                                    <label class="othersSpecify_multipleLabel">Please specify</label>
+                                    <input type="text" class="form-control input input-xxlarge othersSpecify_multiple"
+                                           id="othersSpecify_multiple" name="othersSpecify_multiple" value="">
+                                </li>
+                            {{/if}}
+                        {{/if}}
+                    </div>
+                </div>
+            {{/each}}
+            <button class="btn btn-large btn-primary createSurvey">Create Survey</button>
+        </ul>
 
-	</div>
+    </div>
 
-	{{> confirmationModalTemplate}}
+    {{> confirmationModalTemplate}}
 
 </template>
 
 <template name="confirmationModalTemplate">
-	<div class="modal fade" id="confirmationModal">
-		<div class="modal-dialog modal-sm">
-			<div class="modal-content">
+    <div class="modal fade" id="confirmationModal">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
 
-				<div class="modal-header">
-					<h4 class="modal-title">Are you sure you want to save the survey</h4>
-				</div>
+                <div class="modal-header">
+                    <h4 class="modal-title">Are you sure you want to save the survey</h4>
+                </div>
 
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary save_survey" id="save_survey" data-dismiss="modal">Save</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-				</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary save_survey" id="save_survey" data-dismiss="modal">
+                        Save
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
 
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 </template>
