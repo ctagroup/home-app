@@ -38,7 +38,7 @@ Meteor.publish('messages', () => {
   if (typeof messages === 'undefined') {
     return null;
   }
-  console.log('from inside packages');
+
   return messages.find({});
 }
 );

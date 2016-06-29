@@ -1,7 +1,6 @@
 Template.newMessage.events(
   {
-    'submit .new-message'(e) {
-
+    'submit .new-message': (e) => {
       e.preventDefault();
       const contentText = $(e.target).find('[name=content]');
       const msg = {
@@ -9,14 +8,14 @@ Template.newMessage.events(
         content: contentText.val(),
         timestamp: Date.now(),
       };
-      console.log(msg);
-      Meteor.call('addMessage', msg, ( error, result ) => {
-          if ( error ) {
-            console.log(error);
+      Meteor.call(
+        'addMessage', msg, (error, result) => {
+          if (error) {
+            logger.log(error);
           } else {
-            console.log(result);
+            logger.log(result);
           }
-        },
+        }
       );
       contentText.val('');
     },
