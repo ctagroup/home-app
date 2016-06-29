@@ -38,7 +38,8 @@
     "AdminDashboard": true,
     "AutoForm": true,
     "SimpleSchema": true,
-    "Gravatar": true
+    "Gravatar": true,
+    "messages": true
   },
   "rules": {
     "no-underscore-dangle": [

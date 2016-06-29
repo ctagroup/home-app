@@ -79,7 +79,7 @@ Template.viewClient.helpers(
       let definition = code;
       const questionCollection = adminCollectionObject('questions');
       const question = questionCollection.findOne({ name: text });
-      if(question.hasOwnProperty('options')) {
+      if (question.hasOwnProperty('options')) {
         for (let j = 0; j < question.options.length; j++) {
           if (parseInt(question.options[j].value, 10) === parseInt(code, 10)) {
             definition = question.options[j].description;
