@@ -28,11 +28,17 @@ Schemas.surveys = new SimpleSchema(
       type: Date,
       label: 'Created At',
       autoValue() {
+        let returnstatus;
         if (this.isInsert) {
-          return new Date();
+          returnstatus = new Date();
+        } else if (this.isUpsert) {
+          returnstatus = { $setOnInsert: new Date() };
+        } else {
+          this.unset();  // Prevent user from supplying their own value
         }
-        return null;
+        return returnstatus;
       },
+
     },
     updatedAt: {
       type: Date,
