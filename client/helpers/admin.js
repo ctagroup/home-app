@@ -63,7 +63,7 @@ UI.registerHelper(
 );
 
 Template.registerHelper(
-  'formatDate', (date) => moment(date).format('mm/dd/yyyy')
+  'formatDate', (date) => moment(date).format('MM/DD/YYYY')
 );
 
 Template.registerHelper(
