@@ -54,13 +54,17 @@ Schemas.questions = new SimpleSchema(
     },
     createdAt: {
       type: Date,
-      optional: true,
       label: 'Created At',
       autoValue() {
+        let returnstatus;
         if (this.isInsert) {
-          return new Date();
+          returnstatus = new Date();
+        } else if (this.isUpsert) {
+          returnstatus = { $setOnInsert: new Date() };
+        } else {
+          this.unset();  // Prevent user from supplying their own value
         }
-        return null;
+        return returnstatus;
       },
     },
     updatedAt: {
@@ -69,6 +73,7 @@ Schemas.questions = new SimpleSchema(
       autoValue() {
         return new Date();
       },
+      optional: true,
     },
     // author: {
     //	type: String,
