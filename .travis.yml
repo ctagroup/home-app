@@ -8,3 +8,8 @@ node_js:
 
 script:
   - npm run lint
+
+notifications:
+  slack:
+    rooms:
+      - ctagroup:LnFSEyxzci7KoBVMSERHAGh3#homeapp
