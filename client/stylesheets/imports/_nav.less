@@ -73,7 +73,7 @@
 }
 
 // Dropdown menu items
-.navbar-nav.navbar-right {
+.navbar .navbar-collapse .navbar-nav.navbar-right {
 
   > .dropdown > a {
     min-width: 160px;
@@ -86,6 +86,16 @@
     &:focus {
       background-color: @brand-primary;
       color: white;
+    }
+  }
+
+  .open .dropdown-menu {
+    > li > a {
+      color: white;
+      &:hover,
+      &:focus {
+        background-color: @navbar-inverse-link-hover-bg;
+      }
     }
   }
 }
