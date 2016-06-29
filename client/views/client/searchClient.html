@@ -5,32 +5,43 @@
 
 		<div class="container">
 
-			<div class="row">
-				<div class="col-sm-12 col-md-12 col-lg-12 my-center-block">
-					<h1 class="text-center">Search Existing Client</h1>
-					<a href="{{pathFor 'createClient'}}" class="btn btn-primary pull-right">New Client</a>
-					<form>
+        <h1 class="text-center hidden-xs">Search Existing Client</h1>
+        <h3 class="text-center hidden-sm">Search Existing Client</h3>
 
-						{{{alertMessages}}}
+        <p class="lead text-center"> </p>
 
-						<div class="form-group">
-							<input type="text" id="search-client-keyword"
-							       class="form-control typeahead input-lg" data-source="searchClient"
-							       data-select="clientSelected" data-highlight="true"
-							       autocomplete="off" spellcheck="off"
-							       placeholder="Search for clients ..." />
-						</div>
-					</form>
-					{{#if getRecentClients}}
-						<h4>Recent Clients</h4>
-						<ul>
-							{{#each getRecentClients}}
-								<li><a href="{{this.url}}">{{this.name}}</a></li>
-							{{/each}}
-						</ul>
-					{{/if}}
-				</div>
-			</div>
+        <div class="row">
+            <div class="col-xs-10 col-sm-6 my-center-block">
+              <form class="form-horizontal">
+                {{{alertMessages}}}
+                <div class="form-group">
+                    <div class="col-xs-12">
+                      <input type="text" id="search-client-keyword"
+                             class="form-control typeahead input-lg" data-source="searchClient"
+                             data-select="clientSelected" data-highlight="true"
+                             autocomplete="off" spellcheck="off" />
+                    </div>
+                </div>
+              </form>
+            </div>
+        </div>
+
+        <p class="lead text-center">or</p>
+
+        <div class="row">
+            <div class="col-xs-6 col-sm-3 my-center-block">
+                <a href="{{pathFor 'createClient'}}" class="btn btn-sm btn-block btn-primary text-center">Add New Client</a>
+            </div>
+        </div>
+
+              {{#if getRecentClients}}
+                <h4>Recent Clients</h4>
+                <ul>
+                  {{#each getRecentClients}}
+                    <li><a href="{{this.url}}">{{this.name}}</a></li>
+                  {{/each}}
+                </ul>
+              {{/if}}
 
 		</div>
 
