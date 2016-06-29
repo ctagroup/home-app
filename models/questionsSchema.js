@@ -54,6 +54,7 @@ Schemas.questions = new SimpleSchema(
     },
     createdAt: {
       type: Date,
+      optional: true,
       label: 'Created At',
       autoValue() {
         if (this.isInsert) {
