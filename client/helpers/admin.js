@@ -159,7 +159,7 @@ Template.surveyRow.helpers(
 Template.sortableItemTarget.helpers(
   {
     notQuestion(type) {
-      return ! type === 'question';
+      return !(String(type) === String('question'));
     },
     quesNames(qId) {
       const questionCollection = adminCollectionObject('questions');
