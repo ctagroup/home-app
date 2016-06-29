@@ -34,14 +34,20 @@
             </div>
         </div>
 
-              {{#if getRecentClients}}
-                <h4>Recent Clients</h4>
-                <ul>
-                  {{#each getRecentClients}}
-                    <li><a href="{{this.url}}">{{this.name}}</a></li>
-                  {{/each}}
-                </ul>
-              {{/if}}
+        <p class="lead text-center"> </p>
+
+          {{#if getRecentClients}}
+            <h4 class="text-center">Recent Clients</h4>
+            <div class="row">
+                <div class="col-xs-9 my-center-block text-center">
+                    <div class="row">
+                      {{#each getRecentClients}}
+                        <div class="col-xs-12 col-sm-4"><a href="{{this.url}}">{{this.name}}</a></div>
+                      {{/each}}
+                    </div>
+                </div>
+            </div>
+          {{/if}}
 
 		</div>
 

@@ -107,7 +107,6 @@ Template.LogSurveyResponse.helpers(
       // const clientCollections = adminCollectionObject('clientInfo');
       const name = Router.current().params.query.name;
       // const client = clientCollections.findOne({ _id: id });
-      console.log(name);
       return name;
     },
     displaySection(contentType) {

@@ -5,8 +5,6 @@
 Template.messageList.helpers(
   {
     messages() {
-      console.log('Hi');
-      console.log(messages.find().fetch());
       return messages.find().fetch();
     },
   }
