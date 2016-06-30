@@ -4,30 +4,24 @@
   }
 }
 
-.home {
-  p {
-    margin-bottom: 0px;
-  }
-}
+@media (min-width: @grid-float-breakpoint) {
 
-.home {
-  ul {
-    padding-left: 15px;
-    margin-bottom: 0px;
-  }
+  .home {
+    ul {
+      //margin-bottom: 0px;
+      overflow: auto;
+      padding-left: 15px;
+    }
 
-  li {
-    display: inline-flex;
-    list-style: disc;
-    width: 30%;
-    line-height: 1.5;
-    margin-left: 15px;
-    border-top: 1px solid #aaa;
-    padding: 15px 0;
+    li {
+      float: left;
+      width: 30%;
+      padding: 10px 0;
+      margin-left: 15px;
 
-    &:nth-child(1), &:nth-child(2), &:nth-child(3) {
-      border-top: none;
-      padding-top: 0;
+      &:nth-child(3n-2) {
+        clear:left;
+      }
     }
   }
 }
