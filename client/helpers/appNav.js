@@ -31,7 +31,8 @@ Template.appNav.helpers(
       return '';
     },
     isClientsRoute() {
-      return $.inArray(Router.current().route.getName(), ['searchClient']) !== -1 ? 'active' : '';
+      const clientPages = ['searchClient', 'createClient', 'editClient', 'viewClient'];
+      return $.inArray(Router.current().route.getName(), clientPages) !== -1 ? 'active' : '';
     },
     isSurveysRoute() {
       return $.inArray(Router.current().route.getName(), ['surveyStatus']) !== -1 ? 'active' : '';
