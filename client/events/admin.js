@@ -67,7 +67,7 @@ function sectionComponents(originalSurveyComponentIDs, newSurveSectionIDs, newSu
   const sectionComponent = surveyQuestionsMasterCollection.
     find({ _id: originalSurveyComponentIDs }).fetch();
 
-  for (const i of sectionComponent) {
+  for (let i = 0; i < sectionComponent.length; i++) {
     surveyTitle = surveyCopyTitle;
     // const originalSurveyId = surveyIDForCopy;
     const surveyCopySkipValue = sectionComponent[i].allowSkip;
@@ -110,13 +110,13 @@ function mainSection(mainSectionIDs, surveyingID) {
       logger.log(error);
     } else {
       Session.set('SectionID', result);
-      for (const j of componentsIDs) {
+      for (let j = 0; j < componentsIDs.length; j++) {
         compIDs[j] = componentsIDs[j]._id;
         sectionComponents(compIDs[j], Session.get('SectionID'), surveyingID);
       }
     }
   };
-  for (const i of mainSections) {
+  for (let i = 0; i < mainSections.length; i++) {
     surveyTitle = surveyCopyTitle;
     // const originalSurveyId = surveyIDForCopy;
     const surveyCopySkipValue = mainSections[i].allowSkip;
@@ -149,7 +149,7 @@ function recordsForCopy(surveyingID) {
   const AllRecordsForCopy = surveyQuestionsMasterCollection.
     find({ surveyID: surveyIDForCopy }, { sectionID: 1 }).fetch();
 
-  for (const i of AllRecordsForCopy) {
+  for (let i = 0; i < AllRecordsForCopy.length; i++) {
     originalSurveyUniqueIDs = AllRecordsForCopy[i]._id;
     surveyCopySectionID = AllRecordsForCopy[i].sectionID;
 
@@ -428,7 +428,7 @@ function registerDeleteOption() {
 
 const populateOptions = function (question) {
   let $optionsTag;
-  for (const i of question.options) {
+  for (let i = 0; i < question.options.length; i++) {
     if (question.options[i].description != null) {
       $optionsTag = `<tr  id='${i}' class='questionRow'><td>
         <input type='number' id='${i}.value' class='value' value='question.options[${i}].value'/>
@@ -841,7 +841,7 @@ Template.sortableItemTarget.events(
       const cont = surveyQuestionsMasterCollection.find({ _id: this._id },
           { content_type: 1, _id: 0 }).fetch();
       let contentType;
-      for (const i of cont) {
+      for (let i = 0; i < cont.length; i++) {
         contentType = cont[i].content_type;
       }
       if (contentType === 'question') {
