@@ -204,7 +204,7 @@
                 {{#if notQuestion contentType}}
                     <span class="name">{{content}}</span>
                 {{else}}
-                    <span class="name">{{quesNames content}}</span>
+                    <span class="name">{{{quesNames content}}}</span>
                 {{/if}}
                 <span class="badge">{{order}}</span>
                 <button type="button" class="close" data-dismiss="alert">
@@ -317,7 +317,9 @@
                     </div>
                 </div>
             {{/each}}
+            <br />
             <button class="btn btn-large btn-primary createSurvey">Create Survey</button>
+            <a href="{{editSurveyPath _id}}" class="btn btn-large btn-default">Back</a>
         </ul>
 
     </div>

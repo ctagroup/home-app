@@ -165,7 +165,9 @@ Template.sortableItemTarget.helpers(
       const questionCollection = adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: qId });
 
-      return question.name;
+      /* eslint-disable */
+      return `<strong>Label:</strong> ${question.question} &nbsp;&nbsp;&nbsp;&nbsp;<strong>Name:</strong> ${question.name}`;
+      /* eslint-enable */
     },
   }
 );
@@ -222,6 +224,9 @@ Template.selectQuestions.helpers(
 
 Template.previewSurvey.helpers(
   {
+    editSurveyPath(id) {
+      return Router.path('adminDashboardsurveysEdit', { _id: id });
+    },
     surveyQuesContents() {
       const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
       logger.log(Router.current().params._id);

@@ -341,7 +341,7 @@ function maxRank(surveyingId) {
   const order = surveyQuestionsMasterCollection.
     find({ surveyID: surveyingId }, { sort: { order: - 1 } }).fetch();
   let maxOrder = 0;
-  for (const i of order) {
+  for (let i = 0; i < order.length; i++) {
     maxOrder = order[i].order + 1;
   }
   return maxOrder;
@@ -725,7 +725,7 @@ Template.surveyEditTemplate.events(
         return false;
       }
       Session.set('section_id', tmpl.find('.section').value);
-      return false;
+      return true;
     },
     'click .addSection'(event, tmpl) {
       const surveyingTitle = tmpl.data.title;
