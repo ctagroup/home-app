@@ -360,7 +360,7 @@ Template.surveyViewTemplate.events(
 );
 Template.surveyRow.events(
   {
-    'click .edit'(tmpl) {
+    'click .edit'(event, tmpl) {
       const surveyCollection = adminCollectionObject('surveys');
       const survey = surveyCollection.findOne({ _id: tmpl.data._id });
       const copy = survey.copy;
@@ -689,7 +689,7 @@ Template.questionRow.events(
         setFields(false);
       }
     },
-    'click .delete'(tmpl) {
+    'click .delete'(event, tmpl) {
       Meteor.call(
         'removeQuestion', tmpl.data._id, (error, result) => {
           if (error) {
