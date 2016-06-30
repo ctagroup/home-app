@@ -175,7 +175,6 @@ Template.surveyForm.events(
       $('.s_copy').val('Choose');
     },
     'click .save': (evt, tmpl) => {
-      // const isUpdate = $('#isUpdate').val();
       const created = false;
       surveyID = $('#surveyID').val();
       const copy = tmpl.find('.copy').checked;
@@ -212,8 +211,17 @@ Template.surveyForm.events(
     },
     'click .update': (evt, tmpl) => {
       surveyID = $('#surveyID').val();
-      const title = tmpl.find('.survey_title').value;
-      const active = tmpl.find('.active').checked;
+      const copy = tmpl.find('.copy').checked;
+      let title;
+      let active;
+      if (copy) {
+        title = tmpl.find('.copyof_surveytitle').value;
+        active = tmpl.find('.copy_active').checked;
+      } else {
+        title = tmpl.find('.survey_title').value;
+        active = tmpl.find('.active').checked;
+      }
+
       const stype = tmpl.find('.s_type').value;
 
       const isUpdate = $('#isUpdate').val();
@@ -364,17 +372,18 @@ Template.surveyRow.events(
       const surveyCollection = adminCollectionObject('surveys');
       const survey = surveyCollection.findOne({ _id: tmpl.data._id });
       const copy = survey.copy;
-
       $('.copy').hide();
       $('.copylabel').hide();
       $('.isCopyTrue').hide();
 
       if (copy) {
+        $('.copy').prop('checked', true);
         $('.copyof_surveytitle').show();
         $('.copy_active').show();
         $('.survey_title').hide();
         $('.active').hide();
       } else {
+        $('.copy').prop('checked', false);
         $('.copyof_surveytitle').hide();
         $('.copy_active').hide();
         $('.survey_title').show();
