@@ -15,11 +15,14 @@
               <form class="form-horizontal">
                 {{{alertMessages}}}
                 <div class="form-group">
-                    <div class="col-xs-12">
-                      <input type="text" id="search-client-keyword"
-                             class="form-control typeahead input-lg" data-source="searchClient"
-                             data-select="clientSelected" data-highlight="true"
-                             autocomplete="off" spellcheck="off" />
+                    <div class="col-xs-11 my-center-block">
+                        <input type="text" id="search-client-keyword"
+                               class="form-control typeahead input-lg" data-source="searchClient"
+                               data-select="clientSelected" data-highlight="true"
+                               autocomplete="off" spellcheck="off" />
+                    </div>
+                    <div class="col-xs-1 client-search-icon-container">
+                        <p class="text-primary form-control-static"><i class="fa fa-search"></i></p>
                     </div>
                 </div>
               </form>
