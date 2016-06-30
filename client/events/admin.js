@@ -519,7 +519,7 @@ Template.questionForm.events(
     'change .locked'(/* evt, tmpl*/) {
       checkLocked();
     },
-    'click .save'(tmpl) {
+    'click .save'(event, tmpl) {
       let qCategory = tmpl.find('.q_category').value;
       if (qCategory === 'Other') {
         qCategory = tmpl.find('.category').value;
