@@ -8,7 +8,7 @@ logger = winston;
 Meteor.methods(
   {
     logToServerConsoleLog(msg) {
-      logger.log(`(CLIENT) ${msg}`);
+      logger.info(`(CLIENT) ${msg}`);
     },
     logToServerConsoleDebug(msg) {
       logger.debug(`(CLIENT) ${msg}`);

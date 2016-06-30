@@ -59,9 +59,9 @@ function resetSurveyModal() {
 }
 
 function sectionComponents(originalSurveyComponentIDs, newSurveSectionIDs, newSurveyingID) {
-  console.log(`new survey ID: ${newSurveyingID}`);
-  console.log(`Sub sections: ${originalSurveyComponentIDs}`);
-  console.log(`new section ID: ${newSurveSectionIDs}`);
+  logger.log(`new survey ID: ${newSurveyingID}`);
+  logger.log(`Sub sections: ${originalSurveyComponentIDs}`);
+  logger.log(`new section ID: ${newSurveSectionIDs}`);
 
   const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
   const sectionComponent = surveyQuestionsMasterCollection.
@@ -86,9 +86,9 @@ function sectionComponents(originalSurveyComponentIDs, newSurveSectionIDs, newSu
             surveyCopyRank,
             (error, result) => {
               if (error) {
-                console.log(error);
+                logger.log(error);
               } else {
-                console.log(result);
+                logger.log(result);
               }
             }
         );
@@ -107,7 +107,7 @@ function mainSection(mainSectionIDs, surveyingID) {
 
   const loopFunc = (error, result) => {
     if (error) {
-      console.log(error);
+      logger.log(error);
     } else {
       Session.set('SectionID', result);
       for (const j of componentsIDs) {
@@ -141,7 +141,7 @@ function mainSection(mainSectionIDs, surveyingID) {
 
 let newSurveyID;
 function recordsForCopy(surveyingID) {
-    // console.log("new survey ID: " + surveyID);
+    // logger.log("new survey ID: " + surveyID);
   newSurveyID = surveyingID;
     // let sectionArray = new Array();
 
@@ -221,18 +221,18 @@ Template.surveyForm.events(
         Meteor.call(
           'updateSurvey', surveyID, title, stype, active, (error, result) => {
             if (error) {
-              console.log(error);
+              logger.log(error);
             } else {
-              console.log(result);
+              logger.log(result);
             }
           }
         );
         Meteor.call(
           'updateSurveyQuestionMasterTitle', surveyID, title, (error, result) => {
             if (error) {
-              console.log(error);
+              logger.log(error);
             } else {
-              console.log(result);
+              logger.log(result);
             }
           }
         );
@@ -266,18 +266,18 @@ Template.surveyForm.events(
       Meteor.call(
         'removeSurvey', surveyingID, (error, result) => {
           if (error) {
-            console.log(error);
+            logger.log(error);
           } else {
-            console.log(result);
+            logger.log(result);
           }
         }
       );
       Meteor.call(
         'removeSurveyCopyQuestionMaster', surveyTitle, (error, result) => {
           if (error) {
-            console.log(error);
+            logger.log(error);
           } else {
-            console.log(result);
+            logger.log(result);
           }
         }
       );
@@ -538,8 +538,8 @@ Template.questionForm.events(
       const selectstatus = false;
       let optionArray;
       options = [];
-      console.log(`qtype= ${qType}`);
-      console.log(`audience= ${audience}`);
+      logger.log(`qtype= ${qType}`);
+      logger.log(`audience= ${audience}`);
       if ((
             qDataType === 'Multiple Select'
           ) ||
@@ -599,9 +599,9 @@ Template.questionForm.events(
             isCopy,
             (error, result) => {
               if (error) {
-                console.log(error);
+                logger.log(error);
               } else {
-                console.log(result);
+                logger.log(result);
               }
             }
           );
@@ -619,9 +619,9 @@ Template.questionForm.events(
             isCopy,
             (error, result) => {
               if (error) {
-                console.log(error);
+                logger.log(error);
               } else {
-                console.log(result);
+                logger.log(result);
               }
             }
           );
@@ -640,9 +640,9 @@ Template.questionForm.events(
       Meteor.call(
         'removeQuestion', questionID, (error, result) => {
           if (error) {
-            console.log(error);
+            logger.log(error);
           } else {
-            console.log(result);
+            logger.log(result);
           }
         }
       );
@@ -693,9 +693,9 @@ Template.questionRow.events(
       Meteor.call(
         'removeQuestion', tmpl.data._id, (error, result) => {
           if (error) {
-            console.log(error);
+            logger.log(error);
           } else {
-            console.log(result);
+            logger.log(result);
           }
         }
       );
@@ -719,7 +719,7 @@ Template.surveyEditTemplate.events(
       // }
 
       const secValue = tmpl.find('.section').value;
-      console.log(`section value: ${secValue}`);
+      logger.log(`section value: ${secValue}`);
       if (secValue === 'sectionSelect') {
         alert('Please select/enter a section');
         return false;
@@ -733,7 +733,7 @@ Template.surveyEditTemplate.events(
       const content = tmpl.find('.sectionName').value;
       const contentType = 'section';
       let sectionId = ' ';
-      console.log(`content: ${content}`);
+      logger.log(`content: ${content}`);
       skipVal = tmpl.find('.showskip').checked;
 
       Meteor.call(
@@ -747,9 +747,9 @@ Template.surveyEditTemplate.events(
         maxRank(surveyingId),
         (error, result) => {
           if (error) {
-            console.log(error);
+            logger.log(error);
           } else {
-            console.log(result);
+            logger.log(result);
 
             sectionId = result;
 
@@ -772,7 +772,7 @@ Template.surveyEditTemplate.events(
               // find({_id: section_id},{content:1,_id:0}).fetch();
             //
             // for(var i in section_name){
-            // 	console.log("sec_name: " + section_id);
+            // 	logger.log("sec_name: " + section_id);
             // 	$('#section_val').val(section_id);
             //
             // }
@@ -789,8 +789,8 @@ Template.surveyEditTemplate.events(
       const content = tmpl.find('.labelName').value;
       const contentType = 'labels';
       const sectionId = tmpl.find('.section').value;
-      console.log(`section id: ${sectionId}`);
-      console.log(`SEC_ID: ${Session.get('section_id')}`);
+      logger.log(`section id: ${sectionId}`);
+      logger.log(`SEC_ID: ${Session.get('section_id')}`);
       skipVal = tmpl.find('.showskip').value;
 
       Meteor.call(
@@ -804,9 +804,9 @@ Template.surveyEditTemplate.events(
         maxRank(surveyingId),
         (error, result) => {
           if (error) {
-            console.log(error);
+            logger.log(error);
           } else {
-            console.log(result);
+            logger.log(result);
           }
         }
       );
@@ -891,9 +891,9 @@ Template.sortableItemTarget.events(
         Meteor.call(
           'updateSurveyQuestionMaster', this._id, input.val(), (error, result) => {
             if (error) {
-              console.log(error);
+              logger.log(error);
             } else {
-              console.log(result);
+              logger.log(result);
             }
           }
         );
@@ -917,9 +917,9 @@ Template.sortableItemTarget.events(
       Meteor.call(
         'removeSurveyQuestionMaster', this._id, (error, result) => {
           if (error) {
-            console.log(error);
+            logger.log(error);
           } else {
-            console.log(result);
+            logger.log(result);
           }
         }
       );
@@ -951,8 +951,8 @@ Template.selectQuestions.events(
       for (let i = 0; i < arrayLength; i ++) {
         array[i] = array[i].substring(0, array[i].length - 1);
       }
-      console.log('Ques: ${array}');
-      console.log('skip val: ${skipVal}');
+      logger.log('Ques: ${array}');
+      logger.log('skip val: ${skipVal}');
 
       for (let i = 0; i < array.length; i ++) {
         Meteor.call(
@@ -966,9 +966,9 @@ Template.selectQuestions.events(
           maxRank(surveyId),
           (error, result) => {
             if (error) {
-              console.log(error);
+              logger.log(error);
             } else {
-              console.log(result);
+              logger.log(result);
             }
           }
         );
@@ -995,10 +995,10 @@ Template.previewSurvey.events(
     'change .singleSelect'(evt, tmpl) {
       const element = tmpl.find('input:radio[name=singleSelect]:checked');
       const optionValue = $(element).val();
-      console.log('value: ${optionValue}');
+      logger.log('value: ${optionValue}');
 
       if (optionValue === 'others' || optionValue === 'Others') {
-        console.log('Others, please specify');
+        logger.log('Others, please specify');
         $('.othersSpecify_single').removeClass('hide');
       } else {
         $('.othersSpecify_single').addClass('hide');
@@ -1007,10 +1007,10 @@ Template.previewSurvey.events(
     'change .multipleSelect'(evt, tmpl) {
       const element = tmpl.find('input:checkbox[name=multipleSelect]:checked');
       const optionValue = $(element).val();
-      console.log('value: ${optionValue} ');
+      logger.log('value: ${optionValue} ');
 
       if (optionValue === 'others' || optionValue === 'Others') {
-        console.log('Others, please specify');
+        logger.log('Others, please specify');
         $('.othersSpecify_multiple').removeClass('hide');
       } else {
         $('.othersSpecify_multiple').addClass('hide');
@@ -1028,9 +1028,9 @@ Template.previewSurvey.events(
       Meteor.call(
         'updateCreatedSurvey', surveyID, created, (error, result) => {
           if (error) {
-            console.log(error);
+            logger.log(error);
           } else {
-            console.log(result);
+            logger.log(result);
           }
         }
       );
