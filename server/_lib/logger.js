@@ -8,19 +8,19 @@ logger = winston;
 Meteor.methods(
   {
     logToServerConsoleLog(msg) {
-      logger.info(`(CLIENT) ${msg}`);
+      logger.info(`(CLIENT) ${JSON.stringify(msg)}`);
     },
     logToServerConsoleDebug(msg) {
-      logger.debug(`(CLIENT) ${msg}`);
+      logger.debug(`(CLIENT) ${JSON.stringify(msg)}`);
     },
     logToServerConsoleInfo(msg) {
-      logger.info(`(CLIENT) ${msg}`);
+      logger.info(`(CLIENT) ${JSON.stringify(msg)}`);
     },
     logToServerConsoleWarn(msg) {
-      logger.warn(`(CLIENT) ${msg}`);
+      logger.warn(`(CLIENT) ${JSON.stringify(msg)}`);
     },
     logToServerConsoleError(msg) {
-      logger.error(`(CLIENT) ${msg}`);
+      logger.error(`(CLIENT) ${JSON.stringify(msg)}`);
     },
   }
 );
