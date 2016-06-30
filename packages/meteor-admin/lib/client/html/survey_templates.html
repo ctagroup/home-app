@@ -4,26 +4,30 @@
 
     <div class="container">
         <div class="row">
-            <a href="#newSurveyModal" role="button" data-toggle="modal" class="btn btn-large btn-primary addSurvey">Add
-                Survey</a>
-            <br/><br/>
-            <table class="table table-bordered table-striped table-hover">
-                <thead>
-                <tr>
-                    <th>Survey Title</th>
-                    <th>Date created</th>
-                    <th>Date updated</th>
-                    <th>Edit</th>
-                </tr>
+            <div class="col-xs-12">
+                <a href="#newSurveyModal" role="button" data-toggle="modal" class="btn btn-large btn-primary addSurvey">Add
+                    Survey</a>
+                <br/><br/>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>Survey Title</th>
+                            <th>Date created</th>
+                            <th>Date updated</th>
+                            <th>Edit</th>
+                        </tr>
 
-                </thead>
-                <tbody>
-                {{#each surveyList}}
-                    {{>surveyRow}}
-                {{/each}}
-                </tbody>
+                        </thead>
+                        <tbody>
+                        {{#each surveyList}}
+                            {{>surveyRow}}
+                        {{/each}}
+                        </tbody>
 
-            </table>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -31,7 +35,10 @@
 <template name="surveyRow">
     <tr class="surveyRow">
         {{#if active}}
-            <td><a href="{{editSurveyPath _id}}">{{title}}</a></td>
+            <td>
+                <input type="hidden" id="newsurveyID" value={{_id}}/>
+                <a href="{{editSurveyPath _id}}">{{title}}</a>
+            </td>
         {{else}}
             <td>{{title}}</td>
         {{/if}}
@@ -40,7 +47,6 @@
         <td><a href="#newSurveyModal" role="button" data-toggle="modal" name="edit" class="btn btn-primary edit"><i
                 class="fa fa-edit"></i></a></td>
     </tr>
-    <input type="hidden" id="newsurveyID" value={{_id}}/>
 </template>
 
 <template name="surveyForm">
