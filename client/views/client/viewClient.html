@@ -2,35 +2,52 @@
 	<div id="viewClient_content">
 		{{> appNav}}
 		<div class="container">
-			<h3 class="page-header">{{firstName}} {{lastName}}</h3>
+        <div class="row client-profile-container">
+
+            {{{alertMessages}}}
+
+            <div class="col-xs-3">
+                <div class="name-container">
+                    <form>
+                        <div class="form-group">
+                            <label class="clabel">First Name</label>
+                            <p class="form-control-static cvalue">{{firstName}}</p>
+                        </div>
+                        <div class="form-group">
+                            <label class="clabel">Middle Name</label>
+                            <p class="form-control-static cvalue">{{middleName}}</p>
+                        </div>
+                        <div class="form-group">
+                            <label class="clabel">Last Name</label>
+                            <p class="form-control-static cvalue">{{lastName}}</p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-xs-9">
+                <div class="info-container">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <div class="form-group">
+                                <label class="clabel">Suffix</label>
+                                <p class="form-control-static cvalue">{{suffix}}</p>
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+
+                        </div>
+                        <div class="col-xs-4">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 			<div class="row">
 				<!-- edit form column -->
 				<div class="col-md-8 col-sm-6 col-xs-12 personal-info">
 
-					{{{alertMessages}}}
-
 					<form class="form-horizontal" role="form">
-						<div class="form-group">
-							<label class="col-lg-3 control-label">First name:</label>
-							<div class="col-lg-8">
-								<label class="control-label fName" value={{firstName}}>{{firstName}}</label>
-							</div></div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">Middle name:</label>
-							<div class="col-lg-8">
-								<label class="control-label mName" value={{middleName}}>{{middleName}}</label>
-							</div></div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">Last name:</label>
-							<div class="col-lg-8">
-								<label class="control-label lName" value={{lastName}}>{{lastName}}</label>
-							</div> </div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">Suffix:</label>
-							<div class="col-lg-8">
-								<label class="control-label" value={{suffix}}>{{suffix}}</label>
-							</div>
-						</div>
 						<div class="form-group">
 							<label class="col-lg-3 control-label">SSN:</label>
 							<div class="col-lg-8">
