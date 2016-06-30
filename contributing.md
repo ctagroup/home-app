@@ -64,160 +64,20 @@ We are following [Airbnb JavaScript Style Guide](http://airbnb.io/javascript/).
 --- publish - Meteor code to publish collection data to client side.
 ```
 
-# Files Pending for ESLint Errors
+# Console Logs
 
-- ./client/events
-- ./client/helpers
-- ./client/lib
-- ./client/stylesheets
-- ./client/views
-- ./client/events/appNav.js
-- ./client/events/clientInfo.js
-- ./client/events/logSurvey.js
-- ./client/events/message.js
-- ./client/events/searchClient.js
-- ./client/events/surveyStatus.js
-- ./client/helpers/appNav.js
-- ./client/helpers/clientInfo.js
-- ./client/helpers/footer.js
-- ./client/helpers/logSurveyHelpers.js
-- ./client/helpers/login.js
-- ~~./client/helpers/messageList.js~~
-- ~~./client/helpers/searchClient.js``
-- ~~./client/helpers/surveyStatus.js~~
-- ~~./client/lib/logger.js~~
-- ~~./client/stylesheets/_avatar.scss~~
-- ~~./client/stylesheets/_chat.css~~
-- ~~./client/stylesheets/_footer.scss~~
-- ~~./client/stylesheets/_layout.scss~~
-- ~~./client/stylesheets/_misc.scss~~
-- ~~./client/stylesheets/_nav.scss~~
-- ~~./client/stylesheets/_typehead.scss~~
-- ~~./client/stylesheets/style.scss~~
-- ~~./client/views/appDashboard.html~~
-- ~~./client/views/appNav.html~~
-- ~~./client/views/chat.html~~
-- ~~./client/views/client~~
-- ~~./client/views/footer.html~~
-- ~~./client/views/home.html~~
-- ~~./client/views/login.html~~
-- ~~./client/views/notEnoughPermission.html~~
-- ~~./client/views/privacy.html~~
-- ~~./client/views/survey~~
-- ~~./client/views/termsOfUse.html~~
-- ~~./client/views/client/clientForm.html~~
-- ~~./client/views/client/clientNotFound.html~~
-- ~~./client/views/client/createClient.html~~
-- ~~./client/views/client/editClient.html~~
-- ~~./client/views/client/searchClient.html~~
-- ~~./client/views/client/viewClient.html~~
-- ~~./client/views/survey/logSurvey.html~~
-- ~~./client/views/survey/surveyStatus.html~~
-- ~~./config/accounts.js~~
-- ~~./config/adminConfig.js~~
-- ~~./deploy/cta-home-aws~~
-- ~~./deploy/cta-home-aws/mup.json~~
-- ~~./deploy/cta-home-aws/settings.json~~
-- ~~./lib/generalHelpers.js~~
-- ~~./meteor-mongodb backup/meteor~~
-- ~~./meteor-mongodb backup/mongodump-readme.txt~~
-- ~~./meteor-mongodb backup/meteor/client.bson~~
-- ~~./meteor-mongodb backup/meteor/client.metadata.json~~
-- ~~./meteor-mongodb backup/meteor/enrollment.bson~~
-- ~~./meteor-mongodb backup/meteor/enrollment.metadata.json~~
-- ~~./meteor-mongodb backup/meteor/exit.bson~~
-- ~~./meteor-mongodb backup/meteor/exit.metadata.json~~
-- ~~./meteor-mongodb backup/meteor/hmis_type.bson~~
-- ~~./meteor-mongodb backup/meteor/hmis_type.metadata.json~~
-- ~~./meteor-mongodb backup/meteor/homeRoles.bson~~
-- ~~./meteor-mongodb backup/meteor/homeRoles.metadata.json~~
-- ~~./meteor-mongodb backup/meteor/meteor_accounts_loginServiceConfiguration.bson~~
-- ~~./meteor-mongodb backup/meteor/meteor_accounts_loginServiceConfiguration.metadata.json~~
-- ~~./meteor-mongodb backup/meteor/meteor_oauth_pendingCredentials.bson~~
-- ~~./meteor-mongodb backup/meteor/meteor_oauth_pendingCredentials.metadata.json~~
-- ~~./meteor-mongodb backup/meteor/questions.bson~~
-- ~~./meteor-mongodb backup/meteor/questions.metadata.json~~
-- ~~./meteor-mongodb backup/meteor/rolePermissions.bson~~
-- ~~./meteor-mongodb backup/meteor/rolePermissions.metadata.json~~
-- ~~./meteor-mongodb backup/meteor/roles.bson~~
-- ~~./meteor-mongodb backup/meteor/roles.metadata.json~~
-- ~~./meteor-mongodb backup/meteor/surveys.bson~~
-- ~~./meteor-mongodb backup/meteor/surveys.metadata.json~~
-- ~~./meteor-mongodb backup/meteor/system.indexes.bson~~
-- ~~./meteor-mongodb backup/meteor/users.bson~~
-- ~~./meteor-mongodb backup/meteor/users.metadata.json~~
-- ~~./models/_schema.js~~
-- ~~./models/adminSettingsSchema.js~~
-- ~~./models/clientInfoSchema.js~~
-- ~~./models/homeRoles.js~~
-- ~~./models/messages.js~~
-- ~~./models/optionsSchema.js~~
-- ~~./models/questionsSchema.js~~
-- ~~./models/responseSchema.js~~
-- ~~./models/rolePermissions.js~~
-- ~~./models/surveyQuestionsMasterSchema.js~~
-- ~~./models/surveysSchema.js~~
-- ~~./models/usersSchema.js~~
-- ~~./packages/meteor-admin~~
-- ~~./packages/meteor-admin/LICENSE~~
-- ~~./packages/meteor-admin/README.md~~
-- ~~./packages/meteor-admin/lib~~
-- ~~./packages/meteor-admin/package.js~~
-- ~~./packages/meteor-admin/readme~~
-- ~~./packages/meteor-admin/lib/both~~
-- ~~./packages/meteor-admin/lib/client~~
-- ~~./packages/meteor-admin/lib/server~~
-- ~~./packages/meteor-admin/lib/both/AdminDashboard.coffee~~
-- ~~./packages/meteor-admin/lib/both/collections.coffee~~
-- ~~./packages/meteor-admin/lib/both/homeRouter.js~~
-- ~~./packages/meteor-admin/lib/both/homeStartup.js~~
-- ~~./packages/meteor-admin/lib/both/router.coffee~~
-- ~~./packages/meteor-admin/lib/both/startup.coffee~~
-- ~~./packages/meteor-admin/lib/both/utils.coffee~~
-- ~~./packages/meteor-admin/lib/client/html~~
-- ~~./packages/meteor-admin/lib/client/js~~
-- ~~./packages/meteor-admin/lib/client/stylesheets~~
-- ~~./packages/meteor-admin/lib/client/html/admin_header.html~~
-- ~~./packages/meteor-admin/lib/client/html/admin_layouts.html~~
-- ~~./packages/meteor-admin/lib/client/html/admin_sidebar.html~~
-- ~~./packages/meteor-admin/lib/client/html/admin_templates.html~~
-- ~~./packages/meteor-admin/lib/client/html/admin_widgets.html~~
-- ~~./packages/meteor-admin/lib/client/html/question_templates.html~~
-- ~~./packages/meteor-admin/lib/client/html/survey_templates.html~~
-- ~~./packages/meteor-admin/lib/client/js/adminLayout.js~~
-- ~~./packages/meteor-admin/lib/client/js/autoForm.coffee~~
-- ~~./packages/meteor-admin/lib/client/js/events.coffee~~
-- ~~./packages/meteor-admin/lib/client/js/helpers.coffee~~
-- ~~./packages/meteor-admin/lib/client/js/homeAutoForm.js~~
-- ~~./packages/meteor-admin/lib/client/js/homeEvents.js~~
-- ~~./packages/meteor-admin/lib/client/js/homeHelpers.js~~
-- ~~./packages/meteor-admin/lib/client/js/slim_scroll.js~~
-- ~~./packages/meteor-admin/lib/client/js/templates.coffee~~
-- ~~./packages/meteor-admin/lib/client/stylesheets/_admin.scss~~
-- ~~./packages/meteor-admin/lib/client/stylesheets/_settings.scss~~
-- ~~./packages/meteor-admin/lib/client/stylesheets/_survey.scss~~
-- ~~./packages/meteor-admin/lib/client/stylesheets/style.scss~~
-- ~~./packages/meteor-admin/lib/server/homeMethods.js~~
-- ~~./packages/meteor-admin/lib/server/homePublish.js~~
-- ~~./packages/meteor-admin/lib/server/methods.coffee~~
-- ~~./packages/meteor-admin/lib/server/publish.coffee~~
-- ~~./packages/meteor-admin/readme/screenshot1.png~~
-- ~~./packages/meteor-admin/readme/screenshot2.png~~
-- ~~./public/imgs~~
-- ~~./public/imgs/logo.png~~
-- ~~./public/imgs/spinner.gif~~
-- ~~./router/app.js~~
-- ~~./server/_lib~~
-- ~~./server/config~~
-- ~~./server/hmis~~
-- ~~./server/methods~~
-- ~~./server/publish~~
-- ~~./server/_lib/logger.js~~
-- ~~./server/config/accounts.js~~
-- ~~./server/config/environment.js~~
-- ~~./server/config/mergeAccountsPatch.js~~
-- ~~./server/config/sortableCollections.js~~
-- ~~./server/hmis/hmisApi.js~~
-- ~~./server/methods/searchClient.js~~
-- ~~./server/methods/viewClient.js~~
-- ~~./server/publish/fixtures.js~~
+ESLint doesn't allow `console.*` methods such as `console.log`, `console.debug` etc.
+
+So we have added another logging utility called [Winston](https://github.com/winstonjs/winston).
+
+Ideally, you should not be putting console logs in your production code but just in case you need to put it, use Winston methods for that.
+
+We've created a wrapper object called `logger` to use Winston. And this object is availbel globally on client & server, both the environments.
+
+```
+logger.log("YOYO - This is Log");
+logger.info("YOYO - This is Info");
+logger.debug("YOYO - This is Debug");
+logger.warn("YOYO - This is Warning");
+logger.error("YOYO - This is Error");
+```
