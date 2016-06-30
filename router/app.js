@@ -75,7 +75,7 @@ AccountsTemplates.configureRoute(
     name: 'signIn',
     path: '/login',
     template: 'login',
-    redirect: '/app',
+    redirect: '/app/clients',
     controller: 'HomeAppController',
   }
 );
