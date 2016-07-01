@@ -334,6 +334,25 @@ Meteor.methods(
 
       return surveyQuestionsMasterCollection.remove({ _id: id });
     },
+    resetSurveyQuestionMasterOrder(surveyId) {
+      logger.info(surveyId);
+
+      const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
+      const orders = surveyQuestionsMasterCollection.find(
+        {
+          surveyID: surveyId,
+        }
+      ).fetch();
+
+      for (let i = 0; i < orders.length; i++) {
+        surveyQuestionsMasterCollection.update(
+          { _id: orders[i]._id },
+          { $set: { order: i + 1 } }
+        );
+      }
+
+      return true;
+    },
     addClient(
       firstName,
       middleName,

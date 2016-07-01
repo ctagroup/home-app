@@ -957,6 +957,23 @@ Template.sortableItemTarget.events(
   }
 );
 
+Template.typeDefinition.events(
+  {
+    'click .reset-survey-order': () => {
+
+      var context = Router.current();
+
+      Meteor.call('resetSurveyQuestionMasterOrder', context.params._id, (error, result) => {
+        if (error) {
+          logger.log(error);
+        } else {
+          logger.log(result);
+        }
+      });
+    },
+  }
+);
+
 Template.selectQuestions.events(
   {
     'click .selectques'(evt, tmpl) {
