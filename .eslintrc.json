@@ -39,7 +39,8 @@
     "AutoForm": true,
     "SimpleSchema": true,
     "Gravatar": true,
-    "messages": true
+    "messages": true,
+    "AdminTables": true
   },
   "rules": {
     "no-underscore-dangle": [
