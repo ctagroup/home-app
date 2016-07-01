@@ -960,8 +960,7 @@ Template.sortableItemTarget.events(
 Template.typeDefinition.events(
   {
     'click .reset-survey-order': () => {
-
-      var context = Router.current();
+      const context = Router.current();
 
       Meteor.call('resetSurveyQuestionMasterOrder', context.params._id, (error, result) => {
         if (error) {
