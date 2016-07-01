@@ -50,6 +50,12 @@ Template.AdminDashboardView.helpers
 	newPath: ->
 		Router.path 'adminDashboard' + Session.get('admin_collection_name') + 'New'
 
+Template.AdminDashboardusersView.helpers
+  hasDocuments: ->
+    AdminCollectionsCount.findOne({collection: Session.get 'admin_collection_name'})?.count > 0
+  newPath: ->
+    Router.path 'adminDashboard' + Session.get('admin_collection_name') + 'New'
+
 Template.adminEditBtn.helpers
 	path: ->
 		Router.path "adminDashboard" + Session.get('admin_collection_name') + "Edit", _id: @_id

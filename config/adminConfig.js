@@ -234,6 +234,14 @@ AdminConfig = {
       label: 'Users',
       addNewLink: true,
       templates: {
+        view: {
+          name: 'AdminDashboardusersView',
+          data() {
+            return {
+              admin_table: AdminTables.users,
+            };
+          },
+        },
         edit: {
           name: 'AdminDashboardusersEdit',
         },
