@@ -118,6 +118,9 @@
 
     <div class="container">
         <div class="row">
+
+            <a href="{{pathFor 'adminDashboardsurveysView'}}" class="btn btn-default">Back</a>
+
             <div class="page-header">
                 <h4>Setup</h4>
             </div>
@@ -134,7 +137,7 @@
                             {{#each getSection}}
                                 <option value={{_id}}>{{content}}</option>
                             {{/each}}
-                            <option value="sectionSelect" class="sectionSelect"></option>
+                            <option value="sectionSelect" class="sectionSelect">Select a Section</option>
                             <option value="Other">Add New Section</option>
                         </select>
                     </div>
@@ -152,21 +155,25 @@
                 <br/>
                 <button class="btn btn-large btn-primary addSection">Add Section</button>
             </div>
-            <br/>
             <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-6">
 
-
-                <input type="text" class="form-control  labelName" id="labelName" name="labelName" placeholder="Label"
-                       value=""/>
-                <br/>
-                <button class="btn btn-large btn-primary addLabel">Add Label</button>
+                        <input type="text" class="form-control  labelName" id="labelName" name="labelName" placeholder="Label"
+                               value=""/>
+                        <br/>
+                        <button class="btn btn-large btn-primary addLabel">Add Label</button>
+                    </div>
+                </div>
 
             </div>
-
-            <br/>
-            <div class="addQuesButton">
-                <a href="{{pathFor route='selectSurveyQuestion'}}" class="btn btn-large btn-primary addQues">Add
-                    Questions</a>
+            <div class="form-group addQuesButton">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <a href="{{pathFor route='selectSurveyQuestion'}}" class="btn btn-large btn-primary addQues">Add
+                            Questions</a>
+                    </div>
+                </div>
             </div>
         </div>
 

@@ -33,6 +33,10 @@ Template.AdminRoleManager.events(
   }
 );
 
+Template.AdminHeader.onRendered(() => {
+  $('body').addClass('sidebar-collapse');
+});
+
 // let surveyCopyId;
 let surveyIDForCopy;
 let surveyID;
@@ -342,12 +346,20 @@ function checkLocked() {
 function maxRank(surveyingId) {
   const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
 
-  if (surveyQuestionsMasterCollection.find({ surveyID: surveyingId }).count() <= 0) {
-    return 0;
+  const order = surveyQuestionsMasterCollection.find(
+    {
+      surveyID: surveyingId,
+    }, {
+      sort: {
+        order: 1,
+      },
+    }
+  ).fetch();
+
+  if (order.length === 0) {
+    return 1;
   }
-  const order = surveyQuestionsMasterCollection.
-    find({ surveyID: surveyingId }, { sort: { order: - 1 } }).fetch();
-  let maxOrder = 0;
+  let maxOrder = 1;
   for (let i = 0; i < order.length; i++) {
     maxOrder = order[i].order + 1;
   }
@@ -962,6 +974,8 @@ Template.selectQuestions.events(
       logger.log('Ques: ${array}');
       logger.log('skip val: ${skipVal}');
 
+      let order = maxRank(surveyId);
+
       for (let i = 0; i < array.length; i ++) {
         Meteor.call(
           'addSurveyQuestionMaster',
@@ -971,7 +985,7 @@ Template.selectQuestions.events(
           skipVal,
           'question',
           array[i],
-          maxRank(surveyId),
+          order++,
           (error, result) => {
             if (error) {
               logger.log(error);

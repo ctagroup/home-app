@@ -313,7 +313,26 @@ Meteor.methods(
     },
     removeSurveyQuestionMaster(id) {
       const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
-      surveyQuestionsMasterCollection.remove({ _id: id });
+
+      const order = surveyQuestionsMasterCollection.findOne({ _id: id });
+
+      const nextOrders = surveyQuestionsMasterCollection.find(
+        {
+          surveyID: order.surveyID,
+          order: {
+            $gt: order.order,
+          },
+        }
+      ).fetch();
+
+      for (let i = 0; i < nextOrders.length; i++) {
+        surveyQuestionsMasterCollection.update(
+          { _id: nextOrders[i]._id },
+          { $set: { order: nextOrders[i].order - 1 } }
+        );
+      }
+
+      return surveyQuestionsMasterCollection.remove({ _id: id });
     },
     addClient(
       firstName,
