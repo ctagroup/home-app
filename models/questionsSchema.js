@@ -7,7 +7,6 @@ Schemas.questions = new SimpleSchema(
   {
     name: {
       type: String,
-      max: 256,
     },
     question: {
       type: String,
@@ -17,34 +16,27 @@ Schemas.questions = new SimpleSchema(
     },
     category: {
       type: String,
-      max: 256,
     },
     'options.$': {
       type: Object,
-      max: 256,
       optional: true,
     },
     'options.$.value': {
       type: Number,
-      max: 256,
       optional: true,
     },
     'options.$.description': {
       type: String,
-      max: 256,
       optional: true,
     },
     dataType: {
       type: String,
-      max: 256,
     },
     qtype: {
       type: String,
-      max: 256,
     },
     audience: {
       type: String,
-      max: 256,
     },
     locked: {
       type: Boolean,

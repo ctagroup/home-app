@@ -8,19 +8,15 @@ Schemas.clientInfo = new SimpleSchema(
   {
     firstName: {
       type: String,
-      max: 256,
     },
     middleName: {
       type: String,
-      max: 256,
     },
     lastName: {
       type: String,
-      max: 256,
     },
     suffix: {
       type: String,
-      max: 50,
     },
     ssn: {
       type: String,
@@ -30,27 +26,21 @@ Schemas.clientInfo = new SimpleSchema(
     },
     race: {
       type: String,
-      max: 256,
     },
     ethnicity: {
       type: String,
-      max: 256,
     },
     gender: {
       type: String,
-      max: 256,
     },
     veteranStatus: {
       type: String,
-      max: 256,
     },
     disablingConditions: {
       type: String,
-      max: 256,
     },
     residencePrior: {
       type: String,
-      max: 256,
     },
     entryDate: {
       type: Date,
@@ -60,29 +50,23 @@ Schemas.clientInfo = new SimpleSchema(
     },
     destination: {
       type: String,
-      max: 256,
     },
     personalId: {
       type: String,
-      max: 256,
       optional: true,
     },
     householdId: {
       type: String,
-      max: 256,
       optional: true,
     },
     relationship: {
       type: String,
-      max: 256,
     },
     location: {
       type: String,
-      max: 256,
     },
     shelter: {
       type: String,
-      max: 256,
     },
   }
 );
