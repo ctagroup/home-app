@@ -3,7 +3,8 @@
  */
 
 AdminConfig = {
-  name: 'H.O.M.E.',
+  name: 'H O M E',
+  skin: ' ',
   adminEmails: [
     'desaiuditd@gmail.com',
     'kavithamuthu14@gmail.com',
