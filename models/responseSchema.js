@@ -8,23 +8,18 @@ Schemas.responses = new SimpleSchema(
 
     clientID: {
       type: String,
-      max: 256,
     },
     audience: {
       type: String,
-      max: 256,
     },
     surveyID: {
       type: String,
-      max: 256,
     },
     userID: {
       type: String,
-      max: 256,
     },
     responsestatus: {
       type: String,
-      max: 256,
     },
     timestamp: {
       type: Date,
@@ -38,17 +33,14 @@ Schemas.responses = new SimpleSchema(
     },
     'section.$': {
       type: [Object],
-      max: 256,
       optional: true,
     },
     'section.$.sectionID': {
       type: String,
-      max: 256,
       optional: true,
     },
     'section.$.name': {
       type: String,
-      max: 256,
       optional: true,
     },
     'section.$.skip': {
@@ -57,7 +49,6 @@ Schemas.responses = new SimpleSchema(
     },
     'section.$.response': {
       type: [Object],
-      max: 256,
       optional: true,
     },
     'section.$.response.$.questionID': {

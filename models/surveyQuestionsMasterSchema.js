@@ -7,29 +7,23 @@ Schemas.surveyQuestionsMaster = new SimpleSchema(
   {
     surveyID: {
       type: String,
-      max: 256,
     },
     surveyTitle: {
       type: String,
-      max: 256,
     },
     sectionID: {
       type: String,
       optional: true,
-      max: 256,
     },
     allowSkip: {
       type: String,
-      max: 256,
       optional: true,
     },
     contentType: {
       type: String,
-      max: 256,
     },
     content: {
       type: String,
-      max: 256,
     },
     order: {
       type: Number,

@@ -7,11 +7,9 @@ Schemas.rolePermissions = new SimpleSchema(
   {
     role: {
       type: String,
-      max: 256,
     },
     permission: {
       type: String,
-      max: 256,
     },
     value: {
       type: Boolean,

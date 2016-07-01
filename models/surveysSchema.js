@@ -7,7 +7,6 @@ Schemas.surveys = new SimpleSchema(
   {
     title: {
       type: String,
-      max: 256,
     },
     active: {
       type: Boolean,
@@ -17,12 +16,10 @@ Schemas.surveys = new SimpleSchema(
     },
     stype: {
       type: String,
-      max: 256,
     },
     surveyCopyID: {
       type: String,
       optional: true,
-      max: 256,
     },
     createdAt: {
       type: Date,
