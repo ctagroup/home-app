@@ -27,5 +27,8 @@ Template.searchClient.events(
         }
       }
     },
+    'click .client-search-icon-container': () => {
+      $('#search-client-keyword').focus();
+    },
   }
 );
