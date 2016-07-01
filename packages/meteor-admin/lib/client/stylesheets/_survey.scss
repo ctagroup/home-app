@@ -13,9 +13,7 @@
 }
 
 .sortable.source {
-	/*background: #9FA8DA;*/
 	flex: 0 0 auto;
-	margin-right: 1em;
 	cursor: move;
 	cursor: -webkit-grabbing;
 }
@@ -23,7 +21,6 @@
 .sortable.target {
 	/*background: #3F51B5;*/
 	flex: 1 1 auto;
-	margin-left: 1em;
 }
 .target .well {
 
@@ -44,6 +41,7 @@
 /*/ show the remove button on hover /*/
 .removable .close {
 	display: none;
+    margin-right: 5px;
 }
 .removable:hover .close {
 	display: block;
@@ -54,4 +52,17 @@
 }
 #responseSurveyList li {
 	list-style: none;
+}
+
+.sortable-item {
+    .name {
+        display: inline-block;
+    }
+}
+
+.sortable-item {
+    .badge {
+        margin-right: 5px;
+        margin-top: 0.2em;
+    }
 }

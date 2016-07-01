@@ -159,10 +159,12 @@
                 <div class="row">
                     <div class="col-sm-6">
 
-                        <input type="text" class="form-control  labelName" id="labelName" name="labelName" placeholder="Label"
-                               value=""/>
-                        <br/>
-                        <button class="btn btn-large btn-primary addLabel">Add Label</button>
+                        <div class="input-group">
+                            <input type="text" class="form-control  labelName" id="labelName" name="labelName" placeholder="Label" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary addLabel">Add Label</button>
+                            </span>
+                        </div><!-- /input-group -->
                     </div>
                 </div>
 
@@ -188,43 +190,45 @@
 <template name="typeDefinition">
     <!--<div class="container">-->
         <div class="row">
-            <div class="row">
 
-                <div class="list-pair col-sm-12">
+            <div class="list-pair col-md-9 col-sm-8 col-xs-12">
 
-                    <div class="sortable target" id="object">
-                        {{#sortable items=attributes animation="100" handle=".sortable-handle" ghostClass="sortable-ghost" options=attributesOptions}}
-                            {{> sortableItemTarget}}
-                        {{/sortable}}
-                    </div>
+                <div class="sortable target" id="object">
+                    {{#sortable items=attributes animation="100" handle=".sortable-handle" ghostClass="sortable-ghost" options=attributesOptions}}
+                        {{> sortableItemTarget}}
+                    {{/sortable}}
                 </div>
-
             </div>
-            {{#if showPreview}}
-                <a href="#" class="btn btn-default reset-survey-order">Reset Order</a>
-                <a href="{{pathFor route='previewSurvey' data = getPost}}"
-                   class="btn btn-large btn-primary previewSurvey">Preview</a>
-            {{/if}}
+
         </div>
-    <!--</div>-->
+        <div class="row">
+            <div class="col-md-9 col-sm-8 col-xs-12">
+                {{#if showPreview}}
+                    <a href="#" class="btn btn-default reset-survey-order">Reset Order</a>
+                    <a href="{{pathFor route='previewSurvey' data = getPost}}"
+                       class="btn btn-large btn-primary previewSurvey">Preview</a>
+                {{/if}}
+            </div>
+        </div>
 </template>
 
 <template name="sortableItemTarget">
-    <div class="container-fluid">
-        <div class="row-fluid">
-            <div data-id="{{order}}" class="sortable-item removable well well-sm">
-                {{{icon}}}
-                <i class="sortable-handle mdi-action-view-headline pull-right">Reorder</i>
-                {{#if notQuestion contentType}}
-                    <span class="name">{{content}}</span>
-                {{else}}
-                    <span class="name">{{{quesNames content}}}</span>
-                {{/if}}
-                <span class="badge">{{order}}</span>
-                <button type="button" class="close" data-dismiss="alert">
-                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-                </button>
-            </div>
+    <div data-id="{{order}}" class="sortable-item removable well well-sm row no-pad">
+        <div class="col-xs-9">
+            {{#if notQuestion contentType}}
+                <span class="name">{{content}}</span>
+            {{else}}
+                <span class="name">{{{quesLabel content}}}</span>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="name">{{{quesName content}}}</span>
+            {{/if}}
+        </div>
+        <div class="col-xs-3">
+            <i class="sortable-handle fa fa-bars pull-right"></i>
+            <button type="button" class="close" data-dismiss="alert">
+                <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+            </button>
+            <span class="badge pull-right">{{order}}</span>
         </div>
     </div>
 </template>

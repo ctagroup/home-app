@@ -33,10 +33,6 @@ Template.AdminRoleManager.events(
   }
 );
 
-Template.AdminHeader.onRendered(() => {
-  $('body').addClass('sidebar-collapse');
-});
-
 // let surveyCopyId;
 let surveyIDForCopy;
 let surveyID;

@@ -161,13 +161,17 @@ Template.sortableItemTarget.helpers(
     notQuestion(type) {
       return !(String(type) === String('question'));
     },
-    quesNames(qId) {
+    quesName(qId) {
       const questionCollection = adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: qId });
 
-      /* eslint-disable */
-      return `<strong>Label:</strong> ${question.question} &nbsp;&nbsp;&nbsp;&nbsp;<strong>Name:</strong> ${question.name}`;
-      /* eslint-enable */
+      return `<strong>Name:</strong> ${question.name}`;
+    },
+    quesLabel(qId) {
+      const questionCollection = adminCollectionObject('questions');
+      const question = questionCollection.findOne({ _id: qId });
+
+      return `<strong>Label:</strong> ${question.question}`;
     },
   }
 );
