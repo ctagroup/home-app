@@ -66,7 +66,7 @@ We are following [Airbnb JavaScript Style Guide](http://airbnb.io/javascript/).
 
 # Console Logs
 
-ESLint doesn't allow `console.*` methods such as `console.log`, `console.debug` etc.
+ESLint doesn't allow (only warning) `console.*` methods such as `console.log`, `console.debug` etc.
 
 So we have added another logging utility called [Winston](https://github.com/winstonjs/winston).
 
@@ -75,7 +75,7 @@ Ideally, you should not be putting console logs in your production code but just
 We've created a wrapper object called `logger` to use Winston. And this object is availbel globally on client & server, both the environments.
 
 ```
-logger.log("YOYO - This is Log");
+logger.log('info', "YOYO - This is Log");
 logger.info("YOYO - This is Info");
 logger.debug("YOYO - This is Debug");
 logger.warn("YOYO - This is Warning");

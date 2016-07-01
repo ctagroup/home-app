@@ -4,11 +4,17 @@
 
 import winston from 'winston';
 
-logger = winston;
+logger = new (winston.Logger)(
+  {
+    transports: [
+      new (winston.transports.Console)(),
+    ],
+  }
+);
 Meteor.methods(
   {
     logToServerConsoleLog(msg) {
-      logger.info(`(CLIENT) ${JSON.stringify(msg)}`);
+      logger.log('info', `(CLIENT) ${JSON.stringify(msg)}`);
     },
     logToServerConsoleDebug(msg) {
       logger.debug(`(CLIENT) ${JSON.stringify(msg)}`);
