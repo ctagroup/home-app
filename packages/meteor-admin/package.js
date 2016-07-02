@@ -32,7 +32,7 @@ Package.on_use(
         'aldeed:tabular@1.4.0',
         'meteorhacks:unblock@1.1.0',
         'zimme:active-route@2.3.2',
-        'mfactory:admin-lte@0.0.2',
+        // 'mfactory:admin-lte@0.0.2',
       ],
       both
     );
@@ -62,7 +62,6 @@ Package.on_use(
         'lib/client/html/admin_header.html',
         'lib/client/stylesheets/style.scss',
         'lib/client/stylesheets/_admin.scss',
-        'lib/client/stylesheets/_settings.scss',
         'lib/client/stylesheets/_survey.scss',
         'lib/client/js/helpers.coffee',
         'lib/client/js/templates.coffee',

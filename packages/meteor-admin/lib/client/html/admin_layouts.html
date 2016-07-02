@@ -1,8 +1,6 @@
 <template name="AdminLayout">
   {{#if AdminConfig}}
   {{#if currentUserCan 'view_admin'}}
-  <div class="admin-layout">
-    {{# AdminLTE skin=admin_skin }}
       {{> AdminHeader }}
       {{> AdminSidebar }}
       <div class="content-wrapper" style="min-height: {{minHeight}}">
@@ -32,8 +30,6 @@
           {{> yield }}
         </section>
       </div>
-    {{/ AdminLTE }}
-  </div>
   {{> AdminDeleteModal }}
   {{else}}
   {{> NotAdmin}}

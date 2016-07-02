@@ -15,7 +15,11 @@
 					<span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand" href="{{pathFor 'root'}}">
-            H O M E
+            {{#if AdminConfig.name}}
+                {{AdminConfig.name}}
+            {{else}}
+                Admin
+            {{/if}}
 				</a>
 			</div>
 
