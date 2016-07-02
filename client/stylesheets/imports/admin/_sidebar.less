@@ -1,0 +1,43 @@
+.main-sidebar {
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-height: 100%;
+  width: 230px;
+
+  background-color: @brand-primary;
+
+  .logo {
+    display: block;
+    text-align: center;
+    padding: 15px 15px;
+    font-size: 18px;
+    line-height: 20px;
+    height: 50px;
+    background-color: @brand-primary;
+    color: white;
+    text-decoration: none;
+  }
+
+  .nav > li {
+    & > a {
+      color: white;
+      background-color: @brand-primary;
+      text-decoration: none;
+    }
+
+    &.active {
+      & > a {
+
+        background-color: darken(@brand-primary, 10%);
+
+        &:hover, &:focus {
+          background-color: darken(@brand-primary, 10%);
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+}
