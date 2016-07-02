@@ -2,7 +2,7 @@
     <nav class="navbar navbar-default navbar-static-top admin visible-xs-block">
         <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse" aria-expanded="false">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -16,10 +16,10 @@
                     {{/if}}
                 </a>
             </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse">
                 <ul class="sidebar-menu nav navbar-nav">
                     <li class="{{isActiveRoute 'adminDashboard'}}">
-                        <a href="{{pathFor 'adminDashboard'}}">
+                        <a data-toggle="collapse" data-target=".navbar-collapse" href="{{pathFor 'adminDashboard'}}">
                             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                         </a>
                     </li>
@@ -27,7 +27,7 @@
                 <ul class="sidebar-menu nav navbar-nav">
                     {{#each admin_collections}}
                     <li class="{{isActivePath path=viewPath}}">
-                        <a href="{{viewPath}}">
+                        <a data-toggle="collapse" data-target=".navbar-collapse" href="{{viewPath}}">
                             <i class="fa fa-{{this.icon}}"></i>
                             <span>{{this.label}}</span>
                         </a>
@@ -45,7 +45,7 @@
                 </ul>
                 <ul class="sidebar-menu nav navbar-nav">
                     <li>
-                        <a href="{{pathFor 'root'}}">
+                        <a data-toggle="collapse" data-target=".navbar-collapse" href="{{pathFor 'root'}}">
                             <i class="fa fa-desktop"></i>
                             HOME App
                         </a>
@@ -59,7 +59,7 @@
                             {{{currentUserGravatar}}} {{currentUserFullName}} <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{pathFor 'adminDashboardusersEdit' _id=currentUser._id}}"><i class="fa fa-user"></i> My Profile</a></li>
+                            <li class="{{isMyProfilePath}}"><a data-toggle="collapse" data-target=".navbar-collapse" href="{{pathFor 'adminDashboardusersEdit' _id=currentUser._id}}"><i class="fa fa-user"></i> My Profile</a></li>
                             <li><a class="js-logout" href="#"><i class="fa fa-sign-out"></i> Logout</a></li>
                         </ul>
                     </li>
@@ -68,31 +68,4 @@
             </div>
         </div>
     </nav>
-        <!--<nav class="navbar navbar-static-top" role="navigation">-->
-            <!--<div class="navbar-custom-menu">-->
-                <!--<ul class="nav navbar-nav">-->
-                    <!--<li class="dropdown">-->
-	                    <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">-->
-		                    <!--{{{currentUserGravatar}}} {{currentUserFullName}} <span class="caret"></span>-->
-	                    <!--</a>-->
-                        <!--<ul class="dropdown-menu">-->
-	                        <!--<li class="">-->
-		                        <!--{{#if AdminConfig.dashboard.homeUrl}}-->
-		                        <!--<a href="{{AdminConfig.dashboard.homeUrl}}">Home</a>-->
-		                        <!--{{else}}-->
-		                        <!--<a href="/">Home</a>-->
-		                        <!--{{/if}}-->
-	                        <!--</li>-->
-                            <!--<li class="">-->
-	                            <!--<a href="{{pathFor 'adminDashboardusersEdit' _id=currentUser._id}}">Your profile</a>-->
-                            <!--</li>-->
-                            <!--<li class="">-->
-                                <!--<a href="#" class="btn-sign-out">Sign out</a>-->
-                            <!--</li>-->
-                        <!--</ul>-->
-                    <!--</li>-->
-                <!--</ul>-->
-            <!--</div>-->
-        <!--</nav>-->
-    <!--</header>-->
 </template>
