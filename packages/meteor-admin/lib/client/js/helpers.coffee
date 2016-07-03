@@ -8,7 +8,7 @@ adminCollections = ->
 
 	_.map collections, (obj, key) ->
 		obj = _.extend obj, {name: key}
-		obj = _.defaults obj, {label: key, icon: 'plus', color: 'blue'}
+		obj = _.defaults obj, {label: key, icon: 'plus', color: 'primary'}
 		obj = _.extend obj,
 			viewPath: Router.path "adminDashboard#{key}View"
 			newPath: Router.path "adminDashboard#{key}New"
