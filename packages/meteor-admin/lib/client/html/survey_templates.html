@@ -2,31 +2,29 @@
 
     {{>surveyForm}}
 
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <a href="#newSurveyModal" role="button" data-toggle="modal" class="btn btn-large btn-primary addSurvey">Add
-                    Survey</a>
-                <br/><br/>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-hover">
-                        <thead>
-                        <tr>
-                            <th>Survey Title</th>
-                            <th>Date created</th>
-                            <th>Date updated</th>
-                            <th>Edit</th>
-                        </tr>
+    <div class="row">
+        <div class="col-xs-12">
+            <a href="#newSurveyModal" role="button" data-toggle="modal" class="btn btn-large btn-primary addSurvey">Add
+                Survey</a>
+            <br/><br/>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>Survey Title</th>
+                        <th>Date created</th>
+                        <th>Date updated</th>
+                        <th>Edit</th>
+                    </tr>
 
-                        </thead>
-                        <tbody>
-                        {{#each surveyList}}
-                            {{>surveyRow}}
-                        {{/each}}
-                        </tbody>
+                    </thead>
+                    <tbody>
+                    {{#each surveyList}}
+                        {{>surveyRow}}
+                    {{/each}}
+                    </tbody>
 
-                    </table>
-                </div>
+                </table>
             </div>
         </div>
     </div>
@@ -116,100 +114,96 @@
     <!--</div>-->
     <!--</div>-->
 
-    <div class="container">
-        <div class="row">
+    <div class="row">
 
-            <a href="{{pathFor 'adminDashboardsurveysView'}}" class="btn btn-default">Back</a>
+        <a href="{{pathFor 'adminDashboardsurveysView'}}" class="btn btn-default">Back</a>
 
-            <div class="page-header">
-                <h4>Setup</h4>
-            </div>
+        <div class="page-header">
+            <h4>Setup</h4>
+        </div>
 
-            <div class="form-group">
-                <label for="survey_title1" id="survey_title1" name="survey_title" value={{title}}>
-                    <b>Survey Title:</b> {{title}}
-                </label>
-            </div>
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <select class="form-control section" name="section" id="section_val">
-                            {{#each getSection}}
-                                <option value={{_id}}>{{content}}</option>
-                            {{/each}}
-                            <option value="sectionSelect" class="sectionSelect">Select a Section</option>
-                            <option value="Other">Add New Section</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-6">
-                        <!--<label for="category">Specify:  </label>-->
-                        <input type="text" class="form-control hide sectionName" id="sectionName" name="sectionName"
-                               placeholder="Section Name" value=""/>
-                    </div>
+        <div class="form-group">
+            <label for="survey_title1" id="survey_title1" name="survey_title" value={{title}}>
+                <b>Survey Title:</b> {{title}}
+            </label>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-6">
+                    <select class="form-control section" name="section" id="section_val">
+                        {{#each getSection}}
+                            <option value={{_id}}>{{content}}</option>
+                        {{/each}}
+                        <option value="sectionSelect" class="sectionSelect">Select a Section</option>
+                        <option value="Other">Add New Section</option>
+                    </select>
                 </div>
-                <br/>
-                <label class="checkbox-inline skipLabel">
-                    <input type="checkbox" class="showskip" id="skip_id" value="skip"><b> Skip </b>
-                </label>
-                <br/>
-                <br/>
-                <button class="btn btn-large btn-primary addSection">Add Section</button>
-            </div>
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-sm-6">
-
-                        <div class="input-group">
-                            <input type="text" class="form-control  labelName" id="labelName" name="labelName" placeholder="Label" />
-                            <span class="input-group-btn">
-                                <button class="btn btn-primary addLabel">Add Label</button>
-                            </span>
-                        </div><!-- /input-group -->
-                    </div>
+                <div class="col-sm-6">
+                    <!--<label for="category">Specify:  </label>-->
+                    <input type="text" class="form-control hide sectionName" id="sectionName" name="sectionName"
+                           placeholder="Section Name" value=""/>
                 </div>
-
             </div>
-            <div class="form-group addQuesButton">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <a href="{{pathFor route='selectSurveyQuestion'}}" class="btn btn-large btn-primary addQues">Add
-                            Questions</a>
-                    </div>
+            <br/>
+            <label class="checkbox-inline skipLabel">
+                <input type="checkbox" class="showskip" id="skip_id" value="skip"><b> Skip </b>
+            </label>
+            <br/>
+            <br/>
+            <button class="btn btn-large btn-primary addSection">Add Section</button>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-6">
+
+                    <div class="input-group">
+                        <input type="text" class="form-control  labelName" id="labelName" name="labelName" placeholder="Label" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary addLabel">Add Label</button>
+                        </span>
+                    </div><!-- /input-group -->
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group addQuesButton">
+            <div class="row">
+                <div class="col-sm-6">
+                    <a href="{{pathFor route='selectSurveyQuestion'}}" class="btn btn-large btn-primary addQues">Add
+                        Questions</a>
                 </div>
             </div>
         </div>
-
-        <br />
-
-        {{> typeDefinition}}
-
     </div>
+
+    <br />
+
+    {{> typeDefinition}}
 
 </template>
 
 <template name="typeDefinition">
-    <!--<div class="container">-->
-        <div class="row">
+    <div class="row">
 
-            <div class="list-pair col-md-9 col-sm-8 col-xs-12">
+        <div class="list-pair col-md-9 col-sm-8 col-xs-12">
 
-                <div class="sortable target" id="object">
-                    {{#sortable items=attributes animation="100" handle=".sortable-handle" ghostClass="sortable-ghost" options=attributesOptions}}
-                        {{> sortableItemTarget}}
-                    {{/sortable}}
-                </div>
-            </div>
-
-        </div>
-        <div class="row">
-            <div class="col-md-9 col-sm-8 col-xs-12">
-                {{#if showPreview}}
-                    <a href="#" class="btn btn-default reset-survey-order">Reset Order</a>
-                    <a href="{{pathFor route='previewSurvey' data = getPost}}"
-                       class="btn btn-large btn-primary previewSurvey">Preview</a>
-                {{/if}}
+            <div class="sortable target" id="object">
+                {{#sortable items=attributes animation="100" handle=".sortable-handle" ghostClass="sortable-ghost" options=attributesOptions}}
+                    {{> sortableItemTarget}}
+                {{/sortable}}
             </div>
         </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-9 col-sm-8 col-xs-12">
+            {{#if showPreview}}
+                <a href="#" class="btn btn-default reset-survey-order">Reset Order</a>
+                <a href="{{pathFor route='previewSurvey' data = getPost}}"
+                   class="btn btn-large btn-primary previewSurvey">Preview</a>
+            {{/if}}
+        </div>
+    </div>
 </template>
 
 <template name="sortableItemTarget">
@@ -235,7 +229,7 @@
 
 <template name="previewSurvey">
 
-    <div class="container quesL">
+    <div class="quesL">
 
         <ul id="previewSurveyList">
 
