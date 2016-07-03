@@ -2,30 +2,28 @@
 
 	{{>questionForm}}
 
-    <div class="row">
-        <div class="col-xs-12">
-            <a href="#newQuestionModal" role="button" data-toggle="modal" class="btn btn-large btn-primary addQuestion">Add
-                Question</a>
-            <br/><br/>
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped table-hover">
-                    <thead>
-                    <tr>
-                        <th>Question Name</th>
-                        <th>Date Created</th>
-                        <th>Date updated</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-            {{#each questionList}}
-              {{>questionRow}}
-            {{/each}}
-                    </tbody>
+    <div class="col-xs-12">
+        <a href="#newQuestionModal" role="button" data-toggle="modal" class="btn btn-large btn-primary addQuestion">Add
+            Question</a>
+        <br/><br/>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>Question Name</th>
+                    <th>Date Created</th>
+                    <th>Date updated</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+        {{#each questionList}}
+          {{>questionRow}}
+        {{/each}}
+                </tbody>
 
-                </table>
-            </div>
+            </table>
         </div>
     </div>
 
@@ -171,27 +169,25 @@
 </template>
 
 <template name="selectQuestions">
-    <div class="row">
-        <div class="col-xs-12">
-            <a href="{{pathFor route='adminDashboardsurveysEdit' data = getPost}}"
-               class="btn btn-large btn-primary selectques">Select Question</a>
-            <br/><br/>
-            <table class="table table-bordered table-striped table-hover">
-                <thead>
-                <tr>
-                    <th>Select</th>
-                    <th>Question Name</th>
-                    <th>Display Text</th>
-                    <th>Date updated</th>
-                </tr>
-                </thead>
-                <tbody>
-				{{#each questionList}}
-					{{>selectQuestionRow}}
-				{{/each}}
-                </tbody>
-            </table>
-        </div>
+    <div class="col-xs-12">
+        <a href="{{pathFor route='adminDashboardsurveysEdit' data = getPost}}"
+           class="btn btn-large btn-primary selectques">Select Question</a>
+        <br/><br/>
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Select</th>
+                <th>Question Name</th>
+                <th>Display Text</th>
+                <th>Date updated</th>
+            </tr>
+            </thead>
+            <tbody>
+    {{#each questionList}}
+      {{>selectQuestionRow}}
+    {{/each}}
+            </tbody>
+        </table>
     </div>
 </template>
 
