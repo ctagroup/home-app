@@ -195,7 +195,6 @@ AdminConfig = {
     surveys: {
       icon: 'file-text',
       label: 'Surveys',
-      showDelColumn: false,
       showEditColumn: false,
       tableColumns: [
         {
@@ -276,7 +275,7 @@ AdminConfig = {
           orderable: false,
           render(value, type, doc) {
             /* eslint-disable */
-            return `<a href="#newSurveyModal" role="button" data-toggle="modal" name="edit" data-survey-id="${doc._id}" class="btn btn-primary edit"><i class="fa fa-edit"></i></a>`;
+            return `<a href="#newSurveyModal" role="button" data-toggle="modal" data-survey-id="${doc._id}" class="btn btn-primary edit"><i class="fa fa-edit"></i></a>`;
             /* eslint-enable */
           },
         },
@@ -301,9 +300,118 @@ AdminConfig = {
     questions: {
       icon: 'question',
       label: 'Questions',
+      showEditColumn: false,
+      tableColumns: [
+        {
+          name: 'question',
+          label: 'Question',
+        },
+        {
+          name: 'category',
+          label: 'Category',
+        },
+        {
+          name: 'dataType',
+          label: 'Date Type',
+        },
+        {
+          name: 'qtype',
+          label: 'Question Type',
+          render(value) {
+            let val = '';
+            switch (value) {
+              case 'hud':
+                val = 'HUD';
+                break;
+              case 'spdat':
+                val = 'VI-SPDAT';
+                break;
+              default:
+                val = '';
+                break;
+            }
+            return val;
+          },
+        },
+        {
+          name: 'audience',
+          label: 'Audience',
+          render(value) {
+            let val = '';
+            switch (value) {
+              case 'adult':
+                val = 'Adult';
+                break;
+              case 'hoh':
+                val = 'Head of household';
+                break;
+              case 'bothadultsandhoh':
+                val = 'Adults and Head of Household';
+                break;
+              case 'child':
+                val = 'Child';
+                break;
+              case 'everyone':
+                val = 'Everyone';
+                break;
+              default:
+                val = '';
+                break;
+            }
+            return val;
+          },
+        },
+        {
+          name: 'locked',
+          label: 'Locked?',
+          render(value) {
+            /* eslint-disable */
+            return value ? '<i class="fa fa-check js-tooltip" data-toggle="tooltip" data-placement="right" title=""></i>' : '';
+            /* eslint-enable */
+          },
+        },
+        {
+          name: 'iscopy',
+          label: 'Copy?',
+          render(value) {
+            /* eslint-disable */
+            return value ? '<i class="fa fa-check js-tooltip" data-toggle="tooltip" data-placement="right" title=""></i>' : '';
+            /* eslint-enable */
+          },
+        },
+        {
+          name: 'createdAt',
+          label: 'Date created',
+          render(value) {
+            return moment(value).format('MM/DD/YYYY');
+          },
+        },
+        {
+          name: 'updatedAt',
+          label: 'Date updated',
+          render(value) {
+            return moment(value).format('MM/DD/YYYY');
+          },
+        },
+        {
+          name: '_id',
+          label: 'Edit',
+          orderable: false,
+          render(value, type, doc) {
+            /* eslint-disable */
+            return `<a href="#newQuestionModal" role="button" data-toggle="modal" data-survey-id="${doc._id}" class="btn btn-primary edit"><i class="fa fa-edit"></i></a>`;
+            /* eslint-enable */
+          },
+        },
+      ],
       templates: {
         view: {
           name: 'questionViewTemplate',
+          data() {
+            return {
+              admin_table: AdminTables.questions,
+            };
+          },
         },
       },
     },

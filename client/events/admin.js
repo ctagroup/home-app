@@ -362,6 +362,34 @@ function maxRank(surveyingId) {
   return maxOrder;
 }
 
+function registerDeleteOption() {
+  $('#aoptions').on(
+    'click', 'a.optionremove', () => {
+      const rowId = $(this).attr('id');
+      const i = rowId.split('.');
+      const i1 = i[1];
+      $(`#${i1}`).remove();
+    }
+  );
+}
+
+function populateOptions(question) {
+  let $optionsTag;
+  for (let i = 0; i < question.options.length; i++) {
+    if (question.options[i].description != null) {
+      $optionsTag = `<tr  id='${i}' class='questionRow'><td>
+        <input type='number' id='${i}.value' class='value' value='question.options[${i}].value'/>
+        </td>`;
+      $optionsTag += `<td><textarea rows='1' cols='40' id='${i}.description' class='description'>
+        ${question.options[i].description} </textarea></td>`;
+      $optionsTag += `<td><a id='delete.${i}' class='btn btn-primary optionremove'>
+        <span class='fa fa-remove'></span></a></td></tr>`;
+      $('#aoptions').append($optionsTag);
+      registerDeleteOption();
+    }
+  }
+}
+
 Template.surveyViewTemplate.events(
   {
     'click .addSurvey'(/* evt, tmpl*/) {
@@ -422,36 +450,43 @@ Template.questionViewTemplate.events(
       $('.showWhenNew').show();
       setFields(false);
     },
+    'click .edit'(evt) {
+      evt.preventDefault();
+      $('#aoptions').empty();
+      // let txt1;
+      // let optionsTag;
+      const questionsCollection = adminCollectionObject('questions');
+      const question = questionsCollection.findOne({ _id: $(evt.currentTarget).data('survey-id') });
+
+      $('#q_category').val(question.category).change();
+      $('#q_name').val(question.name);
+      $('#question').val(question.question);
+      $('#q_dataType').val(question.dataType).change();
+      $('#q_type').val(question.qtype).change();
+      $('#q_audience').val(question.audience).change();
+      if (question.options != null) {
+        // optionsTag = '';
+        populateOptions(question);
+      }
+
+      $('#newQuestionModal input[type=checkbox]#isCopy').attr('checked', question.isCopy);
+      $('#newQuestionModal input[type=checkbox]#isCopy').prop('checked', question.isCopy);
+      $('#newQuestionModal input[type=checkbox]#locked').attr('checked', question.locked);
+      $('#newQuestionModal input[type=checkbox]#locked').prop('checked', question.locked);
+
+      $('#isUpdate').val('1');
+      $('#questionID').val($(evt.currentTarget).data('survey-id'));
+
+      $('.showWhenEdit').show();
+      $('.showWhenNew').hide();
+      if (question.locked) {
+        setFields(true);
+      } else {
+        setFields(false);
+      }
+    },
   }
 );
-
-function registerDeleteOption() {
-  $('#aoptions').on(
-        'click', 'a.optionremove', () => {
-          const rowId = $(this).attr('id');
-          const i = rowId.split('.');
-          const i1 = i[1];
-          $(`#${i1}`).remove();
-        }
-    );
-}
-
-function populateOptions(question) {
-  let $optionsTag;
-  for (let i = 0; i < question.options.length; i++) {
-    if (question.options[i].description != null) {
-      $optionsTag = `<tr  id='${i}' class='questionRow'><td>
-        <input type='number' id='${i}.value' class='value' value='question.options[${i}].value'/>
-        </td>`;
-      $optionsTag += `<td><textarea rows='1' cols='40' id='${i}.description' class='description'>
-        ${question.options[i].description} </textarea></td>`;
-      $optionsTag += `<td><a id='delete.${i}' class='btn btn-primary optionremove'>
-        <span class='fa fa-remove'></span></a></td></tr>`;
-      $('#aoptions').append($optionsTag);
-      registerDeleteOption();
-    }
-  }
-}
 
 Template.questionForm.events(
   {
@@ -662,58 +697,6 @@ Template.questionForm.events(
   }
 );
 
-Template.questionRow.events(
-  {
-    'click .edit'(evt, tmpl) {
-      evt.preventDefault();
-      $('#aoptions').empty();
-      // let txt1;
-      // let optionsTag;
-      const questionsCollection = adminCollectionObject('questions');
-      const question = questionsCollection.findOne({ _id: tmpl.data._id });
-
-      $('#q_category').val(question.category).change();
-      $('#q_name').val(question.name);
-      $('#question').val(question.question);
-      $('#q_dataType').val(question.dataType).change();
-      $('#q_type').val(question.qtype).change();
-      $('#q_audience').val(question.audience).change();
-      if (question.options != null) {
-        // optionsTag = '';
-        populateOptions(question);
-      }
-
-      $('#newQuestionModal input[type=checkbox]#isCopy').attr('checked', question.isCopy);
-      $('#newQuestionModal input[type=checkbox]#isCopy').prop('checked', question.isCopy);
-      $('#newQuestionModal input[type=checkbox]#locked').attr('checked', question.locked);
-      $('#newQuestionModal input[type=checkbox]#locked').prop('checked', question.locked);
-
-      $('#isUpdate').val('1');
-      $('#questionID').val(tmpl.data._id);
-
-      $('.showWhenEdit').show();
-      $('.showWhenNew').hide();
-      if (question.locked) {
-        setFields(true);
-      } else {
-        setFields(false);
-      }
-    },
-    'click .delete'(event, tmpl) {
-      Meteor.call(
-        'removeQuestion', tmpl.data._id, (error, result) => {
-          if (error) {
-            logger.log(error);
-          } else {
-            logger.log(result);
-          }
-        }
-      );
-
-      resetQuestionModal();
-    },
-  }
-);
 Session.setDefault('section_id', null);
 // let section_id;
 let skipVal;
