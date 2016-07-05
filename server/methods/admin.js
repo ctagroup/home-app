@@ -364,6 +364,28 @@ Meteor.methods(
 
       return true;
     },
+    fixSurveyQuestionMasterOrder(surveyId) {
+      logger.info(surveyId);
+
+      const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
+      const orders = surveyQuestionsMasterCollection.find(
+        {
+          surveyID: surveyId,
+        },
+        {
+          sort: {
+            order: 1,
+          },
+        }
+      ).fetch();
+
+      for (let i = 0; i < orders.length; i++) {
+        surveyQuestionsMasterCollection.update(
+          { _id: orders[i]._id },
+          { $set: { order: i + 1 } }
+        );
+      }
+    },
     addClient(
       firstName,
       middleName,

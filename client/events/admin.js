@@ -943,6 +943,17 @@ Template.typeDefinition.events(
         }
       });
     },
+    'click .fix-survey-order': () => {
+      const context = Router.current();
+
+      Meteor.call('fixSurveyQuestionMasterOrder', context.params._id, (error, result) => {
+        if (error) {
+          logger.log(error);
+        } else {
+          logger.log(result);
+        }
+      });
+    },
   }
 );
 
