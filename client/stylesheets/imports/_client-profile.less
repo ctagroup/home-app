@@ -1,10 +1,5 @@
-.client-profile-container {
-  margin-top: 60px;
-}
-
 .name-container, .info-container {
   background-color: white;
-  min-height: 450px;
   padding: 40px;
 
   .clabel {
@@ -25,10 +20,31 @@
 
 .info-container {
   .clabel {
-    //font-size: 12px;
+    font-size: 12px;
+  }
+}
+
+.info-container {
+  & > .row {
+    &:nth-child(2n) {
+      margin-bottom: 10px;
+    }
+  }
+}
+
+@media (max-width: @grid-float-breakpoint-max) {
+  .client-profile-container > div {
+    margin-top: 30px;
+  }
+}
+
+@media (min-width: @grid-float-breakpoint) {
+
+  .client-profile-container {
+    margin-top: 60px;
   }
 
-  .cvalue {
-    //font-size: 18px;
+  .name-container, .info-container {
+    min-height: 422px;
   }
 }
