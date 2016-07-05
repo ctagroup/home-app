@@ -179,7 +179,7 @@
 </template>
 
 <template name="sortableItemTarget">
-    <div data-id="{{order}}" class="sortable-item removable well well-sm row no-pad">
+    <div data-id="{{order}}" data-db-id="{{_id}}" class="sortable-item removable well well-sm row no-pad">
         <div class="col-xs-9">
             {{#if notQuestion contentType}}
                 <span class="name">{{content}}</span>
