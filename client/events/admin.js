@@ -371,13 +371,9 @@ Template.surveyViewTemplate.events(
       $('.showWhenEdit').hide();
       $('.showWhenNew').show();
     },
-  }
-);
-Template.surveyRow.events(
-  {
-    'click .edit'(event, tmpl) {
+    'click .edit'(event) {
       const surveyCollection = adminCollectionObject('surveys');
-      const survey = surveyCollection.findOne({ _id: tmpl.data._id });
+      const survey = surveyCollection.findOne({ _id: $(event.currentTarget).data('survey-id') });
       const copy = survey.copy;
       $('.copy').hide();
       $('.copylabel').hide();
@@ -409,12 +405,11 @@ Template.surveyRow.events(
         $('#newSurveyModal input[type=checkbox]#copy').prop('checked', survey.copy);
       }
       $('#isUpdate').val('1');
-      $('#surveyID').val(tmpl.data._id);
+      $('#surveyID').val($(event.currentTarget).data('survey-id'));
 
       $('.showWhenEdit').show();
       $('.showWhenNew').hide();
     },
-
   }
 );
 
@@ -431,9 +426,8 @@ Template.questionViewTemplate.events(
 );
 
 function registerDeleteOption() {
-    /* eslint-disable func-names */
   $('#aoptions').on(
-        'click', 'a.optionremove', function () {
+        'click', 'a.optionremove', () => {
           const rowId = $(this).attr('id');
           const i = rowId.split('.');
           const i1 = i[1];
@@ -442,7 +436,7 @@ function registerDeleteOption() {
     );
 }
 
-const populateOptions = function (question) {
+function populateOptions(question) {
   let $optionsTag;
   for (let i = 0; i < question.options.length; i++) {
     if (question.options[i].description != null) {
@@ -457,7 +451,7 @@ const populateOptions = function (question) {
       registerDeleteOption();
     }
   }
-};
+}
 
 Template.questionForm.events(
   {
@@ -476,7 +470,7 @@ Template.questionForm.events(
 
       $('#aoptions').append(optionsTag);
       $('#aoptions').on(
-        'click', 'a.optionremove', function () {
+        'click', 'a.optionremove', () => {
           const rowId = $(this).attr('id');
           const i = rowId.split('.');
           const i1 = i[1];
@@ -565,7 +559,7 @@ Template.questionForm.events(
         // options = tmpl.find('#options').value;
         // selectstatus=true;
         $('#aoptions').find('tr').each(
-          function () {
+          () => {
             optionArray = {};
             optionArray.value = $(this).find('.value').val();
             optionArray.description = $(this).find('.description').val();

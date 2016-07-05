@@ -195,6 +195,8 @@ AdminConfig = {
     surveys: {
       icon: 'file-text',
       label: 'Surveys',
+      showDelColumn: false,
+      showEditColumn: false,
       tableColumns: [
         {
           name: 'title',
@@ -204,13 +206,89 @@ AdminConfig = {
               `adminDashboard${Session.get('admin_collection_name')}Edit`,
               { _id: doc._id }
             );
-            return `<a href="${path}"><strong>${value}</strong></a>`;
+
+            let val = value;
+
+            if (doc.active) {
+              /* eslint-disable */
+              val = `<input type="hidden" id="newsurveyID" value="${doc.id}" /><a href="${path}">${value}</a>`;
+              /* eslint-enable */
+            }
+
+            return val;
+          },
+        },
+        {
+          name: 'stype',
+          label: 'Survey Type',
+          orderable: false,
+          render(value) {
+            let val = '';
+            switch (value) {
+              case 'hud':
+                val = 'HUD';
+                break;
+              case 'spdat':
+                val = 'VI-SPDAT';
+                break;
+              default:
+                val = '';
+                break;
+            }
+            return val;
+          },
+        },
+        {
+          name: 'active',
+          label: 'Active?',
+          orderable: false,
+          render(value) {
+            return value ? '<i class="fa fa-check"></i>' : '';
+          },
+        },
+        {
+          name: 'copy',
+          label: 'Copy?',
+          orderable: false,
+          render(value) {
+            /* eslint-disable */
+            return value ? '<i class="fa fa-check js-tooltip" data-toggle="tooltip" data-placement="right" title=""></i>' : '';
+            /* eslint-enable */
+          },
+        },
+        {
+          name: 'createdAt',
+          label: 'Date created',
+          render(value) {
+            return moment(value).format('MM/DD/YYYY');
+          },
+        },
+        {
+          name: 'updatedAt',
+          label: 'Date updated',
+          render(value) {
+            return moment(value).format('MM/DD/YYYY');
+          },
+        },
+        {
+          name: '_id',
+          label: 'Edit',
+          orderable: false,
+          render(value, type, doc) {
+            /* eslint-disable */
+            return `<a href="#newSurveyModal" role="button" data-toggle="modal" name="edit" data-survey-id="${doc._id}" class="btn btn-primary edit"><i class="fa fa-edit"></i></a>`;
+            /* eslint-enable */
           },
         },
       ],
       templates: {
         view: {
           name: 'surveyViewTemplate',
+          data() {
+            return {
+              admin_table: AdminTables.surveys,
+            };
+          },
         },
         edit: {
           name: 'surveyEditTemplate',
@@ -232,7 +310,6 @@ AdminConfig = {
     users: {
       icon: 'user',
       label: 'Users',
-      addNewLink: true,
       templates: {
         view: {
           name: 'AdminDashboardusersView',

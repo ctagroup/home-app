@@ -218,7 +218,7 @@ Meteor.methods(
     },
     updateSurvey(surveyID, title, stype, active) {
       const surveyCollection = adminCollectionObject('surveys');
-      surveyCollection.update(surveyID, { $set: { title, stype, active } });
+      return surveyCollection.update(surveyID, { $set: { title, stype, active } });
     },
     updateCreatedSurvey(surveyID, created) {
       const surveyCollection = adminCollectionObject('surveys');
@@ -306,7 +306,7 @@ Meteor.methods(
     },
     updateSurveyQuestionMasterTitle(id, surveyTitle) {
       const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
-      surveyQuestionsMasterCollection.update(
+      return surveyQuestionsMasterCollection.update(
         { surveyID: id },
         { $set: { surveyTitle } }, { multi: true }
       );

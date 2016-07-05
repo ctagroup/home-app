@@ -1,6 +1,6 @@
 @AdminTables = {}
 
-adminTablesDom = '<"box"<"box-header"<"box-toolbar"<"pull-left"<lf>><"pull-right"p>>><"box-body"t>>'
+adminTablesDom = '<"box"<"box-header"<"box-toolbar"<"pull-left"<lf>><"pull-right"p>>><"box-body table-responsive"t>>'
 
 adminEditButton = {
 	data: '_id'
