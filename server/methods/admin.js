@@ -202,6 +202,17 @@ Meteor.methods(
         }
       );
     },
+    adminRemoveDoc(collection, _id) {
+// #		if Roles.userIsInRole this.userId, ['delete_'+collection]
+      let val = '';
+      if (collection === 'Users') {
+        val = Meteor.users.remove({ _id });
+      } else {
+        // # global[collection].remove {_id:_id}
+        val = adminCollectionObject(collection).remove({ _id });
+      }
+      return val;
+    },
     addSurvey(title, active, copy, surveyCopyID, stype, created) {
       const surveyCollection = adminCollectionObject('surveys');
       const surveyID = surveyCollection.insert(
