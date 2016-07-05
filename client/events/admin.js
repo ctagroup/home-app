@@ -594,10 +594,10 @@ Template.questionForm.events(
         // options = tmpl.find('#options').value;
         // selectstatus=true;
         $('#aoptions').find('tr').each(
-          () => {
+          (i, item) => {
             optionArray = {};
-            optionArray.value = $(this).find('.value').val();
-            optionArray.description = $(this).find('.description').val();
+            optionArray.value = $(item).find('.value').val();
+            optionArray.description = $(item).find('.description').val();
             options.push(optionArray);
           }
         );
