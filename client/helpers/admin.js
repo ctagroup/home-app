@@ -157,13 +157,25 @@ Template.sortableItemTarget.helpers(
       const questionCollection = adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: qId });
 
-      return `<strong>Name:</strong> ${question.name}`;
+      let val = '';
+
+      if (question && question.name) {
+        val = `<strong>Name:</strong> ${question.name}`;
+      }
+
+      return val;
     },
     quesLabel(qId) {
       const questionCollection = adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: qId });
 
-      return `<strong>Label:</strong> ${question.question}`;
+      let val = '';
+
+      if (question && question.question) {
+        val = `<strong>Label:</strong> ${question.question}`;
+      }
+
+      return val;
     },
   }
 );
