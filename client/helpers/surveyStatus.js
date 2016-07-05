@@ -15,7 +15,14 @@ Template.surveyStatusRow.helpers(
     surveyName(surveyID) {
       const surveyCollection = adminCollectionObject('surveys');
       const survey = surveyCollection.findOne({ _id: surveyID });
-      return survey.title || '';
+
+      let val = '';
+
+      if (survey && survey.title) {
+        val = survey.title;
+      }
+
+      return val;
     },
     clientName(clientID) {
       const clientInfoCollection = adminCollectionObject('clientInfo');
@@ -25,7 +32,14 @@ Template.surveyStatusRow.helpers(
     userName(userID) {
       const userCollection = adminCollectionObject('users');
       const user = userCollection.findOne({ _id: userID });
-      return user.emails[0].address || '';
+
+      let val = '';
+
+      if (user && user.emails && user.emails[0].address) {
+        val = user.emails[0].address;
+      }
+
+      return val;
     },
   }
 );
