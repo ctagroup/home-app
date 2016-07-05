@@ -155,8 +155,8 @@ HMISAPI = {
     } catch (err) {
       // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
       //                {response: err.response});
-      logger.log(`Failed to create client in HMIS. ${err.message}`);
-      logger.log(err.response);
+      logger.info(`Failed to create client in HMIS. ${err.message}`);
+      logger.info(err.response);
       return false;
     }
   },
@@ -187,8 +187,8 @@ HMISAPI = {
     } catch (err) {
       // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
       //                {response: err.response});
-      logger.log(`Failed to get client info from HMIS. ${err.message}`);
-      logger.log(err.response);
+      logger.info(`Failed to get client info from HMIS. ${err.message}`);
+      logger.info(err.response);
       return false;
     }
   },
@@ -203,12 +203,18 @@ HMISAPI = {
     const params = {
       q: query,
       maxItems: limit,
+      sort: 'firstName',
+      order: 'asc',
     };
+
+    logger.info(params);
 
     const baseUrl = config.hmisAPIEndpoints.clientBaseUrl;
     const searchClientPath = config.hmisAPIEndpoints.searchClient;
     const urlPah = `${baseUrl}${searchClientPath}`;
     const url = `${urlPah}?${querystring.stringify(params)}`;
+
+    logger.info(url);
 
     try {
       const clients = [];
@@ -224,6 +230,8 @@ HMISAPI = {
         },
       }).data;
 
+      logger.info(response);
+
       const clientsReponse = response.searchResults.items;
       for (let i = 0; i < clientsReponse.length; i++) {
         clients.push(clientsReponse[i]);
@@ -233,8 +241,8 @@ HMISAPI = {
     } catch (err) {
       // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
       //                {response: err.response});
-      logger.log(`Failed to search clients in HMIS. ${err.message}`);
-      logger.log(err.response);
+      logger.info(`Failed to search clients in HMIS. ${err.message}`);
+      logger.info(err.response);
       return [];
     }
   },
