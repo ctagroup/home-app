@@ -1,167 +1,128 @@
 <template name="viewClient">
-	<div id="viewClient_content">
-		{{> appNav}}
-		<div class="container">
-        <div class="row client-profile-container">
+    <div id="viewClient_content">
+        {{> appNav}}
+        <div class="container">
+            <div class="row client-profile-container">
 
-            {{{alertMessages}}}
+                {{{alertMessages}}}
 
-            <div class="col-xs-3">
-                <div class="name-container">
-                    <form>
-                        <div class="form-group">
-                            <label class="clabel">First Name</label>
-                            <p class="form-control-static cvalue">{{firstName}}</p>
-                        </div>
-                        <div class="form-group">
-                            <label class="clabel">Middle Name</label>
-                            <p class="form-control-static cvalue">{{middleName}}</p>
-                        </div>
-                        <div class="form-group">
-                            <label class="clabel">Last Name</label>
-                            <p class="form-control-static cvalue">{{lastName}}</p>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="col-xs-9">
-                <div class="info-container">
-                    <div class="row">
-                        <div class="col-xs-2">
+                <div class="col-xs-3">
+                    <div class="name-container">
+                        <form>
                             <div class="form-group">
-                                <label class="clabel">Suffix</label>
-                                <p class="form-control-static cvalue">{{suffix}}</p>
+                                <p class="clabel">First Name</p>
+                                <p class="form-control-static cvalue">{{firstName}}</p>
+                            </div>
+                            <div class="form-group">
+                                <p class="clabel">Middle Name</p>
+                                <p class="form-control-static cvalue">{{middleName}}</p>
+                            </div>
+                            <div class="form-group">
+                                <p class="clabel">Last Name</p>
+                                <p class="form-control-static cvalue">{{lastName}}</p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-xs-9">
+                    <div class="info-container">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <div class="">
+                                    <p class="clabel">Suffix</p>
+                                    <p class="cvalue">{{suffix}}</p>
+                                </div>
+                                <div class="">
+                                    <p class="clabel">SSN</p>
+                                    <p class="cvalue">{{ssn}}</p>
+                                </div>
+                                <div class="">
+                                    <p class="clabel">Date of Birth</p>
+                                    <p class="cvalue dob">{{formatDate dob}}</p>
+                                </div>
+                                <div class="">
+                                    <p class="clabel">Race</p>
+                                    <p class="cvalue">{{getText 'race' race}}</p>
+                                </div>
+                                <div class="">
+                                    <p class="clabel">Ethnicity</p>
+                                    <p class="cvalue">{{getText 'ethnicity' ethnicity}}</p>
+                                </div>
+                                <div class="">
+                                    <p class="clabel">Gender</p>
+                                    <p class="cvalue">{{getText 'gender' gender}}</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <div class="">
+                                    <p class="clabel">Veteran Status</p>
+                                    <p class="cvalue">{{getText 'veteranStatus' veteranStatus}}</p>
+                                </div>
+                                <div class="">
+                                    <p class="clabel">Disabling Condition</p>
+                                    <p class="cvalue">{{getText 'disablingcondition' disablingConditions}}</p>
+                                </div>
+                                <div class="">
+                                    <p class="clabel">Residence Prior to Project Entry</p>
+                                    <p class="cvalue">{{getText 'otherresidenceprior' residencePrior}}</p>
+                                </div>
+                                <div class="">
+                                    <p class="clabel">Project Entry Date</p>
+                                    <p class="cvalue">{{formatDate entryDate}}</p>
+                                </div>
+                                <div class="">
+                                    <label class="clabel">Project Exit Date</label>
+                                    <p class="cvalue">{{formatDate exitDate}}</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-5">
+                                <div class="">
+                                    <p class="clabel">Destination</p>
+                                    <p class="cvalue">{{destination}}</p>
+                                </div>
+                                <div class="">
+                                    <p class="clabel">HMIS ID</p>
+                                    <p class="cvalue clientID">{{personalId}}</p>
+                                </div>
+                                <div class="">
+                                    <p class="clabel">Household ID</p>
+                                    <p class="cvalue">{{householdId}}</p>
+                                </div>
+                                <div class="">
+                                    <p class="clabel">Relationship to Head to Household</p>
+                                    <p class="cvalue reltohoh">{{getText 'relationshiptohoh' relationship}}</p>
+                                </div>
+                                <div class="">
+                                    <p class="clabel">Client Location</p>
+                                    <p class="cvalue">{{location}}</p>
+                                </div>
+                                <div class="">
+                                    <p class="clabel">Time on Streets Emergency Shelter or Safe Haven</p>
+                                    <p class="cvalue">{{getText 'entryfromstreetessh' shelter}}</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-xs-3">
-
-                        </div>
-                        <div class="col-xs-4">
-
+                    </div>
+                </div>
+            </div>
+            <div class="row margin-top-35">
+                <!-- edit form column -->
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <input class="btn btn-default back" value="Back" type="button">
+                            <input class="btn btn-success takeSurvey" value="Survey" type="button">
+                            {{#unless personalId}}
+                                <input class="btn btn-success add-to-hmis" value="Add to HMIS" type="button">
+                                <input class="btn btn-warning edit" value="Edit" type="button">
+                            {{/unless}}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-			<div class="row">
-				<!-- edit form column -->
-				<div class="col-md-8 col-sm-6 col-xs-12 personal-info">
+    </div>
 
-					<form class="form-horizontal" role="form">
-						<div class="form-group">
-							<label class="col-lg-3 control-label">SSN:</label>
-							<div class="col-lg-8">
-								<label class="control-label" value={{ssn}}>{{ssn}}</label>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">Date of Birth:</label>
-							<div class="col-lg-8">
-								<label class="control-label dob" value={{dob}}>{{dob}}</label>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">Race:</label>
-							<div class="col-lg-8">
-								<label class="control-label" value={{race}}>{{getText 'race' race}}</label>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">Ethnicity:</label>
-							<div class="col-lg-8">
-								<label class="control-label" value={{ethnicity}}>{{getText 'ethnicity' ethnicity}} </label>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">Gender:</label>
-							<div class="col-lg-8">
-								<label class="control-label" value="{{gender}}">{{getText 'gender' gender}} </label>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">Veteran Status:</label>
-							<div class="col-lg-8">
-								<label class="control-label" value={{veteranStatus}}>{{getText 'veteranStatus' veteranStatus}} </label>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">Disabling Condition:</label>
-							<div class="col-lg-8">
-								<label class="control-label" value={{disablingConditions}}>{{getText 'disablingcondition' disablingConditions}} </label>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">Residence Prior to Project Entry:</label>
-							<div class="col-lg-8">
-								<label class="control-label" value={{residencePrior}}>{{getText 'otherresidenceprior' residencePrior}}</label>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">Project Entry Date:</label>
-							<div class="col-lg-8">
-								<label class="control-label" value={{entryDate}}>{{entryDate}} </label>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">Project Exit Date:</label>
-							<div class="col-lg-8">
-								<label class="control-label" value={{exitDate}}>{{exitDate}} </label>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">Destination:</label>
-							<div class="col-lg-8">
-								<label class="control-label" value={{destination}}>{{destination}} </label>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">Personal ID:</label>
-							<div class="col-lg-8">
-								<label class="control-label clientID" value={{personalId}}>{{personalId}} </label>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">Household ID:</label>
-							<div class="col-lg-8">
-								<label class="control-label" value={{householdId}}>{{householdId}} </label>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">Relationship to Head to Household:</label>
-							<div class="col-lg-8">
-								<label class="control-label reltohoh" value={{relationship}}>{{getText 'relationshiptohoh' relationship}} </label>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">Client Location:</label>
-							<div class="col-lg-8">
-								<label class="control-label" value={{location}}>{{location}} </label>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">Time on Streets Emergency Shelter or Safe Haven:</label>
-							<div class="col-lg-8">
-								<label class="control-label" value={{shelter}}>{{getText 'entryfromstreetessh' shelter}} </label>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<div class="col-md-8">
-								<input class="btn btn-default back" value="Back" type="button">
-                  <input class="btn btn-success takeSurvey" value="Survey" type="button">
-								{{#unless personalId}}
-									<input class="btn btn-success add-to-hmis" value="Add to HMIS" type="button">
-									<input class="btn btn-warning edit" value="Edit" type="button">
-								{{/unless}}
-							</div>
-						</div>
-
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	{{> footer}}
+    {{> footer}}
 
 </template>
