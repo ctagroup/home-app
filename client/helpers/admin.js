@@ -148,14 +148,6 @@ Template.questionForm.helpers(
   }
 );
 
-Template.surveyRow.helpers(
-  {
-    editSurveyPath(id) {
-      return Router.path(`adminDashboard${Session.get('admin_collection_name')}Edit`, { _id: id });
-    },
-  }
-);
-
 Template.sortableItemTarget.helpers(
   {
     notQuestion(type) {
