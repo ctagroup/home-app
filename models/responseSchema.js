@@ -25,10 +25,15 @@ Schemas.responses = new SimpleSchema(
       type: Date,
       label: 'Timestamp',
       autoValue() {
+        let returnstatus;
         if (this.isInsert) {
-          return new Date();
+          returnstatus = new Date();
+        } else if (this.isUpsert) {
+          returnstatus = { $setOnInsert: new Date() };
+        } else {
+          this.unset();  // Prevent user from supplying their own value
         }
-        return null;
+        return returnstatus;
       },
     },
     'section.$': {

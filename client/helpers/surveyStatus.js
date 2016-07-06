@@ -33,13 +33,35 @@ Template.surveyStatusRow.helpers(
       const userCollection = adminCollectionObject('users');
       const user = userCollection.findOne({ _id: userID });
 
-      let val = '';
-
-      if (user && user.emails && user.emails[0].address) {
-        val = user.emails[0].address;
+      if (user && user.services && user.services.HMIS && user.services.HMIS.name) {
+        return user.services.HMIS.name.trim();
       }
 
-      return val;
+      if (user && user.services && user.services.HMIS
+          && user.services.HMIS.firstName && user.services.HMIS.lastName) {
+        return (
+          `${user.services.HMIS.firstName.trim()} ${user.services.HMIS.lastName.trim()}`
+        ).trim();
+      }
+
+      if (user && user.emails && user.emails[0].address) {
+        return user.emails[0].address;
+      }
+
+      return '';
+    },
+    surveyRoute() {
+      const responseID = this._id;
+      const responseCollection = adminCollectionObject('responses');
+      const responseRecord = responseCollection.findOne({ _id: responseID });
+
+      let url = '#';
+
+      if (responseRecord) {
+        url = Router.path('LogSurveyView', { _id: responseRecord._id });
+      }
+
+      return url;
     },
   }
 );

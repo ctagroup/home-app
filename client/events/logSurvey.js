@@ -257,8 +257,8 @@ function savePausedSurvey(status, tmpl) {
                 answer = $(`input:radio[name=${question._id}]:checked`).val();
               } else if (question.dataType === 'Multiple Select') {
                 $(`input:checkbox[name=${question._id}]:checked`).each(
-                  () => {
-                    answer += `${$(this).val()}|`;
+                  (k, item) => {
+                    answer += `${$(item).val()}|`;
                   }
                 );
                 answer = answer.substr(0, answer.length - 1);
