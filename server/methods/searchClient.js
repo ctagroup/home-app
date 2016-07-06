@@ -16,9 +16,9 @@ Meteor.methods(
         optionz.limit = 50;
       }
 
-      const hmisClients = HMISAPI.searchClient(query, optionz.limit);
+      let hmisClients = HMISAPI.searchClient(query, optionz.limit);
 
-      logger.info(hmisClients);
+      hmisClients = hmisClients.filter((client) => client.link);
 
       const localClients = clientInfo.aggregate(
         [

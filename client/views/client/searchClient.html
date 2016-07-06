@@ -19,6 +19,8 @@
                         <input type="text" id="search-client-keyword"
                                class="form-control typeahead input-lg" data-source="searchClient"
                                data-select="clientSelected" data-highlight="true"
+                               data-template="clientTypeheadTemplate"
+                               data-limit="20"
                                autocomplete="off" spellcheck="off" />
                     </div>
                     <div class="col-xs-1 client-search-icon-container">
@@ -57,4 +59,13 @@
 		{{> footer}}
 
 	</div>
+</template>
+
+<template name="clientTypeheadTemplate">
+    <div>
+        {{value}}
+        {{#if isHMISClient}}
+            <span class="text-muted">(HMIS)</span>
+        {{/if}}
+    </div>
 </template>

@@ -34,7 +34,7 @@ Template.searchClient.helpers(
       } else {
         const query = {};
         if (dataObject.isHMISClient) {
-          query.query = 'isHMISClient=true';
+          query.query = `isHMISClient=true&link=${encodeURIComponent(dataObject.link)}`;
         }
         Router.go('viewClient', { _id: dataObject._id }, query);
       }
