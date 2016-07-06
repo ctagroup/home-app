@@ -345,7 +345,6 @@ Template.LogSurveyView.helpers(
         const surveyElements = surveyQuestionsMasterCollection.find(
           { surveyID: surveyid }, { sort: { order: 1 } }
         ).fetch();
-        console.log(surveyElements);
         quesContents = surveyContents(surveyElements, surveyid);
       }
       return quesContents;
@@ -367,13 +366,15 @@ Template.LogSurveyView.helpers(
 
       let flag = false;
 
-      const status = responseRecord.responsestatus;
-      if (status === 'Completed') {
-        $('.savePaused_survey').hide();
-        $('.pausePaused_survey').hide();
-        $('.cancelPaused_survey').hide();
-        $('#pauseSurvey').hide();
-        flag = true;
+      if (responseRecord && responseRecord.responsestatus) {
+        const status = responseRecord.responsestatus;
+        if (status === 'Completed') {
+          $('.savePaused_survey').hide();
+          $('.pausePaused_survey').hide();
+          $('.cancelPaused_survey').hide();
+          $('#pauseSurvey').hide();
+          flag = true;
+        }
       }
       return flag;
     },
