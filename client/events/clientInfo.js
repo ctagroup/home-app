@@ -115,11 +115,10 @@ Template.editClient.events(
         shelter,
         (error, result) => {
           if (error) {
-            // console.log(error);
+            logger.log(error);
           } else {
-            const clientInfoId = result;
-            // console.log(result);
-            Router.go('viewClient', { _id: clientInfoId });
+            logger.log(result);
+            Router.go('viewClient', { _id: tmpl.data._id });
           }
         }
       );
