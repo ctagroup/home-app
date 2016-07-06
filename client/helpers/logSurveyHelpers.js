@@ -1,23 +1,25 @@
 /**
  * Created by Anush-PC on 5/13/2016.
  */
-function getAge(dob) {
-  const date = new Date(dob);
-  const ageDifMs = Date.now() - date.getTime();
-  const ageDate = new Date(ageDifMs); // miliseconds from epoch
-  return (Math.abs(ageDate.getUTCFullYear() - 1970));
-}
-function isHoH(reltohoh) {
-  let status;
-  if (reltohoh === '1') {
-    status = true;
-  } else {
-    status = false;
-  }
-  return status;
-}
+// function getAge(dob) {
+//   const date = new Date(dob);
+//   const ageDifMs = Date.now() - date.getTime();
+//   const ageDate = new Date(ageDifMs); // miliseconds from epoch
+//   return (Math.abs(ageDate.getUTCFullYear() - 1970));
+// }
+// function isHoH(reltohoh) {
+//   let status;
+//   if (reltohoh === '1') {
+//     status = true;
+//   } else {
+//     status = false;
+//   }
+//   return status;
+// }
 
 function getAudience() {
+  return 'everyone';
+  /*
   const data = Router.current().data();
   const client = data.client;
 
@@ -42,6 +44,7 @@ function getAudience() {
     }
   }
   return audience;
+  */
 }
 
 function isSkipped(sectionID) {
@@ -331,22 +334,32 @@ Template.LogSurveyView.helpers(
     },
     surveyQuesContents() {
       const responseCollection = adminCollectionObject('responses');
-      const responseRecord = responseCollection.findOne({ _id: Router.current().params.survey_id });
+      const responseRecord = responseCollection.findOne({ _id: Router.current().params._id });
 
-      const surveyid = responseRecord.surveyID;
+      let quesContents = [];
 
-      const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
-      const surveyElements = surveyQuestionsMasterCollection.find(
-        { surveyID: surveyid }, { sort: { order: 1 } }
-      ).fetch();
-      return surveyContents(surveyElements, surveyid);
+      if (responseRecord && responseRecord.surveyID) {
+        const surveyid = responseRecord.surveyID;
+
+        const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
+        const surveyElements = surveyQuestionsMasterCollection.find(
+          { surveyID: surveyid }, { sort: { order: 1 } }
+        ).fetch();
+        console.log(surveyElements);
+        quesContents = surveyContents(surveyElements, surveyid);
+      }
+      return quesContents;
     },
     surveyTitle(surveyID) {
       const surveyCollection = adminCollectionObject('surveys');
       const survey = surveyCollection.findOne({ _id: surveyID });
 
-      // surveyId = survey._id;
-      return survey.title;
+      let title = '';
+      if (survey && survey.title) {
+        title = survey.title;
+      }
+
+      return title;
     },
     surveyCompleted() {
       const responseCollection = adminCollectionObject('responses');
@@ -368,16 +381,17 @@ Template.LogSurveyView.helpers(
       const responseCollection = adminCollectionObject('responses');
       const responseRecord = responseCollection.findOne({ _id: Router.current().params._id });
 
-      const status = responseRecord.responsestatus;
-
       let flag = false;
 
-      if (status === 'Paused') {
-        $('.savePaused_survey').show();
-        $('.pausePaused_survey').show();
-        $('.cancelPaused_survey').show();
-        $('#pauseSurvey').show();
-        flag = true;
+      if (responseRecord && responseRecord.responsestatus) {
+        const status = responseRecord.responsestatus;
+        if (status === 'Paused') {
+          $('.savePaused_survey').show();
+          $('.pausePaused_survey').show();
+          $('.cancelPaused_survey').show();
+          $('#pauseSurvey').show();
+          flag = true;
+        }
       }
       return flag;
     },
