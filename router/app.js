@@ -216,7 +216,7 @@ Router.onBeforeAction(
 
     this.next();
   }, {
-    only: ['viewClient', 'editClient'],
+    only: ['viewClient', 'editClient', 'LogSurvey', 'LogSurveyResponse'],
   }
 );
 Router.route(
@@ -233,22 +233,33 @@ Router.route(
 );
 
 Router.route(
-  '/app/LogSurvey/', {
+  '/app/clients/:_id/logSurvey', {
     name: 'LogSurvey',
     template: 'LogSurvey',
     controller: 'HomeAppController',
   }
 );
 Router.route(
-  '/app/LogSurvey/:_id', {
+  '/app/clients/:_id/logsurvey/:survey_id', {
     name: 'LogSurveyResponse',
     template: 'LogSurveyResponse',
     controller: 'HomeAppController',
     data() {
-      const surveyID = this.params._id;
-      logger.log(`suvey ${surveyID}`);
+      let client = '';
+      if (this.params.query && this.params.query.isHMISClient) {
+        client = Session.get('currentHMISClient') || false;
+      } else {
+        const clientInfoID = this.params._id;
+        const clientInfoCollection = adminCollectionObject('clientInfo');
+        client = clientInfoCollection.findOne({ _id: clientInfoID });
+      }
+
+      const surveyID = this.params.survey_id;
+      logger.log(`survey ${surveyID}`);
       const surveysCollection = adminCollectionObject('surveys');
-      return surveysCollection.findOne({ _id: surveyID });
+      const survey = surveysCollection.findOne({ _id: surveyID });
+
+      return { client, survey };
     },
   }
 );

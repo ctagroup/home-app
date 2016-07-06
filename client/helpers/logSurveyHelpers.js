@@ -1,6 +1,48 @@
 /**
  * Created by Anush-PC on 5/13/2016.
  */
+function getAge(dob) {
+  const date = new Date(dob);
+  const ageDifMs = Date.now() - date.getTime();
+  const ageDate = new Date(ageDifMs); // miliseconds from epoch
+  return (Math.abs(ageDate.getUTCFullYear() - 1970));
+}
+function isHoH(reltohoh) {
+  let status;
+  if (reltohoh === '1') {
+    status = true;
+  } else {
+    status = false;
+  }
+  return status;
+}
+
+function getAudience() {
+  const data = Router.current().data();
+  const client = data.client;
+
+  let age;
+  let isHead;
+  let audience;
+  if (client.dob !== '') { age = getAge(parseInt(client.dob, 10)); }
+  if (client.relationship !== '') { isHead = isHoH(client.relationship); }
+  if (isHead) {
+    if (age >= 18) {
+      audience = 'bothadultsandhoh';
+    } else {
+      audience = 'hoh';
+    }
+  } else {
+    if (age >= 18) {
+      audience = 'adult';
+    } else if (age < 18) {
+      audience = 'child';
+    } else {
+      audience = 'everyone';
+    }
+  }
+  return audience;
+}
 
 function isSkipped(sectionID) {
   let status = false;
@@ -18,10 +60,12 @@ function isSkipped(sectionID) {
   return status;
 }
 function chkAudience(content) {
-  const questionCollection = adminCollectionObject('questions');
-  const question = questionCollection.findOne({ _id: content });
+  // const questionCollection = adminCollectionObject('questions');
+  // const question = questionCollection.findOne({ _id: content });
 
-  return Router.current().params.query.audience === question.audience;
+  // return getAudience() === question.audience;
+  // TODO : Fix Audience
+  return true;
 }
 function checkSectionAudience(sid, status) {
   const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
@@ -30,7 +74,7 @@ function checkSectionAudience(sid, status) {
   if (status === null) {
     surveyElements = surveyQuestionsMasterCollection.find(
       {
-        surveyID: Router.current().params._id,
+        surveyID: Router.current().params.survey_id,
         sectionID: sid,
         contentType: 'question',
       }
@@ -49,12 +93,14 @@ function checkSectionAudience(sid, status) {
   for (let i = 0; i < surveyElements.length; i++) {
     const question = questionCollection.find({ _id: surveyElements[i].content }).fetch();
     for (let j = 0; j < question.length; j++) {
-      if (question[j].audience === Router.current().params.query.audience) {
+      if (question[j].audience === getAudience()) {
         count ++;
       }
     }
   }
-  return count > 0;
+  // TODO : Fix Audience
+  // return count > 0;
+  return true;
 }
 function surveyContents(surveyElements, status) {
   const sectionID = [];
@@ -98,15 +144,28 @@ Template.LogSurveyResponse.helpers(
     surveyQuesContents() {
       const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
       const surveyElements = surveyQuestionsMasterCollection.find(
-        { surveyID: Router.current().params._id },
+        { surveyID: Router.current().params.survey_id },
         { sort: { order: 1 } }
       ).fetch();
       return surveyContents(surveyElements, null);
     },
     clientName() {
-      // const clientCollections = adminCollectionObject('clientInfo');
-      const name = Router.current().params.query.name;
-      // const client = clientCollections.findOne({ _id: id });
+      const clientID = Router.current().params._id;
+
+      let client = false;
+
+      if (Router.current().params && Router.current().params.query
+          && Router.current().params.query.isHMISClient && Router.current().params.query.link) {
+        client = Session.get('currentHMISClient') || false;
+      } else {
+        const clientCollections = adminCollectionObject('clientInfo');
+        client = clientCollections.findOne({ _id: clientID });
+      }
+
+      const fn = (client && client.firstName) ? client.firstName.trim() : '';
+      const mn = (client && client.middleName) ? client.middleName.trim() : '';
+      const ln = (client && client.lastName) ? client.lastName.trim() : '';
+      const name = `${fn} ${mn} ${ln}`;
       return name;
     },
     displaySection(contentType) {
@@ -230,7 +289,7 @@ Template.LogSurveyResponse.helpers(
 
       const responseCollection = adminCollectionObject('responses');
       const responseRecords = responseCollection.find(
-        { surveyID: Router.current().params._id }
+        { surveyID: Router.current().params.survey_id }
       ).fetch();
       for (let i = 0; i < responseRecords.length; i++) {
         const sectionz = responseRecords[i].section;
@@ -272,7 +331,7 @@ Template.LogSurveyView.helpers(
     },
     surveyQuesContents() {
       const responseCollection = adminCollectionObject('responses');
-      const responseRecord = responseCollection.findOne({ _id: Router.current().params._id });
+      const responseRecord = responseCollection.findOne({ _id: Router.current().params.survey_id });
 
       const surveyid = responseRecord.surveyID;
 
