@@ -279,7 +279,7 @@ Router.route(
  * Survey status Routes
  */
 Router.route(
-  '/app/surveyStatus/', {
+  '/app/surveys/', {
     name: 'surveyStatus',
     template: 'surveyStatus',
     controller: 'HomeAppController',
