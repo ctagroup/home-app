@@ -6,23 +6,76 @@ Template.LogSurvey.events(
     'click .nextLogSurvey': (evt, tmpl) => {
       const surveyID = tmpl.find('.surveyList').value;
       const clientID = Router.current().params._id;
+
+      const query = {};
+
+      if (Router.current().params && Router.current().params.query
+          && Router.current().params.query.isHMISClient && Router.current().params.query.link) {
+        const url = encodeURIComponent(Router.current().params.query.link);
+        query.query = {
+          isHMISClient: true,
+          link: url,
+        };
+        // query.query = `isHMISClient=true&link=${url}`;
+      }
+
       Router.go(
-        'LogSurveyResponse', { _id: surveyID }, {
-          query: {
-            clientID,
-            audience: Router.current().params.query.audience,
-            name: Router.current().params.query.name,
-          },
-        }
+        'LogSurveyResponse', { _id: clientID, survey_id: surveyID }, query
       );
     },
   }
 );
 let responseId;
 
+function getAge(dob) {
+  const date = new Date(dob);
+  const ageDifMs = Date.now() - date.getTime();
+  const ageDate = new Date(ageDifMs); // miliseconds from epoch
+  return (Math.abs(ageDate.getUTCFullYear() - 1970));
+}
+
+function isHoH(reltohoh) {
+  let status;
+  if (reltohoh === '1') {
+    status = true;
+  } else {
+    status = false;
+  }
+  return status;
+}
+
+function getAudience() {
+  const data = Router.current().data();
+  const client = data.client;
+
+  let age;
+  let isHead;
+  let audience;
+  if (client.dob !== '') { age = getAge(parseInt(client.dob, 10)); }
+  if (client.relationship !== '') { isHead = isHoH(client.relationship); }
+  if (isHead) {
+    if (age >= 18) {
+      audience = 'bothadultsandhoh';
+    } else {
+      audience = 'hoh';
+    }
+  } else {
+    if (age >= 18) {
+      audience = 'adult';
+    } else if (age < 18) {
+      audience = 'child';
+    } else {
+      audience = 'everyone';
+    }
+  }
+  return audience;
+}
+
 function getQuestionName(getQuesName) {
   const questionCollection = adminCollectionObject('questions');
-  const questions = questionCollection.findOne({ _id: getQuesName }, { name: 1, _id: 0 }).fetch();
+  const questions = questionCollection.findOne(
+    { _id: getQuesName }, { name: 1, _id: 0 }
+  ).fetch();
   let name = '';
   for (let k = 0; k < questions.length; k ++) {
     name = questions[k];
@@ -46,7 +99,9 @@ function checkAudience(qid) {
 
 function saveSurvey(status, tmpl) {
   const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
-  const surveyDocument = surveyQuestionsMasterCollection.find({ surveyID: tmpl.data._id }).fetch();
+  const surveyDocument = surveyQuestionsMasterCollection.find(
+    { surveyID: tmpl.data.survey_id }
+  ).fetch();
   const mainSectionObject = [];
   for (let i = 0; i < surveyDocument.length; i ++) {
     const type = surveyDocument[i].contentType;
@@ -116,11 +171,13 @@ function saveSurvey(status, tmpl) {
     }
   }
   if (status === 'Submit') {
+    const data = Router.current().data();
+    const client = data.client;
     Meteor.call(
       'addSurveyResponse',
-      tmpl.data._id,
-      Router.current().params.query.clientID,
-      Router.current().params.query.audience,
+      tmpl.data.survey_id,
+      client._id,
+      getAudience(),
       Meteor.userId(),
       mainSectionObject,
       'Completed',
@@ -134,11 +191,13 @@ function saveSurvey(status, tmpl) {
     );
     alert('Survey Saved!');
   } else if (status === 'Paused') {
+    const data = Router.current().data();
+    const client = data.client;
     Meteor.call(
       'addSurveyResponse',
       tmpl.data._id,
-      Router.current().params.query.clientID,
-      Router.current().params.query.audience,
+      client._id,
+      getAudience(),
       Meteor.userId(),
       mainSectionObject,
       'Paused',

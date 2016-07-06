@@ -1,21 +1,6 @@
 /**
  * Created by Kavi on 4/5/16.
  */
-function getAge(dob) {
-  const date = new Date(dob);
-  const ageDifMs = Date.now() - date.getTime();
-  const ageDate = new Date(ageDifMs); // miliseconds from epoch
-  return (Math.abs(ageDate.getUTCFullYear() - 1970));
-}
-function isHoH(reltohoh) {
-  let status;
-  if (reltohoh === '1') {
-    status = true;
-  } else {
-    status = false;
-  }
-  return status;
-}
 
 Template.createClient.events(
   {
@@ -68,7 +53,7 @@ Template.viewClient.events(
     'click .back'() {
       Router.go('searchClient');
     },
-    'click .add-to-hmis'(tmpl) {
+    'click .add-to-hmis'(event, tmpl) {
       Meteor.call(
         'addClientToHMIS', tmpl.data._id, (error, result) => {
           if (error) {
@@ -82,41 +67,20 @@ Template.viewClient.events(
         }
       );
     },
-    'click .takeSurvey'() {
-      let age;
-      let isHead;
-      let audience;
-      let name;
-      if ($('.dob').text() !== '') { age = getAge(parseInt($('.dob').text(), 10)); }
-      if ($('.reltohoh').text() !== '') { isHead = isHoH($('.reltohoh').text()); }
-      if (isHead) {
-        if (age >= 18) {
-          audience = 'bothadultsandhoh';
-        } else {
-          audience = 'hoh';
-        }
-      } else {
-        if (age >= 18) {
-          audience = 'adult';
-        } else if (age < 18) {
-          audience = 'child';
-        } else {
-          audience = 'everyone';
-        }
+    'click .takeSurvey'(event, tmpl) {
+      const query = {};
+
+      if (Router.current().params && Router.current().params.query
+        && Router.current().params.query.isHMISClient && Router.current().params.query.link) {
+        const url = encodeURIComponent(Router.current().params.query.link);
+        query.query = {
+          isHMISClient: true,
+          link: url,
+        };
+        // `isHMISClient=true&link=${url}`
       }
-      if ($('.fName').text() !== '') {
-        name = $('.fName').text().trim();
-        name += ' ';
-      }
-      if ($('.mName').text() !== '') {
-        name += $('.mName').text().trim();
-        name += ' ';
-      }
-      if ($('.lName').text() !== '') {
-        name += $('.lName').text().trim();
-      }
-      Router.go('LogSurvey', { _id: $('.clientID').text() }, {
-        query: { audience, name } });
+
+      Router.go('LogSurvey', { _id: tmpl.data._id }, query);
     },
   }
 );
