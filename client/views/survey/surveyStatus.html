@@ -35,6 +35,16 @@
         <td><a href="{{surveyRoute}}">{{surveyName surveyID}}</a></td>
         <td>{{clientName clientID}}</td>
         <td>{{userName userID}}</td>
-        <td>{{responsestatus}}</td>
+        <td>
+            {{#if $eq responsestatus 'Completed'}}
+                <span class="text-warning"><i class="fa fa-exclamation"></i> Completed but not yet submitted</span>
+            {{/if}}
+            {{#if $eq responsestatus 'Paused'}}
+                <span class="text-muted"><i class="fa fa-pause"></i> Paused</span>
+            {{/if}}
+            {{#if $eq responsestatus 'Submitted'}}
+                <span class="text-success"><i class="fa fa-pause"></i> Submitted</span>
+            {{/if}}
+        </td>
     </tr>
 </template>

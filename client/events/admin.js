@@ -1017,7 +1017,7 @@ Template.previewSurvey.events(
     'change .singleSelect'(evt, tmpl) {
       const element = tmpl.find('input:radio[name=singleSelect]:checked');
       const optionValue = $(element).val();
-      logger.log('value: ${optionValue}');
+      logger.log(`value: ${optionValue}`);
 
       if (optionValue === 'others' || optionValue === 'Others') {
         logger.log('Others, please specify');
@@ -1029,7 +1029,7 @@ Template.previewSurvey.events(
     'change .multipleSelect'(evt, tmpl) {
       const element = tmpl.find('input:checkbox[name=multipleSelect]:checked');
       const optionValue = $(element).val();
-      logger.log('value: ${optionValue} ');
+      logger.log(`value: ${optionValue} `);
 
       if (optionValue === 'others' || optionValue === 'Others') {
         logger.log('Others, please specify');
