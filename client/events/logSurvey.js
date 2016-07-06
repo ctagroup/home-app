@@ -74,33 +74,31 @@ function getAudience() {
 function getQuestionName(getQuesName) {
   const questionCollection = adminCollectionObject('questions');
   const questions = questionCollection.findOne(
-    { _id: getQuesName }, { name: 1, _id: 0 }
-  ).fetch();
-  let name = '';
-  for (let k = 0; k < questions.length; k ++) {
-    name = questions[k];
-    break;
-  }
-  return name;
+    { _id: getQuesName }
+  );
+
+  return questions;
 }
 function checkAudience(qid) {
   const questionCollection = adminCollectionObject('questions');
   const questions = questionCollection.find({ _id: qid }, { audience: 1, _id: 0 }).fetch();
 
-  let flag = false;
+  // let flag = false;
 
   for (let k = 0; k < questions.length; k ++) {
-    flag = questions[k].audience === Router.current().params.query.audience;
+    // flag = questions[k].audience === Router.current().params.query.audience;
     break;
   }
 
-  return flag;
+  // Todo: Fix Audience
+//  return flag;
+  return true;
 }
 
 function saveSurvey(status, tmpl) {
   const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
   const surveyDocument = surveyQuestionsMasterCollection.find(
-    { surveyID: tmpl.data.survey_id }
+    { surveyID: tmpl.data.survey._id }
   ).fetch();
   const mainSectionObject = [];
   for (let i = 0; i < surveyDocument.length; i ++) {
@@ -129,8 +127,8 @@ function saveSurvey(status, tmpl) {
                 answer = $(`input:radio[name=${question._id}]:checked`).val();
               } else if (question.dataType === 'Multiple Select') {
                 $(`input:checkbox[name=${question._id}]:checked`).each(
-                  () => {
-                    answer += `${$(this).val()}|`;
+                  (k, item) => {
+                    answer += `${$(item).val()}|`;
                   }
                 );
                 answer = answer.substr(0, answer.length - 1);
@@ -175,13 +173,14 @@ function saveSurvey(status, tmpl) {
     const client = data.client;
     Meteor.call(
       'addSurveyResponse',
-      tmpl.data.survey_id,
+      tmpl.data.survey._id,
       client._id,
       getAudience(),
       Meteor.userId(),
       mainSectionObject,
       'Completed',
       (error, result) => {
+        logger.log('Survey Saved completed!');
         if (error) {
           logger.log(error);
         } else {
@@ -195,13 +194,14 @@ function saveSurvey(status, tmpl) {
     const client = data.client;
     Meteor.call(
       'addSurveyResponse',
-      tmpl.data._id,
+      tmpl.data.survey._id,
       client._id,
       getAudience(),
       Meteor.userId(),
       mainSectionObject,
       'Paused',
       (error, result) => {
+        logger.log('Survey Paused completed!');
         if (error) {
           logger.log(error);
         } else {

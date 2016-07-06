@@ -59,7 +59,7 @@ function isSkipped(sectionID) {
 
   return status;
 }
-function chkAudience(content) {
+function chkAudience(/* content */) {
   // const questionCollection = adminCollectionObject('questions');
   // const question = questionCollection.findOne({ _id: content });
 
