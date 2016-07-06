@@ -4,8 +4,8 @@
 
 Meteor.methods(
   {
-    getHMISClient(clientId) {
-      const client = HMISAPI.getClient(clientId);
+    getHMISClient(apiUrl) {
+      const client = HMISAPI.getClientFromUrl(apiUrl);
       return client;
     },
   }

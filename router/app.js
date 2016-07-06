@@ -153,9 +153,9 @@ Router.onBeforeAction(
     let recentClients = Session.get('recentClients') || [];
     const that = this;
 
-    if (this.params.query && this.params.query.isHMISClient) {
+    if (this.params.query && this.params.query.isHMISClient && this.params.query.link) {
       Meteor.call(
-        'getHMISClient', this.params._id, (err, res) => {
+        'getHMISClient', this.params.query.link, (err, res) => {
           const rez = res;
           if (err) {
             logger.log(err);
@@ -176,7 +176,10 @@ Router.onBeforeAction(
               const data = {
                 _id: that.params._id,
                 name: `${rez.firstName.trim()} ${rez.lastName.trim()}`,
-                url: route.path({ _id: that.params._id }, { query: 'isHMISClient=true' }),
+                url: route.path(
+                  { _id: that.params._id },
+                  { query: `isHMISClient=true&link=${encodeURIComponent(this.params.query.link)}` }
+                ),
               };
               recentClients.push(data);
               recentClients = $.unique(recentClients);

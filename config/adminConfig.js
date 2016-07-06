@@ -481,6 +481,7 @@ AdminConfig = {
     },
   },
   hmisAPIEndpoints: {
+    apiBaseUrl: 'https://www.hmislynk.com',
     oauthBaseUrl: 'https://www.hmislynk.com/hmis-authorization-service/rest',
     authorize: '/authorize/',
     token: '/token/',
@@ -491,5 +492,7 @@ AdminConfig = {
     basicInfo: '/accounts/{{username}}/basicinfo',
     selfBasicInfo: '/accounts/self/basicinfo',
     searchClient: '/search/client',
+    v2015: '/v2015',
+    v2014: '',
   },
 };
