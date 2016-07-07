@@ -244,10 +244,12 @@ Template.previewSurvey.helpers(
           { sort: { order: 1 } }
         ).fetch()
       );
-      return surveyQuestionsMasterCollection.find(
+      const questions = surveyQuestionsMasterCollection.find(
         { surveyID: Router.current().params._id },
         { sort: { order: 1 } }
       ).fetch();
+
+      return questions || [];
     },
     displaySection(contentType) {
       return contentType === 'section';
