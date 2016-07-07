@@ -46,3 +46,6 @@ oauth
 meteorhacks:aggregate
 momentjs:moment
 okgrow:router-autoscroll
+mdg:camera
+mdg:reload-on-resume
+mdg:geolocation
