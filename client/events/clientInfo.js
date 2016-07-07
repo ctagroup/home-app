@@ -6,7 +6,8 @@ Template.clientForm.events(
   {
     'click #js-take-photo'(event) {
       event.preventDefault();
-      MeteorCamera.getPicture([], (error, data) => {
+      logger.log('clicked picture button');
+      MeteorCamera.getPicture({}, (error, data) => {
         if (error) {
           logger.log(error);
         } else {
