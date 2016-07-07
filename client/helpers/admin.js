@@ -292,31 +292,61 @@ Template.previewSurvey.helpers(
       const questionCollection = adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
 
-      return question.dataType === 'Textbox(Integer)';
+      let dataType = '';
+
+      if (question && question.dataType) {
+        dataType = question.dataType;
+      }
+
+      return dataType === 'Textbox(Integer)';
     },
     booleanTF(contentQuesId) {
       const questionCollection = adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
 
-      return question.dataType === 'Boolean';
+      let dataType = '';
+
+      if (question && question.dataType) {
+        dataType = question.dataType;
+      }
+
+      return dataType === 'Boolean';
     },
     singleSelect(contentQuesId) {
       const questionCollection = adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
 
-      return question.dataType === 'Single Select';
+      let dataType = '';
+
+      if (question && question.dataType) {
+        dataType = question.dataType;
+      }
+
+      return dataType === 'Single Select';
     },
     singleOptions(contentQuesId) {
       const questionCollection = adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
 
-      return question.options;
+      let options = [];
+
+      if (question && question.options) {
+        options = question.options;
+      }
+
+      return options;
     },
     multipleSelect(contentQuesId) {
       const questionCollection = adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
 
-      return question.dataType === 'Multiple Select';
+      let dataType = '';
+
+      if (question && question.dataType) {
+        dataType = question.dataType;
+      }
+
+      return dataType === 'Multiple Select';
     },
   }
 );
