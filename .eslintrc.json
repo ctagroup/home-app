@@ -40,7 +40,8 @@
     "SimpleSchema": true,
     "Gravatar": true,
     "messages": true,
-    "AdminTables": true
+    "AdminTables": true,
+    "MeteorCamera": true
   },
   "rules": {
     "no-underscore-dangle": [

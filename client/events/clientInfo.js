@@ -2,6 +2,22 @@
  * Created by Kavi on 4/5/16.
  */
 
+Template.clientForm.events(
+  {
+    'click #js-take-photo'(event) {
+      event.preventDefault();
+      MeteorCamera.getPicture([], (error, data) => {
+        if (error) {
+          logger.log(error);
+        } else {
+          $('#client-photo-img').attr('src', data);
+          $('#client-photo-value').val(data);
+        }
+      });
+    },
+  }
+);
+
 Template.createClient.events(
   {
     'click .save'(evt, tmpl) {
@@ -9,6 +25,7 @@ Template.createClient.events(
       const middleName = tmpl.find('.middleName').value;
       const lastName = tmpl.find('.lastName').value;
       const suffix = tmpl.find('.suffix').value;
+      const photo = tmpl.find('.photo').value;
       const ssn = tmpl.find('.ssn').value;
       const dob = tmpl.find('.dob').value;
       const race = tmpl.find('.race_category').value;
@@ -25,7 +42,7 @@ Template.createClient.events(
       const loc = tmpl.find('.loc').value;
       const shelter = tmpl.find('.timeOnStreets_category').value;
       Meteor.call(
-        'addClient', firstName, middleName, lastName, suffix, ssn,
+        'addClient', firstName, middleName, lastName, suffix, photo, ssn,
         dob, race, ethnicity, gender, veteranStatus, disablingConditions, residencePrior, entryDate,
         exitDate, destination, householdId, relationship, loc, shelter, (error, result) => {
           if (error) {
@@ -92,6 +109,7 @@ Template.editClient.events(
       const middleName = tmpl.find('.middleName').value;
       const lastName = tmpl.find('.lastName').value;
       const suffix = tmpl.find('.suffix').value;
+      const photo = tmpl.find('.photo').value;
       const ssn = tmpl.find('.ssn').value;
       const dob = tmpl.find('.dob').value;
       const race = tmpl.find('.race_category').value;
@@ -109,7 +127,7 @@ Template.editClient.events(
       const shelter = tmpl.find('.timeOnStreets_category').value;
       Meteor.call(
         'updateClient', tmpl.data._id, firstName, middleName, lastName,
-        suffix, ssn, dob, race, ethnicity, gender, veteranStatus,
+        suffix, photo, ssn, dob, race, ethnicity, gender, veteranStatus,
         disablingConditions, residencePrior, entryDate, exitDate, destination,
         householdId, relationship, loc,
         shelter,

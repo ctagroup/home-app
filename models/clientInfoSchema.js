@@ -18,6 +18,10 @@ Schemas.clientInfo = new SimpleSchema(
     suffix: {
       type: String,
     },
+    photo: {
+      type: String,
+      optional: true,
+    },
     ssn: {
       type: String,
     },
