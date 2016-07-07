@@ -268,13 +268,25 @@ Template.previewSurvey.helpers(
       const questionCollection = adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
 
-      return question.question;
+      let label = '';
+
+      if (question && question.question) {
+        label = '';
+      }
+
+      return label;
     },
     textboxString(contentQuesId) {
       const questionCollection = adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
 
-      return question.dataType === 'Textbox(String)';
+      let dataType = '';
+
+      if (question && question.dataType) {
+        dataType = question.dataType;
+      }
+
+      return dataType === 'Textbox(String)';
     },
     textboxNumber(contentQuesId) {
       const questionCollection = adminCollectionObject('questions');
