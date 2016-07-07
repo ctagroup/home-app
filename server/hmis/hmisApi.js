@@ -260,6 +260,7 @@ HMISAPI = {
 
       const clientsReponse = response.searchResults.items;
       for (let i = 0; i < clientsReponse.length; i++) {
+        logger.info(clientsReponse[i]);
         clients.push(clientsReponse[i]);
       }
 
