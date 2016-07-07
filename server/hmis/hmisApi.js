@@ -244,7 +244,7 @@ HMISAPI = {
     const urlPah = `${baseUrl}${searchClientPath}`;
     const url = `${urlPah}?${querystring.stringify(params)}`;
 
-    logger.log(url);
+    logger.info(url);
 
     try {
       const clients = [];
