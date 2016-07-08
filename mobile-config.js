@@ -32,7 +32,11 @@ App.icons({
   android_xxxhdpi: 'public/imgs/logo.png', // (192x192)
 });
 
-App.accessRule('https://*gravatar.com/*', { type: 'network' });
-App.accessRule('https://*loremflickr.com/*', { type: 'network' });
-App.accessRule('http://*gravatar.com/*', { type: 'network' });
-App.accessRule('http://*loremflickr.com/*', { type: 'network' });
+App.accessRule('https://gravatar.com/*', { type: 'network' });
+App.accessRule('https://www.gravatar.com/*', { type: 'network' });
+App.accessRule('https://loremflickr.com/*', { type: 'network' });
+App.accessRule('https://www.loremflickr.com/*', { type: 'network' });
+App.accessRule('http://gravatar.com/*', { type: 'network' });
+App.accessRule('http://www.gravatar.com/*', { type: 'network' });
+App.accessRule('http://loremflickr.com/*', { type: 'network' });
+App.accessRule('http://www.loremflickr.com/*', { type: 'network' });
