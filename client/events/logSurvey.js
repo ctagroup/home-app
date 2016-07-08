@@ -132,6 +132,10 @@ function saveSurvey(status, tmpl) {
                   }
                 );
                 answer = answer.substr(0, answer.length - 1);
+              } else if (question.dataType === 'wysiwyg') {
+                if ($(`#${question._id}`).summernote('code') !== '<p><br></p>') {
+                  answer = $(`#${question._id}`).summernote('code');
+                }
               } else {
                 answer = tmpl.find(`#${question._id}`).value;
               }
@@ -262,6 +266,10 @@ function savePausedSurvey(status, tmpl) {
                   }
                 );
                 answer = answer.substr(0, answer.length - 1);
+              } else if (question.dataType === 'wysiwyg') {
+                if ($(`#${question._id}`).summernote('code') !== '<p><br></p>') {
+                  answer = $(`#${question._id}`).summernote('code');
+                }
               } else {
                 answer = tmpl.find(`#${question._id}`).value;
               }
