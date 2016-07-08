@@ -117,6 +117,7 @@ spacebars@1.0.12
 spacebars-compiler@1.0.12
 standard-minifier-css@1.0.7_1
 standard-minifier-js@1.0.7_1
+summernote:standalone@0.8.1
 templating@1.1.12_1
 templating-tools@1.0.4
 tracker@1.0.14

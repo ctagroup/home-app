@@ -290,6 +290,21 @@ Template.previewSurvey.helpers(
 
       return dataType === 'Textbox(String)';
     },
+    wysiwygEditor(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const question = questionCollection.findOne({ _id: contentQuesId });
+      let dataType = '';
+      if (question && question.dataType) {
+        dataType = question.dataType;
+      }
+      return dataType === 'wysiwyg';
+    },
+    displayEditor(contentQuesId) {
+      setTimeout(() => {
+        $(`#${contentQuesId}`).summernote();
+      }, 0);
+      return;
+    },
     textboxNumber(contentQuesId) {
       const questionCollection = adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
