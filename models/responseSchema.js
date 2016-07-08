@@ -58,11 +58,9 @@ Schemas.responses = new SimpleSchema(
     },
     'section.$.response.$.questionID': {
       type: String,
-      max: 256,
     },
     'section.$.response.$.answer': {
       type: String,
-      max: 256,
     },
 
     // author: {
