@@ -3,7 +3,6 @@
  */
 
 Tracker.autorun(() => {
-
   if (Meteor.user()) {
     const position = Geolocation.currentLocation();
 
@@ -13,13 +12,19 @@ Tracker.autorun(() => {
         lat: position.coords.latitude,
         long: position.coords.longitude,
       };
-      Meteor.call('addUserLocation', Meteor.user()._id, new Date(position.timestamp), coords, (error, result) => {
-        if (error) {
-          logger.log(error);
-        } else {
-          logger.log(result);
+      Meteor.call(
+        'addUserLocation',
+        Meteor.user()._id,
+        new Date(position.timestamp),
+        coords,
+        (error, result) => {
+          if (error) {
+            logger.log(error);
+          } else {
+            logger.log(result);
+          }
         }
-      });
+      );
     } else {
       logger.log('position not found.');
       logger.log(Geolocation.error());
