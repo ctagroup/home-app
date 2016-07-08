@@ -8,7 +8,9 @@
 
                 <div class="col-xs-12 col-sm-3 col-md-3">
                     <div class="name-container">
-                        <img class="avatar large center-block" src="{{photo}}" />
+                        {{#if photo}}
+                            <img class="avatar large center-block" src="{{photo}}" />
+                        {{/if}}
                         <form>
                             <div class="form-group">
                                 <p class="clabel">First Name</p>

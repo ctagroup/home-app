@@ -13,8 +13,16 @@ Template.clientForm.events(
         } else {
           $('#client-photo-img').attr('src', data);
           $('#client-photo-value').val(data);
+          $('#js-remove-photo').show();
         }
       });
+    },
+    'click #js-remove-photo'(event) {
+      event.preventDefault();
+      logger.log('clicked remove picture button');
+      $('#client-photo-img').attr('src', '');
+      $('#client-photo-value').val('');
+      $('#js-remove-photo').hide();
     },
   }
 );
