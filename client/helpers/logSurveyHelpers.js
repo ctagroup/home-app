@@ -52,10 +52,12 @@ function isSkipped(sectionID) {
   const responseCollection = adminCollectionObject('responses');
   const responseSection = responseCollection.findOne({ _id: Router.current().params._id });
 
-  for (let i = 0; i < responseSection.section.length; i++) {
-    if (responseSection.section[i].sectionID === sectionID) {
-      if (responseSection.section[i].skip) {
-        status = true;
+  if (responseSection && responseSection.section) {
+    for (let i = 0; i < responseSection.section.length; i++) {
+      if (responseSection.section[i].sectionID === sectionID) {
+        if (responseSection.section[i].skip) {
+          status = true;
+        }
       }
     }
   }
@@ -299,6 +301,18 @@ Template.LogSurveyResponse.helpers(
       }
       return flag;
     },
+    singlePhoto(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const question = questionCollection.findOne({ _id: contentQuesId });
+
+      let dataType = '';
+
+      if (question && question.dataType) {
+        dataType = question.dataType;
+      }
+
+      return dataType === 'Single Photo';
+    },
     getQuesName(getQuesName) {
       return getQName(getQuesName);
     },
@@ -345,6 +359,9 @@ Template.LogSurveyResponse.helpers(
 function getText(id) {
   const responseCollection = adminCollectionObject('responses');
   const responseSection = responseCollection.findOne({ _id: Router.current().params._id });
+  if (!responseSection || !responseSection.section) {
+    return '';
+  }
   sections = responseSection.section;
   for (let j = 0; j < sections.length; j++) {
     const response = sections[j].response;
@@ -580,6 +597,18 @@ Template.LogSurveyView.helpers(
 
       return flag;
     },
+    singlePhoto(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const question = questionCollection.findOne({ _id: contentQuesId });
+
+      let dataType = '';
+
+      if (question && question.dataType) {
+        dataType = question.dataType;
+      }
+
+      return dataType === 'Single Photo';
+    },
     getQuesName(getQuesName) {
       return getQName(getQuesName);
     },
@@ -606,6 +635,10 @@ Template.LogSurveyView.helpers(
     isChecked(type) {
       const responseCollection = adminCollectionObject('responses');
       const responseSection = responseCollection.findOne({ _id: Router.current().params._id });
+
+      if (!responseSection || !responseSection.section) {
+        return '';
+      }
 
       sections = responseSection.section;
       for (let j = 0; j < sections.length; j++) {
@@ -638,6 +671,10 @@ Template.LogSurveyView.helpers(
       const responseCollection = adminCollectionObject('responses');
       const responseSection = responseCollection.findOne({ _id: Router.current().params._id });
 
+      if (!responseSection || !responseSection.section) {
+        return '';
+      }
+
       sections = responseSection.section;
 
       for (let j = 0; j < sections.length; j++) {
@@ -668,6 +705,10 @@ Template.LogSurveyView.helpers(
     isSelectedMultiple(value) {
       const responseCollection = adminCollectionObject('responses');
       const responseSection = responseCollection.findOne({ _id: Router.current().params._id });
+
+      if (!responseSection || !responseSection.section) {
+        return '';
+      }
 
       sections = responseSection.section;
       for (let j = 0; j < sections.length; j++) {

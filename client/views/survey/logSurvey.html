@@ -243,6 +243,17 @@
                                                            value="">
                                                 </li>
                                             {{/if}}
+
+                                            {{#if singlePhoto content}}
+                                                <li class="quesList">
+                                                    <img class="survey-single-photo-img" src="" />
+                                                    <input type="hidden" id={{content}} name="{{content}}" class="survey-single-photo-value" value="" />
+                                                    <br />
+                                                    <a href="#" class="js-take-photo btn btn-primary margin-top-35">Take Picture</a>
+                                                    <a href="#" class="js-remove-photo btn btn-danger margin-top-35 hide">Remove Picture</a>
+                                                </li>
+                                            {{/if}}
+
                                         {{/if}}
                                     {{/if}}
 
@@ -252,9 +263,11 @@
 
                     {{/each}}
                 {{/if}}
-                <button class="btn btn-large btn-primary save_survey">Save</button>
-                <button class="btn btn-large btn-primary pause_survey">Pause</button>
-                <button class="btn btn-large btn-primary cancel_survey">Cancel</button>
+                <div class="margin-top-35">
+                    <button class="btn btn-large btn-primary save_survey">Save</button>
+                    <button class="btn btn-large btn-primary pause_survey">Pause</button>
+                    <button class="btn btn-large btn-primary cancel_survey">Cancel</button>
+                </div>
             </ul>
         </div>
     </div>
@@ -415,6 +428,19 @@
                                                                value="">
                                                     </li>
                                                 {{/if}}
+
+                                                {{#if singlePhoto content}}
+                                                    <li class="quesList">
+                                                        <img class="survey-single-photo-img" src="{{surveyTextResponse content}}" />
+                                                        <input type="hidden" id="{{content}}" name="{{content}}" class="survey-single-photo-value" value="{{surveyTextResponse content}}" />
+                                                        <br />
+                                                        <a href="#" class="js-take-photo btn btn-primary margin-top-35">Take Picture</a>
+                                                        {{#if surveyTextResponse content}}
+                                                            <a href="#" class="js-remove-photo btn btn-danger margin-top-35">Remove Picture</a>
+                                                        {{/if}}
+                                                    </li>
+                                                {{/if}}
+
                                             {{/if}}
                                         {{/if}}
                                     </div>
@@ -426,7 +452,7 @@
                     {{/if}}
                 {{/each}}
                 {{#if paused}}
-                    <div id="pauseSurvey">
+                    <div id="pauseSurvey" class="margin-top-35">
                         <a>
                             <button class="btn btn-large btn-primary  savePaused_survey">Save</button>
                         </a>
