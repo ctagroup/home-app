@@ -382,18 +382,24 @@ Template.LogSurveyResponse.events(
         if (error) {
           logger.log(error);
         } else {
-          $(event.currentTarget).closest('.quesList').find('.survey-single-photo-img').attr('src', data);
-          $(event.currentTarget).closest('.quesList').find('.survey-single-photo-value').val(data);
-          $(event.currentTarget).closest('.quesList').find('.js-remove-photo').removeClass('hide');
+          $(event.currentTarget).closest('.quesList').find('.survey-single-photo-img')
+            .attr('src', data);
+          $(event.currentTarget).closest('.quesList').find('.survey-single-photo-value')
+            .val(data);
+          $(event.currentTarget).closest('.quesList').find('.js-remove-photo')
+            .removeClass('hide');
         }
       });
     },
     'click .js-remove-photo'(event) {
       event.preventDefault();
       logger.log('clicked remove picture button');
-      $(event.currentTarget).closest('.quesList').find('.survey-single-photo-img').attr('src', '');
-      $(event.currentTarget).closest('.quesList').find('.survey-single-photo-value').val('');
-      $(event.currentTarget).closest('.quesList').find('.js-remove-photo').addClass('hide');
+      $(event.currentTarget).closest('.quesList').find('.survey-single-photo-img')
+        .attr('src', '');
+      $(event.currentTarget).closest('.quesList').find('.survey-single-photo-value')
+        .val('');
+      $(event.currentTarget).closest('.quesList').find('.js-remove-photo')
+        .addClass('hide');
     },
   }
 );
@@ -423,18 +429,24 @@ Template.LogSurveyView.events(
         if (error) {
           logger.log(error);
         } else {
-          $(event.currentTarget).closest('.quesList').find('.survey-single-photo-img').attr('src', data);
-          $(event.currentTarget).closest('.quesList').find('.survey-single-photo-value').val(data);
-          $(event.currentTarget).closest('.quesList').find('.js-remove-photo').removeClass('hide');
+          $(event.currentTarget).closest('.quesList').find('.survey-single-photo-img')
+            .attr('src', data);
+          $(event.currentTarget).closest('.quesList').find('.survey-single-photo-value')
+            .val(data);
+          $(event.currentTarget).closest('.quesList').find('.js-remove-photo')
+            .removeClass('hide');
         }
       });
     },
     'click .js-remove-photo'(event) {
       event.preventDefault();
       logger.log('clicked remove picture button');
-      $(event.currentTarget).closest('.quesList').find('.survey-single-photo-img').attr('src', '');
-      $(event.currentTarget).closest('.quesList').find('.survey-single-photo-value').val('');
-      $(event.currentTarget).closest('.quesList').find('.js-remove-photo').addClass('hide');
+      $(event.currentTarget).closest('.quesList').find('.survey-single-photo-img')
+        .attr('src', '');
+      $(event.currentTarget).closest('.quesList').find('.survey-single-photo-value')
+        .val('');
+      $(event.currentTarget).closest('.quesList').find('.js-remove-photo')
+        .addClass('hide');
     },
   }
 );

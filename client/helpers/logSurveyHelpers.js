@@ -52,7 +52,7 @@ function isSkipped(sectionID) {
   const responseCollection = adminCollectionObject('responses');
   const responseSection = responseCollection.findOne({ _id: Router.current().params._id });
 
-  if(responseSection && responseSection.section) {
+  if (responseSection && responseSection.section) {
     for (let i = 0; i < responseSection.section.length; i++) {
       if (responseSection.section[i].sectionID === sectionID) {
         if (responseSection.section[i].skip) {
