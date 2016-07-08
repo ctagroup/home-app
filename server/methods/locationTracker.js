@@ -9,19 +9,22 @@ Meteor.methods(
       logger.info(timestamp);
       logger.info(position);
 
-      const user = Meteor.users.findOne({_id:userID});
+      const user = Meteor.users.findOne({ _id: userID });
 
       if (user) {
         const locationHistory = user.locationHistory;
 
         if (locationHistory !== undefined && locationHistory.length >= 1) {
-          const sorted = locationHistory.sort(function (a, b) {
-            if (a.timestamp < b.timestamp)
+          const sorted = locationHistory.sort((a, b) => {
+            if (a.timestamp < b.timestamp) {
               return 1;
-            if (a.timestamp > b.timestamp)
-              return -1;
-            if (a.timestamp === b.timestamp)
-              return 0;
+            }
+
+            if (a.timestamp > b.timestamp) {
+              return - 1;
+            }
+
+            return 0;
           });
 
           const lastPosition = sorted[0].position;
@@ -32,7 +35,6 @@ Meteor.methods(
           if (lastPosition.lat === position.lat && lastPosition.long === position.long) {
             // No action. no need to update. device has not moved.
           } else {
-
             Meteor.users.update(
               { _id: userID },
               {
@@ -66,6 +68,7 @@ Meteor.methods(
           );
         }
       }
+      return 'No action taken';
     },
   }
 );

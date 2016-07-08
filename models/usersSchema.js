@@ -44,20 +44,20 @@ Schemas.CoOrdinates = new SimpleSchema(
     accuracy: {
       type: Number,
       decimal: true,
-    }
+    },
   }
 );
 
 Schemas.LocationEntry = new SimpleSchema(
   {
     timestamp: {
-      label: "Timestamp",
+      label: 'Timestamp',
       type: Date,
     },
     position: {
-      label: "Position",
+      label: 'Position',
       type: Schemas.CoOrdinates,
-    }
+    },
   }
 );
 
@@ -203,13 +203,13 @@ Schemas.users = new SimpleSchema(
       optional: true,
     },
     locationHistory: {
-      label: "Location Tracker",
+      label: 'Location Tracker',
       type: Array,
-      optional:true,
+      optional: true,
     },
     'locationHistory.$': {
       type: Schemas.LocationEntry,
-    }
+    },
   }
 );
 

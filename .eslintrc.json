@@ -41,7 +41,8 @@
     "Gravatar": true,
     "messages": true,
     "AdminTables": true,
-    "MeteorCamera": true
+    "MeteorCamera": true,
+    "Geolocation": true
   },
   "rules": {
     "no-underscore-dangle": [
