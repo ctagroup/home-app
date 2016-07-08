@@ -273,7 +273,7 @@ Template.previewSurvey.helpers(
       let label = '';
 
       if (question && question.question) {
-        label = '';
+        label = question.question;
       }
 
       return label;
