@@ -135,7 +135,7 @@ function saveSurvey(status, tmpl) {
               } else {
                 answer = tmpl.find(`#${question._id}`).value;
               }
-              if ((answer === null) || (answer === '')) {
+              if ((answer === null) || (answer === '') || (answer === undefined)) {
                 if (status === 'Submit') {
                   if ($(`#${sectionQuestions[j].sectionID}`).is(':checked')) {
                     questionObject.questionID = question._id;
@@ -266,7 +266,7 @@ function savePausedSurvey(status, tmpl) {
                 answer = tmpl.find(`#${question._id}`).value;
               }
 
-              if ((answer === null) || (answer === '')) {
+              if ((answer === null) || (answer === '') || (answer === undefined)) {
                 if (status === 'Pause_Submit') {
                   if ($(`#${sectionQuestions[j].sectionID}`).is(':checked')) {
                     questionObject.questionID = question._id;
@@ -375,6 +375,26 @@ Template.LogSurveyResponse.events(
     'click .save_survey': (evt, tmpl) => {
       saveSurvey('Submit', tmpl);
     },
+    'click .js-take-photo'(event) {
+      event.preventDefault();
+      logger.log('clicked picture button');
+      MeteorCamera.getPicture({}, (error, data) => {
+        if (error) {
+          logger.log(error);
+        } else {
+          $(event.currentTarget).closest('.quesList').find('.survey-single-photo-img').attr('src', data);
+          $(event.currentTarget).closest('.quesList').find('.survey-single-photo-value').val(data);
+          $(event.currentTarget).closest('.quesList').find('.js-remove-photo').removeClass('hide');
+        }
+      });
+    },
+    'click .js-remove-photo'(event) {
+      event.preventDefault();
+      logger.log('clicked remove picture button');
+      $(event.currentTarget).closest('.quesList').find('.survey-single-photo-img').attr('src', '');
+      $(event.currentTarget).closest('.quesList').find('.survey-single-photo-value').val('');
+      $(event.currentTarget).closest('.quesList').find('.js-remove-photo').addClass('hide');
+    },
   }
 );
 
@@ -396,5 +416,25 @@ Template.LogSurveyView.events(
       savePausedSurvey('Pause_Paused', tmpl);
     },
 
+    'click .js-take-photo'(event) {
+      event.preventDefault();
+      logger.log('clicked picture button');
+      MeteorCamera.getPicture({}, (error, data) => {
+        if (error) {
+          logger.log(error);
+        } else {
+          $(event.currentTarget).closest('.quesList').find('.survey-single-photo-img').attr('src', data);
+          $(event.currentTarget).closest('.quesList').find('.survey-single-photo-value').val(data);
+          $(event.currentTarget).closest('.quesList').find('.js-remove-photo').removeClass('hide');
+        }
+      });
+    },
+    'click .js-remove-photo'(event) {
+      event.preventDefault();
+      logger.log('clicked remove picture button');
+      $(event.currentTarget).closest('.quesList').find('.survey-single-photo-img').attr('src', '');
+      $(event.currentTarget).closest('.quesList').find('.survey-single-photo-value').val('');
+      $(event.currentTarget).closest('.quesList').find('.js-remove-photo').addClass('hide');
+    },
   }
 );
