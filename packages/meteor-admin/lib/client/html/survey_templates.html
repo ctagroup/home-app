@@ -303,6 +303,15 @@
                                            id="othersSpecify_multiple" name="othersSpecify_multiple" value="">
                                 </li>
                             {{/if}}
+
+                            {{#if singlePhoto content}}
+                                <li class="quesList">
+                                    <img class="survey-single-photo-img" src="http://loremflickr.com/g/320/240/kitten" />
+                                    <br />
+                                    <a href="#" id="js-take-photo" class="js-take-photo btn btn-primary disabled margin-top-35">Take Picture</a>
+                                    <a href="#" id="js-remove-photo" class="js-remove-photo btn btn-danger disabled margin-top-35">Remove Picture</a>
+                                </li>
+                            {{/if}}
                         {{/if}}
                     </div>
                 </div>
