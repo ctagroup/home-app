@@ -31,6 +31,36 @@ users = Meteor.users;
 
 // users.attachSchema( Schemas.users );
 
+Schemas.CoOrdinates = new SimpleSchema(
+  {
+    lat: {
+      type: Number,
+      decimal: true,
+    },
+    long: {
+      type: Number,
+      decimal: true,
+    },
+    accuracy: {
+      type: Number,
+      decimal: true,
+    }
+  }
+);
+
+Schemas.LocationEntry = new SimpleSchema(
+  {
+    timestamp: {
+      label: "Timestamp",
+      type: Date,
+    },
+    position: {
+      label: "Position",
+      type: Schemas.CoOrdinates,
+    }
+  }
+);
+
 Schemas.UserCountry = new SimpleSchema(
   {
     name: {
@@ -172,6 +202,14 @@ Schemas.users = new SimpleSchema(
       type: Date,
       optional: true,
     },
+    locationHistory: {
+      label: "Location Tracker",
+      type: Array,
+      optional:true,
+    },
+    'locationHistory.$': {
+      type: Schemas.LocationEntry,
+    }
   }
 );
 
