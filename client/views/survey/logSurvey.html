@@ -71,6 +71,12 @@
                                                            id={{content}} name={{content}} value="">
                                                 </li>
                                             {{/if}}
+                                            {{#if wysiwygEditor content}}
+                                                <li class="quesList">
+                                                    <div id={{content}}></div>
+                                                    {{displayEditor content}}
+                                                </li>
+                                            {{/if}}
 
                                             {{#if textboxNumber content}}
                                                 <li class="quesList">
@@ -170,6 +176,12 @@
                                                     <input type="text"
                                                            class="form-control input input-xxlarge stringType"
                                                            id={{content}} name={{content}} value="">
+                                                </li>
+                                            {{/if}}
+                                            {{#if wysiwygEditor content}}
+                                                <li class="quesList">
+                                                    <div id={{content}}></div>
+                                                    {{displayEditor content}}
                                                 </li>
                                             {{/if}}
 
@@ -331,7 +343,12 @@
                                                                value="{{surveyTextResponse content}}">
                                                     </li>
                                                 {{/if}}
-
+                                                {{#if wysiwygEditor content}}
+                                                    <li class="quesList">
+                                                        <div id={{content}}></div>
+                                                        {{displayEditor content}}
+                                                    </li>
+                                                {{/if}}
                                                 {{#if textboxNumber content}}
                                                     <li class="quesList">
                                                         <input type="number"
