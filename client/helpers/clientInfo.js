@@ -93,7 +93,7 @@ Template.viewClient.helpers(
           case '1': return 'American Indian or Alaska Native';
           case '2': return 'Asian';
           case '3': return 'Black or African American';
-          case '4': return 'American Indian or Alaska Native';
+          case '4': return 'Native Hawaiian or Other Pacific Islander';
           case '5': return 'White';
           default: return definition;
         }
@@ -240,7 +240,7 @@ Template.clientForm.helpers(
           description: 'Black or African American',
         }, {
           value: '4',
-          description: 'American Indian or Alaska Native',
+          description: 'Native Hawaiian or Other Pacific Islander',
         }, {
           value: '5',
           description: 'White',
