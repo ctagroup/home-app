@@ -42,7 +42,8 @@
     "messages": true,
     "AdminTables": true,
     "MeteorCamera": true,
-    "Geolocation": true
+    "Geolocation": true,
+    "GoogleMaps": true
   },
   "rules": {
     "no-underscore-dangle": [

@@ -50,3 +50,4 @@ mdg:camera
 mdg:reload-on-resume
 mdg:geolocation
 summernote:standalone
+dburles:google-maps
