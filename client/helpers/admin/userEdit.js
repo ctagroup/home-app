@@ -10,9 +10,11 @@ Template.AdminDashboardusersEdit.helpers(
         // Map initialization options
         return {
           center: new google.maps.LatLng(0, -180),
-          zoom: 8
+          zoom: 8,
         };
       }
+
+      return {};
     },
   }
 );
