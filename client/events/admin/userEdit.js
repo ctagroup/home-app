@@ -37,13 +37,13 @@ Template.AdminDashboardusersEdit.onRendered(() => {
       path.push(latLong);
 
       // Add a new marker at the new plotted point on the polyline.
+      /* eslint-disable */
       const marker = new google.maps.Marker({
         position: latLong,
         title: locationHistory.timestamp,
         map: map.instance,
       });
-
-      logger.log(marker);
+      /* eslint-enable */
 
       bounds.extend(latLong);
     }
