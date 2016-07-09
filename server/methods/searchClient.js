@@ -27,6 +27,7 @@ Meteor.methods(
               firstName: '$firstName',
               middleName: '$middleName',
               lastName: '$lastName',
+              personalId: '$personalId',
               fullName: {
                 $concat: [
                   '$firstName',
@@ -48,7 +49,17 @@ Meteor.methods(
           },
         ]
       );
-
+      // Removing entries where we have data coming from HMIS.
+      for (let i = localClients.length - 1; i >= 0; i--) {
+        for (let j = 0; j < hmisClients.length; j++) {
+          if (localClients[i].personalId === hmisClients[j].clientId) {
+                  // Remove.
+            localClients.splice(i, 1);
+            logger.info('Element Removed');
+            break;
+          }
+        }
+      }
       let mergedClients = [];
 
       if (localClients.length === 0 && hmisClients.length === 0) {
