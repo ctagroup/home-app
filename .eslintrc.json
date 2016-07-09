@@ -43,7 +43,8 @@
     "AdminTables": true,
     "MeteorCamera": true,
     "Geolocation": true,
-    "GoogleMaps": true
+    "GoogleMaps": true,
+    "google": true
   },
   "rules": {
     "no-underscore-dangle": [
