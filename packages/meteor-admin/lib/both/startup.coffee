@@ -136,7 +136,7 @@ adminCreateRouteEditOptions = (collection, collectionName) ->
 			@render()
 		onAfterAction: ->
 			doc = adminCollectionObject(collectionName).findOne _id : parseID(@params._id)
-			if ( collectionName == 'users' )
+			if ( collectionName == 'users' && doc && doc.emails && doc.emails[0] && doc.emails[0].address )
 				subtitle = doc.emails[0].address
 			else
 				subtitle = @params._id

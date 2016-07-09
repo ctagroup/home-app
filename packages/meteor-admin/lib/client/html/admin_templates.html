@@ -121,10 +121,18 @@
 			{{/if}}
 
 			<hr/>
+
+        <h4>Location History</h4>
+        <p>Track user location for last 24 hours.</p>
+        <div class="map-container">
+            {{> googleMap name="locationHistory" options=locationHistoryMapOptions}}
+        </div>
+        <hr />
+
 			<h4>Reset Password</h4>
 			{{#autoForm id="adminSendResetPasswordEmail" schema=AdminSchemas.sendResetPasswordEmail type="method" meteormethod="adminSendResetPasswordEmail"}}
 			<div class="form-group hidden">
-				<label class="control-label" for="title">ID</label>
+				<label class="control-label">ID</label>
 				<input value="{{admin_current_id}}" type="text" name="_id" omitfields="createdAtupdatedAt" required="" data-schema-key="_id" class="form-control" autocomplete="off" />
 				<span class="help-block"></span>
 			</div>
