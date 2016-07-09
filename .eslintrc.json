@@ -44,7 +44,8 @@
     "MeteorCamera": true,
     "Geolocation": true,
     "GoogleMaps": true,
-    "google": true
+    "google": true,
+    "LocationTracker": true
   },
   "rules": {
     "no-underscore-dangle": [

@@ -7,7 +7,6 @@ Template.AdminDashboardusersEdit.helpers(
     locationHistoryMapOptions() {
       // Make sure the maps API has loaded
       if (GoogleMaps.loaded()) {
-
         let center = new google.maps.LatLng(0, -180);
 
         const userID = Session.get('admin_id');

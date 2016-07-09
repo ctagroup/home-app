@@ -14,12 +14,12 @@ Template.AdminDashboardusersEdit.onRendered(() => {
     const poly = new google.maps.Polyline({
       strokeColor: '#428bca',
       strokeOpacity: 1.0,
-      strokeWeight: 3
+      strokeWeight: 3,
     });
 
     poly.setMap(map.instance);
 
-    const bounds  = new google.maps.LatLngBounds();
+    const bounds = new google.maps.LatLngBounds();
 
     const userID = Session.get('admin_id');
     const locationHistory = LocationTracker.getLocationHistory(userID);
@@ -27,18 +27,23 @@ Template.AdminDashboardusersEdit.onRendered(() => {
     for (let i = 0; i < locationHistory.length; i++) {
       const path = poly.getPath();
 
-      const latLong = new google.maps.LatLng(locationHistory[i].position.lat, locationHistory[i].position.long);
+      const latLong = new google.maps.LatLng(
+        locationHistory[i].position.lat,
+        locationHistory[i].position.long
+      );
 
       // Because path is an MVCArray, we can simply append a new coordinate
       // and it will automatically appear.
       path.push(latLong);
 
       // Add a new marker at the new plotted point on the polyline.
-      var marker = new google.maps.Marker({
+      const marker = new google.maps.Marker({
         position: latLong,
         title: locationHistory.timestamp,
         map: map.instance,
       });
+
+      logger.log(marker);
 
       bounds.extend(latLong);
     }
