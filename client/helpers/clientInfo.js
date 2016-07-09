@@ -90,27 +90,39 @@ Template.viewClient.helpers(
       }
       if (text === 'race') {
         switch (code) {
+          case 1:
           case '1': return 'American Indian or Alaska Native';
+          case 2:
           case '2': return 'Asian';
+          case 3:
           case '3': return 'Black or African American';
+          case 4:
           case '4': return 'Native Hawaiian or Other Pacific Islander';
+          case 5:
           case '5': return 'White';
           default: return definition;
         }
       }
       if (text === 'ethnicity') {
         switch (code) {
+          case 0:
           case '0': return 'Non-Hispanic/Non-Latino';
+          case 1:
           case '1': return 'Hispanic/Latino';
           default: return definition;
         }
       }
       if (text === 'gender') {
         switch (code) {
+          case 0:
           case '0': return 'Female';
+          case 1:
           case '1': return 'Male';
+          case 2:
           case '2': return 'Transgender male to female';
+          case 3:
           case '3': return 'Transgender female to male';
+          case 4:
           case '4': return 'Other';
           default: return definition;
         }
@@ -118,46 +130,74 @@ Template.viewClient.helpers(
       /* eslint-disable */
       if (text === 'veteranStatus' || text === 'disablingcondition' || text === 'entryfromstreetessh') {
         switch (code) {
+          case 0:
           case '0': return 'No';
+          case 1:
           case '1': return 'Yes';
           default: return definition;
         }
       }
       if (text === 'otherresidenceprior') {
         switch (code) {
+          case 1:
           case '1': return 'Emergency shelter, including hotel or motel paid for with emergency shelter';
           /* eslint-enable */
+          case 2:
           case '2': return 'Transitional housing for homeless persons (including homeless youth)';
+          case 3:
           case '3': return 'Permanent housing for formerly homeless persons';
+          case 4:
           case '4': return 'Psychiatric hospital or other psychiatric facility    ';
+          case 5:
           case '5': return 'Substance abuse treatment facility or detox center';
+          case 6:
           case '6': return 'Hospital or other residential non-psychiatric medical facility';
+          case 7:
           case '7': return 'Jail, prison or juvenile detention facility';
+          case 12:
           case '12': return 'Staying or living in a family member’s room, apartment or house';
+          case 13:
           case '13': return 'Staying or living in a friend’s room, apartment or house';
+          case 14:
           case '14': return 'Hotel or motel paid for without emergency shelter voucher';
+          case 15:
           case '15': return 'Foster care home or foster care group home';
+          case 16:
           case '16': return 'Place not meant for habitation';
+          case 18:
           case '18': return 'Safe Haven';
+          case 19:
           case '19': return 'Rental by client, with VASH subsidy';
+          case 20:
           case '20': return 'Rental by client, with other ongoing housing subsidy';
+          case 21:
           case '21': return 'Owned by client, with ongoing housing subsidy';
+          case 22:
           case '22': return 'Rental by client, no ongoing housing subsidy';
+          case 23:
           case '23': return 'Owned by client, no ongoing housing subsidy';
+          case 24:
           case '24': return 'Long-term care facility or nursing home';
+          case 25:
           case '25': return 'Rental by client, with GPD TIP subsidy';
+          case 26:
           case '26': return 'Residential project or halfway house with no homeless criteria';
-          default: return 'Other';
+          default: return definition;
         }
       }
       if (text === 'relationshiptohoh') {
         switch (code) {
+          case 1:
           case '1': return 'Self';
+          case 2:
           case '2': return 'Head of household’s child';
+          case 3:
           case '3': return 'Head of household’s spouse or partner';
+          case 4:
           /* eslint-disable */
           case '4': return 'Head of household’s other relation member (other relation to head of household)';
           /* eslint-enable */
+          case 5:
           case '5': return 'Other: non-relation member';
           default: return definition;
         }
@@ -165,35 +205,62 @@ Template.viewClient.helpers(
       if (text === 'destination') {
         switch (code) {
           /* eslint-disable */
+          case 1:
           case '1': return 'Emergency shelter, including hotel or motel paid for with emergency shelter';
+          case 2:
           case '2': return 'Transitional housing for homeless persons (including homeless youth)';
           /* eslint-enable */
+          case 3:
           case '3': return 'Permanent housing for formerly homeless persons';
+          case 4:
           case '4': return 'Psychiatric hospital or other psychiatric facility';
+          case 5:
           case '5': return 'Substance abuse treatment facility or detox center';
+          case 6:
           case '6': return 'Hospital or other residential non-psychiatric medical facility';
+          case 7:
           case '7': return 'Jail, prison or juvenile detention facility';
+          case 10:
           case '10': return 'Rental by client, no ongoing housing subsidy';
+          case 11:
           case '11': return 'Owned by client, no ongoing housing subsidy';
+          case 12:
           case '12': return 'Staying or living with family, temporary tenure';
+          case 13:
           case '13': return 'Staying or living with friends, temporary tenure';
+          case 14:
           case '14': return 'Hotel or motel paid for without emergency shelter voucher';
+          case 15:
           case '15': return 'Foster care home or foster care group home';
+          case 16:
           case '16': return 'Place not meant for habitation';
+          case 17:
           case '17': return 'Other';
+          case 18:
           case '18': return 'Safe Haven';
+          case 19:
           case '19': return 'Rental by client, with VASH subsidy';
+          case 20:
           case '20': return 'Rental by client, with other ongoing housing subsidy';
+          case 21:
           case '21': return 'Owned by client, with ongoing housing subsidy';
+          case 22:
           case '22': return 'Staying or living with family, permanent tenure';
+          case 23:
           case '23': return 'Staying or living with friends, permanent tenure';
+          case 24:
           case '24': return 'Deceased';
+          case 25:
           case '25': return 'Long-term care facility or nursing home';
+          case 26:
           case '26': return 'Moved from one HOPWA funded project to HOPWA PH';
+          case 27:
           case '27': return 'Moved from one HOPWA funded project to HOPWA TH';
+          case 28:
           case '28': return 'Rental by client, with GPD TIP subsidy';
+          case 29:
           case '29': return 'Residential project or halfway house with no homeless criteria';
-          default: return 'Other';
+          default: return definition;
         }
       }
       return definition;
