@@ -51,3 +51,4 @@ mdg:reload-on-resume
 mdg:geolocation
 summernote:standalone
 dburles:google-maps
+tsega:bootstrap3-datetimepicker
