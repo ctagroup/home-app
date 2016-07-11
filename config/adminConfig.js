@@ -415,6 +415,10 @@ AdminConfig = {
         },
       },
     },
+    housingInventory: {
+      icon: 'home',
+      label: 'Housing Inventory',
+    },
     users: {
       icon: 'user',
       label: 'Users',
