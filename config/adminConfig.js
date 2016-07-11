@@ -415,6 +415,10 @@ AdminConfig = {
         },
       },
     },
+    housingInventory: {
+      icon: 'home',
+      label: 'Housing Inventory',
+    },
     users: {
       icon: 'user',
       label: 'Users',
@@ -481,7 +485,7 @@ AdminConfig = {
     },
   },
   googleMaps: {
-    apiKey: 'AIzaSyCfQFc2vib-yTGPXoJpOPvhBgDtl2cAZVk',
+    apiKey: 'AIzaSyC2dPMYEhEoqnUe8LQZK9SVemORszJ-NgE',
   },
   hmisAPIEndpoints: {
     apiBaseUrl: 'https://www.hmislynk.com',
