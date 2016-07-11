@@ -122,6 +122,7 @@ summernote:standalone@0.8.1
 templating@1.1.12_1
 templating-tools@1.0.4
 tracker@1.0.14
+tsega:bootstrap3-datetimepicker@4.17.37_1
 ui@1.0.11
 underscore@1.0.9
 url@1.0.10
