@@ -136,6 +136,8 @@ function saveSurvey(status, tmpl) {
                 if ($(`#${question._id}`).summernote('code') !== '<p><br></p>') {
                   answer = $(`#${question._id}`).summernote('code');
                 }
+              } else if (question.dataType === 'date') {
+                answer = $(`#${question._id} input`).val();
               } else {
                 answer = tmpl.find(`#${question._id}`).value;
               }
