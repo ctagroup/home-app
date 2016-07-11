@@ -481,7 +481,7 @@ AdminConfig = {
     },
   },
   googleMaps: {
-      apiKey: 'AIzaSyCfQFc2vib-yTGPXoJpOPvhBgDtl2cAZVk',
+    apiKey: 'AIzaSyCfQFc2vib-yTGPXoJpOPvhBgDtl2cAZVk',
   },
   hmisAPIEndpoints: {
     apiBaseUrl: 'https://www.hmislynk.com',
