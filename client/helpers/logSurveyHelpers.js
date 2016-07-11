@@ -537,6 +537,26 @@ Template.LogSurveyView.helpers(
       }, 0);
       return;
     },
+    isDate(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const question = questionCollection.findOne({ _id: contentQuesId });
+      let dataType = '';
+      if (question && question.dataType) {
+        dataType = question.dataType;
+      }
+      return dataType === 'date';
+    },
+    initiatePicker(contentQuesId) {
+      setTimeout(() => {
+        $(`#${contentQuesId}`).datetimepicker({
+          format: 'MM-DD-YYYY',
+        });
+      }, 0);
+      setTimeout(() => {
+        $(`#${contentQuesId} input`).val(getText(contentQuesId));
+      }, 0);
+      return;
+    },
     textboxNumber(contentQuesId) {
       const questionCollection = adminCollectionObject('questions');
       const questions = questionCollection.find(

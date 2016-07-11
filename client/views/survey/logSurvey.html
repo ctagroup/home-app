@@ -190,7 +190,13 @@
                                                     {{displayEditor content}}
                                                 </li>
                                             {{/if}}
-
+                                            {{#if isDate content}}
+                                                <li class="quesList">
+                                                    <div id={{content}} class='input-group' ><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                        <input class="set-due-date form-control" type="text"/></div>
+                                                    {{initiatePicker content}}
+                                                </li>
+                                            {{/if}}
                                             {{#if textboxNumber content}}
                                                 <li class="quesList">
                                                     <input type="number"
@@ -366,6 +372,13 @@
                                                     <li class="quesList">
                                                         <div id={{content}}></div>
                                                         {{displayEditor content}}
+                                                    </li>
+                                                {{/if}}
+                                                {{#if isDate content}}
+                                                    <li class="quesList">
+                                                        <div id={{content}} class='input-group' ><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                            <input class="set-due-date form-control" type="text"/></div>
+                                                        {{initiatePicker content}}
                                                     </li>
                                                 {{/if}}
                                                 {{#if textboxNumber content}}
