@@ -480,6 +480,9 @@ AdminConfig = {
       ],
     },
   },
+  googleMaps: {
+      apiKey: 'AIzaSyCfQFc2vib-yTGPXoJpOPvhBgDtl2cAZVk',
+  },
   hmisAPIEndpoints: {
     apiBaseUrl: 'https://www.hmislynk.com',
     oauthBaseUrl: 'https://www.hmislynk.com/hmis-authorization-service/rest',
