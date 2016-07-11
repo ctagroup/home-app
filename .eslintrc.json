@@ -45,7 +45,8 @@
     "Geolocation": true,
     "GoogleMaps": true,
     "google": true,
-    "LocationTracker": true
+    "LocationTracker": true,
+    "housingInventory": true
   },
   "rules": {
     "no-underscore-dangle": [
