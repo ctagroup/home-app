@@ -381,32 +381,34 @@ function getText(id) {
   }
   sections = responseSection.section;
   for (let j = 0; j < sections.length; j++) {
-    const response = sections[j].response;
-    for (let k = 0; k < response.length; k++) {
-      const quesIDs = response[k].questionID;
-      if (id === quesIDs) {
-        let responseVal = response[k].answer;
-        const questionCollection = adminCollectionObject('questions');
-        const questions = questionCollection.find(
-          { _id: quesIDs }, { dataType: 1, _id: 0 }
-        ).fetch();
-        for (let i = 0; i < questions.length; i++) {
-          const dataType = questions[i].dataType;
-          if (dataType === 'Single Select') {
-            const options = questions[i].options;
-            for (let l = 0; l < options.length; l++) {
-              responseVal = options[l].description;
+    if (! sections[j].skip) {
+      const response = sections[j].response;
+      for (let k = 0; k < response.length; k++) {
+        const quesIDs = response[k].questionID;
+        if (id === quesIDs) {
+          let responseVal = response[k].answer;
+          const questionCollection = adminCollectionObject('questions');
+          const questions = questionCollection.find(
+            { _id: quesIDs }, { dataType: 1, _id: 0 }
+          ).fetch();
+          for (let i = 0; i < questions.length; i++) {
+            const dataType = questions[i].dataType;
+            if (dataType === 'Single Select') {
+              const options = questions[i].options;
+              for (let l = 0; l < options.length; l++) {
+                responseVal = options[l].description;
+                return responseVal;
+              }
+            } else if (dataType === 'Multiple Select') {
+              const options = questions[i].options;
+              let answer = '';
+              for (let l = 0; l < options.length; l++) {
+                answer += `${options[l].description}|`;
+              }
+              return answer.split('|');
+            } else {
               return responseVal;
             }
-          } else if (dataType === 'Multiple Select') {
-            const options = questions[i].options;
-            let answer = '';
-            for (let l = 0; l < options.length; l++) {
-              answer += `${options[l].description}|`;
-            }
-            return answer.split('|');
-          } else {
-            return responseVal;
           }
         }
       }
