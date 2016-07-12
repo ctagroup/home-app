@@ -31,3 +31,17 @@ Tracker.autorun(() => {
     }
   }
 });
+
+UI.registerHelper(
+  'currentUserCan', (cap) => Roles.userIsInRole(Meteor.user(), cap)
+);
+
+Template.registerHelper(
+  'formatDate', (date) => moment(date).format('MM/DD/YYYY')
+);
+
+Template.registerHelper(
+  'my_console_log', (data) => {
+    logger.log(data);
+  }
+);
