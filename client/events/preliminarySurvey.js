@@ -15,7 +15,7 @@ Template.preliminarySurvey.events(
     },
     'click .js-open-housing-service-question-modal': (event) => {
       event.preventDefault();
-      if(!PreliminarySurvey.showHousingSurveyQuestion()) {
+      if (!PreliminarySurvey.showHousingSurveyQuestion()) {
         PreliminarySurvey.showReleaseOfInformation();
       }
     },

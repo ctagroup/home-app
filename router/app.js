@@ -128,7 +128,7 @@ Router.route(
     name: 'createClient',
     template: 'createClient',
     controller: 'HomeAppController',
-    waitOn: function(){
+    waitOn() {
       // waitOn makes sure that this publication is ready before rendering your template
       return Meteor.subscribe('options');
     },
