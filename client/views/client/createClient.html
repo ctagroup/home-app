@@ -26,22 +26,128 @@
 
     </div>
 
-    {{> preClientProfileScreen}}
+    {{> preliminarySurvey}}
 
 </template>
 
-<template name="preClientProfileScreen">
-  <div class="modal fade modal-fullscreen force-fullscreen2" id="dvQuestionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<template name="preliminarySurvey">
+  <div class="modal fade modal-fullscreen" id="dvQuestionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content text-center">
+      <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title">Preliminary Survey</h1>
+          <h1 class="modal-title text-center">Preliminary Survey</h1>
         </div>
-        <div class="modal-body">
-          <h1 class="text-muted">Test</h1>
+        <div class="modal-body content">
+          <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 my-center-block">
+              <h1 class="text-muted">
+                {{{dvQuestion}}}
+              </h1>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <div class="row">
+            <div class="col-xs-7 col-md-6 col-lg-4 my-center-block">
+              <div class="row">
+                <div class="col-xs-6">
+                  <button type="button" class="btn btn-lg btn-block js-open-hotline-info js-close-dv-question-modal btn-success">Yes</button>
+                </div>
+                <div class="col-xs-6">
+                  <button type="button" class="btn btn-lg btn-block js-open-housing-service-question-modal js-close-dv-question-modal btn-danger">No</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <div class="modal fade modal-fullscreen" id="housingServiceQuestionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title text-center">Preliminary Survey</h1>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 my-center-block">
+              <h1 class="text-muted">
+                {{{housingServiceQuestion}}}
+              </h1>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col-xs-7 col-md-6 col-lg-4 my-center-block">
+              <div class="row">
+                <div class="col-xs-6">
+                  <button type="button" class="btn btn-lg btn-block js-open-release-of-info-modal js-close-housing-service-question-modal btn-success">Yes</button>
+                </div>
+                <div class="col-xs-6">
+                  <button type="button" class="btn btn-lg btn-block js-goto-home js-close-housing-service-question-modal btn-danger">No</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <div class="modal fade modal-fullscreen" id="hotlineInfoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title text-center">Hotline Information</h1>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 my-center-block">
+              <h1 class="text-muted">
+                {{{hotlineInfo}}}
+              </h1>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col-xs-7 col-md-6 col-lg-4 my-center-block">
+              <button type="button" class="btn btn-lg btn-block js-open-housing-service-question-modal js-close-hotline-info btn-primary">Continue</button>
+            </div>
+          </div>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <div class="modal fade modal-fullscreen" id="releaseOfInformationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title text-center">Release of Information</h1>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 my-center-block">
+              <h1 class="text-muted">
+                {{{releaseOfInformation}}}
+              </h1>
+              <label>
+                <input type="checkbox" required />
+                <span>I Agree</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col-xs-7 col-md-6 col-lg-4 my-center-block">
+              <button type="button" class="btn btn-lg btn-block js-open-housing-service-question-modal js-close-hotline-info btn-primary">Submit</button>
+            </div>
+          </div>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
