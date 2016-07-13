@@ -505,7 +505,7 @@ Template.questionForm.events(
 
       $('#aoptions').append(optionsTag);
       $('#aoptions').on(
-        'click', 'a.optionremove', () => {
+        'click', 'a.optionremove', function remove() {
           const rowId = $(this).attr('id');
           const i = rowId.split('.');
           const i1 = i[1];
