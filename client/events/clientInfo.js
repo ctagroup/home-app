@@ -54,7 +54,8 @@ Template.createClient.events(
       Meteor.call(
         'addClient', firstName, middleName, lastName, suffix, photo, ssn,
         dob, race, ethnicity, gender, veteranStatus, disablingConditions, residencePrior, entryDate,
-        exitDate, destination, householdId, relationship, loc, shelter, signature, (error, result) => {
+        exitDate, destination, householdId, relationship, loc, shelter, signature,
+        (error, result) => {
           if (error) {
             // console.log(error);
           } else {
