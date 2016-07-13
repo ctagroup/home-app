@@ -35,5 +35,9 @@ Template.preliminarySurvey.events(
       event.preventDefault();
       PreliminarySurvey.showReleaseOfInformation();
     },
+    'submit #release-of-information': (event) => {
+      event.preventDefault();
+      return false;
+    },
   }
 );

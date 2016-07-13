@@ -135,17 +135,19 @@
               <h1 class="text-muted">
                 {{{releaseOfInformation}}}
               </h1>
-              <label>
-                <input type="checkbox" required />
-                <span>I Agree</span>
-              </label>
+              <form id="release-of-information">
+                <label>
+                  <input type="checkbox" required />
+                  <span>I Agree</span>
+                </label>
+              </form>
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <div class="row">
             <div class="col-xs-7 col-md-6 col-lg-4 my-center-block">
-              <button type="button" class="btn btn-lg btn-block js-open-housing-service-question-modal js-close-hotline-info btn-primary">Submit</button>
+              <input type="submit" form="release-of-information" value="Submit" class="btn btn-lg btn-block js-open-housing-service-question-modal js-close-hotline-info btn-primary" />
             </div>
           </div>
         </div>
