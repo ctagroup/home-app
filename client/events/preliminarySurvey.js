@@ -35,8 +35,16 @@ Template.preliminarySurvey.events(
       event.preventDefault();
       PreliminarySurvey.showReleaseOfInformation();
     },
-    'submit #release-of-information': (event) => {
+    'submit #release-of-information': (event, template) => {
       event.preventDefault();
+      const signaturePad = Router.current().params.signaturePad;
+      if (signaturePad.isEmpty()) {
+        alert("Please provide signature first.");
+      } else {
+        $('#create-client-form .signature').val(signaturePad.toDataURL());
+        $('#create-client-form .signature-img').attr('src', signaturePad.toDataURL());
+        $('#releaseOfInformationModal').modal('hide');
+      }
       return false;
     },
   }

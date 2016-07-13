@@ -17,6 +17,7 @@ Schemas.clientInfo = new SimpleSchema(
     },
     suffix: {
       type: String,
+      optional: true,
     },
     photo: {
       type: String,
@@ -24,36 +25,47 @@ Schemas.clientInfo = new SimpleSchema(
     },
     ssn: {
       type: String,
+      optional: true,
     },
     dob: {
       type: Date,
+      optional: true,
     },
     race: {
       type: String,
+      optional: true,
     },
     ethnicity: {
       type: String,
+      optional: true,
     },
     gender: {
       type: String,
+      optional: true,
     },
     veteranStatus: {
       type: String,
+      optional: true,
     },
     disablingConditions: {
       type: String,
+      optional: true,
     },
     residencePrior: {
       type: String,
+      optional: true,
     },
     entryDate: {
       type: Date,
+      optional: true,
     },
     exitDate: {
       type: Date,
+      optional: true,
     },
     destination: {
       type: String,
+      optional: true,
     },
     personalId: {
       type: String,
@@ -65,12 +77,19 @@ Schemas.clientInfo = new SimpleSchema(
     },
     relationship: {
       type: String,
+      optional: true,
     },
     location: {
       type: String,
+      optional: true,
     },
     shelter: {
       type: String,
+      optional: true,
+    },
+    signature: {
+      type: String,
+      optional: true,
     },
   }
 );

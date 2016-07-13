@@ -50,10 +50,11 @@ Template.createClient.events(
       const relationship = tmpl.find('.relationtoHoH_category').value;
       const loc = tmpl.find('.loc').value;
       const shelter = tmpl.find('.timeOnStreets_category').value;
+      const signature = tmpl.find('.signature').value;
       Meteor.call(
         'addClient', firstName, middleName, lastName, suffix, photo, ssn,
         dob, race, ethnicity, gender, veteranStatus, disablingConditions, residencePrior, entryDate,
-        exitDate, destination, householdId, relationship, loc, shelter, (error, result) => {
+        exitDate, destination, householdId, relationship, loc, shelter, signature, (error, result) => {
           if (error) {
             // console.log(error);
           } else {
@@ -167,4 +168,3 @@ Template.editClient.events(
     },
   }
 );
-

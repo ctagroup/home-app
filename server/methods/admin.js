@@ -492,7 +492,8 @@ Meteor.methods(
       householdId,
       relationship,
       location,
-      shelter
+      shelter,
+      signature
     ) {
       const clientInfoCollection = adminCollectionObject('clientInfo');
       const clientRecords = clientInfoCollection.insert(
@@ -517,6 +518,7 @@ Meteor.methods(
           relationship,
           location,
           shelter,
+          signature,
         }
       );
       return clientRecords;
