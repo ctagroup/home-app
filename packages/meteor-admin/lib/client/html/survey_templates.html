@@ -242,6 +242,27 @@
                                     {{displayEditor content}}
                                 </li>
                             {{/if}}
+                            {{#if isMTV content}}
+                                <li class="quesList">
+                                    <div id="options">
+                                        <table class="table table-bordered table-striped table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th>Textbox</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                            <tr id='oadd' class='optionRow'>
+                                                <td><a class='btn btn-primary optionadd'><span class='fa fa-plus'></span></a></td>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="aoptions">
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </li>
+                            {{/if}}
                             {{#if isDate content}}
                                 <li class="quesList">
                                     <div id={{content}} class='input-group' ><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
