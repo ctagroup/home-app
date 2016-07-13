@@ -1,6 +1,6 @@
 Template.signaturePad.onRendered(() => {
-  wrapper = document.getElementById('signature-pad');
-  canvas = wrapper.querySelector('canvas');
+  const wrapper = document.getElementById('signature-pad');
+  const canvas = wrapper.querySelector('canvas');
 
   window.onresize = SignaturePadConfig.resizeCanvas;
   SignaturePadConfig.resizeCanvas();

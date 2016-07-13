@@ -47,7 +47,9 @@
     "google": true,
     "LocationTracker": true,
     "housingInventory": true,
-    "PreliminarySurvey": true
+    "PreliminarySurvey": true,
+    "SignaturePad": true,
+    "SignaturePadConfig": true
   },
   "rules": {
     "no-underscore-dangle": [
