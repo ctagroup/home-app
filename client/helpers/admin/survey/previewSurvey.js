@@ -82,6 +82,15 @@ Template.previewSurvey.helpers(
       }
       return dataType === 'date';
     },
+    isMTV(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const question = questionCollection.findOne({ _id: contentQuesId });
+      let dataType = '';
+      if (question && question.dataType) {
+        dataType = question.dataType;
+      }
+      return dataType === 'mtv';
+    },
     initiatePicker(contentQuesId) {
       setTimeout(() => {
         $(`#${contentQuesId}`).datetimepicker({

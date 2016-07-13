@@ -1005,7 +1005,28 @@ Template.selectQuestions.events(
 // var skip_value, contents;
 Template.previewSurvey.events(
   {
+    'click .optionadd'(/* evt, tmpl*/) {
+      let optionLength = $('#aoptions').children().length;
+      let optionsTag;
+      optionLength = optionLength + 1;
+      optionsTag = `<tr  id='${optionLength}' class='questionRow'>`;
 
+      optionsTag += `<td><textarea rows='1' cols='100' id='${optionLength}.description' 
+        class='description' ></textarea></td>`;
+
+      optionsTag += `<td><a id='delete.${optionLength}' class='btn btn-primary optionremove' >
+        <span class='fa fa-remove'></span></a></td></tr>`;
+
+      $('#aoptions').append(optionsTag);
+      $('#aoptions').on(
+        'click', 'a.optionremove', function remove() {
+          const rowId = $(this).attr('id');
+          const i = rowId.split('.');
+          const i1 = i[1];
+          $(`#${i1}`).remove();
+        }
+      );
+    },
     'change .hideWhenSkipped'(evt/* , tmpl*/) {
       const toggleSkip = $(evt.target.id).is(':checked');
       if (toggleSkip) {
