@@ -6,7 +6,7 @@
             <div class="row">
 				<!-- edit form column -->
                 <div class="col-md-8 col-sm-6 col-xs-12 personal-info">
-                    <form class="form-horizontal" role="form">
+                    <form id="create-client-form" class="form-horizontal" role="form">
 
 	                    {{> clientForm}}
 
@@ -126,32 +126,43 @@
   <div class="modal fade modal-fullscreen" id="releaseOfInformationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title text-center">Release of Information</h1>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-6 my-center-block">
-              <h1 class="text-muted">
-                {{{releaseOfInformation}}}
-              </h1>
-              <form id="release-of-information">
+        <form id="release-of-information">
+          <div class="modal-header">
+            <h1 class="modal-title text-center">Release of Information</h1>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-xs-12 col-sm-6 col-md-6 my-center-block">
+                <h1 class="text-muted">
+                  {{{releaseOfInformation}}}
+                </h1>
                 <label>
                   <input type="checkbox" required />
                   <span>I Agree</span>
                 </label>
-              </form>
+                {{> signaturePad}}
+              </div>
             </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <div class="row">
-            <div class="col-xs-7 col-md-6 col-lg-4 my-center-block">
-              <input type="submit" form="release-of-information" value="Submit" class="btn btn-lg btn-block js-open-housing-service-question-modal js-close-hotline-info btn-primary" />
+          <div class="modal-footer">
+            <div class="row">
+              <div class="col-xs-7 col-md-6 col-lg-4 my-center-block">
+                <input type="submit" value="Submit" class="btn btn-lg btn-block btn-primary" />
+              </div>
             </div>
           </div>
-        </div>
+        </form>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
+</template>
+
+<template name="signaturePad">
+  <div id="signature-pad" class="m-signature-pad">
+    <div class="m-signature-pad--body">
+      <canvas></canvas>
+    </div>
+  </div>
+  <div class="sign-above-description">Sign above</div>
+  <a href="#" class="btn btn-xs btn-default js-sign-clear">Clear</a>
 </template>
