@@ -1005,24 +1005,25 @@ Template.selectQuestions.events(
 // var skip_value, contents;
 Template.previewSurvey.events(
   {
-    'click .optionadd'(/* evt, tmpl*/) {
-      let optionLength = $('#aoptions').children().length;
+    'click .optionadd'(evt) {
+      const questionID = evt.currentTarget.id;
+      let optionLength = $(`#aoptions${questionID}`).children().length;
       let optionsTag;
       optionLength = optionLength + 1;
-      optionsTag = `<tr  id='${optionLength}' class='questionRow'>`;
+      const deleteID = `${questionID}${optionLength}`;
+      optionsTag = `<tr  id='${deleteID}' class='questionRow'>`;
 
-      optionsTag += `<td><textarea rows='1' cols='100' id='${optionLength}.description' 
+      optionsTag += `<td><textarea rows='1' cols='100' id='${deleteID}.description' 
         class='description' ></textarea></td>`;
 
-      optionsTag += `<td><a id='delete.${optionLength}' class='btn btn-primary optionremove' >
+      optionsTag += `<td><a id='delete.${deleteID}' class='btn btn-primary optionremove' >
         <span class='fa fa-remove'></span></a></td></tr>`;
-
-      $('#aoptions').append(optionsTag);
-      $('#aoptions').on(
+      $(`#aoptions${evt.currentTarget.id}`).append(optionsTag);
+      $(`#aoptions${evt.currentTarget.id}`).on(
         'click', 'a.optionremove', function remove() {
           const rowId = $(this).attr('id');
           const i = rowId.split('.');
-          const i1 = i[1];
+          const i1 = `${i[1]}`;
           $(`#${i1}`).remove();
         }
       );
