@@ -76,6 +76,29 @@
                                                 {{displayEditor content}}
                                             </li>
                                         {{/if}}
+                                        {{#if isMTV content}}
+                                            <li class="quesList">
+                                                <div id="options">
+                                                    <table class="table table-bordered table-striped table-hover">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Textbox</th>
+                                                            <th>Delete</th>
+                                                        </tr>
+                                                        <tr id='oadd' class='optionRow'>
+                                                            <td><a class='btn btn-primary optionadd'
+                                                                   id={{content}}><span class='fa fa-plus'></span></a>
+                                                            </td>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody id="aoptions{{content}}">
+
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </li>
+                                        {{/if}}
                                         {{#if isDate content}}
                                             <li class="quesList">
                                                 <div id={{content}} class='input-group'><span class="input-group-addon"><i
@@ -247,6 +270,29 @@
                                                     <li class="quesList">
                                                         <div id={{content}}></div>
                                                         {{displayEditor content}}
+                                                    </li>
+                                                {{/if}}
+                                                {{#if isMTV content}}
+                                                    <li class="quesList">
+                                                        <div id="options">
+                                                            <table class="table table-bordered table-striped table-hover">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th>Textbox</th>
+                                                                    <th>Delete</th>
+                                                                </tr>
+                                                                <tr id='oadd' class='optionRow'>
+                                                                    <td><a class='btn btn-primary optionadd'
+                                                                           id={{content}}><span class='fa fa-plus'></span></a>
+                                                                    </td>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody id="aoptions{{content}}">
+
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
                                                     </li>
                                                 {{/if}}
                                                 {{#if isDate content}}
