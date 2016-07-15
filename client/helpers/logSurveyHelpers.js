@@ -146,6 +146,15 @@ Template.LogSurvey.helpers(
 
 Template.LogSurveyResponse.helpers(
   {
+    isMTV(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const question = questionCollection.findOne({ _id: contentQuesId });
+      let dataType = '';
+      if (question && question.dataType) {
+        dataType = question.dataType;
+      }
+      return dataType === 'mtv';
+    },
     surveyQuesContents() {
       const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
       const surveyElements = surveyQuestionsMasterCollection.find(
@@ -419,6 +428,15 @@ function getText(id) {
 
 Template.LogSurveyView.helpers(
   {
+    isMTV(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const question = questionCollection.findOne({ _id: contentQuesId });
+      let dataType = '';
+      if (question && question.dataType) {
+        dataType = question.dataType;
+      }
+      return dataType === 'mtv';
+    },
     checkAudience(content) {
       return chkAudience(content);
     },

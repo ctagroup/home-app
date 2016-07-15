@@ -1013,7 +1013,7 @@ Template.previewSurvey.events(
       const deleteID = `${questionID}${optionLength}`;
       optionsTag = `<tr  id='${deleteID}' class='questionRow'>`;
 
-      optionsTag += `<td><textarea rows='1' cols='100' id='${deleteID}.description' 
+      optionsTag += `<td><textarea rows='1' cols='100' id='${questionID}.description' 
         class='description' ></textarea></td>`;
 
       optionsTag += `<td><a id='delete.${deleteID}' class='btn btn-primary optionremove' >
