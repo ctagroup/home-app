@@ -425,7 +425,30 @@ function getText(id) {
   }
   return '';
 }
-
+function addOptions(question) {
+  let optionsTag;
+  const response = getText(question);
+  if (response !== '') {
+    const resp = response.split('|');
+    for (let i = 0; i < resp.length; i++) {
+      const deleteID = `${question}${i}`;
+      optionsTag = `<tr  id='${deleteID}' class='questionRow'>`;
+      optionsTag += `<td><textarea rows='1' cols='40' id='${question}.description' 
+        class='description'>${resp[i]} </textarea></td>`;
+      optionsTag += `<td><a id='delete.${deleteID}' class='btn btn-primary optionremove' >
+      <span class='fa fa-remove'></span></a></td></tr>`;
+      $(`#aoptions${question}`).append(optionsTag);
+      $(`#aoptions${question}`).on(
+        'click', 'a.optionremove', function remove() {
+          const rowId = $(this).attr('id');
+          const j = rowId.split('.');
+          const i1 = `${j[1]}`;
+          $(`#${i1}`).remove();
+        }
+      );
+    }
+  }
+}
 Template.LogSurveyView.helpers(
   {
     isMTV(contentQuesId) {
@@ -456,6 +479,12 @@ Template.LogSurveyView.helpers(
         quesContents = surveyContents(surveyElements, surveyid);
       }
       return quesContents;
+    },
+    populateOptions(question) {
+      setTimeout(() => {
+        $(`#aoptions${question}`).empty();
+        addOptions(question);
+      }, 0);
     },
     surveyTitle(surveyID) {
       const surveyCollection = adminCollectionObject('surveys');
@@ -687,7 +716,7 @@ Template.LogSurveyView.helpers(
       return toggleVal;
     },
     surveyTextResponse(id) {
-      return getText(id);
+      return getText(id).split('|').join('<br/>');
     },
     isChecked(type) {
       const responseCollection = adminCollectionObject('responses');

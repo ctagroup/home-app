@@ -288,6 +288,20 @@ function savePausedSurvey(status, tmpl) {
                 }
               } else if (question.dataType === 'date') {
                 answer = $(`#${question._id} input`).val();
+              } else if (question.dataType === 'mtv') {
+                let option;
+                option = '';
+                $(`#aoptions${question._id}`).find('tr').each((k, item) => {
+                  if (option === '') {
+                    option = $(item).find('.description').val();
+                  } else {
+                    const op = $(item).find('.description').val();
+                    option += `|${$.trim(op)}`;
+                  }
+                });
+                if (option !== '') {
+                  answer = option;
+                }
               } else {
                 answer = tmpl.find(`#${question._id}`).value;
               }
@@ -455,6 +469,29 @@ Template.LogSurveyResponse.events(
 
 Template.LogSurveyView.events(
   {
+    'click .optionadd'(evt) {
+      const questionID = evt.currentTarget.id;
+      let optionLength = $(`#aoptions${questionID}`).children().length;
+      let optionsTag;
+      optionLength = optionLength + 1;
+      const deleteID = `${questionID}${optionLength}`;
+      optionsTag = `<tr  id='${deleteID}' class='questionRow'>`;
+
+      optionsTag += `<td><textarea rows='1' cols='100' id='${questionID}.description' 
+        class='description' ></textarea></td>`;
+
+      optionsTag += `<td><a id='delete.${deleteID}' class='btn btn-primary optionremove' >
+        <span class='fa fa-remove'></span></a></td></tr>`;
+      $(`#aoptions${evt.currentTarget.id}`).append(optionsTag);
+      $(`#aoptions${evt.currentTarget.id}`).on(
+        'click', 'a.optionremove', function remove() {
+          const rowId = $(this).attr('id');
+          const i = rowId.split('.');
+          const i1 = `${i[1]}`;
+          $(`#${i1}`).remove();
+        }
+      );
+    },
     'change .hideWhenSkipped': (evt) => {
       const toggleSkip = $(`#${evt.target.id}`).is(':checked');
       if (toggleSkip) {
