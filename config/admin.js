@@ -31,6 +31,7 @@ Meteor.startup(
       Meteor.subscribe('surveyQuestionsMaster');
       Meteor.subscribe('clientInfo');
       Meteor.subscribe('responses');
+      Meteor.subscribe('housingUnits');
     }
   }
 );

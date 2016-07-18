@@ -44,30 +44,12 @@ Template.AdminDashboardView.rendered = ->
 	length.find('select').on 'change', ->
 		table.page.len(parseInt @value).draw()
 
-Template.AdminDashboardView.helpers
-	hasDocuments: ->
-		AdminCollectionsCount.findOne({collection: Session.get 'admin_collection_name'})?.count > 0
-	newPath: ->
-		Router.path 'adminDashboard' + Session.get('admin_collection_name') + 'New'
-
-Template.surveyViewTemplate.helpers
-	hasDocuments: ->
-		AdminCollectionsCount.findOne({collection: Session.get 'admin_collection_name'})?.count > 0
-	newPath: ->
-		Router.path 'adminDashboard' + Session.get('admin_collection_name') + 'New'
-
-Template.questionViewTemplate.helpers
-	hasDocuments: ->
-		AdminCollectionsCount.findOne({collection: Session.get 'admin_collection_name'})?.count > 0
-	newPath: ->
-		Router.path 'adminDashboard' + Session.get('admin_collection_name') + 'New'
-
-Template.AdminDashboardusersView.helpers
-  hasDocuments: ->
-    AdminCollectionsCount.findOne({collection: Session.get 'admin_collection_name'})?.count > 0
-  newPath: ->
-    Router.path 'adminDashboard' + Session.get('admin_collection_name') + 'New'
-
 Template.adminEditBtn.helpers
 	path: ->
 		Router.path "adminDashboard" + Session.get('admin_collection_name') + "Edit", _id: @_id
+
+UI.registerHelper 'newPath', () ->
+	Router.path 'adminDashboard' + Session.get('admin_collection_name') + 'New'
+
+UI.registerHelper 'hasDocuments', () ->
+	AdminCollectionsCount.findOne({collection: Session.get 'admin_collection_name'})?.count > 0
