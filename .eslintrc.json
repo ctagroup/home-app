@@ -46,7 +46,7 @@
     "GoogleMaps": true,
     "google": true,
     "LocationTracker": true,
-    "housingInventory": true,
+    "housingUnits": true,
     "PreliminarySurvey": true,
     "SignaturePad": true,
     "SignaturePadConfig": true

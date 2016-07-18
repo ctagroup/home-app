@@ -415,9 +415,17 @@ AdminConfig = {
         },
       },
     },
-    housingInventory: {
+    housingUnits: {
       icon: 'home',
-      label: 'Housing Inventory',
+      label: 'Housing Units',
+      templates: {
+        view: {
+          name: 'housingUnitsListView',
+          data() {
+            return {};
+          },
+        },
+      },
     },
     users: {
       icon: 'user',
@@ -495,10 +503,12 @@ AdminConfig = {
     revoke: '/revoke/',
     clientBaseUrl: 'https://www.hmislynk.com/hmis-clientapi/rest',
     clients: '/clients/',
-    userServiceBaseUrl: 'http://www.hmislynk.com/hmis-user-service/rest',
+    searchClient: '/search/client',
+    userServiceBaseUrl: 'https://www.hmislynk.com/hmis-user-service/rest',
     basicInfo: '/accounts/{{username}}/basicinfo',
     selfBasicInfo: '/accounts/self/basicinfo',
-    searchClient: '/search/client',
+    housingInventoryBaseUrl: 'https://www.hmislynk.com/survey-api/rest',
+    housingUnits: '/housing-units',
     v2015: '/v2015',
     v2014: '',
   },

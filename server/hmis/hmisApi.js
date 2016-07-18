@@ -4,6 +4,13 @@
 const querystring = require('querystring');
 
 HMISAPI = {
+  currentUserId: '',
+  setCurrentUserId(userId) {
+    HMISAPI.currentUserId = userId;
+  },
+  getCurrentUserId() {
+    return HMISAPI.currentUserId;
+  },
   isJSON(str) {
     try {
       JSON.parse(str);
@@ -75,8 +82,8 @@ HMISAPI = {
       refreshToken: hmisRefreshToken,
     };
   },
-  getCurrentAccessToken() {
-    const user = Meteor.user();
+  getUserAccessToken(userId) {
+    const user = Meteor.users.findOne({ _id: userId });
     let accessToken = '';
     if (user && user.services && user.services.HMIS
         && user.services.HMIS.accessToken && user.services.HMIS.expiresAt) {
@@ -107,6 +114,17 @@ HMISAPI = {
       throw _.extend(new Error('No valid access token for HMIS.'));
     }
     return accessToken;
+  },
+  getCurrentAccessToken(useCurrentUserObject = true) {
+    let userId = HMISAPI.getCurrentUserId();
+    if (useCurrentUserObject) {
+      const user = Meteor.user();
+      if (user && user._id) {
+        userId = user._id;
+      }
+    }
+
+    return HMISAPI.getUserAccessToken(userId);
   },
   createClient(client) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
@@ -274,6 +292,48 @@ HMISAPI = {
       logger.info(err.response);
       return [];
     }
+  },
+  getHousingUnitsForPublish() {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+
+    const accessToken = this.getCurrentAccessToken(false);
+
+    let housingUnits = [];
+
+    const baseUrl = config.hmisAPIEndpoints.housingInventoryBaseUrl;
+    const housingUnitsPath = config.hmisAPIEndpoints.housingUnits;
+    const urlPah = `${baseUrl}${housingUnitsPath}`;
+    // const url = `${urlPah}?${querystring.stringify(params)}`;
+    const url = `${urlPah}`;
+
+    logger.info(url);
+    logger.info(accessToken);
+
+    try {
+      const response = HTTP.get(url, {
+        headers: {
+          'X-HMIS-TrustedApp-Id': config.appId,
+          Authorization: `HMISUserAuth session_token=${accessToken}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        npmRequestOptions: {
+          rejectUnauthorized: false, // TODO remove when deploy
+        },
+      }).data;
+      logger.info(response);
+      housingUnits = [];
+    } catch (err) {
+      throw _.extend(
+        new Error(`Failed to get housing units from HMIS. ${err.message}`),
+        { response: err.response }
+      );
+    }
+
+    return housingUnits;
   },
   postQuestionAnswer(category, data) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
