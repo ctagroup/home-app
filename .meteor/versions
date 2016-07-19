@@ -12,7 +12,7 @@ aldeed:tabular@1.6.1
 aldeed:template-extension@3.4.3
 allow-deny@1.0.5
 autoupdate@1.2.11
-babel-compiler@6.8.4
+babel-compiler@6.8.5
 babel-runtime@0.1.9_1
 base64@1.0.9
 binary-heap@1.0.9
@@ -24,7 +24,7 @@ caching-compiler@1.0.6
 caching-html-compiler@1.0.6
 callback-hook@1.0.9
 check@1.2.3
-coffeescript@1.1.3
+coffeescript@1.1.4
 cunneen:signature-pad@1.5.3
 dburles:collection-helpers@1.0.4
 dburles:google-maps@1.1.5
@@ -33,16 +33,16 @@ ddp@1.2.5
 ddp-client@1.2.9
 ddp-common@1.2.6
 ddp-rate-limiter@1.0.5
-ddp-server@1.2.9
+ddp-server@1.2.10
 deps@1.0.12
 desaiuditd:accounts-hmis@0.0.3
 desaiuditd:hmis@0.0.8
 desaiuditd:meteor-admin@1.2.3
 diff-sequence@1.0.6
-ecmascript@0.4.7
+ecmascript@0.4.8
 ecmascript-runtime@0.2.12
 ejson@1.0.12
-email@1.0.15
+email@1.0.16
 es5-shim@4.5.13
 fastclick@1.0.12
 fortawesome:fontawesome@4.5.0
@@ -68,7 +68,7 @@ jparker:gravatar@0.5.1
 jquery@1.11.9
 lai:collection-extensions@0.2.1_1
 launch-screen@1.0.12
-less@2.6.4
+less@2.6.5
 livedata@1.0.18
 localstorage@1.0.11
 logging@1.0.14
@@ -89,7 +89,7 @@ mobile-experience@1.0.4
 mobile-status-bar@1.0.12
 modules@0.6.5
 modules-runtime@0.6.5
-momentjs:moment@2.14.1
+momentjs:moment@2.14.4
 mongo@1.1.9_1
 mongo-id@1.0.5
 mongo-livedata@1.0.12
@@ -121,9 +121,9 @@ spacebars-compiler@1.0.12
 standard-minifier-css@1.0.8
 standard-minifier-js@1.0.8
 summernote:standalone@0.8.1
-templating@1.1.13
+templating@1.1.14
 templating-tools@1.0.4
-tracker@1.0.14
+tracker@1.0.15
 tsega:bootstrap3-datetimepicker@4.17.37_1
 ui@1.0.11
 underscore@1.0.9
@@ -131,6 +131,6 @@ url@1.0.10
 useraccounts:bootstrap@1.14.2
 useraccounts:core@1.14.2
 useraccounts:iron-routing@1.14.2
-webapp@1.2.10
+webapp@1.2.11
 webapp-hashing@1.0.9
 zimme:active-route@2.3.2
