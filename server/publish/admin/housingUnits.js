@@ -18,49 +18,52 @@ Meteor.publish(
 
     housingUnits = [
       {
-        "inactive": false,
-        "housingInventoryId": null,
-        "bedsCurrent": 5,
-        "projectId": "test-project",
-        "userId": "shubas",
-        "bedsCapacity": 6,
-        "familyUnit": null,
-        "inService": null,
-        "vacant": null,
-        "housingUnitAddress": {
-          "line1": "addr line 1",
-          "line2": "addr line 2",
-          "state": "NY",
-          "city": "Austin",
-          "zipCode": 73308
-        }
+        inactive: false,
+        housingInventoryId: null,
+        bedsCurrent: 5,
+        projectId: 'test-project',
+        userId: 'shubas',
+        bedsCapacity: 6,
+        familyUnit: null,
+        inService: null,
+        vacant: null,
+        housingUnitAddress: {
+          line1: 'addr line 1',
+          line2: 'addr line 2',
+          state: 'NY',
+          city: 'Austin',
+          zipCode: 73308,
+        },
       },
       {
-        "inactive": false,
-        "housingInventoryId": null,
-        "bedsCurrent": 5,
-        "projectId": "test-project",
-        "userId": "shubas",
-        "bedsCapacity": 6,
-        "familyUnit": null,
-        "inService": null,
-        "vacant": null,
-        "housingUnitAddress": {
-          "line1": "addr line 1",
-          "line2": "addr line 2",
-          "state": "NY",
-          "city": "Austin",
-          "zipCode": 73308
-        }
+        inactive: false,
+        housingInventoryId: null,
+        bedsCurrent: 5,
+        projectId: 'test-project',
+        userId: 'shubas',
+        bedsCapacity: 6,
+        familyUnit: null,
+        inService: null,
+        vacant: null,
+        housingUnitAddress: {
+          line1: 'addr line 1',
+          line2: 'addr line 2',
+          state: 'NY',
+          city: 'Austin',
+          zipCode: 73308,
+        },
       },
     ];
 
-    _.each(housingUnits, function(item) {
+    _.each(housingUnits, (item) => {
       self.added('housingUnits', Random.id(), item);
     });
 
     self.ready();
-  },
+  }
+);
+
+Meteor.publish(
   'singleHousingUnits', function publishSingleHousingUnit(housingUnitId) {
     let housingUnit = false;
 
@@ -72,5 +75,5 @@ Meteor.publish(
       HMISAPI.setCurrentUserId('');
     }
     return housingUnit;
-  },
+  }
 );

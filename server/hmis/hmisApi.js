@@ -346,7 +346,10 @@ HMISAPI = {
     let housingUnit = false;
 
     const baseUrl = config.hmisAPIEndpoints.housingInventoryBaseUrl;
-    const housingUnitsPath = config.hmisAPIEndpoints.housingUnit.replace('{{housing_unit_uuid}}', housingUnitId);
+    const housingUnitsPath = config.hmisAPIEndpoints.housingUnit.replace(
+      '{{housing_unit_uuid}}',
+      housingUnitId
+    );
     const urlPah = `${baseUrl}${housingUnitsPath}`;
     // const url = `${urlPah}?${querystring.stringify(params)}`;
     const url = `${urlPah}`;
