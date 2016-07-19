@@ -3,7 +3,7 @@
 	<p><a href="{{newPath}}" class="btn btn-primary"><i class="fa fa-plus"></i> Add one</a></p>
 
 	{{#if hasHousingUnits}}
-		{{> tabular table=housingUnitsTable class="table dataTable"}}
+    {{> ReactiveDatatable tableData=housingUnitsData options=housingUnitsTableOptions }}
 	{{else}}
 		<div class="alert alert-info">
 			<p>There are no visible items in this collection.</p>

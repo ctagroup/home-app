@@ -191,7 +191,7 @@ AdminConfig = {
       'delete_intake',
     ],
   },
-  adminTablesDom: '<"box"<"box-header"<"box-toolbar"<"pull-left"<lf>><"pull-right"p>>><"box-body table-responsive"t>>',
+  adminTablesDom: '<"box"<"box-header"<"box-toolbar"<"clearfix"ri><"pull-left"<lf>><"pull-right"p>>><"box-body table-responsive"t>>',
   collections: {
     surveys: {
       icon: 'file-text',
@@ -419,6 +419,30 @@ AdminConfig = {
     housingUnits: {
       icon: 'home',
       label: 'Housing Units',
+      tableColumns: [
+        {
+          title: 'ID',
+          data: '_id', // note: access nested data like this
+        },
+        {
+          title: 'Edit',
+          data: '_id',
+          searchable: false,
+          orderable: false,
+          render(cellData, renderType, currentRow) {
+            return "Edit Button";
+          },
+        },
+        {
+          title: 'Delete',
+          data: '_id',
+          searchable: false,
+          orderable: false,
+          render(cellData, renderType, currentRow) {
+            return "Delete Button";
+          },
+        },
+      ],
       templates: {
         view: {
           name: 'housingUnitsListView',

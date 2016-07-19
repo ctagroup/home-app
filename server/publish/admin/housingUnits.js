@@ -18,6 +18,7 @@ Meteor.publish(
 
     housingUnits = [
       {
+        _id: '123',
         inactive: false,
         housingInventoryId: null,
         bedsCurrent: 5,
@@ -36,6 +37,7 @@ Meteor.publish(
         },
       },
       {
+        _id: '123',
         inactive: false,
         housingInventoryId: null,
         bedsCurrent: 5,
