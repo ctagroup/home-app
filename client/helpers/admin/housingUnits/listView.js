@@ -7,5 +7,16 @@ Template.housingUnitsListView.helpers(
     hasHousingUnits() {
       return housingUnits.find({}).fetch();
     },
+    housingUnitsTableOptions() {
+      return {
+        columns: AdminConfig.collections.housingUnits.tableColumns,
+        dom: AdminConfig.adminTablesDom
+      };
+    },
+    housingUnitsData() {
+      return () => {
+        return housingUnits.find({}).fetch();
+      }
+    },
   }
 );
