@@ -191,7 +191,9 @@ AdminConfig = {
       'delete_intake',
     ],
   },
+  /* eslint-disable */
   adminTablesDom: '<"box"<"box-header"<"box-toolbar"<"clearfix"ri><"pull-left"<lf>><"pull-right"p>>><"box-body table-responsive"t>>',
+  /* eslint-enable */
   collections: {
     surveys: {
       icon: 'file-text',
@@ -429,8 +431,8 @@ AdminConfig = {
           data: '_id',
           searchable: false,
           orderable: false,
-          render(cellData, renderType, currentRow) {
-            return "Edit Button";
+          render(/* cellData, renderType, currentRow */) {
+            return 'Edit Button';
           },
         },
         {
@@ -438,8 +440,8 @@ AdminConfig = {
           data: '_id',
           searchable: false,
           orderable: false,
-          render(cellData, renderType, currentRow) {
-            return "Delete Button";
+          render(/* cellData, renderType, currentRow */) {
+            return 'Delete Button';
           },
         },
       ],
