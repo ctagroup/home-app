@@ -424,6 +424,9 @@ AdminConfig = {
           data() {
             return {};
           },
+          waitOn() {
+            return Meteor.subscribe('housingUnits');
+          },
         },
       },
     },
@@ -509,6 +512,7 @@ AdminConfig = {
     selfBasicInfo: '/accounts/self/basicinfo',
     housingInventoryBaseUrl: 'https://www.hmislynk.com/survey-api/rest',
     housingUnits: '/housing-units',
+    housingUnit: '/housing-units/{{housing_unit_uuid}}',
     v2015: '/v2015',
     v2014: '',
   },
