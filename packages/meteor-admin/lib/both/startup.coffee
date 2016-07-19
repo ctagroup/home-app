@@ -84,20 +84,24 @@ adminCreateRouteView = (collection, collectionName) ->
 		adminCreateRouteViewOptions collection, collectionName
 
 adminCreateRouteViewOptions = (collection, collectionName) ->
-	options =
-		path: "/admin/#{collectionName}"
-		template: "AdminDashboardView"
-		controller: "AdminController"
-		data: ->
-  		admin_table: AdminTables[collectionName]
-		action: ->
-			@render()
-		onAfterAction: ->
-			Session.set 'admin_title', if ( typeof collection.label != 'undefined' ) then collection.label else collectionName
-			Session.set 'admin_subtitle', 'View'
-			Session.set 'admin_collection_name', collectionName
-			collection.routes?.view?.onAfterAction
-	_.defaults options, collection.routes?.view
+  options =
+    path: "/admin/#{collectionName}"
+    template: "AdminDashboardView"
+    controller: "AdminController"
+    data: ->
+      admin_table: AdminTables[collectionName]
+    action: ->
+      @render()
+    onAfterAction: ->
+      Session.set 'admin_title', if ( typeof collection.label != 'undefined' ) then collection.label else collectionName
+      Session.set 'admin_subtitle', 'View'
+      Session.set 'admin_collection_name', collectionName
+      collection.routes?.view?.onAfterAction
+
+  if (collection.templates && collection.templates.view && collection.templates.view.waitOn)
+    options.waitOn = collection.templates.view.waitOn;
+
+  _.defaults options, collection.routes?.view
 
 adminCreateRouteNew = (collection, collectionName) ->
 	Router.route "adminDashboard#{collectionName}New",
