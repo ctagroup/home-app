@@ -10,13 +10,11 @@ Template.housingUnitsListView.helpers(
     housingUnitsTableOptions() {
       return {
         columns: AdminConfig.collections.housingUnits.tableColumns,
-        dom: AdminConfig.adminTablesDom
+        dom: AdminConfig.adminTablesDom,
       };
     },
     housingUnitsData() {
-      return () => {
-        return housingUnits.find({}).fetch();
-      }
+      return () => housingUnits.find({}).fetch();
     },
   }
 );
