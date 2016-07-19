@@ -191,6 +191,7 @@ AdminConfig = {
       'delete_intake',
     ],
   },
+  adminTablesDom: '<"box"<"box-header"<"box-toolbar"<"pull-left"<lf>><"pull-right"p>>><"box-body table-responsive"t>>',
   collections: {
     surveys: {
       icon: 'file-text',

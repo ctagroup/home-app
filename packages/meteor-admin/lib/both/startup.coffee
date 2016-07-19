@@ -1,7 +1,5 @@
 @AdminTables = {}
 
-adminTablesDom = '<"box"<"box-header"<"box-toolbar"<"pull-left"<lf>><"pull-right"p>>><"box-body table-responsive"t>>'
-
 adminEditButton = {
 	data: '_id'
 	title: 'Edit'
@@ -71,7 +69,7 @@ adminCreateTables = (collections) ->
 			sub: collection.sub
 			columns: columns
 			extraFields: collection.extraFields
-			dom: adminTablesDom
+			dom: AdminConfig.adminTablesDom
 			changeSelector: changeSelector
 
 adminCreateRoutes = (collections) ->
