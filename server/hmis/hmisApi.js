@@ -126,7 +126,7 @@ HMISAPI = {
 
     return HMISAPI.getUserAccessToken(userId);
   },
-  createClient(client) {
+  createClient(client, schemaVersion = 'v2015') {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (! config) {
       throw new ServiceConfiguration.ConfigError();
@@ -155,7 +155,9 @@ HMISAPI = {
 
     try {
       const response = HTTP.post(
-        config.hmisAPIEndpoints.clientBaseUrl + config.hmisAPIEndpoints.clients, {
+        config.hmisAPIEndpoints.clientBaseUrl
+        + config.hmisAPIEndpoints[schemaVersion]
+        + config.hmisAPIEndpoints.clients, {
           data: body,
           headers: {
             'X-HMIS-TrustedApp-Id': config.appId,

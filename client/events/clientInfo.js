@@ -1,6 +1,7 @@
 /**
  * Created by Kavi on 4/5/16.
  */
+const querystring = require('querystring');
 
 Template.clientForm.events(
   {
@@ -69,6 +70,10 @@ Template.createClient.events(
   }
 );
 
+Template.viewClient.onRendered(() => {
+  $('body').tooltip({ selector: '.js-tooltip' });
+});
+
 Template.viewClient.events(
   {
     'click .edit'(evt, tmpl) {
@@ -85,12 +90,21 @@ Template.viewClient.events(
       Meteor.call(
         'addClientToHMIS', tmpl.data._id, (error, result) => {
           if (error) {
-            // console.log(error);
+            logger.log(error);
           } else {
-            const query = (
-                            result
-                          ) ? 'addedToHMIS=1' : 'addClientToHMISError=1';
-            Router.go('viewClient', { _id: tmpl.data._id }, { query });
+            let query = 'addClientToHMISError=1';
+            let clientId = tmpl.data._id;
+            if (result) {
+              const params = {
+                addedToHMIS: 1,
+                isHMISClient: true,
+                link: result.link,
+              };
+              clientId = result._id;
+              query = querystring.stringify(params);
+            }
+
+            Router.go('viewClient', { _id: clientId }, { query });
           }
         }
       );
