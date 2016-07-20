@@ -194,6 +194,20 @@ AdminConfig = {
   /* eslint-disable */
   adminTablesDom: '<"box"<"box-header"<"box-toolbar"<"clearfix"ri><"pull-left"<lf>><"pull-right"p>>><"box-body table-responsive"t>>',
   /* eslint-enable */
+  fontFamilies: [
+    'Arial',
+    'Arial Black',
+    'Comic Sans MS',
+    'Courier New',
+    'Helvetica Neue',
+    'Helvetica',
+    'Impact',
+    'Lucida Grande',
+    'Raleway',
+    'Tahoma',
+    'Times New Roman',
+    'Verdana',
+  ],
   collections: {
     surveys: {
       icon: 'file-text',
