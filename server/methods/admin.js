@@ -622,16 +622,14 @@ Meteor.methods(
       let flag = false;
 
       if (personalId) {
-        clientInfoCollection.update(
-          {
-            _id: client._id,
-          }, {
-            $set: {
-              personalId,
-            },
-          }
-        );
-        flag = true;
+        clientInfoCollection.remove({ _id: client._id });
+        flag = {
+          _id: personalId,
+          link: AdminConfig.hmisAPIEndpoints.clientBaseUrl.replace(AdminConfig.hmisAPIEndpoints.apiBaseUrl, '')
+                + AdminConfig.hmisAPIEndpoints.v2015
+                + AdminConfig.hmisAPIEndpoints.clients
+                + '/' + personalId
+        };
       }
       return flag;
     },
