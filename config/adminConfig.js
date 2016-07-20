@@ -485,24 +485,6 @@ AdminConfig = {
           title: 'Matched Status',
           data: 'matchedStatus', // note: access nested data like this
         },
-        {
-          title: 'Edit',
-          data: '_id',
-          searchable: false,
-          orderable: false,
-          render(/* cellData, renderType, currentRow */) {
-            return 'Edit Button';
-          },
-        },
-        {
-          title: 'Delete',
-          data: '_id',
-          searchable: false,
-          orderable: false,
-          render(/* cellData, renderType, currentRow */) {
-            return 'Delete Button';
-          },
-        },
       ],
       templates: {
         view: {

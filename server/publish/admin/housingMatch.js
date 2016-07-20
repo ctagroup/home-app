@@ -8,10 +8,10 @@ Meteor.publish(
 
     let housingMatch = [];
 
-    if (this.userId) {
-    } else {
-      HMISAPI.setCurrentUserId('');
-    }
+    // if (this.userId) {
+    // } else {
+    //   HMISAPI.setCurrentUserId('');
+    // }
 
     housingMatch = [
       {
