@@ -457,6 +457,65 @@ AdminConfig = {
         },
       },
     },
+    housingMatch: {
+      icon: 'home',
+      label: 'Housing Matching Service',
+      tableColumns: [
+        {
+          title: 'Reservation ID',
+          data: 'reservation_id', // note: access nested data like this
+        },
+        {
+          title: 'Client ID',
+          data: 'client_id', // note: access nested data like this
+        },
+        {
+          title: 'Housing Unit ID',
+          data: 'housing_unit_id', // note: access nested data like this
+        },
+        {
+          title: 'Match Date',
+          data: 'match_date', // note: access nested data like this
+        },
+        {
+          title: 'User ID',
+          data: 'user_id', // note: access nested data like this
+        },
+        {
+          title: 'Matched Status',
+          data: 'matchedStatus', // note: access nested data like this
+        },
+        {
+          title: 'Edit',
+          data: '_id',
+          searchable: false,
+          orderable: false,
+          render(/* cellData, renderType, currentRow */) {
+            return 'Edit Button';
+          },
+        },
+        {
+          title: 'Delete',
+          data: '_id',
+          searchable: false,
+          orderable: false,
+          render(/* cellData, renderType, currentRow */) {
+            return 'Delete Button';
+          },
+        },
+      ],
+      templates: {
+        view: {
+          name: 'housingMatchListView',
+          data() {
+            return {};
+          },
+          waitOn() {
+            return Meteor.subscribe('housingMatch');
+          },
+        },
+      },
+    },
     users: {
       icon: 'user',
       label: 'Users',
