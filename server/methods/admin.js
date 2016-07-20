@@ -623,12 +623,16 @@ Meteor.methods(
 
       if (personalId) {
         clientInfoCollection.remove({ _id: client._id });
+        const clientBasePath = AdminConfig.hmisAPIEndpoints.clientBaseUrl.replace(
+          AdminConfig.hmisAPIEndpoints.apiBaseUrl,
+          ''
+        );
+        const schemaVersion = AdminConfig.hmisAPIEndpoints.v2015;
+        const clientsPath = AdminConfig.hmisAPIEndpoints.clients;
+        const url = `${clientBasePath}${schemaVersion}${clientsPath}/${personalId}`;
         flag = {
           _id: personalId,
-          link: AdminConfig.hmisAPIEndpoints.clientBaseUrl.replace(AdminConfig.hmisAPIEndpoints.apiBaseUrl, '')
-                + AdminConfig.hmisAPIEndpoints.v2015
-                + AdminConfig.hmisAPIEndpoints.clients
-                + '/' + personalId
+          link: url,
         };
       }
       return flag;
