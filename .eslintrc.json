@@ -47,6 +47,7 @@
     "google": true,
     "LocationTracker": true,
     "housingUnits": true,
+    "housingMatch": true,
     "PreliminarySurvey": true,
     "SignaturePad": true,
     "SignaturePadConfig": true
