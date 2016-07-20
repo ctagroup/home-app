@@ -24,17 +24,8 @@ Schemas.adminSettings = new SimpleSchema(
           class: 'editor', // optional
           settings: {
             minHeight: 100,             // set minimum height of editor
+            fontNames: AdminConfig.fontFamilies,
           }, // summernote options goes here
-        },
-      },
-    },
-    'preClientProfileQuestions.dvQuestion.skip': {
-      label: 'Skip DV Question ?',
-      type: Boolean,
-      optional: true,
-      autoform: {
-        afFieldInput: {
-          type: 'boolean-checkbox',
         },
       },
     },
@@ -48,7 +39,18 @@ Schemas.adminSettings = new SimpleSchema(
           class: 'editor', // optional
           settings: {
             minHeight: 100,             // set minimum height of editor
+            fontNames: AdminConfig.fontFamilies,
           }, // summernote options goes here
+        },
+      },
+    },
+    'preClientProfileQuestions.dvQuestion.skip': {
+      label: 'Skip DV Question ?',
+      type: Boolean,
+      optional: true,
+      autoform: {
+        afFieldInput: {
+          type: 'boolean-checkbox',
         },
       },
     },
@@ -67,6 +69,7 @@ Schemas.adminSettings = new SimpleSchema(
           class: 'editor', // optional
           settings: {
             minHeight: 100,             // set minimum height of editor
+            fontNames: AdminConfig.fontFamilies,
           }, // summernote options goes here
         },
       },
@@ -95,6 +98,7 @@ Schemas.adminSettings = new SimpleSchema(
           class: 'editor', // optional
           settings: {
             minHeight: 100,             // set minimum height of editor
+            fontNames: AdminConfig.fontFamilies,
           }, // summernote options goes here
         },
       },
