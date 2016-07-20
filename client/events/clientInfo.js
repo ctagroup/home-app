@@ -70,6 +70,10 @@ Template.createClient.events(
   }
 );
 
+Template.viewClient.onRendered(() => {
+  $('body').tooltip({ selector: '.js-tooltip' });
+});
+
 Template.viewClient.events(
   {
     'click .edit'(evt, tmpl) {
