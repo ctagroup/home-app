@@ -606,5 +606,18 @@ Template.clientForm.helpers(
     getExtraTimesHomeless() {
       return timesHomeless;
     },
+    skipReleaseOfInformation() {
+      const releaseOfInformationSkip = options.findOne(
+        { option_name: 'preClientProfileQuestions.releaseOfInformation.skip' }
+      );
+
+      let flag = false;
+
+      if (releaseOfInformationSkip && releaseOfInformationSkip.option_value) {
+        flag = true;
+      }
+
+      return flag;
+    },
   }
 );

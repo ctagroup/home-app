@@ -31,7 +31,7 @@
 </template>
 
 <template name="preliminarySurvey">
-  <div class="modal fade modal-fullscreen" id="dvQuestionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal fade modal-fullscreen" id="preliminarySurveyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -40,85 +40,33 @@
         <div class="modal-body content">
           <div class="row">
             <div class="col-xs-12 col-sm-6 col-md-6 my-center-block">
-              <h1 class="text-muted">
+              {{#unless skipDvQuestion}}
                 {{{dvQuestion}}}
-              </h1>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <div class="row">
-            <div class="col-xs-7 col-md-6 col-lg-4 my-center-block">
-              <div class="row">
-                <div class="col-xs-6">
-                  <button type="button" class="btn btn-lg btn-block js-open-hotline-info js-close-dv-question-modal btn-success">Yes</button>
-                </div>
-                <div class="col-xs-6">
-                  <button type="button" class="btn btn-lg btn-block js-open-housing-service-question-modal js-close-dv-question-modal btn-danger">No</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
-
-  <div class="modal fade modal-fullscreen" id="housingServiceQuestionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title text-center">Preliminary Survey</h1>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-6 my-center-block">
-              <h1 class="text-muted">
-                {{{housingServiceQuestion}}}
-              </h1>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <div class="row">
-            <div class="col-xs-7 col-md-6 col-lg-4 my-center-block">
-              <div class="row">
-                <div class="col-xs-6">
-                  <button type="button" class="btn btn-lg btn-block js-open-release-of-info-modal js-close-housing-service-question-modal btn-success">Yes</button>
-                </div>
-                <div class="col-xs-6">
-                  <button type="button" class="btn btn-lg btn-block js-goto-home js-close-housing-service-question-modal btn-danger">No</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
-
-  <div class="modal fade modal-fullscreen" id="hotlineInfoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title text-center">Hotline Information</h1>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-6 my-center-block">
-              <h1 class="text-muted">
                 {{{hotlineInfo}}}
-              </h1>
+              {{/unless}}
+              {{#unless skipHousingServiceQuestion}}
+                {{{housingServiceQuestion}}}
+              {{/unless}}
             </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <div class="row">
+          <div class="row margin-top-35">
             <div class="col-xs-7 col-md-6 col-lg-4 my-center-block">
-              <button type="button" class="btn btn-lg btn-block js-open-housing-service-question-modal js-close-hotline-info btn-primary">Continue</button>
+              {{#if skipHousingServiceQuestion}}
+                  <button type="button" class="btn btn-lg btn-block btn-primary js-open-release-of-info-modal js-close-preliminary-survey-modal">Continue</button>
+              {{else}}
+                <div class="row">
+                  <div class="col-xs-6">
+                    <button type="button" class="btn btn-lg btn-block js-open-release-of-info-modal js-close-preliminary-survey-modal btn-success">Yes</button>
+                  </div>
+                  <div class="col-xs-6">
+                    <button type="button" class="btn btn-lg btn-block js-goto-home js-close-preliminary-survey-modal btn-danger">No</button>
+                  </div>
+                </div>
+              {{/if}}
             </div>
           </div>
         </div>
+        <div class="modal-footer"></div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
