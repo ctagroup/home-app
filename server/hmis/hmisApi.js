@@ -305,7 +305,7 @@ HMISAPI = {
 
     let housingUnits = [];
 
-    const baseUrl = config.hmisAPIEndpoints.housingInventoryBaseUrl;
+    const baseUrl = 'http://52.38.213.135:8081';
     const housingUnitsPath = config.hmisAPIEndpoints.housingUnits;
     const urlPah = `${baseUrl}${housingUnitsPath}`;
     // const url = `${urlPah}?${querystring.stringify(params)}`;
@@ -327,7 +327,7 @@ HMISAPI = {
         },
       }).data;
       logger.info(response);
-      housingUnits = [];
+      housingUnits = response;
     } catch (err) {
       throw _.extend(
         new Error(`Failed to get housing units from HMIS. ${err.message}`),
