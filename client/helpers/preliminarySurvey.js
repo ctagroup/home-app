@@ -1,5 +1,18 @@
 Template.preliminarySurvey.helpers(
   {
+    skipDvQuestion() {
+      const dvQuestion = options.findOne(
+        { option_name: 'preClientProfileQuestions.dvQuestion.skip' }
+      );
+
+      let skip = false;
+
+      if (dvQuestion && dvQuestion.option_value) {
+        skip = (dvQuestion.option_value === 'true');
+      }
+
+      return skip;
+    },
     dvQuestion() {
       const dvQuestion = options.findOne(
         { option_name: 'preClientProfileQuestions.dvQuestion.question' }
@@ -12,6 +25,19 @@ Template.preliminarySurvey.helpers(
       }
 
       return question;
+    },
+    skipHousingServiceQuestion() {
+      const housingServiceQuestion = options.findOne(
+        { option_name: 'preClientProfileQuestions.housingServiceQuestion.skip' }
+      );
+
+      let skip = false;
+
+      if (housingServiceQuestion && housingServiceQuestion.option_value) {
+        skip = (housingServiceQuestion.option_value === 'true');
+      }
+
+      return skip;
     },
     housingServiceQuestion() {
       const housingServiceQuestion = options.findOne(
