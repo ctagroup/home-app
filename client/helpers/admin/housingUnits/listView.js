@@ -8,8 +8,18 @@ Template.housingUnitsListView.helpers(
       return housingUnits.find({}).fetch();
     },
     housingUnitsTableOptions() {
+
+      const tableColumns = AdminConfig.collections.housingUnits.tableColumns;
+
+      if (AdminConfig.collections.housingUnits.showEditColumn) {
+        tableColumns.push(AdminConfig.adminEditButton)
+      }
+      if (AdminConfig.collections.housingUnits.showDelColumn) {
+        tableColumns.push(AdminConfig.adminDelButton)
+      }
+
       return {
-        columns: AdminConfig.collections.housingUnits.tableColumns,
+        columns: tableColumns,
         dom: AdminConfig.adminTablesDom,
       };
     },
