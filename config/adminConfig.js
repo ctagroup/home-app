@@ -198,7 +198,7 @@ AdminConfig = {
     data: '_id',
     title: 'Edit',
     createdCell(node, cellData/* , rowData */) {
-      $(node).html(Blaze.toHTMLWithData(Template.adminEditBtn, {_id: cellData}));
+      $(node).html(Blaze.toHTMLWithData(Template.adminEditBtn, { _id: cellData }));
     },
     width: '40px',
     orderable: false,
@@ -207,7 +207,7 @@ AdminConfig = {
     data: '_id',
     title: 'Delete',
     createdCell(node, cellData/* , rowData */) {
-      $(node).html(Blaze.toHTMLWithData(Template.adminDeleteBtn, {_id: cellData}));
+      $(node).html(Blaze.toHTMLWithData(Template.adminDeleteBtn, { _id: cellData }));
     },
     width: '40px',
     orderable: false,
