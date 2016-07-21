@@ -1,27 +1,5 @@
 @AdminTables = {}
 
-adminEditButton = {
-	data: '_id'
-	title: 'Edit'
-	createdCell: (node, cellData, rowData) ->
-		$(node).html(Blaze.toHTMLWithData Template.adminEditBtn, {_id: cellData})
-	width: '40px'
-	orderable: false
-}
-adminDelButton = {
-	data: '_id'
-	title: 'Delete'
-	createdCell: (node, cellData, rowData) ->
-		$(node).html(Blaze.toHTMLWithData Template.adminDeleteBtn, {_id: cellData})
-	width: '40px'
-	orderable: false
-}
-
-adminEditDelButtons = [
-	adminEditButton,
-	adminDelButton
-]
-
 defaultColumns = () -> [
   data: '_id',
   title: 'ID'
@@ -54,9 +32,9 @@ adminCreateTables = (collections) ->
       columns = defaultColumns()
 
     if collection.showEditColumn
-      columns.push(adminEditButton)
+      columns.push(AdminConfig.adminEditButton)
     if collection.showDelColumn
-      columns.push(adminDelButton)
+      columns.push(AdminConfig.adminDelButton)
 
     changeSelector = '';
     if collection.changeSelector
