@@ -456,7 +456,51 @@ AdminConfig = {
       tableColumns: [
         {
           title: 'ID',
-          data: '_id', // note: access nested data like this
+          data: 'housingInventoryId',
+        },
+        {
+          title: 'Active?',
+          data: 'inactive',
+          orderable: false,
+          render(value) {
+            /* eslint-disable */
+            return value ? '' : '<i class="fa fa-check js-tooltip" data-toggle="tooltip" data-placement="right" title=""></i>';
+            /* eslint-enable */
+          },
+        },
+        {
+          title: 'Current Beds',
+          data: 'bedsCurrent',
+        },
+        {
+          title: 'Project',
+          data: 'projectId',
+        },
+        {
+          'title': 'User',
+          data: 'userId',
+        },
+        {
+          title: 'Beds Capacity',
+          data: 'bedsCapacity',
+        },
+        {
+          title: 'In Service?',
+          data: 'inService',
+          render(value) {
+            /* eslint-disable */
+            return value ? '<i class="fa fa-check js-tooltip" data-toggle="tooltip" data-placement="right" title=""></i>' : '';
+            /* eslint-enable */
+          },
+        },
+        {
+          title: 'Vacant?',
+          data: 'vacant',
+          render(value) {
+            /* eslint-disable */
+            return value ? '<i class="fa fa-check js-tooltip" data-toggle="tooltip" data-placement="right" title=""></i>' : '';
+            /* eslint-enable */
+          },
         },
       ],
       templates: {
