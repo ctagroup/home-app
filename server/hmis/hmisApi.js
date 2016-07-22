@@ -347,7 +347,7 @@ HMISAPI = {
 
     let housingUnit = false;
 
-      const baseUrl = 'http://52.38.213.135:8081';
+    const baseUrl = 'http://52.38.213.135:8081';
     const housingUnitsPath = config.hmisAPIEndpoints.housingUnit.replace(
       '{{housing_unit_uuid}}',
       housingUnitId
