@@ -460,7 +460,7 @@ Template.questionViewTemplate.events(
 
       $('#q_category').val(question.category).change();
       $('#q_name').val(question.name);
-      $('#question').val(question.question);
+      $('#question').summernote('code', question.question);
       $('#q_dataType').val(question.dataType).change();
       $('#q_type').val(question.qtype).change();
       $('#q_audience').val(question.audience).change();

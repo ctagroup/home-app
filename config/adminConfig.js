@@ -338,8 +338,12 @@ AdminConfig = {
       showEditColumn: false,
       tableColumns: [
         {
+          name: 'name',
+          label: 'Question Name',
+        },
+        {
           name: 'question',
-          label: 'Question',
+          label: 'Question Label',
           render(value) {
             const div = document.createElement('div');
             div.innerHTML = value;
