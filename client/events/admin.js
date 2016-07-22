@@ -488,6 +488,10 @@ Template.questionViewTemplate.events(
   }
 );
 
+Template.questionForm.onRendered(() => {
+  $('.js-summernote').summernote();
+});
+
 Template.questionForm.events(
   {
     'click .optionadd'(/* evt, tmpl*/) {
@@ -570,7 +574,7 @@ Template.questionForm.events(
         qCategory = tmpl.find('.category').value;
       }
       const qName = tmpl.find('.q_name').value;
-      const question = tmpl.find('.question').value;
+      const question = $(tmpl.find('.question')).summernote('code');
 
       const qDataType = tmpl.find('.q_dataType').value;
       const qType = tmpl.find('#q_type').value;

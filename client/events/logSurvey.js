@@ -151,6 +151,8 @@ function saveSurvey(status, tmpl) {
                 }
               } else if (question.dataType === 'date') {
                 answer = $(`#${question._id} input`).val();
+              } else if (question.dataType === 'label') {
+                answer = 'This answer should be ignored as it\'s just a label';
               } else {
                 answer = tmpl.find(`#${question._id}`).value;
               }
@@ -302,6 +304,8 @@ function savePausedSurvey(status, tmpl) {
                 if (option !== '') {
                   answer = option;
                 }
+              } else if (question.dataType === 'label') {
+                answer = 'This answer should be ignored as it\'s just a label';
               } else {
                 answer = tmpl.find(`#${question._id}`).value;
               }
