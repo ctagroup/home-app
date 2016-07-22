@@ -361,21 +361,25 @@ AdminConfig = {
           name: 'dataType',
           label: 'Date Type',
           render(value) {
-            switch(value) {
+            let valuez = value;
+            switch (value) {
               case 'wysiwyg':
-                value = 'WYSIWYG';
+                valuez = 'WYSIWYG';
                 break;
               case 'date':
-                value = 'Date';
+                valuez = 'Date';
                 break;
               case 'label':
-                value = 'Label';
+                valuez = 'Label';
                 break;
               case 'mtv':
-                value = 'Multiple Textbox Values';
+                valuez = 'Multiple Textbox Values';
+                break;
+              default:
+                valuez = value;
                 break;
             }
-            return value;
+            return valuez;
           },
         },
         {
