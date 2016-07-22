@@ -46,6 +46,18 @@ Template.previewSurvey.helpers(
 
       return label;
     },
+    wysiwygLabel(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const question = questionCollection.findOne({ _id: contentQuesId });
+
+      let dataType = '';
+
+      if (question && question.dataType) {
+        dataType = question.dataType;
+      }
+
+      return dataType === 'label';
+    },
     textboxString(contentQuesId) {
       const questionCollection = adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });

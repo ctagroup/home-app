@@ -61,8 +61,13 @@
                                 {{#if displayQues contentType}}
                                     {{#if checkAudience content}}
                                         <li>
-                                            <h5>{{displayQuesContents content}}</h5>
+                                            <h5>{{{displayQuesContents content}}}</h5>
                                         </li>
+
+                                        {{#if wysiwygLabel content}}
+                                        <!-- DO NOTHING AS ITS JUST A LABEL-->
+                                        {{/if}}
+
                                         {{#if textboxString content}}
                                             <li class="quesList">
                                                 <input type="text"
@@ -165,6 +170,23 @@
                                                        value="">
                                             </li>
                                         {{/if}}
+
+                                        {{#if singlePhoto content}}
+                                          <li class="quesList">
+                                            <img class="survey-single-photo-img"
+                                                 src=""/>
+                                            <input type="hidden" id="{{content}}" name=""
+                                                   class="survey-single-photo-value"
+                                                   value=""/>
+                                            <br/>
+                                            <a href="#" class="js-take-photo btn btn-primary margin-top-35">Take
+                                              Picture</a>
+                                            <a href="#"
+                                               class="js-remove-photo btn btn-danger margin-top-35 hide">Remove
+                                              Picture</a>
+                                          </li>
+                                        {{/if}}
+
                                     {{/if}}
                                 {{/if}}
 
@@ -254,9 +276,12 @@
                                         {{#if displayQues contentType}}
                                             {{#if checkAudience content}}
                                                 <li>
-                                                    <h5>{{displayQuesContents content}}</h5>
+                                                    <h5>{{{displayQuesContents content}}}</h5>
                                                 </li>
 
+                                                {{#if wysiwygLabel content}}
+                                                <!-- DO NOTHING AS ITS JUST A LABEL-->
+                                                {{/if}}
 
                                                 {{#if textboxString content}}
                                                     <li class="quesList">

@@ -202,6 +202,18 @@ Template.LogSurveyResponse.helpers(
     checkAudience(content) {
       return chkAudience(content);
     },
+    wysiwygLabel(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const question = questionCollection.findOne({ _id: contentQuesId });
+
+      let dataType = '';
+
+      if (question && question.dataType) {
+        dataType = question.dataType;
+      }
+
+      return dataType === 'label';
+    },
     textboxString(contentQuesId) {
       const questionCollection = adminCollectionObject('questions');
       const questions = questionCollection.find(
@@ -550,6 +562,18 @@ Template.LogSurveyView.helpers(
       const question = questionCollection.findOne({ _id: contentQuesId });
 
       return question.question;
+    },
+    wysiwygLabel(contentQuesId) {
+      const questionCollection = adminCollectionObject('questions');
+      const question = questionCollection.findOne({ _id: contentQuesId });
+
+      let dataType = '';
+
+      if (question && question.dataType) {
+        dataType = question.dataType;
+      }
+
+      return dataType === 'label';
     },
     textboxString(contentQuesId) {
       const questionCollection = adminCollectionObject('questions');

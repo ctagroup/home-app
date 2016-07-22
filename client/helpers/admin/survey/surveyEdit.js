@@ -51,7 +51,16 @@ Template.sortableItemTarget.helpers(
       let val = '';
 
       if (question && question.question) {
-        val = `<strong>Label:</strong> ${question.question}`;
+        const div = document.createElement('div');
+        div.innerHTML = question.question;
+        let text = div.textContent || div.innerText || question.question;
+
+        if (text.length > 40) {
+          text = text.substr(0, 40);
+          text += ' ... ';
+        }
+
+        val = `<strong>Label:</strong> ${text}`;
       }
 
       return val;

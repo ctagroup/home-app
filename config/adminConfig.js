@@ -340,6 +340,18 @@ AdminConfig = {
         {
           name: 'question',
           label: 'Question',
+          render(value) {
+            const div = document.createElement('div');
+            div.innerHTML = value;
+            let text = div.textContent || div.innerText || value;
+
+            if (text.length > 40) {
+              text = text.substr(0, 40);
+              text += ' ... ';
+            }
+
+            return text;
+          },
         },
         {
           name: 'category',
