@@ -58,7 +58,7 @@ HMISAPI = {
 
     // If 'responseContent' parses as JSON, it is an error.
     // XXX which hmis error causes this behvaior?
-    if (! this.isJSON(responseContent)) {
+    if (! HMISAPI.isJSON(responseContent)) {
       throw new Error(`Failed to complete OAuth handshake with HMIS. ${responseContent}`);
     }
 
@@ -93,7 +93,7 @@ HMISAPI = {
       if (expiresAt > currentTimestamp) {
         accessToken = user.services.HMIS.accessToken;
       } else if (user.services.HMIS.refreshToken) {
-        const newTokens = this.renewAccessToken(user.services.HMIS.refreshToken);
+        const newTokens = HMISAPI.renewAccessToken(user.services.HMIS.refreshToken);
         Meteor.users.update(
           {
             _id: user._id,
@@ -132,7 +132,7 @@ HMISAPI = {
       throw new ServiceConfiguration.ConfigError();
     }
 
-    const accessToken = this.getCurrentAccessToken();
+    const accessToken = HMISAPI.getCurrentAccessToken();
 
     const body = {
       client: {
@@ -186,7 +186,7 @@ HMISAPI = {
       throw new ServiceConfiguration.ConfigError();
     }
 
-    const accessToken = this.getCurrentAccessToken();
+    const accessToken = HMISAPI.getCurrentAccessToken();
 
     try {
       const response = HTTP.get(
@@ -218,7 +218,7 @@ HMISAPI = {
       throw new ServiceConfiguration.ConfigError();
     }
 
-    const accessToken = this.getCurrentAccessToken();
+    const accessToken = HMISAPI.getCurrentAccessToken();
 
     try {
       const response = HTTP.get(
@@ -250,7 +250,7 @@ HMISAPI = {
       throw new ServiceConfiguration.ConfigError();
     }
 
-    const accessToken = this.getCurrentAccessToken();
+    const accessToken = HMISAPI.getCurrentAccessToken();
 
     const params = {
       q: query,
@@ -347,7 +347,7 @@ HMISAPI = {
 
     let housingUnit = false;
 
-    const baseUrl = config.hmisAPIEndpoints.housingInventoryBaseUrl;
+      const baseUrl = 'http://52.38.213.135:8081';
     const housingUnitsPath = config.hmisAPIEndpoints.housingUnit.replace(
       '{{housing_unit_uuid}}',
       housingUnitId
@@ -372,7 +372,7 @@ HMISAPI = {
         },
       }).data;
       logger.info(response);
-      housingUnit = [];
+      housingUnit = response;
     } catch (err) {
       throw _.extend(
         new Error(`Failed to get housing units from HMIS. ${err.message}`),
@@ -388,7 +388,7 @@ HMISAPI = {
       throw new ServiceConfiguration.ConfigError();
     }
 
-    const accessToken = this.getCurrentAccessToken();
+    const accessToken = HMISAPI.getCurrentAccessToken();
     let response = '';
 
     try {

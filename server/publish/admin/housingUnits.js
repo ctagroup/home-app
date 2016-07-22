@@ -8,8 +8,8 @@ Meteor.publish(
 
     let housingUnits = [];
 
-    if (this.userId) {
-      HMISAPI.setCurrentUserId(this.userId);
+    if (self.userId) {
+      HMISAPI.setCurrentUserId(self.userId);
 
       housingUnits = HMISAPI.getHousingUnitsForPublish();
     } else {
@@ -17,7 +17,7 @@ Meteor.publish(
     }
 
     _.each(housingUnits, (item) => {
-      self.added('housingUnits', Random.id(), item);
+      self.added('housingUnits', item.housingInventoryId, item);
     });
 
     self.ready();
@@ -25,16 +25,23 @@ Meteor.publish(
 );
 
 Meteor.publish(
-  'singleHousingUnits', function publishSingleHousingUnit(housingUnitId) {
+  'singleHousingUnit', function publishSingleHousingUnit(housingUnitId) {
+    const self = this;
+
     let housingUnit = false;
 
-    if (this.userId) {
-      HMISAPI.setCurrentUserId(this.userId);
+    if (self.userId) {
+      HMISAPI.setCurrentUserId(self.userId);
 
       housingUnit = HMISAPI.getHousingUnitForPublish(housingUnitId);
     } else {
       HMISAPI.setCurrentUserId('');
     }
-    return housingUnit;
+
+    if (housingUnit) {
+      self.added('housingUnits', housingUnit.housingInventoryId, housingUnit);
+    }
+
+    self.ready();
   }
 );

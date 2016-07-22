@@ -506,12 +506,20 @@ AdminConfig = {
       templates: {
         view: {
           name: 'housingUnitsListView',
-          data() {
-            return {};
-          },
           waitOn() {
             return Meteor.subscribe('housingUnits');
           },
+        },
+        edit: {
+          name: 'housingUnitEditView',
+          waitOn() {
+            const _id = Router.current().params._id;
+            return Meteor.subscribe('singleHousingUnit', _id);
+          },
+          data() {
+            const _id = Router.current().params._id;
+            return housingUnits.findOne({ _id: _id });
+          }
         },
       },
     },
