@@ -360,6 +360,23 @@ AdminConfig = {
         {
           name: 'dataType',
           label: 'Date Type',
+          render(value) {
+            switch(value) {
+              case 'wysiwyg':
+                value = 'WYSIWYG';
+                break;
+              case 'date':
+                value = 'Date';
+                break;
+              case 'label':
+                value = 'Label';
+                break;
+              case 'mtv':
+                value = 'Multiple Textbox Values';
+                break;
+            }
+            return value;
+          },
         },
         {
           name: 'qtype',
