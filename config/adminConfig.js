@@ -477,7 +477,7 @@ AdminConfig = {
           data: 'projectId',
         },
         {
-          'title': 'User',
+          title: 'User',
           data: 'userId',
         },
         {
@@ -518,8 +518,8 @@ AdminConfig = {
           },
           data() {
             const _id = Router.current().params._id;
-            return housingUnits.findOne({ _id: _id });
-          }
+            return housingUnits.findOne({ _id });
+          },
         },
       },
     },
