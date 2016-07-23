@@ -32,11 +32,14 @@
     <div class="form-group">
         <label class="col-lg-3 control-label">Photo:</label>
         <div class="col-lg-8">
-            <input class="photo" type="hidden" id="client-photo-value" value="{{photo}}" />
-            <img class="client-photo" id="client-photo-img" src="{{photo}}" />
-            <a href="#" id="js-take-photo" class="btn btn-primary margin-top-35">Take Picture</a>
-            {{#if photo}}
-                <a href="#" id="js-remove-photo" class="btn btn-danger margin-top-35">Remove Picture</a>
+            {{#if isios or isandroid}}
+              <input class="photo" id="client-photo-value" type="file" accept="image/*;capture=camera" value="{{photo}}" />
+              <img class="client-photo" id="client-photo-img" src="{{photo}}" />
+            {{else}}
+              <input class="photo" type="hidden" id="client-photo-value" value="{{photo}}" />
+              <img class="client-photo" id="client-photo-img" src="{{photo}}" />
+              <a href="#" id="js-take-photo" class="btn btn-primary margin-top-35">Take Picture</a>
+              <a href="#" id="js-remove-photo" class="btn btn-danger margin-top-35 {{#unless photo}}hide{{/unless}}">Remove Picture</a>
             {{/if}}
         </div>
     </div>
@@ -181,12 +184,12 @@
 		<!--</div>-->
 	<!--</div>-->
 
-	<div class="form-group">
-		<label class="col-lg-3 control-label">Household ID:</label>
-		<div class="col-lg-8">
-			<input class="form-control householdId" value={{householdId}} type="text">
-		</div>
-	</div>
+	<!--<div class="form-group">-->
+		<!--<label class="col-lg-3 control-label">Household ID:</label>-->
+		<!--<div class="col-lg-8">-->
+			<!--<input class="form-control householdId" value={{householdId}} type="text">-->
+		<!--</div>-->
+	<!--</div>-->
 
 	<div class="form-group">
 		<label class="col-lg-3 control-label">Relationship to Head of Household:</label>
