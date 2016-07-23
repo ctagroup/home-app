@@ -46,5 +46,5 @@ Template.registerHelper(
   }
 );
 
-UI.registerHelper('isios', () => { logger.info(is.ios()); return is.ios(); });
-UI.registerHelper('isandroid', () => { logger.info(is.android()); return is.android(); });
+UI.registerHelper('isios', () => is.ios());
+UI.registerHelper('isandroid', () => is.android());
