@@ -50,7 +50,8 @@
     "housingMatch": true,
     "PreliminarySurvey": true,
     "SignaturePad": true,
-    "SignaturePadConfig": true
+    "SignaturePadConfig": true,
+    "is": true
   },
   "rules": {
     "no-underscore-dangle": [
