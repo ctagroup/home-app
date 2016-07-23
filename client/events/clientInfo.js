@@ -5,6 +5,19 @@ const querystring = require('querystring');
 
 Template.clientForm.events(
   {
+    'change #js-photo-input'() {
+      const file = document.querySelector('#js-photo-input').files[0];
+      const reader = new FileReader();
+
+      reader.addEventListener('load', () => {
+        $('#client-photo-img').attr('src', reader.result);
+        $('#client-photo-value').val(reader.result);
+      }, false);
+
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    },
     'click #js-take-photo'(event) {
       event.preventDefault();
       logger.log('clicked picture button');
@@ -47,15 +60,14 @@ Template.createClient.events(
       const entryDate = tmpl.find('.entryDate').value;
       const exitDate = tmpl.find('.exitDate').value;
       const destination = tmpl.find('.destinationCategory').value;
-      const householdId = tmpl.find('.householdId').value;
       const relationship = tmpl.find('.relationtoHoH_category').value;
       const loc = tmpl.find('.loc').value;
       const shelter = tmpl.find('.timeOnStreets_category').value;
-      const signature = tmpl.find('.signature').value;
+      const signature = tmpl.find('.signature') ? tmpl.find('.signature').value : '';
       Meteor.call(
         'addClient', firstName, middleName, lastName, suffix, photo, ssn,
         dob, race, ethnicity, gender, veteranStatus, disablingConditions, residencePrior, entryDate,
-        exitDate, destination, householdId, relationship, loc, shelter, signature,
+        exitDate, destination, relationship, loc, shelter, signature,
         (error, result) => {
           if (error) {
             // console.log(error);
@@ -146,7 +158,6 @@ Template.editClient.events(
       const entryDate = tmpl.find('.entryDate').value;
       const exitDate = tmpl.find('.exitDate').value;
       const destination = tmpl.find('.destinationCategory').value;
-      const householdId = tmpl.find('.householdId').value;
       const relationship = tmpl.find('.relationtoHoH_category').value;
       const loc = tmpl.find('.loc').value;
       const shelter = tmpl.find('.timeOnStreets_category').value;
@@ -154,7 +165,7 @@ Template.editClient.events(
         'updateClient', tmpl.data._id, firstName, middleName, lastName,
         suffix, photo, ssn, dob, race, ethnicity, gender, veteranStatus,
         disablingConditions, residencePrior, entryDate, exitDate, destination,
-        householdId, relationship, loc,
+        relationship, loc,
         shelter,
         (error, result) => {
           if (error) {
