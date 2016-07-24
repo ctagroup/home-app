@@ -6,7 +6,7 @@ Template.searchClient.helpers(
   {
     searchClient(query, sync, callback) {
       Meteor.call(
-        'searchClient', query, {}, (err, res) => {
+        'searchClient', query, {limit: 10}, (err, res) => {
           if (err) {
             logger.log(err);
             return;

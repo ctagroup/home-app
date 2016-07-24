@@ -46,7 +46,9 @@ Meteor.methods(
             $sort: {
               firstName: 1,
             },
-          },
+          }, {
+            $limit: optionz.limit
+          }
         ]
       );
       // Removing entries where we have data coming from HMIS.
