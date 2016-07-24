@@ -1,9 +1,13 @@
 .container {
   margin-bottom: 200px;
+
+  &.searchClient {
+    margin-bottom: 900px;
+  }
 }
 
 @media (min-width: @grid-float-breakpoint) {
-  .container {
+  .container, .container.searchClient {
     margin-bottom: 70px;
   }
 }
