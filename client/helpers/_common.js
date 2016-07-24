@@ -46,5 +46,6 @@ Template.registerHelper(
   }
 );
 
-UI.registerHelper('isios', () => is.ios());
-UI.registerHelper('isandroid', () => is.android());
+UI.registerHelper('isiOS', () => is.ios());
+UI.registerHelper('isAndroid', () => is.android());
+UI.registerHelper('isCordova', () => Meteor.isCordova);
