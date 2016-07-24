@@ -173,17 +173,18 @@
 
                                         {{#if singlePhoto content}}
                                           <li class="quesList">
-                                            <img class="survey-single-photo-img"
-                                                 src=""/>
-                                            <input type="hidden" id="{{content}}" name=""
-                                                   class="survey-single-photo-value"
-                                                   value=""/>
-                                            <br/>
-                                            <a href="#" class="js-take-photo btn btn-primary margin-top-35">Take
-                                              Picture</a>
-                                            <a href="#"
-                                               class="js-remove-photo btn btn-danger margin-top-35 hide">Remove
-                                              Picture</a>
+                                            <img class="survey-single-photo-img" src="" />
+                                            <input type="hidden" id="{{content}}" name="{{content}}" class="survey-single-photo-value" value="" />
+                                            <br />
+                                            {{#if isCordova}}
+                                              {{> surveyCameraNative}}
+                                            {{else}}
+                                              {{#if isiOS or isAndroid}}
+                                                {{> surveyCameraFileInput}}
+                                              {{else}}
+                                                {{> surveyCameraNative}}
+                                              {{/if}}
+                                            {{/if}}
                                           </li>
                                         {{/if}}
 
@@ -399,19 +400,18 @@
 
                                                 {{#if singlePhoto content}}
                                                     <li class="quesList">
-                                                        <img class="survey-single-photo-img"
-                                                             src="{{surveyTextResponse content}}"/>
-                                                        <input type="hidden" id="{{content}}" name="{{content}}"
-                                                               class="survey-single-photo-value"
-                                                               value="{{surveyTextResponse content}}"/>
-                                                        <br/>
-                                                        <a href="#" class="js-take-photo btn btn-primary margin-top-35">Take
-                                                            Picture</a>
-                                                        {{#if surveyTextResponse content}}
-                                                            <a href="#"
-                                                               class="js-remove-photo btn btn-danger margin-top-35">Remove
-                                                                Picture</a>
+                                                      <img class="survey-single-photo-img" src="{{surveyTextResponse content}}" />
+                                                      <input type="hidden" id="{{content}}" name="{{content}}" class="survey-single-photo-value" value="{{surveyTextResponse content}}" />
+                                                      <br />
+                                                      {{#if isCordova}}
+                                                        {{> surveyCameraNative}}
+                                                      {{else}}
+                                                        {{#if isiOS or isAndroid}}
+                                                          {{> surveyCameraFileInput}}
+                                                        {{else}}
+                                                          {{> surveyCameraNative}}
                                                         {{/if}}
+                                                      {{/if}}
                                                     </li>
                                                 {{/if}}
 
@@ -442,44 +442,11 @@
 
 </template>
 
-<!--<template name="surveySaveModalTemplate">-->
-<!--<div class="modal fade" id="surveySaveModal">-->
-<!--<div class="modal-dialog modal-sm">-->
-<!--<div class="modal-content">-->
+<template name="surveyCameraFileInput">
+  <input class="js-photo-input" type="file" accept="image/*;capture=camera" />
+</template>
 
-<!--<div class="modal-header">-->
-<!--<h6 class="modal-title">Survey status</h6>-->
-<!--</div>-->
-<!--<div class="modal-body">-->
-<!--<h4>Survey saved</h4>-->
-<!--</div>-->
-<!--<div class="modal-footer">-->
-<!--<button type="button" class="btn btn-primary survey_save" id="survey_save">Ok</button>-->
-<!--<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>-->
-<!--</div>-->
-
-
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--</template>-->
-
-<!--<template name="surveyPauseModalTemplate">-->
-<!--<div class="modal fade" id="surveyPauseModal">-->
-<!--<div class="modal-dialog modal-sm">-->
-<!--<div class="modal-content">-->
-
-<!--<div class="modal-header">-->
-<!--<h6 class="modal-title">Survey status</h6>-->
-<!--</div>-->
-<!--<div class="modal-footer">-->
-<!--<button type="button" class="btn btn-primary survey_save" id="survey_pause" >Ok</button>-->
-<!--<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>-->
-<!--</div>-->
-
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--</template>-->
-
-
+<template name="surveyCameraNative">
+  <a href="#" class="js-take-photo btn btn-primary margin-top-35">Take Picture</a>
+  <a href="#" class="js-remove-photo btn btn-danger margin-top-35 {{#unless surveyTextResponse content}}hide{{/unless}}">Remove Picture</a>
+</template>

@@ -442,6 +442,21 @@ Template.LogSurveyResponse.events(
     'click .save_survey': (evt, tmpl) => {
       saveSurvey('Submit', tmpl);
     },
+    'change .js-photo-input'(event) {
+      const file = document.querySelector('.js-photo-input').files[0];
+      const reader = new FileReader();
+
+      reader.addEventListener('load', () => {
+        $(event.currentTarget).closest('.quesList').find('.survey-single-photo-img')
+          .attr('src', reader.result);
+        $(event.currentTarget).closest('.quesList').find('.survey-single-photo-value')
+          .val(reader.result);
+      }, false);
+
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    },
     'click .js-take-photo'(event) {
       event.preventDefault();
       logger.log('clicked picture button');
@@ -511,7 +526,21 @@ Template.LogSurveyView.events(
     'click .pausePaused_survey': (evt, tmpl) => {
       savePausedSurvey('Pause_Paused', tmpl);
     },
+    'change .js-photo-input'(event) {
+      const file = document.querySelector('.js-photo-input').files[0];
+      const reader = new FileReader();
 
+      reader.addEventListener('load', () => {
+        $(event.currentTarget).closest('.quesList').find('.survey-single-photo-img')
+          .attr('src', reader.result);
+        $(event.currentTarget).closest('.quesList').find('.survey-single-photo-value')
+          .val(reader.result);
+      }, false);
+
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    },
     'click .js-take-photo'(event) {
       event.preventDefault();
       logger.log('clicked picture button');
