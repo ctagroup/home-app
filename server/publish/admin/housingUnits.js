@@ -9,12 +9,53 @@ Meteor.publish(
     let housingUnits = [];
 
     if (self.userId) {
-      HMISAPI.setCurrentUserId(self.userId);
+      // HMISAPI.setCurrentUserId(self.userId);
 
-      housingUnits = HMISAPI.getHousingUnitsForPublish();
+      // housingUnits = HMISAPI.getHousingUnitsForPublish();
     } else {
       HMISAPI.setCurrentUserId('');
     }
+
+    housingUnits = [
+      {
+        _id: Random.id(),
+        inactive: false,
+        housingInventoryId: Random.id(),
+        bedsCurrent: 5,
+        projectId: 'test-project',
+        userId: 'shubas',
+        bedsCapacity: 6,
+        familyUnit: null,
+        inService: null,
+        vacant: null,
+        housingUnitAddress: {
+          line1: 'addr line 1',
+          line2: 'addr line 2',
+          state: 'NY',
+          city: 'Austin',
+          zipCode: 73308,
+        },
+      },
+      {
+        _id: Random.id(),
+        inactive: false,
+        housingInventoryId: Random.id(),
+        bedsCurrent: 5,
+        projectId: 'test-project',
+        userId: 'shubas',
+        bedsCapacity: 6,
+        familyUnit: null,
+        inService: null,
+        vacant: null,
+        housingUnitAddress: {
+          line1: 'addr line 1',
+          line2: 'addr line 2',
+          state: 'NY',
+          city: 'Austin',
+          zipCode: 73308,
+        },
+      },
+    ];
 
     _.each(housingUnits, (item) => {
       self.added('housingUnits', item.housingInventoryId, item);

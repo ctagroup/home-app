@@ -10,6 +10,7 @@ AdminConfig = {
     'anushagovindan@gmail.com',
     'javier@ctagroup.org',
     'bob@ctagroup.org',
+    'emma@ctagroup.org',
     'kgautam@scu.edu',
     'kghate@scu.edu',
     'agovindan@scu.edu',
