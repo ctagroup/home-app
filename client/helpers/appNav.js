@@ -8,7 +8,7 @@ Template.appNav.helpers(
       const user = Meteor.user();
       const email = user && user.emails && user.emails[0].address;
       // email = Email.normalize( email );
-      return `<img class="avatar small" src="${Gravatar.imageUrl(email)}" />`;
+      return `<img class="avatar small" src="${Gravatar.imageUrl(email, { secure: true })}" />`;
     },
     currentUserFullName() {
       const user = Meteor.user();
