@@ -52,7 +52,8 @@
     "PreliminarySurvey": true,
     "SignaturePad": true,
     "SignaturePadConfig": true,
-    "is": true
+    "is": true,
+    "collectionsCount": true
   },
   "rules": {
     "no-underscore-dangle": [
