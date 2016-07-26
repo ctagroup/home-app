@@ -76,14 +76,14 @@ UI.registerHelper 'adminGetUserSchema', ->
 
 	return schema
 
-UI.registerHelper 'adminCollectionLabel', (collection)->
+UI.registerHelper 'collectionLabel', (collection)->
 	AdminDashboard.collectionLabel(collection) if collection?
 
-UI.registerHelper 'adminCollectionCount', (collection)->
+UI.registerHelper 'collectionsCount', (collection)->
 	if collection == 'Users'
 		Meteor.users.find().count()
 	else
-		AdminCollectionsCount.findOne({collection: collection})?.count
+    collectionsCount.findOne({collection: collection})?.count
 
 UI.registerHelper 'adminTemplate', (collection, mode)->
 	if typeof AdminConfig?.collections?[collection]?.templates != 'undefined'

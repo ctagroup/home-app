@@ -1,7 +1,7 @@
 <template name="AdminSidebar">
     <aside class="main-sidebar hidden-xs">
 
-        <a href="/admin" class="logo"> {{#if AdminConfig.name}} {{AdminConfig.name}} {{else}} Admin {{/if}} </a>
+        <a href="{{pathFor 'root'}}" class="logo"> {{#if AdminConfig.name}} {{AdminConfig.name}} {{else}} Admin {{/if}} </a>
 
         <ul class="sidebar-menu nav">
             <li class="{{isActiveRoute 'adminDashboard'}}">

@@ -52,4 +52,4 @@ UI.registerHelper 'newPath', () ->
 	Router.path 'adminDashboard' + Session.get('admin_collection_name') + 'New'
 
 UI.registerHelper 'hasDocuments', () ->
-	AdminCollectionsCount.findOne({collection: Session.get 'admin_collection_name'})?.count > 0
+  collectionsCount.findOne({collection: Session.get 'admin_collection_name'})?.count > 0

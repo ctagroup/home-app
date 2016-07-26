@@ -59,13 +59,6 @@ Router.route(
     controller: 'HomeAppController',
   }
 );
-Router.route(
-  '/home', {
-    name: 'home',
-    template: 'home',
-    controller: 'HomeAppController',
-  }
-);
 
 /**
  * Accounts Routes
@@ -75,7 +68,7 @@ AccountsTemplates.configureRoute(
     name: 'signIn',
     path: '/login',
     template: 'login',
-    redirect: '/app/clients',
+    redirect: '/dashaboard',
     controller: 'HomeAppController',
   }
 );
@@ -84,24 +77,6 @@ AccountsTemplates.configureRoute(
     name: 'signUp',
     path: '/register',
     template: 'login',
-    controller: 'HomeAppController',
-  }
-);
-
-/**
- * App Routes
- */
-Router.route(
-  '/app', {
-    name: 'appRoot',
-    template: 'appDashboard',
-    controller: 'HomeAppController',
-  }
-);
-Router.route(
-  '/app/dashboard', {
-    name: 'appDashboard',
-    template: 'appDashboard',
     controller: 'HomeAppController',
   }
 );
@@ -117,14 +92,14 @@ Router.route(
  * Client Routes
  */
 Router.route(
-  '/app/clients', {
+  '/clients', {
     name: 'searchClient',
     template: 'searchClient',
     controller: 'HomeAppController',
   }
 );
 Router.route(
-  '/app/clients/new', {
+  '/clients/new', {
     name: 'createClient',
     template: 'createClient',
     controller: 'HomeAppController',
@@ -135,7 +110,7 @@ Router.route(
   }
 );
 Router.route(
-  '/app/clients/:_id', {
+  '/clients/:_id', {
     name: 'viewClient',
     template: 'viewClient',
     controller: 'HomeAppController',
@@ -224,7 +199,7 @@ Router.onBeforeAction(
   }
 );
 Router.route(
-  '/app/clients/:_id/edit', {
+  '/clients/:_id/edit', {
     name: 'editClient',
     template: 'editClient',
     controller: 'HomeAppController',
@@ -237,14 +212,14 @@ Router.route(
 );
 
 Router.route(
-  '/app/clients/:_id/logSurvey', {
+  '/clients/:_id/logSurvey', {
     name: 'LogSurvey',
     template: 'LogSurvey',
     controller: 'HomeAppController',
   }
 );
 Router.route(
-  '/app/clients/:_id/logsurvey/:survey_id', {
+  '/clients/:_id/logsurvey/:survey_id', {
     name: 'LogSurveyResponse',
     template: 'LogSurveyResponse',
     controller: 'HomeAppController',
@@ -268,7 +243,7 @@ Router.route(
   }
 );
 Router.route(
-  '/app/LogSurveyView/:_id', {
+  '/LogSurveyView/:_id', {
     name: 'LogSurveyView',
     template: 'LogSurveyView',
     controller: 'HomeAppController',
@@ -321,7 +296,7 @@ Router.route(
  */
 
 Router.route(
-  '/app/chat/', {
+  '/chat/', {
     name: 'chat',
     template: 'chat',
     controller: 'HomeAppController',

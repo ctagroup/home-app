@@ -13,7 +13,7 @@
             <li><a href="/admin/">Dashboard</a></li>
             {{#if $.Session.get 'admin_collection_name'}}
               <li><a href="/admin/{{$.Session.get 'admin_collection_name'}}/">
-                {{adminCollectionLabel admin_collection_name}}
+                {{collectionLabel admin_collection_name}}
               </a></li>
             {{/if}}
 
