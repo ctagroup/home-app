@@ -1,0 +1,13 @@
+<template name="AdminSettings">
+  {{> adminAlert}}
+  {{> quickForm
+    id="adminSettingsForm"
+    schema="Schemas.adminSettings"
+    type="method"
+    meteormethod="saveAdminSettings"
+    template="bootstrap3"
+    label-class="sr-only"
+    afFieldInput-placeholder="schemaLabel"
+    doc=getAdminSettings
+  }}
+</template>

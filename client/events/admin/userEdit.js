@@ -52,3 +52,20 @@ Template.AdminDashboardusersEdit.onRendered(() => {
     map.instance.panToBounds(bounds);     // auto-center
   });
 });
+
+Template.AdminDashboardusersEdit.events({
+  'click .btn-add-role': (e) => {
+    logger.info('adding user');
+    $('.home-spinner').removeClass('hide').addClass('show');
+    Meteor.call('addUserToRole', $(e.target).attr('user'), $(e.target).attr('role'), () => {
+      $('.home-spinner').removeClass('show').addClass('hide');
+    });
+  },
+  'click .btn-remove-role': (e) => {
+    logger.info('removing user');
+    $('.home-spinner').removeClass('hide').addClass('show');
+    Meteor.call('removeUserFromRole', $(e.target).attr('user'), $(e.target).attr('role'), () => {
+      $('.home-spinner').removeClass('show').addClass('hide');
+    });
+  },
+});
