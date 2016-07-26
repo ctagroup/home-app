@@ -295,6 +295,48 @@ HMISAPI = {
       return [];
     }
   },
+  getEnrollments(clientId) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+
+    const accessToken = this.getCurrentAccessToken();
+
+    let enrollments = [];
+
+    const baseUrl = config.hmisAPIEndpoints.clientBaseUrl;
+    const enrollmentsPath = config.hmisAPIEndpoints.enrollments.replace('{{client_id}}', clientId);
+    const urlPah = `${baseUrl}${enrollmentsPath}`;
+    // const url = `${urlPah}?${querystring.stringify(params)}`;
+    const url = `${urlPah}`;
+
+    logger.info(url);
+    logger.info(accessToken);
+
+    try {
+      const response = HTTP.get(url, {
+        headers: {
+          'X-HMIS-TrustedApp-Id': config.appId,
+          Authorization: `HMISUserAuth session_token=${accessToken}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        npmRequestOptions: {
+          rejectUnauthorized: false, // TODO remove when deploy
+        },
+      }).data;
+      logger.info(response);
+      enrollments = response.enrollments;
+    } catch (err) {
+      throw _.extend(
+        new Error(`Failed to get housing units from HMIS. ${err.message}`),
+        { response: err.response }
+      );
+    }
+
+    return enrollments;
+  },
   getHousingUnitsForPublish() {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (! config) {
@@ -305,7 +347,7 @@ HMISAPI = {
 
     let housingUnits = [];
 
-    const baseUrl = 'http://52.38.213.135:8081';
+    const baseUrl = config.hmisAPIEndpoints.housingInventoryBaseUrl;
     const housingUnitsPath = config.hmisAPIEndpoints.housingUnits;
     const urlPah = `${baseUrl}${housingUnitsPath}`;
     // const url = `${urlPah}?${querystring.stringify(params)}`;
@@ -347,7 +389,7 @@ HMISAPI = {
 
     let housingUnit = false;
 
-    const baseUrl = 'http://52.38.213.135:8081';
+    const baseUrl = config.hmisAPIEndpoints.housingInventoryBaseUrl;
     const housingUnitsPath = config.hmisAPIEndpoints.housingUnit.replace(
       '{{housing_unit_uuid}}',
       housingUnitId

@@ -678,6 +678,7 @@ AdminConfig = {
     revoke: '/revoke/',
     clientBaseUrl: 'https://www.hmislynk.com/hmis-clientapi/rest',
     clients: '/clients/',
+    enrollments: '/clients/{{client_id}}/enrollments',
     searchClient: '/search/client',
     userServiceBaseUrl: 'https://www.hmislynk.com/hmis-user-service/rest',
     basicInfo: '/accounts/{{username}}/basicinfo',

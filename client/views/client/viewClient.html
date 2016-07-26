@@ -108,6 +108,39 @@
                     </div>
                 </div>
             </div>
+            {{#if getEnrollments}}
+              <div class="row">
+                <h3>Enrollments</h3>
+                <div class="table-responsive">
+                  <table class="table table-hover table-striped">
+                    <thead>
+                      <tr>
+                        <th>Enrollment ID</th>
+                        <th>Entry Date</th>
+                        <th>Housing Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {{#each getEnrollments}}
+                        <tr>
+                          <td>{{enrollmentId}}</td>
+                          <td>{{entrydate}}</td>
+                          <td>{{housingstatus}}</td>
+                        </tr>
+                      {{/each}}
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th>Enrollment ID</th>
+                        <th>Entry Date</th>
+                        <th>Housing Status</th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            {{/if}}
+
             <div class="row margin-top-35">
                 <!-- edit form column -->
                 <div class="col-xs-12">
