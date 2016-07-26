@@ -1,7 +1,7 @@
 Home Meteor App
 ===============
 
-[![Build Status](https://travis-ci.org/ctagroup/home-app.svg?branch=meteor)](https://travis-ci.org/desaiuditd/home-app)
+[![Build Status](https://travis-ci.org/ctagroup/home-app.svg?branch=master)](https://travis-ci.org/desaiuditd/home-app)
 
 ## Prerequisites
 
