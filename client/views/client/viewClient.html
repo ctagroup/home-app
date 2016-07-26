@@ -108,7 +108,7 @@
                     </div>
                 </div>
             </div>
-            {{#if getEnrollments}}
+            {{#if enrollments}}
               <div class="row">
                 <h3>Enrollments</h3>
                 <div class="table-responsive">
@@ -121,7 +121,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      {{#each getEnrollments}}
+                      {{#each enrollments}}
                         <tr>
                           <td>{{enrollmentId}}</td>
                           <td>{{entrydate}}</td>

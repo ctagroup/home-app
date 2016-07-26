@@ -159,7 +159,7 @@ Router.onBeforeAction(
 
     if (this.params.query && this.params.query.isHMISClient && this.params.query.link) {
       Meteor.call(
-        'getHMISClient', this.params.query.link, (err, res) => {
+        'getHMISClient', this.params._id, this.params.query.link, (err, res) => {
           const rez = res;
           if (err) {
             logger.log(err);
