@@ -17,18 +17,6 @@ Template.AdminDeleteModal.events
       logger.log(r)
 			$('#admin-delete-modal').modal('hide')
 
-Template.AdminDashboardusersEdit.events
-	'click .btn-add-role': (e,t) ->
-		console.log 'adding user'
-		$('.home-spinner').removeClass("hide").addClass('show');
-		Meteor.call 'addUserToRole', $(e.target).attr('user'), $(e.target).attr('role'), (error, result) ->
-			$('.home-spinner').removeClass("show").addClass('hide');
-	'click .btn-remove-role': (e,t) ->
-		console.log 'removing user'
-		$('.home-spinner').removeClass("hide").addClass('show');
-		Meteor.call 'removeUserFromRole', $(e.target).attr('user'), $(e.target).attr('role'), (error, result) ->
-			$('.home-spinner').removeClass("show").addClass('hide');
-
 Template.AdminHeader.events
 	'click .btn-sign-out': () ->
 		Meteor.logout ->
