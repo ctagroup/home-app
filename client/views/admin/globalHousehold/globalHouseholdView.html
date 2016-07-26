@@ -1,0 +1,15 @@
+<template name="globalHouseholdListView">
+    <p>
+        <a href="#newGlobalHouseholdModal" role="button" data-toggle="modal" class="btn btn-primary addGlobalHousehold">
+            <i class="fa fa-plus"></i> Add one
+        </a>
+    </p>
+    {{#if hasGlobalHousehold}}
+        {{> ReactiveDatatable tableData=globalHouseholdData options=globalHouseholdTableOptions }}
+    {{else}}
+        <div class="alert alert-info">
+            <p>There are no visible items in this collection.</p>
+        </div>
+    {{/if}}
+
+</template>

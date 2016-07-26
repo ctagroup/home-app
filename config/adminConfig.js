@@ -602,6 +602,43 @@ AdminConfig = {
         },
       },
     },
+    globalHousehold: {
+      icon: 'bed',
+      label: 'Global Household',
+      tableColumns: [
+        {
+          title: 'Global Household ID',
+          data: 'globalHouseHoldId', // note: access nested data like this
+        },
+        {
+          title: 'Head of HouseHold ID',
+          data: 'headOfHouseholdId', // note: access nested data like this
+        },
+        {
+          title: 'Date Created',
+          data: 'dateCreated', // note: access nested data like this
+        },
+        {
+          title: 'User Created',
+          data: 'userCreate', // note: access nested data like this
+        },
+        {
+          title: 'Updated User',
+          data: 'userUpdate', // note: access nested data like this
+        },
+      ],
+      templates: {
+        view: {
+          name: 'globalHouseholdListView',
+          data() {
+            return {};
+          },
+          waitOn() {
+            return Meteor.subscribe('globalHousehold');
+          },
+        },
+      },
+    },
     users: {
       icon: 'user',
       label: 'Users',
