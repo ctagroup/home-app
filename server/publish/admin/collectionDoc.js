@@ -4,7 +4,7 @@
 
 Meteor.publishComposite('adminCollectionDoc', (collection, id) => {
   check(collection, String);
-  check(id, Match.OneOf(String, Mongo.ObjectID));
+
   if (Roles.userIsInRole(this.userId, ['view_admin'])) {
     let children = [];
 
@@ -17,9 +17,9 @@ Meteor.publishComposite('adminCollectionDoc', (collection, id) => {
       find() {
         return adminCollectionObject(collection).find(id);
       },
-      children
+      children,
     };
-  } else {
-    return this.ready();
   }
+
+  return this.ready();
 });
