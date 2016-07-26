@@ -265,21 +265,6 @@ Template.viewClient.helpers(
       }
       return definition;
     },
-    getEnrollments() {
-      const data = Template.instance().data;
-      let enrollments = [];
-      if (data && data.isHMISClient) {
-        Meteor.call('getEnrollments', data._id, (error, result) => {
-          if (error) {
-            logger.info(error);
-          } else {
-            enrollments = result;
-          }
-        });
-        enrollments = [];
-      }
-      return enrollments;
-    },
   }
 );
 
