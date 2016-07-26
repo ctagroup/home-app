@@ -1,1 +1,1 @@
-@AdminCollectionsCount = new Mongo.Collection 'adminCollectionsCount'
+@collectionsCount = new Mongo.Collection 'collectionsCount'

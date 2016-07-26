@@ -3,7 +3,7 @@
  */
 
 Meteor.publish(
-  'adminCollectionsCount', () => {
+  'collectionsCount', function publishCollectionCount() {
     const handles = [];
     const self = this;
     _.each(
@@ -18,17 +18,17 @@ Meteor.publish(
             {
               added() {
                 count += 1;
-                return ready && self.changed('adminCollectionsCount', id, { count });
+                return ready && self.changed('collectionsCount', id, { count });
               },
               removed() {
                 count -= 1;
-                return ready && self.changed('adminCollectionsCount', id, { count });
+                return ready && self.changed('collectionsCount', id, { count });
               },
             }
           )
         );
         ready = true;
-        return self.added('adminCollectionsCount', id, { collection: name, count });
+        return self.added('collectionsCount', id, { collection: name, count });
       }
     );
     self.onStop(

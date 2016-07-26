@@ -2,7 +2,7 @@
 	layoutTemplate: 'AdminLayout'
 	waitOn: ->
 		[
-			Meteor.subscribe 'adminCollectionsCount'
+			Meteor.subscribe 'collectionsCount'
 		]
 	onBeforeAction: ->
 		Session.set 'adminSuccess', null
@@ -24,7 +24,7 @@
 
 
 Router.route "adminDashboard",
-	path: "/admin"
+	path: "/dashboard"
 	template: "AdminDashboard"
 	controller: "AdminController"
 	action: ->
