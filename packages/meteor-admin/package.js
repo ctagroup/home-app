@@ -47,7 +47,6 @@ Package.on_use(
         'lib/both/router.coffee',
         'lib/both/utils.coffee',
         'lib/both/startup.coffee',
-        'lib/both/collections.coffee',
       ], both
     );
 
@@ -58,21 +57,10 @@ Package.on_use(
         'lib/client/html/admin_layouts.html',
         'lib/client/html/admin_sidebar.html',
         'lib/client/html/admin_header.html',
-        'lib/client/stylesheets/style.scss',
-        'lib/client/stylesheets/_admin.scss',
-        'lib/client/stylesheets/_survey.scss',
         'lib/client/js/helpers.coffee',
-        'lib/client/js/templates.coffee',
         'lib/client/js/events.coffee',
-        'lib/client/js/slim_scroll.js',
         'lib/client/js/autoForm.coffee',
       ], 'client'
-    );
-
-    api.add_files(
-      [
-        'lib/server/methods.coffee',
-      ], 'server'
     );
 
     api.export('AdminDashboard', both);

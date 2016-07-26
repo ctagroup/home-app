@@ -77,3 +77,33 @@ UI.registerHelper('currentUserFullName', () => {
 
   return '';
 });
+
+Template.adminEditBtn.helpers(
+  {
+    path() {
+      const data = Template.instance().data;
+      return Router.path(`adminDashboard${Session.get('admin_collection_name')}Edit`, {
+        _id: data._id,
+      });
+    },
+  }
+);
+
+UI.registerHelper(
+  'newPath',
+  () => Router.path(`adminDashboard${Session.get('admin_collection_name')}New`)
+);
+
+UI.registerHelper('hasDocuments', () => {
+  let flag = false;
+
+  const count = collectionsCount.findOne({
+    collection: Session.get('admin_collection_name'),
+  });
+
+  if (count && count.count && count.count > 0) {
+    flag = true;
+  }
+
+  return flag;
+});

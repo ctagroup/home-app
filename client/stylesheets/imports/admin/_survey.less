@@ -13,3 +13,68 @@
 .survey-single-photo-img {
   max-width: 100%;
 }
+
+[class^="mdi-"], [class*=" mdi-"] {
+  vertical-align: baseline;
+  font-size: 90%;
+  margin-right: 0.4em;
+}
+
+.sortable {
+  /*  font-size: 2em;*/
+}
+
+.sortable.source {
+  flex: 0 0 auto;
+  cursor: move;
+  cursor: -webkit-grabbing;
+}
+
+.sortable.target {
+  /*background: #3F51B5;*/
+  flex: 1 1 auto;
+}
+.target .well {
+
+}
+
+.sortable-handle {
+  cursor: move;
+  cursor: -webkit-grabbing;
+}
+.sortable-handle.pull-right {
+  margin-top: 0.3em;
+}
+
+.sortable-ghost {
+  opacity: 0.6;
+}
+
+/*/ show the remove button on hover /*/
+.removable .close {
+  display: none;
+  margin-right: 5px;
+}
+.removable:hover .close {
+  display: block;
+}
+
+#previewSurveyList li {
+  list-style: none;
+}
+#responseSurveyList li {
+  list-style: none;
+}
+
+.sortable-item {
+  .name {
+    display: inline-block;
+  }
+}
+
+.sortable-item {
+  .badge {
+    margin-right: 5px;
+    margin-top: 0.2em;
+  }
+}
