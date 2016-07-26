@@ -8,5 +8,9 @@ Meteor.methods(
       const client = HMISAPI.getClientFromUrl(apiUrl);
       return client;
     },
+    getEnrollments(clientId) {
+      const enrollments = HMISAPI.getEnrollments(clientId);
+      return enrollments;
+    },
   }
 );
