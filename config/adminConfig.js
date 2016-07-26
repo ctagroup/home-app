@@ -562,7 +562,7 @@ AdminConfig = {
       },
     },
     housingMatch: {
-      icon: 'home',
+      icon: 'bed',
       label: 'Housing Matching Service',
       tableColumns: [
         {
