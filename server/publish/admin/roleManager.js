@@ -2,6 +2,8 @@
  * Created by udit on 15/07/16.
  */
 
+Meteor.publish('roles', () => Meteor.roles.find({}));
+
 Meteor.publish(
   'homeRoles', () => {
     if (typeof homeRoles === 'undefined') {

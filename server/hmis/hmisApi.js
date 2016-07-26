@@ -326,8 +326,7 @@ HMISAPI = {
           rejectUnauthorized: false, // TODO remove when deploy
         },
       }).data;
-      logger.info(response);
-      enrollments = response.enrollments;
+      enrollments = response.enrollments.enrollments;
     } catch (err) {
       throw _.extend(
         new Error(`Failed to get housing units from HMIS. ${err.message}`),

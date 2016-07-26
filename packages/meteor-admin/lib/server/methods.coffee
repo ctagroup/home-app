@@ -15,16 +15,6 @@ Meteor.methods
 			result = adminCollectionObject(collection).update {_id:_id},modifier
 			return result
 
-#  adminRemoveDoc: (collection, _id)->
-#    check arguments, [Match.Any]
-##		if Roles.userIsInRole this.userId, ['delete_'+collection]
-#    if collection == 'Users'
-#      return Meteor.users.remove { _id: _id }
-#    else
-## global[collection].remove {_id:_id}
-#      return adminCollectionObject(collection).remove { _id: _id }
-
-
 	adminNewUser: (doc) ->
 		check arguments, [Match.Any]
 		if Roles.userIsInRole this.userId, ['create_user']
