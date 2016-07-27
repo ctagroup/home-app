@@ -4,7 +4,7 @@
 Template.surveyStatus.helpers(
   {
     surveyStatusList() {
-      const surveyStatusCollection = adminCollectionObject('responses');
+      const surveyStatusCollection = HomeUtils.adminCollectionObject('responses');
       return surveyStatusCollection.find({}).fetch();
     },
   }
@@ -13,7 +13,7 @@ Template.surveyStatus.helpers(
 Template.surveyStatusRow.helpers(
   {
     surveyName(surveyID) {
-      const surveyCollection = adminCollectionObject('surveys');
+      const surveyCollection = HomeUtils.adminCollectionObject('surveys');
       const survey = surveyCollection.findOne({ _id: surveyID });
 
       let val = '';
@@ -25,12 +25,12 @@ Template.surveyStatusRow.helpers(
       return val;
     },
     clientName(clientID) {
-      const clientInfoCollection = adminCollectionObject('clientInfo');
+      const clientInfoCollection = HomeUtils.adminCollectionObject('clientInfo');
       const client = clientInfoCollection.findOne({ _id: clientID });
       return `${client.firstName} ${client.middleName} ${client.lastName}` || '';
     },
     userName(userID) {
-      const userCollection = adminCollectionObject('users');
+      const userCollection = HomeUtils.adminCollectionObject('users');
       const user = userCollection.findOne({ _id: userID });
 
       if (user && user.services && user.services.HMIS && user.services.HMIS.name) {
@@ -52,7 +52,7 @@ Template.surveyStatusRow.helpers(
     },
     surveyRoute() {
       const responseID = this._id;
-      const responseCollection = adminCollectionObject('responses');
+      const responseCollection = HomeUtils.adminCollectionObject('responses');
       const responseRecord = responseCollection.findOne({ _id: responseID });
 
       let url = '#';

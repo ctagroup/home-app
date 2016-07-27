@@ -603,7 +603,7 @@ AdminConfig = {
       },
     },
     globalHousehold: {
-      icon: 'bed',
+      icon: 'users',
       label: 'Global Household',
       tableColumns: [
         {

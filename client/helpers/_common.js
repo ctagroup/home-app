@@ -50,33 +50,9 @@ UI.registerHelper('isiOS', () => is.ios());
 UI.registerHelper('isAndroid', () => is.android());
 UI.registerHelper('isCordova', () => Meteor.isCordova);
 
-UI.registerHelper('currentUserGravatar', () => {
-  const user = Meteor.user();
-  const email = user && user.emails && user.emails[0].address;
-  // email = Email.normalize( email );
-  return `<img class="avatar small" src="${Gravatar.imageUrl(email, { secure: true })}" />`;
-});
+UI.registerHelper('currentUserGravatar', () => HomeHelpers.getCurrentUserGravatar());
 
-UI.registerHelper('currentUserFullName', () => {
-  const user = Meteor.user();
-
-  if (user && user.services && user.services.HMIS && user.services.HMIS.name) {
-    return user.services.HMIS.name.trim();
-  }
-
-  if (user && user.services && user.services.HMIS
-      && user.services.HMIS.firstName && user.services.HMIS.lastName) {
-    return (
-      `${user.services.HMIS.firstName.trim()} ${user.services.HMIS.lastName.trim()}`
-    ).trim();
-  }
-
-  if (user && user.emails && user.emails[0].address) {
-    return user.emails[0].address;
-  }
-
-  return '';
-});
+UI.registerHelper('currentUserFullName', () => HomeHelpers.getCurrentUserFullName());
 
 Template.adminEditBtn.helpers(
   {
@@ -106,4 +82,139 @@ UI.registerHelper('hasDocuments', () => {
   }
 
   return flag;
+});
+
+UI.registerHelper('AdminTables', AdminTables);
+
+adminCollections = () => {
+  let collections = {};
+
+  if (AdminConfig && AdminConfig.collections) {
+    collections = AdminConfig.collections;
+  }
+
+  return _.map(collections, (obj, key) => {
+    let obz = _.extend(obj, { name: key });
+    obz = _.defaults(obz, {
+      label: key,
+      icon: 'plus',
+      color: 'primary',
+    });
+
+    return _.extend(obz, {
+      viewPath: Router.path(`adminDashboard${key}View`),
+      newPath: Router.path(`adminDashboard${key}New`),
+    });
+  });
+};
+
+UI.registerHelper('AdminConfig', () => AdminConfig);
+
+UI.registerHelper(
+  'admin_skin',
+  () => ((AdminConfig && AdminConfig.skin) ? AdminConfig.skin : 'blue')
+);
+
+UI.registerHelper('admin_collections', adminCollections);
+
+UI.registerHelper('admin_collection_name', () => Session.get('admin_collection_name'));
+
+UI.registerHelper('admin_current_id', () => Session.get('admin_id'));
+
+UI.registerHelper('admin_current_doc', () => Session.get('admin_doc'));
+
+UI.registerHelper(
+  'admin_is_users_collection',
+  () => Session.get('admin_collection_name') === 'Users'
+);
+
+UI.registerHelper('admin_sidebar_items', () => AdminDashboard.sidebarItems);
+
+UI.registerHelper('admin_omit_fields', () => {
+  let collection = undefined;
+  let globalz = undefined;
+
+  if (AdminConfig && AdminConfig.autoForm && AdminConfig.autoForm.omitFields) {
+    globalz = AdminConfig.autoForm.omitFields;
+  }
+
+  if (!Session.equals('admin_collection_name', 'Users') && AdminConfig && AdminConfig.collections
+      && AdminConfig.collections[Session.get('admin_collection_name')].omitFields === 'object') {
+    collection = AdminConfig.collections[Session.get('admin_collection_name')].omitFields;
+  }
+
+  if (typeof globalz === 'object' && typeof collection === 'object') {
+    return _.union(globalz, collection);
+  } else if (typeof globalz === 'object') {
+    return globalz;
+  } else if (typeof collection === 'object') {
+    return collection;
+  }
+
+  return {};
+});
+
+UI.registerHelper('AdminSchemas', () => AdminDashboard.schemas);
+
+UI.registerHelper('adminGetSkin', () => {
+  if (AdminConfig && AdminConfig.dashboard && AdminConfig.dashboard.skin) {
+    return AdminConfig.dashboard.skin;
+  }
+  return 'blue';
+});
+
+UI.registerHelper('adminGetUsers', () => Meteor.users);
+
+UI.registerHelper('adminGetUserSchema', () => {
+  let schema = {};
+  if (_.has(AdminConfig, 'userSchema')) {
+    schema = AdminConfig.userSchema;
+  } else {
+    schema = Meteor.users.simpleSchema();
+  }
+  return schema;
+});
+
+UI.registerHelper('collectionLabel', (collection) => AdminDashboard.collectionLabel(collection));
+
+UI.registerHelper('collectionsCount', (collection) => {
+  if (collection === 'Users') {
+    return Meteor.users.find().count();
+  }
+
+  const rows = collectionsCount.findOne({ collection });
+  return rows ? rows.count : 0;
+});
+
+UI.registerHelper('adminTemplate', (collection, mode) => {
+  let template = false;
+
+  if (AdminConfig && AdminConfig.collections && AdminConfig.collections[collection]
+    && AdminConfig.collections[collection].templates
+    && AdminConfig.collections[collection].templates[mode]) {
+    template = AdminConfig.collections[collection].templates[mode];
+  }
+
+  return template;
+});
+
+UI.registerHelper(
+  'adminGetCollection',
+  (collection) => _.find(adminCollections(), (item) => item.name === collection)
+);
+
+UI.registerHelper('adminWidgets', () => {
+  let widgets = [];
+  if (AdminConfig && AdminConfig.dashboard && AdminConfig.dashboard.widgets) {
+    widgets = AdminConfig.dashboard.widgets;
+  }
+  return widgets;
+});
+
+UI.registerHelper('adminUserEmail', (emails) => {
+  let email = false;
+  if (emails && emails[0] && emails[0].address) {
+    email = emails[0].address;
+  }
+  return email;
 });

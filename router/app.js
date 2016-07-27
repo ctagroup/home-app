@@ -120,7 +120,7 @@ Router.route(
         client = Session.get('currentHMISClient') || false;
       } else {
         const clientInfoID = this.params._id;
-        const clientInfoCollection = adminCollectionObject('clientInfo');
+        const clientInfoCollection = HomeUtils.adminCollectionObject('clientInfo');
         client = clientInfoCollection.findOne({ _id: clientInfoID });
       }
       return client;
@@ -170,7 +170,7 @@ Router.onBeforeAction(
         }
       );
     } else {
-      const clientInfoCollection = adminCollectionObject('clientInfo');
+      const clientInfoCollection = HomeUtils.adminCollectionObject('clientInfo');
       const clientInfo = clientInfoCollection.findOne({ _id: this.params._id });
 
       if (clientInfo && clientInfo._id) {
@@ -205,7 +205,7 @@ Router.route(
     controller: 'HomeAppController',
     data() {
       const clientInfoID = this.params._id;
-      const clientInfoCollection = adminCollectionObject('clientInfo');
+      const clientInfoCollection = HomeUtils.adminCollectionObject('clientInfo');
       return clientInfoCollection.findOne({ _id: clientInfoID });
     },
   }
@@ -229,13 +229,13 @@ Router.route(
         client = Session.get('currentHMISClient') || false;
       } else {
         const clientInfoID = this.params._id;
-        const clientInfoCollection = adminCollectionObject('clientInfo');
+        const clientInfoCollection = HomeUtils.adminCollectionObject('clientInfo');
         client = clientInfoCollection.findOne({ _id: clientInfoID });
       }
 
       const surveyID = this.params.survey_id;
       logger.log(`survey ${surveyID}`);
-      const surveysCollection = adminCollectionObject('surveys');
+      const surveysCollection = HomeUtils.adminCollectionObject('surveys');
       const survey = surveysCollection.findOne({ _id: surveyID });
 
       return { client, survey };
@@ -249,7 +249,7 @@ Router.route(
     controller: 'HomeAppController',
     data() {
       const responseID = this.params._id;
-      const responsesCollection = adminCollectionObject('responses');
+      const responsesCollection = HomeUtils.adminCollectionObject('responses');
       return responsesCollection.findOne({ _id: responseID });
     },
   }

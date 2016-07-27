@@ -1,7 +1,7 @@
 Template.surveyEditTemplate.helpers(
   {
     questionList() {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       return questionCollection.find({}).fetch();
     },
     existingSelectedQuestions() {
@@ -9,7 +9,9 @@ Template.surveyEditTemplate.helpers(
       return qIds != null;
     },
     getSection() {
-      const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
+      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
+        'surveyQuestionsMaster'
+      );
       const distinctEntries = _.uniq(
         surveyQuestionsMasterCollection.find(
           {
@@ -33,7 +35,7 @@ Template.sortableItemTarget.helpers(
       return !(String(type) === String('question'));
     },
     quesName(qId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: qId });
 
       let val = '';
@@ -45,7 +47,7 @@ Template.sortableItemTarget.helpers(
       return val;
     },
     quesLabel(qId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: qId });
 
       let val = '';
@@ -71,7 +73,9 @@ Template.sortableItemTarget.helpers(
 Template.typeDefinition.helpers(
   {
     showPreview() {
-      const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
+      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
+        'surveyQuestionsMaster'
+      );
       if (
         surveyQuestionsMasterCollection.find(
           { surveyID: Router.current().params._id }
@@ -83,7 +87,9 @@ Template.typeDefinition.helpers(
       return false;
     },
     attributes() {
-      const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
+      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
+        'surveyQuestionsMaster'
+      );
       return surveyQuestionsMasterCollection.find(
         { surveyID: Router.current().params._id }, {
           sort: { order: 1 },

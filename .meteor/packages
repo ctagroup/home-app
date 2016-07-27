@@ -24,6 +24,7 @@ zimme:active-route
 useraccounts:bootstrap
 useraccounts:iron-routing
 email
+underscore
 accounts-google
 service-configuration
 dburles:collection-helpers
@@ -32,7 +33,6 @@ aldeed:autoform
 aldeed:tabular
 alanning:roles
 fortawesome:fontawesome
-desaiuditd:meteor-admin
 jparker:gravatar
 check
 rubaxa:sortable
@@ -58,3 +58,8 @@ cunneen:signature-pad
 random
 ephemer:reactive-datatables
 hb5:meteor-is.js
+meteorhacks:unblock
+reywood:publish-composite
+raix:handlebar-helpers
+aldeed:template-extension
+templating

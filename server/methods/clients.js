@@ -26,7 +26,7 @@ Meteor.methods(
       shelter,
       signature
     ) {
-      const clientInfoCollection = adminCollectionObject('clientInfo');
+      const clientInfoCollection = HomeUtils.adminCollectionObject('clientInfo');
       const clientRecords = clientInfoCollection.insert(
         {
           firstName,
@@ -75,7 +75,7 @@ Meteor.methods(
       location,
       shelter
     ) {
-      const clientInfoCollection = adminCollectionObject('clientInfo');
+      const clientInfoCollection = HomeUtils.adminCollectionObject('clientInfo');
       clientInfoCollection.update(
         clientInfoID, {
           $set: {
@@ -103,11 +103,11 @@ Meteor.methods(
       );
     },
     removeClient(clientInfoID) {
-      const questionCollection = adminCollectionObject('clientInfo');
+      const questionCollection = HomeUtils.adminCollectionObject('clientInfo');
       questionCollection.remove({ _id: clientInfoID });
     },
     addClientToHMIS(clientID) {
-      const clientInfoCollection = adminCollectionObject('clientInfo');
+      const clientInfoCollection = HomeUtils.adminCollectionObject('clientInfo');
       const client = clientInfoCollection.findOne({ _id: clientID });
 
       const personalId = HMISAPI.createClient(client);

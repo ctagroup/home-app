@@ -5,11 +5,11 @@
 Meteor.methods(
   {
     getAllHomeRoles() {
-      const homeRolesCollection = adminCollectionObject('homeRoles');
+      const homeRolesCollection = HomeUtils.adminCollectionObject('homeRoles');
       return homeRolesCollection.find({}).fetch();
     },
     insertHomeRole(data) {
-      const homeRolesCollection = adminCollectionObject('homeRoles');
+      const homeRolesCollection = HomeUtils.adminCollectionObject('homeRoles');
       homeRolesCollection.insert(data);
     },
     generateDefaultHomeRoles() {
@@ -28,7 +28,7 @@ Meteor.methods(
       }
     },
     getAllRolePermissions() {
-      const rolePermissions = adminCollectionObject('rolePermissions');
+      const rolePermissions = HomeUtils.adminCollectionObject('rolePermissions');
       return rolePermissions.find({}).fetch();
     },
     generateHomeRolePermissions() {
@@ -38,7 +38,7 @@ Meteor.methods(
             && AdminConfig.defaultRolePermissions[defaultHomeRoles[i]]) {
           const rolePermissions = AdminConfig.defaultRolePermissions[defaultHomeRoles[i]];
           for (let j = 0; j < rolePermissions.length; j++) {
-            const rolePermissionsCollection = adminCollectionObject('rolePermissions');
+            const rolePermissionsCollection = HomeUtils.adminCollectionObject('rolePermissions');
             rolePermissionsCollection.insert(
               {
                 role: defaultHomeRoles[i],
@@ -51,7 +51,7 @@ Meteor.methods(
       }
     },
     addUserToRole(userID, role) {
-      const rolePermissionsCollection = adminCollectionObject('rolePermissions');
+      const rolePermissionsCollection = HomeUtils.adminCollectionObject('rolePermissions');
       let rolePermissions = rolePermissionsCollection.find({ role, value: true }).fetch();
 
       rolePermissions = _.map(
@@ -63,7 +63,7 @@ Meteor.methods(
       }
     },
     removeUserFromRole(userID, role) {
-      const rolePermissionsCollection = adminCollectionObject('rolePermissions');
+      const rolePermissionsCollection = HomeUtils.adminCollectionObject('rolePermissions');
       let rolePermissions = rolePermissionsCollection.find({ role, value: true }).fetch();
 
       rolePermissions = _.map(
@@ -106,7 +106,7 @@ Meteor.methods(
     updateRolePermissions(data) {
       const dataz = data;
       const rolePermissions = Meteor.call('getAllRolePermissions');
-      const rolePermissionsCollection = adminCollectionObject('rolePermissions');
+      const rolePermissionsCollection = HomeUtils.adminCollectionObject('rolePermissions');
 
       for (let i = 0; i < rolePermissions.length; i++) {
         let flag = false;
@@ -165,7 +165,7 @@ Meteor.methods(
       return dataz;
     },
     resetRolePermissions() {
-      const rolePermissionsCollection = adminCollectionObject('rolePermissions');
+      const rolePermissionsCollection = HomeUtils.adminCollectionObject('rolePermissions');
       rolePermissionsCollection.remove({});
       Meteor.call('generateHomeRolePermissions');
     },

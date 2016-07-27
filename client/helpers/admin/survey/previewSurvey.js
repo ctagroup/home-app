@@ -4,7 +4,9 @@ Template.previewSurvey.helpers(
       return Router.path('adminDashboardsurveysEdit', { _id: id });
     },
     surveyQuesContents() {
-      const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
+      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
+        'surveyQuestionsMaster'
+      );
       logger.log(Router.current().params._id);
       logger.log(
         surveyQuestionsMasterCollection.find(
@@ -35,7 +37,7 @@ Template.previewSurvey.helpers(
       return contentType === 'question';
     },
     displayQuesContents(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
 
       let label = '';
@@ -47,7 +49,7 @@ Template.previewSurvey.helpers(
       return label;
     },
     wysiwygLabel(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
 
       let dataType = '';
@@ -59,7 +61,7 @@ Template.previewSurvey.helpers(
       return dataType === 'label';
     },
     textboxString(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
 
       let dataType = '';
@@ -71,7 +73,7 @@ Template.previewSurvey.helpers(
       return dataType === 'Textbox(String)';
     },
     wysiwygEditor(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
       let dataType = '';
       if (question && question.dataType) {
@@ -86,7 +88,7 @@ Template.previewSurvey.helpers(
       return;
     },
     isDate(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
       let dataType = '';
       if (question && question.dataType) {
@@ -95,7 +97,7 @@ Template.previewSurvey.helpers(
       return dataType === 'date';
     },
     isMTV(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
       let dataType = '';
       if (question && question.dataType) {
@@ -112,7 +114,7 @@ Template.previewSurvey.helpers(
       return;
     },
     textboxNumber(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
 
       let dataType = '';
@@ -124,7 +126,7 @@ Template.previewSurvey.helpers(
       return dataType === 'Textbox(Integer)';
     },
     booleanTF(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
 
       let dataType = '';
@@ -136,7 +138,7 @@ Template.previewSurvey.helpers(
       return dataType === 'Boolean';
     },
     singleSelect(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
 
       let dataType = '';
@@ -148,7 +150,7 @@ Template.previewSurvey.helpers(
       return dataType === 'Single Select';
     },
     singleOptions(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
 
       let options = [];
@@ -160,7 +162,7 @@ Template.previewSurvey.helpers(
       return options;
     },
     multipleSelect(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
 
       let dataType = '';
@@ -172,7 +174,7 @@ Template.previewSurvey.helpers(
       return dataType === 'Multiple Select';
     },
     singlePhoto(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
 
       let dataType = '';

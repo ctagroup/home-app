@@ -53,7 +53,22 @@
     "SignaturePad": true,
     "SignaturePadConfig": true,
     "is": true,
-    "collectionsCount": true
+    "collectionsCount": true,
+    "defaultColumns": true,
+    "adminTablePubName": true,
+    "adminCreateTables": true,
+    "adminCreateRouteViewOptions": true,
+    "adminCreateRouteView": true,
+    "adminCreateRouteNewOptions": true,
+    "adminCreateRouteNew": true,
+    "adminCreateRouteEditOptions": true,
+    "adminCreateRouteEdit": true,
+    "adminPublishTables": true,
+    "adminCreateRoutes": true,
+    "HomeUtils": true,
+    "Tabular": true,
+    "adminCollections": true,
+    "AdminController": true
   },
   "rules": {
     "no-underscore-dangle": [

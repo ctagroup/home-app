@@ -5,7 +5,7 @@
 Meteor.methods(
   {
     addSurveyResponse(surveyID, clientID, audience, userID, mainSectionObject, status) {
-      const responsesCollection = adminCollectionObject('responses');
+      const responsesCollection = HomeUtils.adminCollectionObject('responses');
       const responseRecords = responsesCollection.insert(
         {
           clientID,
@@ -19,7 +19,7 @@ Meteor.methods(
       return responseRecords;
     },
     updateSurveyResponse(responseID, surveyID, clientID, userID, mainSectionObject, status) {
-      const responsesCollection = adminCollectionObject('responses');
+      const responsesCollection = HomeUtils.adminCollectionObject('responses');
       const responseRecords = responsesCollection.update(
         {
           _id: responseID,

@@ -9,7 +9,7 @@ Meteor.methods(
 
       logger.info(JSON.stringify(settings));
 
-      const optionsCollection = adminCollectionObject('options');
+      const optionsCollection = HomeUtils.adminCollectionObject('options');
 
       let value = '';
 

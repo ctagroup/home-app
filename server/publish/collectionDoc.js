@@ -2,7 +2,7 @@
  * Created by udit on 26/07/16.
  */
 
-Meteor.publishComposite('adminCollectionDoc', (collection, id) => {
+Meteor.publishComposite('collectionDoc', function publishCollectionDoc(collection, id) {
   check(collection, String);
 
   if (Roles.userIsInRole(this.userId, ['view_admin'])) {
@@ -15,7 +15,7 @@ Meteor.publishComposite('adminCollectionDoc', (collection, id) => {
 
     return {
       find() {
-        return adminCollectionObject(collection).find(id);
+        return HomeUtils.adminCollectionObject(collection).find(id);
       },
       children,
     };

@@ -1,7 +1,7 @@
 Template.surveyViewTemplate.helpers(
   {
     surveyList() {
-      const surveyCollection = adminCollectionObject('surveys');
+      const surveyCollection = HomeUtils.adminCollectionObject('surveys');
       return surveyCollection.find({}).fetch();
     },
   }
@@ -10,7 +10,7 @@ Template.surveyViewTemplate.helpers(
 Template.surveyForm.helpers(
   {
     surveyList() {
-      const surveyCollection = adminCollectionObject('surveys');
+      const surveyCollection = HomeUtils.adminCollectionObject('surveys');
       return surveyCollection.find({}).fetch();
     },
   }

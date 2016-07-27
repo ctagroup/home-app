@@ -5,7 +5,7 @@
 Meteor.methods(
   {
     addSurvey(title, active, copy, surveyCopyID, stype, created) {
-      const surveyCollection = adminCollectionObject('surveys');
+      const surveyCollection = HomeUtils.adminCollectionObject('surveys');
       const surveyID = surveyCollection.insert(
         {
           title,
@@ -19,15 +19,15 @@ Meteor.methods(
       return surveyID;
     },
     updateSurvey(surveyID, title, stype, active) {
-      const surveyCollection = adminCollectionObject('surveys');
+      const surveyCollection = HomeUtils.adminCollectionObject('surveys');
       return surveyCollection.update(surveyID, { $set: { title, stype, active } });
     },
     updateCreatedSurvey(surveyID, created) {
-      const surveyCollection = adminCollectionObject('surveys');
+      const surveyCollection = HomeUtils.adminCollectionObject('surveys');
       surveyCollection.update(surveyID, { $set: { created } });
     },
     removeSurvey(surveyID) {
-      const surveyCollection = adminCollectionObject('surveys');
+      const surveyCollection = HomeUtils.adminCollectionObject('surveys');
       surveyCollection.remove({ _id: surveyID });
     },
     addSurveyQuestionMaster(
@@ -39,7 +39,9 @@ Meteor.methods(
       content,
       order
     ) {
-      const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
+      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
+        'surveyQuestionsMaster'
+      );
       const surveyQues = surveyQuestionsMasterCollection.insert(
         {
           surveyTitle,
@@ -54,18 +56,24 @@ Meteor.methods(
       return surveyQues;
     },
     updateSurveyQuestionMaster(_id, content) {
-      const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
+      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
+        'surveyQuestionsMaster'
+      );
       surveyQuestionsMasterCollection.update({ _id }, { $set: { content } });
     },
     updateSurveyQuestionMasterTitle(id, surveyTitle) {
-      const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
+      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
+        'surveyQuestionsMaster'
+      );
       return surveyQuestionsMasterCollection.update(
         { surveyID: id },
         { $set: { surveyTitle } }, { multi: true }
       );
     },
     removeSurveyQuestionMaster(id) {
-      const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
+      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
+        'surveyQuestionsMaster'
+      );
 
       const order = surveyQuestionsMasterCollection.findOne({ _id: id });
 
@@ -90,7 +98,9 @@ Meteor.methods(
     resetSurveyQuestionMasterOrder(surveyId) {
       logger.info(surveyId);
 
-      const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
+      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
+        'surveyQuestionsMaster'
+      );
       const orders = surveyQuestionsMasterCollection.find(
         {
           surveyID: surveyId,
@@ -109,7 +119,9 @@ Meteor.methods(
     fixSurveyQuestionMasterOrder(surveyId) {
       logger.info(surveyId);
 
-      const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
+      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
+        'surveyQuestionsMaster'
+      );
       const orders = surveyQuestionsMasterCollection.find(
         {
           surveyID: surveyId,
@@ -129,7 +141,9 @@ Meteor.methods(
       }
     },
     removeSurveyCopyQuestionMaster(surveyCopyTitle) {
-      const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
+      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
+        'surveyQuestionsMaster'
+      );
       surveyQuestionsMasterCollection.remove({ surveyTitle: surveyCopyTitle });
     },
   }
