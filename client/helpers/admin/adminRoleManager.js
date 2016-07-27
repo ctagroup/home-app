@@ -15,7 +15,7 @@ Template.AdminRoleManager.helpers(
       return permissions;
     },
     isPermissionInRole(permission) {
-      const rolePermissionsCollection = adminCollectionObject('rolePermissions');
+      const rolePermissionsCollection = HomeUtils.adminCollectionObject('rolePermissions');
       const result = rolePermissionsCollection.find(
         { role: this.title, permission, value: true }
       ).fetch();

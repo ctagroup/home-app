@@ -37,7 +37,6 @@ ddp-server@1.2.10
 deps@1.0.12
 desaiuditd:accounts-hmis@0.0.3
 desaiuditd:hmis@0.1.0
-desaiuditd:meteor-admin@1.2.3
 diff-sequence@1.0.6
 ecmascript@0.4.8
 ecmascript-runtime@0.2.12
@@ -47,7 +46,6 @@ ephemer:reactive-datatables@1.1.0
 es5-shim@4.5.13
 fastclick@1.0.12
 fortawesome:fontawesome@4.5.0
-fourseven:scss@3.8.0_1
 geojson-utils@1.0.9
 google@1.1.13
 hb5:meteor-is.js@0.0.1

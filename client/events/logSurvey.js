@@ -71,7 +71,7 @@ function getAudience() {
 }
 
 function getQuestionName(getQuesName) {
-  const questionCollection = adminCollectionObject('questions');
+  const questionCollection = HomeUtils.adminCollectionObject('questions');
   const questions = questionCollection.findOne(
     { _id: getQuesName }
   );
@@ -79,7 +79,7 @@ function getQuestionName(getQuesName) {
   return questions;
 }
 function checkAudience(qid) {
-  const questionCollection = adminCollectionObject('questions');
+  const questionCollection = HomeUtils.adminCollectionObject('questions');
   const questions = questionCollection.find({ _id: qid }, { audience: 1, _id: 0 }).fetch();
 
   // let flag = false;
@@ -95,7 +95,7 @@ function checkAudience(qid) {
 }
 
 function saveSurvey(status, tmpl) {
-  const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
+  const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject('surveyQuestionsMaster');
   const surveyDocument = surveyQuestionsMasterCollection.find(
     { surveyID: tmpl.data.survey._id }
   ).fetch();
@@ -239,7 +239,7 @@ function saveSurvey(status, tmpl) {
 
 
 function savePausedSurvey(status, tmpl) {
-  const responsesCollection = adminCollectionObject('responses');
+  const responsesCollection = HomeUtils.adminCollectionObject('responses');
   const responseDocument = responsesCollection.find({ _id: tmpl.data._id }).fetch();
 
   let surveyId = '';
@@ -250,7 +250,7 @@ function savePausedSurvey(status, tmpl) {
     clientId = responseDocument[i].clientID;
   }
 
-  const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
+  const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject('surveyQuestionsMaster');
   const surveyDocument = surveyQuestionsMasterCollection.find({ surveyID: surveyId }).fetch();
   const mainSectionObject = [];
   for (let i = 0; i < surveyDocument.length; i++) {

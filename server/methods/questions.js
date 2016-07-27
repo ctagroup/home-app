@@ -5,7 +5,7 @@
 Meteor.methods(
   {
     addQuestion(category, name, question, dataType, options, qtype, audience, locked, isCopy) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       questionCollection.insert(
         {
           category,
@@ -32,7 +32,7 @@ Meteor.methods(
       locked,
       isCopy
     ) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       questionCollection.update(
         questionID, {
           $set: {
@@ -50,7 +50,7 @@ Meteor.methods(
       );
     },
     removeQuestion(questionID) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       questionCollection.remove({ _id: questionID });
     },
   }

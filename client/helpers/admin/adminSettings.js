@@ -7,7 +7,7 @@ Template.AdminSettings.helpers(
       settings.preClientProfileQuestions.housingServiceQuestion = {};
       settings.preClientProfileQuestions.releaseOfInformation = {};
 
-      const optionsCollection = adminCollectionObject('options');
+      const optionsCollection = HomeUtils.adminCollectionObject('options');
 
       const dvQuestion = optionsCollection.find(
         { option_name: 'preClientProfileQuestions.dvQuestion.question' }

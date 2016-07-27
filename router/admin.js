@@ -1,15 +1,34 @@
 /**
  * Created by udit on 06/02/16.
  */
-Router.route(
-  '/admin/dashboard', () => {
-    Router.go('/admin');
-  }
-);
+
+AdminController = RouteController.extend({
+  layoutTemplate: 'AdminLayout',
+  waitOn() {
+    return [Meteor.subscribe('collectionsCount')];
+  },
+  onBeforeAction() {
+    Session.set('adminSuccess', null);
+    Session.set('adminError', null);
+    Session.set('admin_title', '');
+    Session.set('admin_subtitle', '');
+    Session.set('admin_collection_page', null);
+    Session.set('admin_collection_name', null);
+    Session.set('admin_id', null);
+    Session.set('admin_doc', null);
+    if (!Roles.userIsInRole(Meteor.userId(), ['view_admin'])) {
+      Meteor.call('adminCheckAdmin');
+      if (AdminConfig && AdminConfig.nonAdminRedirectRoute) {
+        Router.go(AdminConfig.nonAdminRedirectRoute);
+      }
+    }
+    this.next();
+  },
+});
 
 Router.route(
   'adminRoleManager', {
-    path: '/admin/roles',
+    path: '/roles',
     template: 'AdminRoleManager',
     controller: 'AdminController',
     action() {
@@ -25,7 +44,7 @@ Router.route(
 
 Router.route(
   'adminSettings', {
-    path: '/admin/settings',
+    path: '/settings',
     template: 'AdminSettings',
     controller: 'AdminController',
     action() {
@@ -41,7 +60,7 @@ Router.route(
 
 Router.route(
   'selectSurveyQuestion', {
-    path: '/admin/surveys/:_id/selectQuestions',
+    path: '/surveys/:_id/selectQuestions',
     template: 'selectQuestions',
     controller: 'AdminController',
     action() {
@@ -54,7 +73,7 @@ Router.route(
     },
     data() {
       const surveyID = this.params._id;
-      const surveyCollection = adminCollectionObject('surveys');
+      const surveyCollection = HomeUtils.adminCollectionObject('surveys');
       return surveyCollection.findOne({ _id: surveyID });
     },
   }
@@ -62,7 +81,7 @@ Router.route(
 
 Router.route(
   'previewSurvey', {
-    path: '/admin/surveys/:_id/preview',
+    path: '/surveys/:_id/preview',
     template: 'previewSurvey',
     controller: 'AdminController',
     action() {
@@ -75,8 +94,22 @@ Router.route(
     },
     data() {
       const surveyID = this.params._id;
-      const surveyCollection = adminCollectionObject('surveys');
+      const surveyCollection = HomeUtils.adminCollectionObject('surveys');
       return surveyCollection.findOne({ _id: surveyID });
     },
   }
 );
+
+Router.route('adminDashboard', {
+  path: '/dashboard',
+  template: 'AdminDashboard',
+  controller: 'AdminController',
+  action() {
+    return this.render();
+  },
+  onAfterAction() {
+    Session.set('admin_title', 'Dashboard');
+    Session.set('admin_collection_name', '');
+    Session.set('admin_collection_page', '');
+  },
+});

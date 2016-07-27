@@ -12,7 +12,7 @@ let timesHomeless;
 let disablingCond;
 
 function getUniversalElements() {
-  const questionsCollection = adminCollectionObject('questions');
+  const questionsCollection = HomeUtils.adminCollectionObject('questions');
   const universalElements = questionsCollection.find(
     { category: 'Universal Data Elements' }
   ).fetch();
@@ -77,7 +77,7 @@ Template.viewClient.helpers(
     },
     getText(text, code) {
       let definition = code;
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ name: text });
       if (question && question.options) {
         for (let j = 0; j < question.options.length; j++) {

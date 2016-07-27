@@ -1,7 +1,7 @@
 Template.questionViewTemplate.helpers(
   {
     questionList() {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       return questionCollection.find({}).fetch();
     },
   }
@@ -10,11 +10,11 @@ Template.questionViewTemplate.helpers(
 Template.questionForm.helpers(
   {
     questionList() {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       return questionCollection.find({}).fetch();
     },
     getQuestionCategory() {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const distinctEntries = _.uniq(
         questionCollection.find(
           {},

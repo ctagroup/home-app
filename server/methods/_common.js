@@ -8,7 +8,7 @@ Meteor.methods(
       let result = false;
       if (Roles.userIsInRole(this.userId, [`create_${collection}`])) {
         this.unblock();
-        result = adminCollectionObject(collection).insert(doc);
+        result = HomeUtils.adminCollectionObject(collection).insert(doc);
       }
       return result;
     },
@@ -17,7 +17,7 @@ Meteor.methods(
       if (Roles.userIsInRole(this.userId, [`edit_${collection}`])) {
         this.unblock();
         logger.info(modifier);
-        result = adminCollectionObject(collection).update({ _id }, modifier);
+        result = HomeUtils.adminCollectionObject(collection).update({ _id }, modifier);
       }
       return result;
     },
@@ -25,7 +25,7 @@ Meteor.methods(
       let val = '';
       if (Roles.userIsInRole(this.userId, [`delete_${collection}`])) {
         this.unblock();
-        val = adminCollectionObject(collection).remove({ _id });
+        val = HomeUtils.adminCollectionObject(collection).remove({ _id });
       }
       return val;
     },

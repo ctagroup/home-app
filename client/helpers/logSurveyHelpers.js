@@ -49,7 +49,7 @@ function getAudience() {
 
 function isSkipped(sectionID) {
   let status = false;
-  const responseCollection = adminCollectionObject('responses');
+  const responseCollection = HomeUtils.adminCollectionObject('responses');
   const responseSection = responseCollection.findOne({ _id: Router.current().params._id });
 
   if (responseSection && responseSection.section) {
@@ -65,7 +65,7 @@ function isSkipped(sectionID) {
   return status;
 }
 function chkAudience(/* content */) {
-  // const questionCollection = adminCollectionObject('questions');
+  // const questionCollection = HomeUtils.adminCollectionObject('questions');
   // const question = questionCollection.findOne({ _id: content });
 
   // return getAudience() === question.audience;
@@ -73,8 +73,10 @@ function chkAudience(/* content */) {
   return true;
 }
 function checkSectionAudience(sid, status) {
-  const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
-  const questionCollection = adminCollectionObject('questions');
+  const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
+    'surveyQuestionsMaster'
+  );
+  const questionCollection = HomeUtils.adminCollectionObject('questions');
   let surveyElements = null;
   if (status === null) {
     surveyElements = surveyQuestionsMasterCollection.find(
@@ -104,7 +106,11 @@ function checkSectionAudience(sid, status) {
     }
   }
   // TODO : Fix Audience
-  // return count > 0;
+
+  if (count > 0) {
+    return true;
+  }
+
   return true;
 }
 function surveyContents(surveyElements, status) {
@@ -124,7 +130,7 @@ function surveyContents(surveyElements, status) {
 }
 
 function getQName(qID) {
-  const questionCollection = adminCollectionObject('questions');
+  const questionCollection = HomeUtils.adminCollectionObject('questions');
   const question = questionCollection.findOne({ _id: qID });
   return question.name;
 }
@@ -134,11 +140,11 @@ let sections;
 Template.LogSurvey.helpers(
   {
     getCreatedSurvey() {
-      const surveyCollections = adminCollectionObject('surveys');
+      const surveyCollections = HomeUtils.adminCollectionObject('surveys');
       return surveyCollections.find({ created: true }).fetch();
     },
     getSurveyedClient() {
-      const clientCollections = adminCollectionObject('clientInfo');
+      const clientCollections = HomeUtils.adminCollectionObject('clientInfo');
       return clientCollections.find().fetch();
     },
   }
@@ -147,7 +153,7 @@ Template.LogSurvey.helpers(
 Template.LogSurveyResponse.helpers(
   {
     isMTV(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
       let dataType = '';
       if (question && question.dataType) {
@@ -156,7 +162,9 @@ Template.LogSurveyResponse.helpers(
       return dataType === 'mtv';
     },
     surveyQuesContents() {
-      const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
+      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
+        'surveyQuestionsMaster'
+      );
       const surveyElements = surveyQuestionsMasterCollection.find(
         { surveyID: Router.current().params.survey_id },
         { sort: { order: 1 } }
@@ -172,7 +180,7 @@ Template.LogSurveyResponse.helpers(
           && Router.current().params.query.isHMISClient && Router.current().params.query.link) {
         client = Session.get('currentHMISClient') || false;
       } else {
-        const clientCollections = adminCollectionObject('clientInfo');
+        const clientCollections = HomeUtils.adminCollectionObject('clientInfo');
         client = clientCollections.findOne({ _id: clientID });
       }
 
@@ -195,7 +203,7 @@ Template.LogSurveyResponse.helpers(
       return contentType === 'question';
     },
     displayQuesContents(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
       return question.question;
     },
@@ -203,7 +211,7 @@ Template.LogSurveyResponse.helpers(
       return chkAudience(content);
     },
     wysiwygLabel(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
 
       let dataType = '';
@@ -215,7 +223,7 @@ Template.LogSurveyResponse.helpers(
       return dataType === 'label';
     },
     textboxString(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const questions = questionCollection.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
@@ -232,7 +240,7 @@ Template.LogSurveyResponse.helpers(
       return flag;
     },
     wysiwygEditor(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
       let dataType = '';
       if (question && question.dataType) {
@@ -247,7 +255,7 @@ Template.LogSurveyResponse.helpers(
       return;
     },
     isDate(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
       let dataType = '';
       if (question && question.dataType) {
@@ -264,7 +272,7 @@ Template.LogSurveyResponse.helpers(
       return;
     },
     textboxNumber(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const questions = questionCollection.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
@@ -281,7 +289,7 @@ Template.LogSurveyResponse.helpers(
       return flag;
     },
     booleanTF(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const questions = questionCollection.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
@@ -298,7 +306,7 @@ Template.LogSurveyResponse.helpers(
       return flag;
     },
     singleSelect(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const questions = questionCollection.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
@@ -315,7 +323,7 @@ Template.LogSurveyResponse.helpers(
       return flag;
     },
     singleOptions(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const questions = questionCollection.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
@@ -323,7 +331,7 @@ Template.LogSurveyResponse.helpers(
       return questions[0].options;
     },
     multipleSelect(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const questions = questionCollection.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
@@ -340,7 +348,7 @@ Template.LogSurveyResponse.helpers(
       return flag;
     },
     singlePhoto(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
 
       let dataType = '';
@@ -357,7 +365,7 @@ Template.LogSurveyResponse.helpers(
     responseExists() {
       let flag = false;
 
-      const responseCollection = adminCollectionObject('responses');
+      const responseCollection = HomeUtils.adminCollectionObject('responses');
       const responseRecords = responseCollection.find(
         { surveyID: Router.current().params.survey_id }
       ).fetch();
@@ -375,7 +383,7 @@ Template.LogSurveyResponse.helpers(
       return flag;
     },
     surveyContents() {
-      const responseCollection = adminCollectionObject('responses');
+      const responseCollection = HomeUtils.adminCollectionObject('responses');
       const responseSections = responseCollection.find(
         { surveyID: Router.current().params._id }
       ).fetch();
@@ -395,7 +403,7 @@ Template.LogSurveyResponse.helpers(
 );
 
 function getText(id) {
-  const responseCollection = adminCollectionObject('responses');
+  const responseCollection = HomeUtils.adminCollectionObject('responses');
   const responseSection = responseCollection.findOne({ _id: Router.current().params._id });
   if (!responseSection || !responseSection.section) {
     return '';
@@ -408,7 +416,7 @@ function getText(id) {
         const quesIDs = response[k].questionID;
         if (id === quesIDs) {
           let responseVal = response[k].answer;
-          const questionCollection = adminCollectionObject('questions');
+          const questionCollection = HomeUtils.adminCollectionObject('questions');
           const questions = questionCollection.find(
             { _id: quesIDs }, { dataType: 1, _id: 0 }
           ).fetch();
@@ -464,7 +472,7 @@ function addOptions(question) {
 Template.LogSurveyView.helpers(
   {
     isMTV(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
       let dataType = '';
       if (question && question.dataType) {
@@ -476,7 +484,7 @@ Template.LogSurveyView.helpers(
       return chkAudience(content);
     },
     surveyQuesContents() {
-      const responseCollection = adminCollectionObject('responses');
+      const responseCollection = HomeUtils.adminCollectionObject('responses');
       const responseRecord = responseCollection.findOne({ _id: Router.current().params._id });
 
       let quesContents = [];
@@ -484,7 +492,9 @@ Template.LogSurveyView.helpers(
       if (responseRecord && responseRecord.surveyID) {
         const surveyid = responseRecord.surveyID;
 
-        const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
+        const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
+          'surveyQuestionsMaster'
+        );
         const surveyElements = surveyQuestionsMasterCollection.find(
           { surveyID: surveyid }, { sort: { order: 1 } }
         ).fetch();
@@ -499,7 +509,7 @@ Template.LogSurveyView.helpers(
       }, 0);
     },
     surveyTitle(surveyID) {
-      const surveyCollection = adminCollectionObject('surveys');
+      const surveyCollection = HomeUtils.adminCollectionObject('surveys');
       const survey = surveyCollection.findOne({ _id: surveyID });
 
       let title = '';
@@ -510,7 +520,7 @@ Template.LogSurveyView.helpers(
       return title;
     },
     surveyCompleted() {
-      const responseCollection = adminCollectionObject('responses');
+      const responseCollection = HomeUtils.adminCollectionObject('responses');
       const responseRecord = responseCollection.findOne({ _id: Router.current().params._id });
 
       let flag = false;
@@ -528,7 +538,7 @@ Template.LogSurveyView.helpers(
       return flag;
     },
     paused() {
-      const responseCollection = adminCollectionObject('responses');
+      const responseCollection = HomeUtils.adminCollectionObject('responses');
       const responseRecord = responseCollection.findOne({ _id: Router.current().params._id });
 
       let flag = false;
@@ -558,13 +568,13 @@ Template.LogSurveyView.helpers(
       return contentType === 'question';
     },
     displayQuesContents(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
 
       return question.question;
     },
     wysiwygLabel(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
 
       let dataType = '';
@@ -576,7 +586,7 @@ Template.LogSurveyView.helpers(
       return dataType === 'label';
     },
     textboxString(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const questions = questionCollection.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
@@ -593,7 +603,7 @@ Template.LogSurveyView.helpers(
       return flag;
     },
     wysiwygEditor(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
       let dataType = '';
       if (question && question.dataType) {
@@ -611,7 +621,7 @@ Template.LogSurveyView.helpers(
       return;
     },
     isDate(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
       let dataType = '';
       if (question && question.dataType) {
@@ -631,7 +641,7 @@ Template.LogSurveyView.helpers(
       return;
     },
     textboxNumber(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const questions = questionCollection.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
@@ -648,7 +658,7 @@ Template.LogSurveyView.helpers(
       return flag;
     },
     booleanTF(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const questions = questionCollection.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
@@ -665,7 +675,7 @@ Template.LogSurveyView.helpers(
       return flag;
     },
     singleSelect(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const questions = questionCollection.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
@@ -682,7 +692,7 @@ Template.LogSurveyView.helpers(
       return flag;
     },
     singleOptions(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const questions = questionCollection.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
@@ -690,7 +700,7 @@ Template.LogSurveyView.helpers(
       return questions[0].options;
     },
     multipleSelect(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const questions = questionCollection.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
@@ -708,7 +718,7 @@ Template.LogSurveyView.helpers(
       return flag;
     },
     singlePhoto(contentQuesId) {
-      const questionCollection = adminCollectionObject('questions');
+      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ _id: contentQuesId });
 
       let dataType = '';
@@ -743,7 +753,7 @@ Template.LogSurveyView.helpers(
       return getText(id).split('|').join('<br/>');
     },
     isChecked(type) {
-      const responseCollection = adminCollectionObject('responses');
+      const responseCollection = HomeUtils.adminCollectionObject('responses');
       const responseSection = responseCollection.findOne({ _id: Router.current().params._id });
 
       if (!responseSection || !responseSection.section) {
@@ -756,7 +766,7 @@ Template.LogSurveyView.helpers(
         for (let k = 0; k < response.length; k++) {
           const quesIDs = response[k].questionID;
           const responseVal = response[k].answer;
-          const questionCollection = adminCollectionObject('questions');
+          const questionCollection = HomeUtils.adminCollectionObject('questions');
           const questions = questionCollection.find(
             {
               _id: quesIDs,
@@ -778,7 +788,7 @@ Template.LogSurveyView.helpers(
       return '';
     },
     isSelected(value) {
-      const responseCollection = adminCollectionObject('responses');
+      const responseCollection = HomeUtils.adminCollectionObject('responses');
       const responseSection = responseCollection.findOne({ _id: Router.current().params._id });
 
       if (!responseSection || !responseSection.section) {
@@ -792,7 +802,7 @@ Template.LogSurveyView.helpers(
         for (let k = 0; k < response.length; k++) {
           const quesIDs = response[k].questionID;
           const responseVal = response[k].answer;
-          const questionCollection = adminCollectionObject('questions');
+          const questionCollection = HomeUtils.adminCollectionObject('questions');
           const questions = questionCollection.find(
             {
               _id: quesIDs,
@@ -813,7 +823,7 @@ Template.LogSurveyView.helpers(
       return '';
     },
     isSelectedMultiple(value) {
-      const responseCollection = adminCollectionObject('responses');
+      const responseCollection = HomeUtils.adminCollectionObject('responses');
       const responseSection = responseCollection.findOne({ _id: Router.current().params._id });
 
       if (!responseSection || !responseSection.section) {
@@ -828,7 +838,7 @@ Template.LogSurveyView.helpers(
 
           const responseVal = response[k].answer.split('|');
 
-          const questionCollection = adminCollectionObject('questions');
+          const questionCollection = HomeUtils.adminCollectionObject('questions');
           const questions = questionCollection.find(
             {
               _id: quesIDs,
