@@ -118,7 +118,9 @@ Meteor.methods(
     },
     fixSurveyQuestionMasterOrder(surveyId) {
       logger.info(surveyId);
-      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject('surveyQuestionsMaster');
+      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
+        'surveyQuestionsMaster'
+      );
       const sections = surveyQuestionsMasterCollection.find(
         { $and: [
           { surveyID: surveyId },

@@ -341,6 +341,7 @@ function checkLocked() {
 
 function maxRank(surveyingId, type) {
   const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject('surveyQuestionsMaster');
+  let finalOrder;
   if (type === 'section') {
     const lastSection = surveyQuestionsMasterCollection.find(
       { $and: [
@@ -351,9 +352,10 @@ function maxRank(surveyingId, type) {
       }
     ).fetch();
     if (lastSection.length === 0) {
-      return 1;
+      finalOrder = 1;
+    } else {
+      finalOrder = lastSection[0].order + 1;
     }
-    return lastSection[0].order + 1;
   } else {
     const lastSection = surveyQuestionsMasterCollection.find(
       { $and: [
@@ -374,15 +376,12 @@ function maxRank(surveyingId, type) {
     ).fetch();
 
     if (questionCount.length === 0) {
-      return (lastSection[0].order * 1000) + 1;
+      finalOrder = (lastSection[0].order * 1000) + 1;
+    } else {
+      finalOrder = questionCount[0].order + 1;
     }
-    return questionCount[0].order + 1;
-    // let maxOrder = 1;
-    // for (let i = 0; i < questionCount.length; i++) {
-    //   maxOrder = questionCount[i].order + 1;
-    // }
-    // return maxOrder;
   }
+  return finalOrder;
 }
 
 function registerDeleteOption() {
