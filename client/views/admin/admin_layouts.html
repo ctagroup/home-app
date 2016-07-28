@@ -10,9 +10,9 @@
             <small>{{$.Session.get 'admin_subtitle'}}</small>
           </h1>
           <ol class="breadcrumb">
-            <li><a href="/admin/">Dashboard</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
             {{#if $.Session.get 'admin_collection_name'}}
-              <li><a href="/admin/{{$.Session.get 'admin_collection_name'}}/">
+              <li><a href="/{{$.Session.get 'admin_collection_name'}}/">
                 {{collectionLabel admin_collection_name}}
               </a></li>
             {{/if}}

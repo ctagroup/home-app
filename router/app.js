@@ -68,7 +68,7 @@ AccountsTemplates.configureRoute(
     name: 'signIn',
     path: '/login',
     template: 'login',
-    redirect: '/dashaboard',
+    redirect: '/dashboard',
     controller: 'HomeAppController',
   }
 );
