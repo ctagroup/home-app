@@ -1,13 +1,6 @@
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-  <title>H O M E</title>
-</head>
 <template name="appNav">
 
-	<nav class="navbar navbar-default navbar-static-top">
+	<nav class="navbar navbar-default navbar-static-top app-nav">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -26,11 +19,6 @@
 			</div>
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav">
-          <li class="{{isClientsRoute}}"><a href="{{pathFor 'searchClient'}}">Clients</a></li>
-          <li class="{{isSurveysRoute}}"><a href="{{pathFor 'surveyStatus'}}">Surveys</a></li>
-          <li class="{{isChatRoute}}"><a href="{{pathFor 'chat'}}">Chat</a></li>
-        </ul>
 
 				<ul class="nav navbar-nav navbar-right">
           {{#if currentUser}}
