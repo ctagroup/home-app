@@ -1,8 +1,6 @@
 <template name="AdminSidebar">
     <aside class="main-sidebar hidden-xs">
 
-        <a href="{{pathFor 'root'}}" class="logo"> {{#if HomeConfig.name}} {{HomeConfig.name}} {{else}} Admin {{/if}} </a>
-
         <ul class="sidebar-menu nav">
             <li class="{{isActiveRoute 'adminDashboard'}}">
                 <a href="{{pathFor 'adminDashboard'}}"> <i class="fa fa-dashboard"></i> <span>Dashboard</span> </a>
@@ -18,16 +16,6 @@
         <ul class="sidebar-menu nav">
             {{#each admin_sidebar_items}} {{#if options.urls}} {{> adminSidebarItemTree}} {{else}} {{>
             adminSidebarItem}} {{/if}} {{/each}}
-        </ul>
-        <ul class="sidebar-menu nav">
-            <li>
-                <a href="{{pathFor 'root'}}"> <i class="fa fa-desktop"></i> HOME App </a>
-            </li>
-        </ul>
-
-        <ul class="sidebar-menu nav">
-            <li class="{{isMyProfilePath}}"><a href="{{pathFor 'adminDashboardusersEdit' _id=currentUser._id}}">{{{currentUserGravatar}}} {{currentUserFullName}}</a></li>
-            <li><a href="{{pathFor 'logout'}}"><i class="fa fa-sign-out"></i> Logout</a></li>
         </ul>
 
     </aside>

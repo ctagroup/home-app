@@ -31,13 +31,13 @@
 }
 
 //Logo color variation
-.logo-variant(@bg-color; @color: #fff; @border-bottom-color: transparent; @border-bottom-width: 0) {
+.logo-variant(@bg-color; @color: #fff; @border-bottom-color: transparent; @border-bottom-width: 0; @bg-hover-perc: 1%) {
   background-color: @bg-color;
   color: @color;
   border-bottom: @border-bottom-width solid @border-bottom-color;
 
   &:hover {
-    background-color: darken(@bg-color, 1%);
+    background-color: darken(@bg-color, @bg-hover-perc);
   }
 }
 

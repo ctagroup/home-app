@@ -1,16 +1,6 @@
-Template.AppLayout.onCreated(
+Template.AppLayout.onRendered(
   () => {
-    const self = Template.instance();
-
-    self.minHeight = new ReactiveVar(
-      $(window).height() - $('.main-header').height()
-    );
-
-    $(window).resize(
-      () => {
-        self.minHeight.set($(window).height() - $('.main-header').height());
-      }
-    );
+    $('body').addClass('sidebar-mini skin-home');
   }
 );
 

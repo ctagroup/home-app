@@ -10,11 +10,13 @@
 					<span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand" href="{{pathFor 'root'}}">
-            {{#if HomeConfig.name}}
-                {{HomeConfig.name}}
-            {{else}}
-                Admin
-            {{/if}}
+          <b><i class="fa fa-home"></i></b>
+          &nbsp;
+          {{#if HomeConfig.name}}
+              {{HomeConfig.name}}
+          {{else}}
+              Admin
+          {{/if}}
 				</a>
 			</div>
 

@@ -8,12 +8,5 @@ Template.AdminSidebar.helpers(
       return Router.current().route.getName() === 'adminDashboardusersEdit'
              && Router.current().params._id === Meteor.userId() ? 'active' : '';
     },
-    minHeight() {
-      const height = (
-                       Template.instance().minHeight
-                     ) ?
-                     `${Template.instance().minHeight.get()}px` : '100%';
-      return height;
-    },
   }
 );
