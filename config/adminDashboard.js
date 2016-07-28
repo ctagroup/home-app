@@ -13,9 +13,9 @@ AdminDashboard = {
     Session.set('adminError', message);
   },
   collectionLabel(collection) {
-    if (collection && AdminConfig && AdminConfig.collections
-        && AdminConfig.collections[collection] && AdminConfig.collections[collection].label) {
-      return AdminConfig.collections[collection].label;
+    if (collection && HomeConfig && HomeConfig.collections
+        && HomeConfig.collections[collection] && HomeConfig.collections[collection].label) {
+      return HomeConfig.collections[collection].label;
     }
     return Session.get('admin_title');
   },

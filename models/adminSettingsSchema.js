@@ -24,7 +24,7 @@ Schemas.openingScript = new SimpleSchema(
           class: 'editor', // optional
           settings: {
             minHeight: 100,             // set minimum height of editor
-            fontNames: AdminConfig.fontFamilies,
+            fontNames: HomeConfig.fontFamilies,
           }, // summernote options goes here
         },
       },
@@ -39,7 +39,7 @@ Schemas.openingScript = new SimpleSchema(
           class: 'editor', // optional
           settings: {
             minHeight: 100,             // set minimum height of editor
-            fontNames: AdminConfig.fontFamilies,
+            fontNames: HomeConfig.fontFamilies,
           }, // summernote options goes here
         },
       },
@@ -69,7 +69,7 @@ Schemas.openingScript = new SimpleSchema(
           class: 'editor', // optional
           settings: {
             minHeight: 100,             // set minimum height of editor
-            fontNames: AdminConfig.fontFamilies,
+            fontNames: HomeConfig.fontFamilies,
           }, // summernote options goes here
         },
       },
@@ -98,7 +98,7 @@ Schemas.openingScript = new SimpleSchema(
           class: 'editor', // optional
           settings: {
             minHeight: 100,             // set minimum height of editor
-            fontNames: AdminConfig.fontFamilies,
+            fontNames: HomeConfig.fontFamilies,
           }, // summernote options goes here
         },
       },

@@ -89,8 +89,8 @@ UI.registerHelper('AdminTables', AdminTables);
 adminCollections = () => {
   let collections = {};
 
-  if (AdminConfig && AdminConfig.collections) {
-    collections = AdminConfig.collections;
+  if (HomeConfig && HomeConfig.collections) {
+    collections = HomeConfig.collections;
   }
 
   return _.map(collections, (obj, key) => {
@@ -108,11 +108,11 @@ adminCollections = () => {
   });
 };
 
-UI.registerHelper('AdminConfig', () => AdminConfig);
+UI.registerHelper('HomeConfig', () => HomeConfig);
 
 UI.registerHelper(
   'admin_skin',
-  () => ((AdminConfig && AdminConfig.skin) ? AdminConfig.skin : 'blue')
+  () => ((HomeConfig && HomeConfig.skin) ? HomeConfig.skin : 'blue')
 );
 
 UI.registerHelper('admin_collections', adminCollections);
@@ -134,13 +134,13 @@ UI.registerHelper('admin_omit_fields', () => {
   let collection = undefined;
   let globalz = undefined;
 
-  if (AdminConfig && AdminConfig.autoForm && AdminConfig.autoForm.omitFields) {
-    globalz = AdminConfig.autoForm.omitFields;
+  if (HomeConfig && HomeConfig.autoForm && HomeConfig.autoForm.omitFields) {
+    globalz = HomeConfig.autoForm.omitFields;
   }
 
-  if (!Session.equals('admin_collection_name', 'Users') && AdminConfig && AdminConfig.collections
-      && AdminConfig.collections[Session.get('admin_collection_name')].omitFields === 'object') {
-    collection = AdminConfig.collections[Session.get('admin_collection_name')].omitFields;
+  if (!Session.equals('admin_collection_name', 'Users') && HomeConfig && HomeConfig.collections
+      && HomeConfig.collections[Session.get('admin_collection_name')].omitFields === 'object') {
+    collection = HomeConfig.collections[Session.get('admin_collection_name')].omitFields;
   }
 
   if (typeof globalz === 'object' && typeof collection === 'object') {
@@ -157,8 +157,8 @@ UI.registerHelper('admin_omit_fields', () => {
 UI.registerHelper('AdminSchemas', () => AdminDashboard.schemas);
 
 UI.registerHelper('adminGetSkin', () => {
-  if (AdminConfig && AdminConfig.dashboard && AdminConfig.dashboard.skin) {
-    return AdminConfig.dashboard.skin;
+  if (HomeConfig && HomeConfig.dashboard && HomeConfig.dashboard.skin) {
+    return HomeConfig.dashboard.skin;
   }
   return 'blue';
 });
@@ -167,8 +167,8 @@ UI.registerHelper('adminGetUsers', () => Meteor.users);
 
 UI.registerHelper('adminGetUserSchema', () => {
   let schema = {};
-  if (_.has(AdminConfig, 'userSchema')) {
-    schema = AdminConfig.userSchema;
+  if (_.has(HomeConfig, 'userSchema')) {
+    schema = HomeConfig.userSchema;
   } else {
     schema = Meteor.users.simpleSchema();
   }
@@ -189,10 +189,10 @@ UI.registerHelper('collectionsCount', (collection) => {
 UI.registerHelper('adminTemplate', (collection, mode) => {
   let template = false;
 
-  if (AdminConfig && AdminConfig.collections && AdminConfig.collections[collection]
-    && AdminConfig.collections[collection].templates
-    && AdminConfig.collections[collection].templates[mode]) {
-    template = AdminConfig.collections[collection].templates[mode];
+  if (HomeConfig && HomeConfig.collections && HomeConfig.collections[collection]
+      && HomeConfig.collections[collection].templates
+      && HomeConfig.collections[collection].templates[mode]) {
+    template = HomeConfig.collections[collection].templates[mode];
   }
 
   return template;
@@ -205,8 +205,8 @@ UI.registerHelper(
 
 UI.registerHelper('adminWidgets', () => {
   let widgets = [];
-  if (AdminConfig && AdminConfig.dashboard && AdminConfig.dashboard.widgets) {
-    widgets = AdminConfig.dashboard.widgets;
+  if (HomeConfig && HomeConfig.dashboard && HomeConfig.dashboard.widgets) {
+    widgets = HomeConfig.dashboard.widgets;
   }
   return widgets;
 });

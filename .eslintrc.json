@@ -18,7 +18,7 @@
     "OAuth": true,
     "logger": true,
     "moment": true,
-    "AdminConfig": true,
+    "HomeConfig": true,
     "adminCollectionObject": true,
     "AccountsTemplates": true,
     "Roles": true,

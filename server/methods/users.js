@@ -15,10 +15,10 @@ Meteor.methods(
             user.password = doc.password;
           }
           const _id = Accounts.createUser(user);
-          if (doc.sendPassword && (AdminConfig.fromEmail != null)) {
+          if (doc.sendPassword && (HomeConfig.fromEmail != null)) {
             Email.send({
               to: user.email,
-              from: AdminConfig.fromEmail,
+              from: HomeConfig.fromEmail,
               subject: 'Your account has been created',
               /* eslint-disable */
               html: `You've just had an account created for ${Meteor.absoluteUrl()} with password ${doc.password}`,

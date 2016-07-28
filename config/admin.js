@@ -5,21 +5,7 @@
 Meteor.startup(
   () => {
     if (Meteor.isClient) {
-      Meteor.subscribe(
-        'users', () => {
-          AdminDashboard.addSidebarItem(
-            'Role Manager',
-            Router.path('roleManager'),
-            { icon: 'user-secret' }
-          );
-          AdminDashboard.addSidebarItem(
-            'Opening Script',
-            Router.path('openingScript'),
-            { icon: 'comment' }
-          );
-        }
-      );
-
+      Meteor.subscribe('users');
       Meteor.subscribe('roles');
       Meteor.subscribe('homeRoles');
       Meteor.subscribe('rolePermissions');

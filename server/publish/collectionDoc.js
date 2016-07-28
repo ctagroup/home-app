@@ -7,9 +7,9 @@ Meteor.publishComposite('collectionDoc', (collection, id) => {
 
   let children = [];
 
-  if (AdminConfig && AdminConfig.collections && AdminConfig.collections[collection]
-    && AdminConfig.collections[collection].children) {
-    children = AdminConfig.collections[collection].children;
+  if (HomeConfig && HomeConfig.collections && HomeConfig.collections[collection]
+      && HomeConfig.collections[collection].children) {
+    children = HomeConfig.collections[collection].children;
   }
 
   return {

@@ -32,7 +32,7 @@ Meteor.methods(
     checkDevUser() {
       let adminEmails = [];
       const user = Meteor.users.findOne({ _id: this.userId });
-      const developerPermissions = AdminConfig.defaultRolePermissions.Developer;
+      const developerPermissions = HomeConfig.defaultRolePermissions.Developer;
       if (this.userId && !Roles.userIsInRole(this.userId, developerPermissions)
           && user.emails && (user.emails.length > 0)) {
         const email = user.emails[0].address;
@@ -42,9 +42,9 @@ Meteor.methods(
             logger.info(`Adding dev user: ${email}`);
             return Roles.addUsersToRoles(this.userId, developerPermissions, Roles.GLOBAL_GROUP);
           }
-        } else if (typeof AdminConfig !== 'undefined'
-           && typeof AdminConfig.adminEmails === 'object') {
-          adminEmails = AdminConfig.adminEmails;
+        } else if (typeof HomeConfig !== 'undefined'
+           && typeof HomeConfig.adminEmails === 'object') {
+          adminEmails = HomeConfig.adminEmails;
           if (adminEmails.indexOf(email) > -1) {
             logger.info(`Adding dev user: ${email}`);
             return Roles.addUsersToRoles(this.userId, developerPermissions, Roles.GLOBAL_GROUP);

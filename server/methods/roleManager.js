@@ -13,7 +13,7 @@ Meteor.methods(
       homeRolesCollection.insert(data);
     },
     generateDefaultHomeRoles() {
-      const defaultHomeRoles = AdminConfig.defaultHomeRoles;
+      const defaultHomeRoles = HomeConfig.defaultHomeRoles;
       for (let i = 0; i < defaultHomeRoles.length; i++) {
         Meteor.call('insertHomeRole', { title: defaultHomeRoles[i] });
       }
@@ -22,7 +22,7 @@ Meteor.methods(
       return Roles.getAllRoles().fetch();
     },
     generateHomePermissions() {
-      const defaultPermissions = AdminConfig.defaultPermissions;
+      const defaultPermissions = HomeConfig.defaultPermissions;
       for (let i = 0; i < defaultPermissions.length; i++) {
         Roles.createRole(defaultPermissions[i]);
       }
@@ -32,11 +32,11 @@ Meteor.methods(
       return rolePermissions.find({}).fetch();
     },
     generateHomeRolePermissions() {
-      const defaultHomeRoles = AdminConfig.defaultHomeRoles;
+      const defaultHomeRoles = HomeConfig.defaultHomeRoles;
       for (let i = 0; i < defaultHomeRoles.length; i++) {
-        if (AdminConfig && AdminConfig.defaultRolePermissions
-            && AdminConfig.defaultRolePermissions[defaultHomeRoles[i]]) {
-          const rolePermissions = AdminConfig.defaultRolePermissions[defaultHomeRoles[i]];
+        if (HomeConfig && HomeConfig.defaultRolePermissions
+            && HomeConfig.defaultRolePermissions[defaultHomeRoles[i]]) {
+          const rolePermissions = HomeConfig.defaultRolePermissions[defaultHomeRoles[i]];
           for (let j = 0; j < rolePermissions.length; j++) {
             const rolePermissionsCollection = HomeUtils.adminCollectionObject('rolePermissions');
             rolePermissionsCollection.insert(

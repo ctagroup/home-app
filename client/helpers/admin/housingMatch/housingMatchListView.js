@@ -9,8 +9,8 @@ Template.housingMatchListView.helpers(
     },
     housingMatchTableOptions() {
       return {
-        columns: AdminConfig.collections.housingMatch.tableColumns,
-        dom: AdminConfig.adminTablesDom,
+        columns: HomeConfig.collections.housingMatch.tableColumns,
+        dom: HomeConfig.adminTablesDom,
       };
     },
     housingMatchData() {

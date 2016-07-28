@@ -9,8 +9,8 @@ Template.globalHouseholdListView.helpers(
     },
     globalHouseholdTableOptions() {
       return {
-        columns: AdminConfig.collections.globalHousehold.tableColumns,
-        dom: AdminConfig.adminTablesDom,
+        columns: HomeConfig.collections.globalHousehold.tableColumns,
+        dom: HomeConfig.adminTablesDom,
       };
     },
     globalHouseholdData() {
