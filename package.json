@@ -1,7 +1,7 @@
 {
   "dependencies": {
-    "meteor-node-stubs": "^0.2.3",
-    "winston": "^2.2.0"
+    "meteor-node-stubs": "http://registry.npmjs.org/meteor-node-stubs/-/meteor-node-stubs-0.2.3.tgz",
+    "winston": "http://registry.npmjs.org/winston/-/winston-2.2.0.tgz"
   },
   "devDependencies": {
     "eslint": "^2.12.0",
