@@ -2,7 +2,7 @@
  * Created by udit on 26/02/16.
  */
 
-Schemas.adminSettings = new SimpleSchema(
+Schemas.openingScript = new SimpleSchema(
   {
     preClientProfileQuestions: {
       label: 'Pre - Client Profile Questions',

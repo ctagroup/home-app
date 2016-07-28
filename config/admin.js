@@ -9,16 +9,14 @@ Meteor.startup(
         'users', () => {
           AdminDashboard.addSidebarItem(
             'Role Manager',
-            Router.path('adminRoleManager'),
+            Router.path('roleManager'),
             { icon: 'user-secret' }
           );
-          if (Roles.userIsInRole(Meteor.user(), 'manage_settings')) {
-            AdminDashboard.addSidebarItem(
-              'Settings',
-              Router.path('adminSettings'),
-              { icon: 'cogs' }
-            );
-          }
+          AdminDashboard.addSidebarItem(
+            'Opening Script',
+            Router.path('openingScript'),
+            { icon: 'comment' }
+          );
         }
       );
 

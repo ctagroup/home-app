@@ -26,9 +26,9 @@ AutoForm.addHooks(
 
 AutoForm.hooks(
   {
-    adminSettingsForm: {
+    openingScriptForm: {
       onSuccess() {
-        AdminDashboard.alertSuccess('Settings saved successfully.');
+        AdminDashboard.alertSuccess('Opening Script saved successfully.');
       },
     },
     admin_insert: {

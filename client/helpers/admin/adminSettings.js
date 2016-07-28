@@ -1,6 +1,6 @@
-Template.AdminSettings.helpers(
+Template.openingScript.helpers(
   {
-    getAdminSettings() {
+    getOpeningScript() {
       const settings = {};
       settings.preClientProfileQuestions = {};
       settings.preClientProfileQuestions.dvQuestion = {};
