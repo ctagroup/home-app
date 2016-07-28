@@ -1,6 +1,37 @@
 /**
  * Created by udit on 10/02/16.
  */
+Template.AdminRoleManager.events(
+  {
+    'click .js-update': (e) => {
+      e.preventDefault();
+      const serializeInput = $('#js-frm-role-manager').serializeArray();
+      $('#js-frm-role-manager :input').attr('disabled', true);
+      Meteor.call(
+        'updateRolePermissions', serializeInput, (error, result) => {
+          if (error) {
+            logger.log(error);
+          } else {
+            logger.log(result);
+          }
+          $('#js-frm-role-manager :input').attr('disabled', false);
+        }
+      );
+    },
+    'click .js-reset': (e) => {
+      e.preventDefault();
+      Meteor.call(
+        'resetRolePermissions', (error, result) => {
+          if (error) {
+            logger.log(error);
+          } else {
+            logger.log(result);
+          }
+        }
+      );
+    },
+  }
+);
 
 // let surveyCopyId;
 let surveyIDForCopy;
@@ -32,7 +63,7 @@ function sectionComponents(originalSurveyComponentIDs, newSurveSectionIDs, newSu
   logger.log(`Sub sections: ${originalSurveyComponentIDs}`);
   logger.log(`new section ID: ${newSurveSectionIDs}`);
 
-  const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject('surveyQuestionsMaster');
+  const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
   const sectionComponent = surveyQuestionsMasterCollection.
     find({ _id: originalSurveyComponentIDs }).fetch();
 
@@ -67,7 +98,7 @@ function sectionComponents(originalSurveyComponentIDs, newSurveSectionIDs, newSu
 
 let compIDs;
 function mainSection(mainSectionIDs, surveyingID) {
-  const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject('surveyQuestionsMaster');
+  const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
   const mainSections = surveyQuestionsMasterCollection.find({ _id: mainSectionIDs }).fetch();
 
   const componentsIDs = surveyQuestionsMasterCollection.
@@ -114,7 +145,7 @@ function recordsForCopy(surveyingID) {
   newSurveyID = surveyingID;
     // let sectionArray = new Array();
 
-  const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject('surveyQuestionsMaster');
+  const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
   const AllRecordsForCopy = surveyQuestionsMasterCollection.
     find({ surveyID: surveyIDForCopy }, { sectionID: 1 }).fetch();
 
@@ -308,27 +339,50 @@ function checkLocked() {
   }
 }
 
-function maxRank(surveyingId) {
+function maxRank(surveyingId, type) {
   const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject('surveyQuestionsMaster');
-
-  const order = surveyQuestionsMasterCollection.find(
-    {
-      surveyID: surveyingId,
-    }, {
-      sort: {
-        order: 1,
-      },
+  if (type === 'section') {
+    const lastSection = surveyQuestionsMasterCollection.find(
+      { $and: [
+        { surveyID: surveyingId },
+        { contentType: 'section' },
+      ] }, {
+        sort: { order: -1 },
+      }
+    ).fetch();
+    if (lastSection.length === 0) {
+      return 1;
     }
-  ).fetch();
+    return lastSection[0].order + 1;
+  } else {
+    const lastSection = surveyQuestionsMasterCollection.find(
+      { $and: [
+        { surveyID: surveyingId },
+        { contentType: 'section' },
+      ] }, {
+        sort: { order: -1 },
+      }
+    ).fetch();
+    const questionCount = surveyQuestionsMasterCollection.find(
+      { $and: [
+        { surveyID: surveyingId },
+        { sectionID: lastSection[0]._id },
+        { $or: [{ contentType: 'question' }, { contentType: 'label' }] },
+      ] }, {
+        sort: { order: -1 },
+      }
+    ).fetch();
 
-  if (order.length === 0) {
-    return 1;
+    if (questionCount.length === 0) {
+      return (lastSection[0].order * 1000) + 1;
+    }
+    return questionCount[0].order + 1;
+    // let maxOrder = 1;
+    // for (let i = 0; i < questionCount.length; i++) {
+    //   maxOrder = questionCount[i].order + 1;
+    // }
+    // return maxOrder;
   }
-  let maxOrder = 1;
-  for (let i = 0; i < order.length; i++) {
-    maxOrder = order[i].order + 1;
-  }
-  return maxOrder;
 }
 
 function registerDeleteOption() {
@@ -369,7 +423,7 @@ Template.surveyViewTemplate.events(
       $('.showWhenNew').show();
     },
     'click .edit'(event) {
-      const surveyCollection = HomeUtils.adminCollectionObject('surveys');
+      const surveyCollection = adminCollectionObject('surveys');
       const survey = surveyCollection.findOne({ _id: $(event.currentTarget).data('survey-id') });
       const copy = survey.copy;
       $('.copy').hide();
@@ -424,7 +478,7 @@ Template.questionViewTemplate.events(
       $('#aoptions').empty();
       // let txt1;
       // let optionsTag;
-      const questionsCollection = HomeUtils.adminCollectionObject('questions');
+      const questionsCollection = adminCollectionObject('questions');
       const question = questionsCollection.findOne({ _id: $(evt.currentTarget).data('survey-id') });
 
       $('#q_category').val(question.category).change();
@@ -710,7 +764,7 @@ Template.surveyEditTemplate.events(
         skipVal,
         contentType,
         content,
-        maxRank(surveyingId),
+        maxRank(surveyingId, 'section'),
         (error, result) => {
           if (error) {
             logger.log(error);
@@ -733,9 +787,7 @@ Template.surveyEditTemplate.events(
             // }
 
 
-            // var surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
-            // 'surveyQuestionsMaster'
-            // );
+            // var surveyQuestionsMasterCollection = adminCollectionObject("surveyQuestionsMaster");
             // var section_name = surveyQuestionsMasterCollection.
               // find({_id: section_id},{content:1,_id:0}).fetch();
             //
@@ -769,7 +821,7 @@ Template.surveyEditTemplate.events(
         skipVal,
         contentType,
         content,
-        maxRank(surveyingId),
+        maxRank(surveyingId, 'label'),
         (error, result) => {
           if (error) {
             logger.log(error);
@@ -804,9 +856,7 @@ Template.sortableItemTarget.events(
     'dblclick .name'(event, template) {
       // Make the name editable. We should use an existing component, but it's
       // in a sorry state - https://github.com/arillo/meteor-x-editable/issues/1
-      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
-        'surveyQuestionsMaster'
-      );
+      const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
       let input;
       const cont = surveyQuestionsMasterCollection.find({ _id: this._id },
           { content_type: 1, _id: 0 }).fetch();
@@ -895,9 +945,7 @@ Template.sortableItemTarget.events(
       );
 
       // custom code, working on a specific collection
-      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
-        'surveyQuestionsMaster'
-      );
+      const surveyQuestionsMasterCollection = adminCollectionObject('surveyQuestionsMaster');
       if (surveyQuestionsMasterCollection.find({}).count() === 0) {
         Meteor.setTimeout(
           () => {
@@ -953,7 +1001,7 @@ Template.selectQuestions.events(
       logger.log('Ques: ${array}');
       logger.log('skip val: ${skipVal}');
 
-      let order = maxRank(surveyId);
+      let order = maxRank(surveyId, 'question');
 
       for (let i = 0; i < array.length; i ++) {
         Meteor.call(

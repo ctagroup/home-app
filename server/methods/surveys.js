@@ -118,27 +118,36 @@ Meteor.methods(
     },
     fixSurveyQuestionMasterOrder(surveyId) {
       logger.info(surveyId);
-
-      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
-        'surveyQuestionsMaster'
-      );
-      const orders = surveyQuestionsMasterCollection.find(
-        {
-          surveyID: surveyId,
-        },
-        {
-          sort: {
-            order: 1,
-          },
-        }
+      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject('surveyQuestionsMaster');
+      const sections = surveyQuestionsMasterCollection.find(
+        { $and: [
+          { surveyID: surveyId },
+          { contentType: { $eq: 'section' } },
+        ] },
+        { sort: { order: 1 } }
       ).fetch();
-
-      for (let i = 0; i < orders.length; i++) {
+      let sectionCount = 1;
+      let questionCount = 1;
+      for (let i = 0; i < sections.length; i++) {
         surveyQuestionsMasterCollection.update(
-          { _id: orders[i]._id },
-          { $set: { order: i + 1 } }
+          { _id: sections[i]._id },
+          { $set: { order: sectionCount++ } }
         );
+        const questions = surveyQuestionsMasterCollection.find(
+          { sectionID: sections[i]._id },
+          { sort: { order: 1 },
+          }
+        ).fetch();
+        questionCount = ((sectionCount - 1) * 1000) + 1;
+        for (let j = 0; j < questions.length; j++) {
+          surveyQuestionsMasterCollection.update(
+            { _id: questions[j]._id },
+            { $set: { order: questionCount++ } }
+          );
+        }
       }
+
+      return true;
     },
     removeSurveyCopyQuestionMaster(surveyCopyTitle) {
       const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(

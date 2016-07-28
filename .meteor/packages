@@ -35,7 +35,6 @@ alanning:roles
 fortawesome:fontawesome
 jparker:gravatar
 check@1.2.3
-rubaxa:sortable
 oauth2@1.1.10
 desaiuditd:accounts-hmis
 desaiuditd:hmis
@@ -63,3 +62,4 @@ reywood:publish-composite
 raix:handlebar-helpers
 aldeed:template-extension
 templating@1.2.13
+manoj2509:sortable
