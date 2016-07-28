@@ -156,8 +156,8 @@
     <div class="col-xs-12">
 
         <div class="sortable target" id="object">
-            {{#sortable items=attributes animation="150" draggable=".sortable-item" handle=".sortable-handle" ghostClass="sortable-ghost" options=attributesOptions}}
-                {{> sortableSectionItem}}
+            {{#sortable items=attributes animation="100" handle=".sortable-handle" ghostClass="sortable-ghost" options=attributesOptions}}
+                {{> sortableItemTarget}}
             {{/sortable}}
         </div>
     </div>
@@ -179,10 +179,10 @@
 </template>
 
 <template name="sortableItemTarget">
-    <div data-id="{{order}}" data-db-id="{{_id}}" class="sortable-item removable well well-sm row no-pad" id="{{_id}}">
+    <div data-id="{{order}}" data-db-id="{{_id}}" class="sortable-item removable well well-sm row no-pad">
         <div class="col-xs-9">
             {{#if notQuestion contentType}}
-                <span class="name sectionItem">{{content}}</span>
+                <span class="name">{{content}}</span>
             {{else}}
                 <span class="name">{{{quesLabel content}}}</span>
                 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -195,28 +195,6 @@
                 <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
             </button>
             <span class="badge pull-right">{{order}}</span>
-        </div>
-    </div>
-</template>
-
-<template name="sortableSectionItem">
-    <div data-id="{{order}}" data-db-id="{{_id}}" class="sortable-item removable well well-sm ">
-        <div class="row no-pad">
-            <div class="col-xs-9 sectionItem">
-                <span class="name ">{{content}}</span>
-            </div>
-            <div class="col-xs-3">
-                <i class="sortable-handle fa fa-bars pull-right"></i>
-                <button type="button" class="close" data-dismiss="alert">
-                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-                </button>
-                <span class="badge pull-right">S {{order}}</span>
-            </div>
-        </div>
-        <div id="{{_id}}" class="question_list">
-            {{#sortable items=sectionQuestions animation="100" draggable=".sortable-item" handle=".sortable-handle" ghostClass="sortable-ghost" options=questionOptions}}
-                {{> sortableItemTarget}}
-            {{/sortable}}
         </div>
     </div>
 </template>
