@@ -31,9 +31,6 @@ Template.surveyEditTemplate.helpers(
 
 Template.sortableItemTarget.helpers(
   {
-    questionOrder(order) {
-      return order%100;
-    },
     notQuestion(type) {
       return !(String(type) === String('question'));
     },
@@ -80,10 +77,9 @@ Template.typeDefinition.helpers(
         'surveyQuestionsMaster'
       );
       return surveyQuestionsMasterCollection.find(
-          {surveyID: Router.current().params._id}
+          { surveyID: Router.current().params._id }
         ).count()
         > 0;
-      
     },
     attributes() {
       const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
@@ -108,7 +104,9 @@ Template.typeDefinition.helpers(
         logger.log(`Section Item ${event.data.content}: #${event.oldIndex} to #${event.newIndex}`);
       },
       onEnd(event) {
-        const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject('surveyQuestionsMaster');
+        const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
+          'surveyQuestionsMaster'
+        );
         let start = event.oldIndex;
         let sectionId;
         let questionCount;
@@ -151,7 +149,9 @@ let oldID;
 Template.sortableSectionItem.helpers(
   {
     sectionQuestions() {
-      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject('surveyQuestionsMaster');
+      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
+        'surveyQuestionsMaster'
+      );
       return surveyQuestionsMasterCollection.find(
         { sectionID: Template.parentData(0)._id },
         { sort: { order: 1 },
@@ -166,14 +166,15 @@ Template.sortableSectionItem.helpers(
       onAdd(event) {
         const obj = $(event.item).parent().attr('id');
         const secID = $(event.item).parents(':eq(1)').attr('data-id');
-        const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject('surveyQuestionsMaster');
-        // surveyQuestionsMasterCollection.remove({ _id: event.data._id });
+        const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
+          'surveyQuestionsMaster'
+        );
         const secLen = surveyQuestionsMasterCollection.find({ sectionID: obj }).count();
         event.data.order = (secID * 1000) + secLen + 1;   // eslint-disable-line no-param-reassign
         event.data.sectionID = obj;  // eslint-disable-line no-param-reassign
         oldID = event.data._id;
         delete event.data._id;  // eslint-disable-line no-param-reassign
-        logger.log(`Item ${event.data._id} went from #${event.oldIndex} to #${event.data.order}.`);
+        logger.log(`Item ${event.data._id} went from #${event.oldIndex} to #${event.newIndex}.`);
       },
       onRemove(event) {
         logger.log(`${event.data._id} and ${event.data.order}`);
@@ -181,7 +182,7 @@ Template.sortableSectionItem.helpers(
         // Will have to provide back the Old ID. Otherwise it will remove the newest entry.
       },
       onSort(event) {
-        logger.log(`OnSort: Item ${event.data._id} went from #${event.oldIndex} to #${event.newIndex}.`);
+        logger.log(`Item ${event.data._id} went from #${event.oldIndex} to #${event.newIndex}.`);
       },
       selector: { $or: [{ contentType: 'question' }, { contentType: 'label' }] },
       sort: true,

@@ -42,27 +42,24 @@ surveyQuestionsMaster.allow(
       'undefined' &&
       Meteor.users.findOne(
         userId,
-        {fields: {Id: 1}}
+        { fields: { Id: 1 } }
       ).Id !== doc.Id);
-      
     },
     insert(userId, doc) {
       return !(typeof Meteor.users !==
       'undefined' &&
       Meteor.users.findOne(
         userId,
-        {fields: {Id: 1}}
+        { fields: { Id: 1 } }
       ).Id !== doc.Id);
-      
     },
     remove(userId, doc) {
       return !(typeof Meteor.users !==
       'undefined' &&
       Meteor.users.findOne(
         userId,
-        {fields: {Id: 1}}
+        { fields: { Id: 1 } }
       ).Id !== doc.Id);
-      
     },
   }
 );
