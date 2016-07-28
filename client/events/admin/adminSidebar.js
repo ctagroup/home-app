@@ -17,13 +17,3 @@ Template.AdminSidebar.onCreated(
     );
   }
 );
-
-Template.AdminSidebar.events(
-  {
-    'click .js-logout'() {
-      if (Meteor.userId()) {
-        AccountsTemplates.logout();
-      }
-    },
-  }
-);

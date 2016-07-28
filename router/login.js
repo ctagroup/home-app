@@ -30,7 +30,7 @@ AccountsTemplates.configureRoute(
     path: '/login',
     template: 'login',
     redirect: '/dashboard',
-    controller: 'HomeAppController',
+    controller: 'HomeController',
   }
 );
 AccountsTemplates.configureRoute(
@@ -38,7 +38,7 @@ AccountsTemplates.configureRoute(
     name: 'signUp',
     path: '/register',
     template: 'login',
-    controller: 'HomeAppController',
+    controller: 'HomeController',
   }
 );
 
@@ -51,3 +51,13 @@ Router.plugin(
   }
 );
 
+Router.route(
+  '/logout', {
+    name: 'logout',
+    template: 'logout',
+    onBeforeAction() {
+      AccountsTemplates.logout();
+      this.next();
+    },
+  }
+);

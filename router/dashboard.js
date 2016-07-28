@@ -5,7 +5,7 @@
 Router.route('adminDashboard', {
   path: '/dashboard',
   template: 'AdminDashboard',
-  controller: 'AdminController',
+  controller: 'AppController',
   action() {
     return this.render();
   },

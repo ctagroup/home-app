@@ -1,8 +1,20 @@
-/**
- * Created by udit on 27/07/16.
- */
+Template.AppLayout.onCreated(
+  () => {
+    const self = Template.instance();
 
-Template.AdminLayout.events({
+    self.minHeight = new ReactiveVar(
+      $(window).height() - $('.main-header').height()
+    );
+
+    $(window).resize(
+      () => {
+        self.minHeight.set($(window).height() - $('.main-header').height());
+      }
+    );
+  }
+);
+
+Template.AppLayout.events({
   'click .btn-delete': (e) => {
     const _id = $(e.target).attr('doc');
     if (Session.equals('admin_collection_name', 'Users')) {

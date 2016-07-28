@@ -2,8 +2,20 @@
  * Created by udit on 28/07/16.
  */
 
-AdminController = RouteController.extend({
-  layoutTemplate: 'AdminLayout',
+/**
+ * Route Controller to check on users.
+ */
+HomeController = RouteController.extend(
+  {
+    onBeforeAction() {
+      Meteor.call('checkDevUser');
+      this.next();
+    },
+  }
+);
+
+AppController = HomeController.extend({
+  layoutTemplate: 'AppLayout',
   waitOn() {
     return [Meteor.subscribe('collectionsCount')];
   },

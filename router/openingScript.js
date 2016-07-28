@@ -6,7 +6,7 @@ Router.route(
   'openingScript', {
     path: '/openingScript',
     template: 'openingScript',
-    controller: 'AdminController',
+    controller: 'AppController',
     action() {
       this.render();
     },
