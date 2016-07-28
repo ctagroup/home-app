@@ -2,19 +2,7 @@
  * Created by udit on 12/12/15.
  */
 
-/**
- * Route Controller to check on users.
- */
-HomeAppController = RouteController.extend(
-  {
-    onBeforeAction() {
-      Meteor.call('checkDevUser');
-      this.next();
-    },
-  }
-);
-
-HomeAppSurveyorController = HomeAppController.extend(
+HomeAppSurveyorController = HomeController.extend(
   {
     onBeforeAction() {
       if (Meteor.userId() && Roles.userIsInRole(Meteor.userId(), 'Surveyor')) {
@@ -35,7 +23,7 @@ Router.route(
   '/', {
     name: 'root',
     template: 'home',
-    controller: 'HomeAppController',
+    controller: 'HomeController',
   }
 );
 
@@ -43,7 +31,7 @@ Router.route(
   '/not-enough-permission', {
     name: 'notEnoughPermission',
     template: 'notEnoughPermission',
-    controller: 'HomeAppController',
+    controller: 'HomeController',
   }
 );
 /**
@@ -53,14 +41,14 @@ Router.route(
   '/clients', {
     name: 'searchClient',
     template: 'searchClient',
-    controller: 'HomeAppController',
+    controller: 'HomeController',
   }
 );
 Router.route(
   '/clients/new', {
     name: 'createClient',
     template: 'createClient',
-    controller: 'HomeAppController',
+    controller: 'HomeController',
     waitOn() {
       // waitOn makes sure that this publication is ready before rendering your template
       return Meteor.subscribe('options');
@@ -71,7 +59,7 @@ Router.route(
   '/clients/:_id', {
     name: 'viewClient',
     template: 'viewClient',
-    controller: 'HomeAppController',
+    controller: 'HomeController',
     data() {
       let client = '';
       if (this.params.query && this.params.query.isHMISClient) {
@@ -160,7 +148,7 @@ Router.route(
   '/clients/:_id/edit', {
     name: 'editClient',
     template: 'editClient',
-    controller: 'HomeAppController',
+    controller: 'HomeController',
     data() {
       const clientInfoID = this.params._id;
       const clientInfoCollection = HomeUtils.adminCollectionObject('clientInfo');
@@ -173,14 +161,14 @@ Router.route(
   '/clients/:_id/logSurvey', {
     name: 'LogSurvey',
     template: 'LogSurvey',
-    controller: 'HomeAppController',
+    controller: 'HomeController',
   }
 );
 Router.route(
   '/clients/:_id/logsurvey/:survey_id', {
     name: 'LogSurveyResponse',
     template: 'LogSurveyResponse',
-    controller: 'HomeAppController',
+    controller: 'HomeController',
     data() {
       let client = '';
       if (this.params.query && this.params.query.isHMISClient) {
@@ -204,7 +192,7 @@ Router.route(
   '/LogSurveyView/:_id', {
     name: 'LogSurveyView',
     template: 'LogSurveyView',
-    controller: 'HomeAppController',
+    controller: 'HomeController',
     data() {
       const responseID = this.params._id;
       const responsesCollection = HomeUtils.adminCollectionObject('responses');
@@ -219,7 +207,7 @@ Router.route(
   '/app/surveys/', {
     name: 'surveyStatus',
     template: 'surveyStatus',
-    controller: 'HomeAppController',
+    controller: 'HomeController',
   }
 );
 
@@ -230,14 +218,14 @@ Router.route(
   '/privacy', {
     name: 'privacy',
     template: 'privacy',
-    controller: 'HomeAppController',
+    controller: 'HomeController',
   }
 );
 Router.route(
   '/terms-of-use', {
     name: 'termsOfUse',
     template: 'termsOfUse',
-    controller: 'HomeAppController',
+    controller: 'HomeController',
   }
 );
 
@@ -249,6 +237,6 @@ Router.route(
   '/chat/', {
     name: 'chat',
     template: 'chat',
-    controller: 'HomeAppController',
+    controller: 'HomeController',
   }
 );

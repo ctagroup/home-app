@@ -6,7 +6,7 @@ Router.route(
   'roleManager', {
     path: '/roles',
     template: 'roleManager',
-    controller: 'AdminController',
+    controller: 'AppController',
     action() {
       this.render();
     },

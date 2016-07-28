@@ -27,7 +27,7 @@
 
         <ul class="sidebar-menu nav">
             <li class="{{isMyProfilePath}}"><a href="{{pathFor 'adminDashboardusersEdit' _id=currentUser._id}}">{{{currentUserGravatar}}} {{currentUserFullName}}</a></li>
-            <li><a class="js-logout" href="#"><i class="fa fa-sign-out"></i> Logout</a></li>
+            <li><a href="{{pathFor 'logout'}}"><i class="fa fa-sign-out"></i> Logout</a></li>
         </ul>
 
     </aside>

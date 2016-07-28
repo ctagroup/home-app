@@ -23,7 +23,7 @@
     "AccountsTemplates": true,
     "Roles": true,
     "RouteController": true,
-    "HomeAppController": true,
+    "HomeController": true,
     "HomeAppSurveyorController": true,
     "responses": true,
     "users": true,
@@ -68,7 +68,7 @@
     "HomeUtils": true,
     "Tabular": true,
     "adminCollections": true,
-    "AdminController": true
+    "AppController": true
   },
   "rules": {
     "no-underscore-dangle": [

@@ -6,7 +6,7 @@ Router.route(
   'selectSurveyQuestion', {
     path: '/surveys/:_id/selectQuestions',
     template: 'selectQuestions',
-    controller: 'AdminController',
+    controller: 'AppController',
     action() {
       this.render();
     },
@@ -27,7 +27,7 @@ Router.route(
   'previewSurvey', {
     path: '/surveys/:_id/preview',
     template: 'previewSurvey',
-    controller: 'AdminController',
+    controller: 'AppController',
     action() {
       this.render();
     },

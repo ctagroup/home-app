@@ -2,7 +2,7 @@
  * Created by udit on 26/07/16.
  */
 
-Template.AdminLayout.helpers(
+Template.AppLayout.helpers(
   {
     minHeight() {
       const height = (
