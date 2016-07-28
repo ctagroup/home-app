@@ -1,41 +1,37 @@
 <template name="AdminLayout">
   {{#if AdminConfig}}
-  {{#if currentUserCan 'view_admin'}}
-      {{> AdminHeader }}
-      {{> AdminSidebar }}
-      <div class="content-wrapper" style="min-height: {{minHeight}}">
-        <section class="content-header">
-          <h1>
-            {{$.Session.get 'admin_title'}}
-            <small>{{$.Session.get 'admin_subtitle'}}</small>
-          </h1>
-          <ol class="breadcrumb">
-            <li><a href="/dashboard">Dashboard</a></li>
-            {{#if $.Session.get 'admin_collection_name'}}
-              <li><a href="/{{$.Session.get 'admin_collection_name'}}/">
-                {{collectionLabel admin_collection_name}}
-              </a></li>
-            {{/if}}
+    {{> AdminHeader }}
+    {{> AdminSidebar }}
+    <div class="content-wrapper" style="min-height: {{minHeight}}">
+      <section class="content-header">
+        <h1>
+          {{$.Session.get 'admin_title'}}
+          <small>{{$.Session.get 'admin_subtitle'}}</small>
+        </h1>
+        <ol class="breadcrumb">
+          <li><a href="/dashboard">Dashboard</a></li>
+          {{#if $.Session.get 'admin_collection_name'}}
+            <li><a href="/{{$.Session.get 'admin_collection_name'}}/">
+              {{collectionLabel admin_collection_name}}
+            </a></li>
+          {{/if}}
 
-            {{#if $.Session.equals 'admin_collection_page' 'new'}}
-              <li>New</li>
-            {{/if}}
+          {{#if $.Session.equals 'admin_collection_page' 'new'}}
+            <li>New</li>
+          {{/if}}
 
-            {{#if $.Session.equals 'admin_collection_page' 'edit'}}
-              <li>Edit</li>
-            {{/if}}
-          </ol>
-        </section>
-        <section class="content">
-          {{> yield }}
-        </section>
-      </div>
-  {{> AdminDeleteModal }}
+          {{#if $.Session.equals 'admin_collection_page' 'edit'}}
+            <li>Edit</li>
+          {{/if}}
+        </ol>
+      </section>
+      <section class="content">
+        {{> yield }}
+      </section>
+    </div>
+    {{> AdminDeleteModal }}
   {{else}}
-  {{> NotAdmin}}
-  {{/if}}
-  {{else}}
-  {{> NoConfig}}
+    {{> NoConfig}}
   {{/if}}
 </template>
 
@@ -57,18 +53,6 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
-</template>
-
-<template name="NotAdmin">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-4 col-md-offset-4">
-        <p class="alert alert-info" style="margin-top:100px;">
-          You need to be an admin to view this page
-        </p>
-      </div>
-    </div>
-  </div>
 </template>
 
 <template name="NoConfig">

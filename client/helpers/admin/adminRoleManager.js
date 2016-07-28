@@ -1,4 +1,4 @@
-Template.AdminRoleManager.helpers(
+Template.roleManager.helpers(
   {
     getHomeRoles() {
       return homeRoles.find({}).fetch();

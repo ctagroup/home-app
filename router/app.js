@@ -3,33 +3,12 @@
  */
 
 /**
- * Public Routes without login
- */
-const publicRoutes = [
-  'root',
-  'home',
-  'changePwd',
-  'enrollAccount',
-  'forgotPwd',
-  'resetPwd',
-  'signIn',
-  'signUp',
-  'verifyEmail',
-  'resendVerificationEmail',
-  'privacy',
-  'termsOfUse',
-  'notEnoughPermission',
-];
-
-/**
  * Route Controller to check on users.
  */
 HomeAppController = RouteController.extend(
   {
     onBeforeAction() {
-      if (Meteor.userId() && ! Roles.userIsInRole(Meteor.userId(), 'view_admin')) {
-        Meteor.call('adminCheckAdmin');
-      }
+      Meteor.call('checkDevUser');
       this.next();
     },
   }
@@ -56,27 +35,6 @@ Router.route(
   '/', {
     name: 'root',
     template: 'home',
-    controller: 'HomeAppController',
-  }
-);
-
-/**
- * Accounts Routes
- */
-AccountsTemplates.configureRoute(
-  'signIn', {
-    name: 'signIn',
-    path: '/login',
-    template: 'login',
-    redirect: '/dashboard',
-    controller: 'HomeAppController',
-  }
-);
-AccountsTemplates.configureRoute(
-  'signUp', {
-    name: 'signUp',
-    path: '/register',
-    template: 'login',
     controller: 'HomeAppController',
   }
 );
@@ -262,14 +220,6 @@ Router.route(
     name: 'surveyStatus',
     template: 'surveyStatus',
     controller: 'HomeAppController',
-  }
-);
-/**
- * Ensure User Login for templates
- */
-Router.plugin(
-  'ensureSignedIn', {
-    except: publicRoutes,
   }
 );
 

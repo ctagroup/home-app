@@ -12,25 +12,6 @@ AdminDashboard = {
   alertFailure(message) {
     Session.set('adminError', message);
   },
-  canViewAdmin() {
-    if (!Roles.userIsInRole(Meteor.userId(), ['view_admin'])) {
-      Meteor.call('adminCheckAdmin');
-      if (AdminConfig && AdminConfig.nonAdminRedirectRoute) {
-        Router.go(AdminConfig.nonAdminRedirectRoute);
-      }
-    }
-    if (typeof this.next === 'function') {
-      this.next();
-    }
-  },
-  adminRoutes: [
-    'adminDashboard',
-    'adminDashboardUsersNew',
-    'adminDashboardUsersEdit',
-    'adminDashboardView',
-    'adminDashboardNew',
-    'adminDashboardEdit',
-  ],
   collectionLabel(collection) {
     if (collection && AdminConfig && AdminConfig.collections
         && AdminConfig.collections[collection] && AdminConfig.collections[collection].label) {

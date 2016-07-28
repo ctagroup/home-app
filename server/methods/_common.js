@@ -29,7 +29,7 @@ Meteor.methods(
       }
       return val;
     },
-    adminCheckAdmin() {
+    checkDevUser() {
       let adminEmails = [];
       const user = Meteor.users.findOne({ _id: this.userId });
       const developerPermissions = AdminConfig.defaultRolePermissions.Developer;
@@ -39,14 +39,14 @@ Meteor.methods(
         if (typeof Meteor.settings.adminEmails !== 'undefined') {
           adminEmails = Meteor.settings.adminEmails;
           if (adminEmails.indexOf(email) > -1) {
-            logger.info(`Adding admin user: ${email}`);
+            logger.info(`Adding dev user: ${email}`);
             return Roles.addUsersToRoles(this.userId, developerPermissions, Roles.GLOBAL_GROUP);
           }
         } else if (typeof AdminConfig !== 'undefined'
            && typeof AdminConfig.adminEmails === 'object') {
           adminEmails = AdminConfig.adminEmails;
           if (adminEmails.indexOf(email) > -1) {
-            logger.info(`Adding admin user: ${email}`);
+            logger.info(`Adding dev user: ${email}`);
             return Roles.addUsersToRoles(this.userId, developerPermissions, Roles.GLOBAL_GROUP);
           }
         } else if (this.userId === Meteor.users.findOne({}, {

@@ -1,13 +1,13 @@
-<template name="AdminSettings">
+<template name="openingScript">
   {{> adminAlert}}
   {{> quickForm
-    id="adminSettingsForm"
-    schema="Schemas.adminSettings"
+    id="openingScriptForm"
+    schema="Schemas.openingScript"
     type="method"
-    meteormethod="saveAdminSettings"
+    meteormethod="saveOpeningScript"
     template="bootstrap3"
     label-class="sr-only"
     afFieldInput-placeholder="schemaLabel"
-    doc=getAdminSettings
+    doc=getOpeningScript
   }}
 </template>

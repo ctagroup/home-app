@@ -4,8 +4,8 @@
 
 Meteor.methods(
   {
-    saveAdminSettings(settings) {
-      check(settings, Schemas.adminSettings);
+    saveOpeningScript(settings) {
+      check(settings, Schemas.openingScript);
 
       logger.info(JSON.stringify(settings));
 

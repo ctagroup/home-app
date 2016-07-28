@@ -2,14 +2,13 @@
  * Created by udit on 26/07/16.
  */
 
-
-Template.AdminRoleManager.onRendered(
+Template.roleManager.onRendered(
   () => {
     $('.js-tooltip').tooltip();
   }
 );
 
-Template.AdminRoleManager.events(
+Template.roleManager.events(
   {
     'click .js-update': (e) => {
       e.preventDefault();
