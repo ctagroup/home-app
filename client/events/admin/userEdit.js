@@ -5,7 +5,7 @@
 Template.AdminDashboardusersEdit.onRendered(() => {
   GoogleMaps.load(
     {
-      key: AdminConfig.googleMaps.apiKey,
+      key: HomeConfig.googleMaps.apiKey,
     }
   );
 

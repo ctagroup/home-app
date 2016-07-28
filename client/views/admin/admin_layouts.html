@@ -1,5 +1,5 @@
 <template name="AppLayout">
-  {{#if AdminConfig}}
+  {{#if HomeConfig}}
     {{> AdminHeader }}
     {{> AdminSidebar }}
     <div class="content-wrapper" style="min-height: {{minHeight}}">
@@ -57,12 +57,12 @@
 
 <template name="NoConfig">
   <p class="alert alert-info">
-    You need to define an AdminConfig object to use the admin dashboard.
+    You need to define an HomeConfig object to use the admin dashboard.
     <br/>
       A basic config to manage the 'Posts' and 'Comments' collection would look like this:
     <br/>
     <code>
-      AdminConfig = {
+      HomeConfig = {
         <br/>
         adminEmails: ['john.doe@example.com'],
         <br/>

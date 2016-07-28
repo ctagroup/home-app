@@ -26,7 +26,7 @@ Meteor.startup(
         service: 'HMIS',
       }, {
         $set: {
-          hmisAPIEndpoints: AdminConfig.hmisAPIEndpoints,
+          hmisAPIEndpoints: HomeConfig.hmisAPIEndpoints,
           appId: '16631CFE-6909-4AC1-B4EB-57902AC7AF0A',
           appSecret: 'e7052d2a000447c8bd51cb88ab10ca17',
         },

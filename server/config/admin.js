@@ -23,7 +23,7 @@ Meteor.startup(
     }
 
     // Check Roles of Developer Users
-    const emails = AdminConfig.adminEmails;
+    const emails = HomeConfig.adminEmails;
     for (let i = 0; i < emails; i ++) {
       const devUser = Meteor.users.find(
         {

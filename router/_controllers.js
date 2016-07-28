@@ -17,7 +17,20 @@ HomeController = RouteController.extend(
 AppController = HomeController.extend({
   layoutTemplate: 'AppLayout',
   waitOn() {
-    return [Meteor.subscribe('collectionsCount')];
+    return [
+      Meteor.subscribe('collectionsCount', () => {
+        AdminDashboard.addSidebarItem(
+          'Role Manager',
+          Router.path('roleManager'),
+          { icon: 'user-secret' }
+        );
+        AdminDashboard.addSidebarItem(
+          'Opening Script',
+          Router.path('openingScript'),
+          { icon: 'comment' }
+        );
+      }),
+    ];
   },
   onBeforeAction() {
     Session.set('adminSuccess', null);

@@ -10,32 +10,32 @@ Template.housingUnitsListView.helpers(
     housingUnitsTableOptions() {
       // Deep Copy to avoid reference to the same array.
       // It was causing to add Edit/Delete column mulitple times
-      let tableColumns = $.extend(true, [], AdminConfig.collections.housingUnits.tableColumns);
+      let tableColumns = $.extend(true, [], HomeConfig.collections.housingUnits.tableColumns);
 
       let showEditColumn = true;
       let showDeleteColumn = true;
 
-      if (typeof AdminConfig.collections.housingUnits.showEditColumn === 'boolean'
-          && AdminConfig.collections.housingUnits.showEditColumn === false) {
+      if (typeof HomeConfig.collections.housingUnits.showEditColumn === 'boolean'
+          && HomeConfig.collections.housingUnits.showEditColumn === false) {
         showEditColumn = false;
       }
 
-      if (typeof AdminConfig.collections.housingUnits.showDelColumn === 'boolean'
-          && AdminConfig.collections.housingUnits.showDelColumn === false) {
+      if (typeof HomeConfig.collections.housingUnits.showDelColumn === 'boolean'
+          && HomeConfig.collections.housingUnits.showDelColumn === false) {
         showDeleteColumn = false;
       }
 
       if (showEditColumn) {
-        tableColumns = $.merge(tableColumns, [AdminConfig.adminEditButton]);
+        tableColumns = $.merge(tableColumns, [HomeConfig.adminEditButton]);
       }
 
       if (showDeleteColumn) {
-        tableColumns = $.merge(tableColumns, [AdminConfig.adminDelButton]);
+        tableColumns = $.merge(tableColumns, [HomeConfig.adminDelButton]);
       }
 
       return {
         columns: tableColumns,
-        dom: AdminConfig.adminTablesDom,
+        dom: HomeConfig.adminTablesDom,
       };
     },
     housingUnitsData() {

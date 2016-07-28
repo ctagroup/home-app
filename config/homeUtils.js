@@ -28,18 +28,18 @@ HomeUtils = {
     return obj;
   },
   adminCollectionObject(collection) {
-    if (AdminConfig && AdminConfig.collections && AdminConfig.collections[collection]
-        && AdminConfig.collections[collection].collectionObject) {
-      return AdminConfig.collections[collection].collectionObject;
+    if (HomeConfig && HomeConfig.collections && HomeConfig.collections[collection]
+        && HomeConfig.collections[collection].collectionObject) {
+      return HomeConfig.collections[collection].collectionObject;
     }
     return HomeUtils.lookup(collection);
   },
   adminCallback(name, args, callback) {
     let stop = false;
 
-    if (AdminConfig && AdminConfig.callbacks && AdminConfig.callbacks[name]
-        && typeof AdminConfig.callbacks[name] === 'function') {
-      stop = AdminConfig.callbacks[name].apply(AdminConfig.callbacks, args) === false;
+    if (HomeConfig && HomeConfig.callbacks && HomeConfig.callbacks[name]
+        && typeof HomeConfig.callbacks[name] === 'function') {
+      stop = HomeConfig.callbacks[name].apply(HomeConfig.callbacks, args) === false;
     }
 
     if (typeof callback === 'function') {

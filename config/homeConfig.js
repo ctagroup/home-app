@@ -2,7 +2,7 @@
  * Created by udit on 13/12/15.
  */
 
-AdminConfig = {
+HomeConfig = {
   name: 'H O M E',
   adminEmails: [
     'desaiuditd@gmail.com',
