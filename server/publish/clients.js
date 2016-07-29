@@ -3,10 +3,10 @@
  */
 
 Meteor.publish(
-  'clientInfo', () => {
-    if (typeof clientInfo === 'undefined') {
+  'clients', () => {
+    if (typeof clients === 'undefined') {
       return [];
     }
-    return clientInfo.find({});
+    return clients.find({});
   }
 );

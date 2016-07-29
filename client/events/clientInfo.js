@@ -72,9 +72,9 @@ Template.createClient.events(
           if (error) {
             // console.log(error);
           } else {
-            const clientInfoId = result;
+            const clientId = result;
             // console.log(result);
-            Router.go('viewClient', { _id: clientInfoId });
+            Router.go('viewClient', { _id: clientId });
           }
         }
       );

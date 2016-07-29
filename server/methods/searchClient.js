@@ -20,7 +20,7 @@ Meteor.methods(
 
       hmisClients = hmisClients.filter((client) => client.link);
 
-      const localClients = clientInfo.aggregate(
+      const localClients = clients.aggregate(
         [
           {
             $project: {

@@ -2,9 +2,9 @@
  * Created by Kavi on 4/8/16.
  */
 
-clientInfo = new Meteor.Collection('clientInfo');
+clients = new Meteor.Collection('clients');
 
-Schemas.clientInfo = new SimpleSchema(
+Schemas.clients = new SimpleSchema(
   {
     firstName: {
       type: String,
@@ -94,4 +94,4 @@ Schemas.clientInfo = new SimpleSchema(
   }
 );
 
-clientInfo.attachSchema(Schemas.clientInfo);
+clients.attachSchema(Schemas.clients);

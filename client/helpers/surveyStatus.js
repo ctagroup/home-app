@@ -25,8 +25,7 @@ Template.surveyStatusRow.helpers(
       return val;
     },
     clientName(clientID) {
-      const clientInfoCollection = HomeUtils.adminCollectionObject('clientInfo');
-      const client = clientInfoCollection.findOne({ _id: clientID });
+      const client = clients.findOne({ _id: clientID });
       return `${client.firstName} ${client.middleName} ${client.lastName}` || '';
     },
     userName(userID) {

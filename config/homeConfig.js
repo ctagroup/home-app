@@ -223,6 +223,15 @@ HomeConfig = {
     'Verdana',
   ],
   collections: {
+    clients: {
+      icon: 'user',
+      label: 'Clients',
+      templates: {
+        view: {
+          name: 'searchClient',
+        },
+      },
+    },
     questions: {
       icon: 'question',
       label: 'Questions',
@@ -660,7 +669,7 @@ HomeConfig = {
       },
     },
     users: {
-      icon: 'user',
+      icon: 'user-md',
       label: 'Users',
       templates: {
         view: {

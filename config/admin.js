@@ -13,7 +13,7 @@ Meteor.startup(
       Meteor.subscribe('surveys');
       Meteor.subscribe('questions');
       Meteor.subscribe('surveyQuestionsMaster');
-      Meteor.subscribe('clientInfo');
+      Meteor.subscribe('clients');
       Meteor.subscribe('responses');
     }
   }
