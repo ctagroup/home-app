@@ -1,6 +1,6 @@
 Template.AppLayout.onRendered(
   () => {
-    $('body').addClass('sidebar-mini skin-home');
+    $('body').addClass('sidebar-mini skin-home fixed');
   }
 );
 
