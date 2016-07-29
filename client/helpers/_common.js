@@ -54,7 +54,7 @@ UI.registerHelper('currentUserGravatar', () => HomeHelpers.getCurrentUserGravata
 
 UI.registerHelper('currentUserFullName', () => HomeHelpers.getCurrentUserFullName());
 
-Template.adminEditBtn.helpers(
+Template.AppEditBtn.helpers(
   {
     path() {
       const data = Template.instance().data;

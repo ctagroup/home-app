@@ -24,11 +24,11 @@ Template.globalHouseholdListView.helpers(
       }
 
       if (showEditColumn) {
-        tableColumns = $.merge(tableColumns, [HomeConfig.adminEditButton]);
+        tableColumns = $.merge(tableColumns, [HomeConfig.appEditButton]);
       }
 
       if (showDeleteColumn) {
-        tableColumns = $.merge(tableColumns, [HomeConfig.adminDelButton]);
+        tableColumns = $.merge(tableColumns, [HomeConfig.appDelButton]);
       }
       return {
         columns: tableColumns,
