@@ -1,6 +1,7 @@
 Template.AppLayout.onRendered(
   () => {
     $('body').addClass('sidebar-mini skin-home fixed');
+    $('body').tooltip({ selector: '.js-tooltip' });
   }
 );
 
@@ -15,5 +16,10 @@ Template.AppLayout.events({
     const collection = Session.get('admin_collection_name');
     const collectionObject = HomeUtils.adminCollectionObject(collection);
     Session.set('admin_doc', collectionObject.findOne(HomeUtils.parseID(_id)));
+  },
+  'click .main-sidebar .sidebar-menu li a': () => {
+    if (!$('body').hasClass('sidebar-collapse') && is.mobile()) {
+      $('a[data-toggle="offcanvas"]').click();
+    }
   },
 });
