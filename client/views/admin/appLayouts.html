@@ -1,7 +1,7 @@
 <template name="AppLayout">
   {{#if HomeConfig}}
-    {{> AdminHeader }}
-    {{> AdminSidebar }}
+    {{> AppHeader }}
+    {{> AppSidebar }}
     <div class="content-wrapper">
       <section class="content-header">
         <h1>
@@ -29,14 +29,14 @@
         {{> yield }}
       </section>
     </div>
-    {{> AdminDeleteModal }}
+    {{> AppDeleteModal }}
   {{else}}
     {{> NoConfig}}
   {{/if}}
 </template>
 
-<template name="AdminDeleteModal">
-  <div class="modal fade" id="admin-delete-modal">
+<template name="AppDeleteModal">
+  <div class="modal fade" id="app-delete-modal">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">

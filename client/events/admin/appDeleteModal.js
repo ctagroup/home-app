@@ -2,7 +2,7 @@
  * Created by udit on 27/07/16.
  */
 
-Template.AdminDeleteModal.events({
+Template.AppDeleteModal.events({
   'click #confirm-delete'() {
     const collection = Session.get('admin_collection_name');
     const _id = Session.get('admin_id');
@@ -10,6 +10,6 @@ Template.AdminDeleteModal.events({
       logger.log(e);
       logger.log(r);
     });
-    $('#admin-delete-modal').modal('hide');
+    $('#app-delete-modal').modal('hide');
   },
 });

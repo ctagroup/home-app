@@ -190,20 +190,20 @@ HomeConfig = {
   /* eslint-disable */
   adminTablesDom: '<"box"<"box-header"<"box-toolbar"<"clearfix"ri><"pull-left"<lf>><"pull-right"p>>><"box-body table-responsive"t>>',
   /* eslint-enable */
-  adminEditButton: {
+  appEditButton: {
     data: '_id',
     title: 'Edit',
     createdCell(node, cellData/* , rowData */) {
-      $(node).html(Blaze.toHTMLWithData(Template.adminEditBtn, { _id: cellData }));
+      $(node).html(Blaze.toHTMLWithData(Template.AppEditBtn, { _id: cellData }));
     },
     width: '40px',
     orderable: false,
   },
-  adminDelButton: {
+  appDelButton: {
     data: '_id',
     title: 'Delete',
     createdCell(node, cellData/* , rowData */) {
-      $(node).html(Blaze.toHTMLWithData(Template.adminDeleteBtn, { _id: cellData }));
+      $(node).html(Blaze.toHTMLWithData(Template.AppDeleteBtn, { _id: cellData }));
     },
     width: '40px',
     orderable: false,
