@@ -16,7 +16,7 @@ Template.searchClient.events(
       if (fullname != null) {
         // console.log(fullname);
         const fnln = fullname.split('');
-        const clientRecord = clientInfo.findOne({ firstName: fnln[0], lastName: fnln[1] });
+        const clientRecord = clients.findOne({ firstName: fnln[0], lastName: fnln[1] });
         // console.log(clientRecord);
         if (clientRecord) {
           const clientID = clientRecord._id;

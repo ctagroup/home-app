@@ -49,8 +49,7 @@ function getAudience() {
 
 function isSkipped(sectionID) {
   let status = false;
-  const responseCollection = HomeUtils.adminCollectionObject('responses');
-  const responseSection = responseCollection.findOne({ _id: Router.current().params._id });
+  const responseSection = responses.findOne({ _id: Router.current().params._id });
 
   if (responseSection && responseSection.section) {
     for (let i = 0; i < responseSection.section.length; i++) {
@@ -65,21 +64,16 @@ function isSkipped(sectionID) {
   return status;
 }
 function chkAudience(/* content */) {
-  // const questionCollection = HomeUtils.adminCollectionObject('questions');
-  // const question = questionCollection.findOne({ _id: content });
+  // const question = questions.findOne({ _id: content });
 
   // return getAudience() === question.audience;
   // TODO : Fix Audience
   return true;
 }
 function checkSectionAudience(sid, status) {
-  const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
-    'surveyQuestionsMaster'
-  );
-  const questionCollection = HomeUtils.adminCollectionObject('questions');
   let surveyElements = null;
   if (status === null) {
-    surveyElements = surveyQuestionsMasterCollection.find(
+    surveyElements = surveyQuestionsMaster.find(
       {
         surveyID: Router.current().params.survey_id,
         sectionID: sid,
@@ -87,7 +81,7 @@ function checkSectionAudience(sid, status) {
       }
     ).fetch();
   } else {
-    surveyElements = surveyQuestionsMasterCollection.find(
+    surveyElements = surveyQuestionsMaster.find(
       {
         surveyID: status,
         sectionID: sid,
@@ -98,7 +92,7 @@ function checkSectionAudience(sid, status) {
 
   let count = 0;
   for (let i = 0; i < surveyElements.length; i++) {
-    const question = questionCollection.find({ _id: surveyElements[i].content }).fetch();
+    const question = questions.find({ _id: surveyElements[i].content }).fetch();
     for (let j = 0; j < question.length; j++) {
       if (question[j].audience === getAudience()) {
         count ++;
@@ -130,8 +124,7 @@ function surveyContents(surveyElements, status) {
 }
 
 function getQName(qID) {
-  const questionCollection = HomeUtils.adminCollectionObject('questions');
-  const question = questionCollection.findOne({ _id: qID });
+  const question = questions.findOne({ _id: qID });
   return question.name;
 }
 
@@ -140,12 +133,10 @@ let sections;
 Template.LogSurvey.helpers(
   {
     getCreatedSurvey() {
-      const surveyCollections = HomeUtils.adminCollectionObject('surveys');
-      return surveyCollections.find({ created: true }).fetch();
+      return surveys.find({ created: true }).fetch();
     },
     getSurveyedClient() {
-      const clientCollections = HomeUtils.adminCollectionObject('clientInfo');
-      return clientCollections.find().fetch();
+      return clients.find().fetch();
     },
   }
 );
@@ -153,8 +144,7 @@ Template.LogSurvey.helpers(
 Template.LogSurveyResponse.helpers(
   {
     isMTV(contentQuesId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const question = questionCollection.findOne({ _id: contentQuesId });
+      const question = questions.findOne({ _id: contentQuesId });
       let dataType = '';
       if (question && question.dataType) {
         dataType = question.dataType;
@@ -162,10 +152,7 @@ Template.LogSurveyResponse.helpers(
       return dataType === 'mtv';
     },
     surveyQuesContents() {
-      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
-        'surveyQuestionsMaster'
-      );
-      const surveyElements = surveyQuestionsMasterCollection.find(
+      const surveyElements = surveyQuestionsMaster.find(
         { surveyID: Router.current().params.survey_id },
         { sort: { order: 1 } }
       ).fetch();
@@ -180,8 +167,7 @@ Template.LogSurveyResponse.helpers(
           && Router.current().params.query.isHMISClient && Router.current().params.query.link) {
         client = Session.get('currentHMISClient') || false;
       } else {
-        const clientCollections = HomeUtils.adminCollectionObject('clientInfo');
-        client = clientCollections.findOne({ _id: clientID });
+        client = clients.findOne({ _id: clientID });
       }
 
       const fn = (client && client.firstName) ? client.firstName.trim() : '';
@@ -203,16 +189,14 @@ Template.LogSurveyResponse.helpers(
       return contentType === 'question';
     },
     displayQuesContents(contentQuesId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const question = questionCollection.findOne({ _id: contentQuesId });
+      const question = questions.findOne({ _id: contentQuesId });
       return question.question;
     },
     checkAudience(content) {
       return chkAudience(content);
     },
     wysiwygLabel(contentQuesId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const question = questionCollection.findOne({ _id: contentQuesId });
+      const question = questions.findOne({ _id: contentQuesId });
 
       let dataType = '';
 
@@ -223,15 +207,14 @@ Template.LogSurveyResponse.helpers(
       return dataType === 'label';
     },
     textboxString(contentQuesId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const questions = questionCollection.find(
+      const questionsList = questions.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
 
       let flag = false;
 
-      for (let i = 0; i < questions.length; i++) {
-        const type = questions[i].dataType;
+      for (let i = 0; i < questionsList.length; i++) {
+        const type = questionsList[i].dataType;
         if (type === 'Textbox(String)') {
           flag = true;
           break;
@@ -240,8 +223,7 @@ Template.LogSurveyResponse.helpers(
       return flag;
     },
     wysiwygEditor(contentQuesId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const question = questionCollection.findOne({ _id: contentQuesId });
+      const question = questions.findOne({ _id: contentQuesId });
       let dataType = '';
       if (question && question.dataType) {
         dataType = question.dataType;
@@ -255,8 +237,7 @@ Template.LogSurveyResponse.helpers(
       return;
     },
     isDate(contentQuesId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const question = questionCollection.findOne({ _id: contentQuesId });
+      const question = questions.findOne({ _id: contentQuesId });
       let dataType = '';
       if (question && question.dataType) {
         dataType = question.dataType;
@@ -272,15 +253,14 @@ Template.LogSurveyResponse.helpers(
       return;
     },
     textboxNumber(contentQuesId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const questions = questionCollection.find(
+      const questionsList = questions.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
 
       let flag = false;
 
-      for (let i = 0; i < questions.length; i++) {
-        const type = questions[i].dataType;
+      for (let i = 0; i < questionsList.length; i++) {
+        const type = questionsList[i].dataType;
         if (type === 'Textbox(Integer)') {
           flag = true;
           break;
@@ -289,15 +269,14 @@ Template.LogSurveyResponse.helpers(
       return flag;
     },
     booleanTF(contentQuesId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const questions = questionCollection.find(
+      const questionsList = questions.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
 
       let flag = false;
 
-      for (let i = 0; i < questions.length; i++) {
-        const type = questions[i].dataType;
+      for (let i = 0; i < questionsList.length; i++) {
+        const type = questionsList[i].dataType;
         if (type === 'Boolean') {
           flag = true;
           break;
@@ -306,15 +285,14 @@ Template.LogSurveyResponse.helpers(
       return flag;
     },
     singleSelect(contentQuesId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const questions = questionCollection.find(
+      const questionsList = questions.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
 
       let flag = false;
 
-      for (let i = 0; i < questions.length; i++) {
-        const type = questions[i].dataType;
+      for (let i = 0; i < questionsList.length; i++) {
+        const type = questionsList[i].dataType;
         if (type === 'Single Select') {
           flag = true;
           break;
@@ -323,23 +301,21 @@ Template.LogSurveyResponse.helpers(
       return flag;
     },
     singleOptions(contentQuesId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const questions = questionCollection.find(
+      const questionsList = questions.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
 
-      return questions[0].options;
+      return questionsList[0].options;
     },
     multipleSelect(contentQuesId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const questions = questionCollection.find(
+      const questionsList = questions.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
 
       let flag = false;
 
-      for (let i = 0; i < questions.length; i++) {
-        const type = questions[i].dataType;
+      for (let i = 0; i < questionsList.length; i++) {
+        const type = questionsList[i].dataType;
         if (type === 'Multiple Select') {
           flag = true;
           break;
@@ -348,8 +324,7 @@ Template.LogSurveyResponse.helpers(
       return flag;
     },
     singlePhoto(contentQuesId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const question = questionCollection.findOne({ _id: contentQuesId });
+      const question = questions.findOne({ _id: contentQuesId });
 
       let dataType = '';
 
@@ -365,16 +340,15 @@ Template.LogSurveyResponse.helpers(
     responseExists() {
       let flag = false;
 
-      const responseCollection = HomeUtils.adminCollectionObject('responses');
-      const responseRecords = responseCollection.find(
+      const responseRecords = responses.find(
         { surveyID: Router.current().params.survey_id }
       ).fetch();
       for (let i = 0; i < responseRecords.length; i++) {
         const sectionz = responseRecords[i].section;
         for (let j = 0; j < sectionz.length; j++) {
-          const responses = sectionz[j].response;
-          for (let k = 0; k < responses.length; k++) {
-            const answers = responses[k].answer;
+          const responsesList = sectionz[j].response;
+          for (let k = 0; k < responsesList.length; k++) {
+            const answers = responsesList[k].answer;
             flag = answers != null;
             break;
           }
@@ -383,16 +357,15 @@ Template.LogSurveyResponse.helpers(
       return flag;
     },
     surveyContents() {
-      const responseCollection = HomeUtils.adminCollectionObject('responses');
-      const responseSections = responseCollection.find(
+      const responseSections = responses.find(
         { surveyID: Router.current().params._id }
       ).fetch();
       for (let i = 0; i < responseSections.length; i++) {
         const sectionz = responseSections[i].section;
         for (let j = 0; j < sectionz.length; j++) {
-          const responses = sectionz[j].response;
-          for (let k = 0; k < responses.length; k++) {
-            const answers = responses[k].answer;
+          const responsesList = sectionz[j].response;
+          for (let k = 0; k < responsesList.length; k++) {
+            const answers = responsesList[k].answer;
             return answers;
           }
         }
@@ -403,8 +376,7 @@ Template.LogSurveyResponse.helpers(
 );
 
 function getText(id) {
-  const responseCollection = HomeUtils.adminCollectionObject('responses');
-  const responseSection = responseCollection.findOne({ _id: Router.current().params._id });
+  const responseSection = responses.findOne({ _id: Router.current().params._id });
   if (!responseSection || !responseSection.section) {
     return '';
   }
@@ -416,20 +388,19 @@ function getText(id) {
         const quesIDs = response[k].questionID;
         if (id === quesIDs) {
           let responseVal = response[k].answer;
-          const questionCollection = HomeUtils.adminCollectionObject('questions');
-          const questions = questionCollection.find(
+          const questionsList = questions.find(
             { _id: quesIDs }, { dataType: 1, _id: 0 }
           ).fetch();
-          for (let i = 0; i < questions.length; i++) {
-            const dataType = questions[i].dataType;
+          for (let i = 0; i < questionsList.length; i++) {
+            const dataType = questionsList[i].dataType;
             if (dataType === 'Single Select') {
-              const options = questions[i].options;
+              const options = questionsList[i].options;
               for (let l = 0; l < options.length; l++) {
                 responseVal = options[l].description;
                 return responseVal;
               }
             } else if (dataType === 'Multiple Select') {
-              const options = questions[i].options;
+              const options = questionsList[i].options;
               let answer = '';
               for (let l = 0; l < options.length; l++) {
                 answer += `${options[l].description}|`;
@@ -472,8 +443,7 @@ function addOptions(question) {
 Template.LogSurveyView.helpers(
   {
     isMTV(contentQuesId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const question = questionCollection.findOne({ _id: contentQuesId });
+      const question = questions.findOne({ _id: contentQuesId });
       let dataType = '';
       if (question && question.dataType) {
         dataType = question.dataType;
@@ -484,18 +454,14 @@ Template.LogSurveyView.helpers(
       return chkAudience(content);
     },
     surveyQuesContents() {
-      const responseCollection = HomeUtils.adminCollectionObject('responses');
-      const responseRecord = responseCollection.findOne({ _id: Router.current().params._id });
+      const responseRecord = responses.findOne({ _id: Router.current().params._id });
 
       let quesContents = [];
 
       if (responseRecord && responseRecord.surveyID) {
         const surveyid = responseRecord.surveyID;
 
-        const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
-          'surveyQuestionsMaster'
-        );
-        const surveyElements = surveyQuestionsMasterCollection.find(
+        const surveyElements = surveyQuestionsMaster.find(
           { surveyID: surveyid }, { sort: { order: 1 } }
         ).fetch();
         quesContents = surveyContents(surveyElements, surveyid);
@@ -509,8 +475,7 @@ Template.LogSurveyView.helpers(
       }, 0);
     },
     surveyTitle(surveyID) {
-      const surveyCollection = HomeUtils.adminCollectionObject('surveys');
-      const survey = surveyCollection.findOne({ _id: surveyID });
+      const survey = surveys.findOne({ _id: surveyID });
 
       let title = '';
       if (survey && survey.title) {
@@ -520,8 +485,7 @@ Template.LogSurveyView.helpers(
       return title;
     },
     surveyCompleted() {
-      const responseCollection = HomeUtils.adminCollectionObject('responses');
-      const responseRecord = responseCollection.findOne({ _id: Router.current().params._id });
+      const responseRecord = responses.findOne({ _id: Router.current().params._id });
 
       let flag = false;
 
@@ -538,8 +502,7 @@ Template.LogSurveyView.helpers(
       return flag;
     },
     paused() {
-      const responseCollection = HomeUtils.adminCollectionObject('responses');
-      const responseRecord = responseCollection.findOne({ _id: Router.current().params._id });
+      const responseRecord = responses.findOne({ _id: Router.current().params._id });
 
       let flag = false;
 
@@ -568,14 +531,12 @@ Template.LogSurveyView.helpers(
       return contentType === 'question';
     },
     displayQuesContents(contentQuesId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const question = questionCollection.findOne({ _id: contentQuesId });
+      const question = questions.findOne({ _id: contentQuesId });
 
       return question.question;
     },
     wysiwygLabel(contentQuesId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const question = questionCollection.findOne({ _id: contentQuesId });
+      const question = questions.findOne({ _id: contentQuesId });
 
       let dataType = '';
 
@@ -586,15 +547,14 @@ Template.LogSurveyView.helpers(
       return dataType === 'label';
     },
     textboxString(contentQuesId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const questions = questionCollection.find(
+      const questionsList = questions.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
 
       let flag = false;
 
-      for (let i = 0; i < questions.length; i++) {
-        const type = questions[i].dataType;
+      for (let i = 0; i < questionsList.length; i++) {
+        const type = questionsList[i].dataType;
         if (type === 'Textbox(String)') {
           flag = true;
           break;
@@ -603,8 +563,7 @@ Template.LogSurveyView.helpers(
       return flag;
     },
     wysiwygEditor(contentQuesId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const question = questionCollection.findOne({ _id: contentQuesId });
+      const question = questions.findOne({ _id: contentQuesId });
       let dataType = '';
       if (question && question.dataType) {
         dataType = question.dataType;
@@ -621,8 +580,7 @@ Template.LogSurveyView.helpers(
       return;
     },
     isDate(contentQuesId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const question = questionCollection.findOne({ _id: contentQuesId });
+      const question = questions.findOne({ _id: contentQuesId });
       let dataType = '';
       if (question && question.dataType) {
         dataType = question.dataType;
@@ -641,15 +599,14 @@ Template.LogSurveyView.helpers(
       return;
     },
     textboxNumber(contentQuesId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const questions = questionCollection.find(
+      const questionsList = questions.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
 
       let flag = false;
 
-      for (let i = 0; i < questions.length; i++) {
-        const type = questions[i].dataType;
+      for (let i = 0; i < questionsList.length; i++) {
+        const type = questionsList[i].dataType;
         if (type === 'Textbox(Integer)') {
           flag = true;
           break;
@@ -658,15 +615,14 @@ Template.LogSurveyView.helpers(
       return flag;
     },
     booleanTF(contentQuesId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const questions = questionCollection.find(
+      const questionsList = questions.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
 
       let flag = false;
 
-      for (let i = 0; i < questions.length; i++) {
-        const type = questions[i].dataType;
+      for (let i = 0; i < questionsList.length; i++) {
+        const type = questionsList[i].dataType;
         if (type === 'Boolean') {
           flag = true;
           break;
@@ -675,15 +631,14 @@ Template.LogSurveyView.helpers(
       return flag;
     },
     singleSelect(contentQuesId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const questions = questionCollection.find(
+      const questionsList = questions.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
 
       let flag = false;
 
-      for (let i = 0; i < questions.length; i++) {
-        const type = questions[i].dataType;
+      for (let i = 0; i < questionsList.length; i++) {
+        const type = questionsList[i].dataType;
         if (type === 'Single Select') {
           flag = true;
           break;
@@ -692,23 +647,21 @@ Template.LogSurveyView.helpers(
       return flag;
     },
     singleOptions(contentQuesId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const questions = questionCollection.find(
+      const questionsList = questions.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
 
-      return questions[0].options;
+      return questionsList[0].options;
     },
     multipleSelect(contentQuesId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const questions = questionCollection.find(
+      const questionsList = questions.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
 
       let flag = false;
 
-      for (let i = 0; i < questions.length; i++) {
-        const multipleSelect = questions[i].dataType;
+      for (let i = 0; i < questionsList.length; i++) {
+        const multipleSelect = questionsList[i].dataType;
         if (multipleSelect === 'Multiple Select') {
           flag = true;
           break;
@@ -718,8 +671,7 @@ Template.LogSurveyView.helpers(
       return flag;
     },
     singlePhoto(contentQuesId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const question = questionCollection.findOne({ _id: contentQuesId });
+      const question = questions.findOne({ _id: contentQuesId });
 
       let dataType = '';
 
@@ -753,8 +705,7 @@ Template.LogSurveyView.helpers(
       return getText(id).split('|').join('<br/>');
     },
     isChecked(type) {
-      const responseCollection = HomeUtils.adminCollectionObject('responses');
-      const responseSection = responseCollection.findOne({ _id: Router.current().params._id });
+      const responseSection = responses.findOne({ _id: Router.current().params._id });
 
       if (!responseSection || !responseSection.section) {
         return '';
@@ -766,8 +717,7 @@ Template.LogSurveyView.helpers(
         for (let k = 0; k < response.length; k++) {
           const quesIDs = response[k].questionID;
           const responseVal = response[k].answer;
-          const questionCollection = HomeUtils.adminCollectionObject('questions');
-          const questions = questionCollection.find(
+          const questionsList = questions.find(
             {
               _id: quesIDs,
             }, {
@@ -776,8 +726,8 @@ Template.LogSurveyView.helpers(
             }
           ).fetch();
 
-          for (let i = 0; i < questions.length; i++) {
-            const dataType = questions[i].dataType;
+          for (let i = 0; i < questionsList.length; i++) {
+            const dataType = questionsList[i].dataType;
 
             if (dataType === 'Boolean') {
               return (responseVal === type) ? 'checked' : '';
@@ -788,8 +738,7 @@ Template.LogSurveyView.helpers(
       return '';
     },
     isSelected(value) {
-      const responseCollection = HomeUtils.adminCollectionObject('responses');
-      const responseSection = responseCollection.findOne({ _id: Router.current().params._id });
+      const responseSection = responses.findOne({ _id: Router.current().params._id });
 
       if (!responseSection || !responseSection.section) {
         return '';
@@ -802,8 +751,7 @@ Template.LogSurveyView.helpers(
         for (let k = 0; k < response.length; k++) {
           const quesIDs = response[k].questionID;
           const responseVal = response[k].answer;
-          const questionCollection = HomeUtils.adminCollectionObject('questions');
-          const questions = questionCollection.find(
+          const questionsList = questions.find(
             {
               _id: quesIDs,
             }, {
@@ -812,8 +760,8 @@ Template.LogSurveyView.helpers(
             }
           ).fetch();
 
-          for (let i = 0; i < questions.length; i++) {
-            const dataType = questions[i].dataType;
+          for (let i = 0; i < questionsList.length; i++) {
+            const dataType = questionsList[i].dataType;
             if (dataType === 'Single Select') {
               return (responseVal === value) ? 'checked' : '';
             }
@@ -823,8 +771,7 @@ Template.LogSurveyView.helpers(
       return '';
     },
     isSelectedMultiple(value) {
-      const responseCollection = HomeUtils.adminCollectionObject('responses');
-      const responseSection = responseCollection.findOne({ _id: Router.current().params._id });
+      const responseSection = responses.findOne({ _id: Router.current().params._id });
 
       if (!responseSection || !responseSection.section) {
         return '';
@@ -838,8 +785,7 @@ Template.LogSurveyView.helpers(
 
           const responseVal = response[k].answer.split('|');
 
-          const questionCollection = HomeUtils.adminCollectionObject('questions');
-          const questions = questionCollection.find(
+          const questionsList = questions.find(
             {
               _id: quesIDs,
             }, {
@@ -848,8 +794,8 @@ Template.LogSurveyView.helpers(
             }
           ).fetch();
 
-          for (let i = 0; i < questions.length; i++) {
-            const dataType = questions[i].dataType;
+          for (let i = 0; i < questionsList.length; i++) {
+            const dataType = questionsList[i].dataType;
 
             if (dataType === 'Multiple Select') {
               for (let l = 0; l < responseVal.length; l++) {

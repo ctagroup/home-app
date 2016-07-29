@@ -26,8 +26,7 @@ Meteor.methods(
       shelter,
       signature
     ) {
-      const clientInfoCollection = HomeUtils.adminCollectionObject('clientInfo');
-      const clientRecords = clientInfoCollection.insert(
+      const client = clients.insert(
         {
           firstName,
           middleName,
@@ -51,10 +50,10 @@ Meteor.methods(
           signature,
         }
       );
-      return clientRecords;
+      return client;
     },
     updateClient(
-      clientInfoID,
+      clientID,
       firstName,
       middleName,
       lastName,
@@ -75,9 +74,8 @@ Meteor.methods(
       location,
       shelter
     ) {
-      const clientInfoCollection = HomeUtils.adminCollectionObject('clientInfo');
-      clientInfoCollection.update(
-        clientInfoID, {
+      clients.update(
+        clientID, {
           $set: {
             firstName,
             middleName,
@@ -102,20 +100,18 @@ Meteor.methods(
         }
       );
     },
-    removeClient(clientInfoID) {
-      const questionCollection = HomeUtils.adminCollectionObject('clientInfo');
-      questionCollection.remove({ _id: clientInfoID });
+    removeClient(clientID) {
+      clients.remove({ _id: clientID });
     },
     addClientToHMIS(clientID) {
-      const clientInfoCollection = HomeUtils.adminCollectionObject('clientInfo');
-      const client = clientInfoCollection.findOne({ _id: clientID });
+      const client = clients.findOne({ _id: clientID });
 
       const personalId = HMISAPI.createClient(client);
 
       let flag = false;
 
       if (personalId) {
-        clientInfoCollection.remove({ _id: client._id });
+        clients.remove({ _id: client._id });
         const clientBasePath = HomeConfig.hmisAPIEndpoints.clientBaseUrl.replace(
           HomeConfig.hmisAPIEndpoints.apiBaseUrl,
           ''

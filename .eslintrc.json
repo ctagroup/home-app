@@ -13,7 +13,7 @@
   "globals": {
     "Messages": true,
     "HMISAPI": true,
-    "clientInfo": true,
+    "clients": true,
     "Sortable": true,
     "OAuth": true,
     "logger": true,
