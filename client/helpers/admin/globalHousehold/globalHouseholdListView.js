@@ -8,8 +8,30 @@ Template.globalHouseholdListView.helpers(
       return globalHousehold.find({}).fetch();
     },
     globalHouseholdTableOptions() {
+      // Deep Copy to avoid reference to the same array.
+      // It was causing to add Edit/Delete column mulitple times
+      let tableColumns = $.extend(true, [], HomeConfig.collections.globalHousehold.tableColumns);
+      let showEditColumn = true;
+      let showDeleteColumn = true;
+      if (typeof HomeConfig.collections.globalHousehold.showEditColumn === 'boolean'
+          && HomeConfig.collections.globalHousehold.showEditColumn === false) {
+        showEditColumn = false;
+      }
+
+      if (typeof HomeConfig.collections.globalHousehold.showDelColumn === 'boolean'
+          && HomeConfig.collections.globalHousehold.showDelColumn === false) {
+        showDeleteColumn = false;
+      }
+
+      if (showEditColumn) {
+        tableColumns = $.merge(tableColumns, [HomeConfig.adminEditButton]);
+      }
+
+      if (showDeleteColumn) {
+        tableColumns = $.merge(tableColumns, [HomeConfig.adminDelButton]);
+      }
       return {
-        columns: HomeConfig.collections.globalHousehold.tableColumns,
+        columns: tableColumns,
         dom: HomeConfig.adminTablesDom,
       };
     },

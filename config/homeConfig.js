@@ -603,7 +603,7 @@ HomeConfig = {
       tableColumns: [
         {
           title: 'Global Household ID',
-          data: 'globalHouseHoldId', // note: access nested data like this
+          data: 'globalHouseholdId', // note: access nested data like this
         },
         {
           title: 'Head of HouseHold ID',
@@ -614,12 +614,26 @@ HomeConfig = {
           data: 'dateCreated', // note: access nested data like this
         },
         {
+          title: 'Date Updated',
+          data: 'dateUpdated', // note: access nested data like this
+        },
+        {
           title: 'User Created',
           data: 'userCreate', // note: access nested data like this
         },
         {
           title: 'Updated User',
           data: 'userUpdate', // note: access nested data like this
+        },
+        {
+          title: 'Active?',
+          data: 'inactive',
+          orderable: false,
+          render(value) {
+            /* eslint-disable */
+            return value ? '' : '<i class="fa fa-check js-tooltip" data-toggle="tooltip" data-placement="right" title=""></i>';
+            /* eslint-enable */
+          },
         },
       ],
       templates: {
@@ -630,6 +644,17 @@ HomeConfig = {
           },
           waitOn() {
             return Meteor.subscribe('globalHousehold');
+          },
+        },
+        edit: {
+          name: 'globalHouseholdEditView',
+          waitOn() {
+            const _id = Router.current().params._id;
+            return Meteor.subscribe('singleGlobalHousehold', _id);
+          },
+          data() {
+            const _id = Router.current().params._id;
+            return globalHousehold.findOne({ _id });
           },
         },
       },
@@ -718,6 +743,9 @@ HomeConfig = {
     housingInventoryBaseUrl: 'https://www.hmislynk.com/survey-api/rest',
     housingUnits: '/housing-units',
     housingUnit: '/housing-units/{{housing_unit_uuid}}',
+    globalHouseholdBaseUrl: 'https://www.hmislynk.com/global-household-api',
+    globalHouseholds: '/global-households',
+    globalHousehold: '/global-households/{{global_household_uuid}}',
     v2015: '/v2015',
     v2014: '',
   },
