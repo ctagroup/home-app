@@ -14,10 +14,10 @@
             {{/each}}
         </ul>
         <ul class="sidebar-menu nav">
-          <li class="{{isActivePath path='roleManager'}}">
+          <li class="{{isActiveRoute 'roleManager'}}">
             <a href="{{pathFor 'roleManager'}}"> <i class="fa fa-user-secret"></i> <span>Role Manager</span> </a>
           </li>
-          <li class="{{isActivePath path='openingScript'}}">
+          <li class="{{isActiveRoute 'openingScript'}}">
             <a href="{{pathFor 'openingScript'}}"> <i class="fa fa-comment"></i> <span>Opening Script</span> </a>
           </li>
         </ul>
