@@ -74,22 +74,11 @@
 }
 
 //Different radius each side
-.border-radius(@top-left;
-@top-right
-;
-@bottom-left
-;
-@bottom-right
-)
-{
-  border-top-left-radius: @top-left
-;
-  border-top-right-radius: @top-right
-;
-  border-bottom-right-radius: @bottom-right
-;
-  border-bottom-left-radius: @bottom-left
-;
+.border-radius(@ctop-left; @ctop-right; @cbottom-left; @cbottom-right) {
+  border-top-left-radius: @ctop-left;
+  border-top-right-radius: @ctop-right;
+  border-bottom-right-radius: @cbottom-right;
+  border-bottom-left-radius: @cbottom-left;
 }
 
 //Gradient background
