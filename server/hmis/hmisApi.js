@@ -423,6 +423,92 @@ HMISAPI = {
 
     return housingUnit;
   },
+  getGlobalHouseholdForPublish() {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+
+    const accessToken = this.getCurrentAccessToken(false);
+
+    let globalHousehold = [];
+
+    const baseUrl = config.hmisAPIEndpoints.globalHouseholdBaseUrl;
+    const globalHouseholdPath = config.hmisAPIEndpoints.globalHouseholds;
+    const urlPah = `${baseUrl}${globalHouseholdPath}`;
+    // const url = `${urlPah}?${querystring.stringify(params)}`;
+    const url = `${urlPah}`;
+
+    logger.info(url);
+    logger.info(accessToken);
+
+    try {
+      const response = HTTP.get(url, {
+        headers: {
+          'X-HMIS-TrustedApp-Id': config.appId,
+          Authorization: `HMISUserAuth session_token=${accessToken}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        npmRequestOptions: {
+          rejectUnauthorized: false, // TODO remove when deploy
+        },
+      }).data;
+      logger.info(response);
+      globalHousehold = response;
+    } catch (err) {
+      throw _.extend(
+        new Error(`Failed to get global Household from HMIS. ${err.message}`),
+        { response: err.response }
+      );
+    }
+
+    return globalHousehold;
+  },
+  getSingleGlobalHouseholdForPublish(globalHouseholdId) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+
+    const accessToken = this.getCurrentAccessToken(false);
+
+    let singleGlobalHousehold = false;
+
+    const baseUrl = config.hmisAPIEndpoints.globalHouseholdBaseUrl;
+    const singleGlobalHouseholdPath = config.hmisAPIEndpoints.globalHousehold.replace(
+      '{{global_household_uuid}}',
+      globalHouseholdId
+    );
+    const urlPah = `${baseUrl}${singleGlobalHouseholdPath}`;
+    const url = `${urlPah}`;
+
+    logger.info(url);
+    logger.info(accessToken);
+
+    try {
+      const response = HTTP.get(url, {
+        headers: {
+          'X-HMIS-TrustedApp-Id': config.appId,
+          Authorization: `HMISUserAuth session_token=${accessToken}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        npmRequestOptions: {
+          rejectUnauthorized: false, // TODO remove when deploy
+        },
+      }).data;
+      logger.info(response);
+      singleGlobalHousehold = response;
+    } catch (err) {
+      throw _.extend(
+        new Error(`Failed to get single household details from HMIS. ${err.message}`),
+        { response: err.response }
+      );
+    }
+
+    return singleGlobalHousehold;
+  },
   postQuestionAnswer(category, data) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (! config) {
