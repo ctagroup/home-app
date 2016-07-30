@@ -1,46 +1,55 @@
 <template name="appNav">
 
-	<nav class="navbar navbar-default navbar-static-top app-nav">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="{{pathFor 'root'}}">
-          <b><i class="fa fa-home"></i></b>
-          &nbsp;
-          {{#if HomeConfig.name}}
-              {{HomeConfig.name}}
-          {{else}}
-              Admin
-          {{/if}}
-				</a>
-			</div>
+  <header class="app-nav main-header">
+    <!-- Logo -->
+    <a href="{{pathFor 'root'}}" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b><i class="fa fa-home"></i></b></span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg">
+        <b><i class="fa fa-home"></i></b>
+        &nbsp;
+        {{#if HomeConfig.name}}
+          {{HomeConfig.name}}
+        {{else}}
+          Admin
+        {{/if}}
+      </span>
+    </a>
 
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
 
-				<ul class="nav navbar-nav navbar-right">
-          {{#if currentUser}}
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-							{{{currentUserGravatar}}} {{currentUserFullName}} <span class="caret"></span>
-						</a>
-						<ul class="dropdown-menu">
-							<li><a href="{{pathFor 'adminDashboard'}}"><i class="fa fa-user-secret"></i> Dashboard</a></li>
-              <li><a href="{{pathFor 'adminDashboardusersEdit' _id=currentUser._id}}"><i class="fa fa-user"></i> My Profile</a></li>
-							<li><a href="{{pathFor 'logout'}}"><i class="fa fa-sign-out"></i> Logout</a></li>
-						</ul>
-          </li>
-          {{else}}
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+          <ul class="nav navbar-nav navbar-right">
+            {{#if currentUser}}
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                {{{currentUserGravatar}}} {{currentUserFullName}} <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a href="{{pathFor 'adminDashboard'}}"><i class="fa fa-user-secret"></i> Dashboard</a></li>
+                <li><a href="{{pathFor 'adminDashboardusersEdit' _id=currentUser._id}}"><i class="fa fa-user"></i> My Profile</a></li>
+                <li><a href="{{pathFor 'logout'}}"><i class="fa fa-sign-out"></i> Logout</a></li>
+              </ul>
+            </li>
+            {{else}}
             <li class="{{isActiveRoute 'signIn'}}"><a href="{{pathFor 'signIn'}}">Sign In</a></li>
-          {{/if}}
-				</ul>
-			</div>
+            {{/if}}
+          </ul>
+        </div>
 
-		</div>
-	</nav>
+      </div>
+    </nav>
+  </header>
 
 </template>
