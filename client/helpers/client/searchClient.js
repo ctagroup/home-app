@@ -30,7 +30,7 @@ Template.searchClient.helpers(
     clientSelected(event, dataObject) {
       if (dataObject.clientNotFound) {
         $('#search-client-keyword').val(dataObject.query).change();
-        Router.go('createClient', {}, { query: `firstName=${dataObject.query}` });
+        Router.go('adminDashboardclientsNew', {}, { query: `firstName=${dataObject.query}` });
       } else {
         const query = {};
         if (dataObject.isHMISClient) {
