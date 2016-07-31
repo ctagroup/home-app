@@ -4,9 +4,9 @@ Template.preliminarySurvey.events(
       event.preventDefault();
       $('#preliminarySurveyModal').modal('hide');
     },
-    'click .js-goto-home': (event) => {
+    'click .js-goto-dashboard': (event) => {
       event.preventDefault();
-      Router.go('root');
+      Router.go('dashboard');
     },
     'click .js-open-release-of-info-modal': (event) => {
       event.preventDefault();

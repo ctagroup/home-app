@@ -2,9 +2,9 @@
  * Created by udit on 28/07/16.
  */
 
-Router.route('adminDashboard', {
+Router.route('dashboard', {
   path: '/dashboard',
-  template: 'AdminDashboard',
+  template: 'Dashboard',
   controller: 'AppController',
   action() {
     return this.render();

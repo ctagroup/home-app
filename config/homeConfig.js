@@ -230,6 +230,9 @@ HomeConfig = {
         view: {
           name: 'searchClient',
         },
+        new: {
+          name: 'createClient'
+        }
       },
     },
     questions: {

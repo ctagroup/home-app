@@ -35,7 +35,7 @@
     "homeRoles": true,
     "Schemas": true,
     "HomeHelpers": true,
-    "AdminDashboard": true,
+    "HomeDashboard": true,
     "AutoForm": true,
     "SimpleSchema": true,
     "Gravatar": true,

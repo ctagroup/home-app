@@ -19,7 +19,7 @@ AutoForm.addHooks(
       $('.btn-primary').removeClass('disabled');
     },
     onError(formType, error) {
-      AdminDashboard.alertFailure(error.message);
+      HomeDashboard.alertFailure(error.message);
     },
   }
 );
@@ -28,7 +28,7 @@ AutoForm.hooks(
   {
     openingScriptForm: {
       onSuccess() {
-        AdminDashboard.alertSuccess('Opening Script saved successfully.');
+        HomeDashboard.alertSuccess('Opening Script saved successfully.');
       },
     },
     admin_insert: {
@@ -50,7 +50,7 @@ AutoForm.hooks(
         return false;
       },
       onSuccess(formType, collection) {
-        AdminDashboard.alertSuccess('Successfully created');
+        HomeDashboard.alertSuccess('Successfully created');
         Router.go(`/${collection}`);
       },
     },
@@ -79,13 +79,13 @@ AutoForm.hooks(
         return false;
       },
       onSuccess(formType, collection) {
-        AdminDashboard.alertSuccess('Successfully updated');
+        HomeDashboard.alertSuccess('Successfully updated');
         Router.go(`/${collection}`);
       },
     },
     adminNewUser: {
       onSuccess() {
-        AdminDashboard.alertSuccess('Created user');
+        HomeDashboard.alertSuccess('Created user');
         Router.go('/users');
       },
     },
@@ -95,18 +95,18 @@ AutoForm.hooks(
         return false;
       },
       onSuccess() {
-        AdminDashboard.alertSuccess('Updated user');
+        HomeDashboard.alertSuccess('Updated user');
         Router.go('/users');
       },
     },
     adminSendResetPasswordEmail: {
       onSuccess() {
-        AdminDashboard.alertSuccess('Email sent');
+        HomeDashboard.alertSuccess('Email sent');
       },
     },
     adminChangePassword: {
       onSuccess() {
-        AdminDashboard.alertSuccess('Password reset');
+        HomeDashboard.alertSuccess('Password reset');
       },
     },
   }

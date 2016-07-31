@@ -1,8 +1,8 @@
 <template name="createClient">
-    <div id="content">
-        {{> appNav}}
-        <div class="container">
-            <h3 class="page-header">Create Profile</h3>
+    <!--<div id="content">-->
+        <!--{{> appNav}}-->
+        <!--<div class="container">-->
+            <!--<h3 class="page-header">Create Profile</h3>-->
             <div class="row">
 				<!-- edit form column -->
                 <div class="col-md-8 col-sm-6 col-xs-12 personal-info">
@@ -20,11 +20,11 @@
                     </form>
                 </div>
             </div>
-        </div>
+        <!--</div>-->
 
-		{{> footer}}
+		<!--{{> footer}}-->
 
-    </div>
+    <!--</div>-->
 
     {{> preliminarySurvey}}
 
@@ -59,7 +59,7 @@
                     <button type="button" class="btn btn-lg btn-block js-open-release-of-info-modal js-close-preliminary-survey-modal btn-success">Yes</button>
                   </div>
                   <div class="col-xs-6">
-                    <button type="button" class="btn btn-lg btn-block js-goto-home js-close-preliminary-survey-modal btn-danger">No</button>
+                    <button type="button" class="btn btn-lg btn-block js-goto-dashboard js-close-preliminary-survey-modal btn-danger">No</button>
                   </div>
                 </div>
               {{/if}}
@@ -81,9 +81,7 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-xs-12 col-sm-6 col-md-6 my-center-block">
-                <h1 class="text-muted">
-                  {{{releaseOfInformation}}}
-                </h1>
+                {{{releaseOfInformation}}}
                 <label>
                   <input type="checkbox" required />
                   <span>I Agree</span>

@@ -128,7 +128,7 @@ UI.registerHelper(
   () => Session.get('admin_collection_name') === 'Users'
 );
 
-UI.registerHelper('admin_sidebar_items', () => AdminDashboard.sidebarItems);
+UI.registerHelper('admin_sidebar_items', () => HomeDashboard.sidebarItems);
 
 UI.registerHelper('admin_omit_fields', () => {
   let collection = undefined;
@@ -154,7 +154,7 @@ UI.registerHelper('admin_omit_fields', () => {
   return {};
 });
 
-UI.registerHelper('AdminSchemas', () => AdminDashboard.schemas);
+UI.registerHelper('AdminSchemas', () => HomeDashboard.schemas);
 
 UI.registerHelper('adminGetSkin', () => {
   if (HomeConfig && HomeConfig.dashboard && HomeConfig.dashboard.skin) {
@@ -175,7 +175,7 @@ UI.registerHelper('adminGetUserSchema', () => {
   return schema;
 });
 
-UI.registerHelper('collectionLabel', (collection) => AdminDashboard.collectionLabel(collection));
+UI.registerHelper('collectionLabel', (collection) => HomeDashboard.collectionLabel(collection));
 
 UI.registerHelper('collectionsCount', (collection) => {
   if (collection === 'Users') {
