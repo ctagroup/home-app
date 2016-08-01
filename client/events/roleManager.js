@@ -2,12 +2,6 @@
  * Created by udit on 26/07/16.
  */
 
-Template.roleManager.onRendered(
-  () => {
-    $('.js-tooltip').tooltip();
-  }
-);
-
 Template.roleManager.events(
   {
     'click .js-update': (e) => {
