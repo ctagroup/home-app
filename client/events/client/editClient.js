@@ -1,15 +1,11 @@
-Template.createClient.onRendered(() => {
-  const template = Template.instance();
-  template.autorun(() => {
-    if (!PreliminarySurvey.showPreliminarySurvey()) {
-      PreliminarySurvey.showReleaseOfInformation();
-    }
-  });
-});
+/**
+ * Created by udit on 01/08/16.
+ */
 
-Template.createClient.events(
+
+Template.editClient.events(
   {
-    'click .save'(evt, tmpl) {
+    'click .update'(evt, tmpl) {
       const firstName = tmpl.find('.firstName').value;
       const middleName = tmpl.find('.middleName').value;
       const lastName = tmpl.find('.lastName').value;
@@ -29,21 +25,36 @@ Template.createClient.events(
       const relationship = tmpl.find('.relationtoHoH_category').value;
       const loc = tmpl.find('.loc').value;
       const shelter = tmpl.find('.timeOnStreets_category').value;
-      const signature = tmpl.find('.signature') ? tmpl.find('.signature').value : '';
       Meteor.call(
-        'addClient', firstName, middleName, lastName, suffix, photo, ssn,
-        dob, race, ethnicity, gender, veteranStatus, disablingConditions, residencePrior, entryDate,
-        exitDate, destination, relationship, loc, shelter, signature,
+        'updateClient', tmpl.data._id, firstName, middleName, lastName,
+        suffix, photo, ssn, dob, race, ethnicity, gender, veteranStatus,
+        disablingConditions, residencePrior, entryDate, exitDate, destination,
+        relationship, loc,
+        shelter,
         (error, result) => {
           if (error) {
-            // console.log(error);
+            logger.log(error);
           } else {
-            const clientId = result;
-            // console.log(result);
-            Router.go('viewClient', { _id: clientId });
+            logger.log(result);
+            Router.go('viewClient', { _id: tmpl.data._id });
           }
         }
       );
+    },
+    'click .delete'(evt, tmpl) {
+      Meteor.call(
+        'removeClient', tmpl.data._id, (error) => {
+          if (error) {
+            // console.log(error);
+          } else {
+            // console.log(result);
+            Router.go('searchClient', {}, { query: 'deleted=1' });
+          }
+        }
+      );
+    },
+    'click .back'(evt, tmpl) {
+      Router.go('viewClient', { _id: tmpl.data._id });
     },
   }
 );

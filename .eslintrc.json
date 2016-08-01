@@ -55,7 +55,6 @@
     "is": true,
     "collectionsCount": true,
     "defaultColumns": true,
-    "adminTablePubName": true,
     "adminCreateTables": true,
     "adminCreateRouteViewOptions": true,
     "adminCreateRouteView": true,
