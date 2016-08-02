@@ -1,44 +1,39 @@
 <template name="home">
 
-	<div id="content" class="home">
-		{{> appNav}}
+  <div class="home">
 
-		<div class="container">
-        <h2 class="text-center">Welcome to HOME!</h2>
-        <p>
-            HOME is Community Technology Alliance’s mobile app. Use HOME from your shelter, your desk or even out in the field.
+    <h2 class="text-center">Welcome to HOME!</h2>
+    <p>
+      HOME is Community Technology Alliance’s mobile app. Use HOME from your shelter, your desk or even out in the
+      field.
 
-            This open-source, cross platform app can be used as a stand-alone tool or as part of your coordinated entry system.
-        </p>
-        <p>
-            HOME comes preloaded with:
-        </p>
-        <ul>
-            <li>VI-SPDATs (singles, families, youth)</li>
-            <li>Homeless data fields, standardized for all federal systems</li>
-            <li>Chat feature for easier collaboration</li>
-            <li>Web based portal for administrators and end users</li>
-            <li>Ability to review and export data to your data warehouse or reporting platform</li>
-            <li>Ability to refer clients to centralized intake center or directly to providers</li>
-            <li>Basic reporting feature</li>
-        </ul>
-        <br />
-        <div class="row text-center">
-            <div class="col-xs-12 col-sm-6 my-center-block">
-                <div class="row">
-                    <div class="col-xs-6">
-                      <a href="{{pathFor 'root'}}"><i class="fa fa-desktop"></i><br />See Our<br />Live Demo</a>
-                    </div>
-                    <div class="col-xs-6">
-                        <a href="https://github.com/ctagroup/home-app"><i class="fa fa-github"></i><br />Github Repo<br />Contribute</a>
-                    </div>
-                </div>
-            </div>
+      This open-source, cross platform app can be used as a stand-alone tool or as part of your coordinated entry
+      system.
+    </p>
+    <p>
+      HOME comes preloaded with: </p>
+    <ul>
+      <li>VI-SPDATs (singles, families, youth)</li>
+      <li>Homeless data fields, standardized for all federal systems</li>
+      <li>Chat feature for easier collaboration</li>
+      <li>Web based portal for administrators and end users</li>
+      <li>Ability to review and export data to your data warehouse or reporting platform</li>
+      <li>Ability to refer clients to centralized intake center or directly to providers</li>
+      <li>Basic reporting feature</li>
+    </ul>
+    <br/>
+    <div class="row text-center">
+      <div class="col-xs-12 col-sm-6 my-center-block">
+        <div class="row">
+          <div class="col-xs-6">
+            <a href="{{pathFor 'root'}}"><i class="fa fa-desktop"></i><br/>See Our<br/>Live Demo</a>
+          </div>
+          <div class="col-xs-6">
+            <a href="https://github.com/ctagroup/home-app"><i class="fa fa-github"></i><br/>Github Repo<br/>Contribute</a>
+          </div>
         </div>
-		</div>
-
-		{{> footer}}
-
-	</div>
+      </div>
+    </div>
+  </div>
 
 </template>
