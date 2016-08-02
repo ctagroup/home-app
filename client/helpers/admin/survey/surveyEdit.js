@@ -79,80 +79,124 @@ Template.typeDefinition.rendered = function () {
     maxLevels: 2,
     protectRoot: true,
     doNotClear: true,
-    start(event, ui) {
-      // Details of element after it has been dropped.
-      const movedElement = ui.item.get(0);
-      const prevElement = ui.item.prev().get(0);
-      const nextElement = ui.item.next().get(0);
-      // Loading there details using Blaze.
-      let nextElementDetails;
-      let prevElementDetails;
-      const movedElementDetails = Blaze.getData(movedElement);
-      if (!prevElement) {
-        nextElementDetails = Blaze.getData(nextElement);
-        logger.info(`S:${movedElementDetails.content}, ${nextElementDetails.content}`);
-      } else if (!nextElement) {
-        prevElementDetails = Blaze.getData(prevElement);
-        logger.info(`S:${movedElementDetails.content} & ${prevElementDetails.content}`);
-      } else {
-        prevElementDetails = Blaze.getData(prevElement);
-        nextElementDetails = Blaze.getData(nextElement);
-        logger.info(`S:${movedElementDetails.content} & ${prevElementDetails.content}`);
-      }
-      logger.log(`$ ${ui.item.index()}`);
-    },
+    opacity: 0.2,
     update(event, ui) {
       // Details of element after it has been dropped.
       const movedElement = ui.item.get(0);
       const movedElementDetails = Blaze.getData(movedElement);
       const newIndex = ui.item.index() + 1;
       const oldIndex = movedElementDetails.order;
+      let incField;
       // Checking if section is being moved or question and setting selector accordingly.
-      const selector = {};
-      // Changing order.
       const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
         'surveyQuestionsMaster'
       );
-      let incField;
-      if (newIndex < oldIndex) {
-        // Element moved up in the list. The dropped element has a next sibling for sure.
-        // Make the current element order to newIndex + 1.
-        incField = 1;
-        if (movedElementDetails.contentType === 'section') {
-          selector['contentType'] = 'section';      // eslint-disable-line
-          selector['order'] = { $gte: newIndex, $lt: oldIndex };    // eslint-disable-line
-        } else {
-          selector['contentType'] = 'question';     // eslint-disable-line
-          selector['sectionID'] = movedElementDetails.sectionID;      // eslint-disable-line
+      const selector = {};
+      if (movedElementDetails.contentType === 'section') {
+        selector['contentType'] = 'section';      // eslint-disable-line
+        if (newIndex < oldIndex) {
+          incField = 1;
           selector['order'] = { $gte: newIndex, $lt: oldIndex };      // eslint-disable-line
-        }
-      } else {
-        // Element moved down in the list. The dropped element has a previous sibling for sure.
-        // Update index.
-        incField = -1;
-        if (movedElementDetails.contentType === 'section') {
-          selector['contentType'] = 'section';      // eslint-disable-line
-          selector['order'] = { $gt: oldIndex, $lte: newIndex };    // eslint-disable-line
         } else {
-          selector['contentType'] = 'question';     // eslint-disable-line
-          selector['sectionID'] = movedElementDetails.sectionID;    // eslint-disable-line
-          selector['order'] = {$gt: oldIndex, $lte: newIndex};    // eslint-disable-line
+          incField = -1;
+          selector['order'] = { $gt: oldIndex, $lte: newIndex };    // eslint-disable-line
+        }
+        Meteor.call(
+          'updateOrder', selector, incField, (error, result) => {
+            if (error) {
+              logger.log(error);
+            } else {
+              logger.log(result);
+            }
+          }
+        );
+      } else {
+        selector['contentType'] = 'question';     // eslint-disable-line
+        // Getting new sectionID.
+        const parentElement = ui.item.parent().get(0);
+        const parentElementDetails = Blaze.getData(parentElement);
+        if (parentElementDetails._id !== movedElementDetails.sectionID) {
+          // Get last question in this section to get last order.
+          let newOrder;
+          const lastQuestion = surveyQuestionsMasterCollection.findOne(
+            { $and: [
+              { surveyID: parentElementDetails.surveyID },
+              { sectionID: parentElementDetails._id },
+            ] },
+            { sort: { order: -1 } }
+          );
+          if (lastQuestion) {
+            newOrder = lastQuestion.order + 1;
+          } else {
+            newOrder = 1;
+          }
+          // Element has been moved to a new section. Change it's section and order to end.
+          Meteor.call(
+            'updateQuestionSection', movedElementDetails._id,
+            parentElementDetails._id, newOrder, (error, result) => {
+              if (error) {
+                logger.log(error);
+              } else {
+                logger.log(result);
+              }
+            }
+          );
+          // Decrement all subsequent entries by 1 in oldSection. From oldIndex.
+          incField = -1;
+          selector['sectionID'] = { $eq: movedElementDetails.sectionID };   // eslint-disable-line
+          selector['order'] = { $gte: oldIndex };   // eslint-disable-line
+          Meteor.call(
+            'updateOrder', selector, incField, (error, result) => {
+              if (error) {
+                logger.log(error);
+              } else {
+                logger.log(result);
+              }
+            }
+          );
+          // Increment all subsequent entries by 1 in newSection. From newIndex.
+          incField = 1;
+          selector['sectionID'] = { $eq: parentElementDetails._id };    // eslint-disable-line
+          selector['order'] = { $gte: newIndex };     // eslint-disable-line
+          Meteor.call(
+            'updateOrder', selector, incField, (error, result) => {
+              if (error) {
+                logger.log(error);
+              } else {
+                logger.log(result);
+              }
+            }
+          );
+        } else {
+          selector['sectionID'] = movedElementDetails.sectionID;      // eslint-disable-line
+          if (newIndex < oldIndex) {
+            // Element moved up in the list. The dropped element has a next sibling for sure.
+            // Make the current element order to newIndex + 1.
+            incField = 1;
+            selector['order'] = { $gte: newIndex, $lt: oldIndex };      // eslint-disable-line
+          } else {
+            // Element moved down in the list. The dropped element has a previous sibling for sure.
+            // Update index.
+            incField = -1;
+            selector['order'] = { $gt: oldIndex, $lte: newIndex };    // eslint-disable-line
+          }
+          Meteor.call(
+            'updateOrder', selector, incField, (error, result) => {
+              if (error) {
+                logger.log(error);
+              } else {
+                logger.log(result);
+              }
+            }
+          );
         }
       }
-      Meteor.call(
-        'updateOrder', selector, incField, (error, result) => {
-          if (error) {
-            logger.log(error);
-          } else {
-            logger.log(result);
-          }
-        }
-      );
+      // Changing order.
       surveyQuestionsMasterCollection.update(
         { _id: movedElementDetails._id },
         { $set: { order: newIndex } }
       );
-      logger.log(`Q$ ${ui.item.index()}`);
+      logger.log(`Q$ #${oldIndex} #${newIndex}`);
     },
   });
 };
