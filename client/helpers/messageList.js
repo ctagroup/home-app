@@ -16,6 +16,7 @@ Deps.autorun(() => {
 }
 );
 
+/*
 Template.sidebar.helpers({
   onlineuser() {
     return Meteor.users.find({ 'status.online': true, _id: { $ne: Meteor.userId() } });
@@ -24,4 +25,6 @@ Template.sidebar.helpers({
 
 }
 );
+
+*/
 
