@@ -130,7 +130,7 @@ function getQName(qID) {
 
 let sections;
 
-Template.LogSurvey.helpers(
+Template.selectSurvey.helpers(
   {
     getCreatedSurvey() {
       return surveys.find({ created: true }).fetch();
