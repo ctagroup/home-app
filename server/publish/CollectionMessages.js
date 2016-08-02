@@ -40,13 +40,13 @@ Meteor.startup(() => {
 
 Meteor.startup(() => {
   messages.allow({
-    insert(userId, doc) {
+    insert() {
       return true;
     },
-    update(userId, doc, fieldNames, modifier) {
+    update() {
       return true;
     },
-    remove(userId, doc) {
+    remove() {
       return false;
     },
   }
