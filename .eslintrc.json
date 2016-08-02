@@ -68,7 +68,8 @@
     "Tabular": true,
     "adminCollections": true,
     "AppController": true,
-    "AdminLTEOptions": true
+    "AdminLTEOptions": true,
+    "ContentController": true
   },
   "rules": {
     "no-underscore-dangle": [
