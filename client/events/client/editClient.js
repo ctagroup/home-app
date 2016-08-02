@@ -48,7 +48,7 @@ Template.editClient.events(
             // console.log(error);
           } else {
             // console.log(result);
-            Router.go('searchClient', {}, { query: 'deleted=1' });
+            Router.go('adminDashboardclientsView', {}, { query: 'deleted=1' });
           }
         }
       );
