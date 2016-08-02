@@ -3,10 +3,6 @@
  */
 const querystring = require('querystring');
 
-Template.viewClient.onRendered(() => {
-  $('body').tooltip({ selector: '.js-tooltip' });
-});
-
 Template.viewClient.events(
   {
     'click .edit'(evt, tmpl) {
@@ -17,7 +13,7 @@ Template.viewClient.events(
       Router.go('adminDashboardclientsEdit', { _id: tmpl.data._id }, query);
     },
     'click .back'() {
-      Router.go('searchClient');
+      Router.go('adminDashboardclientsView');
     },
     'click .add-to-hmis'(event, tmpl) {
       Meteor.call(
