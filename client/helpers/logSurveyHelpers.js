@@ -141,7 +141,7 @@ Template.selectSurvey.helpers(
   }
 );
 
-Template.LogSurveyResponse.helpers(
+Template.createResponse.helpers(
   {
     isMTV(contentQuesId) {
       const question = questions.findOne({ _id: contentQuesId });
