@@ -64,7 +64,9 @@ Meteor.publish('messages', () => {
 }
 );
 
+/*
 Meteor.publish('onlineuser', () => {
   return Meteor.onlineuser.find({ 'status.online': true }, { username: 1 });
 }
 );
+*/
