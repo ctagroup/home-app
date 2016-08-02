@@ -63,3 +63,4 @@ reywood:publish-composite
 raix:handlebar-helpers
 aldeed:template-extension
 templating@1.2.13
+mizzao:jquery-ui

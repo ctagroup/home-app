@@ -70,41 +70,131 @@ Template.sortableItemTarget.helpers(
   }
 );
 
+Template.typeDefinition.rendered = function () {
+  this.$('.sortable').nestedSortable({
+    listType: 'div.question-list',
+    toleranceElement: '> .row',
+    items: '.sortable-item',
+    handle: '.sortable-handle',
+    maxLevels: 2,
+    protectRoot: true,
+    doNotClear: true,
+    start(event, ui) {
+      // Details of element after it has been dropped.
+      const movedElement = ui.item.get(0);
+      const prevElement = ui.item.prev().get(0);
+      const nextElement = ui.item.next().get(0);
+      // Loading there details using Blaze.
+      let nextElementDetails;
+      let prevElementDetails;
+      const movedElementDetails = Blaze.getData(movedElement);
+      if (!prevElement) {
+        nextElementDetails = Blaze.getData(nextElement);
+        logger.info(`S:${movedElementDetails.content}, ${nextElementDetails.content}`);
+      } else if (!nextElement) {
+        prevElementDetails = Blaze.getData(prevElement);
+        logger.info(`S:${movedElementDetails.content} & ${prevElementDetails.content}`);
+      } else {
+        prevElementDetails = Blaze.getData(prevElement);
+        nextElementDetails = Blaze.getData(nextElement);
+        logger.info(`S:${movedElementDetails.content} & ${prevElementDetails.content}`);
+      }
+      logger.log(`$ ${ui.item.index()}`);
+    },
+    update(event, ui) {
+      // Details of element after it has been dropped.
+      const movedElement = ui.item.get(0);
+      const movedElementDetails = Blaze.getData(movedElement);
+      const newIndex = ui.item.index() + 1;
+      const oldIndex = movedElementDetails.order;
+      // Checking if section is being moved or question and setting selector accordingly.
+      const selector = {};
+      // Changing order.
+      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
+        'surveyQuestionsMaster'
+      );
+      let incField;
+      if (newIndex < oldIndex) {
+        // Element moved up in the list. The dropped element has a next sibling for sure.
+        // Make the current element order to newIndex + 1.
+        incField = 1;
+        if (movedElementDetails.contentType === 'section') {
+          selector['contentType'] = 'section';      // eslint-disable-line
+          selector['order'] = { $gte: newIndex, $lt: oldIndex };    // eslint-disable-line
+        } else {
+          selector['contentType'] = 'question';     // eslint-disable-line
+          selector['sectionID'] = movedElementDetails.sectionID;      // eslint-disable-line
+          selector['order'] = { $gte: newIndex, $lt: oldIndex };      // eslint-disable-line
+        }
+      } else {
+        // Element moved down in the list. The dropped element has a previous sibling for sure.
+        // Update index.
+        incField = -1;
+        if (movedElementDetails.contentType === 'section') {
+          selector['contentType'] = 'section';      // eslint-disable-line
+          selector['order'] = { $gt: oldIndex, $lte: newIndex };    // eslint-disable-line
+        } else {
+          selector['contentType'] = 'question';     // eslint-disable-line
+          selector['sectionID'] = movedElementDetails.sectionID;    // eslint-disable-line
+          selector['order'] = {$gt: oldIndex, $lte: newIndex};    // eslint-disable-line
+        }
+      }
+      Meteor.call(
+        'updateOrder', selector, incField, (error, result) => {
+          if (error) {
+            logger.log(error);
+          } else {
+            logger.log(result);
+          }
+        }
+      );
+      surveyQuestionsMasterCollection.update(
+        { _id: movedElementDetails._id },
+        { $set: { order: newIndex } }
+      );
+      logger.log(`Q$ ${ui.item.index()}`);
+    },
+  });
+};
+
 Template.typeDefinition.helpers(
   {
     showPreview() {
       const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
         'surveyQuestionsMaster'
       );
-      if (
-        surveyQuestionsMasterCollection.find(
+      return surveyQuestionsMasterCollection.find(
           { surveyID: Router.current().params._id }
         ).count()
-        > 0
-      ) {
-        return true;
-      }
-      return false;
+        > 0;
     },
     attributes() {
       const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
         'surveyQuestionsMaster'
       );
       return surveyQuestionsMasterCollection.find(
-        { surveyID: Router.current().params._id }, {
+        { $and: [
+          { surveyID: Router.current().params._id },
+          { contentType: { $eq: 'section' } },
+        ] }, {
           sort: { order: 1 },
         }
       );
     },
-    attributesOptions: {
-      group: {
-        name: 'typeDefinition',
-        put: true,
-      },
-      // event handler for reordering attributes
-      onSort(event) {
-        logger.log(`Item ${event.data.name} went from #${event.oldIndex} to #${event.newIndex}`);
-      },
+  }
+);
+
+Template.sortableSectionItem.helpers(
+  {
+    sectionQuestions() {
+      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
+        'surveyQuestionsMaster'
+      );
+      return surveyQuestionsMasterCollection.find(
+        { sectionID: Template.parentData(0)._id },
+        { sort: { order: 1 },
+        } // section ID retrieved from parent Data elements.
+      );
     },
   }
 );
