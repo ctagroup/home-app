@@ -9,7 +9,7 @@
             </head>
             <body>
             <aside class="chat-sidebar">
-                <h5 class="room-label"> Case Managers <i class="ion-person-stalker"></i></h5>
+                {{> chatsidebar }}
             </aside>
             <section class="chat-container">
                 <header class="chat-header">Intra-Chat Application</header>
@@ -48,4 +48,18 @@
         <textarea name="content" class="new-message-input" placeholder="Start typing a new message..."></textarea>
         <button type="submit" class="new-message-submit">Send</button>
     </form>
+</template>
+
+
+
+
+<template name="chatsidebar">
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav onlineUsers">
+            <h5 class="room-label"> Case Managers <i class="ion-person-stalker"></i></h5>
+            {{#each onlineuser}}
+                <li class="user"><a href='#'>{{username}}</a></li>
+            {{/each}}
+        </ul>
+    </div>
 </template>
