@@ -308,27 +308,33 @@ function checkLocked() {
   }
 }
 
-function maxRank(surveyingId) {
+function maxRank(surveyingId, type) {
+  let newOrder;
   const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject('surveyQuestionsMaster');
-
-  const order = surveyQuestionsMasterCollection.find(
-    {
-      surveyID: surveyingId,
-    }, {
-      sort: {
-        order: 1,
-      },
+  const lastSection = surveyQuestionsMasterCollection.findOne(
+    { surveyID: surveyingId },
+    { sort: { order: -1 } }
+  );
+  if (lastSection) {
+    newOrder = lastSection.order + 1;
+  } else {
+    newOrder = 1;
+  }
+  if (type === 'question') {
+    const lastQuestion = surveyQuestionsMasterCollection.findOne(
+      { $and: [
+        { surveyID: surveyingId },
+        { sectionID: lastSection._id },
+      ] },
+      { sort: { order: -1 } }
+    );
+    if (lastQuestion) {
+      newOrder = lastQuestion.order + 1;
+    } else {
+      newOrder = 1;
     }
-  ).fetch();
-
-  if (order.length === 0) {
-    return 1;
   }
-  let maxOrder = 1;
-  for (let i = 0; i < order.length; i++) {
-    maxOrder = order[i].order + 1;
-  }
-  return maxOrder;
+  return newOrder;
 }
 
 function registerDeleteOption() {
@@ -710,7 +716,7 @@ Template.surveyEditTemplate.events(
         skipVal,
         contentType,
         content,
-        maxRank(surveyingId),
+        maxRank(surveyingId, 'section'),
         (error, result) => {
           if (error) {
             logger.log(error);
@@ -769,7 +775,7 @@ Template.surveyEditTemplate.events(
         skipVal,
         contentType,
         content,
-        maxRank(surveyingId),
+        maxRank(surveyingId, 'question'),
         (error, result) => {
           if (error) {
             logger.log(error);
@@ -909,6 +915,23 @@ Template.sortableItemTarget.events(
   }
 );
 
+Template.sortableSectionItem.events(
+  {
+    'click .close'(/* event, template*/) {
+      // `this` is the data context set by the enclosing block helper (#each, here)
+      // Give out a warning here, before deleting.
+      Meteor.call(
+        'removeSurveyQuestionMasterSection', this._id, (error, result) => {
+          if (error) {
+            logger.log(error);
+          } else {
+            logger.log(result);
+          }
+        }
+      );
+    },
+  }
+);
 Template.typeDefinition.events(
   {
     'click .reset-survey-order': () => {
@@ -953,7 +976,7 @@ Template.selectQuestions.events(
       logger.log('Ques: ${array}');
       logger.log('skip val: ${skipVal}');
 
-      let order = maxRank(surveyId);
+      let order = maxRank(surveyId, 'question');
 
       for (let i = 0; i < array.length; i ++) {
         Meteor.call(

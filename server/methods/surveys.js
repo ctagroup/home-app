@@ -70,6 +70,31 @@ Meteor.methods(
         { $set: { surveyTitle } }, { multi: true }
       );
     },
+    removeSurveyQuestionMasterSection(id) {
+      logger.log(id);
+      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
+        'surveyQuestionsMaster'
+      );
+      const order = surveyQuestionsMasterCollection.findOne({ _id: id });
+      const nextOrders = surveyQuestionsMasterCollection.find(
+        {
+          surveyID: order.surveyID,
+          contentType: 'section',
+          order: {
+            $gt: order.order,
+          },
+        }
+      ).fetch();
+
+      for (let i = 0; i < nextOrders.length; i++) {
+        surveyQuestionsMasterCollection.update(
+          { _id: nextOrders[i]._id },
+          { $set: { order: nextOrders[i].order - 1 } }
+        );
+      }
+      surveyQuestionsMasterCollection.remove({ sectionID: id });
+      return surveyQuestionsMasterCollection.remove({ _id: id });
+    },
     removeSurveyQuestionMaster(id) {
       const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
         'surveyQuestionsMaster'
@@ -80,6 +105,7 @@ Meteor.methods(
       const nextOrders = surveyQuestionsMasterCollection.find(
         {
           surveyID: order.surveyID,
+          sectionID: order.sectionID,
           order: {
             $gt: order.order,
           },
@@ -94,6 +120,16 @@ Meteor.methods(
       }
 
       return surveyQuestionsMasterCollection.remove({ _id: id });
+    },
+    updateOrder(selector, incField) {
+      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
+        'surveyQuestionsMaster'
+      );
+      surveyQuestionsMasterCollection.update(
+        selector,
+        { $inc: { order: incField } },
+        { multi: true }
+      );
     },
     resetSurveyQuestionMasterOrder(surveyId) {
       logger.info(surveyId);
@@ -122,22 +158,32 @@ Meteor.methods(
       const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
         'surveyQuestionsMaster'
       );
-      const orders = surveyQuestionsMasterCollection.find(
-        {
-          surveyID: surveyId,
-        },
-        {
-          sort: {
-            order: 1,
-          },
-        }
+      const sections = surveyQuestionsMasterCollection.find(
+        { $and: [
+          { surveyID: surveyId },
+          { contentType: { $eq: 'section' } },
+        ] },
+        { sort: { order: 1 } }
       ).fetch();
-
-      for (let i = 0; i < orders.length; i++) {
+      let sectionCount = 1;
+      let questionCount;
+      for (let i = 0; i < sections.length; i++) {
         surveyQuestionsMasterCollection.update(
-          { _id: orders[i]._id },
-          { $set: { order: i + 1 } }
+          { _id: sections[i]._id },
+          { $set: { order: sectionCount++ } }
         );
+        const questions = surveyQuestionsMasterCollection.find(
+          { sectionID: sections[i]._id },
+          { sort: { order: 1 },
+          }
+        ).fetch();
+        questionCount = 1;
+        for (let j = 0; j < questions.length; j++) {
+          surveyQuestionsMasterCollection.update(
+            { _id: questions[j]._id },
+            { $set: { order: questionCount++ } }
+          );
+        }
       }
     },
     removeSurveyCopyQuestionMaster(surveyCopyTitle) {
