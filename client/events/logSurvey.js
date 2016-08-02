@@ -1,7 +1,7 @@
 /**
  * Created by Anush-PC on 5/13/2016.
  */
-Template.LogSurvey.events(
+Template.selectSurvey.events(
   {
     'click .nextLogSurvey': (evt, tmpl) => {
       const surveyID = tmpl.find('.surveyList').value;
@@ -16,7 +16,6 @@ Template.LogSurvey.events(
           isHMISClient: true,
           link: url,
         };
-        // query.query = `isHMISClient=true&link=${url}`;
       }
 
       Router.go(

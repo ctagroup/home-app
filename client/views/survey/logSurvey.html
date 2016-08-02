@@ -1,33 +1,3 @@
-<template name="LogSurvey">
-    <div id="content">
-        {{> appNav}}
-
-        <div class="container">
-
-            <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-12 my-center-block">
-                    <h1>Select Survey Details</h1><br/><br/>
-                    <form>
-                        <div class="form-group">
-                            <label for="surveyList">Published Surveys:</label>
-                            <select class="form-control surveyList" name="surveyList" id="surveyList">
-                                <option value="Choose" selected>Choose a survey</option>
-                                {{#each getCreatedSurvey}}
-                                    <option value={{_id}}>{{title}}</option>
-                                {{/each}}
-                            </select><br/><br/>
-                            <input class="btn btn-primary nextLogSurvey" value="Next" type="button">
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-        </div>
-
-        {{> footer}}
-
-    </div>
-</template>
 <template name="LogSurveyResponse">
     <div id="content">
         {{> appNav}}

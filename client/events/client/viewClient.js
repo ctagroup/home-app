@@ -48,10 +48,9 @@ Template.viewClient.events(
           isHMISClient: true,
           link: url,
         };
-        // `isHMISClient=true&link=${url}`
       }
 
-      Router.go('LogSurvey', { _id: tmpl.data._id }, query);
+      Router.go('selectSurvey', { _id: tmpl.data._id }, query);
     },
   }
 );
