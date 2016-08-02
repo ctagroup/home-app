@@ -121,6 +121,14 @@ Meteor.methods(
 
       return surveyQuestionsMasterCollection.remove({ _id: id });
     },
+    updateQuestionSection(elementId, sectionId, order) {
+      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
+        'surveyQuestionsMaster'
+      );
+      surveyQuestionsMasterCollection.update(
+        { _id: elementId },
+        { $set: { sectionID: sectionId, order: order } });    // eslint-disable-line
+    },
     updateOrder(selector, incField) {
       const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
         'surveyQuestionsMaster'
