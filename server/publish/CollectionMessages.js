@@ -2,7 +2,9 @@
  * Created by kavyagautam on 5/18/16.
  */
 
+/*
 Meteor.startup(() => {
+
   const messageData = [
     {
       name: 'Joe Lipper',
@@ -34,11 +36,35 @@ Meteor.startup(() => {
 }
 );
 
+*/
+
+Meteor.startup(() => {
+  messages.allow({
+    insert(userId, doc) {
+      return true;
+    },
+    update(userId, doc, fieldNames, modifier) {
+      return true;
+    },
+    remove(userId, doc) {
+      return false;
+    },
+  }
+  );
+}
+);
+
+
 Meteor.publish('messages', () => {
   if (typeof messages === 'undefined') {
     return null;
   }
 
   return messages.find({});
+}
+);
+
+Meteor.publish('onlineuser', () => {
+  return Meteor.onlineuser.find({ 'status.online': true }, { username: 1 });
 }
 );

@@ -10,5 +10,18 @@ Template.messageList.helpers(
   }
 );
 
+Deps.autorun(() => {
+  Meteor.subscribe('messages');
+  Meteor.subscribe('onlineuser');
+}
+);
 
-Meteor.subscribe('messages');
+Template.sidebar.helpers({
+  onlineuser() {
+    return Meteor.users.find({ 'status.online': true, _id: { $ne: Meteor.userId() } });
+     // return Meteor.users.find({}); - even this doesnt list all the users??
+  },
+
+}
+);
+
