@@ -10,7 +10,7 @@
 	{{> adminAlert}}
 	{{#if adminTemplate admin_collection_name 'new'}}
 		{{#with adminTemplate admin_collection_name 'new'}}
-		{{> UI.dynamic template=name data=data }}
+		{{> UI.dynamic template=name data=getTemplateData }}
 		{{/with}}
 	{{else}}
 		<div class="box box-default">
@@ -25,7 +25,7 @@
 	{{> adminAlert}}
 	{{#if adminTemplate admin_collection_name 'edit'}}
 		{{#with adminTemplate admin_collection_name 'edit'}}
-		{{> UI.dynamic template=name data=data }}
+		{{> UI.dynamic template=name data=getTemplateData }}
 		{{/with}}
 	{{else}}
 		<div class="box box-default">
@@ -38,16 +38,11 @@
 	{{/if}}
 </template>
 
-<template name="AdminDashboardViewWrapper">
-	<div></div>
-	{{! This template is used to manually re-render AdminDashboardView on route transition }}
-</template>
-
 <template name="AdminDashboardView">
 	{{> adminAlert}}
 	{{#if adminTemplate admin_collection_name 'view'}}
 		{{#with adminTemplate admin_collection_name 'view'}}
-		{{> UI.dynamic template=name data=data }}
+		{{> UI.dynamic template=name data=getTemplateData }}
 		{{/with}}
 	{{else}}
 		{{#if hasDocuments}}
