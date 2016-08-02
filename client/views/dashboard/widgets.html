@@ -1,12 +1,12 @@
-<template name="adminDefaultWidgets">
+<template name="defaultWidgets">
 	{{#each admin_collections}}
 		{{#unless $eq showWidget false}}
-			{{> adminCollectionWidget collection=name}}
+			{{> collectionWidget collection=name}}
 		{{/unless}}
 	{{/each}}
 </template>
 
-<template name="adminCollectionWidget">
+<template name="collectionWidget">
 	<div class="{{#if class}}{{class}}{{else}} col-lg-3 col-xs-6{{/if}}">
 	{{#with adminGetCollection collection}}
 		<a class="admin-widget" href="/{{this.name}}">

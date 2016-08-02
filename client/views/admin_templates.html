@@ -1,11 +1,3 @@
-<template name="Dashboard">
-	{{#each adminWidgets}}
-	{{> UI.dynamic template=template data=data}}
-	{{else}}
-	{{> adminDefaultWidgets}}
-	{{/each}}
-</template>
-
 <template name="AdminDashboardNew">
 	{{> adminAlert}}
 	{{#if adminTemplate admin_collection_name 'new'}}
