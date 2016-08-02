@@ -218,3 +218,8 @@ UI.registerHelper('adminUserEmail', (emails) => {
   }
   return email;
 });
+
+UI.registerHelper('getTemplateData', () => {
+  const tmpl = Template.instance();
+  return tmpl.data;
+});
