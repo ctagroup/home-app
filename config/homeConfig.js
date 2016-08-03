@@ -666,6 +666,9 @@ HomeConfig = {
             return globalHousehold.findOne({ _id });
           },
         },
+        new: {
+          name: 'globalHouseholdCreateView',
+        },
       },
     },
     users: {

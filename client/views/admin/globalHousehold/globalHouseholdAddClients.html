@@ -1,0 +1,42 @@
+<template name="globalHouseholdAddClients">
+    <div class="form-group">
+        {{>selectClients}}
+        <div class="col-xs-1 client-search-icon-container">
+            <p class="text-primary form-control-static"><i class="fa fa-search"></i></p>
+        </div>
+    </div>
+
+</template>
+
+<template name="selectClients">
+    <div class="col-xs-12">
+        <a href=""
+           class="btn btn-large btn-primary selectClients">Select Clients</a>
+        <br/><br/>
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Select</th>
+                <th>ID</th>
+                <th> Name</th>
+                <th>Client Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each getClientList}}
+                {{>selectClientRow}}
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+</template>
+
+<template name="selectClientRow">
+    <tr class="selectClientRow">
+        <td><input type="checkbox" class="toggle-checked" id="reportable" value={{clientId}}/></td>
+        <td>{{clientId}}</td>
+        <td>{{firstName}}&nbsp;{{middleName}}&nbsp;{{lastName}}</td>
+        <td>{{getClientStatus isHMISClient}}</td>
+    </tr>
+</template>
+
