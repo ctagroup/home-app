@@ -1,0 +1,159 @@
+<template name="viewClient">
+    <div id="viewClient_content">
+            <div class="row client-profile-container">
+
+                {{{alertMessages}}}
+
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <div class="name-container">
+                        {{#if photo}}
+                            <img class="avatar large center-block" src="{{photo}}" />
+                        {{/if}}
+                        <form>
+                            <div class="form-group">
+                                <p class="clabel">First Name</p>
+                                <p class="form-control-static cvalue">{{firstName}}</p>
+                            </div>
+                            <div class="form-group">
+                                <p class="clabel">Middle Name</p>
+                                <p class="form-control-static cvalue">{{middleName}}</p>
+                            </div>
+                            <div class="form-group">
+                                <p class="clabel">Last Name</p>
+                                <p class="form-control-static cvalue">{{lastName}}</p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-9 col-md-9">
+                    <div class="info-container">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-3 col-md-3">
+                                <div class="">
+                                    <p class="clabel">Suffix</p>
+                                    <p class="cvalue">{{suffix}}</p>
+                                </div>
+                                <div class="">
+                                    <p class="clabel">SSN</p>
+                                    <p class="cvalue">{{ssn}}</p>
+                                </div>
+                                <div class="">
+                                    <p class="clabel">Date of Birth</p>
+                                    <p class="cvalue dob">{{formatDate dob}}</p>
+                                </div>
+                                <div class="">
+                                    <p class="clabel">Race</p>
+                                    <p class="cvalue">{{getText 'race' race}}</p>
+                                </div>
+                                <div class="">
+                                    <p class="clabel">Ethnicity</p>
+                                    <p class="cvalue">{{getText 'ethnicity' ethnicity}}</p>
+                                </div>
+                                <div class="">
+                                    <p class="clabel">Gender</p>
+                                    <p class="cvalue">{{getText 'gender' gender}}</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-4 col-md-4">
+                                <div class="">
+                                    <p class="clabel">Veteran Status</p>
+                                    <p class="cvalue">{{getText 'veteranStatus' veteranStatus}}</p>
+                                </div>
+                                <div class="">
+                                    <p class="clabel">Disabling Condition</p>
+                                    <p class="cvalue">{{getText 'disablingcondition' disablingConditions}}</p>
+                                </div>
+                                <div class="">
+                                    <p class="clabel">Residence Prior to Project Entry</p>
+                                    <p class="cvalue">{{getText 'otherresidenceprior' residencePrior}}</p>
+                                </div>
+                                <div class="">
+                                    <p class="clabel">Project Entry Date</p>
+                                    <p class="cvalue">{{formatDate entryDate}}</p>
+                                </div>
+                                <div class="">
+                                    <p class="clabel">Project Exit Date</p>
+                                    <p class="cvalue">{{formatDate exitDate}}</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-5 col-md-5">
+                                <div class="">
+                                    <p class="clabel">Destination</p>
+                                    <p class="cvalue">{{getText 'destination' destination}}</p>
+                                </div>
+                                <!--<div class="">-->
+                                    <!--<p class="clabel">HMIS ID</p>-->
+                                    <!--<p class="cvalue clientID">{{personalId}}</p>-->
+                                <!--</div>-->
+                                <!--<div class="">-->
+                                    <!--<p class="clabel">Household ID</p>-->
+                                    <!--<p class="cvalue">{{householdId}}</p>-->
+                                <!--</div>-->
+                                <div class="">
+                                    <p class="clabel">Relationship to Head of Household</p>
+                                    <p class="cvalue reltohoh">{{getText 'relationshiptohoh' relationship}}</p>
+                                </div>
+                                <div class="">
+                                    <p class="clabel">Client Location</p>
+                                    <p class="cvalue">{{location}}</p>
+                                </div>
+                                <div class="">
+                                    <p class="clabel">Time on Streets Emergency Shelter or Safe Haven</p>
+                                    <p class="cvalue">{{getText 'entryfromstreetessh' shelter}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{#if enrollments}}
+              <div class="row">
+                <h3>Enrollments</h3>
+                <div class="table-responsive">
+                  <table class="table table-hover table-striped">
+                    <thead>
+                      <tr>
+                        <th>Enrollment ID</th>
+                        <th>Entry Date</th>
+                        <th>Housing Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {{#each enrollments}}
+                        <tr>
+                          <td>{{enrollmentId}}</td>
+                          <td>{{entrydate}}</td>
+                          <td>{{housingstatus}}</td>
+                        </tr>
+                      {{/each}}
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th>Enrollment ID</th>
+                        <th>Entry Date</th>
+                        <th>Housing Status</th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            {{/if}}
+
+            <div class="row margin-top-35">
+                <!-- edit form column -->
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <input class="btn btn-default back" value="Back" type="button">
+                            <input class="btn btn-success takeSurvey" value="Survey" type="button">
+                            {{#unless personalId}}
+                                <input class="btn btn-success add-to-hmis js-tooltip" data-toggle="tooltip" value="Upload" title="This action uploads the client information to HMIS data server." type="button" />
+                                <input class="btn btn-warning edit" value="Edit" type="button" />
+                            {{/unless}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+</template>

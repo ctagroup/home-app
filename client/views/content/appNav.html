@@ -37,7 +37,8 @@
                 {{{currentUserGravatar}}} {{currentUserFullName}} <span class="caret"></span>
               </a>
               <ul class="dropdown-menu">
-                <li><a href="{{pathFor 'adminDashboard'}}"><i class="fa fa-user-secret"></i> Dashboard</a></li>
+                <li><a href="{{pathFor 'dashboard'}}"><i class="fa fa-user-secret"></i> Dashboard</a></li>
+                <li><a href="{{pathFor 'adminDashboardclientsView'}}"><i class="fa fa-user-secret"></i> Clients</a></li>
                 <li><a href="{{pathFor 'adminDashboardusersEdit' _id=currentUser._id}}"><i class="fa fa-user"></i> My Profile</a></li>
                 <li><a href="{{pathFor 'logout'}}"><i class="fa fa-sign-out"></i> Logout</a></li>
               </ul>

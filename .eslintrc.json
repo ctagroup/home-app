@@ -35,7 +35,7 @@
     "homeRoles": true,
     "Schemas": true,
     "HomeHelpers": true,
-    "AdminDashboard": true,
+    "HomeDashboard": true,
     "AutoForm": true,
     "SimpleSchema": true,
     "Gravatar": true,
@@ -55,7 +55,6 @@
     "is": true,
     "collectionsCount": true,
     "defaultColumns": true,
-    "adminTablePubName": true,
     "adminCreateTables": true,
     "adminCreateRouteViewOptions": true,
     "adminCreateRouteView": true,
@@ -69,7 +68,8 @@
     "Tabular": true,
     "adminCollections": true,
     "AppController": true,
-    "AdminLTEOptions": true
+    "AdminLTEOptions": true,
+    "ContentController": true
   },
   "rules": {
     "no-underscore-dangle": [
