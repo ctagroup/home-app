@@ -368,7 +368,7 @@ HMISAPI = {
         },
       }).data;
       logger.info(response);
-      housingUnits = response;
+      housingUnits = response.content;
     } catch (err) {
       throw _.extend(
         new Error(`Failed to get housing units from HMIS. ${err.message}`),

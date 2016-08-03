@@ -1,0 +1,65 @@
+<template name="searchClient">
+
+		<div class="searchClient">
+
+        <h1 class="margin-top-35 text-center hidden-xs">Search Existing Client</h1>
+        <h3 class="margin-top-35 text-center visible-xs-block">Search Existing Client</h3>
+
+        <p class="lead text-center"> </p>
+
+        <div class="row">
+            <div class="col-xs-10 col-sm-6 my-center-block">
+              <form class="form-horizontal">
+                {{{alertMessages}}}
+                <div class="form-group">
+                    <div class="col-xs-11 my-center-block">
+                        <input type="text" id="search-client-keyword"
+                               class="form-control typeahead input-lg" data-source="searchClient"
+                               data-select="clientSelected" data-highlight="true"
+                               data-template="clientTypeheadTemplate"
+                               data-limit="20"
+                               autocomplete="off" spellcheck="off" />
+                    </div>
+                    <div class="col-xs-1 client-search-icon-container">
+                        <p class="text-primary form-control-static"><i class="fa fa-search"></i></p>
+                    </div>
+                </div>
+              </form>
+            </div>
+        </div>
+
+        <p class="lead text-center">or</p>
+
+        <div class="row">
+            <div class="col-xs-6 col-sm-3 my-center-block">
+                <a href="{{pathFor 'adminDashboardclientsNew'}}" class="btn btn-sm btn-block btn-primary text-center">Add New Client</a>
+            </div>
+        </div>
+
+        <p class="lead text-center"> </p>
+
+          {{#if getRecentClients}}
+            <h4 class="text-center">Recent Clients</h4>
+            <div class="row">
+                <div class="col-xs-9 my-center-block text-center">
+                    <div class="row recent-clients-container">
+                      {{#each getRecentClients}}
+                        <div class="col-xs-12 col-sm-4"><a href="{{this.url}}">{{this.name}}</a></div>
+                      {{/each}}
+                    </div>
+                </div>
+            </div>
+          {{/if}}
+
+		</div>
+
+</template>
+
+<template name="clientTypeheadTemplate">
+    <div>
+        {{value}}
+        {{#if isHMISClient}}
+            <span class="text-muted">(HMIS)</span>
+        {{/if}}
+    </div>
+</template>

@@ -1,0 +1,19 @@
+<template name="selectSurvey">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 my-center-block">
+      <form>
+        <div class="form-group">
+          <label for="surveyList">Select Survey:</label>
+          <select class="form-control surveyList" name="surveyList" id="surveyList">
+            <option value="Choose" selected>Choose a survey</option>
+            {{#each getCreatedSurvey}}
+              <option value={{_id}}>{{title}}</option>
+            {{/each}}
+          </select>
+          <p class="description-block">Only published surveys will be listed here.</p>
+          <input class="btn btn-primary nextLogSurvey" value="Next" type="button" />
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
