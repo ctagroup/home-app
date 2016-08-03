@@ -312,7 +312,10 @@ function maxRank(surveyingId, type) {
   let newOrder;
   const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject('surveyQuestionsMaster');
   const lastSection = surveyQuestionsMasterCollection.findOne(
-    { surveyID: surveyingId },
+    { $and: [
+      { surveyID: surveyingId },
+      { contentType: 'section' },
+    ] },
     { sort: { order: -1 } }
   );
   if (lastSection) {
@@ -934,17 +937,6 @@ Template.sortableSectionItem.events(
 );
 Template.typeDefinition.events(
   {
-    'click .reset-survey-order': () => {
-      const context = Router.current();
-
-      Meteor.call('resetSurveyQuestionMasterOrder', context.params._id, (error, result) => {
-        if (error) {
-          logger.log(error);
-        } else {
-          logger.log(result);
-        }
-      });
-    },
     'click .fix-survey-order': () => {
       const context = Router.current();
 
