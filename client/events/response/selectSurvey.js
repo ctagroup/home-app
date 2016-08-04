@@ -26,5 +26,21 @@ Template.selectSurvey.events(
         'adminDashboardresponsesNew', {}, { query: querystring.stringify(query) }
       );
     },
+    'click .backToClient': (evt, tmpl) => {
+      const query = {};
+
+      if (Router.current().params && Router.current().params.query
+          && Router.current().params.query.isHMISClient && Router.current().params.query.link) {
+        const url = encodeURIComponent(Router.current().params.query.link);
+        query.isHMISClient = true;
+        query.link = url;
+      }
+
+      Router.go(
+        'viewClient',
+        { _id: Router.current().params._id },
+        { query: querystring.stringify(query) }
+      );
+    },
   }
 );
