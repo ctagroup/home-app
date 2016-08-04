@@ -11,7 +11,7 @@ Template.createResponse.events(
       ResponseHelpers.saveResponse('Submit', tmpl);
     },
     'click .cancel_survey': (evt, tmpl) => {
-      Router.go('selectSurvey', {_id: tmpl.data.client._id});
+      Router.go('selectSurvey', { _id: tmpl.data.client._id });
     },
   }
 );
