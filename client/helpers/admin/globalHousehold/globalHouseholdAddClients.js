@@ -17,6 +17,20 @@ Template.selectClients.helpers(
   });
 
 Template.selectClientRow.helpers({
+  checkIfSelected(id) {
+    const selectedClients = Session.get('selectedClients');
+    let status = '';
+    if ((selectedClients === null) || (selectedClients === undefined)) {
+      status = '';
+    } else {
+      for (let i = 0; i < selectedClients.length; i++) {
+        if (selectedClients[i].clientId === id) {
+          status = 'checked';
+        }
+      }
+    }
+    return status;
+  },
   getClientStatus(isHMIS) {
     let status = 'HMIS';
     if (isHMIS) {
@@ -25,5 +39,8 @@ Template.selectClientRow.helpers({
       status = 'Local';
     }
     return status;
+  },
+  getValue(cId, fName, mName, lName) {
+    return `${cId}|${fName.trim()} ${mName.trim()} ${lName.trim()}`;
   },
 });

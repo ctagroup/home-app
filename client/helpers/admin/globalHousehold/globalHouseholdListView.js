@@ -1,7 +1,6 @@
 /**
  * Created by Anush-PC on 7/19/2016.
  */
-
 Template.globalHouseholdListView.helpers(
   {
     hasGlobalHousehold() {
@@ -40,3 +39,10 @@ Template.globalHouseholdListView.helpers(
     },
   }
 );
+
+Template.selectedClientsView.helpers(
+  {
+    getSelectedClientList() {
+      return Session.get('selectedClients');
+    },
+  });
