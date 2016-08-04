@@ -1,51 +1,6 @@
 /**
  * Created by Anush-PC on 5/13/2016.
  */
-// function getAge(dob) {
-//   const date = new Date(dob);
-//   const ageDifMs = Date.now() - date.getTime();
-//   const ageDate = new Date(ageDifMs); // miliseconds from epoch
-//   return (Math.abs(ageDate.getUTCFullYear() - 1970));
-// }
-// function isHoH(reltohoh) {
-//   let status;
-//   if (reltohoh === '1') {
-//     status = true;
-//   } else {
-//     status = false;
-//   }
-//   return status;
-// }
-
-function getAudience() {
-  return 'everyone';
-  /*
-  const data = Router.current().data();
-  const client = data.client;
-
-  let age;
-  let isHead;
-  let audience;
-  if (client.dob !== '') { age = getAge(parseInt(client.dob, 10)); }
-  if (client.relationship !== '') { isHead = isHoH(client.relationship); }
-  if (isHead) {
-    if (age >= 18) {
-      audience = 'bothadultsandhoh';
-    } else {
-      audience = 'hoh';
-    }
-  } else {
-    if (age >= 18) {
-      audience = 'adult';
-    } else if (age < 18) {
-      audience = 'child';
-    } else {
-      audience = 'everyone';
-    }
-  }
-  return audience;
-  */
-}
 
 function isSkipped(sectionID) {
   let status = false;
@@ -63,51 +18,6 @@ function isSkipped(sectionID) {
 
   return status;
 }
-function chkAudience(/* content */) {
-  // const question = questions.findOne({ _id: content });
-
-  // return getAudience() === question.audience;
-  // TODO : Fix Audience
-  return true;
-}
-function checkSectionAudience(sid, status) {
-  let surveyElements = null;
-  if (status === null) {
-    surveyElements = surveyQuestionsMaster.find(
-      {
-        surveyID: Router.current().params.survey_id,
-        sectionID: sid,
-        contentType: 'question',
-      }
-    ).fetch();
-  } else {
-    surveyElements = surveyQuestionsMaster.find(
-      {
-        surveyID: status,
-        sectionID: sid,
-        contentType: 'question',
-      }
-    ).fetch();
-  }
-
-  let count = 0;
-  for (let i = 0; i < surveyElements.length; i++) {
-    const question = questions.find({ _id: surveyElements[i].content }).fetch();
-    for (let j = 0; j < question.length; j++) {
-      if (question[j].audience === getAudience()) {
-        count ++;
-      }
-    }
-  }
-  // TODO : Fix Audience
-
-  if (count > 0) {
-    return true;
-  }
-
-  return true;
-}
-
 
 function getQName(qID) {
   const question = questions.findOne({ _id: qID });
@@ -116,51 +26,9 @@ function getQName(qID) {
 
 let sections;
 
-
-function getText(id) {
-  const responseSection = responses.findOne({ _id: Router.current().params._id });
-  if (!responseSection || !responseSection.section) {
-    return '';
-  }
-  sections = responseSection.section;
-  for (let j = 0; j < sections.length; j++) {
-    if (! sections[j].skip) {
-      const response = sections[j].response;
-      for (let k = 0; k < response.length; k++) {
-        const quesIDs = response[k].questionID;
-        if (id === quesIDs) {
-          let responseVal = response[k].answer;
-          const questionsList = questions.find(
-            { _id: quesIDs }, { dataType: 1, _id: 0 }
-          ).fetch();
-          for (let i = 0; i < questionsList.length; i++) {
-            const dataType = questionsList[i].dataType;
-            if (dataType === 'Single Select') {
-              const options = questionsList[i].options;
-              for (let l = 0; l < options.length; l++) {
-                responseVal = options[l].description;
-                return responseVal;
-              }
-            } else if (dataType === 'Multiple Select') {
-              const options = questionsList[i].options;
-              let answer = '';
-              for (let l = 0; l < options.length; l++) {
-                answer += `${options[l].description}|`;
-              }
-              return answer.split('|');
-            } else {
-              return responseVal;
-            }
-          }
-        }
-      }
-    }
-  }
-  return '';
-}
 function addOptions(question) {
   let optionsTag;
-  const response = getText(question);
+  const response = ResponseHelpers.getText(question);
   if (response !== '') {
     const resp = response.split('|');
     for (let i = 0; i < resp.length; i++) {
@@ -193,7 +61,7 @@ Template.LogSurveyView.helpers(
       return dataType === 'mtv';
     },
     checkAudience(content) {
-      return chkAudience(content);
+      return ResponseHelpers.checkAudience(content);
     },
     surveyQuesContents() {
       const responseRecord = responses.findOne({ _id: Router.current().params._id });
@@ -317,7 +185,7 @@ Template.LogSurveyView.helpers(
         $(`#${contentQuesId}`).summernote();
       }, 0);
       setTimeout(() => {
-        $(`#${contentQuesId}`).summernote('code', getText(contentQuesId));
+        $(`#${contentQuesId}`).summernote('code', ResponseHelpers.getText(contentQuesId));
       }, 0);
       return;
     },
@@ -328,17 +196,6 @@ Template.LogSurveyView.helpers(
         dataType = question.dataType;
       }
       return dataType === 'date';
-    },
-    initiatePicker(contentQuesId) {
-      setTimeout(() => {
-        $(`#${contentQuesId}`).datetimepicker({
-          format: 'MM-DD-YYYY',
-        });
-      }, 0);
-      setTimeout(() => {
-        $(`#${contentQuesId} input`).val(getText(contentQuesId));
-      }, 0);
-      return;
     },
     textboxNumber(contentQuesId) {
       const questionsList = questions.find(
@@ -444,7 +301,7 @@ Template.LogSurveyView.helpers(
       return toggleVal;
     },
     surveyTextResponse(id) {
-      return getText(id).split('|').join('<br/>');
+      return ResponseHelpers.getText(id).split('|').join('<br/>');
     },
     isChecked(type) {
       const responseSection = responses.findOne({ _id: Router.current().params._id });

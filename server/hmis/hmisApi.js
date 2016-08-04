@@ -45,9 +45,6 @@ HMISAPI = {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        npmRequestOptions: {
-          rejectUnauthorized: false, // TODO remove when deploy
-        },
       }).content;
     } catch (err) {
       throw _.extend(
@@ -165,9 +162,6 @@ HMISAPI = {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
-          },
         }
       ).data;
 
@@ -197,9 +191,6 @@ HMISAPI = {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
-          },
         }
       ).data;
 
@@ -228,9 +219,6 @@ HMISAPI = {
             Authorization: `HMISUserAuth session_token=${accessToken}`,
             Accept: 'application/json',
             'Content-Type': 'application/json',
-          },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
           },
         }
       ).data;
@@ -274,9 +262,6 @@ HMISAPI = {
           Authorization: `HMISUserAuth session_token=${accessToken}`,
           Accept: 'application/json',
           'Content-Type': 'application/json',
-        },
-        npmRequestOptions: {
-          rejectUnauthorized: false, // TODO remove when deploy
         },
       }).data;
 
@@ -322,9 +307,6 @@ HMISAPI = {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        npmRequestOptions: {
-          rejectUnauthorized: false, // TODO remove when deploy
-        },
       }).data;
       enrollments = response.enrollments.enrollments;
     } catch (err) {
@@ -362,9 +344,6 @@ HMISAPI = {
           Authorization: `HMISUserAuth session_token=${accessToken}`,
           Accept: 'application/json',
           'Content-Type': 'application/json',
-        },
-        npmRequestOptions: {
-          rejectUnauthorized: false, // TODO remove when deploy
         },
       }).data;
       logger.info(response);
@@ -408,9 +387,6 @@ HMISAPI = {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        npmRequestOptions: {
-          rejectUnauthorized: false, // TODO remove when deploy
-        },
       }).data;
       logger.info(response);
       housingUnit = response;
@@ -449,9 +425,6 @@ HMISAPI = {
           Authorization: `HMISUserAuth session_token=${accessToken}`,
           Accept: 'application/json',
           'Content-Type': 'application/json',
-        },
-        npmRequestOptions: {
-          rejectUnauthorized: false, // TODO remove when deploy
         },
       }).data;
       logger.info(response);
@@ -494,9 +467,6 @@ HMISAPI = {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        npmRequestOptions: {
-          rejectUnauthorized: false, // TODO remove when deploy
-        },
       }).data;
       logger.info(response);
       singleGlobalHousehold = response;
@@ -527,9 +497,6 @@ HMISAPI = {
             Authorization: `HMISUserAuth session_token=${accessToken}`,
             Accept: 'application/json',
             'Content-Type': 'application/json',
-          },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
           },
         }
       ).data;

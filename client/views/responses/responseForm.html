@@ -1,0 +1,191 @@
+<template name="responseForm">
+  <div class="quesL">
+    <h3 class="page-header">{{clientName}}</h3>
+
+    <h2>
+      {{#if isActiveRoute 'previewSurvey'}}
+        {{title}}
+      {{else}}
+        {{survey.title}}
+      {{/if}}
+    </h2>
+
+    <ul id="responseSurveyList">
+
+      {{#each surveyQuesContents}}
+
+        <div class="responseSection">
+          <div class="section">
+
+            {{#if displaySection contentType}}
+              <li><h3 style="color: #1b6d85">{{content}}</h3></li>
+              {{#if displaySkipButton contentType allowSkip}}
+                <input type="checkbox" class="hideWhenSkipped" id={{_id}} value="skip"> &nbsp;
+                <label style="color: #A00000">Skip</label>
+              {{/if}}
+            {{/if}}
+          </div>
+          <div class="{{sectionID}}">
+            <div class="labels">
+              {{#if displayLabel contentType}}
+                <li><h4>{{content}}</h4></li>
+              {{/if}}
+            </div>
+            <div class="question">
+              {{#if displayQues contentType}}
+                {{#if checkAudience content}}
+                  <li>
+                    <h5>{{{displayQuesContents content}}}</h5>
+                  </li>
+
+                  {{#if wysiwygLabel content}}
+                  <!-- DO NOTHING AS ITS JUST A LABEL-->
+                  {{/if}}
+
+                  {{#if textboxString content}}
+                    <li class="quesList">
+                      <input type="text"
+                             class="form-control input input-xxlarge stringType"
+                             id={{content}} name={{content}} value="">
+                    </li>
+                  {{/if}}
+
+                  {{#if wysiwygEditor content}}
+                    <li class="quesList">
+                      <div id={{content}} class="js-summernote"></div>
+                    </li>
+                  {{/if}}
+
+                  {{#if isMTV content}}
+                    <li class="quesList">
+                      <div id="options" class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover">
+                          <thead>
+                          <tr>
+                            <th>Textbox</th>
+                            <th>Delete</th>
+                          </tr>
+                          <tr id='oadd' class='optionRow'>
+                            <td><a class='btn btn-primary optionadd'
+                                   id={{content}}><span class='fa fa-plus'></span></a>
+                            </td>
+                          </tr>
+                          </thead>
+                          <tbody id="aoptions{{content}}">
+
+
+                          </tbody>
+                        </table>
+                      </div>
+                    </li>
+                  {{/if}}
+
+                  {{#if isDate content}}
+                    <li class="quesList">
+                      <div id={{content}} class='input-group js-datepicker'><span class="input-group-addon"><i
+                          class="fa fa-calendar"></i></span>
+                        <input class="set-due-date form-control" type="text" value="{{surveyTextResponse content}}"/></div>
+                    </li>
+                  {{/if}}
+
+                  {{#if textboxNumber content}}
+                  <li class="quesList">
+                    <input type="number"
+                           class="form-control input input-xxlarge numberType"
+                           id={{content}} name={{content}} value="">
+                  </li>
+                  {{/if}}
+
+                  {{#if booleanTF content}}
+                    <li class="quesList">
+                      <label class="boolY"><input type="radio" class="boolY"
+                                                  id={{content}} name={{content}}
+                                                  value="true"> &nbsp;True</label>
+                    </li>
+                    <li class="quesList">
+                      <label class="boolY"> <input type="radio" class="boolN"
+                                                   id={{content}} name={{content}}
+                                                   value="false"> &nbsp;False</label>
+                    </li>
+                  {{/if}}
+
+                  {{#if singleSelect content}}
+                    {{#each singleOptions content}}
+                      <li class="quesList">
+                        <label class="singleSelect"><input type="radio"
+                                                           class="singleSelect"
+                                                           id={{../content}}  name={{../content}}
+                                                           value={{this.value}}>
+                          &nbsp; {{this.description}}</label>
+                      </li>
+                    {{/each}}
+                    <li class="othersSpecify_single hide">
+                      <label class="othersSpecifyLabel">Please specify</label>
+                      <input type="text"
+                             class="form-control input input-xxlarge othersSpecify_single"
+                             id="othersSpecify_single" name="othersSpecify_single"
+                             value="">
+                    </li>
+                  {{/if}}
+
+                  {{#if multipleSelect content}}
+                    {{#each singleOptions content}}
+                      <li class="quesList">
+                        <label class="multipleSelect" id={{../content}}><input
+                            type="checkbox" class="multipleSelect"
+                            id={{../content}} name={{../content}}
+                            value={{this.value}}> &nbsp; {{this.description}}
+                        </label>
+                      </li>
+                    {{/each}}
+                    <li class="othersSpecify_multiple hide">
+                      <label class="othersSpecify_multipleLabel">Please specify</label>
+                      <input type="text"
+                             class="form-control input input-xxlarge othersSpecify_multiple"
+                             id="othersSpecify_multiple" name="othersSpecify_multiple"
+                             value="">
+                    </li>
+                  {{/if}}
+
+                  {{#if singlePhoto content}}
+                    <li class="quesList">
+                      <img class="survey-single-photo-img" src="{{#if isActiveRoute 'previewSurvey'}}http://loremflickr.com/g/320/240/kitten{{/if}}" />
+                      <input type="hidden" id="{{content}}" name="{{content}}" class="survey-single-photo-value" value="" />
+                      <br />
+                      {{#if isCordova}}
+                        {{> surveyCameraNative}}
+                      {{else}}
+                        {{#if isiOS or isAndroid}}
+                          {{> surveyCameraFileInput}}
+                        {{else}}
+                          {{> surveyCameraNative}}
+                        {{/if}}
+                      {{/if}}
+                    </li>
+                  {{/if}}
+
+                {{/if}}
+              {{/if}}
+
+            </div>
+          </div>
+        </div>
+
+      {{/each}}
+    </ul>
+  </div>
+</template>
+
+<template name="surveyCameraFileInput">
+  {{#if isActiveRoute 'previewSurvey'}}
+    <input class="js-photo-input" type="file" accept="image/*;capture=camera" disabled />
+  {{else}}
+    <input class="js-photo-input" type="file" accept="image/*;capture=camera" />
+  {{/if}}
+</template>
+
+<template name="surveyCameraNative">
+  <!-- TODO: Handle Remove button in preview survey -->
+  <a href="#" class="js-take-photo btn btn-primary margin-top-35 {{#if isActiveRoute 'previewSurvey'}}disabled{{/if}}">Take Picture</a>
+  <a href="#" class="js-remove-photo btn btn-danger margin-top-35 {{#if isActiveRoute 'previewSurvey'}}disabled{{/if}} {{#unless ../surveyTextResponse content}}hide{{/unless}}">Remove Picture</a>
+</template>

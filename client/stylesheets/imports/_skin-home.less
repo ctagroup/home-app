@@ -38,13 +38,12 @@
     }
     //Hover and active states
     &:hover > a,
-    &.active > a {
+    &.active > a,
+    > a:focus {
       color: #FFFFFF;
       background: darken(@brand-primary, 5%);
     }
-    &:hover > a {
 
-    }
     &.active {
       border-left-color: @icon-active-color;
       > a {
