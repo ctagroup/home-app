@@ -1,3 +1,4 @@
+
 Template.surveyEditTemplate.helpers(
   {
     questionList() {
@@ -70,8 +71,8 @@ Template.sortableItemTarget.helpers(
   }
 );
 
-Template.typeDefinition.rendered = function () {
-  this.$('.sortable').nestedSortable({
+Template.typeDefinition.onRendered(() => {
+  $('.sortable').nestedSortable({
     listType: 'div.question-list',
     toleranceElement: '> .row',
     items: '.sortable-item',
@@ -199,7 +200,7 @@ Template.typeDefinition.rendered = function () {
       logger.log(`Q$ #${oldIndex} #${newIndex}`);
     },
   });
-};
+});
 
 Template.typeDefinition.helpers(
   {
