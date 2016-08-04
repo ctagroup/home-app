@@ -26,7 +26,7 @@ Template.selectSurvey.events(
         'adminDashboardresponsesNew', {}, { query: querystring.stringify(query) }
       );
     },
-    'click .backToClient': (evt, tmpl) => {
+    'click .backToClient': (/* evt, tmpl */) => {
       const query = {};
 
       if (Router.current().params && Router.current().params.query

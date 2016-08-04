@@ -975,17 +975,26 @@ Template.selectQuestions.events(
       for (let i = 0; i < arrayLength; i ++) {
         array[i] = array[i].substring(0, array[i].length - 1);
       }
-      logger.log('Ques: ${array}');
-      logger.log('skip val: ${skipVal}');
-
+      logger.log(`Ques: ${array}`);
+      // get section's Id which is at the bottom.
+      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
+        'surveyQuestionsMaster'
+      );
+      const lastSection = surveyQuestionsMasterCollection.findOne(
+        { $and: [
+          { surveyID: surveyId },
+          { contentType: 'section' },
+        ] },
+        { sort: { order: -1 } }
+      );
       let order = maxRank(surveyId, 'question');
-
+      logger.log(`skip val: ${order}`);
       for (let i = 0; i < array.length; i ++) {
         Meteor.call(
           'addSurveyQuestionMaster',
           surveyingTitle,
           surveyId,
-          Session.get('section_id'),
+          lastSection._id,
           skipVal,
           'question',
           array[i],
