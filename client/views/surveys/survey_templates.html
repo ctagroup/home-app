@@ -167,7 +167,7 @@
     <div class="col-xs-12">
         {{#if showPreview}}
             <a href="#" class="btn btn-default fix-survey-order">Fix Order</a>
-            <a href="{{pathFor route='previewSurvey' data = getPost}}"
+            <a href="{{pathFor route='previewSurvey'}}"
                class="btn btn-large btn-primary previewSurvey">Preview</a>
         {{/if}}
     </div>
@@ -227,160 +227,12 @@
 
 <template name="previewSurvey">
 
-    <div class="quesL">
+  {{> responseForm}}
 
-        <ul id="previewSurveyList">
+  <button class="btn btn-large btn-primary createSurvey">Create Survey</button>
+  <a href="{{editSurveyPath _id}}" class="btn btn-large btn-default">Back</a>
 
-            <h2>{{title}}</h2>
-
-            {{#each surveyQuesContents}}
-                <div class="{{sectionID}}">
-                    <div class="section">
-                        {{#if displaySection contentType}}
-                            <li><h3 style="color: #1b6d85">{{content}}</h3></li>
-                            {{#if displaySkipButton contentType allowSkip}}
-                                <input type="checkbox" class="hideWhenSkipped" id={{_id}} value="skip"> &nbsp; <label
-                                    style="color: #A00000">Skip</label>
-                            {{/if}}
-                        {{/if}}
-                    </div>
-                    <div class="labels">
-                        {{#if displayLabel contentType}}
-                            <li><h4>{{content}}</h4></li>
-                        {{/if}}
-                    </div>
-                    <div class="question">
-                        {{#if displayQues contentType}}
-                            <li>
-                                <h5>{{{displayQuesContents content}}}</h5>
-                            </li>
-
-                            {{#if wysiwygLabel content}}
-                            <!-- DO NOTHING AS ITS JUST A LABEL-->
-                            {{/if}}
-
-                            {{#if textboxString content}}
-                                <li class="quesList">
-                                    <input type="text" class="form-control input input-xxlarge stringType"
-                                           id="stringType" name="stringType" value="">
-                                </li>
-                            {{/if}}
-                            {{#if wysiwygEditor content}}
-                                <li class="quesList">
-                                    <div id={{content}}></div>
-                                    {{displayEditor content}}
-                                </li>
-                            {{/if}}
-                            {{#if isMTV content}}
-                                <li class="quesList">
-                                    <div id="options">
-                                        <table class="table table-bordered table-striped table-hover">
-                                            <thead>
-                                            <tr>
-                                                <th>Textbox</th>
-                                                <th>Delete</th>
-                                            </tr>
-                                            <tr id='oadd' class='optionRow'>
-                                                <td><a class='btn btn-primary optionadd' id={{content}}><span class='fa fa-plus'></span></a></td>
-                                            </tr>
-                                            </thead>
-                                            <tbody id="aoptions{{content}}">
-
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </li>
-                            {{/if}}
-                            {{#if isDate content}}
-                                <li class="quesList">
-                                    <div id={{content}} class='input-group' ><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input class="set-due-date form-control" type="text"/></div>
-                                {{initiatePicker content}}
-                                </li>
-                            {{/if}}
-
-                            {{#if textboxNumber content}}
-                                <li class="quesList">
-                                    <input type="number" min="0" class="form-control input input-xxlarge numberType"
-                                           id="numberType" name="numberType" value="">
-                                </li>
-                            {{/if}}
-
-                            {{#if booleanYN content}}
-                                <li class="quesList">
-                                    <label class="boolY"><input type="radio" class="boolY" name="boolY" value="Yes">
-                                        &nbsp;Yes</label>
-                                </li>
-                                <li class="quesList">
-                                    <label class="boolY"> <input type="radio" class="boolN" name="boolY" value="No">
-                                        &nbsp;No</label>
-                                </li>
-                            {{/if}}
-
-                            {{#if booleanTF content}}
-                                <li class="quesList">
-                                    <label class="boolY"><input type="radio" class="boolY" name="boolY" value="Yes">
-                                        &nbsp;True</label>
-                                </li>
-                                <li class="quesList">
-                                    <label class="boolY"> <input type="radio" class="boolN" name="boolY" value="No">
-                                        &nbsp;False</label>
-                                </li>
-                            {{/if}}
-
-                            {{#if singleSelect content}}
-                                {{#each singleOptions content}}
-                                    <li class="quesList">
-                                        <label class="singleSelect"><input type="radio" class="singleSelect"
-                                                                           id="singleSelect" name="singleSelect"
-                                                                           value={{this.description}}>
-                                            &nbsp; {{this.description}}</label>
-                                    </li>
-                                {{/each}}
-                                <li class="othersSpecify_single hide">
-                                    <label class="othersSpecifyLabel">Please specify</label>
-                                    <input type="text" class="form-control input input-xxlarge othersSpecify_single"
-                                           id="othersSpecify_single" name="othersSpecify_single" value="">
-                                </li>
-                            {{/if}}
-
-                            {{#if multipleSelect content}}
-                                {{#each singleOptions content}}
-                                    <li class="quesList">
-                                        <label class="multipleSelect"><input type="checkbox" class="multipleSelect"
-                                                                             id="multipleSelect" name="multipleSelect"
-                                                                             value={{this.description}}>
-                                            &nbsp; {{this.description}}</label>
-                                    </li>
-                                {{/each}}
-                                <li class="othersSpecify_multiple hide">
-                                    <label class="othersSpecify_multipleLabel">Please specify</label>
-                                    <input type="text" class="form-control input input-xxlarge othersSpecify_multiple"
-                                           id="othersSpecify_multiple" name="othersSpecify_multiple" value="">
-                                </li>
-                            {{/if}}
-
-                            {{#if singlePhoto content}}
-                                <li class="quesList">
-                                    <img class="survey-single-photo-img" src="http://loremflickr.com/g/320/240/kitten" />
-                                    <br />
-                                    <a href="#" id="js-take-photo" class="js-take-photo btn btn-primary disabled margin-top-35">Take Picture</a>
-                                    <a href="#" id="js-remove-photo" class="js-remove-photo btn btn-danger disabled margin-top-35">Remove Picture</a>
-                                </li>
-                            {{/if}}
-                        {{/if}}
-                    </div>
-                </div>
-            {{/each}}
-            <br />
-            <button class="btn btn-large btn-primary createSurvey">Create Survey</button>
-            <a href="{{editSurveyPath _id}}" class="btn btn-large btn-default">Back</a>
-        </ul>
-
-    </div>
-
-    {{> confirmationModalTemplate}}
+  {{> confirmationModalTemplate}}
 
 </template>
 

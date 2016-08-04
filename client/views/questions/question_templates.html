@@ -133,11 +133,8 @@
                             <div class="col-sm-6">
                                 <label for="q_audience">Audience: </label>
                                 <select class="form-control q_audience" name="q_audience" id="q_audience">
-                                    <option value="adult">Adult</option>
-                                    <option value="hoh">Head of household</option>
-                                    <option value="bothadultsandhoh">Adults and Head of Household</option>
-                                    <option value="child">Child</option>
-                                    <option value="everyone">Everyone</option>
+                                  <option value="everyone">Everyone</option>
+                                  <option value="onlyadults">Only Adults</option>
                                 </select>
                             </div>
                         </div>
@@ -166,7 +163,7 @@
 
 <template name="selectQuestions">
     <div class="col-xs-12">
-        <a href="{{pathFor route='adminDashboardsurveysEdit' data = getPost}}"
+        <a href="{{pathFor route='adminDashboardsurveysEdit'}}"
            class="btn btn-large btn-primary selectques">Select Question</a>
         <br/><br/>
         <table class="table table-bordered table-striped table-hover">

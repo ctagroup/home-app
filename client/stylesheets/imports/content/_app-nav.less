@@ -74,8 +74,7 @@
 
           color: @brand-primary;
 
-          &:hover,
-          &:focus {
+          &:hover {
 
             color: white;
             background-color: @brand-primary;
@@ -86,11 +85,15 @@
 
         > .active > a {
           &,
-          &:hover,
           &:focus {
-
             color: @brand-primary;
             background-color: transparent;
+          }
+
+          &:hover {
+
+            color: white;
+            background-color: @brand-primary;
 
           }
         }

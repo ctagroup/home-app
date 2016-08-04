@@ -5,29 +5,13 @@
 Meteor.methods(
   {
     adminInsertDoc(doc, collection) {
-      let result = false;
-      if (Roles.userIsInRole(this.userId, [`create_${collection}`])) {
-        this.unblock();
-        result = HomeUtils.adminCollectionObject(collection).insert(doc);
-      }
-      return result;
+      return HomeUtils.adminCollectionObject(collection).insert(doc);
     },
     adminUpdateDoc(modifier, collection, _id) {
-      let result = false;
-      if (Roles.userIsInRole(this.userId, [`edit_${collection}`])) {
-        this.unblock();
-        logger.info(modifier);
-        result = HomeUtils.adminCollectionObject(collection).update({ _id }, modifier);
-      }
-      return result;
+      return HomeUtils.adminCollectionObject(collection).update({ _id }, modifier);
     },
     adminRemoveDoc(collection, _id) {
-      let val = '';
-      if (Roles.userIsInRole(this.userId, [`delete_${collection}`])) {
-        this.unblock();
-        val = HomeUtils.adminCollectionObject(collection).remove({ _id });
-      }
-      return val;
+      return HomeUtils.adminCollectionObject(collection).remove({ _id });
     },
     checkDevUser() {
       let adminEmails = [];

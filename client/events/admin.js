@@ -17,6 +17,7 @@ function resetSurveyModal() {
   $('#newSurveyModal input[type=text]').val('');
   $('#newSurveyModal input[type=checkbox]').attr('checked', false);
   $('#newSurveyModal input[type=checkbox]').prop('checked', false);
+
   $('.isCopyTrue').hide();
   $('.copyof_surveytitle').hide();
   $('.copy_active').hide();
@@ -265,12 +266,15 @@ Template.surveyForm.events(
 
 function resetQuestionModal() {
   $('#newQuestionModal input[type=text]').val('');
-  $('#newQuestionModal select').val('').change();
+  $('#newQuestionModal #q_dataType').val('Textbox(String)').change();
+  $('#newQuestionModal #q_type').val('hud').change();
+  $('#newQuestionModal #q_audience').val('everyone').change();
   $('#newQuestionModal input[type=checkbox]').attr('checked', false);
   $('#newQuestionModal input[type=checkbox]').prop('checked', false);
   $('.isCopySet').hide();
   $('#isUpdate').val('0');
   $('#questionID').val('');
+  $('#question').summernote('code', '');
 }
 
 function setFields(status) {
@@ -278,7 +282,7 @@ function setFields(status) {
   $('#q_copy').attr('disabled', status);
   $('#q_category').attr('disabled', status);
   $('#q_name').attr('disabled', status);
-  $('#question').attr('disabled', status);
+  $('#question').summernote(status ? 'disable' : 'enable');
   $('#hud').attr('disabled', status);
   $('#q_dataType').attr('disabled', status);
   if ((
@@ -356,10 +360,12 @@ function populateOptions(question) {
   for (let i = 0; i < question.options.length; i++) {
     if (question.options[i].description != null) {
       $optionsTag = `<tr  id='${i}' class='questionRow'><td>
-        <input type='number' id='${i}.value' class='value' value='question.options[${i}].value'/>
+        <input type='text' id='${i}.value' class='value' value='${question.options[i].value}'/>
         </td>`;
-      $optionsTag += `<td><textarea rows='1' cols='40' id='${i}.description' class='description'>
-        ${question.options[i].description} </textarea></td>`;
+      $optionsTag += `<td>
+        <input type="text" id="${i}.description" class="description"
+        value="${question.options[i].description}">
+      </td>`;
       $optionsTag += `<td><a id='delete.${i}' class='btn btn-primary optionremove'>
         <span class='fa fa-remove'></span></a></td></tr>`;
       $('#aoptions').append($optionsTag);
@@ -467,7 +473,10 @@ Template.questionViewTemplate.events(
 );
 
 Template.questionForm.onRendered(() => {
-  $('.js-summernote').summernote();
+  $('.js-summernote').summernote({
+    minHeight: 100,
+    fontNames: HomeConfig.fontFamilies,
+  });
 });
 
 Template.questionForm.events(
@@ -476,11 +485,12 @@ Template.questionForm.events(
       let optionLength = $('#aoptions').children().length;
       let optionsTag;
       optionLength = optionLength + 1;
-      optionsTag = `<tr  id='${optionLength}' class='questionRow'><td><input type='number' 
+      optionsTag = `<tr  id='${optionLength}' class='questionRow'><td><input type='text' 
         id='${optionLength}.value' class='value' value=''/></td>`;
 
-      optionsTag += `<td><textarea rows='1' cols='40' id='${optionLength}.description' 
-        class='description' ></textarea></td>`;
+      optionsTag += `<td>
+        <input type="text" id="${optionLength}.description" class="description" />
+      </td>`;
 
       optionsTag += `<td><a id='delete.${optionLength}' class='btn btn-primary optionremove' >
         <span class='fa fa-remove'></span></a></td></tr>`;
@@ -511,7 +521,7 @@ Template.questionForm.events(
         const question2 = questions.findOne({ _id: value });
         $('#q_category').val(question2.category).change();
         $('#q_name').val(question2.name);
-        $('#question').val(question2.question);
+        $('#question').summernote('code', question2.question);
         $('#q_dataType').val(question2.dataType).change();
         if ((
               document.getElementById('q_dataType').value === 'Multiple Select'
@@ -524,7 +534,7 @@ Template.questionForm.events(
           populateOptions(question2);
         }
         $('#q_type').val(question2.qtype);
-        $('#q_audience').val(question2.audience);
+        $('#q_audience').val(question2.audience).change();
       }
     },
     'change .q_dataType'(evt /* , tmpl*/) {
@@ -555,8 +565,8 @@ Template.questionForm.events(
       const question = $(tmpl.find('.question')).summernote('code');
 
       const qDataType = tmpl.find('.q_dataType').value;
-      const qType = tmpl.find('#q_type').value;
-      const audience = tmpl.find('#q_audience').value;
+      const qType = $('#q_type').val();
+      const audience = $('#q_audience').val();
       const locked = tmpl.find('#locked').checked;
 
       const isCopy = tmpl.find('#isCopy').checked;
@@ -965,17 +975,26 @@ Template.selectQuestions.events(
       for (let i = 0; i < arrayLength; i ++) {
         array[i] = array[i].substring(0, array[i].length - 1);
       }
-      logger.log('Ques: ${array}');
-      logger.log('skip val: ${skipVal}');
-
+      logger.log(`Ques: ${array}`);
+      // get section's Id which is at the bottom.
+      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
+        'surveyQuestionsMaster'
+      );
+      const lastSection = surveyQuestionsMasterCollection.findOne(
+        { $and: [
+          { surveyID: surveyId },
+          { contentType: 'section' },
+        ] },
+        { sort: { order: -1 } }
+      );
       let order = maxRank(surveyId, 'question');
-
+      logger.log(`skip val: ${order}`);
       for (let i = 0; i < array.length; i ++) {
         Meteor.call(
           'addSurveyQuestionMaster',
           surveyingTitle,
           surveyId,
-          Session.get('section_id'),
+          lastSection._id,
           skipVal,
           'question',
           array[i],
@@ -992,87 +1011,5 @@ Template.selectQuestions.events(
 
       Router.go('adminDashboardsurveysEdit', { _id: tmpl.data._id });
     },
-  }
-);
-
-
-// var skip_value, contents;
-Template.previewSurvey.events(
-  {
-    'click .optionadd'(evt) {
-      const questionID = evt.currentTarget.id;
-      let optionLength = $(`#aoptions${questionID}`).children().length;
-      let optionsTag;
-      optionLength = optionLength + 1;
-      const deleteID = `${questionID}${optionLength}`;
-      optionsTag = `<tr  id='${deleteID}' class='questionRow'>`;
-
-      optionsTag += `<td><textarea rows='1' cols='100' id='${questionID}.description' 
-        class='description' ></textarea></td>`;
-
-      optionsTag += `<td><a id='delete.${deleteID}' class='btn btn-primary optionremove' >
-        <span class='fa fa-remove'></span></a></td></tr>`;
-      $(`#aoptions${evt.currentTarget.id}`).append(optionsTag);
-      $(`#aoptions${evt.currentTarget.id}`).on(
-        'click', 'a.optionremove', function remove() {
-          const rowId = $(this).attr('id');
-          const i = rowId.split('.');
-          const i1 = `${i[1]}`;
-          $(`#${i1}`).remove();
-        }
-      );
-    },
-    'change .hideWhenSkipped'(evt/* , tmpl*/) {
-      const toggleSkip = $(evt.target.id).is(':checked');
-      if (toggleSkip) {
-        $(evt.target.id).hide();
-      } else {
-        $(evt.target.id).show();
-      }
-    },
-    'change .singleSelect'(evt, tmpl) {
-      const element = tmpl.find('input:radio[name=singleSelect]:checked');
-      const optionValue = $(element).val();
-      logger.log(`value: ${optionValue}`);
-
-      if (optionValue === 'others' || optionValue === 'Others') {
-        logger.log('Others, please specify');
-        $('.othersSpecify_single').removeClass('hide');
-      } else {
-        $('.othersSpecify_single').addClass('hide');
-      }
-    },
-    'change .multipleSelect'(evt, tmpl) {
-      const element = tmpl.find('input:checkbox[name=multipleSelect]:checked');
-      const optionValue = $(element).val();
-      logger.log(`value: ${optionValue} `);
-
-      if (optionValue === 'others' || optionValue === 'Others') {
-        logger.log('Others, please specify');
-        $('.othersSpecify_multiple').removeClass('hide');
-      } else {
-        $('.othersSpecify_multiple').addClass('hide');
-      }
-    },
-    'click .createSurvey'(evt /* , tmpl*/) {
-      evt.preventDefault();
-      $('#confirmationModal').modal('show');
-    },
-    'click .save_survey'(evt, tmpl) {
-      // alert("save clicked: " + tmpl.data._id );
-      surveyID = tmpl.data._id;
-      const created = true;
-
-      Meteor.call(
-        'updateCreatedSurvey', surveyID, created, (error, result) => {
-          if (error) {
-            logger.log(error);
-          } else {
-            logger.log(result);
-          }
-        }
-      );
-    },
-
   }
 );

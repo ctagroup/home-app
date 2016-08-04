@@ -69,7 +69,8 @@
     "adminCollections": true,
     "AppController": true,
     "AdminLTEOptions": true,
-    "ContentController": true
+    "ContentController": true,
+    "ResponseHelpers": true
   },
   "rules": {
     "no-underscore-dangle": [

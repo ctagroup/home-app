@@ -76,10 +76,9 @@
                                         {{/if}}
                                         {{#if isDate content}}
                                             <li class="quesList">
-                                                <div id={{content}} class='input-group'><span class="input-group-addon"><i
+                                                <div id={{content}} class='input-group js-datepicker'><span class="input-group-addon"><i
                                                         class="fa fa-calendar"></i></span>
                                                     <input class="set-due-date form-control" type="text"/></div>
-                                                {{initiatePicker content}}
                                             </li>
                                         {{/if}}
                                         {{#if textboxNumber content}}
@@ -295,10 +294,9 @@
                                                 {{/if}}
                                                 {{#if isDate content}}
                                                     <li class="quesList">
-                                                        <div id={{content}} class='input-group'><span
+                                                        <div id={{content}} class='input-group js-datepicker'><span
                                                                 class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                            <input class="set-due-date form-control" type="text"/></div>
-                                                        {{initiatePicker content}}
+                                                            <input class="set-due-date form-control" type="text" value="{{surveyTextResponse content}}"/></div>
                                                     </li>
                                                 {{/if}}
                                                 {{#if textboxNumber content}}
@@ -410,13 +408,4 @@
       {{> footer}}
     </div>
 
-</template>
-
-<template name="surveyCameraFileInput">
-  <input class="js-photo-input" type="file" accept="image/*;capture=camera" />
-</template>
-
-<template name="surveyCameraNative">
-  <a href="#" class="js-take-photo btn btn-primary margin-top-35">Take Picture</a>
-  <a href="#" class="js-remove-photo btn btn-danger margin-top-35 {{#unless surveyTextResponse content}}hide{{/unless}}">Remove Picture</a>
 </template>
