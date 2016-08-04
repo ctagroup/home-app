@@ -56,7 +56,9 @@
                         <label for="s_type">Survey Type: </label>
                         <select class="form-control s_type" name="s_type" id="s_type">
                             <option value="hud">HUD</option>
-                            <option value="spdat">VI-SPDAT</option>
+                            <option value="spdat-t">TAY-VI-SPDAT</option>
+                            <option value="spdat-s">VI-SPDAT-Single</option>
+                            <option value="spdat-f">VI-SPDAT-Family</option>
                         </select>
 
                         <input type="hidden" id="isUpdate" value="0"/>
@@ -164,7 +166,6 @@
 
     <div class="col-xs-12">
         {{#if showPreview}}
-            <a href="#" class="btn btn-default reset-survey-order">Reset Order</a>
             <a href="#" class="btn btn-default fix-survey-order">Fix Order</a>
             <a href="{{pathFor route='previewSurvey' data = getPost}}"
                class="btn btn-large btn-primary previewSurvey">Preview</a>
@@ -215,6 +216,7 @@
                 <span class="badge pull-right">S {{order}}</span>
             </div>
         </div>
+        <br>
         <div id="{{_id}}" class="question-list">
             {{#each sectionQuestions }}
                 {{> sortableItemTarget}}
