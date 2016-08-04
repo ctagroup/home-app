@@ -1,9 +1,11 @@
-/**
- * Created by udit on 08/07/16.
- */
-
 Template.AdminDashboardusersEdit.helpers(
   {
+    getOtherRoles(userId) {
+      return HomeHelpers.getOtherRoles(userId);
+    },
+    getUserRoles(userId) {
+      return HomeHelpers.getUserRoles(userId);
+    },
     locationHistoryMapOptions() {
       // Make sure the maps API has loaded
       if (GoogleMaps.loaded()) {

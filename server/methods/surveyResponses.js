@@ -4,12 +4,11 @@
 
 Meteor.methods(
   {
-    addSurveyResponse(surveyID, clientID, audience, userID, mainSectionObject, status) {
+    addSurveyResponse(surveyID, clientID, userID, mainSectionObject, status) {
       const responsesCollection = HomeUtils.adminCollectionObject('responses');
       const responseRecords = responsesCollection.insert(
         {
           clientID,
-          audience,
           surveyID,
           userID,
           responsestatus: status,
