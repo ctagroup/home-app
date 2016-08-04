@@ -573,4 +573,74 @@ HMISAPI = {
       return false;
     }
   },
+  createGlobalHousehold(globalHouseholdMembers, globalHouseholdObject) {
+    const body = [];
+    body.push(globalHouseholdObject);
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+
+    const accessToken = HMISAPI.getCurrentAccessToken();
+
+    try {
+      const response = HTTP.post(
+        config.hmisAPIEndpoints.globalHouseholdBaseUrl + config.hmisAPIEndpoints.globalHouseholds, {
+          data: body,
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          npmRequestOptions: {
+            rejectUnauthorized: false, // TODO remove when deploy
+          },
+        }
+      ).data;
+      HMISAPI.addMembersToHousehold(response[0].globalHouseholdId, globalHouseholdMembers);
+      return response[0];
+    } catch (err) {
+      // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
+      //                {response: err.response});
+      logger.info(`Failed to get client info from HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
+  addMembersToHousehold(globalHouseholdID, globalHouseholdMembers) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+
+    const accessToken = HMISAPI.getCurrentAccessToken();
+    const globalHouseholdMembersPath = config.hmisAPIEndpoints.globalHouseholdMembers.replace(
+      '{{global_household_uuid}}',
+       globalHouseholdID
+    );
+    try {
+      const response = HTTP.post(
+        config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHouseholdMembersPath, {
+          data: globalHouseholdMembers,
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          npmRequestOptions: {
+            rejectUnauthorized: false, // TODO remove when deploy
+          },
+        }
+      ).data;
+      return response;
+    } catch (err) {
+      // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
+      //                {response: err.response});
+      logger.info(`Failed to get client info from HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
 };

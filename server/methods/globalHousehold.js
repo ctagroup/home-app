@@ -4,10 +4,13 @@
 
 Meteor.methods(
   {
+    createGlobalHousehold(globalHouseholdMembers, globalHouseholdObject) {
+      const hmisClients = HMISAPI.createGlobalHousehold(globalHouseholdMembers,
+          globalHouseholdObject);
+      return hmisClients;
+    },
     getClients() {
       const hmisClients = HMISAPI.getClients();
-      // hmisClients = hmisClients.filter((client) => client.link);
-
       const localClients = clients.aggregate(
         [
           {
