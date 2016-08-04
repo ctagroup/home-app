@@ -30,7 +30,7 @@
 
 <template name="selectClientRow">
     <tr class="selectClientRow">
-        <td><input type="checkbox" class="toggle-checked" id="reportable" value={{clientId}}/></td>
+        <td><input type="checkbox" class="toggle-checked" id="reportable" value={{getValue clientId firstName middleName lastName}} {{checkIfSelected clientId}}/></td>
         <td>{{clientId}}</td>
         <td>{{firstName}}&nbsp;{{middleName}}&nbsp;{{lastName}}</td>
         <td>{{getClientStatus isHMISClient}}</td>

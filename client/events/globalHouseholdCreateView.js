@@ -9,25 +9,28 @@ Template.globalHouseholdCreateView.onRendered(
 
 Template.globalHouseholdCreateView.events(
   {
-    'click .search-btn'(event, template) {
-      event.preventDefault();
-      const fullname = template.find('input.typeahead.tt-input').value;
-      if (fullname != null) {
-        // console.log(fullname);
-        const fnln = fullname.split('');
-        const clientRecord = clients.findOne({ firstName: fnln[0], lastName: fnln[1] });
-        // console.log(clientRecord);
-        if (clientRecord) {
-          const clientID = clientRecord._id;
-          // console.log(clientID);
-          Router.go('viewClient', { _id: clientID });
-        } else {
-          // console.log('The entered name is not in the local MongoDB');
-        }
-      }
-    },
-    'click .client-search-icon-container': () => {
-      $('#search-client-keyword').focus();
+    // 'click .createHousehold': () => {
+    //    //insert into hmis
+    // },
+    'click .cancelHousehold': () => {
+      delete Session.keys.selectedClients;
     },
   }
 );
+
+Template.globalHouseholdAddClients.events(
+  {
+    'click .selectClients'(evt, tmpl) {
+      delete Session.keys.selectedClients;
+      evt.preventDefault();
+      const selected = tmpl.findAll('input[type=checkbox]:checked');
+      let array = [];
+      array = selected.map((item) => {
+        const clientId = item.value.split('|')[0];
+        const clientName = item.value.split('|')[1];
+        return { clientId, clientName };
+      });
+      Session.set('selectedClients', array);
+      history.go(-1);
+    },
+  });
