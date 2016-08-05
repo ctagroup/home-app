@@ -5,9 +5,6 @@
 // Set up login services
 Meteor.startup(
   () => {
-    // Add Google configuration entry
-    ServiceConfiguration.configurations.remove({service: 'google'});
-
     // Add HMIS configuration entry
     ServiceConfiguration.configurations.update(
       {
