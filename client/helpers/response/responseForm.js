@@ -15,7 +15,7 @@ Template.responseForm.helpers(
     surveyQuesContents() {
       const surveyID = (Router.current().route.getName() === 'previewSurvey')
         ? Router.current().params._id
-        : Router.current().params.query.survey_id;
+        : Template.instance().data.survey._id;
       const surveyElements = surveyQuestionsMaster.find(
         { surveyID },
         { sort: { order: 1 } }
@@ -27,15 +27,13 @@ Template.responseForm.helpers(
         return 'Dummy Client';
       }
 
-      const clientID = Router.current().params.query.client_id;
-
       let client = false;
 
       if (Router.current().params && Router.current().params.query
           && Router.current().params.query.isHMISClient && Router.current().params.query.link) {
         client = Session.get('currentHMISClient') || false;
       } else {
-        client = clients.findOne({ _id: clientID });
+        client = Template.instance().data.client;
       }
 
       const fn = (client && client.firstName) ? client.firstName.trim() : '';
