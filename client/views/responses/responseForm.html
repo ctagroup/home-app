@@ -79,7 +79,7 @@
                         <li class="quesList">
                           <input type="text"
                                  class="form-control input input-xxlarge stringType"
-                                 id={{content}} name={{content}} value="">
+                                 id={{content}} name={{content}} value="{{surveyTextResponse content}}">
                         </li>
                       {{/if}}
 
@@ -130,7 +130,7 @@
                         <li class="quesList">
                           <input type="number"
                                  class="form-control input input-xxlarge numberType"
-                                 id={{content}} name={{content}} value="">
+                                 id={{content}} name={{content}} value="{{surveyTextResponse content}}">
                         </li>
                       {{/if}}
 
@@ -138,12 +138,12 @@
                         <li class="quesList">
                           <label class="boolY"><input type="radio" class="boolY"
                                                       id={{content}} name={{content}}
-                                                      value="true"> &nbsp;True</label>
+                                                      value="true" {{isChecked 'true'}}> &nbsp;True</label>
                         </li>
                         <li class="quesList">
                           <label class="boolY"> <input type="radio" class="boolN"
                                                        id={{content}} name={{content}}
-                                                       value="false"> &nbsp;False</label>
+                                                       value="false" {{isChecked 'false'}}> &nbsp;False</label>
                         </li>
                       {{/if}}
 
@@ -153,7 +153,7 @@
                             <label class="singleSelect"><input type="radio"
                                                                class="singleSelect"
                                                                id={{../content}}  name={{../content}}
-                                                               value={{this.value}}>
+                                                               value={{this.value}} {{isSelected this.value}}>
                               &nbsp; {{this.description}}</label>
                           </li>
                         {{/each}}
@@ -164,6 +164,7 @@
                                  id="othersSpecify_single" name="othersSpecify_single"
                                  value="">
                         </li>
+                        {{surveyTextResponse ../content}}
                       {{/if}}
 
                       {{#if multipleSelect content}}
@@ -172,7 +173,7 @@
                             <label class="multipleSelect" id={{../content}}><input
                                 type="checkbox" class="multipleSelect"
                                 id={{../content}} name={{../content}}
-                                value={{this.value}}> &nbsp; {{this.description}}
+                                value={{this.value}} {{isSelectedMultiple this.value}}> &nbsp; {{this.description}}
                             </label>
                           </li>
                         {{/each}}
@@ -187,16 +188,29 @@
 
                       {{#if singlePhoto content}}
                         <li class="quesList">
-                          <img class="survey-single-photo-img" src="{{#if isActiveRoute 'previewSurvey'}}http://loremflickr.com/g/320/240/kitten{{/if}}" />
+                          {{#if isActiveRoute 'previewSurvey'}}
+                            <img class="survey-single-photo-img" src="http://loremflickr.com/g/320/240/kitten" />
+                          {{else}}
+                            {{{surveyTextResponse content}}}
+                          {{/if}}
                           <input type="hidden" id="{{content}}" name="{{content}}" class="survey-single-photo-value" value="" />
                           <br />
                           {{#if isCordova}}
-                            {{> surveyCameraNative}}
+                            <!-- {{> surveyCameraNative}}  -->
+                            <a href="#" class="js-take-photo btn btn-primary margin-top-35 {{#if isActiveRoute 'previewSurvey'}}disabled{{/if}}">Take Picture</a>
+                            <a href="#" class="js-remove-photo btn btn-danger margin-top-35 {{#if isActiveRoute 'previewSurvey'}}disabled{{/if}} {{#unless surveyTextResponse content}}hide{{/unless}}">Remove Picture</a>
                           {{else}}
                             {{#if isiOS or isAndroid}}
-                              {{> surveyCameraFileInput}}
+                              <!-- {{> surveyCameraFileInput}} -->
+                              {{#if isActiveRoute 'previewSurvey'}}
+                                <input class="js-photo-input" type="file" accept="image/*;capture=camera" disabled />
+                              {{else}}
+                                <input class="js-photo-input" type="file" accept="image/*;capture=camera" />
+                              {{/if}}
                             {{else}}
-                              {{> surveyCameraNative}}
+                              <!-- {{> surveyCameraNative}}  -->
+                              <a href="#" class="js-take-photo btn btn-primary margin-top-35 {{#if isActiveRoute 'previewSurvey'}}disabled{{/if}}">Take Picture</a>
+                              <a href="#" class="js-remove-photo btn btn-danger margin-top-35 {{#if isActiveRoute 'previewSurvey'}}disabled{{else}}{{#unless surveyTextResponse content}}hide{{/unless}}{{/if}}">Remove Picture</a>
                             {{/if}}
                           {{/if}}
                         </li>
@@ -211,18 +225,4 @@
       {{/each}}
     </ul>
   </div>
-</template>
-
-<template name="surveyCameraFileInput">
-  {{#if isActiveRoute 'previewSurvey'}}
-    <input class="js-photo-input" type="file" accept="image/*;capture=camera" disabled />
-  {{else}}
-    <input class="js-photo-input" type="file" accept="image/*;capture=camera" />
-  {{/if}}
-</template>
-
-<template name="surveyCameraNative">
-  <!-- TODO: Handle Remove button in preview survey -->
-  <a href="#" class="js-take-photo btn btn-primary margin-top-35 {{#if isActiveRoute 'previewSurvey'}}disabled{{/if}}">Take Picture</a>
-  <a href="#" class="js-remove-photo btn btn-danger margin-top-35 {{#if isActiveRoute 'previewSurvey'}}disabled{{/if}} {{#unless ../surveyTextResponse content}}hide{{/unless}}">Remove Picture</a>
 </template>
