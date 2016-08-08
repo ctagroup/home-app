@@ -4,11 +4,11 @@
 
 Template.editResponse.events(
   {
-    'click .pause_survey': (evt, tmpl) => {
-      ResponseHelpers.saveResponse('Paused', tmpl);
+    'click .savePaused_survey': (evt, tmpl) => {
+      ResponseHelpers.savePausedSurvey('Pause_Submit', tmpl);
     },
-    'click .save_survey': (evt, tmpl) => {
-      ResponseHelpers.saveResponse('Submit', tmpl);
+    'click .pausePaused_survey': (evt, tmpl) => {
+      ResponseHelpers.savePausedSurvey('Pause_Paused', tmpl);
     },
     'click .cancel_survey': () => {
       Router.go('adminDashboardresponsesView');
