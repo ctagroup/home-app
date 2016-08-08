@@ -1,26 +1,34 @@
 <template name="AppSidebar">
-    <aside class="main-sidebar">
+  <aside class="main-sidebar">
 
-        <ul class="sidebar-menu nav">
-            <li class="{{isActiveRoute 'dashboard'}}">
-                <a href="{{pathFor 'dashboard'}}"> <i class="fa fa-dashboard"></i> <span>Dashboard</span> </a>
-            </li>
-        </ul>
-        <ul class="sidebar-menu nav">
-            {{#each admin_collections}}
-            <li class="{{isActivePath path=viewPath}}">
-                <a href="{{viewPath}}"> <i class="fa fa-{{this.icon}}"></i> <span>{{this.label}}</span> </a>
-            </li>
-            {{/each}}
-        </ul>
-        <ul class="sidebar-menu nav">
-          <li class="{{isActiveRoute 'roleManager'}}">
-            <a href="{{pathFor 'roleManager'}}"> <i class="fa fa-user-secret"></i> <span>Role Manager</span> </a>
-          </li>
-          <li class="{{isActiveRoute 'openingScript'}}">
-            <a href="{{pathFor 'openingScript'}}"> <i class="fa fa-comment"></i> <span>Opening Script</span> </a>
-          </li>
-        </ul>
+    <ul class="sidebar-menu nav">
+      <li class="{{isActiveRoute 'dashboard'}}">
+        <a href="{{pathFor 'dashboard'}}"> <i class="fa fa-dashboard"></i> <span>Dashboard</span> </a>
+      </li>
+    </ul>
 
-    </aside>
+    <ul class="sidebar-menu nav">
+      {{#each admin_collections}}
+      <li class="{{isActivePath path=viewPath}}">
+        <a href="{{viewPath}}"> <i class="fa fa-{{this.icon}}"></i> <span>{{this.label}}</span> </a>
+      </li>
+      {{/each}}
+    </ul>
+
+    <!--<ul class="sidebar-menu nav">-->
+      <!--<li class="{{isActiveRoute 'chat'}}">-->
+        <!--<a href="{{pathFor 'chat'}}"> <i class="fa fa-comments-o"></i> <span>Chat</span> </a>-->
+      <!--</li>-->
+    <!--</ul>-->
+
+    <ul class="sidebar-menu nav">
+      <li class="{{isActiveRoute 'roleManager'}}">
+        <a href="{{pathFor 'roleManager'}}"> <i class="fa fa-user-secret"></i> <span>Role Manager</span> </a>
+      </li>
+      <li class="{{isActiveRoute 'openingScript'}}">
+        <a href="{{pathFor 'openingScript'}}"> <i class="fa fa-comment"></i> <span>Opening Script</span> </a>
+      </li>
+    </ul>
+
+  </aside>
 </template>
