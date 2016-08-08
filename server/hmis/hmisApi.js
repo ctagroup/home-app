@@ -610,4 +610,38 @@ HMISAPI = {
       return false;
     }
   },
+  deleteGlobalHousehold(globalHouseholdID) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+
+    const accessToken = HMISAPI.getCurrentAccessToken();
+    const globalHouseholdMembersPath = config.hmisAPIEndpoints.globalHousehold.replace(
+      '{{global_household_uuid}}',
+       globalHouseholdID
+    );
+    try {
+      const response = HTTP.del(
+        config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHouseholdMembersPath, {
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          npmRequestOptions: {
+            rejectUnauthorized: false, // TODO remove when deploy
+          },
+        }
+      ).data;
+      return response;
+    } catch (err) {
+      // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
+      //                {response: err.response});
+      logger.info(`Failed to get client info from HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
 };
