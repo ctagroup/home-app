@@ -2,14 +2,6 @@
  * Created by Anush-PC on 5/13/2016.
  */
 
-function getQuestionName(getQuesName) {
-  const question = questions.findOne(
-    { _id: getQuesName }
-  );
-
-  return question;
-}
-
 function savePausedSurvey(status, tmpl) {
   const responsesCollection = HomeUtils.adminCollectionObject('responses');
   const responseDocument = responsesCollection.find({ _id: tmpl.data._id }).fetch();
@@ -44,7 +36,7 @@ function savePausedSurvey(status, tmpl) {
           const stype = sectionQuestions[j].contentType;
           if (stype !== 'labels') {
             if (ResponseHelpers.checkAudience(sectionQuestions[j].content)) {
-              const question = getQuestionName(sectionQuestions[j].content);
+              const question = questions.findOne({ _id: sectionQuestions[j].content });
               const questionObject = {};
               let answer = '';
               if ((question.dataType === 'Single Select') || (question.dataType === 'Boolean')) {

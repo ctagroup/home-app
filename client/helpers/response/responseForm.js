@@ -42,6 +42,29 @@ Template.responseForm.helpers(
       const name = `${fn} ${mn} ${ln}`;
       return name;
     },
+    surveyCompleted() {
+      let flag = false;
+
+      if (Router.current().route.getName() === 'adminDashboardresponsesEdit') {
+        const responseRecord = responses.findOne({ _id: Router.current().params._id });
+
+        if (responseRecord && responseRecord.responsestatus) {
+          const status = responseRecord.responsestatus;
+          if (status === 'Completed') {
+            // $('.savePaused_survey').hide();
+            // $('.pausePaused_survey').hide();
+            // $('.cancelPaused_survey').hide();
+            // $('#pauseSurvey').hide();
+            flag = true;
+          }
+        }
+      }
+
+      return flag;
+    },
+    sectionSkipped(sectionID) {
+      return ResponseHelpers.isSkipped(sectionID);
+    },
     displaySection(contentType) {
       return contentType === 'section';
     },
@@ -186,18 +209,15 @@ Template.responseForm.helpers(
 
       return dataType === 'Single Photo';
     },
-    getQuesName(qID) {
-      let name = '';
-
-      const question = questions.findOne({ _id: qID });
-      if (question && question.name) {
-        name = question.name;
+    checkSkipped(sectionID) {
+      let skipVal = '';
+      if (ResponseHelpers.isSkipped(sectionID)) {
+        skipVal = 'checked';
       }
-
-      return name;
+      return skipVal;
     },
     surveyTextResponse(id) {
-      return ResponseHelpers.getText(id).split('|').join('<br/>');
+      return ResponseHelpers.getText(id);
     },
     responseExists() {
       let flag = false;
@@ -233,6 +253,135 @@ Template.responseForm.helpers(
         }
       }
       return [];
+    },
+    hideIfSkipped(sectionID) {
+      let toggleVal = '';
+      if ((sectionID != null) && (($(`#${sectionID}`).length))) {
+        const toggleSkip = $(`#${sectionID}`).is(':checked');
+        if (toggleSkip) {
+          toggleVal = 'hidden';
+        }
+      }
+      return toggleVal;
+    },
+    isChecked(type) {
+      if (Router.current().route.getName() === 'adminDashboardresponsesEdit') {
+        const responseSection = responses.findOne({ _id: Router.current().params._id });
+
+        if (!responseSection || !responseSection.section) {
+          return '';
+        }
+
+        const sections = responseSection.section;
+        for (let j = 0; j < sections.length; j++) {
+          const response = sections[j].response;
+          for (let k = 0; k < response.length; k++) {
+            const quesIDs = response[k].questionID;
+            const responseVal = response[k].answer;
+            const questionsList = questions.find(
+              {
+                _id: quesIDs,
+              }, {
+                dataType: 1,
+                _id: 0,
+              }
+            ).fetch();
+
+            for (let i = 0; i < questionsList.length; i++) {
+              const dataType = questionsList[i].dataType;
+
+              if (dataType === 'Boolean') {
+                return (responseVal === type) ? 'checked' : '';
+              }
+            }
+          }
+        }
+      }
+
+      return '';
+    },
+    isSelected(value) {
+      if (Router.current().route.getName() === 'adminDashboardresponsesEdit') {
+        const responseSection = responses.findOne({ _id: Router.current().params._id });
+
+        if (! responseSection || ! responseSection.section) {
+          return '';
+        }
+
+        const sections = responseSection.section;
+
+        for (let j = 0; j < sections.length; j ++) {
+          const response = sections[j].response;
+          for (let k = 0; k < response.length; k ++) {
+            const quesIDs = response[k].questionID;
+            const responseVal = response[k].answer;
+            const questionsList = questions.find(
+              {
+                _id: quesIDs,
+              }, {
+                dataType: 1,
+                _id: 0,
+              }
+            ).fetch();
+
+            for (let i = 0; i < questionsList.length; i ++) {
+              const dataType = questionsList[i].dataType;
+              if (dataType === 'Single Select') {
+                return (responseVal === value) ? 'checked' : '';
+              }
+            }
+          }
+        }
+      }
+      return '';
+    },
+    isSelectedMultiple(value) {
+      if (Router.current().route.getName() === 'adminDashboardresponsesEdit') {
+        const responseSection = responses.findOne({ _id: Router.current().params._id });
+
+        if (! responseSection || ! responseSection.section) {
+          return '';
+        }
+
+        const sections = responseSection.section;
+        for (let j = 0; j < sections.length; j ++) {
+          const response = sections[j].response;
+          for (let k = 0; k < response.length; k ++) {
+            const quesIDs = response[k].questionID;
+
+            const responseVal = response[k].answer.split('|');
+
+            const questionsList = questions.find(
+              {
+                _id: quesIDs,
+              }, {
+                dataType: 1,
+                _id: 0,
+              }
+            ).fetch();
+
+            for (let i = 0; i < questionsList.length; i ++) {
+              const dataType = questionsList[i].dataType;
+
+              if (dataType === 'Multiple Select') {
+                for (let l = 0; l < responseVal.length; l ++) {
+                  if (value === responseVal[i]) {
+                    return 'checked';
+                  }
+                }
+                return '';
+              }
+            }
+          }
+        }
+      }
+      return '';
+    },
+    populateOptions(question) {
+      setTimeout(() => {
+        $(`#aoptions${question}`).empty();
+        ResponseHelpers.addOptions(question);
+      }, 0);
     },
   }
 );
