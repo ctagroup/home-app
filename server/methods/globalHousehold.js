@@ -9,6 +9,10 @@ Meteor.methods(
           globalHouseholdObject);
       return hmisClients;
     },
+    deleteHousehold(globalHouseholdId) {
+      const hmisClients = HMISAPI.deleteGlobalHousehold(globalHouseholdId);
+      return hmisClients;
+    },
     getClients() {
       const hmisClients = HMISAPI.getClients();
       const localClients = clients.aggregate(
