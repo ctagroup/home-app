@@ -1,3 +1,14 @@
 <template name="editResponse">
   {{> responseForm}}
+  {{#if paused}}
+    <div id="pauseSurvey" class="margin-top-35">
+      <button class="btn btn-default cancel_survey">Cancel</button>
+      <button class="btn btn-primary btn-success savePaused_survey">Save</button>
+      <button class="btn btn-primary btn-warning pausePaused_survey">Pause</button>
+    </div>
+  {{else}}
+    <div class="margin-top-35">
+      <button class="btn btn-default cancel_survey">Back</button>
+    </div>
+  {{/if}}
 </template>
