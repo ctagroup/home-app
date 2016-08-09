@@ -191,7 +191,11 @@
                           {{#if isActiveRoute 'previewSurvey'}}
                             <img class="survey-single-photo-img" src="http://loremflickr.com/g/320/240/kitten" />
                           {{else}}
-                            {{{surveyTextResponse content}}}
+                            {{#if surveyTextResponse content}}
+                              {{{surveyTextResponse content}}}
+                            {{else}}
+                              <img class="survey-single-photo-img" src="" />
+                            {{/if}}
                           {{/if}}
                           <input type="hidden" id="{{content}}" name="{{content}}" class="survey-single-photo-value" value="" />
                           <br />
