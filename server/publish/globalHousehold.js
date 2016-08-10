@@ -32,7 +32,7 @@ Meteor.publish(
       HMISAPI.setCurrentUserId('');
     }
     if (singleGlobalHousehold) {
-      self.added('globalHousehold', singleGlobalHousehold.globalHousehold, singleGlobalHousehold);
+      self.added('globalHousehold', singleGlobalHousehold.globalHouseholdId, singleGlobalHousehold);
     }
     self.ready();
   }
