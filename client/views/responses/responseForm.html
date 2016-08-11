@@ -117,7 +117,7 @@
 
                       {{#if isDate content}}
                         <li class="quesList">
-                          <div id={{content}} class='input-group js-datepicker'>
+                          <div id="{{content}}" class='input-group js-datepicker'>
                             <span class="input-group-addon">
                               <i class="fa fa-calendar"></i>
                             </span>
@@ -153,7 +153,8 @@
                             <label class="singleSelect"><input type="radio"
                                                                class="singleSelect"
                                                                id={{../content}}  name={{../content}}
-                                                               value={{this.value}} {{isSelected this.value}}>
+                                                               value={{this.description}}
+                                {{isSelected this.description}}>
                               &nbsp; {{this.description}}</label>
                           </li>
                         {{/each}}
@@ -173,7 +174,8 @@
                             <label class="multipleSelect" id={{../content}}><input
                                 type="checkbox" class="multipleSelect"
                                 id={{../content}} name={{../content}}
-                                value={{this.value}} {{isSelectedMultiple this.value}}> &nbsp; {{this.description}}
+                                value={{this.description}} {{isSelectedMultiple this.description}}>
+                                &nbsp; {{this.description}}
                             </label>
                           </li>
                         {{/each}}
