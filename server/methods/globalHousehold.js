@@ -73,5 +73,11 @@ Meteor.methods(
       }
       return mergedClients;
     },
+    getHouseholdClients(id) {
+      return HMISAPI.getSingleGlobalHouseholdForPublish(id);
+    },
+    getHousehold(id) {
+      return HMISAPI.getHousehold(id);
+    },
   }
 );
