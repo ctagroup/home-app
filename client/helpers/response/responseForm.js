@@ -16,10 +16,14 @@ Template.responseForm.helpers(
       const surveyID = (Router.current().route.getName() === 'previewSurvey')
         ? Router.current().params._id
         : Template.instance().data.survey._id;
-      const surveyElements = surveyQuestionsMaster.find(
-        { surveyID },
-        { sort: { order: 1 } }
-      ).fetch();
+      const sections = surveyFormatHelpers.getSections(surveyID);
+      const surveyElements = [];
+      for (let i = 0; i < sections.length; i++) {
+        surveyElements.push(sections[i]);
+        Array.prototype.push.apply(surveyElements,
+          surveyFormatHelpers.getQuestionsPerSection(sections[i]._id)
+        );
+      }
       return ResponseHelpers.surveyContents(surveyElements, null);
     },
     clientName() {
