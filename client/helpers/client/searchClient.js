@@ -4,6 +4,16 @@
 
 Template.searchClient.helpers(
   {
+    forGlobalHousehold() {
+      const route = Router.current().location.get().path.split('/')[1];
+      let status = false;
+      if (route === 'globalHousehold') {
+        status = true;
+      } else {
+        status = false;
+      }
+      return status;
+    },
     searchClient(query, sync, callback) {
       Meteor.call(
         'searchClient', query, { limit: 10 }, (err, res) => {
@@ -28,15 +38,36 @@ Template.searchClient.helpers(
       );
     },
     clientSelected(event, dataObject) {
-      if (dataObject.clientNotFound) {
-        $('#search-client-keyword').val(dataObject.query).change();
-        Router.go('adminDashboardclientsNew', {}, { query: `firstName=${dataObject.query}` });
-      } else {
-        const query = {};
-        if (dataObject.isHMISClient) {
-          query.query = `isHMISClient=true&link=${encodeURIComponent(dataObject.link)}`;
+      const route = Router.current().location.get().path.split('/')[1];
+      if (route === 'globalHousehold') {
+        if (dataObject.clientNotFound) {
+          $('#search-client-keyword').val(dataObject.query).change();
+          // Router.go('adminDashboardclientsNew', {}, { query: `firstName=${dataObject.query}` });
+        } else {
+          const query = {};
+          if (dataObject.isHMISClient) {
+            query.query = `isHMISClient=true&link=${encodeURIComponent(dataObject.link)}`;
+          }
+          const clientInfo = {};
+          clientInfo.clientId = dataObject._id;
+          clientInfo.clientName =
+            `${dataObject.firstName} ${dataObject.middleName} ${dataObject.lastName}`;
+          const clientDetails = Session.get('selectedClients');
+          clientDetails.push(clientInfo);
+          Session.set('selectedClients', clientDetails);
+          // Router.go('viewClient', { _id: dataObject._id }, query);
         }
-        Router.go('viewClient', { _id: dataObject._id }, query);
+      } else {
+        if (dataObject.clientNotFound) {
+          $('#search-client-keyword').val(dataObject.query).change();
+          Router.go('adminDashboardclientsNew', {}, { query: `firstName=${dataObject.query}` });
+        } else {
+          const query = {};
+          if (dataObject.isHMISClient) {
+            query.query = `isHMISClient=true&link=${encodeURIComponent(dataObject.link)}`;
+          }
+          Router.go('viewClient', { _id: dataObject._id }, query);
+        }
       }
     },
     getRecentClients() {

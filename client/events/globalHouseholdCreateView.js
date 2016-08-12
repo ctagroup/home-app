@@ -63,3 +63,9 @@ Template.globalHouseholdAddClients.events(
       history.go(-1);
     },
   });
+
+Template.selectedClientRowEdit.events({
+  'click .deleteMember'(evt) {
+    $(`tr#${evt.target.id}`).remove();
+  },
+});

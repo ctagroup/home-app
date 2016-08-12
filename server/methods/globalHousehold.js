@@ -74,7 +74,17 @@ Meteor.methods(
       return mergedClients;
     },
     getHouseholdClients(id) {
-      return HMISAPI.getSingleGlobalHouseholdForPublish(id);
+      const selectedClients = [];
+      const clients = HMISAPI.getSingleGlobalHouseholdForPublish(id);
+      for (let i = 0; i < clients.length; i++) {
+        const clientDetails = {};
+        clientDetails.clientId = clients[i].globalClientId;
+        const clientInfo = HMISAPI.getClient(clients[i].globalClientId);
+        clientDetails.clientName =
+          `${clientInfo.firstName} ${clientInfo.middleName} ${clientInfo.lastName}`;
+        selectedClients.push(clientDetails);
+      }
+      return selectedClients;
     },
     getHousehold(id) {
       return HMISAPI.getHousehold(id);
