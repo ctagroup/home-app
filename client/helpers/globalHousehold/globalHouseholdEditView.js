@@ -7,10 +7,13 @@ Template.selectedClientsEdit.helpers({
       if (err) {
         logger.log(err);
       } else {
-        Session.set('selectedEditClients', res);
+        if ((Session.get('selectedClients') === undefined) ||
+          (Session.get('selectedClients').length < res.length)) {
+          Session.set('selectedClients', res);
+        }
       }
     });
-    return Session.get('selectedEditClients');
+    return Session.get('selectedClients');
   },
   updateHOH() {
     let hoh = null;

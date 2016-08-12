@@ -9,6 +9,7 @@ Template.globalHouseholdListView.helpers(
     globalHouseholdTableOptions() {
       // Deep Copy to avoid reference to the same array.
       // It was causing to add Edit/Delete column mulitple times
+      delete Session.keys.selectedClients;
       let tableColumns = $.extend(true, [], HomeConfig.collections.globalHousehold.tableColumns);
       let showEditColumn = true;
       let showDeleteColumn = true;
