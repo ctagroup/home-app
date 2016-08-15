@@ -70,7 +70,9 @@
     "AppController": true,
     "AdminLTEOptions": true,
     "ContentController": true,
-    "ResponseHelpers": true
+    "ResponseHelpers": true,
+    "surveyFormatHelpers": true,
+    "spdatScoreHelpers": true
   },
   "rules": {
     "no-underscore-dangle": [
