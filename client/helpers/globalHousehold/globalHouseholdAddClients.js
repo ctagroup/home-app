@@ -44,3 +44,11 @@ Template.selectClientRow.helpers({
     return `${cId}|${fName.trim()} ${mName.trim()} ${lName.trim()}`;
   },
 });
+
+Template.selectedClientsView.helpers(
+  {
+    getSelectedClient() {
+      setTimeout(() => $('.form-control:nth-child(1)').remove(), 0);
+      return Session.get('selectedClients');
+    },
+  });

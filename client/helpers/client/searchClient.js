@@ -52,7 +52,10 @@ Template.searchClient.helpers(
           clientInfo.clientId = dataObject._id;
           clientInfo.clientName =
             `${dataObject.firstName} ${dataObject.middleName} ${dataObject.lastName}`;
-          const clientDetails = Session.get('selectedClients');
+          let clientDetails = Session.get('selectedClients');
+          if ((clientDetails === undefined) || (clientDetails === null)) {
+            clientDetails = [];
+          }
           clientDetails.push(clientInfo);
           Session.set('selectedClients', clientDetails);
           // Router.go('viewClient', { _id: dataObject._id }, query);

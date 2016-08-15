@@ -1,12 +1,7 @@
 <template name="globalHouseholdCreateView">
+    {{>searchClient}}
     <div class="form-group">
-        <div class="form-group addQuesButton">
-            <div class="col-xs-12">
-                <a href="{{pathFor route='addClients'}}" class="btn btn-large btn-primary addClients">Add
-                    Members to Household</a>
-            </div>
-            {{>selectedClientsView}}
-        </div>
+        {{>selectedClientsView}}
         <a href="/globalHousehold" class="btn btn-large btn-primary createHousehold">Create
            </a>
         <a  href='/globalHousehold' class="btn btn-large btn-primary cancelHousehold">Cancel</a>
@@ -23,10 +18,11 @@
                 <th>Client Name</th>
                 <th>Relationship to Head of Household</th>
                 <th>Is Head of Household?</th>
+                <th> Delete Member</th>
             </tr>
             </thead>
             <tbody class = 'sClients'>
-            {{#each getSelectedClientList}}
+            {{#each getSelectedClient}}
                 {{>selectedClientRow}}
             {{/each}}
             </tbody>
@@ -35,8 +31,8 @@
 </template>
 
 <template name="selectedClientRow">
-    <tr class="selectClientRow">
-       <td id="clientID">{{clientId}}</td>
+    <tr id={{clientId}} class="selectClientRow">
+        <td id="clientID">{{clientId}}</td>
         <td id="clientName">{{clientName}}</td>
         <td>
             <select class="form-control relationshiptohoh" name="relationshiptohoh" id={{clientId}}>
@@ -46,7 +42,8 @@
                 <option value="5">Other:  non-relation member </option>
             </select>
         </td>
-        <td><input type="radio" class="ihoh" id="ishoh" name="ishoh" value={{clientId}}> </td>
+        <td><input type="radio" class="ihoh" id="{{clientId}}" name="ishoh" value={{clientId}}> </td>
+        <td><a class="btn btn-danger deleteMember" id={{clientId}}><span class="fa fa-remove"></span></a></td>
     </tr>
 </template>
 

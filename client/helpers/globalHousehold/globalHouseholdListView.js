@@ -41,9 +41,3 @@ Template.globalHouseholdListView.helpers(
   }
 );
 
-Template.selectedClientsView.helpers(
-  {
-    getSelectedClientList() {
-      return Session.get('selectedClients');
-    },
-  });
