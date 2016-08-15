@@ -1,18 +1,18 @@
 /**
  * Created by Anush-PC on 8/1/2016.
  */
-Template.globalHouseholdCreateView.onRendered(
+Template.globalHouseholdEditView.onRendered(
   () => {
     Meteor.typeahead.inject();
   }
 );
 
-Template.globalHouseholdCreateView.events(
+Template.globalHouseholdEditView.events(
   {
-    'click .createHousehold': () => {
+    'click .updateHousehold': () => {
       const globalHouseholdObject = {};
       const globalHouseholdMembers = [];
-      globalHouseholdObject.globalHouseholdId = null;
+      globalHouseholdObject.globalHouseholdId = window.location.href.split('/')[4];
       globalHouseholdObject.headOfHouseholdId = $('input[name=ishoh]:checked').val();
       globalHouseholdObject.dateCreated = '';
       globalHouseholdObject.dateUpdated = '';
@@ -21,18 +21,18 @@ Template.globalHouseholdCreateView.events(
       $('.sClients').find('tr').each(
         (i, item) => {
           const optionArray = {};
-          optionArray.houseHoldMembershipId = '';
+          optionArray.houseHoldMembershipId = null;
           optionArray.globalClientId = $(item).find('#clientID').text();
-          optionArray.dateCreated = '';
-          optionArray.dateUpdated = '';
+          optionArray.relationshipToHeadOfHousehold = $(item).find('.relationshiptohoh').val();
+          optionArray.dateCreate = '';
+          optionArray.dateUpdate = '';
           optionArray.userCreate = Meteor.userId();
           optionArray.userUpdate = Meteor.userId();
-          optionArray.relationshipToHeadOfHousehold = $(item).find('.relationshiptohoh').val();
-          optionArray.globalHouseholdId = '';
+          optionArray.globalHouseHoldId = window.location.href.split('/')[4];
           globalHouseholdMembers.push(optionArray);
         }
       );
-      Meteor.call('createGlobalHousehold', globalHouseholdMembers,
+      Meteor.call('updateGlobalHousehold', globalHouseholdMembers,
         globalHouseholdObject, (err, res) => {
           if (err) {
             logger.log(err);
@@ -49,24 +49,7 @@ Template.globalHouseholdCreateView.events(
   }
 );
 
-Template.globalHouseholdAddClients.events(
-  {
-    'click .selectClients'(evt, tmpl) {
-      delete Session.keys.selectedClients;
-      evt.preventDefault();
-      const selected = tmpl.findAll('input[type=checkbox]:checked');
-      let array = [];
-      array = selected.map((item) => {
-        const clientId = item.value.split('|')[0];
-        const clientName = item.value.split('|')[1];
-        return { clientId, clientName };
-      });
-      Session.set('selectedClients', array);
-      history.go(-1);
-    },
-  });
-
-Template.selectedClientRow.events({
+Template.selectedClientRowEdit.events({
   'click .deleteMember'(evt) {
     $(`tr#${evt.target.id}`).remove();
   },

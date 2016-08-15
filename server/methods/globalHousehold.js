@@ -4,6 +4,15 @@
 
 Meteor.methods(
   {
+    updateGlobalHousehold(globalHouseholdMembers, globalHouseholdObject) {
+      const getGlobalHousehold = HMISAPI.getHousehold(globalHouseholdObject.globalHouseholdId);
+      const globalObject = globalHouseholdObject;
+      globalObject.userCreate = getGlobalHousehold.userCreate;
+      globalObject.dateCreated = getGlobalHousehold.dateCreated;
+      const hmisClients = HMISAPI.updateGlobalHousehold(globalHouseholdMembers,
+          globalObject);
+      return hmisClients;
+    },
     createGlobalHousehold(globalHouseholdMembers, globalHouseholdObject) {
       const hmisClients = HMISAPI.createGlobalHousehold(globalHouseholdMembers,
           globalHouseholdObject);
@@ -79,6 +88,7 @@ Meteor.methods(
       for (let i = 0; i < clients.length; i++) {
         const clientDetails = {};
         clientDetails.clientId = clients[i].globalClientId;
+        clientDetails.relationshipToHoh = clients[i].relationshipToHeadOfHousehold;
         const clientInfo = HMISAPI.getClient(clients[i].globalClientId);
         clientDetails.clientName =
           `${clientInfo.firstName} ${clientInfo.middleName} ${clientInfo.lastName}`;

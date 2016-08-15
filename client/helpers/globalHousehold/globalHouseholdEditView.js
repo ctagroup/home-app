@@ -3,6 +3,7 @@
  */
 Template.selectedClientsEdit.helpers({
   getSelectedClientEdit() {
+    setTimeout(() => $('.form-control:nth-child(1)').hide(), 0);
     Meteor.call('getHouseholdClients', window.location.href.split('/')[4], (err, res) => {
       if (err) {
         logger.log(err);
@@ -25,5 +26,11 @@ Template.selectedClientsEdit.helpers({
         $(`#${hoh.headOfHouseholdId} input`).prop('checked', true);
       }
     });
+  },
+});
+
+Template.selectedClientRowEdit.helpers({
+  updaterelhoh(clientId, rehoh) {
+    setTimeout(() => $(`#${clientId} select`).val(rehoh).change(), 0);
   },
 });
