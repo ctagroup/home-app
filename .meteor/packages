@@ -4,29 +4,29 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
-meteor-base@1.0.4             # Packages every Meteor app needs to have
-mobile-experience@1.0.4       # Packages for a great mobile UX
-mongo@1.1.10                   # The database Meteor supports right now
-blaze-html-templates@1.0.4    # Compile .html files into Meteor Blaze views
-session@1.1.6                 # Client-side reactive dictionary for your app
-reactive-var@1.0.10
-jquery@1.11.9                  # Helpful client-side library
-tracker@1.1.0                 # Meteor's client-side reactive programming library
+meteor-base             # Packages every Meteor app needs to have
+mobile-experience       # Packages for a great mobile UX
+mongo                   # The database Meteor supports right now
+blaze-html-templates    # Compile .html files into Meteor Blaze views
+session                 # Client-side reactive dictionary for your app
+reactive-var
+jquery                  # Helpful client-side library
+tracker                 # Meteor's client-side reactive programming library
 
-es5-shim@4.6.13                # ECMAScript 5 compatibility for older browsers.
-ecmascript@0.5.7              # Enable ECMAScript2015+ syntax in app code
+es5-shim                # ECMAScript 5 compatibility for older browsers.
+ecmascript              # Enable ECMAScript2015+ syntax in app code
 
-modules@0.7.5
+modules
 
 iron:router
-less@2.7.4
+less
 zimme:active-route
 useraccounts:bootstrap
 useraccounts:iron-routing
-email@1.1.16
-underscore@1.0.9
-accounts-google@1.0.10
-service-configuration@1.0.10
+email
+underscore
+accounts-google
+service-configuration
 dburles:collection-helpers
 aldeed:collection2
 aldeed:autoform
@@ -34,16 +34,16 @@ aldeed:tabular
 alanning:roles
 fortawesome:fontawesome
 jparker:gravatar
-check@1.2.3
+check
 rubaxa:sortable
-oauth2@1.1.10
+oauth2
 desaiuditd:accounts-hmis
 desaiuditd:hmis
-standard-minifier-css@1.1.8
-standard-minifier-js@1.1.8
+standard-minifier-css
+standard-minifier-js
 sergeyt:typeahead
-http@1.2.8
-oauth@1.1.11
+http
+oauth
 meteorhacks:aggregate
 momentjs:moment
 okgrow:router-autoscroll
@@ -55,12 +55,12 @@ dburles:google-maps
 tsega:bootstrap3-datetimepicker
 mpowaga:autoform-summernote
 cunneen:signature-pad
-random@1.0.10
+random
 ephemer:reactive-datatables
 hb5:meteor-is.js
 meteorhacks:unblock
 reywood:publish-composite
 raix:handlebar-helpers
 aldeed:template-extension
-templating@1.2.13
+templating
 mizzao:jquery-ui
