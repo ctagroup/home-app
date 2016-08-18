@@ -128,7 +128,7 @@
 
                       {{#if textboxNumber content}}
                         <li class="quesList">
-                          <input type="number" min="0"
+                          <input type="number" min="0" oninput="validity.valid||(value='');"
                                  class="form-control input input-xxlarge numberType"
                                  id={{content}} name={{content}} value="{{surveyTextResponse content}}">
                         </li>
