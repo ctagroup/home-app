@@ -145,7 +145,8 @@ HMISAPI = {
         race: client.race,
         ethnicity: client.ethnicity,
         gender: client.gender,
-        otherGender: 'Test', // TODO - check with Javier for what to pass in Other Gender
+        // Putting otherGender as null. Confirmed with Javier. Because it's of no use as of now.
+        otherGender: 'null',
         veteranStatus: client.veteranStatus,
       },
     };
