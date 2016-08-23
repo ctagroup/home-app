@@ -1,0 +1,61 @@
+<template name="projectSetup">
+  {{#if project}}
+    <h2>Current Project</h2>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover table-bordered">
+        <tbody>
+          <tr>
+            <td><label>ID: </label></td>
+            <td>{{project.projectId}}</td>
+          </tr>
+          <tr>
+            <td><label>Name: </label></td>
+            <td>{{project.projectName}}</td>
+          </tr>
+          <tr>
+            <td><label>Common Name: </label></td>
+            <td>{{project.projectCommonName}}</td>
+          </tr>
+          <tr>
+            <td><label>Type: </label></td>
+            <td>{{project.projectType}}</td>
+          </tr>
+          <tr>
+            <td><label>Continuum Project: </label></td>
+            <td>{{project.continuumProject}}</td>
+          </tr>
+          <tr>
+            <td><label>Residential Affiliation: </label></td>
+            <td>{{project.residentialAffiliation}}</td>
+          </tr>
+          <tr>
+            <td><label>Target Population: </label></td>
+            <td>{{project.targetPopulation}}</td>
+          </tr>
+          <tr>
+            <td><label>Tracking Method: </label></td>
+            <td>{{project.trackingMethod}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <a href="#" id="removeAppProject" class="btn btn-danger">Remove Project</a>
+  {{else}}
+    <p class="description-block">Setup a new project for this App.</p>
+    <br />
+    <form>
+      <div class="form-group">
+        <label for="projectName">Project Name</label>
+        <input type="text" name="projectName" id="projectName" class="form-control"
+               placeholder="Coordinated Assessment Project" />
+      </div>
+      <div class="form-group">
+        <label for="projectCommonName">Project Common Name</label>
+        <input type="text" class="form-control" id="projectCommonName" name="projectCommonName"
+               placeholder="Coordinated Assessment Project" />
+      </div>
+      <a href="#" id="createAppProject" type="submit" class="btn btn-success">Create New Project</a>
+    </form>
+  {{/if}}
+</template>
