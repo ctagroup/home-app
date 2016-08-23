@@ -16,9 +16,6 @@ Meteor.publish(
       if (projectId) {
         project = HMISAPI.getProject(projectId.option_value);
       }
-
-      console.log(project);
-
     } else {
       HMISAPI.setCurrentUserId('');
     }

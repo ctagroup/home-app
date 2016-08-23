@@ -13,11 +13,12 @@ Meteor.methods(
 
       options.upsert(
         { option_name: 'appProjectId' }, {
-        $set: {
-          option_name: 'appProjectId',
-          option_value: projectId,
-        },
-      })
+          $set: {
+            option_name: 'appProjectId',
+            option_value: projectId,
+          },
+        }
+      );
     },
   }
 );
