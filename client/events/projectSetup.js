@@ -4,11 +4,11 @@
 
 Template.projectSetup.events(
   {
-    'keyup #projectName': (e) => {
+    'keyup #projectName': () => {
       const projectName = $('#projectName').val();
       $('#projectCommonName').val(projectName);
     },
-    'click #createAppProject': (e) => {
+    'click #createAppProject': () => {
       const projectName = $('#projectName').val();
       const projectCommonName = $('#projectCommonName').val();
 

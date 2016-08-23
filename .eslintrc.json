@@ -72,7 +72,8 @@
     "ContentController": true,
     "ResponseHelpers": true,
     "surveyFormatHelpers": true,
-    "spdatScoreHelpers": true
+    "spdatScoreHelpers": true,
+    "projectSetup": true
   },
   "rules": {
     "no-underscore-dangle": [
