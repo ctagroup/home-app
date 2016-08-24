@@ -186,9 +186,8 @@
                 {{#if notQuestion contentType}}
                     <span class="name">{{content}}</span>
                 {{else}}
+                    <i class="fa fa-exclamation-circle js-tooltip" aria-hidden="true" data-toggle="tooltip" title="{{quesName content}}"></i>
                     <span class="name">{{{quesLabel content}}}</span>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="name">{{{quesName content}}}</span>
                 {{/if}}
             </div>
             <div class="col-xs-3 removable">
