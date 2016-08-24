@@ -42,7 +42,7 @@ Template.sortableItemTarget.helpers(
       let val = '';
 
       if (question && question.name) {
-        val = `<strong>Name:</strong> ${question.name}`;
+        val = question.name;
       }
 
       return val;
@@ -63,7 +63,7 @@ Template.sortableItemTarget.helpers(
           text += ' ... ';
         }
 
-        val = `<strong>Label:</strong> ${text}`;
+        val = text;
       }
 
       return val;
