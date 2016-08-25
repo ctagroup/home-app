@@ -129,6 +129,11 @@ Meteor.methods(
     getHMISClient(clientId, apiUrl) {
       const client = HMISAPI.getClientFromUrl(apiUrl);
       const enrollments = HMISAPI.getEnrollments(clientId);
+
+      for(let i = 0; i<enrollments.length; i++) {
+        enrollments.exits = HMISAPI.getEnrollmentExits(clientId, enrollments[i].enrollmentId);
+      }
+
       client.enrollments = enrollments;
       return client;
     },

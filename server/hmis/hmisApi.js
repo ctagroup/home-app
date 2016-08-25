@@ -319,6 +319,45 @@ HMISAPI = {
 
     return enrollments;
   },
+  getEnrollmentExits(clientId, enrollmentId) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+
+    const accessToken = this.getCurrentAccessToken();
+
+    let exits = [];
+
+    const baseUrl = config.hmisAPIEndpoints.clientBaseUrl;
+    const enrollmentsPath = config.hmisAPIEndpoints.enrollmentExits.replace('{{client_id}}', clientId);
+    const exitsPath = enrollmentsPath.replace('{{enrollmentId}}', enrollmentId);
+    const urlPah = `${baseUrl}${exitsPath}`;
+    // const url = `${urlPah}?${querystring.stringify(params)}`;
+    const url = `${urlPah}`;
+
+    logger.info(url);
+    logger.info(accessToken);
+
+    try {
+      const response = HTTP.get(url, {
+        headers: {
+          'X-HMIS-TrustedApp-Id': config.appId,
+          Authorization: `HMISUserAuth session_token=${accessToken}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }).data;
+      exits = response.exits.exits;
+    } catch (err) {
+      throw _.extend(
+        new Error(`Failed to get housing units from HMIS. ${err.message}`),
+        { response: err.response }
+      );
+    }
+
+    return exits;
+  },
   getHousingUnitsForPublish() {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (! config) {
