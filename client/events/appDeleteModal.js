@@ -13,6 +13,13 @@ Template.AppDeleteModal.events({
       });
       $('#app-delete-modal').modal('hide');
       location.reload();
+    } else if (collection === 'housingUnits') {
+      Meteor.call('deleteHousing', _id, (err, res) => {
+        logger.log(`Delete: ${err}`);
+        logger.log(`Delete: ${res}`);
+      });
+      $('#app-delete-modal').modal('hide');
+      location.reload();
     } else {
       Meteor.call('adminRemoveDoc', collection, _id, (e, r) => {
         logger.log(e);
