@@ -389,7 +389,6 @@ HMISAPI = {
           'Content-Type': 'application/json',
         },
       }).data;
-      logger.info(response);
       housingUnits = response.content;
     } catch (err) {
       throw _.extend(
@@ -441,6 +440,47 @@ HMISAPI = {
     }
 
     return housingUnit;
+  },
+  createHousingUnit(housingUnitObject) {
+    const body = [];
+    // stringify to find out what is coming through.
+    body.push(housingUnitObject);
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+
+    const accessToken = HMISAPI.getCurrentAccessToken();
+    const baseUrl = config.hmisAPIEndpoints.housingInventoryBaseUrl;
+    const housingUnitsPath = config.hmisAPIEndpoints.housingUnits;
+    const urlPah = `${baseUrl}${housingUnitsPath}`;
+    // const url = `${urlPah}?${querystring.stringify(params)}`;
+    const url = `${urlPah}`;
+    try {
+      const response = HTTP.post(
+        url, {
+          data: body,
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          npmRequestOptions: {
+            rejectUnauthorized: false, // TODO remove when deploy
+          },
+        }
+      ).data;
+      // HMISAPI.addMembersToHousehold(response[0].globalHouseholdId, globalHouseholdMembers);
+      logger.log(response);
+      return response[0];
+    } catch (err) {
+      // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
+      //                {response: err.response});
+      logger.info(`Failed to get client info from HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
   },
   getGlobalHouseholdForPublish() {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
@@ -814,7 +854,6 @@ HMISAPI = {
           },
         }
       ).data;
-
       return response;
     } catch (err) {
       // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
@@ -896,6 +935,42 @@ HMISAPI = {
       // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
       //                {response: err.response});
       logger.info(`Failed to create project in HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
+  createSectionScores(surveyId, clientId, score) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+    const body = { score };
+    const accessToken = HMISAPI.getCurrentAccessToken();
+    let globalSectionScoresPath = config.hmisAPIEndpoints.sectionScores.replace(
+      '{{client_id}}', clientId
+    );
+    globalSectionScoresPath = globalSectionScoresPath.replace('{{survey_id}}', surveyId);
+    logger.info(`Section Scores HMIS: ${JSON.stringify(globalSectionScoresPath, null, 2)} `);
+    logger.info(`Section Scores HMIS: ${JSON.stringify(body, null, 2)} `);
+    // put a for loop and upload scores one by one. If all do not go at once.
+    try {
+      const response = HTTP.post(
+        config.hmisAPIEndpoints.surveyServiceBaseUrl + globalSectionScoresPath, {
+          data: body,
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          npmRequestOptions: {
+            rejectUnauthorized: false, // TODO remove when deploy
+          },
+        }
+      ).data;
+      return response;
+    } catch (err) {
+      logger.info(`Failed to save scores in HMIS. ${err.message}`);
       logger.info(err.response);
       return false;
     }
