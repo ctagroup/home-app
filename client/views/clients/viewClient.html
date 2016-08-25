@@ -128,15 +128,19 @@
                                 {{formatDate exitDate}}
                               {{/with}}
                             </td>
-                            <td></td>
+                            <td>
+                              {{#with project}}
+                                <span class="js-tooltip" data-toggle="tooltip" title="{{projectCommonName}}">{{projectName}}</span>
+                              {{/with}}
+                            </td>
                           </tr>
                         {{/each}}
                       </tbody>
                       <tfoot>
                         <tr>
-                          <th>Enrollment ID</th>
                           <th>Entry Date</th>
-                          <th>Housing Status</th>
+                          <th>Exit Date</th>
+                          <th>Project Name</th>
                         </tr>
                       </tfoot>
                     </table>
