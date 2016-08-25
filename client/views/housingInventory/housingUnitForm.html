@@ -1,0 +1,67 @@
+<template name="housingUnitForm">
+    <div class="form-group">
+        <label class="col-lg-3 control-label">Alias name:</label>
+        <div class="col-lg-8">
+            <input class="form-control name" value={{aliasName}} type="text" required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-3 control-label">Beds currently Available:</label>
+        <div class="col-lg-8">
+            <input class="form-control beds_avail" min="0" oninput="validity.valid||(value='');"
+                   value={{getBedsCurrent}} type="number" required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-3 control-label">Total beds capacity:</label>
+        <div class="col-lg-8">
+            <input class="form-control beds_cap" min="0" oninput="validity.valid||(value='');"
+                   value={{bedsCapacity}} type="number" required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-3 control-label">Project affiliated:</label>
+        <div class="col-lg-8">
+            <select class="form-control project_id" name="race_category" required>
+                <option value='' disabled>Loading Projects...</option>
+                <!--List generated on the go-->
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-3 control-label">Is active?:</label>
+        <div class="col-lg-8">
+            <label><input type="radio" name="inactive" value="false" checked> Yes</label>
+            <label><input type="radio" name="inactive" value="true"> No<br></label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-3 control-label">Family units:</label>
+        <div class="col-lg-8">
+            <label><input type="radio" name="family_unit" value="true" checked> Yes</label>
+            <label><input type="radio" name="family_unit" value="false"> No<br></label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-3 control-label">In service:</label>
+        <div class="col-lg-8">
+            <label><input type="radio" name="in_service" value="true" checked> Yes</label>
+            <label><input type="radio" name="in_service" value="false"> No<br></label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-3 control-label">Vacant:</label>
+        <div class="col-lg-8">
+            <label><input type="radio" name="vacant" value="true" checked> Yes</label>
+            <label><input type="radio" name="vacant" value="false"> No<br></label>
+        </div>
+    </div>
+    <!--Get all values to be checked while using form to edit-->
+</template>
