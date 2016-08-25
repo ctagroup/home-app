@@ -330,7 +330,10 @@ HMISAPI = {
     let exits = [];
 
     const baseUrl = config.hmisAPIEndpoints.clientBaseUrl;
-    const enrollmentsPath = config.hmisAPIEndpoints.enrollmentExits.replace('{{client_id}}', clientId);
+    const enrollmentsPath = config.hmisAPIEndpoints.enrollmentExits.replace(
+      '{{client_id}}',
+      clientId
+    );
     const exitsPath = enrollmentsPath.replace('{{enrollmentId}}', enrollmentId);
     const urlPah = `${baseUrl}${exitsPath}`;
     // const url = `${urlPah}?${querystring.stringify(params)}`;
