@@ -10,5 +10,8 @@ Meteor.methods(
     createHouseUnit(housingObject) {
       return HMISAPI.createHousingUnit(housingObject);
     },
+    updateHouseUnit(housingObject) {
+      return HMISAPI.updateHousingUnit(housingObject);
+    },
   }
 );
