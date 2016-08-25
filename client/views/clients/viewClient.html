@@ -108,33 +108,37 @@
             </div>
             {{#if enrollments}}
               <div class="row">
-                <h3>Enrollments</h3>
-                <div class="table-responsive">
-                  <table class="table table-hover table-striped">
-                    <thead>
-                      <tr>
-                        <th>Enrollment ID</th>
-                        <th>Entry Date</th>
-                        <th>Housing Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {{#each enrollments}}
+                <div class="col-xs-12">
+                  <h3>Enrollments</h3>
+                  <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                      <thead>
                         <tr>
-                          <td>{{enrollmentId}}</td>
-                          <td>{{entrydate}}</td>
-                          <td>{{housingstatus}}</td>
+                          <th>Entry Date</th>
+                          <th>Exit Date</th>
+                          <th>Project Name</th>
                         </tr>
-                      {{/each}}
-                    </tbody>
-                    <tfoot>
-                      <tr>
-                        <th>Enrollment ID</th>
-                        <th>Entry Date</th>
-                        <th>Housing Status</th>
-                      </tr>
-                    </tfoot>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {{#each enrollments}}
+                          <tr>
+                            <td>{{formatDate entrydate}}</td>
+                            <td>
+                              {{my_console_log exits}}
+                            </td>
+                            <td></td>
+                          </tr>
+                        {{/each}}
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <th>Enrollment ID</th>
+                          <th>Entry Date</th>
+                          <th>Housing Status</th>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
                 </div>
               </div>
             {{/if}}
