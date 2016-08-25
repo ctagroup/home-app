@@ -34,5 +34,12 @@ Meteor.methods(
       );
       return responseRecords;
     },
+    sendScoresToHMIS(surveyId, clientId, score) {
+      const sectionScoresId = HMISAPI.createSectionScores(surveyId, clientId, score);
+      if (sectionScoresId) {
+        // Add this ID to DB. For any reference.
+        logger.log(`SurveyResponse.Js: ${sectionScoresId}`);
+      }
+    },
   }
 );
