@@ -13,5 +13,8 @@ Meteor.methods(
     updateHouseUnit(housingObject) {
       return HMISAPI.updateHousingUnit(housingObject);
     },
+    deleteHousing(housingInventoryId) {
+      return HMISAPI.deleteHousingUnit(housingInventoryId);
+    },
   }
 );
