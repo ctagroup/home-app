@@ -1,10 +1,11 @@
 /**
- * Created by Mj on 24-Aug-16.
+ * Created by Mj on 25-Aug-16.
  */
 
-Template.housingUnitCreateView.events(
+Template.housingUnitEditView.events(
   {
-    'click .createHousing': (evt, tmpl) => {
+    'click .update_housing': (evt, tmpl) => {
+      const housingInventoryId = Template.currentData()._id;
       const aliasName = tmpl.find('.name').value;
       const bedsCurrent = tmpl.find('.beds_avail').value;
       const bedsCapacity = tmpl.find('.beds_cap').value;
@@ -16,6 +17,7 @@ Template.housingUnitCreateView.events(
       // Printing.
       const housingObject = {
         inactive,
+        housingInventoryId,
         bedsCurrent,
         projectId,
         userId: Meteor.user().services.HMIS.id,
@@ -26,11 +28,12 @@ Template.housingUnitCreateView.events(
         aliasName,
       };
       logger.info(`Create Housing: ${JSON.stringify(housingObject, null, 2)}`);
-      Meteor.call('createHouseUnit', housingObject,
+      Meteor.call('updateHouseUnit', housingObject,
         (error, result) => {
           if (error) {
             // console.log(error);
           } else {
+            // receives complete object and not just client ID.
             logger.info(result);
             Router.go('/housingUnits');
           }
