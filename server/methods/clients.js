@@ -138,6 +138,10 @@ Meteor.methods(
         }
       }
 
+      for (let i = 0; i < enrollments.length; i++) {
+        enrollments[i].project = HMISAPI.getProject(enrollments[i].projectid);
+      }
+
       client.enrollments = enrollments;
       return client;
     },
