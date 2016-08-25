@@ -124,7 +124,9 @@
                           <tr>
                             <td>{{formatDate entrydate}}</td>
                             <td>
-                              {{my_console_log exits}}
+                              {{#with exits}}
+                                {{formatDate exitDate}}
+                              {{/with}}
                             </td>
                             <td></td>
                           </tr>
