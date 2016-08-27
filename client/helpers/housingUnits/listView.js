@@ -36,6 +36,8 @@ Template.housingUnitsListView.helpers(
       return {
         columns: tableColumns,
         dom: HomeConfig.adminTablesDom,
+        stateSave: true,
+        processing: true,
       };
     },
     housingUnitsData() {
