@@ -154,7 +154,7 @@ HMISAPI = {
     try {
       const response = HTTP.post(
         config.hmisAPIEndpoints.clientBaseUrl
-        + config.hmisAPIEndpoints[schemaVersion]
+        + config.hmisAPIEndpoints[schema]
         + config.hmisAPIEndpoints.clients, {
           data: body,
           headers: {
@@ -361,7 +361,7 @@ HMISAPI = {
 
     return exits;
   },
-  getHousingUnitsForPublish(/* page = 1, limit = 30 */) {
+  getHousingUnitsForPublish(page = 1, limit = 30) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (! config) {
       throw new ServiceConfiguration.ConfigError();
