@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    {{#unless forGlobalHousehold}}
+    {{#unless isGlobalHousehold}}
 
       <p class="lead text-center">or</p>
 
@@ -63,7 +63,9 @@
       <span class="text-muted">(HMIS)</span>
     {{/if}}
   </div>
-  <div class="text-muted">
-    DOB: {{formatDate dob}}
-  </div>
+  {{#if dob}}
+    <div class="text-muted">
+      DOB: {{formatDate dob}}
+    </div>
+  {{/if}}
 </template>

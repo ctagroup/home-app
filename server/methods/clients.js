@@ -126,27 +126,30 @@ Meteor.methods(
       }
       return flag;
     },
-    getHMISClient(clientId, apiUrl) {
-      const client = HMISAPI.getClientFromUrl(apiUrl);
-      const enrollments = HMISAPI.getEnrollments(clientId);
+    getHMISClient(clientId, schema) {
+      const client = HMISAPI.getClient(clientId, schema);
+      const enrollments = HMISAPI.getEnrollments(clientId, schema);
 
       for (let i = 0; i < enrollments.length; i++) {
-        enrollments[i].exits = HMISAPI.getEnrollmentExits(clientId, enrollments[i].enrollmentId);
+        enrollments[i].exits = HMISAPI.getEnrollmentExits(clientId, enrollments[i].enrollmentId, schema);
 
         if (enrollments[i].exits.length > 0) {
           enrollments[i].exits = enrollments[i].exits[0];
+        } else {
+          enrollments[i].exits = false;
         }
       }
 
       for (let i = 0; i < enrollments.length; i++) {
-        enrollments[i].project = HMISAPI.getProject(enrollments[i].projectid);
+        HMISAPI.setCurrentUserId(Meteor.userId());
+        enrollments[i].project = HMISAPI.getProject(enrollments[i].projectid, schema);
       }
 
       client.enrollments = enrollments;
       return client;
     },
-    getEnrollments(clientId) {
-      const enrollments = HMISAPI.getEnrollments(clientId);
+    getEnrollments(clientId, schema) {
+      const enrollments = HMISAPI.getEnrollments(clientId, schema);
       return enrollments;
     },
   }
