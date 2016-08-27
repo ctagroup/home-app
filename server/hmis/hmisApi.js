@@ -154,7 +154,7 @@ HMISAPI = {
     try {
       const response = HTTP.post(
         config.hmisAPIEndpoints.clientBaseUrl
-        + config.hmisAPIEndpoints[schema]
+        + config.hmisAPIEndpoints[schemaVersion]
         + config.hmisAPIEndpoints.clients, {
           data: body,
           headers: {
@@ -175,7 +175,7 @@ HMISAPI = {
       return false;
     }
   },
-  getClient(clientId, schema = 'v2015') {
+  getClient(clientId) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (! config) {
       throw new ServiceConfiguration.ConfigError();
@@ -185,9 +185,7 @@ HMISAPI = {
 
     try {
       const response = HTTP.get(
-        config.hmisAPIEndpoints.clientBaseUrl
-        + config.hmisAPIEndpoints[schema]
-        + config.hmisAPIEndpoints.clients + clientId, {
+        config.hmisAPIEndpoints.clientBaseUrl + config.hmisAPIEndpoints.clients + clientId, {
           headers: {
             'X-HMIS-TrustedApp-Id': config.appId,
             Authorization: `HMISUserAuth session_token=${accessToken}`,
@@ -252,8 +250,8 @@ HMISAPI = {
 
     const baseUrl = config.hmisAPIEndpoints.clientBaseUrl;
     const searchClientPath = config.hmisAPIEndpoints.searchClient;
-    const urlPath = `${baseUrl}${searchClientPath}`;
-    const url = `${urlPath}?${querystring.stringify(params)}`;
+    const urlPah = `${baseUrl}${searchClientPath}`;
+    const url = `${urlPah}?${querystring.stringify(params)}`;
 
     logger.info(url);
 
@@ -283,7 +281,7 @@ HMISAPI = {
       return [];
     }
   },
-  getEnrollments(clientId, schema = 'v2015') {
+  getEnrollments(clientId) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (! config) {
       throw new ServiceConfiguration.ConfigError();
@@ -294,11 +292,10 @@ HMISAPI = {
     let enrollments = [];
 
     const baseUrl = config.hmisAPIEndpoints.clientBaseUrl;
-    const schemaPath = config.hmisAPIEndpoints[schema];
     const enrollmentsPath = config.hmisAPIEndpoints.enrollments.replace('{{client_id}}', clientId);
-    const urlPath = `${baseUrl}${schemaPath}${enrollmentsPath}`;
-    // const url = `${urlPath}?${querystring.stringify(params)}`;
-    const url = `${urlPath}`;
+    const urlPah = `${baseUrl}${enrollmentsPath}`;
+    // const url = `${urlPah}?${querystring.stringify(params)}`;
+    const url = `${urlPah}`;
 
     logger.info(url);
     logger.info(accessToken);
@@ -322,7 +319,7 @@ HMISAPI = {
 
     return enrollments;
   },
-  getEnrollmentExits(clientId, enrollmentId, schema = 2015) {
+  getEnrollmentExits(clientId, enrollmentId) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (! config) {
       throw new ServiceConfiguration.ConfigError();
@@ -333,15 +330,14 @@ HMISAPI = {
     let exits = [];
 
     const baseUrl = config.hmisAPIEndpoints.clientBaseUrl;
-    const schemaPath = config.hmisAPIEndpoints[schema];
     const enrollmentsPath = config.hmisAPIEndpoints.enrollmentExits.replace(
       '{{client_id}}',
       clientId
     );
     const exitsPath = enrollmentsPath.replace('{{enrollmentId}}', enrollmentId);
-    const urlPath = `${baseUrl}${schemaPath}${exitsPath}`;
-    // const url = `${urlPath}?${querystring.stringify(params)}`;
-    const url = `${urlPath}`;
+    const urlPah = `${baseUrl}${exitsPath}`;
+    // const url = `${urlPah}?${querystring.stringify(params)}`;
+    const url = `${urlPah}`;
 
     logger.info(url);
     logger.info(accessToken);
@@ -377,9 +373,9 @@ HMISAPI = {
 
     const baseUrl = config.hmisAPIEndpoints.housingInventoryBaseUrl;
     const housingUnitsPath = config.hmisAPIEndpoints.housingUnits;
-    const urlPath = `${baseUrl}${housingUnitsPath}`;
-    // const url = `${urlPath}?${querystring.stringify(params)}`;
-    const url = `${urlPath}`;
+    const urlPah = `${baseUrl}${housingUnitsPath}`;
+    // const url = `${urlPah}?${querystring.stringify(params)}`;
+    const url = `${urlPah}?page=${page}&size=${limit}`;
 
     logger.info(url);
     logger.info(accessToken);
@@ -418,9 +414,9 @@ HMISAPI = {
       '{{housing_unit_uuid}}',
       housingUnitId
     );
-    const urlPath = `${baseUrl}${housingUnitsPath}`;
-    // const url = `${urlPath}?${querystring.stringify(params)}`;
-    const url = `${urlPath}`;
+    const urlPah = `${baseUrl}${housingUnitsPath}`;
+    // const url = `${urlPah}?${querystring.stringify(params)}`;
+    const url = `${urlPah}`;
 
     logger.info(url);
     logger.info(accessToken);
@@ -457,9 +453,9 @@ HMISAPI = {
     const accessToken = HMISAPI.getCurrentAccessToken();
     const baseUrl = config.hmisAPIEndpoints.housingInventoryBaseUrl;
     const housingUnitsPath = config.hmisAPIEndpoints.housingUnits;
-    const urlPath = `${baseUrl}${housingUnitsPath}`;
-    // const url = `${urlPath}?${querystring.stringify(params)}`;
-    const url = `${urlPath}`;
+    const urlPah = `${baseUrl}${housingUnitsPath}`;
+    // const url = `${urlPah}?${querystring.stringify(params)}`;
+    const url = `${urlPah}`;
     try {
       const response = HTTP.post(
         url, {
@@ -495,9 +491,9 @@ HMISAPI = {
     const accessToken = HMISAPI.getCurrentAccessToken();
     const baseUrl = config.hmisAPIEndpoints.housingInventoryBaseUrl;
     const housingUnitsPath = config.hmisAPIEndpoints.housingUnits;
-    const urlPath = `${baseUrl}${housingUnitsPath}`;
-    // const url = `${urlPath}?${querystring.stringify(params)}`;
-    const url = `${urlPath}`;
+    const urlPah = `${baseUrl}${housingUnitsPath}`;
+    // const url = `${urlPah}?${querystring.stringify(params)}`;
+    const url = `${urlPah}`;
     try {
       const response = HTTP.put(
         url, {
@@ -532,8 +528,8 @@ HMISAPI = {
       '{{housing_unit_uuid}}',
       housingInventoryId
     );
-    const urlPath = `${baseUrl}${housingUnitsPath}`;
-    const url = `${urlPath}`;
+    const urlPah = `${baseUrl}${housingUnitsPath}`;
+    const url = `${urlPah}`;
     try {
       const response = HTTP.del(
         url, {
@@ -570,9 +566,9 @@ HMISAPI = {
 
     const baseUrl = config.hmisAPIEndpoints.globalHouseholdBaseUrl;
     const globalHouseholdPath = config.hmisAPIEndpoints.globalHouseholds;
-    const urlPath = `${baseUrl}${globalHouseholdPath}`;
-    // const url = `${urlPath}?${querystring.stringify(params)}`;
-    const url = `${urlPath}`;
+    const urlPah = `${baseUrl}${globalHouseholdPath}`;
+    // const url = `${urlPah}?${querystring.stringify(params)}`;
+    const url = `${urlPah}`;
 
     logger.info(url);
     logger.info(accessToken);
@@ -612,8 +608,8 @@ HMISAPI = {
       '{{global_household_uuid}}',
       globalHouseholdId
     );
-    const urlPath = `${baseUrl}${singleGlobalHouseholdPath}`;
-    const url = `${urlPath}`;
+    const urlPah = `${baseUrl}${singleGlobalHouseholdPath}`;
+    const url = `${urlPah}`;
 
     logger.info(url);
     logger.info(accessToken);
@@ -909,7 +905,7 @@ HMISAPI = {
       return false;
     }
   },
-  getProjects(schema = 'v2015') {
+  getProjects(schemaVersion = 'v2015') {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (! config) {
       throw new ServiceConfiguration.ConfigError();
@@ -920,7 +916,7 @@ HMISAPI = {
     try {
       const response = HTTP.get(
         config.hmisAPIEndpoints.clientBaseUrl
-        + config.hmisAPIEndpoints[schema]
+        + config.hmisAPIEndpoints[schemaVersion]
         + config.hmisAPIEndpoints.projects, {
           headers: {
             'X-HMIS-TrustedApp-Id': config.appId,
@@ -939,7 +935,7 @@ HMISAPI = {
       return false;
     }
   },
-  getProject(projectId, schema = 'v2015') {
+  getProject(projectId, schemaVersion = 'v2015') {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (! config) {
       throw new ServiceConfiguration.ConfigError();
@@ -950,7 +946,7 @@ HMISAPI = {
     try {
       const response = HTTP.get(
         config.hmisAPIEndpoints.clientBaseUrl
-        + config.hmisAPIEndpoints[schema]
+        + config.hmisAPIEndpoints[schemaVersion]
         + config.hmisAPIEndpoints.projects
         + projectId, {
           headers: {
@@ -971,7 +967,7 @@ HMISAPI = {
       return false;
     }
   },
-  createProject(projectName, projectCommonName, schema = 'v2015') {
+  createProject(projectName, projectCommonName, schemaVersion = 'v2015') {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (! config) {
       throw new ServiceConfiguration.ConfigError();
@@ -994,7 +990,7 @@ HMISAPI = {
     try {
       const response = HTTP.post(
         config.hmisAPIEndpoints.clientBaseUrl
-        + config.hmisAPIEndpoints[schema]
+        + config.hmisAPIEndpoints[schemaVersion]
         + config.hmisAPIEndpoints.projects, {
           data: body,
           headers: {
