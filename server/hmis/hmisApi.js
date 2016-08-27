@@ -361,7 +361,7 @@ HMISAPI = {
 
     return exits;
   },
-  getHousingUnitsForPublish() {
+  getHousingUnitsForPublish(page = 1, limit = 30) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (! config) {
       throw new ServiceConfiguration.ConfigError();
@@ -389,7 +389,7 @@ HMISAPI = {
           'Content-Type': 'application/json',
         },
       }).data;
-      housingUnits = response.content;
+      housingUnits = response;
     } catch (err) {
       throw _.extend(
         new Error(`Failed to get housing units from HMIS. ${err.message}`),

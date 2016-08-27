@@ -11,12 +11,14 @@ Meteor.publish(
     if (self.userId) {
       HMISAPI.setCurrentUserId(self.userId);
 
-      housingUnits = HMISAPI.getHousingUnitsForPublish();
+      const response = HMISAPI.getHousingUnitsForPublish();
+      housingUnits = response.content;
     } else {
       HMISAPI.setCurrentUserId('');
     }
 
     _.each(housingUnits, (item) => {
+      item.project = HMISAPI.getProject(item.projectId);
       self.added('housingUnits', item.housingInventoryId, item);
     });
 
