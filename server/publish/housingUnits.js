@@ -18,8 +18,9 @@ Meteor.publish(
     }
 
     _.each(housingUnits, (item) => {
-      item.project = HMISAPI.getProject(item.projectId);
-      self.added('housingUnits', item.housingInventoryId, item);
+      const itemz = item;
+      itemz.project = HMISAPI.getProject(item.projectId);
+      self.added('housingUnits', itemz.housingInventoryId, itemz);
     });
 
     self.ready();
