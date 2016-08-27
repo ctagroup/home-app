@@ -4,15 +4,9 @@
 
 Template.searchClient.helpers(
   {
-    forGlobalHousehold() {
+    isGlobalHousehold() {
       const route = Router.current().location.get().path.split('/')[1];
-      let status = false;
-      if (route === 'globalHousehold') {
-        status = true;
-      } else {
-        status = false;
-      }
-      return status;
+      return route === 'globalHousehold';
     },
     searchClient(query, sync, callback) {
       Meteor.call(
@@ -67,7 +61,7 @@ Template.searchClient.helpers(
         } else {
           const query = {};
           if (dataObject.isHMISClient) {
-            query.query = `isHMISClient=true&link=${encodeURIComponent(dataObject.link)}`;
+            query.query = `isHMISClient=true&schema=${dataObject.schema}`;
           }
           Router.go('viewClient', { _id: dataObject._id }, query);
         }
