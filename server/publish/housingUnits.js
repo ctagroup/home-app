@@ -18,7 +18,7 @@ Meteor.publish(
         const temp = HMISAPI.getHousingUnitsForPublish(i);
         housingUnits.push.apply(housingUnits, temp.content);
         logger.info(`Temp: ${housingUnits.length}`);
-        _.each(temp, (item) => {
+        _.each(temp.content, (item) => {
           const itemz = item;
           itemz.project = HMISAPI.getProject(item.projectId);
           self.added('housingUnits', itemz.housingInventoryId, itemz);
