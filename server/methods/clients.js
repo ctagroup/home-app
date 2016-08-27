@@ -131,7 +131,11 @@ Meteor.methods(
       const enrollments = HMISAPI.getEnrollments(clientId, schema);
 
       for (let i = 0; i < enrollments.length; i++) {
-        enrollments[i].exits = HMISAPI.getEnrollmentExits(clientId, enrollments[i].enrollmentId, schema);
+        enrollments[i].exits = HMISAPI.getEnrollmentExits(
+          clientId,
+          enrollments[i].enrollmentId,
+          schema
+        );
 
         if (enrollments[i].exits.length > 0) {
           enrollments[i].exits = enrollments[i].exits[0];
