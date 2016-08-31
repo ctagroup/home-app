@@ -25,9 +25,8 @@
     <div class="form-group">
         <label class="col-lg-3 control-label">Project affiliated:</label>
         <div class="col-lg-8">
-            <select class="form-control project_id" name="race_category" required>
-                <option value='' disabled>Loading Projects...</option>
-                <!--List generated on the go-->
+            <select class="form-control project_id" name="project_list" required>
+                {{getAllOfProjects}}
             </select>
         </div>
     </div>

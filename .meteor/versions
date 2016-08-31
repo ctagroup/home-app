@@ -28,7 +28,6 @@ coffeescript@1.1.4
 cunneen:signature-pad@1.5.3
 dburles:collection-helpers@1.0.4
 dburles:google-maps@1.1.5
-dburles:mongo-collection-instances@0.3.4
 ddp@1.2.5
 ddp-client@1.2.9
 ddp-common@1.2.6
@@ -66,7 +65,6 @@ jparker:crypto-core@0.1.0
 jparker:crypto-md5@0.1.1
 jparker:gravatar@0.5.1
 jquery@1.11.9
-lai:collection-extensions@0.1.4
 launch-screen@1.0.12
 less@2.6.5
 livedata@1.0.18
@@ -96,6 +94,7 @@ mongo@1.1.9_1
 mongo-id@1.0.5
 mongo-livedata@1.0.12
 mpowaga:autoform-summernote@0.4.3
+natestrauser:select2@4.0.3
 npm-mongo@1.4.45
 oauth@1.1.11
 oauth2@1.1.10
@@ -113,7 +112,6 @@ reload@1.1.10
 retry@1.0.8
 reywood:publish-composite@1.4.2
 routepolicy@1.0.11
-rubaxa:sortable@1.3.0
 sergeyt:typeahead@0.11.1_9
 service-configuration@1.0.10
 session@1.1.6
