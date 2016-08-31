@@ -14,26 +14,20 @@ Meteor.publish(
       housingUnits = response.content;
       // according to the content received.
       logger.info(housingUnits.length);
-      for (let i = 1; i < response.page.totalPages; i++) {
+      for (let i = 0; i < response.page.totalPages; i++) {
         const temp = HMISAPI.getHousingUnitsForPublish(i);
         housingUnits.push.apply(housingUnits, temp.content);
         logger.info(`Temp: ${housingUnits.length}`);
         _.each(temp.content, (item) => {
-          const itemz = item;
-          itemz.project = HMISAPI.getProject(item.projectId);
-          self.added('housingUnits', itemz.housingInventoryId, itemz);
+          const tempItem = item;
+          tempItem.project = HMISAPI.getProject(item.projectId);
+          self.added('housingUnits', tempItem.housingInventoryId, tempItem);
         });
         self.ready();
       }
     } else {
       HMISAPI.setCurrentUserId('');
     }
-    _.each(housingUnits, (item) => {
-      const itemz = item;
-      itemz.project = HMISAPI.getProject(item.projectId);
-      self.added('housingUnits', itemz.housingInventoryId, itemz);
-    });
-    self.ready();
   }
 );
 
