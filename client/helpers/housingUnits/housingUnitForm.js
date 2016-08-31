@@ -19,23 +19,30 @@ Template.housingUnitForm.helpers(
       }
       return Template.currentData().bedsCurrent;
     },
-  }
-);
-Template.housingUnitForm.onRendered(
-  () => {
-    Meteor.call('getAllProjects', (err, res) => {
-      if (err) {
-        logger.log(err);
-      } else {
-        // Making a dynamic element that will bring in values of Projects.
-        let dynamicHtml = "<option value='' disabled>Select a Project</option>";
-        for (let i = 0; i < res.projects.projects.length; i++) {
-          const el = res.projects.projects[i];
-          dynamicHtml += `<option value="${el.projectId}">${el.projectName}</option>`;
+    getAllOfProjects() {
+      const currentProjectId = Template.currentData().projectId;
+      logger.error(currentProjectId);
+      Meteor.call('getAllProjects', (err, res) => {
+        if (err) {
+          logger.log(err);
+        } else {
+          // Making a dynamic element that will bring in values of Projects.
+          let dynamicHtml = '';
+          for (let i = 0; i < res.projects.projects.length; i++) {
+            const el = res.projects.projects[i];
+            if (currentProjectId === el.projectId) {
+              dynamicHtml += `<option value="${el.projectId}" selected>${el.projectName}</option>`;
+            } else {
+              dynamicHtml += `<option value="${el.projectId}">${el.projectName}</option>`;
+            }
+          }
+          $('.project_id').html(dynamicHtml);   // Setting the options in place.
+          $('.project_id').select2({
+            placeholder: 'Select a project',
+            allowClear: true,
+          });
         }
-        $('.project_id').html(dynamicHtml);
-      }
-    });
-    // If data available, set to that drop-down option.
+      });
+    },
   }
 );

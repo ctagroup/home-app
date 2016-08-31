@@ -35,7 +35,6 @@ alanning:roles
 fortawesome:fontawesome
 jparker:gravatar
 check
-rubaxa:sortable
 oauth2
 desaiuditd:accounts-hmis
 desaiuditd:hmis
@@ -64,3 +63,4 @@ raix:handlebar-helpers
 aldeed:template-extension
 templating
 mizzao:jquery-ui
+natestrauser:select2
