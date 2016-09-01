@@ -3,6 +3,14 @@
  */
 const querystring = require('querystring');
 
+Template.viewClient.onRendered(() => {
+  $('body').addClass('sidebar-collapse');
+});
+
+Template.viewClient.onDestroyed(() => {
+  $('body').removeClass('sidebar-collapse');
+});
+
 Template.viewClient.events(
   {
     'click .edit'(evt, tmpl) {
