@@ -25,12 +25,12 @@
 
       <hr/>
 
-      <h4>Location History</h4>
-      <p>Track user location for last 24 hours.</p>
-      <div class="map-container">
-        {{> googleMap name="locationHistory" options=locationHistoryMapOptions}}
-      </div>
-      <hr />
+      <!--<h4>Location History</h4>-->
+      <!--<p>Track user location for last 24 hours.</p>-->
+      <!--<div class="map-container">-->
+        <!--{{> googleMap name="locationHistory" options=locationHistoryMapOptions}}-->
+      <!--</div>-->
+      <!--<hr />-->
 
       <h4>Reset Password</h4>
       {{#autoForm id="adminSendResetPasswordEmail" schema=AdminSchemas.sendResetPasswordEmail type="method" meteormethod="adminSendResetPasswordEmail"}}
