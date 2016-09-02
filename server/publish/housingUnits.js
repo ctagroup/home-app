@@ -25,6 +25,9 @@ Meteor.publish(
         });
         self.ready();
       }
+      if (response.page.totalPages === 0) {
+        self.ready();   // Condition where there are no records.
+      }
     } else {
       HMISAPI.setCurrentUserId('');
     }
