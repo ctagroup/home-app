@@ -1,0 +1,32 @@
+<template name="userForm">
+  <div class="form-group">
+    <label class="col-lg-4 control-label">First Name:</label>
+    <div class="col-lg-8">
+      <input class="form-control fName" value={{fName}} type="text" required />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-lg-4 control-label">Middle Name:</label>
+    <div class="col-lg-8">
+      <input class="form-control mName" value={{mName}} type="text" required />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-lg-4 control-label">Last Name:</label>
+    <div class="col-lg-8">
+      <input class="form-control lName" value={{lName}} type="text" required />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-lg-4 control-label">Gender:</label>
+    <div class="col-lg-8">
+      <select class="gender form-control">
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+    </div>
+  </div>
+</template>
