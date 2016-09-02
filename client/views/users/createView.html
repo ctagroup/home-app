@@ -1,14 +1,18 @@
 <template name="AdminDashboardusersNew">
-  <form id="create-housing-form" class="form-horizontal" role="form">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-1">
+      <form id="create-housing-form" class="form-horizontal" role="form">
 
-    {{> userForm}}
+        {{> userForm}}
 
-    <div class="form-group">
-      <label class="col-md-4 control-label"></label>
-      <div class="col-md-8">
-        <a class="btn btn-large btn-success createUser">Create</a>
-        <a  href='/users' class="btn btn-large btn-default cancelUser">Cancel</a>
-      </div>
+        <div class="form-group">
+          <label class="col-md-4 control-label"></label>
+          <div class="col-md-8">
+            <a class="btn btn-large btn-success createUser">Create</a>
+            <a  href='/users' class="btn btn-large btn-default cancelUser">Cancel</a>
+          </div>
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
 </template>
