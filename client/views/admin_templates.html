@@ -48,29 +48,6 @@
 	{{/if}}
 </template>
 
-<template name="AdminDashboardusersNew">
-	<div class="box box-default">
-		<div class="box-body">
-			{{> adminAlert}}
-			{{# autoForm id="adminNewUser" schema=AdminSchemas.newUser type="method" meteormethod="adminNewUser"}}
-
-			{{>afQuickField name="email"}}
-			{{>afQuickField name="chooseOwnPassword"}}
-
-			{{#if afFieldValueIs name="chooseOwnPassword" value=false}}
-
-			{{>afQuickField name="password"}}
-			{{>afQuickField name="sendPassword"}}
-
-			{{/if}}
-
-			<button type="submit" class="btn btn-primary">Add User</button>
-
-			{{/autoForm}}
-		</div>
-	</div>
-</template>
-
 <template name="adminAlert">
 	{{#if $.Session.get 'adminSuccess'}}
 	<div class="alert alert-success admin-alert">
