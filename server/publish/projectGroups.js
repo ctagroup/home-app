@@ -14,8 +14,8 @@ Meteor.publish(
       projectGroups = response.projectGroups;
       // according to the content received.
       logger.info(projectGroups.length);
-      for (let i = 0; i*30 < response.pagination.total; i++) {
-        const temp = HMISAPI.getProjectGroups(i*30, 30);
+      for (let i = 0; (i * 30) < response.pagination.total; i++) {
+        const temp = HMISAPI.getProjectGroups((i * 30), 30);
         projectGroups.push.apply(projectGroups, temp.projectGroups);
         logger.info(`Temp: ${projectGroups.length}`);
         _.each(temp.projectGroups, (item) => {

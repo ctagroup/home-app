@@ -1040,7 +1040,7 @@ HMISAPI = {
         },
       }).data;
       logger.info(response);
-      globalHousehold = response.projectgroups;
+      projectGroups = response.projectgroups;
     } catch (err) {
       throw _.extend(
         new Error(`Failed to get global Household from HMIS. ${err.message}`),
@@ -1048,7 +1048,7 @@ HMISAPI = {
       );
     }
 
-    return globalHousehold;
+    return projectGroups;
   },
   createSectionScores(surveyId, clientId, score) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
