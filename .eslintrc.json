@@ -73,7 +73,8 @@
     "ResponseHelpers": true,
     "surveyFormatHelpers": true,
     "spdatScoreHelpers": true,
-    "projectSetup": true
+    "projectSetup": true,
+    "projectGroups": true
   },
   "rules": {
     "no-underscore-dangle": [
