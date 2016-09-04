@@ -47,8 +47,11 @@
   <div class="form-group">
     <label class="col-lg-4 control-label">Project Group:</label>
     <div class="col-lg-8">
-      <select class="projectGroup form-control">
-        <option value="1">1</option>
+      <select class="projectGroup form-control" required>
+        <option>Select Project Group</option>
+        {{#each getProjectGroups}}
+          <option value="{{projectGroupId}}">{{projectGroupCode}} - {{projectGroupName}}</option>
+        {{/each}}
       </select>
     </div>
   </div>
