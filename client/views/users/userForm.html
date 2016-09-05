@@ -60,7 +60,10 @@
     <label class="col-lg-4 control-label">Profile:</label>
     <div class="col-lg-8">
       <select class="profile form-control">
-        <option value="1">1</option>
+        <option>Select User Profile</option>
+        {{#each getUserProfiles}}
+          <option value="{{id}}">{{profileName}}</option>
+        {{/each}}
       </select>
     </div>
   </div>
