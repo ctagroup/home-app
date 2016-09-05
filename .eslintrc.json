@@ -74,7 +74,8 @@
     "surveyFormatHelpers": true,
     "spdatScoreHelpers": true,
     "projectSetup": true,
-    "projectGroups": true
+    "projectGroups": true,
+    "userProfiles": true
   },
   "rules": {
     "no-underscore-dangle": [
