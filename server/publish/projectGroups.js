@@ -3,7 +3,7 @@
  */
 
 Meteor.publish(
-  'projectGroups', function publishUsersNew() {
+  'projectGroups', function publishProjectGroups() {
     const self = this;
 
     let projectGroups = [];

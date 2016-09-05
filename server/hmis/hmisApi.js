@@ -1043,12 +1043,51 @@ HMISAPI = {
       projectGroups = response.projectgroups;
     } catch (err) {
       throw _.extend(
-        new Error(`Failed to get global Household from HMIS. ${err.message}`),
+        new Error(`Failed to get project groups from HMIS. ${err.message}`),
         { response: err.response }
       );
     }
 
     return projectGroups;
+  },
+  getUserProfiles(from = 0, limit = 30) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+
+    const accessToken = this.getCurrentAccessToken(false);
+
+    let userProfiles = [];
+
+    const baseUrl = config.hmisAPIEndpoints.userServiceBaseUrl;
+    const userProfilesPath = config.hmisAPIEndpoints.userProfiles;
+    const urlPah = `${baseUrl}${userProfilesPath}`;
+    // const url = `${urlPah}?${querystring.stringify(params)}`;
+    const url = `${urlPah}?startIndex=${from}&maxItems=${limit}`;
+
+    logger.info(url);
+    logger.info(accessToken);
+
+    try {
+      const response = HTTP.get(url, {
+        headers: {
+          'X-HMIS-TrustedApp-Id': config.appId,
+          Authorization: `HMISUserAuth session_token=${accessToken}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }).data;
+      logger.info(response);
+      userProfiles = response.profiles;
+    } catch (err) {
+      throw _.extend(
+        new Error(`Failed to get user profiles from HMIS. ${err.message}`),
+        { response: err.response }
+      );
+    }
+
+    return userProfiles;
   },
   createSectionScores(surveyId, clientId, score) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });

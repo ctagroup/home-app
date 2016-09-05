@@ -7,5 +7,8 @@ Template.userForm.helpers(
     getProjectGroups() {
       return projectGroups.find({}).fetch();
     },
+    getUserProfiles() {
+      return userProfiles.find({}).fetch();
+    },
   }
 );
