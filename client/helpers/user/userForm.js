@@ -10,5 +10,8 @@ Template.userForm.helpers(
     getUserProfiles() {
       return userProfiles.find({}).fetch();
     },
+    getHMISRoles() {
+      return hmisRoles.find({}).fetch();
+    },
   }
 );

@@ -21,16 +21,6 @@
   </div>
 
   <div class="form-group">
-    <label class="col-lg-4 control-label">Gender:</label>
-    <div class="col-lg-8">
-      <select class="gender form-control">
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="form-group">
     <label class="col-lg-4 control-label">Email:</label>
     <div class="col-lg-8">
       <input class="form-control email" value={{email}} type="email" required />
@@ -51,6 +41,18 @@
         <option>Select Project Group</option>
         {{#each getProjectGroups}}
           <option value="{{projectGroupId}}">{{projectGroupCode}} - {{projectGroupName}}</option>
+        {{/each}}
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-lg-4 control-label">Role:</label>
+    <div class="col-lg-8">
+      <select class="role form-control">
+        <option>Select Role</option>
+        {{#each getHMISRoles}}
+          <option value="{{id}}">{{roleName}}</option>
         {{/each}}
       </select>
     </div>
