@@ -20,7 +20,7 @@ Meteor.methods(
               {
                 address: userObj.emailAddress,
                 verified: false,
-              }
+              },
             ],
           }
         );

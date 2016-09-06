@@ -75,7 +75,8 @@
     "spdatScoreHelpers": true,
     "projectSetup": true,
     "projectGroups": true,
-    "userProfiles": true
+    "userProfiles": true,
+    "hmisRoles": true
   },
   "rules": {
     "no-underscore-dangle": [

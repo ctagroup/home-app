@@ -1118,7 +1118,7 @@ HMISAPI = {
         },
       }).data;
       logger.info(response);
-      userProfiles = response.roles;
+      roles = response.roles;
     } catch (err) {
       throw _.extend(
         new Error(`Failed to get roles from HMIS. ${err.message}`),
@@ -1126,7 +1126,7 @@ HMISAPI = {
       );
     }
 
-    return userProfiles;
+    return roles;
   },
   createSectionScores(surveyId, clientId, score) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
