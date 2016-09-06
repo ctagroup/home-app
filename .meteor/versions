@@ -134,3 +134,4 @@ useraccounts:iron-routing@1.14.2
 webapp@1.2.11
 webapp-hashing@1.0.9
 zimme:active-route@2.3.2
+zuuk:stale-session@1.0.8
