@@ -192,14 +192,16 @@
                         <li class="quesList">
                           {{#if isActiveRoute 'previewSurvey'}}
                             <img class="survey-single-photo-img" src="http://loremflickr.com/g/320/240/kitten" />
+                            <input type="hidden" id="{{content}}" name="{{content}}" class="survey-single-photo-value" value="" />
                           {{else}}
                             {{#if surveyTextResponse content}}
-                              {{{surveyTextResponse content}}}
+                              <img class="survey-single-photo-img" src="{{surveyTextResponse content}}" />
+                              <input type="hidden" id="{{content}}" name="{{content}}" class="survey-single-photo-value" value="{{surveyTextResponse content}}" />
                             {{else}}
                               <img class="survey-single-photo-img" src="" />
+                              <input type="hidden" id="{{content}}" name="{{content}}" class="survey-single-photo-value" value="" />
                             {{/if}}
                           {{/if}}
-                          <input type="hidden" id="{{content}}" name="{{content}}" class="survey-single-photo-value" value="" />
                           <br />
                           {{#if isCordova}}
                             <!-- {{> surveyCameraNative}}  -->
