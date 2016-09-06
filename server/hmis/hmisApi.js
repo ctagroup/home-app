@@ -1089,6 +1089,45 @@ HMISAPI = {
 
     return userProfiles;
   },
+  getRoles(from = 0, limit = 30) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+
+    const accessToken = this.getCurrentAccessToken(false);
+
+    let roles = [];
+
+    const baseUrl = config.hmisAPIEndpoints.userServiceBaseUrl;
+    const rolesPath = config.hmisAPIEndpoints.roles;
+    const urlPah = `${baseUrl}${rolesPath}`;
+    // const url = `${urlPah}?${querystring.stringify(params)}`;
+    const url = `${urlPah}?startIndex=${from}&maxItems=${limit}`;
+
+    logger.info(url);
+    logger.info(accessToken);
+
+    try {
+      const response = HTTP.get(url, {
+        headers: {
+          'X-HMIS-TrustedApp-Id': config.appId,
+          Authorization: `HMISUserAuth session_token=${accessToken}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }).data;
+      logger.info(response);
+      userProfiles = response.roles;
+    } catch (err) {
+      throw _.extend(
+        new Error(`Failed to get roles from HMIS. ${err.message}`),
+        { response: err.response }
+      );
+    }
+
+    return userProfiles;
+  },
   createSectionScores(surveyId, clientId, score) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (! config) {
@@ -1143,6 +1182,9 @@ HMISAPI = {
       account: userObj,
     };
 
+    logger.info(url);
+    logger.info(JSON.stringify(body));
+
     try {
       const response = HTTP.post(url, {
         data: body,
@@ -1159,7 +1201,7 @@ HMISAPI = {
       // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
       //                {response: err.response});
       logger.info(`Failed to create user in HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.info(JSON.stringify(err.response));
       return false;
     }
   },

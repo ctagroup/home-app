@@ -8,7 +8,22 @@ Meteor.methods(
       const user = HMISAPI.createUser(userObj);
 
       if (user) {
-        const _id = Accounts.createUser({ email: userObj.emailAddress });
+        const _id = users.insert(
+          {
+            createdAt: new Date(),
+            services: {
+              HMIS: {
+                id: user.account.accountId,
+              },
+            },
+            emails: [
+              {
+                address: userObj.emailAddress,
+                verified: false,
+              }
+            ],
+          }
+        );
         logger.info(_id);
       }
 
