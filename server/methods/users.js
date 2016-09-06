@@ -13,7 +13,12 @@ Meteor.methods(
             createdAt: new Date(),
             services: {
               HMIS: {
+                accountId: user.account.accountId,
                 id: user.account.accountId,
+                emailAddress: userObj.emailAddress,
+                email: userObj.emailAddress,
+                firstName: userObj.firstName,
+                lastName: userObj.lastName,
               },
             },
             emails: [
