@@ -1125,4 +1125,42 @@ HMISAPI = {
       return false;
     }
   },
+  createUser(userObj) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+
+    const accessToken = this.getCurrentAccessToken();
+
+    const baseUrl = config.hmisAPIEndpoints.userServiceBaseUrl;
+    const accountsPath = config.hmisAPIEndpoints.accounts;
+    const urlPah = `${baseUrl}${accountsPath}`;
+    // const url = `${urlPah}?${querystring.stringify(params)}`;
+    const url = `${urlPah}`;
+
+    const body = {
+      account: userObj,
+    };
+
+    try {
+      const response = HTTP.post(url, {
+        data: body,
+        headers: {
+          'X-HMIS-TrustedApp-Id': config.appId,
+          Authorization: `HMISUserAuth session_token=${accessToken}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }).data;
+
+      return response;
+    } catch (err) {
+      // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
+      //                {response: err.response});
+      logger.info(`Failed to create user in HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
 };

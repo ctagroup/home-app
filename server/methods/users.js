@@ -4,6 +4,16 @@
 
 Meteor.methods(
   {
+    createHMISUser(userObj) {
+      const user = HMISAPI.createUser(userObj);
+
+      if (user) {
+        const _id = Accounts.createUser({ email: userObj.emailAddress });
+        logger.info(_id);
+      }
+
+      return user;
+    },
     adminNewUser(doc) {
       let emails = [];
       if (Roles.userIsInRole(this.userId, ['create_user'])) {
