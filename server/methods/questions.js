@@ -4,7 +4,7 @@
 
 Meteor.methods(
   {
-    addQuestion(category, name, question, dataType, options, qtype, audience, locked, isCopy) {
+    addQuestion(category, name, question, dataType, options, qtype, audience, locked, allowSkip, isCopy) {
       const questionCollection = HomeUtils.adminCollectionObject('questions');
       questionCollection.insert(
         {
@@ -16,6 +16,7 @@ Meteor.methods(
           qtype,
           audience,
           locked,
+          allowSkip,
           isCopy,
         }
       );
@@ -30,6 +31,7 @@ Meteor.methods(
       qtype,
       audience,
       locked,
+      allowSkip,
       isCopy
     ) {
       const questionCollection = HomeUtils.adminCollectionObject('questions');
@@ -44,6 +46,7 @@ Meteor.methods(
             qtype,
             audience,
             locked,
+            allowSkip,
             isCopy,
           },
         }
