@@ -1218,6 +1218,10 @@ HMISAPI = {
     const questionPath =
       config.hmisAPIEndpoints.surveyServiceQuestions.
       replace('{{questiongroupid}}', questionGroupId);
+
+    logger.info(config.hmisAPIEndpoints.surveyServiceBaseUrl + questionPath);
+    logger.info(accessToken);
+
     try {
       const response = HTTP.post(
         config.hmisAPIEndpoints.surveyServiceBaseUrl + questionPath, {
@@ -1254,6 +1258,10 @@ HMISAPI = {
       config.hmisAPIEndpoints.surveyServiceQuestion.replace('{{questionid}}', questionId);
     questionPath =
       questionPath.replace('{{questiongroupid}}', questionGroupId);
+
+    logger.info(config.hmisAPIEndpoints.surveyServiceBaseUrl + questionPath);
+    logger.info(accessToken);
+
     try {
       const response = HTTP.put(
         config.hmisAPIEndpoints.surveyServiceBaseUrl + questionPath, {
