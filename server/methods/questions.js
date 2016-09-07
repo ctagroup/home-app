@@ -5,16 +5,8 @@
 Meteor.methods(
   {
     addQuestion(
-      category,
-      name,
-      question,
-      dataType,
-      options,
-      qtype,
-      audience,
-      locked,
-      allowSkip,
-      isCopy
+      category, name, question, dataType, options,
+      qtype, audience, locked, allowSkip, isCopy, surveyServiceQuesId
     ) {
       const questionCollection = HomeUtils.adminCollectionObject('questions');
       questionCollection.insert(
@@ -26,6 +18,7 @@ Meteor.methods(
           dataType,
           qtype,
           audience,
+          surveyServiceQuesId,
           locked,
           allowSkip,
           isCopy,
@@ -43,7 +36,8 @@ Meteor.methods(
       audience,
       locked,
       allowSkip,
-      isCopy
+      isCopy,
+      surveyServiceQuesId
     ) {
       const questionCollection = HomeUtils.adminCollectionObject('questions');
       questionCollection.update(
@@ -56,6 +50,7 @@ Meteor.methods(
             dataType,
             qtype,
             audience,
+            surveyServiceQuesId,
             locked,
             allowSkip,
             isCopy,
@@ -66,6 +61,24 @@ Meteor.methods(
     removeQuestion(questionID) {
       const questionCollection = HomeUtils.adminCollectionObject('questions');
       questionCollection.remove({ _id: questionID });
+    },
+    gettingQuestionDetails(questionId) {
+      return HMISAPI.getSurveyServiceQuestion(questionId);
+    },
+    deleteOldPickListGroup(pickListGroupId) {
+      return HMISAPI.deletePickListGroup(pickListGroupId);
+    },
+    addingPickListGroup(pickListGroup) {
+      return HMISAPI.createPickListGroup(pickListGroup);
+    },
+    addingPickListValues(pickListGroupId, pickListValues) {
+      return HMISAPI.createPickListValues(pickListGroupId, pickListValues);
+    },
+    updatingQuestionSurveyService(question, questionId) {
+      return HMISAPI.updateSurveyServiceQuestion(question, questionId);
+    },
+    addingQuestionSurveyService(question) {
+      return HMISAPI.createSurveyServiceQuestions(question);
     },
   }
 );

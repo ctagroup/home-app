@@ -1205,4 +1205,205 @@ HMISAPI = {
       return false;
     }
   },
+  createSurveyServiceQuestions(
+    question, questionGroupId = '95bdca23-5135-4552-9f11-819cab1aaa45'
+  ) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+    const body = { question };
+    const accessToken = HMISAPI.getCurrentAccessToken();
+    logger.info(`Adding a question: ${JSON.stringify(body, null, 2)} `);
+    const questionPath =
+      config.hmisAPIEndpoints.surveyServiceQuestions.
+      replace('{{questiongroupid}}', questionGroupId);
+    try {
+      const response = HTTP.post(
+        config.hmisAPIEndpoints.surveyServiceBaseUrl + questionPath, {
+          data: body,
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          npmRequestOptions: {
+            rejectUnauthorized: false, // TODO remove when deploy
+          },
+        }
+      ).data;
+      return response;
+    } catch (err) {
+      logger.info(`Failed to add question in HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
+  updateSurveyServiceQuestion(
+    questionObject, questionId, questionGroupId = '95bdca23-5135-4552-9f11-819cab1aaa45'
+  ) {
+    const body = { questionObject };
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+    const accessToken = HMISAPI.getCurrentAccessToken();
+    // replace with questionId in the url
+    let questionPath =
+      config.hmisAPIEndpoints.surveyServiceQuestion.replace('{{questionid}}', questionId);
+    questionPath =
+      questionPath.replace('{{questiongroupid}}', questionGroupId);
+    try {
+      const response = HTTP.put(
+        config.hmisAPIEndpoints.surveyServiceBaseUrl + questionPath, {
+          data: body,
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          npmRequestOptions: {
+            rejectUnauthorized: false, // TODO remove when deploy
+          },
+        }
+      ).data;
+      return response[0];
+    } catch (err) {
+      logger.info(`Failed to update question in HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
+  getSurveyServiceQuestion(questionId, questionGroupId = '95bdca23-5135-4552-9f11-819cab1aaa45') {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+    const accessToken = HMISAPI.getCurrentAccessToken();
+    // replace with questionId in the url
+    let questionPath =
+      config.hmisAPIEndpoints.surveyServiceQuestion.replace('{{questionid}}', questionId);
+    questionPath =
+      questionPath.replace('{{questiongroupid}}', questionGroupId);
+    try {
+      const response = HTTP.get(
+        config.hmisAPIEndpoints.surveyServiceBaseUrl + questionPath, {
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          npmRequestOptions: {
+            rejectUnauthorized: false, // TODO remove when deploy
+          },
+        }
+      ).data;
+      logger.info(`HMISAPI getQuestion: ${JSON.stringify(response)}`);
+      return response.question;
+    } catch (err) {
+      logger.info(`Failed to get question from HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
+  deletePickListGroup(pickListGroupId) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+    const accessToken = HMISAPI.getCurrentAccessToken();
+    const url = config.hmisAPIEndpoints.surveyServiceBaseUrl +
+      config.hmisAPIEndpoints.pickListGroup.replace('{{picklistgroupid}}', pickListGroupId);
+    try {
+      const response = HTTP.del(
+        url, {
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          npmRequestOptions: {
+            rejectUnauthorized: false, // TODO remove when deploy
+          },
+        }
+      ).data;
+      logger.info(`HMISAPI Delete PLG ${JSON.stringify(response)}`);
+      return response;
+    } catch (err) {
+      // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
+      //                {response: err.response});
+      logger.info(`Failed to get client info from HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
+  createPickListGroup(pickListGroup) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+    const body = { pickListGroup };
+    const accessToken = HMISAPI.getCurrentAccessToken();
+    logger.info(`HMISAPI Create PLG : ${JSON.stringify(body, null, 2)} `);
+    const url =
+      config.hmisAPIEndpoints.surveyServiceBaseUrl + config.hmisAPIEndpoints.pickListGroups;
+    try {
+      const response = HTTP.post(
+        url, {
+          data: body,
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          npmRequestOptions: {
+            rejectUnauthorized: false, // TODO remove when deploy
+          },
+        }
+      ).data;
+      return response.pickListGroup;
+    } catch (err) {
+      logger.info(`Failed to add Pick List Group in HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
+  createPickListValues(pickListGroupId, pickListValues) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+    const body = { pickListValues };
+    const accessToken = HMISAPI.getCurrentAccessToken();
+    const url = config.hmisAPIEndpoints.surveyServiceBaseUrl +
+      config.hmisAPIEndpoints.pickListValues.replace('{{picklistgroupid}}', pickListGroupId);
+    logger.info(`HMISAPI Create PLV : ${url} - ${JSON.stringify(body, null, 2)} `);
+    try {
+      const response = HTTP.post(
+        url, {
+          data: body,
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          npmRequestOptions: {
+            rejectUnauthorized: false, // TODO remove when deploy
+          },
+        }
+      ).data;
+      logger.info(JSON.stringify(response, null, 2));
+      return response.pickListValues;
+    } catch (err) {
+      logger.info(`Failed to add Pick List Values in HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
 };
