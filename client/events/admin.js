@@ -279,9 +279,12 @@ function resetQuestionModal() {
 
 function setFields(status) {
   $('#isCopy').attr('disabled', status);
+  $('#allowSkip').attr('disabled', status);
   $('#q_copy').attr('disabled', status);
   $('#q_category').attr('disabled', status);
   $('#q_name').attr('disabled', status);
+  $('#q_type').attr('disabled', status);
+  $('#q_audience').attr('disabled', status);
   $('#question').summernote(status ? 'disable' : 'enable');
   $('#hud').attr('disabled', status);
   $('#q_dataType').attr('disabled', status);
@@ -456,8 +459,12 @@ Template.questionViewTemplate.events(
 
       $('#newQuestionModal input[type=checkbox]#isCopy').attr('checked', question.isCopy);
       $('#newQuestionModal input[type=checkbox]#isCopy').prop('checked', question.isCopy);
+
       $('#newQuestionModal input[type=checkbox]#locked').attr('checked', question.locked);
       $('#newQuestionModal input[type=checkbox]#locked').prop('checked', question.locked);
+
+      $('#newQuestionModal input[type=checkbox]#allowSkip').attr('checked', question.allowSkip);
+      $('#newQuestionModal input[type=checkbox]#allowSkip').prop('checked', question.allowSkip);
 
       $('#isUpdate').val('1');
       $('#isUploaded').val(question.surveyServiceQuesId).change();
