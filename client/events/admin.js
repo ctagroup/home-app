@@ -574,8 +574,8 @@ Template.questionForm.events(
       const questionDescription = tmpl.find('.q_name').value;
       const displayText = $(tmpl.find('.question')).summernote('code');
 
-      const questionDataType = tmpl.find('.q_dataType').value;
-      const questionType = $('#q_type').val();
+      const qDataType = tmpl.find('.q_dataType').value;
+      const qType = $('#q_type').val();
       const audience = $('#q_audience').val();
       const locked = tmpl.find('#locked').checked;
       const allowSkip = tmpl.find('#allowSkip').checked;
@@ -587,13 +587,13 @@ Template.questionForm.events(
       let optionArray;
       let temp;
       const pickListValues = { pickListValues: [] };
-      logger.log(`qtype= ${questionType}`);
+      logger.log(`qtype= ${qType}`);
       logger.log(`audience= ${audience}`);
       if ((
-          questionDataType === 'Multiple Select'
+          qDataType === 'Multiple Select'
           ) ||
           (
-            questionDataType === 'Single Select'
+            qDataType === 'Single Select'
           )) {
         // options = tmpl.find('#options').value;
         // selectstatus=true;
@@ -621,7 +621,7 @@ Template.questionForm.events(
       } else if (displayText === '') {
         $('#error').html('<b>Please enter a display text</b>');
         $('#error').show();
-      } else if (questionDataType === '') {
+      } else if (qDataType === '') {
         $('#error').html('<b>Please select a datatype</b>');
         $('#error').show();
       } else if ((
@@ -639,15 +639,35 @@ Template.questionForm.events(
         const isUpdate = $('#isUpdate').val();
         const questionID = $('#questionID').val();
         const correctValueForAssessment = null;
-        const hudQuestion = (questionType === 'hud');
-        const questionWeight = 10;
+        const hudQuestion = (qType === 'hud');
+        const questionWeight = 0;
+        let questionDataType;
+        let questionType;
+        switch (qDataType) {
+          case 'TextBox(Integer)':
+            questionDataType = 'NUMBER'; break;
+          case 'Boolean':
+            questionDataType = 'BOOLEAN';
+            break;
+          default:
+            questionDataType = 'STRING';
+        }
+        switch (qDataType) {
+          case 'Multiple Select':
+            questionType = 'CHECKBOX'; break;
+          case 'Boolean':
+          case 'Single Select':
+            questionType = 'RADIOBUTTON'; break;
+          default:
+            questionType = 'TEXT';
+        }
         const question = {
           questionDescription, displayText, questionDataType, questionType,
           correctValueForAssessment, copyQuestionId, hudQuestion, locked, questionWeight };
         const pickListGroupName = displayText.split(/\s+/).slice(1, 5).join(' ');
         const pickListGroup = { pickListGroupName };
         // check here for surveyServiceQuesId. If already there, update else save.
-        logger.error(`Question Add and update: ${(isUploaded) ? 'Update' : 'Add'}`);
+        logger.info(`Question Add and update: ${(isUploaded) ? 'Update' : 'Add'}`);
         if (isUploaded) {
           // Means it is already uploaded to HMIS Survey Service. We have the ID.
           Meteor.call('gettingQuestionDetails', isUploaded, (error, resul) => {
@@ -655,7 +675,7 @@ Template.questionForm.events(
               logger.info(error);
             } else {
               logger.info(resul);
-              if (questionDataType === 'Single Select' || questionDataType === 'Multiple Select') {
+              if (qDataType === 'Single Select' || qDataType === 'Multiple Select') {
                 Meteor.call('deleteOldPickListGroup', resul.pickListGroupId, (erro, resu) => {
                   if (erro) {
                     logger.error(`ERROR Pick List Group Delete: ${erro}`);
@@ -666,18 +686,15 @@ Template.questionForm.events(
                       if (err) {
                         logger.error(`ERROR Pick List Group Create: ${err}`);
                       } else {
-                        logger.info(`Pick List Group Create: ${res}`);
-                        question.pickListGroupId = resul.pickListGroupId;
-                        logger.info(`Sending PickList Values: ${pickListValues}`);
+                        logger.info(`Pick List Group Create: ${JSON.stringify(res)}`);
+                        question.pickListGroupId = res.pickListGroupId;
                         Meteor.call(
-                          'addingPickListValues', resul.pickListGroupId, pickListValues,
+                          'addingPickListValues', res.pickListGroupId, pickListValues,
                           (er, re) => {
                             if (er) {
                               logger.error(`ERROR Pick List Values Add: ${er}`);
                             } else {
                               logger.info(`Pick List Values Add: ${re}`);
-                              // to see if picklist Id changes.
-                              logger.info(JSON.stringify(question));
                               Meteor.call('updatingQuestionSurveyService',
                                 question, isUploaded, (e, r) => {
                                   if (e) {
@@ -686,7 +703,7 @@ Template.questionForm.events(
                                     logger.info(`Question Update: ${r}`);
                                     Meteor.call(
                                       'updateQuestion', questionID, qCategory, questionDescription,
-                                      displayText, questionDataType, options, questionType,
+                                      displayText, qDataType, options, qType,
                                       audience, locked, allowSkip, copyQuestionId,
                                       isUploaded, (Err, Res) => {
                                         if (Err) {
@@ -714,7 +731,7 @@ Template.questionForm.events(
                   } else {
                     logger.info(`Question Update: ${r}`);
                     Meteor.call('updateQuestion', questionID, qCategory, questionDescription,
-                      displayText, questionDataType, options, questionType,
+                      displayText, qDataType, options, qType,
                       audience, locked, allowSkip, copyQuestionId, isUploaded, (Err, Res) => {
                         if (Err) {
                           logger.error(`ERROR Mongo Update: ${Err}`);
@@ -733,7 +750,7 @@ Template.questionForm.events(
           });
         } else {
           // It's not yet uploaded, upload it to HMIS first, then save the QID recvd in Mongo.
-          if (questionDataType === 'Single Select' || questionDataType === 'Multiple Select') {
+          if (qDataType === 'Single Select' || qDataType === 'Multiple Select') {
             Meteor.call(
               'addingPickListGroup', pickListGroup, (e, r) => {
                 if (e) {
@@ -757,7 +774,7 @@ Template.questionForm.events(
                               if (isUpdate === '1') {
                                 Meteor.call(
                                   'updateQuestion', questionID, qCategory, questionDescription,
-                                  displayText, questionDataType, options, questionType, audience,
+                                  displayText, qDataType, options, qType, audience,
                                   locked, allowSkip, copyQuestionId, surveyServiceQuesId,
                                   (error, result) => {
                                     if (error) {
@@ -771,7 +788,7 @@ Template.questionForm.events(
                               } else {
                                 Meteor.call(
                                   'addQuestion', qCategory, questionDescription, displayText,
-                                  questionDataType, options, questionType, audience, locked,
+                                  qDataType, options, qType, audience, locked,
                                   allowSkip, copyQuestionId, surveyServiceQuesId,
                                   (error, result) => {
                                     if (error) {
@@ -802,7 +819,7 @@ Template.questionForm.events(
                 if (isUpdate === '1') {
                   Meteor.call(
                     'updateQuestion', questionID, qCategory, questionDescription,
-                    displayText, questionDataType, options, questionType, audience,
+                    displayText, qDataType, options, qType, audience,
                     locked, allowSkip, copyQuestionId, surveyServiceQuesId, (error, result) => {
                       if (error) {
                         logger.error(`ERROR Mongo Update: ${error}`);
@@ -814,8 +831,8 @@ Template.questionForm.events(
                   );
                 } else {
                   Meteor.call(
-                    'addQuestion', qCategory, questionDescription, displayText, questionDataType,
-                    options, questionType, audience, locked, allowSkip, copyQuestionId,
+                    'addQuestion', qCategory, questionDescription, displayText, qDataType,
+                    options, qType, audience, locked, allowSkip, copyQuestionId,
                     surveyServiceQuesId, (error, result) => {
                       if (error) {
                         logger.error(`ERROR Mongo Add: ${error}`);

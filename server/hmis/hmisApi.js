@@ -1237,7 +1237,7 @@ HMISAPI = {
           },
         }
       ).data;
-      return response;
+      return response.question;
     } catch (err) {
       logger.info(`Failed to add question in HMIS. ${err.message}`);
       logger.info(err.response);
@@ -1245,9 +1245,9 @@ HMISAPI = {
     }
   },
   updateSurveyServiceQuestion(
-    questionObject, questionId, questionGroupId = '95bdca23-5135-4552-9f11-819cab1aaa45'
+    question, questionId, questionGroupId = '95bdca23-5135-4552-9f11-819cab1aaa45'
   ) {
-    const body = { questionObject };
+    const body = { question };
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (! config) {
       throw new ServiceConfiguration.ConfigError();
@@ -1261,7 +1261,6 @@ HMISAPI = {
 
     logger.info(config.hmisAPIEndpoints.surveyServiceBaseUrl + questionPath);
     logger.info(accessToken);
-
     try {
       const response = HTTP.put(
         config.hmisAPIEndpoints.surveyServiceBaseUrl + questionPath, {
@@ -1277,7 +1276,7 @@ HMISAPI = {
           },
         }
       ).data;
-      return response[0];
+      return response;
     } catch (err) {
       logger.info(`Failed to update question in HMIS. ${err.message}`);
       logger.info(err.response);
@@ -1344,7 +1343,7 @@ HMISAPI = {
     } catch (err) {
       // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
       //                {response: err.response});
-      logger.info(`Failed to get client info from HMIS. ${err.message}`);
+      logger.info(`Failed to delete pick list group from HMIS. ${err.message}`);
       logger.info(err.response);
       return false;
     }
