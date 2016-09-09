@@ -1308,10 +1308,43 @@ HMISAPI = {
           },
         }
       ).data;
-      logger.info(`HMISAPI getQuestion: ${JSON.stringify(response)}`);
+      logger.info(`HMISAPI get Question: ${JSON.stringify(response)}`);
       return response.question;
     } catch (err) {
       logger.info(`Failed to get question from HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
+  deleteSurveyServiceQuestion(questionId, qGroupId = '95bdca23-5135-4552-9f11-819cab1aaa45') {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+    const accessToken = HMISAPI.getCurrentAccessToken();
+    let url = config.hmisAPIEndpoints.surveyServiceBaseUrl +
+      config.hmisAPIEndpoints.surveyServiceQuestion;
+    url = url.replace('{{questiongroupid}}', qGroupId);
+    url = url.replace('{{questionid}}', questionId);
+    logger.info(url);
+    try {
+      const response = HTTP.del(
+        url, {
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          npmRequestOptions: {
+            rejectUnauthorized: false, // TODO remove when deploy
+          },
+        }
+      ).data;
+      logger.info(`Delete question ${JSON.stringify(response)}`);
+      return response;
+    } catch (err) {
+      logger.info(`Failed to delete question from HMIS. ${err.message}`);
       logger.info(err.response);
       return false;
     }

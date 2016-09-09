@@ -655,7 +655,7 @@ Template.questionForm.events(
         switch (qDataType) {
           case 'Multiple Select':
             questionType = 'CHECKBOX'; break;
-          case 'Boolean':
+          // case 'Boolean': Does not have a pick list assigned to it in implementation.
           case 'Single Select':
             questionType = 'RADIOBUTTON'; break;
           default:
@@ -857,16 +857,13 @@ Template.questionForm.events(
     },
     'click .remove'(/* evt, tmp1*/) {
       const questionID = $('#questionID').val();
-      Meteor.call(
-        'removeQuestion', questionID, (error, result) => {
-          if (error) {
-            logger.log(error);
-          } else {
-            logger.log(result);
-          }
+      Meteor.call('deleteQuestion', questionID, (err, res) => {
+        if (err) {
+          logger.error(`Error deleting question: ${err}`);
+        } else {
+          logger.info(`Success deleting question: ${res}`);
         }
-      );
-
+      });
       resetQuestionModal();
     },
   }
