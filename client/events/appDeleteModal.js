@@ -20,6 +20,16 @@ Template.AppDeleteModal.events({
       });
       $('#app-delete-modal').modal('hide');
       location.reload();
+    } else if (collection === 'questions') {
+      Meteor.call('deleteQuestion', _id, (err, res) => {
+        if (err) {
+          logger.error(`Error deleting question: ${err}`);
+        } else {
+          logger.info(`Success deleting question: ${res}`);
+        }
+      });
+      $('#app-delete-modal').modal('hide');
+      location.reload();
     } else {
       Meteor.call('adminRemoveDoc', collection, _id, (e, r) => {
         logger.log(e);

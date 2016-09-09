@@ -58,10 +58,6 @@ Meteor.methods(
         }
       );
     },
-    removeQuestion(questionID) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      questionCollection.remove({ _id: questionID });
-    },
     gettingQuestionDetails(questionId) {
       return HMISAPI.getSurveyServiceQuestion(questionId);
     },
@@ -79,6 +75,23 @@ Meteor.methods(
     },
     addingQuestionSurveyService(question) {
       return HMISAPI.createSurveyServiceQuestions(question);
+    },
+    deleteQuestion(_id) {
+      const questionsCollection = HomeUtils.adminCollectionObject('questions');
+      const question = questionsCollection.findOne({ _id });
+      if (question.surveyServiceQuesId) {
+        const apiQuestion = HMISAPI.getSurveyServiceQuestion(question.surveyServiceQuesId);
+        // Get details to see PLG exists for it or not?
+        if (apiQuestion.pickListGroupId) {
+          const temp = HMISAPI.deletePickListGroup(apiQuestion.pickListGroupId);
+          logger.info(`Delete Question PLG: ${JSON.stringify(temp)}`);
+        }
+        const delQuestionResponse =
+          HMISAPI.deleteSurveyServiceQuestion(question.surveyServiceQuesId);
+        logger.info(`Delete Question : ${JSON.stringify(delQuestionResponse)}`);
+      }
+      // Removing from Mongo.
+      questionsCollection.remove({ _id });
     },
   }
 );
