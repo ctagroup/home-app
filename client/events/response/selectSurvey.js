@@ -16,10 +16,9 @@ Template.selectSurvey.events(
       };
 
       if (Router.current().params && Router.current().params.query
-          && Router.current().params.query.isHMISClient && Router.current().params.query.link) {
-        const url = encodeURIComponent(Router.current().params.query.link);
+          && Router.current().params.query.isHMISClient && Router.current().params.query.schema) {
         query.isHMISClient = true;
-        query.link = url;
+        query.schema = Router.current().params.query.schema;
       }
 
       Router.go(
@@ -30,10 +29,9 @@ Template.selectSurvey.events(
       const query = {};
 
       if (Router.current().params && Router.current().params.query
-          && Router.current().params.query.isHMISClient && Router.current().params.query.link) {
-        const url = encodeURIComponent(Router.current().params.query.link);
+          && Router.current().params.query.isHMISClient && Router.current().params.query.schema) {
         query.isHMISClient = true;
-        query.link = url;
+        query.schema = Router.current().params.query.schema;
       }
 
       Router.go(
