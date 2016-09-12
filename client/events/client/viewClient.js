@@ -50,11 +50,10 @@ Template.viewClient.events(
       const query = {};
 
       if (Router.current().params && Router.current().params.query
-        && Router.current().params.query.isHMISClient && Router.current().params.query.link) {
-        const url = encodeURIComponent(Router.current().params.query.link);
+        && Router.current().params.query.isHMISClient && Router.current().params.query.schema) {
         query.query = {
           isHMISClient: true,
-          link: url,
+          schema: Router.current().params.query.schema,
         };
       }
 
