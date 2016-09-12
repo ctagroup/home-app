@@ -19,7 +19,7 @@ Meteor.methods(
       const developerPermissions = HomeConfig.defaultRolePermissions.Developer;
       if (this.userId && !Roles.userIsInRole(this.userId, developerPermissions)
           && user.emails && (user.emails.length > 0)) {
-        const email = user.emails[0].address;
+        const email = user.emails[0].address.toLowerCase();
         if (typeof Meteor.settings.adminEmails !== 'undefined') {
           adminEmails = Meteor.settings.adminEmails;
           if (adminEmails.indexOf(email) > -1) {

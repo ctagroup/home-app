@@ -9,7 +9,7 @@ Template.AdminDashboardusersNew.events(
       const firstName = tmpl.find('.fName').value;
       const middleName = tmpl.find('.mName').value;
       const lastName = tmpl.find('.lName').value;
-      const emailAddress = tmpl.find('.email').value;
+      const emailAddress = tmpl.find('.email').value.toLowerCase();
       const username = emailAddress;
       const password = tmpl.find('.password').value;
       const confirmPassword = password;

@@ -214,7 +214,7 @@ UI.registerHelper('adminWidgets', () => {
 UI.registerHelper('adminUserEmail', (emails) => {
   let email = false;
   if (emails && emails[0] && emails[0].address) {
-    email = emails[0].address;
+    email = emails[0].address.toLowerCase();
   }
   return email;
 });
