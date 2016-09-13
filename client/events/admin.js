@@ -13,6 +13,15 @@ let originalSurveyUniqueIDs;
 let surveyCopySectionID;
 let surveyCopyTitle;
 
+
+function setSurveyFields(status) {
+  $('#survey_title').attr('disabled', status);
+  $('#active').attr('disabled', status);
+  $('#copy').attr('disabled', status);
+  $('#s_copy').attr('disabled', status);
+  $('#s_type').attr('disabled', status);
+}
+
 function resetSurveyModal() {
   $('#newSurveyModal input[type=text]').val('');
   $('#newSurveyModal input[type=checkbox]').attr('checked', false);
@@ -26,6 +35,7 @@ function resetSurveyModal() {
   $('#isUpdate').val('0');
   $('#surveyID').val('');
   $('.othersSpecify').hide();
+  setSurveyFields(false);
 }
 
 function sectionComponents(originalSurveyComponentIDs, newSurveSectionIDs, newSurveyingID) {
@@ -132,6 +142,15 @@ function recordsForCopy(surveyingID) {
   }
 }
 
+function checkSurveyLocked() {
+  const toggle = $('#locked').is(':checked');
+  if (toggle) {
+    setSurveyFields(true);
+  } else {
+    setSurveyFields(false);
+  }
+}
+
 Template.surveyForm.events(
   {
     'change .s_copy': (event) => {
@@ -144,6 +163,9 @@ Template.surveyForm.events(
 
       $('.s_copy').val('Choose');
     },
+    'change .locked'(/* evt, tmpl*/) {
+      checkSurveyLocked();
+    },
     'click .save': (evt, tmpl) => {
       const created = false;
       surveyID = $('#surveyID').val();
@@ -152,7 +174,7 @@ Template.surveyForm.events(
 
       let title = tmpl.find('.survey_title').value;
       let active = tmpl.find('.active').checked;
-
+      const locked = tmpl.find('#locked').checked;
       if (copy) {
         title = tmpl.find('.copyof_surveytitle').value;
         surveyCopyTitle = title;
@@ -162,7 +184,7 @@ Template.surveyForm.events(
       }
 
       Meteor.call(
-        'addSurvey', title, active, copy, surveyID, stype, created, (error, result) => {
+        'addSurvey', title, active, copy, surveyID, stype, created, locked, (error, result) => {
           if (error) {
             logger.log(error);
           } else {
@@ -192,11 +214,11 @@ Template.surveyForm.events(
         active = tmpl.find('.active').checked;
       }
       const stype = tmpl.find('.s_type').value;
-
+      const locked = tmpl.find('#locked').checked;
       const isUpdate = $('#isUpdate').val();
       if (isUpdate === '1') {
         Meteor.call(
-          'updateSurvey', surveyID, title, stype, active, (error, result) => {
+          'updateSurvey', surveyID, title, stype, active, locked, (error, result) => {
             if (error) {
               logger.log(error);
             } else {
@@ -418,6 +440,13 @@ Template.surveyViewTemplate.events(
         $('#newSurveyModal input[type=checkbox]#active').prop('checked', survey.active);
         $('#newSurveyModal input[type=checkbox]#copy').attr('checked', survey.copy);
         $('#newSurveyModal input[type=checkbox]#copy').prop('checked', survey.copy);
+      }
+      if (typeof survey.locked === 'boolean') {
+        $('#newSurveyModal').find('input[type=checkbox]#locked').attr('checked', survey.locked);
+        $('#newSurveyModal').find('input[type=checkbox]#locked').prop('checked', survey.locked);
+        if (survey.locked) {
+          checkSurveyLocked();
+        }
       }
       $('#isUpdate').val('1');
       $('#surveyID').val($(event.currentTarget).data('survey-id'));

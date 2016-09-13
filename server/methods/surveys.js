@@ -4,7 +4,7 @@
 
 Meteor.methods(
   {
-    addSurvey(title, active, copy, surveyCopyID, stype, created) {
+    addSurvey(title, active, copy, surveyCopyID, stype, created, locked) {
       const surveyCollection = HomeUtils.adminCollectionObject('surveys');
       const surveyID = surveyCollection.insert(
         {
@@ -14,13 +14,14 @@ Meteor.methods(
           surveyCopyID,
           stype,
           created,
+          locked,
         }
       );
       return surveyID;
     },
-    updateSurvey(surveyID, title, stype, active) {
+    updateSurvey(surveyID, title, stype, active, locked) {
       const surveyCollection = HomeUtils.adminCollectionObject('surveys');
-      return surveyCollection.update(surveyID, { $set: { title, stype, active } });
+      return surveyCollection.update(surveyID, { $set: { title, stype, active, locked } });
     },
     updateCreatedSurvey(surveyID, created) {
       const surveyCollection = HomeUtils.adminCollectionObject('surveys');
