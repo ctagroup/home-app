@@ -36,9 +36,8 @@
         </div>
       </div>
 
-      <p class="lead text-center"></p>
-
       {{#if getRecentClients}}
+        <hr />
         <h4 class="text-center">Recent Clients</h4>
         <div class="row">
           <div class="col-xs-9 my-center-block text-center">
@@ -49,6 +48,12 @@
             </div>
           </div>
         </div>
+      {{/if}}
+
+      {{#if hasDocuments}}
+        <hr />
+        <h4 class="text-center">Pending Clients</h4>
+        {{> tabular table=admin_table class="table dataTable"}}
       {{/if}}
 
     {{/unless}}

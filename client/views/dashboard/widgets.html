@@ -16,7 +16,11 @@
 						{{collectionsCount name}}
 					</h3>
 					<p>
-						{{this.label}}
+            {{#if this.widgetLabel}}
+              {{this.widgetLabel}}
+            {{else}}
+  						{{this.label}}
+            {{/if}}
 					</p>
 				</div>
 				<div class="icon">
