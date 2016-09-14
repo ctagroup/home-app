@@ -2,6 +2,8 @@
  * Created by udit on 08/07/16.
  */
 
+const querystring = require('querystring');
+
 Template.AdminDashboardusersEdit.onRendered(() => {
   GoogleMaps.load(
     {
@@ -104,7 +106,11 @@ Template.AdminDashboardusersEdit.events({
             logger.info(error1);
           } else {
             logger.info(result1);
-            Router.go(`${Router.current().url}?updated=1`);
+            const oldUrl = Router.current().url;
+            const qs = querystring.stringify(Router.current().params.query);
+            let cleanUrl = oldUrl.replace(qs, '');
+            cleanUrl = cleanUrl.replace('?', '');
+            Router.go(`${cleanUrl}?updated=1`);
           }
         });
       }
