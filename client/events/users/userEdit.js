@@ -77,15 +77,17 @@ Template.AdminDashboardusersEdit.events({
     const lastName = tmpl.find('.lName').value.trim();
 
     const projectGroupId = tmpl.find('.projectGroup').value;
-    const roleId = tmpl.find('.role').value;
+    const roleIds = $(tmpl.find('.role')).val();
     const userProfileId = tmpl.find('.userProfile').value;
 
     const projectGroup = projectGroups.findOne({ projectGroupId });
     const profile = userProfiles.findOne({ id: userProfileId });
 
-    const role = hmisRoles.findOne({ id: roleId });
+    const newRoles = hmisRoles.find({ id: { $in: roleIds } }).fetch();
 
-    delete role._id;
+    const localUser = users.findOne({ _id: Router.current().params._id });
+    const hmisUser = singleHMISUser.findOne({ _id: localUser.services.HMIS.accountId });
+    const oldRoles = hmisUser.roles.role;
 
     const userObj = {
       firstName,
@@ -101,7 +103,7 @@ Template.AdminDashboardusersEdit.events({
       } else {
         logger.info(result);
 
-        Meteor.call('updateHMISUserRole', Router.current().params._id, role, (error1, result1) => {
+        Meteor.call('updateHMISUserRoles', Router.current().params._id, oldRoles, newRoles, (error1, result1) => {
           if (error1) {
             logger.info(error1);
           } else {

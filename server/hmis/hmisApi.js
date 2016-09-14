@@ -1299,6 +1299,49 @@ HMISAPI = {
       return false;
     }
   },
+  deleteUserRole(userId, roleId) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+
+    const accessToken = this.getCurrentAccessToken();
+
+    const baseUrl = config.hmisAPIEndpoints.userServiceBaseUrl;
+    const accountRolePath = config.hmisAPIEndpoints.accountRole.replace(
+      '{{accountId}}',
+      userId
+    ).replace(
+      '{{roleId}}',
+      roleId
+    );
+    const urlPah = `${baseUrl}${accountRolePath}`;
+    // const url = `${urlPah}?${querystring.stringify(params)}`;
+    const url = `${urlPah}`;
+
+    logger.info(url);
+
+    try {
+      const response = HTTP.del(url, {
+        headers: {
+          'X-HMIS-TrustedApp-Id': config.appId,
+          Authorization: `HMISUserAuth session_token=${accessToken}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }).data;
+
+      logger.info(JSON.stringify(response, null, '\t'));
+
+      return response;
+    } catch (err) {
+      // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
+      //                {response: err.response});
+      logger.info(`Failed to delete user role in HMIS. ${err.message}`);
+      logger.info(JSON.stringify(err.response));
+      return false;
+    }
+  },
   getUserForPublish(userId) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (! config) {

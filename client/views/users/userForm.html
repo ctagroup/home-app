@@ -55,7 +55,7 @@
   <div class="form-group">
     <label class="col-lg-4 control-label">Role:</label>
     <div class="col-lg-8">
-      <select class="role form-control">
+      <select class="role form-control" multiple>
         <option>Select Role</option>
         {{#each getHMISRoles}}
           <option value="{{id}}" {{isRoleSelected id ../roles.role}}>{{roleName}}</option>
