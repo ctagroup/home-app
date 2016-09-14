@@ -53,7 +53,13 @@
       {{#if hasDocuments}}
         <hr />
         <h4 class="text-center">Pending Clients</h4>
-        {{> tabular table=admin_table class="table dataTable"}}
+        <div class="row">
+          <div class="col-xs-8 my-center-block">
+            <div class="row pending-clients-container">
+              {{> tabular table=admin_table class="table dataTable"}}
+            </div>
+          </div>
+        </div>
       {{/if}}
 
     {{/unless}}
