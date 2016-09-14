@@ -14,10 +14,10 @@ Template.AdminDashboardusersNew.events(
       const password = tmpl.find('.password').value;
       const confirmPassword = password;
       const projectGroupId = tmpl.find('.projectGroup').value;
-      const roleId = tmpl.find('.role').value;
+      const roleIds = $(tmpl.find('.role')).val();
       const userProfileId = tmpl.find('.userProfile').value;
       const projectGroup = projectGroups.findOne({ projectGroupId });
-      const role = hmisRoles.findOne({ id: roleId });
+      const role = hmisRoles.find({ id: { $in: roleIds } });
       const profile = userProfiles.findOne({ id: userProfileId });
 
       const userObj = {

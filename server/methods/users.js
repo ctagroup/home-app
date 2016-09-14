@@ -51,12 +51,16 @@ Meteor.methods(
 
       return user;
     },
-    updateHMISUserRole(userId, role) {
+    updateHMISUserRoles(userId, oldRoles, newRoles) {
       const localUser = users.findOne({ _id: userId });
 
-      const user = HMISAPI.updateUserRole(localUser.services.HMIS.accountId, role);
+      for (let i = 0; i < oldRoles.length; i++) {
+        HMISAPI.deleteUserRole(localUser.services.HMIS.accountId, oldRoles[i].id);
+      }
 
-      return user;
+      for (let i = 0; i < newRoles.length; i++) {
+        HMISAPI.updateUserRole(localUser.services.HMIS.accountId, newRoles[i]);
+      }
     },
     adminNewUser(doc) {
       let emails = [];

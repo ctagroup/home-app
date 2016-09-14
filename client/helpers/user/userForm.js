@@ -20,9 +20,11 @@ Template.userForm.helpers(
       return (profileOptionId === currentProfileId) ? 'selected' : '';
     },
     isRoleSelected(roleOptionId, currentRoles) {
-      for (let i = 0; i < currentRoles.length; i++) {
-        if (roleOptionId === currentRoles[i].id) {
-          return 'selected';
+      if (currentRoles) {
+        for (let i = 0; i < currentRoles.length; i++) {
+          if (roleOptionId === currentRoles[i].id) {
+            return 'selected';
+          }
         }
       }
       return '';
