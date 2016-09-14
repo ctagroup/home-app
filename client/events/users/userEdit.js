@@ -103,18 +103,24 @@ Template.AdminDashboardusersEdit.events({
       } else {
         logger.info(result);
 
-        Meteor.call('updateHMISUserRoles', Router.current().params._id, oldRoles, newRoles, (error1, result1) => {
-          if (error1) {
-            logger.info(error1);
-          } else {
-            logger.info(result1);
-            const oldUrl = Router.current().url;
-            const qs = querystring.stringify(Router.current().params.query);
-            let cleanUrl = oldUrl.replace(qs, '');
-            cleanUrl = cleanUrl.replace('?', '');
-            Router.go(`${cleanUrl}?updated=1`);
+        Meteor.call(
+          'updateHMISUserRoles',
+          Router.current().params._id,
+          oldRoles,
+          newRoles,
+          (error1, result1) => {
+            if (error1) {
+              logger.info(error1);
+            } else {
+              logger.info(result1);
+              const oldUrl = Router.current().url;
+              const qs = querystring.stringify(Router.current().params.query);
+              let cleanUrl = oldUrl.replace(qs, '');
+              cleanUrl = cleanUrl.replace('?', '');
+              Router.go(`${cleanUrl}?updated=1`);
+            }
           }
-        });
+        );
       }
     });
   },
