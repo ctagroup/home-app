@@ -1,5 +1,37 @@
 Template.AdminDashboardusersEdit.helpers(
   {
+    getHMISStatusLabel(status) {
+      let cssclass = '';
+      switch (status) {
+        case 'ACTIVE':
+          cssclass = 'label-success';
+          break;
+        case 'INACTIVE':
+          cssclass = 'label-danger';
+          break;
+        case 'PENDING':
+          cssclass = 'label-warning';
+          break;
+        default:
+          cssclass = '';
+      }
+      return cssclass;
+    },
+    debugAPIMode() {
+      return (Router.current().params.query && Router.current().params.query.debugHMIS);
+    },
+    printHMISData() {
+      const user = users.findOne({ _id: Router.current().params._id });
+      return JSON.stringify(user.services.HMIS, null, '\t');
+    },
+    showUpdatedMessage() {
+      if (Router.current().params.query && Router.current().params.query.updated) {
+        return '<div class="alert alert-success admin-alert">' +
+          'User information is saved successfully.' +
+        '</div>';
+      }
+      return '';
+    },
     getOtherRoles(userId) {
       return HomeHelpers.getOtherRoles(userId);
     },

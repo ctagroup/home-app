@@ -34,6 +34,30 @@ Meteor.methods(
 
       return user;
     },
+    updateHMISUser(userId, userObj) {
+      const localUser = users.findOne({ _id: userId });
+
+      const user = HMISAPI.updateUser(localUser.services.HMIS.accountId, userObj);
+
+      if (user) {
+        const _id = users.update(userId, {
+          $set: {
+            'services.HMIS.firstName': userObj.firstName,
+            'services.HMIS.lastName': userObj.lastName,
+          },
+        });
+        logger.info(_id);
+      }
+
+      return user;
+    },
+    updateHMISUserRole(userId, role) {
+      const localUser = users.findOne({ _id: userId });
+
+      const user = HMISAPI.updateUserRole(localUser.services.HMIS.accountId, role);
+
+      return user;
+    },
     adminNewUser(doc) {
       let emails = [];
       if (Roles.userIsInRole(this.userId, ['create_user'])) {

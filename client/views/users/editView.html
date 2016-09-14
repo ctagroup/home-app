@@ -1,9 +1,12 @@
 <template name="AdminDashboardusersEdit">
+
+  {{> adminAlert}}
+  {{{showUpdatedMessage}}}
+
   <div class="box box-default">
     <div class="box-body">
-      {{> adminAlert}}
 
-      <h4>User Roles</h4>
+      <h4>HOME App User Roles</h4>
       <img class="home-spinner hide" alt="spinner" src="/imgs/spinner.gif" />
       {{#each getUserRoles admin_current_id}}
       <button class="btn btn-primary btn-xs {{#if isInRole 'manage_user_role' }}btn-remove-role{{/if}}" role="{{this}}" user="{{admin_current_id}}">{{this}}</button>
@@ -23,7 +26,7 @@
       {{/unless}}
       {{/if}}
 
-      <hr/>
+      <!--<hr/>-->
 
       <!--<h4>Location History</h4>-->
       <!--<p>Track user location for last 24 hours.</p>-->
@@ -32,28 +35,64 @@
       <!--</div>-->
       <!--<hr />-->
 
-      <h4>Reset Password</h4>
-      {{#autoForm id="adminSendResetPasswordEmail" schema=AdminSchemas.sendResetPasswordEmail type="method" meteormethod="adminSendResetPasswordEmail"}}
-      <div class="form-group hidden">
-        <label class="control-label">ID</label>
-        <input value="{{admin_current_id}}" type="text" name="_id" omitfields="createdAtupdatedAt" required="" data-schema-key="_id" class="form-control" autocomplete="off" />
-        <span class="help-block"></span>
-      </div>
-      <p>Send a reset password email to {{admin_current_doc.emails.[0].address}}</p>
-      <button type="submit" class="btn btn-primary btn-sm">Send Email</button>
-      {{/autoForm}}
+      <!--<h4>Reset Password</h4>-->
+      <!--{{#autoForm id="adminSendResetPasswordEmail" schema=AdminSchemas.sendResetPasswordEmail type="method" meteormethod="adminSendResetPasswordEmail"}}-->
+      <!--<div class="form-group hidden">-->
+        <!--<label class="control-label">ID</label>-->
+        <!--<input value="{{admin_current_id}}" type="text" name="_id" omitfields="createdAtupdatedAt" required="" data-schema-key="_id" class="form-control" autocomplete="off" />-->
+        <!--<span class="help-block"></span>-->
+      <!--</div>-->
+      <!--<p>Send a reset password email to {{admin_current_doc.emails.[0].address}}</p>-->
+      <!--<button type="submit" class="btn btn-primary btn-sm">Send Email</button>-->
+      <!--{{/autoForm}}-->
 
-      <hr/>
-      <h4>Change Password</h4>
-      {{#autoForm id="adminChangePassword" schema=AdminSchemas.changePassword type="method" meteormethod="adminChangePassword"}}
-      <div class="form-group hidden">
-        <label class="control-label">ID</label>
-        <input value="{{admin_current_id}}" type="text" name="_id" omitfields="createdAtupdatedAt" required="" data-schema-key="_id" class="form-control" autocomplete="off" />
-        <span class="help-block"></span>
-      </div>
-      {{>afQuickField name="password"}}
-      <button type="submit" class="btn btn-primary btn-sm">Change Password</button>
-      {{/autoForm}}
+      <!--<hr/>-->
+      <!--<h4>Change Password</h4>-->
+      <!--{{#autoForm id="adminChangePassword" schema=AdminSchemas.changePassword type="method" meteormethod="adminChangePassword"}}-->
+      <!--<div class="form-group hidden">-->
+        <!--<label class="control-label">ID</label>-->
+        <!--<input value="{{admin_current_id}}" type="text" name="_id" omitfields="createdAtupdatedAt" required="" data-schema-key="_id" class="form-control" autocomplete="off" />-->
+        <!--<span class="help-block"></span>-->
+      <!--</div>-->
+      <!--{{>afQuickField name="password"}}-->
+      <!--<button type="submit" class="btn btn-primary btn-sm">Change Password</button>-->
+      <!--{{/autoForm}}-->
     </div>
   </div>
+
+  <div class="box box-default">
+    <div class="box-body">
+      <h4>HMIS Profile</h4>
+      <label class="label {{getHMISStatusLabel status}}">{{status}}</label><br /><br />
+
+      <div class="row">
+        <div class="col-md-6 col-md-offset-1">
+          <form id="create-housing-form" class="form-horizontal" role="form">
+
+            {{> userForm}}
+
+            <div class="form-group">
+              <label class="col-md-4 control-label"></label>
+              <div class="col-md-8">
+                <a href="#" class="btn btn-large btn-success saveHMISProfile">Save HMIS Profile</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  {{#if debugAPIMode}}
+  <div class="box box-default">
+    <div class="box-body">
+      <h4>HMIS API Data</h4>
+
+      <pre>{{printHMISData}}</pre>
+
+    </div>
+  </div>
+  {{/if}}
+
 </template>
