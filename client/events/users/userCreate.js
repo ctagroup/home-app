@@ -6,9 +6,9 @@ Template.AdminDashboardusersNew.events(
   {
     'click .createUser': (evt, tmpl) => {
       evt.preventDefault();
-      const firstName = tmpl.find('.fName').value;
-      const middleName = tmpl.find('.mName').value;
-      const lastName = tmpl.find('.lName').value;
+      const firstName = tmpl.find('.fName').value.trim();
+      const middleName = tmpl.find('.mName').value.trim();
+      const lastName = tmpl.find('.lName').value.trim();
       const emailAddress = tmpl.find('.email').value.toLowerCase();
       const username = emailAddress;
       const password = tmpl.find('.password').value;

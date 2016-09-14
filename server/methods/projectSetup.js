@@ -4,10 +4,6 @@
 
 Meteor.methods(
   {
-    getProjects() {
-      const projects = HMISAPI.getProjects();
-      console.log(projects);
-    },
     createProject(projectName, projectCommonName) {
       const projectId = HMISAPI.createProject(projectName, projectCommonName);
 

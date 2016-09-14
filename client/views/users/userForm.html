@@ -2,37 +2,43 @@
   <div class="form-group">
     <label class="col-lg-4 control-label">First Name:</label>
     <div class="col-lg-8">
-      <input class="form-control fName" value={{fName}} type="text" required />
+      <input class="form-control fName" value={{firstName}} type="text" required />
     </div>
   </div>
 
   <div class="form-group">
     <label class="col-lg-4 control-label">Middle Name:</label>
     <div class="col-lg-8">
-      <input class="form-control mName" value={{mName}} type="text" required />
+      <input class="form-control mName" value={{middleName}} type="text" required />
     </div>
   </div>
 
   <div class="form-group">
     <label class="col-lg-4 control-label">Last Name:</label>
     <div class="col-lg-8">
-      <input class="form-control lName" value={{lName}} type="text" required />
+      <input class="form-control lName" value={{lastName}} type="text" required />
     </div>
   </div>
 
   <div class="form-group">
     <label class="col-lg-4 control-label">Email:</label>
     <div class="col-lg-8">
-      <input class="form-control email" value={{email}} type="email" required />
+      {{#if accountId}}
+        <input class="form-control email" value={{emailAddress}} type="email" disabled required />
+      {{else}}
+        <input class="form-control email" value={{emailAddress}} type="email" required />
+      {{/if}}
     </div>
   </div>
 
-  <div class="form-group">
-    <label class="col-lg-4 control-label">Password:</label>
-    <div class="col-lg-8">
-      <input class="form-control password" value={{password}} type="password" required />
+  {{#unless accountId}}
+    <div class="form-group">
+      <label class="col-lg-4 control-label">Password:</label>
+      <div class="col-lg-8">
+        <input class="form-control password" value={{password}} type="password" required />
+      </div>
     </div>
-  </div>
+  {{/unless}}
 
   <div class="form-group">
     <label class="col-lg-4 control-label">Project Group:</label>
@@ -40,7 +46,7 @@
       <select class="projectGroup form-control" required>
         <option>Select Project Group</option>
         {{#each getProjectGroups}}
-          <option value="{{projectGroupId}}">{{projectGroupCode}} - {{projectGroupName}}</option>
+          <option value="{{projectGroupId}}" {{isProjectGroupSelected projectGroupId ../projectGroup.projectGroupId}}>{{projectGroupCode}} - {{projectGroupName}}</option>
         {{/each}}
       </select>
     </div>
@@ -52,7 +58,7 @@
       <select class="role form-control">
         <option>Select Role</option>
         {{#each getHMISRoles}}
-          <option value="{{id}}">{{roleName}}</option>
+          <option value="{{id}}" {{isRoleSelected id ../roles.role}}>{{roleName}}</option>
         {{/each}}
       </select>
     </div>
@@ -64,7 +70,7 @@
       <select class="userProfile form-control">
         <option>Select User Profile</option>
         {{#each getUserProfiles}}
-          <option value="{{id}}">{{profileName}}</option>
+          <option value="{{id}}" {{isProfileSelected id ../profile.id}}>{{profileName}}</option>
         {{/each}}
       </select>
     </div>

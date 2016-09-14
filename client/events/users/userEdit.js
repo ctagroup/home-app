@@ -68,4 +68,46 @@ Template.AdminDashboardusersEdit.events({
       $('.home-spinner').removeClass('show').addClass('hide');
     });
   },
+  'click .saveHMISProfile': (e, tmpl) => {
+    e.preventDefault();
+    const firstName = tmpl.find('.fName').value.trim();
+    const middleName = tmpl.find('.mName').value.trim();
+    const lastName = tmpl.find('.lName').value.trim();
+
+    const projectGroupId = tmpl.find('.projectGroup').value;
+    const roleId = tmpl.find('.role').value;
+    const userProfileId = tmpl.find('.userProfile').value;
+
+    const projectGroup = projectGroups.findOne({ projectGroupId });
+    const profile = userProfiles.findOne({ id: userProfileId });
+
+    const role = hmisRoles.findOne({ id: roleId });
+
+    delete role._id;
+
+    const userObj = {
+      firstName,
+      middleName,
+      lastName,
+      projectGroup,
+      profile,
+    };
+
+    Meteor.call('updateHMISUser', Router.current().params._id, userObj, (error, result) => {
+      if (error) {
+        logger.info(error);
+      } else {
+        logger.info(result);
+
+        Meteor.call('updateHMISUserRole', Router.current().params._id, role, (error1, result1) => {
+          if (error1) {
+            logger.info(error1);
+          } else {
+            logger.info(result1);
+            Router.go(`${Router.current().url}?updated=1`);
+          }
+        });
+      }
+    });
+  },
 });

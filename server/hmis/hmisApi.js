@@ -1207,6 +1207,136 @@ HMISAPI = {
       return false;
     }
   },
+  updateUser(userId, userObj) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+
+    const accessToken = this.getCurrentAccessToken();
+
+    const baseUrl = config.hmisAPIEndpoints.userServiceBaseUrl;
+    const accountPath = config.hmisAPIEndpoints.account.replace(
+      '{{accountId}}',
+      userId
+    );
+    const urlPah = `${baseUrl}${accountPath}`;
+    // const url = `${urlPah}?${querystring.stringify(params)}`;
+    const url = `${urlPah}`;
+
+    const body = {
+      account: userObj,
+    };
+
+    logger.info(url);
+    logger.info(JSON.stringify(body));
+
+    try {
+      const response = HTTP.put(url, {
+        data: body,
+        headers: {
+          'X-HMIS-TrustedApp-Id': config.appId,
+          Authorization: `HMISUserAuth session_token=${accessToken}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }).data;
+
+      logger.info(JSON.stringify(response, null, '\t'));
+
+      return response;
+    } catch (err) {
+      // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
+      //                {response: err.response});
+      logger.info(`Failed to update user in HMIS. ${err.message}`);
+      logger.info(JSON.stringify(err.response));
+      return false;
+    }
+  },
+  updateUserRole(userId, roleObj) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+
+    const accessToken = this.getCurrentAccessToken();
+
+    const baseUrl = config.hmisAPIEndpoints.userServiceBaseUrl;
+    const accountRolesPath = config.hmisAPIEndpoints.accountRoles.replace(
+      '{{accountId}}',
+      userId
+    );
+    const urlPah = `${baseUrl}${accountRolesPath}`;
+    // const url = `${urlPah}?${querystring.stringify(params)}`;
+    const url = `${urlPah}`;
+
+    const body = {
+      role: roleObj,
+    };
+
+    logger.info(url);
+    logger.info(JSON.stringify(body));
+
+    try {
+      const response = HTTP.put(url, {
+        data: body,
+        headers: {
+          'X-HMIS-TrustedApp-Id': config.appId,
+          Authorization: `HMISUserAuth session_token=${accessToken}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }).data;
+
+      logger.info(JSON.stringify(response, null, '\t'));
+
+      return response;
+    } catch (err) {
+      // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
+      //                {response: err.response});
+      logger.info(`Failed to update user roles in HMIS. ${err.message}`);
+      logger.info(JSON.stringify(err.response));
+      return false;
+    }
+  },
+  getUserForPublish(userId) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+
+    const accessToken = this.getCurrentAccessToken(false);
+
+    const baseUrl = config.hmisAPIEndpoints.userServiceBaseUrl;
+    const accountPath = config.hmisAPIEndpoints.account.replace(
+      '{{accountId}}',
+      userId
+    );
+    const urlPah = `${baseUrl}${accountPath}`;
+    // const url = `${urlPah}?${querystring.stringify(params)}`;
+    const url = `${urlPah}`;
+
+    logger.info(url);
+
+    try {
+      const response = HTTP.get(url, {
+        headers: {
+          'X-HMIS-TrustedApp-Id': config.appId,
+          Authorization: `HMISUserAuth session_token=${accessToken}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }).data;
+
+      return response.account;
+    } catch (err) {
+      // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
+      //                {response: err.response});
+      logger.info(`Failed to get user from HMIS. ${err.message}`);
+      logger.info(JSON.stringify(err.response));
+      return false;
+    }
+  },
   createSurveyServiceQuestions(
     question, questionGroupId = '95bdca23-5135-4552-9f11-819cab1aaa45'
   ) {

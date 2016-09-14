@@ -76,7 +76,8 @@
     "projectSetup": true,
     "projectGroups": true,
     "userProfiles": true,
-    "hmisRoles": true
+    "hmisRoles": true,
+    "singleHMISUser": true
   },
   "rules": {
     "no-underscore-dangle": [
