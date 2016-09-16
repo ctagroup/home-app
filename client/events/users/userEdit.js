@@ -76,11 +76,11 @@ Template.AdminDashboardusersEdit.events({
     const middleName = tmpl.find('.mName').value.trim();
     const lastName = tmpl.find('.lName').value.trim();
 
-    const projectGroupId = tmpl.find('.projectGroup').value;
+    // const projectGroupId = tmpl.find('.projectGroup').value;
     const roleIds = $(tmpl.find('.role')).val();
     const userProfileId = tmpl.find('.userProfile').value;
 
-    const projectGroup = projectGroups.findOne({ projectGroupId });
+    // const projectGroup = projectGroups.findOne({ projectGroupId });
     const profile = userProfiles.findOne({ id: userProfileId });
 
     const newRoles = hmisRoles.find({ id: { $in: roleIds } }).fetch();
@@ -93,7 +93,7 @@ Template.AdminDashboardusersEdit.events({
       firstName,
       middleName,
       lastName,
-      projectGroup,
+      // projectGroup,
       profile,
     };
 

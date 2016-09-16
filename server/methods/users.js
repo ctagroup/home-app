@@ -58,9 +58,7 @@ Meteor.methods(
         HMISAPI.deleteUserRole(localUser.services.HMIS.accountId, oldRoles[i].id);
       }
 
-      for (let i = 0; i < newRoles.length; i++) {
-        HMISAPI.updateUserRole(localUser.services.HMIS.accountId, newRoles[i]);
-      }
+      HMISAPI.updateUserRoles(localUser.services.HMIS.accountId, newRoles);
     },
     adminNewUser(doc) {
       let emails = [];
