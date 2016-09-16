@@ -1253,7 +1253,7 @@ HMISAPI = {
       return false;
     }
   },
-  updateUserRole(userId, roleObj) {
+  updateUserRoles(userId, rolesObj) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (! config) {
       throw new ServiceConfiguration.ConfigError();
@@ -1271,7 +1271,9 @@ HMISAPI = {
     const url = `${urlPah}`;
 
     const body = {
-      role: roleObj,
+      roles: {
+        role: roleObj,
+      },
     };
 
     logger.info(url);

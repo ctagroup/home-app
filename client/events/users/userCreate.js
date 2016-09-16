@@ -13,11 +13,11 @@ Template.AdminDashboardusersNew.events(
       const username = emailAddress;
       const password = tmpl.find('.password').value;
       const confirmPassword = password;
-      const projectGroupId = tmpl.find('.projectGroup').value;
+      // const projectGroupId = tmpl.find('.projectGroup').value;
       const roleIds = $(tmpl.find('.role')).val();
       const userProfileId = tmpl.find('.userProfile').value;
-      const projectGroup = projectGroups.findOne({ projectGroupId });
-      const role = hmisRoles.find({ id: { $in: roleIds } });
+      // const projectGroup = projectGroups.findOne({ projectGroupId });
+      const roles = hmisRoles.find({ id: { $in: roleIds } }).fetch();
       const profile = userProfiles.findOne({ id: userProfileId });
 
       const userObj = {
@@ -28,8 +28,8 @@ Template.AdminDashboardusersNew.events(
         firstName,
         middleName,
         lastName,
-        projectGroup,
-        role,
+        // projectGroup,
+        roles,
         profile,
       };
 

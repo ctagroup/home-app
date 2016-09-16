@@ -4,18 +4,18 @@
 
 Template.userForm.helpers(
   {
-    getProjectGroups() {
-      return projectGroups.find({}).fetch();
-    },
+    // getProjectGroups() {
+    //   return projectGroups.find({}).fetch();
+    // },
     getUserProfiles() {
       return userProfiles.find({}).fetch();
     },
     getHMISRoles() {
       return hmisRoles.find({}).fetch();
     },
-    isProjectGroupSelected(projectGroupOptionId, currentProjectGroupId) {
-      return (projectGroupOptionId === currentProjectGroupId) ? 'selected' : '';
-    },
+    // isProjectGroupSelected(projectGroupOptionId, currentProjectGroupId) {
+    //   return (projectGroupOptionId === currentProjectGroupId) ? 'selected' : '';
+    // },
     isProfileSelected(profileOptionId, currentProfileId) {
       return (profileOptionId === currentProfileId) ? 'selected' : '';
     },

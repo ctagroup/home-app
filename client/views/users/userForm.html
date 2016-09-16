@@ -40,17 +40,17 @@
     </div>
   {{/unless}}
 
-  <div class="form-group">
-    <label class="col-lg-4 control-label">Project Group:</label>
-    <div class="col-lg-8">
-      <select class="projectGroup form-control" required>
-        <option>Select Project Group</option>
-        {{#each getProjectGroups}}
-          <option value="{{projectGroupId}}" {{isProjectGroupSelected projectGroupId ../projectGroup.projectGroupId}}>{{projectGroupCode}} - {{projectGroupName}}</option>
-        {{/each}}
-      </select>
-    </div>
-  </div>
+  <!--<div class="form-group">-->
+    <!--<label class="col-lg-4 control-label">Project Group:</label>-->
+    <!--<div class="col-lg-8">-->
+      <!--<select class="projectGroup form-control" required>-->
+        <!--<option>Select Project Group</option>-->
+        <!--{{#each getProjectGroups}}-->
+          <!--<option value="{{projectGroupId}}" {{isProjectGroupSelected projectGroupId ../projectGroup.projectGroupId}}>{{projectGroupCode}} - {{projectGroupName}}</option>-->
+        <!--{{/each}}-->
+      <!--</select>-->
+    <!--</div>-->
+  <!--</div>-->
 
   <div class="form-group">
     <label class="col-lg-4 control-label">Role:</label>
@@ -58,7 +58,7 @@
       <select class="role form-control" multiple>
         <option>Select Role</option>
         {{#each getHMISRoles}}
-          <option value="{{id}}" {{isRoleSelected id ../roles.role}}>{{roleName}}</option>
+          <option value="{{id}}" {{isRoleSelected id ../roles}}>{{roleName}}</option>
         {{/each}}
       </select>
     </div>
