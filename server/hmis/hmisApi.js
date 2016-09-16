@@ -1272,7 +1272,7 @@ HMISAPI = {
 
     const body = {
       roles: {
-        role: roleObj,
+        role: rolesObj,
       },
     };
 
