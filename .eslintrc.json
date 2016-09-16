@@ -77,7 +77,9 @@
     "projectGroups": true,
     "userProfiles": true,
     "hmisRoles": true,
-    "singleHMISUser": true
+    "singleHMISUser": true,
+    "hmisQuesSync": true,
+    "hmisSurveySync": true
   },
   "rules": {
     "no-underscore-dangle": [

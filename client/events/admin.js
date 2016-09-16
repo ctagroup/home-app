@@ -596,33 +596,31 @@ Template.questionForm.events(
     },
     'click .save'(event, tmpl) {
       // Getting all values from template. Also creating complete object acc to API.
-      let qCategory = tmpl.find('.q_category').value;
-      if (qCategory === 'Other') {
-        qCategory = tmpl.find('.category').value;
+      let category = tmpl.find('.q_category').value;
+      if (category === 'Other') {
+        category = tmpl.find('.category').value;
       }
-      const questionDescription = tmpl.find('.q_name').value;
-      const displayText = $(tmpl.find('.question')).summernote('code');
+      const name = tmpl.find('.q_name').value;
+      const question = $(tmpl.find('.question')).summernote('code');
 
-      const qDataType = tmpl.find('.q_dataType').value;
-      const qType = $('#q_type').val();
+      const dataType = tmpl.find('.q_dataType').value;
+      const qtype = $('#q_type').val();
       const audience = $('#q_audience').val();
       const locked = tmpl.find('#locked').checked;
       const allowSkip = tmpl.find('#allowSkip').checked;
       const isUploaded = tmpl.find('#isUploaded').value;
-      const copyQuestionId = tmpl.find('#isCopy').checked;
+      const isCopy = tmpl.find('#isCopy').checked;
 
       let options = [];
       const selectstatus = false;
       let optionArray;
-      let temp;
-      const pickListValues = { pickListValues: [] };
-      logger.log(`qtype= ${qType}`);
+      logger.log(`qtype= ${qtype}`);
       logger.log(`audience= ${audience}`);
       if ((
-          qDataType === 'Multiple Select'
+          dataType === 'Multiple Select'
           ) ||
           (
-            qDataType === 'Single Select'
+            dataType === 'Single Select'
           )) {
         // options = tmpl.find('#options').value;
         // selectstatus=true;
@@ -632,25 +630,21 @@ Template.questionForm.events(
             optionArray.value = $(item).find('.value').val();
             optionArray.description = $(item).find('.description').val();
             options.push(optionArray);
-            temp = {};
-            temp.pickListValueCode = $(item).find('.value').val();
-            temp.valueText = $(item).find('.description').val();
-            pickListValues.pickListValues.push(temp);
           }
         );
       } else {
         options = '';
       }
-      if (qCategory === '') {
+      if (category === '') {
         $('#error').html('<b>Please select a question category</b>');
         $('#error').show();
-      } else if (questionDescription === '') {
+      } else if (name === '') {
         $('#error').html('<b>Please enter a questions name</b>');
         $('#error').show();
-      } else if (displayText === '') {
+      } else if (question === '') {
         $('#error').html('<b>Please enter a display text</b>');
         $('#error').show();
-      } else if (qDataType === '') {
+      } else if (dataType === '') {
         $('#error').html('<b>Please select a datatype</b>');
         $('#error').show();
       } else if ((
@@ -667,213 +661,63 @@ Template.questionForm.events(
         // Setting components for Survey Service API.
         const isUpdate = $('#isUpdate').val();
         const questionID = $('#questionID').val();
-        const correctValueForAssessment = null;
-        const hudQuestion = (qType === 'hud');
-        const questionWeight = 0;
-        let questionDataType;
-        let questionType;
-        switch (qDataType) {
-          case 'TextBox(Integer)':
-            questionDataType = 'NUMBER'; break;
-          case 'Boolean':
-            questionDataType = 'BOOLEAN';
-            break;
-          default:
-            questionDataType = 'STRING';
-        }
-        switch (qDataType) {
-          case 'Multiple Select':
-            questionType = 'CHECKBOX'; break;
-          // case 'Boolean': Does not have a pick list assigned to it in implementation.
-          case 'Single Select':
-            questionType = 'RADIOBUTTON'; break;
-          default:
-            questionType = 'TEXT';
-        }
-        const question = {
-          questionDescription, displayText, questionDataType, questionType,
-          correctValueForAssessment, copyQuestionId, hudQuestion, locked, questionWeight };
-        const pickListGroupName = displayText.split(/\s+/).slice(1, 5).join(' ');
-        const pickListGroup = { pickListGroupName };
+        // ----------hmisQuesSync----------
         // check here for surveyServiceQuesId. If already there, update else save.
         logger.info(`Question Add and update: ${(isUploaded) ? 'Update' : 'Add'}`);
-        if (isUploaded) {
+        if (isUploaded) { // isUploaded by default contains the API Id.
           // Means it is already uploaded to HMIS Survey Service. We have the ID.
-          Meteor.call('gettingQuestionDetails', isUploaded, (error, resul) => {
-            if (error) {
-              logger.info(error);
-            } else {
-              logger.info(resul);
-              if (qDataType === 'Single Select' || qDataType === 'Multiple Select') {
-                Meteor.call('deleteOldPickListGroup', resul.pickListGroupId, (erro, resu) => {
-                  if (erro) {
-                    logger.error(`ERROR Pick List Group Delete: ${erro}`);
-                  } else {
-                    logger.info(`Pick List Group Delete: ${resu}`);
-                    // Create new PLG, get ID.
-                    Meteor.call('addingPickListGroup', pickListGroup, (err, res) => {
-                      if (err) {
-                        logger.error(`ERROR Pick List Group Create: ${err}`);
-                      } else {
-                        logger.info(`Pick List Group Create: ${JSON.stringify(res)}`);
-                        question.pickListGroupId = res.pickListGroupId;
-                        Meteor.call(
-                          'addingPickListValues', res.pickListGroupId, pickListValues,
-                          (er, re) => {
-                            if (er) {
-                              logger.error(`ERROR Pick List Values Add: ${er}`);
-                            } else {
-                              logger.info(`Pick List Values Add: ${re}`);
-                              Meteor.call('updatingQuestionSurveyService',
-                                question, isUploaded, (e, r) => {
-                                  if (e) {
-                                    logger.error(`ERROR Question Update: ${e}`);
-                                  } else {
-                                    logger.info(`Question Update: ${r}`);
-                                    Meteor.call(
-                                      'updateQuestion', questionID, qCategory, questionDescription,
-                                      displayText, qDataType, options, qType,
-                                      audience, locked, allowSkip, copyQuestionId,
-                                      isUploaded, (Err, Res) => {
-                                        if (Err) {
-                                          logger.error(`ERROR Mongo Update: ${Err}`);
-                                        } else {
-                                          logger.log(`Mongo Update: ${Res}`);
-                                          resetQuestionModal();
-                                        }
-                                      }
-                                    );
-                                  }
-                                });
-                            }
-                          }
-                        );
-                      }
-                    });
-                  }
-                });
-              } else {
-                logger.info(JSON.stringify(question));
-                Meteor.call('updatingQuestionSurveyService', question, isUploaded, (e, r) => {
-                  if (e) {
-                    logger.error(`ERROR Question Update: ${e}`);
-                  } else {
-                    logger.info(`Question Update: ${r}`);
-                    Meteor.call('updateQuestion', questionID, qCategory, questionDescription,
-                      displayText, qDataType, options, qType,
-                      audience, locked, allowSkip, copyQuestionId, isUploaded, (Err, Res) => {
-                        if (Err) {
-                          logger.error(`ERROR Mongo Update: ${Err}`);
-                        } else {
-                          logger.log(`Mongo Update: ${Res}`);
-                          resetQuestionModal();
-                        }
-                      }
-                    );
-                  }
-                });
+          const surveyServiceQuesId = isUploaded;
+          const ques = { name, question, category, options, dataType, qtype,
+            audience, locked, allowSkip, isCopy, surveyServiceQuesId };
+          hmisQuesSync.updatingQuesToHmis(ques);
+          if (isUpdate === '1') {
+            Meteor.call(
+              'updateQuestion', questionID, category, name,
+              question, dataType, options, qtype, audience,
+              locked, allowSkip, isCopy, surveyServiceQuesId, (error, result) => {
+                if (error) {
+                  logger.error(`ERROR Mongo Update: ${error}`);
+                } else {
+                  logger.info(`Mongo Update: ${result}`);
+                  resetQuestionModal();
+                }
               }
-              // Call updateQuestionToSurveyService here.
-              // Call meteor callbacks in result of those, so that we can update locally.
-            }
-          });
+            );
+          }
         } else {
           // It's not yet uploaded, upload it to HMIS first, then save the QID recvd in Mongo.
-          if (qDataType === 'Single Select' || qDataType === 'Multiple Select') {
+          if (isUpdate === '1') {
             Meteor.call(
-              'addingPickListGroup', pickListGroup, (e, r) => {
-                if (e) {
-                  logger.log(e);
+              'updateQuestion', questionID, category, name, question, dataType, options, qtype,
+              audience, locked, allowSkip, isCopy, (error, result) => {
+                if (error) {
+                  logger.error(`ERROR Mongo Update: ${error}`);
                 } else {
-                  logger.log(r);
-                  question.pickListGroupId = r.pickListGroupId;
-                  Meteor.call(
-                    'addingPickListValues', r.pickListGroupId, pickListValues, (er, re) => {
-                      if (er) {
-                        logger.log(er);
-                      } else {
-                        logger.info(re);
-                        Meteor.call(
-                          'addingQuestionSurveyService', question, (err, res) => {
-                            if (err) {
-                              logger.error(err);
-                            } else {
-                              const surveyServiceQuesId = res.questionId;
-                              // Call question save to Mongo DB here.
-                              if (isUpdate === '1') {
-                                Meteor.call(
-                                  'updateQuestion', questionID, qCategory, questionDescription,
-                                  displayText, qDataType, options, qType, audience,
-                                  locked, allowSkip, copyQuestionId, surveyServiceQuesId,
-                                  (error, result) => {
-                                    if (error) {
-                                      logger.error(`ERROR Mongo Update: ${error}`);
-                                    } else {
-                                      logger.info(`Mongo Update: ${result}`);
-                                      resetQuestionModal();
-                                    }
-                                  }
-                                );
-                              } else {
-                                Meteor.call(
-                                  'addQuestion', qCategory, questionDescription, displayText,
-                                  qDataType, options, qType, audience, locked,
-                                  allowSkip, copyQuestionId, surveyServiceQuesId,
-                                  (error, result) => {
-                                    if (error) {
-                                      logger.error(`ERROR Mongo Add: ${error}`);
-                                    } else {
-                                      logger.info(`Mongo Add: ${result}`);
-                                      resetQuestionModal();
-                                    }
-                                  }
-                                );
-                              }
-                            }
-                          }
-                        );
-                      }
-                    }
-                  );
+                  logger.info(`Mongo Update: ${result}`);
+                  // Send the question Id also.
+                  const ques = { name, question, category, options, dataType, qtype,
+                    audience, locked, allowSkip, isCopy };
+                  hmisQuesSync.addingQuestionToHmis(ques, questionID);
+                  resetQuestionModal();
                 }
               }
             );
           } else {
-            Meteor.call('addingQuestionSurveyService', question, (err, res) => {
-              if (err) {
-                logger.error(err);
-              } else {
-                const surveyServiceQuesId = res.questionId;
-                // Call question save to Mongo DB here.
-                if (isUpdate === '1') {
-                  Meteor.call(
-                    'updateQuestion', questionID, qCategory, questionDescription,
-                    displayText, qDataType, options, qType, audience,
-                    locked, allowSkip, copyQuestionId, surveyServiceQuesId, (error, result) => {
-                      if (error) {
-                        logger.error(`ERROR Mongo Update: ${error}`);
-                      } else {
-                        logger.info(`Mongo Update: ${result}`);
-                        resetQuestionModal();
-                      }
-                    }
-                  );
+            Meteor.call(
+              'addQuestion', category, name, question, dataType,
+              options, qtype, audience, locked, allowSkip, isCopy, (error, resultId) => {
+                if (error) {
+                  logger.error(`ERROR Mongo Add: ${error}`);
                 } else {
-                  Meteor.call(
-                    'addQuestion', qCategory, questionDescription, displayText, qDataType,
-                    options, qType, audience, locked, allowSkip, copyQuestionId,
-                    surveyServiceQuesId, (error, result) => {
-                      if (error) {
-                        logger.error(`ERROR Mongo Add: ${error}`);
-                      } else {
-                        logger.info(`Mongo Add: ${result}`);
-                        resetQuestionModal();
-                      }
-                    }
-                  );
+                  logger.info(`Mongo Add: ${resultId}`);
+                  // send question Id also.
+                  const ques = { name, question, category, options, dataType, qtype,
+                    audience, locked, allowSkip, isCopy };
+                  hmisQuesSync.addingQuestionToHmis(ques, resultId);
+                  resetQuestionModal();
                 }
               }
-            });
+            );
           }
         }
       }

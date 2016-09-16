@@ -180,5 +180,31 @@ Meteor.methods(
       );
       surveyQuestionsMasterCollection.remove({ surveyTitle: surveyCopyTitle });
     },
+    creatingHMISSurvey(surveyTitle, surveyOwner, tagValue, locked, copySurveyId) {
+      const survey = { surveyTitle, surveyOwner, tagValue, locked, copySurveyId };
+      return HMISAPI.createSurvey(survey);
+    },
+    creatingHMISSection(surveyId, sectionText, order) {
+      const sectionDetail = '';
+      const sectionWeight = 0;
+      const surveySection = { sectionText, sectionDetail, sectionWeight, order };
+      return HMISAPI.createSection(surveySection, surveyId);
+    },
+    creatingQuestionMapping(surveyId, sectionId, required, questionId) {
+      const sectionQuestionMappings = { sectionQuestionMappings: [
+        { question: { questionId }, required },
+      ] };
+      return HMISAPI.createSurveyQuestionMappings(surveyId, sectionId, sectionQuestionMappings);
+    },
+    addSectionMongoApiId(_id, apiSurveyServiceId) {
+      surveyQuestionsMaster.update(_id,
+        { $set: { apiSurveyServiceId } });
+      logger.info('Hmis Survey Section Id Added to mongo');
+    },
+    addSurveyApiId(_id, apiSurveyServiceId) {
+      surveys.update(_id,
+        { $set: { apiSurveyServiceId } });
+      logger.info('Hmis Survey Id Added to mongo');
+    },
   }
 );
