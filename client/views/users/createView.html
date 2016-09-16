@@ -1,14 +1,14 @@
 <template name="AdminDashboardusersNew">
   <div class="row">
     <div class="col-md-6 col-md-offset-1">
-      <form id="create-housing-form" class="form-horizontal" role="form">
+      <form id="create-user" class="form-horizontal" role="form">
 
         {{> userForm}}
 
         <div class="form-group">
           <label class="col-md-4 control-label"></label>
           <div class="col-md-8">
-            <a href="#" class="btn btn-large btn-success createUser">Create</a>
+            <input type="submit" class="btn btn-large btn-success" value="Create" />
             <a  href='/users' class="btn btn-large btn-default cancelUser">Cancel</a>
           </div>
         </div>

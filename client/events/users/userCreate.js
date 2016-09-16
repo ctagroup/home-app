@@ -4,7 +4,7 @@
 
 Template.AdminDashboardusersNew.events(
   {
-    'click .createUser': (evt, tmpl) => {
+    'submit #create-user': (evt, tmpl) => {
       evt.preventDefault();
       const firstName = tmpl.find('.fName').value.trim();
       const middleName = tmpl.find('.mName').value.trim();
