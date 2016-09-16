@@ -70,7 +70,7 @@ Template.AdminDashboardusersEdit.events({
       $('.home-spinner').removeClass('show').addClass('hide');
     });
   },
-  'click .saveHMISProfile': (e, tmpl) => {
+  'submit #edit-user': (e, tmpl) => {
     e.preventDefault();
     const firstName = tmpl.find('.fName').value.trim();
     const middleName = tmpl.find('.mName').value.trim();
