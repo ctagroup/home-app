@@ -22,7 +22,13 @@ Meteor.methods(
           locked,
           allowSkip,
           isCopy,
+        }, (err, doc) => {
+        if (err) {
+          return false;
         }
+        logger.info(`AddQuestion: ${JSON.stringify(doc)}`);
+        return doc;
+      }
       );
     },
     updateQuestion(
@@ -92,6 +98,10 @@ Meteor.methods(
       }
       // Removing from Mongo.
       questionsCollection.remove({ _id });
+    },
+    putSurveyApiId(_id, surveyServiceQuesId) {
+      questions.update(_id, { $set: { surveyServiceQuesId } });
+      logger.info(`Successfully updated SSQId: ${surveyServiceQuesId}`);
     },
   }
 );
