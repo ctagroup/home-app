@@ -87,7 +87,7 @@ Template.AdminDashboardusersEdit.events({
 
     const localUser = users.findOne({ _id: Router.current().params._id });
     const hmisUser = singleHMISUser.findOne({ _id: localUser.services.HMIS.accountId });
-    const oldRoles = hmisUser.roles.role;
+    const oldRoles = hmisUser.roles;
 
     const userObj = {
       firstName,
