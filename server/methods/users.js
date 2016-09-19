@@ -52,13 +52,28 @@ Meteor.methods(
       return user;
     },
     updateHMISUserRoles(userId, oldRoles, newRoles) {
+
+      const oldRoleIds = oldRoles.map((item) => {
+        return item.id;
+      });
+
+      const newRoleIds = newRoles.map((item) => {
+        return item.id;
+      });
+
+      const intersection = oldRoleIds.filter((item) => {
+        return newRoleIds.indexOf(item) != -1;
+      });
+
       const localUser = users.findOne({ _id: userId });
 
-      for (let i = 0; i < oldRoles.length; i++) {
-        HMISAPI.deleteUserRole(localUser.services.HMIS.accountId, oldRoles[i].id);
-      }
-
       HMISAPI.updateUserRoles(localUser.services.HMIS.accountId, newRoles);
+
+      for (let i = 0; i < oldRoles.length; i++) {
+        if (intersection.indexOf(oldRoles[i].id) === -1) {
+          HMISAPI.deleteUserRole(localUser.services.HMIS.accountId, oldRoles[i].id);
+        }
+      }
     },
     adminNewUser(doc) {
       let emails = [];
