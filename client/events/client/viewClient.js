@@ -5,6 +5,25 @@ const querystring = require('querystring');
 
 Template.viewClient.onRendered(() => {
   $('body').addClass('sidebar-collapse');
+
+  $('a[data-toggle="tab"]').on('shown.bs.tab', (e) => {
+
+    //update progress
+    const step = $(e.target).data('step');
+    const total = HomeConfig.collections.clients.referralStatus.length;
+    const percent = (parseInt(step+1) / total) * 100;
+
+    $('.progress-bar').css({width: `${percent}%`});
+    $('.progress-bar').text(`${step+1} / ${total}`);
+
+    const btnClass = HomeConfig.collections.clients.referralStatus[parseInt(step)].btnClass;
+
+    $('#referral-timeline .navigation a').removeClass().addClass('btn btn-sm btn-arrow-right btn-default');
+    $(e.currentTarget).removeClass('btn-default').addClass(btnClass);
+
+    //e.relatedTarget // previous tab
+  });
+
 });
 
 Template.viewClient.onDestroyed(() => {

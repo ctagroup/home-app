@@ -56,6 +56,18 @@ function getUniversalElements() {
 
 Template.viewClient.helpers(
   {
+    isReferralStatusActive(step) {
+      if (step == '1') {
+        return 'active';
+      }
+      return '';
+    },
+    isReferralStatusActiveButton(step) {
+      if (step == '1') {
+        return HomeConfig.collections.clients.referralStatus[parseInt(step)].btnClass;
+      }
+      return 'btn-default';
+    },
     alertMessages() {
       const params = Router.current().params;
 
