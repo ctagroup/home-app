@@ -45,39 +45,39 @@ Template.AdminDashboardusersNew.events(
       }
 
       if (errors.length > 0) {
-        const seperator = '</p><p class="alert alert-danger">'
-        const errorsHtml = `<p class="alert alert-danger">${errors.join(seperator)}</p>`;
+        const separator = '</p><p class="alert alert-danger">';
+        const errorsHtml = `<p class="alert alert-danger">${errors.join(separator)}</p>`;
         $(tmpl.find('.errors')).html(errorsHtml);
-        return false;
-      }
+      } else {
+        const userObj = {
+          username,
+          emailAddress,
+          password,
+          confirmPassword,
+          firstName,
+          middleName,
+          lastName,
+          // projectGroup,
+          roles,
+          profile,
+        };
 
-      const userObj = {
-        username,
-        emailAddress,
-        password,
-        confirmPassword,
-        firstName,
-        middleName,
-        lastName,
-        // projectGroup,
-        roles,
-        profile,
-      };
-
-      Meteor.call('createHMISUser', userObj, (error, result) => {
-        if (error) {
-          logger.info(error);
-        } else {
-          logger.info(result);
-
-          if (!result) {
-            const errorsHtml = `<p class="alert alert-danger">User could not be created. There was an error in HMIS system.</p>`;
-            $(tmpl.find('.errors')).html(errorsHtml);
+        Meteor.call('createHMISUser', userObj, (error, result) => {
+          if (error) {
+            logger.info(error);
           } else {
-            Router.go('/users');
+            logger.info(result);
+
+            if (!result) {
+              const message = 'User could not be created. There was an error in HMIS system.';
+              const errorsHtml = `<p class="alert alert-danger">${message}</p>`;
+              $(tmpl.find('.errors')).html(errorsHtml);
+            } else {
+              Router.go('/users');
+            }
           }
-        }
-      });
+        });
+      }
     },
   }
 );
