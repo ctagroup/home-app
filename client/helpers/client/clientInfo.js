@@ -57,14 +57,15 @@ function getUniversalElements() {
 Template.viewClient.helpers(
   {
     isReferralStatusActive(step) {
-      if (step == '1') {
+      if (step === '1') {
         return 'active';
       }
       return '';
     },
     isReferralStatusActiveButton(step) {
-      if (step == '1') {
-        return HomeConfig.collections.clients.referralStatus[parseInt(step)].btnClass;
+      if (step === '1') {
+        const index = parseInt(step, 10);
+        return HomeConfig.collections.clients.referralStatus[index].btnClass;
       }
       return 'btn-default';
     },
