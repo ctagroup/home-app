@@ -6,6 +6,9 @@ Template.AdminDashboardusersNew.events(
   {
     'submit #create-user': (evt, tmpl) => {
       evt.preventDefault();
+
+      $(tmpl.find('.errors')).html('');
+
       const firstName = tmpl.find('.fName').value.trim();
       const middleName = tmpl.find('.mName').value.trim();
       const lastName = tmpl.find('.lName').value.trim();
@@ -19,6 +22,34 @@ Template.AdminDashboardusersNew.events(
       // const projectGroup = projectGroups.findOne({ projectGroupId });
       const roles = hmisRoles.find({ id: { $in: roleIds } }).fetch();
       const profile = userProfiles.findOne({ id: userProfileId });
+
+      const errors = [];
+      if (password.length < 8 || password.length > 16) {
+        errors.push('Password length should be between 8 & 16.');
+      }
+
+      if (password.search(/[a-z]/) < 0) {
+        errors.push('Password should contain at least one lowercase character.');
+      }
+
+      if (password.search(/[A-Z]/) < 0) {
+        errors.push('Password should contain at least one uppercase character.');
+      }
+
+      if (password.search(/[0-9]/) < 0) {
+        errors.push('Password should contain at least one number.');
+      }
+
+      if (password.search(/[!@#$*"]/) < 0) {
+        errors.push('Password should contain at least one special character from [! @ # $ * "].');
+      }
+
+      if (errors.length > 0) {
+        const seperator = '</p><p class="alert alert-danger">'
+        const errorsHtml = `<p class="alert alert-danger">${errors.join(seperator)}</p>`;
+        $(tmpl.find('.errors')).html(errorsHtml);
+        return false;
+      }
 
       const userObj = {
         username,
@@ -38,7 +69,13 @@ Template.AdminDashboardusersNew.events(
           logger.info(error);
         } else {
           logger.info(result);
-          Router.go('/users');
+
+          if (!result) {
+            const errorsHtml = `<p class="alert alert-danger">User could not be created. There was an error in HMIS system.</p>`;
+            $(tmpl.find('.errors')).html(errorsHtml);
+          } else {
+            Router.go('/users');
+          }
         }
       });
     },
