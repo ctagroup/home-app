@@ -149,6 +149,44 @@
               </div>
             {{/if}}
 
+      {{#if currentUserCan 'System Admin'}}
+        <div class="row">
+          <div class="col-xs-12">
+            <h3>Referral Status</h3>
+            <div class="row">
+              <div class="col-xs-9 my-center-block">
+                <div id="referral-timeline">
+
+                  <div class="navigation">
+                    {{#each HomeConfig.collections.clients.referralStatus}}
+                      <a class="btn {{isReferralStatusActiveButton step}} btn-sm btn-arrow-right" href="#step{{step}}" data-toggle="tab" data-step="{{step}}">{{title}}</a>
+                    {{/each}}
+                  </div>
+
+                  <div class="progress">
+                    <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="2" aria-valuemin="1" aria-valuemax="{{HomeConfig.collections.clients.referralStatus.length}}" style="width: 18.18%;">
+                      2 / {{HomeConfig.collections.clients.referralStatus.length}}
+                    </div>
+                  </div>
+
+                  <div class="tab-content">
+                    {{#each HomeConfig.collections.clients.referralStatus}}
+                      <div class="tab-pane fade in {{isReferralStatusActive step}}" id="step{{step}}">
+                        <div class="well">
+                          <label>{{desc}}</label>
+                        </div>
+                      </div>
+                    {{/each}}
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      {{/if}}
+
             <div class="row margin-top-35">
                 <!-- edit form column -->
                 <div class="col-xs-12">
