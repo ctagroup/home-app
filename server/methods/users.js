@@ -52,18 +52,11 @@ Meteor.methods(
       return user;
     },
     updateHMISUserRoles(userId, oldRoles, newRoles) {
+      const oldRoleIds = oldRoles.map((item) => item.id);
 
-      const oldRoleIds = oldRoles.map((item) => {
-        return item.id;
-      });
+      const newRoleIds = newRoles.map((item) => item.id);
 
-      const newRoleIds = newRoles.map((item) => {
-        return item.id;
-      });
-
-      const intersection = oldRoleIds.filter((item) => {
-        return newRoleIds.indexOf(item) != -1;
-      });
+      const intersection = oldRoleIds.filter((item) => newRoleIds.indexOf(item) !== -1);
 
       const localUser = users.findOne({ _id: userId });
 
