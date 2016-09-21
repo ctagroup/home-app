@@ -47,24 +47,7 @@ Template.responseForm.helpers(
       return name;
     },
     surveyCompleted() {
-      let flag = false;
-
-      if (Router.current().route.getName() === 'adminDashboardresponsesEdit') {
-        const responseRecord = responses.findOne({ _id: Router.current().params._id });
-
-        if (responseRecord && responseRecord.responsestatus) {
-          const status = responseRecord.responsestatus;
-          if (status === 'Completed') {
-            // $('.savePaused_survey').hide();
-            // $('.pausePaused_survey').hide();
-            // $('.cancelPaused_survey').hide();
-            // $('#pauseSurvey').hide();
-            flag = true;
-          }
-        }
-      }
-
-      return flag;
+      return ResponseHelpers.isSurveyCompleted(Router.current().params._id);
     },
     sectionSkipped(sectionID) {
       return ResponseHelpers.isSkipped(sectionID);
