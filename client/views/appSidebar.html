@@ -9,9 +9,11 @@
 
     <ul class="sidebar-menu nav">
       {{#each admin_collections}}
-      <li class="{{isActivePath path=viewPath}}">
-        <a href="{{viewPath}}"> <i class="fa fa-{{this.icon}}"></i> <span>{{this.label}}</span> </a>
-      </li>
+        {{#if showSidebarMenuItem this.userRoles}}
+          <li class="{{isActivePath path=viewPath}}">
+            <a href="{{viewPath}}"> <i class="fa fa-{{this.icon}}"></i> <span>{{this.label}}</span> </a>
+          </li>
+        {{/if}}
       {{/each}}
     </ul>
 
@@ -21,17 +23,19 @@
       <!--</li>-->
     <!--</ul>-->
 
-    <ul class="sidebar-menu nav">
-      <li class="{{isActiveRoute 'roleManager'}}">
-        <a href="{{pathFor 'roleManager'}}"> <i class="fa fa-user-secret"></i> <span>Role Manager</span> </a>
-      </li>
-      <li class="{{isActiveRoute 'openingScript'}}">
-        <a href="{{pathFor 'openingScript'}}"> <i class="fa fa-comment"></i> <span>Opening Script</span> </a>
-      </li>
-      <li class="{{isActiveRoute 'projectSetup'}}">
-        <a href="{{pathFor 'projectSetup'}}"> <i class="fa fa-cog"></i> <span>Project Setup</span> </a>
-      </li>
-    </ul>
+    {{#if isInRole 'Developer,System Admin'}}
+      <ul class="sidebar-menu nav">
+        <li class="{{isActiveRoute 'roleManager'}}">
+          <a href="{{pathFor 'roleManager'}}"> <i class="fa fa-user-secret"></i> <span>Role Manager</span> </a>
+        </li>
+        <li class="{{isActiveRoute 'openingScript'}}">
+          <a href="{{pathFor 'openingScript'}}"> <i class="fa fa-comment"></i> <span>Opening Script</span> </a>
+        </li>
+        <li class="{{isActiveRoute 'projectSetup'}}">
+          <a href="{{pathFor 'projectSetup'}}"> <i class="fa fa-cog"></i> <span>Project Setup</span> </a>
+        </li>
+      </ul>
+    {{/if}}
 
   </aside>
 </template>
