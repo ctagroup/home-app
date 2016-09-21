@@ -6,24 +6,26 @@ const querystring = require('querystring');
 Template.viewClient.onRendered(() => {
   $('body').addClass('sidebar-collapse');
 
-  $('a[data-toggle="tab"]').on('shown.bs.tab', (e) => {
-    // update progress
-    const step = $(e.target).data('step');
-    const index = parseInt(step, 10);
-    const total = HomeConfig.collections.clients.referralStatus.length;
-    const percent = ((index + 1) / total) * 100;
+  if (Roles.userIsInRole(Meteor.user(), ['Developer', 'System Admin'])) {
+    $('a[data-toggle="tab"]').on('shown.bs.tab', (e) => {
+      // update progress
+      const step = $(e.target).data('step');
+      const index = parseInt(step, 10);
+      const total = HomeConfig.collections.clients.referralStatus.length;
+      const percent = ((index + 1) / total) * 100;
 
-    $('.progress-bar').css({ width: `${percent}%` });
-    $('.progress-bar').text(`${index + 1} / ${total}`);
+      $('.progress-bar').css({ width: `${percent}%` });
+      $('.progress-bar').text(`${index + 1} / ${total}`);
 
-    const btnClass = HomeConfig.collections.clients.referralStatus[index].btnClass;
+      const btnClass = HomeConfig.collections.clients.referralStatus[index].btnClass;
 
-    $('#referral-timeline .navigation a').removeClass()
-      .addClass('btn btn-sm btn-arrow-right btn-default');
-    $(e.currentTarget).removeClass('btn-default').addClass(btnClass);
+      $('#referral-timeline .navigation a').removeClass()
+        .addClass('btn btn-sm btn-arrow-right btn-default');
+      $(e.currentTarget).removeClass('btn-default').addClass(btnClass);
 
-    // e.relatedTarget // previous tab
-  });
+      // e.relatedTarget // previous tab
+    });
+  }
 });
 
 Template.viewClient.onDestroyed(() => {
