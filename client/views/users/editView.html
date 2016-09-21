@@ -9,21 +9,22 @@
       <h4>HOME App User Roles</h4>
       <img class="home-spinner hide" alt="spinner" src="/imgs/spinner.gif" />
       {{#each getUserRoles admin_current_id}}
-      <button class="btn btn-primary btn-xs {{#if isInRole 'manage_user_role' }}btn-remove-role{{/if}}" role="{{this}}" user="{{admin_current_id}}">{{this}}</button>
+        <button class="btn btn-primary btn-xs {{#if isInRole 'Developer,Super Admin' }}btn-remove-role{{/if}}" role="{{this}}" user="{{admin_current_id}}">{{this}}</button>
       {{/each}}
-      {{#if isInRole 'manage_user_role'}}
-      {{#each getOtherRoles admin_current_id}}
-      <button class="btn btn-default btn-xs btn-add-role" role="{{this}}" user="{{admin_current_id}}">{{this}}</button>
-      {{/each}}
-      {{#if getUserRoles admin_current_id}}
-      <p style="margin-top:5px;">Click a role to toggle it.</p>
+
+      {{#if isInRole 'Developer,Super Admin'}}
+        {{#each getOtherRoles admin_current_id}}
+          <button class="btn btn-default btn-xs btn-add-role" role="{{this}}" user="{{admin_current_id}}">{{this}}</button>
+        {{/each}}
+        {{#if getUserRoles admin_current_id}}
+          <p style="margin-top:5px;">Click a role to toggle it.</p>
+        {{else}}
+          <p>User not in any roles. Click a role to add it to a user.</p>
+        {{/if}}
       {{else}}
-      <p>User not in any roles. Click a role to add it to a user.</p>
-      {{/if}}
-      {{else}}
-      {{#unless getUserRoles admin_current_id}}
-      <p style="margin-top:5px;">User not in any roles.</p>
-      {{/unless}}
+        {{#unless getUserRoles admin_current_id}}
+          <p style="margin-top:5px;">User not in any roles.</p>
+        {{/unless}}
       {{/if}}
 
       <!--<hr/>-->
@@ -71,12 +72,14 @@
 
             {{> userForm}}
 
-            <div class="form-group">
-              <label class="col-md-4 control-label"></label>
-              <div class="col-md-8">
-                <input type="submit" class="btn btn-large btn-success" value="Save HMIS Profile" />
+            {{#if isInRole 'Developer,Super Admin'}}
+              <div class="form-group">
+                <label class="col-md-4 control-label"></label>
+                <div class="col-md-8">
+                  <input type="submit" class="btn btn-large btn-success" value="Save HMIS Profile" />
+                </div>
               </div>
-            </div>
+            {{/if}}
           </form>
         </div>
       </div>

@@ -7,21 +7,21 @@
   <div class="form-group">
     <label class="col-lg-4 control-label">First Name:</label>
     <div class="col-lg-8">
-      <input class="form-control fName" value={{firstName}} type="text" required />
+      <input class="form-control fName" value={{firstName}} type="text" required {{editFormDisabled}} />
     </div>
   </div>
 
   <div class="form-group">
     <label class="col-lg-4 control-label">Middle Name:</label>
     <div class="col-lg-8">
-      <input class="form-control mName" value={{middleName}} type="text" required />
+      <input class="form-control mName" value={{middleName}} type="text" required {{editFormDisabled}} />
     </div>
   </div>
 
   <div class="form-group">
     <label class="col-lg-4 control-label">Last Name:</label>
     <div class="col-lg-8">
-      <input class="form-control lName" value={{lastName}} type="text" required />
+      <input class="form-control lName" value={{lastName}} type="text" required {{editFormDisabled}} />
     </div>
   </div>
 
@@ -60,7 +60,7 @@
   <div class="form-group">
     <label class="col-lg-4 control-label">Role:</label>
     <div class="col-lg-8">
-      <select class="role form-control" multiple>
+      <select class="role form-control" multiple {{editFormDisabled}}>
         <option>Select Role</option>
         {{#each getHMISRoles}}
           <option value="{{id}}" {{isRoleSelected id ../roles}}>{{roleName}}</option>
@@ -72,7 +72,7 @@
   <div class="form-group">
     <label class="col-lg-4 control-label">Profile:</label>
     <div class="col-lg-8">
-      <select class="userProfile form-control">
+      <select class="userProfile form-control" {{editFormDisabled}}>
         <option>Select User Profile</option>
         {{#each getUserProfiles}}
           <option value="{{id}}" {{isProfileSelected id ../profile.id}}>{{profileName}}</option>
