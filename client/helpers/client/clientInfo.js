@@ -69,6 +69,9 @@ Template.viewClient.helpers(
       }
       return 'btn-default';
     },
+    showReferralStatus() {
+      return Roles.userIsInRole(Meteor.user(), ['Super Admin', 'Developer', 'Case Manager']);
+    },
     alertMessages() {
       const params = Router.current().params;
 
