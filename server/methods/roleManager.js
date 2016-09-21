@@ -10,7 +10,12 @@ Meteor.methods(
     },
     insertHomeRole(data) {
       const homeRolesCollection = HomeUtils.adminCollectionObject('homeRoles');
-      homeRolesCollection.insert(data);
+      try {
+        homeRolesCollection.insert(data);
+      } catch (err) {
+        logger.info(`Failed to insert home role. ${err.message}`);
+        logger.info(JSON.stringify(err));
+      }
     },
     generateDefaultHomeRoles() {
       const defaultHomeRoles = HomeConfig.defaultHomeRoles;
@@ -165,8 +170,9 @@ Meteor.methods(
       return dataz;
     },
     resetRolePermissions() {
-      const rolePermissionsCollection = HomeUtils.adminCollectionObject('rolePermissions');
-      rolePermissionsCollection.remove({});
+      homeRoles.remove({});
+      rolePermissions.remove({});
+      Meteor.call('generateDefaultHomeRoles');
       Meteor.call('generateHomeRolePermissions');
     },
   }
