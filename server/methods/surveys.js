@@ -206,5 +206,34 @@ Meteor.methods(
         { $set: { apiSurveyServiceId } });
       logger.info('Hmis Survey Id Added to mongo');
     },
+    updatingHmisSurvey(surveyId, surveyTitle, surveyOwner, tagValue, locked, copySurveyId) {
+      const survey = { surveyTitle, surveyOwner, tagValue, locked, copySurveyId };
+      return HMISAPI.updateHmisSurvey(surveyId, survey);
+    },
+    updatingHmisSection(surveyId, sectionId, sectionText, order) {
+      const sectionDetail = '';
+      const sectionWeight = 0;
+      const surveySection = { sectionText, sectionDetail, sectionWeight, order };
+      return HMISAPI.updateHmisSurveySection(surveySection, surveyId, sectionId);
+    },
+    updateQuesIdInSqm(_id, apiSurveyServiceId) {
+      surveyQuestionsMaster.update(_id, { $set: { apiSurveyServiceId } });
+      logger.info('Hmis Survey Question Id Added to mongo');
+    },
+    getAllHmisSections(surveyId) {
+      return HMISAPI.getHmisSurveySections(surveyId);
+    },
+    gettingQuesMapping(surveyId, sectionId) {
+      return HMISAPI.getHmisSurveyQuestionMappings(surveyId, sectionId);
+    },
+    deleteQuesMapping(surveyId, sectionId, questionId) {
+      return HMISAPI.deleteHmisSurveyQuestionMapping(surveyId, sectionId, questionId);
+    },
+    deleteHmisSection(surveyId, sectionId) {
+      return HMISAPI.deleteHmisSurveySection(surveyId, sectionId);
+    },
+    deleteQuesMappings(surveyId, sectionId, questionIds) {
+      return HMISAPI.deleteQuestionMappings(surveyId, sectionId, questionIds);
+    },
   }
 );

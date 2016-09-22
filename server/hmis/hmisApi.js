@@ -928,6 +928,7 @@ HMISAPI = {
           },
         }
       ).data;
+      // TODO Get all projects. It's giving only 30 entries.
       return response;
     } catch (err) {
       // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
@@ -1719,6 +1720,244 @@ HMISAPI = {
       return true;
     } catch (err) {
       logger.info(`Failed to add question Mapping in HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
+  updateHmisSurvey(surveyId, survey) {
+    const body = { survey };
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+    const accessToken = HMISAPI.getCurrentAccessToken();
+    // replace with survey Id in the url
+    const surveyPath =
+      config.hmisAPIEndpoints.survey.replace('{{surveyid}}', surveyId);
+
+    logger.info(config.hmisAPIEndpoints.surveyServiceBaseUrl + surveyPath);
+    logger.info(accessToken);
+    logger.info(JSON.stringify(body, null, 2));
+    try {
+      let response = HTTP.put(
+        config.hmisAPIEndpoints.surveyServiceBaseUrl + surveyPath, {
+          data: body,
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          npmRequestOptions: {
+            rejectUnauthorized: false, // TODO remove when deploy
+          },
+        }
+      ).data;
+      response = true;
+      return response;
+    } catch (err) {
+      logger.info(`Failed to update survey in HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
+  updateHmisSurveySection(surveySection, surveyId, sectionId) {
+    const body = { surveySection };
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+    const accessToken = HMISAPI.getCurrentAccessToken();
+    // replace with section Id in the url
+    let sectionPath =
+      config.hmisAPIEndpoints.surveySection.replace('{{surveyid}}', surveyId);
+    sectionPath =
+      sectionPath.replace('{{sectionid}}', sectionId);
+
+    logger.info(config.hmisAPIEndpoints.surveyServiceBaseUrl + sectionPath);
+    logger.info(accessToken);
+    try {
+      const response = HTTP.put(
+        config.hmisAPIEndpoints.surveyServiceBaseUrl + sectionPath, {
+          data: body,
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          npmRequestOptions: {
+            rejectUnauthorized: false, // TODO remove when deploy
+          },
+        }
+      ).data;
+      return response;
+    } catch (err) {
+      logger.info(`Failed to update survey section in HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
+  getHmisSurveySections(surveyId) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+    const accessToken = HMISAPI.getCurrentAccessToken();
+    // replace with questionId in the url
+    const sectionPath =
+      config.hmisAPIEndpoints.surveySections.replace('{{surveyid}}', surveyId);
+    try {
+      const response = HTTP.get(
+        config.hmisAPIEndpoints.surveyServiceBaseUrl + sectionPath, {
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          npmRequestOptions: {
+            rejectUnauthorized: false, // TODO remove when deploy
+          },
+        }
+      ).data;
+      logger.info(`HMISAPI get sections: ${JSON.stringify(response, null, 2)}`);
+      return response.surveySections.surveySections;
+    } catch (err) {
+      logger.info(`Failed to get sections from HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
+  getHmisSurveyQuestionMappings(surveyId, sectionId) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+    const accessToken = HMISAPI.getCurrentAccessToken();
+    // replace with questionId in the url
+    let questionMappingsPath =
+      config.hmisAPIEndpoints.surveyQuestions.replace('{{surveyid}}', surveyId);
+    questionMappingsPath = questionMappingsPath.replace('{{sectionid}}', sectionId);
+    try {
+      const response = HTTP.get(
+        config.hmisAPIEndpoints.surveyServiceBaseUrl + questionMappingsPath, {
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          npmRequestOptions: {
+            rejectUnauthorized: false, // TODO remove when deploy
+          },
+        }
+      ).data;
+      logger.info(`HMISAPI get Question Mappings: ${JSON.stringify(response, null, 2)}`);
+      return response.sectionQuestionMappings.sectionQuestionMappings;
+    } catch (err) {
+      logger.info(`Failed to get question from HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
+  deleteHmisSurveyQuestionMapping(surveyId, sectionId, questionId) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+
+    const accessToken = HMISAPI.getCurrentAccessToken();
+    let questionMappingsPath =
+      config.hmisAPIEndpoints.surveyQuestions.replace('{{surveyid}}', surveyId);
+    questionMappingsPath = questionMappingsPath.replace('{{sectionid}}', sectionId);
+    questionMappingsPath = questionMappingsPath.replace('{{questionid}}', questionId);
+    try {
+      const response = HTTP.del(
+        config.hmisAPIEndpoints.surveyServiceBaseUrl + questionMappingsPath, {
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          npmRequestOptions: {
+            rejectUnauthorized: false, // TODO remove when deploy
+          },
+        }
+      ).data;
+      logger.info(`Delete survey question Mapping ${JSON.stringify(response)}`);
+      return response;
+    } catch (err) {
+      logger.info(`Failed to delete question mapping from HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
+  deleteHmisSurveySection(surveyId, sectionId) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+
+    const accessToken = HMISAPI.getCurrentAccessToken();
+    let sectionPath =
+      config.hmisAPIEndpoints.surveyQuestions.replace('{{surveyid}}', surveyId);
+    sectionPath = sectionPath.replace('{{sectionid}}', sectionId);
+    try {
+      const response = HTTP.del(
+        config.hmisAPIEndpoints.surveyServiceBaseUrl + sectionPath, {
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          npmRequestOptions: {
+            rejectUnauthorized: false, // TODO remove when deploy
+          },
+        }
+      ).data;
+      logger.info(`Delete survey sections ${JSON.stringify(response)}`);
+      return response;
+    } catch (err) {
+      logger.info(`Failed to delete sections from HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
+  deleteQuestionMappings(surveyId, sectionId, questionIds) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+
+    const accessToken = HMISAPI.getCurrentAccessToken();
+    let sectionPath =
+      config.hmisAPIEndpoints.surveyQuestion.replace('{{surveyid}}', surveyId);
+    sectionPath = sectionPath.replace('{{sectionid}}', sectionId);
+    try {
+      for (let i = 0; i < questionIds.length; i++) {
+        const url = sectionPath.replace('{{questionid}}', questionIds[i]);
+        logger.info(`Deleting Mapping - ${url}`);
+        const response = HTTP.del(
+          config.hmisAPIEndpoints.surveyServiceBaseUrl + url, {
+            headers: {
+              'X-HMIS-TrustedApp-Id': config.appId,
+              Authorization: `HMISUserAuth session_token=${accessToken}`,
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            npmRequestOptions: {
+              rejectUnauthorized: false, // TODO remove when deploy
+            },
+          }
+        ).data;
+        logger.info(`Delete mappings ${JSON.stringify(response)}`);
+      }
+      return true;
+    } catch (err) {
+      logger.info(`Failed to delete mappings from HMIS. ${err.message}`);
       logger.info(err.response);
       return false;
     }
