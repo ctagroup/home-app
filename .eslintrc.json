@@ -79,7 +79,8 @@
     "hmisRoles": true,
     "singleHMISUser": true,
     "hmisQuesSync": true,
-    "hmisSurveySync": true
+    "hmisSurveySync": true,
+    "responseHmisHelpers": true
   },
   "rules": {
     "no-underscore-dangle": [

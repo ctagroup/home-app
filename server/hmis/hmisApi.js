@@ -1968,7 +1968,7 @@ HMISAPI = {
     if (! config) {
       throw new ServiceConfiguration.ConfigError();
     }
-    const responses = { responses: [ { questionId, responseText, sectionid, appid } ] };
+    const responses = { responses: [{ questionId, responseText, sectionid, appid }] };
     const body = { responses };
     const accessToken = HMISAPI.getCurrentAccessToken();
     let url = config.hmisAPIEndpoints.surveyServiceBaseUrl +
