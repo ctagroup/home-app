@@ -35,10 +35,16 @@ Meteor.methods(
       return responseRecords;
     },
     sendScoresToHMIS(surveyId, clientId, score) {
-      const sectionScoresId = HMISAPI.createSectionScores(surveyId, clientId, score);
-      if (sectionScoresId) {
-        // Add this ID to DB. For any reference.
-        logger.log(`SurveyResponse.Js: ${sectionScoresId}`);
+      // Send scores section-wise here.
+      for (let i = 0; i < score.length; i++) {
+        const sectionId = score[i].sectionId;
+        const sectionScore = { sectionScore: score[i].sectionScore };
+        const sectionScoresId =
+          HMISAPI.createSectionScores(surveyId, clientId, sectionId, sectionScore);
+        if (sectionScoresId) {
+          // Add this ID to DB. For any reference.
+          logger.log(`SurveyResponse.Js: ${sectionScoresId}`);
+        }
       }
     },
   }

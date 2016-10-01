@@ -1131,18 +1131,19 @@ HMISAPI = {
 
     return roles;
   },
-  createSectionScores(surveyId, clientId, score) {
+  createSectionScores(surveyId, clientId, sectionId, sectionScore) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (! config) {
       throw new ServiceConfiguration.ConfigError();
     }
-    const body = { score };
+    const body = { sectionScore };
     const accessToken = HMISAPI.getCurrentAccessToken();
-    let globalSectionScoresPath = config.hmisAPIEndpoints.sectionScores.replace(
+    let globalSectionScoresPath = config.hmisAPIEndpoints.sectionScore.replace(
       '{{client_id}}', clientId
     );
     globalSectionScoresPath = globalSectionScoresPath.replace('{{survey_id}}', surveyId);
-    logger.info(`Section Scores HMIS: ${JSON.stringify(globalSectionScoresPath, null, 2)} `);
+    globalSectionScoresPath = globalSectionScoresPath.replace('{{section_id}}', sectionId);
+    logger.info(`Section Scores HMIS path: ${globalSectionScoresPath} `);
     logger.info(`Section Scores HMIS: ${JSON.stringify(body, null, 2)} `);
     // put a for loop and upload scores one by one. If all do not go at once.
     try {
@@ -1958,6 +1959,41 @@ HMISAPI = {
       return true;
     } catch (err) {
       logger.info(`Failed to delete mappings from HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
+  addResponseToHmis(clientId, surveyId, appid, sectionid, questionId, responseText) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+    const responses = { responses: [ { questionId, responseText, sectionid, appid } ] };
+    const body = { responses };
+    const accessToken = HMISAPI.getCurrentAccessToken();
+    let url = config.hmisAPIEndpoints.surveyServiceBaseUrl +
+      config.hmisAPIEndpoints.responses.replace('{{clientid}}', clientId);
+    url = url.replace('{{surveyid}}', surveyId);
+    logger.info(`HMISAPI Create Question Mapping : ${url} - ${JSON.stringify(body, null, 2)} `);
+    try {
+      const response = HTTP.post(
+        url, {
+          data: body,
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          npmRequestOptions: {
+            rejectUnauthorized: false, // TODO remove when deploy
+          },
+        }
+      ).data;
+      logger.info(JSON.stringify(response, null, 2));
+      return response.response;
+    } catch (err) {
+      logger.info(`Failed to add responses in HMIS. ${err.message}`);
       logger.info(err.response);
       return false;
     }

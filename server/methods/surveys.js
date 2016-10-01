@@ -191,10 +191,16 @@ Meteor.methods(
       return HMISAPI.createSection(surveySection, surveyId);
     },
     creatingQuestionMapping(surveyId, sectionId, required, questionId) {
+        if (!required|| required === 'skip') {
+            required = false;
+        }
       const sectionQuestionMappings = { sectionQuestionMappings: [
         { question: { questionId }, required },
       ] };
-      return HMISAPI.createSurveyQuestionMappings(surveyId, sectionId, sectionQuestionMappings);
+      if (questionId) {
+          return HMISAPI.createSurveyQuestionMappings(surveyId, sectionId, sectionQuestionMappings);
+      }
+      return false;
     },
     addSectionMongoApiId(_id, apiSurveyServiceId) {
       surveyQuestionsMaster.update(_id,
