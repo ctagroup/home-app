@@ -1963,18 +1963,18 @@ HMISAPI = {
       return false;
     }
   },
-  addResponseToHmis(clientId, surveyId, appid, sectionid, questionId, responseText) {
+  addResponseToHmis(clientId, surveyId, appId, sectionId, questionId, responseText) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (! config) {
       throw new ServiceConfiguration.ConfigError();
     }
-    const responses = { responses: [{ questionId, responseText, sectionid, appid }] };
+    const responses = { responses: [{ questionId, responseText, sectionId, appId }] };
     const body = { responses };
     const accessToken = HMISAPI.getCurrentAccessToken();
     let url = config.hmisAPIEndpoints.surveyServiceBaseUrl +
       config.hmisAPIEndpoints.responses.replace('{{clientid}}', clientId);
     url = url.replace('{{surveyid}}', surveyId);
-    logger.info(`HMISAPI Create Question Mapping : ${url} - ${JSON.stringify(body, null, 2)} `);
+    logger.info(`HMISAPI Create Response : ${url} - ${JSON.stringify(body, null, 2)} `);
     try {
       const response = HTTP.post(
         url, {
@@ -1994,6 +1994,39 @@ HMISAPI = {
       return response.response;
     } catch (err) {
       logger.info(`Failed to add responses in HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
+  deleteSurveyScores(surveyId, clientId) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (! config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+    const accessToken = HMISAPI.getCurrentAccessToken();
+    let url = config.hmisAPIEndpoints.surveyServiceBaseUrl +
+      config.hmisAPIEndpoints.responses.replace('{{clientid}}', clientId);
+    url = url.replace('{{surveyid}}', surveyId);
+    try {
+      const response = HTTP.del(
+        url, {
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          npmRequestOptions: {
+            rejectUnauthorized: false, // TODO remove when deploy
+          },
+        }
+      ).data;
+      logger.info(`HMISAPI Delete Survey Scores ${JSON.stringify(response)}`);
+      return true;
+    } catch (err) {
+      // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
+      //                {response: err.response});
+      logger.info(`Failed to delete old Survey scores from HMIS. ${err.message}`);
       logger.info(err.response);
       return false;
     }
