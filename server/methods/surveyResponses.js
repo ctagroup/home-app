@@ -47,5 +47,8 @@ Meteor.methods(
         }
       }
     },
+    deleteOldScores(surveyId, clientId) {
+      return HMISAPI.deleteSurveyScores(surveyId, clientId);
+    },
   }
 );
