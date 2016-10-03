@@ -18,11 +18,11 @@ Template.globalHouseholdCreateView.events(
         (i, item) => {
           const optionArray = {
             // houseHoldMembershipId: '',
-            globalClientId: $(item).find('#clientID').text(),
+            globalClientId: $(item).find('.clientID').text(),
             // dateCreated: '',
             // dateUpdated: '',
-            userCreate: user.services.HMIS.accountId,
-            userUpdate: user.services.HMIS.accountId,
+            // userCreate: user.services.HMIS.accountId,
+            // userUpdate: user.services.HMIS.accountId,
             relationshipToHeadOfHousehold: $(item).find('.relationshiptohoh').val(),
             // globalHouseholdId: '',
           };

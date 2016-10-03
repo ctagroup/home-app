@@ -13,18 +13,27 @@ Meteor.publish(
       globalHouseholds = response.content;
       // according to the content received.
       logger.info(globalHouseholds.length);
-      for (let i = 0; i < response.page.totalPages; i += 1) {
+      // starting from 1. because we already got the 0th page in previous call
+      for (let i = 1; i < response.page.totalPages; i += 1) {
         const temp = HMISAPI.getGlobalHouseholdsForPublish(i);
         globalHouseholds.push(...temp.content);
         logger.info(`Temp: ${globalHouseholds.length}`);
-        _.each(temp.content, (item) => {
-          self.added('globalHouseholds', item.globalHouseholdId, item);
-        });
-        self.ready();
       }
-      if (response.page.totalPages === 0) {
-        self.ready();   // Condition where there are no records.
+
+      for (let i = 0; i < globalHouseholds.length; i += 1) {
+        globalHouseholds[i].headOfHouseholdClient = HMISAPI.getClient(
+          globalHouseholds[i].headOfHouseholdId,
+          // TODO: default schema because we don't know the schema for now.
+          'v2015',
+          // useCurrentUserObject
+          false
+        );
+        globalHouseholds[i].userCreateDetails = HMISAPI.getUserForPublish(globalHouseholds[i].userCreate);
+        globalHouseholds[i].userUpdateDetails = HMISAPI.getUserForPublish(globalHouseholds[i].userUpdate);
+        self.added('globalHouseholds', globalHouseholds[i].globalHouseholdId, globalHouseholds[i]);
       }
+      self.ready();
+
     } else {
       HMISAPI.setCurrentUserId('');
     }
@@ -49,10 +58,13 @@ Meteor.publish(
       }
 
       for (let i = 0; i < globalHousehold.clients.length; i += 1) {
-        // TODO: By default schema is v2015 bcz we don't have info on that for now.
+        let schema = 'v2015';
+        if (globalHousehold.clients[i].links[0].rel.indexOf('v2014') !== -1) {
+          schema = 'v2014';
+        }
         globalHousehold.clients[i].clientDetails = HMISAPI.getClient(
           globalHousehold.clients[i].globalClientId,
-          'v2015',
+          schema,
           // useCurrentUserObject
           false
         );

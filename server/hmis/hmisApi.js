@@ -788,10 +788,15 @@ HMISAPI = {
       '{{global_household_uuid}}',
        globalHouseholdID
     );
+
+    logger.info(config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHouseholdMembersPath);
+    logger.info(accessToken);
+    logger.info({ members: globalHouseholdMembers });
+
     try {
       const response = HTTP.post(
         config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHouseholdMembersPath, {
-          data: globalHouseholdMembers,
+          data: { members: globalHouseholdMembers },
           headers: {
             'X-HMIS-TrustedApp-Id': config.appId,
             Authorization: `HMISUserAuth session_token=${accessToken}`,
@@ -803,6 +808,7 @@ HMISAPI = {
           },
         }
       ).data;
+      logger.info(response);
       return response;
     } catch (err) {
       // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
@@ -823,6 +829,10 @@ HMISAPI = {
       '{{global_household_uuid}}',
        globalHouseholdID
     );
+
+    logger.info(config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHousehold);
+    logger.info(accessToken);
+
     try {
       const response = HTTP.del(
         config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHousehold, {
@@ -837,6 +847,7 @@ HMISAPI = {
           },
         }
       ).data;
+      logger.info(response);
       return response;
     } catch (err) {
       // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
