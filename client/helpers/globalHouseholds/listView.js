@@ -4,22 +4,21 @@
 Template.globalHouseholdListView.helpers(
   {
     hasGlobalHousehold() {
-      return globalHousehold.find({}).fetch();
+      return globalHouseholds.find({}).fetch();
     },
     globalHouseholdTableOptions() {
       // Deep Copy to avoid reference to the same array.
       // It was causing to add Edit/Delete column mulitple times
-      delete Session.keys.selectedClients;
-      let tableColumns = $.extend(true, [], HomeConfig.collections.globalHousehold.tableColumns);
+      let tableColumns = $.extend(true, [], HomeConfig.collections.globalHouseholds.tableColumns);
       let showEditColumn = true;
       let showDeleteColumn = true;
-      if (typeof HomeConfig.collections.globalHousehold.showEditColumn === 'boolean'
-          && HomeConfig.collections.globalHousehold.showEditColumn === false) {
+      if (typeof HomeConfig.collections.globalHouseholds.showEditColumn === 'boolean'
+          && HomeConfig.collections.globalHouseholds.showEditColumn === false) {
         showEditColumn = false;
       }
 
-      if (typeof HomeConfig.collections.globalHousehold.showDelColumn === 'boolean'
-          && HomeConfig.collections.globalHousehold.showDelColumn === false) {
+      if (typeof HomeConfig.collections.globalHouseholds.showDelColumn === 'boolean'
+          && HomeConfig.collections.globalHouseholds.showDelColumn === false) {
         showDeleteColumn = false;
       }
 
@@ -36,7 +35,7 @@ Template.globalHouseholdListView.helpers(
       };
     },
     globalHouseholdData() {
-      return () => globalHousehold.find({}).fetch();
+      return () => globalHouseholds.find({}).fetch();
     },
   }
 );

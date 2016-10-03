@@ -6,11 +6,20 @@ Template.searchClient.helpers(
   {
     isGlobalHousehold() {
       const route = Router.current().location.get().path.split('/')[1];
-      return route === 'globalHousehold';
+      return route === 'globalHouseholds';
     },
     searchClient(query, sync, callback) {
+      const options = {
+        limit: 10,
+      };
+
+      const route = Router.current().location.get().path.split('/')[1];
+      if (route === 'globalHouseholds') {
+        options.excludeLocalClients = true;
+      }
+
       Meteor.call(
-        'searchClient', query, { limit: 10 }, (err, res) => {
+        'searchClient', query, options, (err, res) => {
           if (err) {
             logger.log(err);
             return;
@@ -33,30 +42,21 @@ Template.searchClient.helpers(
     },
     clientSelected(event, dataObject) {
       const route = Router.current().location.get().path.split('/')[1];
-      if (route === 'globalHousehold') {
+      if (route === 'globalHouseholds') {
         if (dataObject.clientNotFound) {
           $('#search-client-keyword').val(dataObject.query).change();
-          // Router.go('adminDashboardclientsNew', {}, { query: `firstName=${dataObject.query}` });
         } else {
-          const query = {};
-          if (dataObject.isHMISClient) {
-            query.query = `isHMISClient=true&link=${encodeURIComponent(dataObject.link)}`;
-          }
-          const clientInfo = {};
-          clientInfo.clientId = dataObject._id;
-          clientInfo.clientName =
+          const client = {};
+          client.clientId = dataObject._id;
+          client.clientName =
             `${dataObject.firstName} ${dataObject.middleName} ${dataObject.lastName}`;
-          let clientDetails = Session.get('selectedClients');
-          if ((clientDetails === undefined) || (clientDetails === null)) {
-            clientDetails = [];
-          }
-          clientDetails.push(clientInfo);
-          Session.set('selectedClients', clientDetails);
-          // Router.go('viewClient', { _id: dataObject._id }, query);
+          $('.globalHouseholdMembers').append(globalHouseholdsHelpers.generateMemberHtml(client));
         }
       } else {
+        // NoOp Statement. Not going to be used anywhere.
+        const temp = '';
         if (dataObject.clientNotFound) {
-          $('#search-client-keyword').val(dataObject.query).change();
+          $('#search-client-keyword').val(dataObject.query + temp).change();
           Router.go('adminDashboardclientsNew', {}, { query: `firstName=${dataObject.query}` });
         } else {
           const query = {};

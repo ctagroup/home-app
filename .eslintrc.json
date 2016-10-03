@@ -48,7 +48,7 @@
     "LocationTracker": true,
     "housingUnits": true,
     "housingMatch": true,
-    "globalHousehold": true,
+    "globalHouseholds": true,
     "PreliminarySurvey": true,
     "SignaturePad": true,
     "SignaturePadConfig": true,
@@ -80,7 +80,8 @@
     "singleHMISUser": true,
     "hmisQuesSync": true,
     "hmisSurveySync": true,
-    "responseHmisHelpers": true
+    "responseHmisHelpers": true,
+    "globalHouseholdsHelpers": true
   },
   "rules": {
     "no-underscore-dangle": [
