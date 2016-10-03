@@ -28,12 +28,15 @@ Meteor.publish(
           // useCurrentUserObject
           false
         );
-        globalHouseholds[i].userCreateDetails = HMISAPI.getUserForPublish(globalHouseholds[i].userCreate);
-        globalHouseholds[i].userUpdateDetails = HMISAPI.getUserForPublish(globalHouseholds[i].userUpdate);
+        globalHouseholds[i].userCreateDetails = HMISAPI.getUserForPublish(
+          globalHouseholds[i].userCreate
+        );
+        globalHouseholds[i].userUpdateDetails = HMISAPI.getUserForPublish(
+          globalHouseholds[i].userUpdate
+        );
         self.added('globalHouseholds', globalHouseholds[i].globalHouseholdId, globalHouseholds[i]);
       }
       self.ready();
-
     } else {
       HMISAPI.setCurrentUserId('');
     }
