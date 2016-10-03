@@ -6,7 +6,10 @@ Template.globalHouseholdMembers.helpers(
   {
     getGlobalHouseholdMembers() {
       const globalHousehold = globalHouseholds.findOne({ _id: Router.current().params._id });
-      return globalHousehold.clients;
+      if (globalHousehold) {
+        return globalHousehold.clients;
+      }
+      return [];
     },
   }
 );

@@ -95,9 +95,8 @@ Meteor.methods(
               clientz._id = clientz.clientId;
               clientz.isHMISClient = true;
 
-              if (clientz.link.indexOf('v2015') !== -1) {
-                clientz.schema = 'v2015';
-              } else {
+              clientz.schema = 'v2015';
+              if (clientz.link.indexOf('v2014') !== -1) {
                 clientz.schema = 'v2014';
               }
 
