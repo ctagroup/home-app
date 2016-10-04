@@ -870,6 +870,10 @@ HMISAPI = {
       globalHouseholdId
     );
 
+    logger.info(config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHousehold);
+    logger.info(accessToken);
+    logger.info(body);
+
     try {
       const response = HTTP.put(
         config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHousehold, {
@@ -886,12 +890,12 @@ HMISAPI = {
         }
       ).data;
       logger.info(JSON.stringify(response));
-      HMISAPI.updateMembersToHousehold(response[0].globalHouseholdId, globalHouseholdMembers);
-      return response[0];
+      HMISAPI.updateMembersToHousehold(globalHouseholdId, globalHouseholdMembers);
+      return response;
     } catch (err) {
       // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
       //                {response: err.response});
-      logger.info(`Failed to get client info from HMIS. ${err.message}`);
+      logger.info(`Failed to update global household in HMIS. ${err.message}`);
       logger.info(err.response);
       return false;
     }
@@ -911,11 +915,12 @@ HMISAPI = {
 
     logger.info(config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHouseholdMembersPath);
     logger.info(accessToken);
+    logger.info({ members: globalHouseholdMembers });
 
     try {
       const response = HTTP.put(
         config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHouseholdMembersPath, {
-          data: globalHouseholdMembers,
+          data: { members: globalHouseholdMembers },
           headers: {
             'X-HMIS-TrustedApp-Id': config.appId,
             Authorization: `HMISUserAuth session_token=${accessToken}`,
@@ -932,7 +937,7 @@ HMISAPI = {
     } catch (err) {
       // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
       //                {response: err.response});
-      logger.info(`Failed to get client info from HMIS. ${err.message}`);
+      logger.info(`Failed to update members of global household in HMIS. ${err.message}`);
       logger.info(err.response);
       return false;
     }

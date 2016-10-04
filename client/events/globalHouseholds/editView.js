@@ -21,12 +21,12 @@ Template.globalHouseholdEditView.events(
         (i, item) => {
           const optionArray = {
             // houseHoldMembershipId: null,
-            globalClientId: $(item).find('#clientID').text(),
+            globalClientId: $(item).find('.clientID').text(),
             relationshipToHeadOfHousehold: $(item).find('.relationshiptohoh').val(),
             // dateCreate: '',
             // dateUpdate: '',
             // userCreate: '',
-            userUpdate: user.services.HMIS.accountId,
+            // userUpdate: user.services.HMIS.accountId,
             globalHouseholdId,
           };
           globalHouseholdMembers.push(optionArray);
