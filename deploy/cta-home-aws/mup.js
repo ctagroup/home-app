@@ -7,7 +7,7 @@ module.exports = {
       // password:
       // or leave blank for authenticate from ssh-agent
       pem: '/Users/udit/.ssh/home.pem',
-    }
+    },
   },
 
   meteor: {
@@ -17,7 +17,7 @@ module.exports = {
       image: 'abernix/meteord:base',
     },
     servers: {
-      one: {}
+      one: {},
     },
     buildOptions: {
       serverOnly: true,
@@ -25,11 +25,11 @@ module.exports = {
     env: {
       PORT: '3000',
       ROOT_URL: 'https://home.ctagroup.org',
-      MONGO_URL: 'mongodb://localhost/meteor'
+      MONGO_URL: 'mongodb://localhost/meteor',
     },
 
-    //dockerImage: 'kadirahq/meteord'
-    deployCheckWaitTime: 60
+    // dockerImage: 'kadirahq/meteord'
+    deployCheckWaitTime: 60,
   },
 
   mongo: {
