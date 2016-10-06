@@ -4,9 +4,6 @@
 
 Meteor.methods(
   {
-    getAllProjects() {
-      return HMISAPI.getProjects();
-    },
     createHouseUnit(housingObject) {
       return HMISAPI.createHousingUnit(housingObject);
     },

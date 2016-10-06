@@ -73,7 +73,7 @@
     "ResponseHelpers": true,
     "surveyFormatHelpers": true,
     "spdatScoreHelpers": true,
-    "projectSetup": true,
+    "projects": true,
     "projectGroups": true,
     "userProfiles": true,
     "hmisRoles": true,

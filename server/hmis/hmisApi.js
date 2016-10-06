@@ -942,29 +942,33 @@ HMISAPI = {
       return false;
     }
   },
-  getProjects(schemaVersion = 'v2015') {
+  getProjectsForPublish(from = 0, limit = 30, schemaVersion = 'v2015') {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
-    const accessToken = HMISAPI.getCurrentAccessToken();
+    const accessToken = HMISAPI.getCurrentAccessToken(false);
+
+    const baseUrl = config.hmisAPIEndpoints.clientBaseUrl;
+    const schemaPath = config.hmisAPIEndpoints[schemaVersion];
+    const projectsPath = config.hmisAPIEndpoints.projects;
+    const urlPah = `${baseUrl}${schemaPath}${projectsPath}`;
+    // const url = `${urlPah}?${querystring.stringify(params)}`;
+    // TODO: Check pagination params
+    const url = `${urlPah}?startIndex=${from}&maxItems=${limit}`;
 
     try {
-      const response = HTTP.get(
-        config.hmisAPIEndpoints.clientBaseUrl
-        + config.hmisAPIEndpoints[schemaVersion]
-        + config.hmisAPIEndpoints.projects, {
-          headers: {
-            'X-HMIS-TrustedApp-Id': config.appId,
-            Authorization: `HMISUserAuth session_token=${accessToken}`,
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-        }
-      ).data;
+      const response = HTTP.get(url, {
+        headers: {
+          'X-HMIS-TrustedApp-Id': config.appId,
+          Authorization: `HMISUserAuth session_token=${accessToken}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }).data;
       // TODO Get all projects. It's giving only 30 entries.
-      return response;
+      return response.projects;
     } catch (err) {
       // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
       //                {response: err.response});
@@ -1005,7 +1009,7 @@ HMISAPI = {
       return false;
     }
   },
-  createProject(projectName, projectCommonName, schemaVersion = 'v2015') {
+  createProjectSetup(projectName, projectCommonName, schemaVersion = 'v2015') {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (!config) {
       throw new ServiceConfiguration.ConfigError();

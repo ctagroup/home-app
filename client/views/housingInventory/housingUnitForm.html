@@ -26,7 +26,10 @@
         <label class="col-lg-3 control-label">Project affiliated:</label>
         <div class="col-lg-8">
             <select class="form-control project_id" name="project_list" required>
-                {{getAllOfProjects}}
+              <option>Select a project</option>
+              {{#each getProjects}}
+                <option {{isProjectSelected projectId}} value="{{projectId}}">{{projectName}}</option>
+              {{/each}}
             </select>
         </div>
     </div>

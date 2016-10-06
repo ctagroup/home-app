@@ -44,18 +44,36 @@
   {{else}}
     <p class="description-block">Setup a new project for this App.</p>
     <br />
+    <form id="selectAppProjectFrm">
+      <fieldset>
+        <legend>Select a project from the existing list</legend>
+        <select id="existingProjects" required>
+          <option>Select from existing projects</option>
+          {{#each getProjects}}
+            <option value="{{projectId}}">{{projectName}}</option>
+          {{/each}}
+        </select>
+        <input type="submit" class="btn btn-success" value="Select Project" />
+      </fieldset>
+    </form>
+    <br />
+    <h4>OR</h4>
+    <br />
     <form>
-      <div class="form-group">
-        <label for="projectName">Project Name</label>
-        <input type="text" name="projectName" id="projectName" class="form-control"
-               placeholder="Coordinated Assessment Project" />
-      </div>
-      <div class="form-group">
-        <label for="projectCommonName">Project Common Name</label>
-        <input type="text" class="form-control" id="projectCommonName" name="projectCommonName"
-               placeholder="Coordinated Assessment Project" />
-      </div>
-      <a href="#" id="createAppProject" type="submit" class="btn btn-success">Create New Project</a>
+      <fieldset>
+        <legend>Create a new project</legend>
+        <div class="form-group">
+          <label for="projectName">Project Name</label>
+          <input type="text" name="projectName" id="projectName" class="form-control"
+                 placeholder="Coordinated Assessment Project" />
+        </div>
+        <div class="form-group">
+          <label for="projectCommonName">Project Common Name</label>
+          <input type="text" class="form-control" id="projectCommonName" name="projectCommonName"
+                 placeholder="Coordinated Assessment Project" />
+        </div>
+        <a href="#" id="createAppProject" type="submit" class="btn btn-success">Create New Project</a>
+      </fieldset>
     </form>
   {{/if}}
 </template>
