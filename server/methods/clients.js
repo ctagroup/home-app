@@ -133,7 +133,7 @@ Meteor.methods(
 
       const enrollments = HMISAPI.getEnrollments(clientId, schema);
 
-      for (let i = 0; i < enrollments.length; i++) {
+      for (let i = 0; i < enrollments.length; i += 1) {
         enrollments[i].exits = HMISAPI.getEnrollmentExits(
           clientId,
           enrollments[i].enrollmentId,
@@ -147,7 +147,7 @@ Meteor.methods(
         }
       }
 
-      for (let i = 0; i < enrollments.length; i++) {
+      for (let i = 0; i < enrollments.length; i += 1) {
         HMISAPI.setCurrentUserId(Meteor.userId());
         enrollments[i].project = HMISAPI.getProject(enrollments[i].projectid, schema);
       }
@@ -163,7 +163,7 @@ Meteor.methods(
         globalHouseholdMemberships.push(...temp.content);
       }
 
-      let globalHouseholds = [];
+      const globalHouseholds = [];
       for (let i = 0; i < globalHouseholdMemberships.length; i += 1) {
         HMISAPI.setCurrentUserId(Meteor.userId());
         const globalHousehold = HMISAPI.getSingleGlobalHouseholdForPublish(

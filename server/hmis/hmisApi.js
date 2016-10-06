@@ -195,14 +195,13 @@ HMISAPI = {
 
     try {
       const response = HTTP.get(url, {
-          headers: {
-            'X-HMIS-TrustedApp-Id': config.appId,
-            Authorization: `HMISUserAuth session_token=${accessToken}`,
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-        }
-      ).data;
+        headers: {
+          'X-HMIS-TrustedApp-Id': config.appId,
+          Authorization: `HMISUserAuth session_token=${accessToken}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }).data;
 
       return response.client;
     } catch (err) {
@@ -668,7 +667,9 @@ HMISAPI = {
       //   new Error(`Failed to get single household details from HMIS. ${err.message}`),
       //   { response: err.response }
       // );
-      logger.info(`Failed to get global household memberships for client from HMIS. ${err.message}`);
+      logger.info(
+        `Failed to get global household memberships for client from HMIS. ${err.message}`
+      );
       logger.info(err.response);
       return false;
     }
@@ -983,14 +984,13 @@ HMISAPI = {
 
     try {
       const response = HTTP.del(url, {
-          headers: {
-            'X-HMIS-TrustedApp-Id': config.appId,
-            Authorization: `HMISUserAuth session_token=${accessToken}`,
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-        }
-      ).data;
+        headers: {
+          'X-HMIS-TrustedApp-Id': config.appId,
+          Authorization: `HMISUserAuth session_token=${accessToken}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }).data;
       logger.info(response);
       return response;
     } catch (err) {
