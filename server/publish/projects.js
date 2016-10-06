@@ -19,7 +19,7 @@ Meteor.publish(
       projects = response.projects;
 
       // starting from 1. because we already got the 0th page in previous call
-      for (let i = 1; ( i * 30 ) < response.pagination.total; i += 1) {
+      for (let i = 1; (i * 30) < response.pagination.total; i += 1) {
         const temp = HMISAPI.getProjectsForPublish(i * 30);
         projects.push(...temp.projects);
       }
