@@ -25,7 +25,8 @@
     <td class="clientName">{{clientDetails.firstName}} {{clientDetails.middleName}} {{clientDetails.lastName}}</td>
     <td>
       <select class="relationshiptohoh" name="relationshiptohoh">
-        <option {{isRelationshipToHOHSelected relationshipToHeadOfHousehold '2'}} value="2">Head of household’s child </option>
+        <option {{isRelationshipToHOHSelected relationshipToHeadOfHousehold '1'}} value="1">Self</option>
+        <option {{isRelationshipToHOHSelected relationshipToHeadOfHousehold '2'}} value="2">Head of household’s child</option>
         <option {{isRelationshipToHOHSelected relationshipToHeadOfHousehold '3'}} value="3">Head of household’s spouse or partner</option>
         <option {{isRelationshipToHOHSelected relationshipToHeadOfHousehold '4'}} value="4">Head of household’s other relation member (other relation to head of household)</option>
         <option {{isRelationshipToHOHSelected relationshipToHeadOfHousehold '5'}} value="5">Other:  non-relation member</option>
