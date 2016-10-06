@@ -28,6 +28,7 @@ Meteor.publish(
           // useCurrentUserObject
           false
         );
+        globalHouseholds[i].headOfHouseholdClient.schema = 'v2015';
         globalHouseholds[i].userCreateDetails = HMISAPI.getUserForPublish(
           globalHouseholds[i].userCreate
         );
@@ -71,6 +72,7 @@ Meteor.publish(
           // useCurrentUserObject
           false
         );
+        globalHousehold.clients[i].clientDetails.schema = schema;
       }
     } else {
       HMISAPI.setCurrentUserId('');

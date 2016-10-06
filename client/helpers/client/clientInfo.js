@@ -70,7 +70,13 @@ Template.viewClient.helpers(
       return 'btn-default';
     },
     showReferralStatus() {
-      return Roles.userIsInRole(Meteor.user(), ['Super Admin', 'Developer', 'Case Manager']);
+      return Roles.userIsInRole(Meteor.user(), ['Super Admin', 'Developer', 'Case Manager'])
+        && Router.current().data().clientId && Router.current().params.query.isHMISClient;
+    },
+    showGlobalHousehold() {
+      return Roles.userIsInRole(
+        Meteor.user(), ['Super Admin', 'Developer', 'Case Manager', 'Surveyor']
+      ) && Router.current().data().clientId && Router.current().params.query.isHMISClient;
     },
     alertMessages() {
       const params = Router.current().params;

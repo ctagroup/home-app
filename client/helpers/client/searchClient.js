@@ -50,7 +50,11 @@ Template.searchClient.helpers(
           client.clientId = dataObject._id;
           client.clientName =
             `${dataObject.firstName} ${dataObject.middleName} ${dataObject.lastName}`;
-          $('.globalHouseholdMembers').append(globalHouseholdsHelpers.generateMemberHtml(client));
+
+          if ($('.globalHouseholdMembers').find(`#${client.clientId}`).length < 1) {
+            $('.globalHouseholdMembers').append(globalHouseholdsHelpers.generateMemberHtml(client));
+            $('.no-household-members-found-row').remove();
+          }
         }
       } else {
         // NoOp Statement. Not going to be used anywhere.

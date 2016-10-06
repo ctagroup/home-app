@@ -70,6 +70,25 @@ UI.registerHelper(
   () => Router.path(`adminDashboard${Session.get('admin_collection_name')}New`)
 );
 
+UI.registerHelper(
+  'getGlobalHouseholdEditPath',
+  (_id) => Router.path('adminDashboardglobalHouseholdsEdit', { _id })
+);
+
+UI.registerHelper(
+  'getGlobalHouseholdNewPath',
+  () => Router.path('adminDashboardglobalHouseholdsNew')
+);
+
+UI.registerHelper(
+  'getClientViewPath',
+  (client) => Router.path(
+    'viewClient',
+    { _id: client.clientId },
+    { query: `isHMISClient=true&schema=${client.schema}` }
+  )
+);
+
 UI.registerHelper('hasDocuments', () => {
   let flag = false;
 

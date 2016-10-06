@@ -128,6 +128,9 @@ Meteor.methods(
     },
     getHMISClient(clientId, schema) {
       const client = HMISAPI.getClient(clientId, schema);
+
+      client.schema = schema;
+
       const enrollments = HMISAPI.getEnrollments(clientId, schema);
 
       for (let i = 0; i < enrollments.length; i++) {
@@ -150,6 +153,43 @@ Meteor.methods(
       }
 
       client.enrollments = enrollments;
+
+      let globalHouseholdMemberships = [];
+      const response = HMISAPI.getGlobalHouseholdMemberships(clientId);
+      globalHouseholdMemberships = response.content;
+
+      for (let i = 1; i < response.page.totalPages; i += 1) {
+        const temp = HMISAPI.getGlobalHouseholdMemberships(clientId, i);
+        globalHouseholdMemberships.push(...temp.content);
+      }
+
+      let globalHouseholds = [];
+      for (let i = 0; i < globalHouseholdMemberships.length; i += 1) {
+        HMISAPI.setCurrentUserId(Meteor.userId());
+        const globalHousehold = HMISAPI.getSingleGlobalHouseholdForPublish(
+          globalHouseholdMemberships[i].globalHouseholdId
+        );
+
+        globalHousehold.headOfHouseholdClient = HMISAPI.getClient(
+          globalHousehold.headOfHouseholdId,
+          // TODO: default schema because we don't know the schema for now.
+          'v2015',
+          // useCurrentUserObject
+          false
+        );
+        globalHousehold.headOfHouseholdClient.schema = 'v2015';
+        globalHousehold.userCreateDetails = HMISAPI.getUserForPublish(
+          globalHousehold.userCreate
+        );
+        globalHousehold.userUpdateDetails = HMISAPI.getUserForPublish(
+          globalHousehold.userUpdate
+        );
+
+        globalHouseholds.push(globalHousehold);
+      }
+
+      client.globalHouseholds = globalHouseholds;
+
       return client;
     },
     getEnrollments(clientId, schema) {
