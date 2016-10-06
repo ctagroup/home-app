@@ -21,7 +21,7 @@ HMISAPI = {
   },
   renewAccessToken(refreshToken) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -55,7 +55,7 @@ HMISAPI = {
 
     // If 'responseContent' parses as JSON, it is an error.
     // XXX which hmis error causes this behvaior?
-    if (! HMISAPI.isJSON(responseContent)) {
+    if (!HMISAPI.isJSON(responseContent)) {
       throw new Error(`Failed to complete OAuth handshake with HMIS. ${responseContent}`);
     }
 
@@ -66,7 +66,7 @@ HMISAPI = {
     const hmisExpires = parsedResponse.oAuthAuthorization.expiresIn;
     const hmisRefreshToken = parsedResponse.oAuthAuthorization.refreshToken;
 
-    if (! hmisAccessToken) {
+    if (!hmisAccessToken) {
       throw new Error(
         /* eslint-disable */
         `Failed to complete OAuth handshake with hmis -- can\'t find access token in HTTP response. ${responseContent}`
@@ -125,7 +125,7 @@ HMISAPI = {
   },
   createClient(client, schema = 'v2015') {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -175,13 +175,13 @@ HMISAPI = {
       return false;
     }
   },
-  getClient(clientId, schema = 'v2015') {
+  getClient(clientId, schema = 'v2015', useCurrentUserObject = true) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
-    const accessToken = HMISAPI.getCurrentAccessToken();
+    const accessToken = HMISAPI.getCurrentAccessToken(useCurrentUserObject);
 
     try {
       const response = HTTP.get(
@@ -208,7 +208,7 @@ HMISAPI = {
   },
   getClientFromUrl(apiUrl) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -237,7 +237,7 @@ HMISAPI = {
   },
   searchClient(query, limit) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -269,7 +269,7 @@ HMISAPI = {
       }).data;
 
       const clientsReponse = response.searchResults.items;
-      for (let i = 0; i < clientsReponse.length; i++) {
+      for (let i = 0; i < clientsReponse.length; i += 1) {
         logger.info(clientsReponse[i]);
         clients.push(clientsReponse[i]);
       }
@@ -283,9 +283,9 @@ HMISAPI = {
       return [];
     }
   },
-  getEnrollments(clientId) {
+  getEnrollments(clientId, schema = 'v2015') {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -294,8 +294,9 @@ HMISAPI = {
     let enrollments = [];
 
     const baseUrl = config.hmisAPIEndpoints.clientBaseUrl;
+    const schemaPath = config.hmisAPIEndpoints[schema];
     const enrollmentsPath = config.hmisAPIEndpoints.enrollments.replace('{{client_id}}', clientId);
-    const urlPah = `${baseUrl}${enrollmentsPath}`;
+    const urlPah = `${baseUrl}${schemaPath}${enrollmentsPath}`;
     // const url = `${urlPah}?${querystring.stringify(params)}`;
     const url = `${urlPah}`;
 
@@ -321,9 +322,9 @@ HMISAPI = {
 
     return enrollments;
   },
-  getEnrollmentExits(clientId, enrollmentId) {
+  getEnrollmentExits(clientId, enrollmentId, schema = 'v2015') {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -332,12 +333,13 @@ HMISAPI = {
     let exits = [];
 
     const baseUrl = config.hmisAPIEndpoints.clientBaseUrl;
+    const schemaPath = config.hmisAPIEndpoints[schema];
     const enrollmentsPath = config.hmisAPIEndpoints.enrollmentExits.replace(
       '{{client_id}}',
       clientId
     );
     const exitsPath = enrollmentsPath.replace('{{enrollmentId}}', enrollmentId);
-    const urlPah = `${baseUrl}${exitsPath}`;
+    const urlPah = `${baseUrl}${schemaPath}${exitsPath}`;
     // const url = `${urlPah}?${querystring.stringify(params)}`;
     const url = `${urlPah}`;
 
@@ -363,9 +365,9 @@ HMISAPI = {
 
     return exits;
   },
-  getHousingUnitsForPublish(page = 1, limit = 30) {
+  getHousingUnitsForPublish(page = 0, limit = 30) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -403,7 +405,7 @@ HMISAPI = {
   },
   getHousingUnitForPublish(housingUnitId) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -448,7 +450,7 @@ HMISAPI = {
     // stringify to find out what is coming through.
     body.push(housingUnitObject);
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -486,7 +488,7 @@ HMISAPI = {
     // stringify to find out what is coming through.
     body.push(housingUnitObject);
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -520,7 +522,7 @@ HMISAPI = {
   },
   deleteHousingUnit(housingInventoryId) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -556,21 +558,21 @@ HMISAPI = {
       return false;
     }
   },
-  getGlobalHouseholdForPublish() {
+  getGlobalHouseholdsForPublish(page = 0, limit = 30) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
     const accessToken = this.getCurrentAccessToken(false);
 
-    let globalHousehold = [];
+    let globalHouseholds = [];
 
     const baseUrl = config.hmisAPIEndpoints.globalHouseholdBaseUrl;
     const globalHouseholdPath = config.hmisAPIEndpoints.globalHouseholds;
     const urlPah = `${baseUrl}${globalHouseholdPath}`;
     // const url = `${urlPah}?${querystring.stringify(params)}`;
-    const url = `${urlPah}`;
+    const url = `${urlPah}?page=${page}&size=${limit}`;
 
     logger.info(url);
     logger.info(accessToken);
@@ -585,7 +587,7 @@ HMISAPI = {
         },
       }).data;
       logger.info(response);
-      globalHousehold = response;
+      globalHouseholds = response;
     } catch (err) {
       throw _.extend(
         new Error(`Failed to get global Household from HMIS. ${err.message}`),
@@ -593,20 +595,18 @@ HMISAPI = {
       );
     }
 
-    return globalHousehold;
+    return globalHouseholds;
   },
   getSingleGlobalHouseholdForPublish(globalHouseholdId) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
     const accessToken = this.getCurrentAccessToken(false);
 
-    let singleGlobalHousehold = false;
-
     const baseUrl = config.hmisAPIEndpoints.globalHouseholdBaseUrl;
-    const singleGlobalHouseholdPath = config.hmisAPIEndpoints.globalHouseholdMembers.replace(
+    const singleGlobalHouseholdPath = config.hmisAPIEndpoints.globalHousehold.replace(
       '{{global_household_uuid}}',
       globalHouseholdId
     );
@@ -626,19 +626,60 @@ HMISAPI = {
         },
       }).data;
       logger.info(response);
-      singleGlobalHousehold = response;
+      return response;
     } catch (err) {
-      throw _.extend(
-        new Error(`Failed to get single household details from HMIS. ${err.message}`),
-        { response: err.response }
-      );
+      // throw _.extend(
+      //   new Error(`Failed to get single household details from HMIS. ${err.message}`),
+      //   { response: err.response }
+      // );
+      logger.info(`Failed to get single household details from HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
+  getGlobalHouseholdMembersForPublish(globalHouseholdId, page = 0, limit = 30) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (!config) {
+      throw new ServiceConfiguration.ConfigError();
     }
 
-    return singleGlobalHousehold;
+    const accessToken = this.getCurrentAccessToken(false);
+
+    const baseUrl = config.hmisAPIEndpoints.globalHouseholdBaseUrl;
+    const singleGlobalHouseholdPath = config.hmisAPIEndpoints.globalHouseholdMembers.replace(
+      '{{global_household_uuid}}',
+      globalHouseholdId
+    );
+    const urlPah = `${baseUrl}${singleGlobalHouseholdPath}`;
+    const url = `${urlPah}?page=${page}&size=${limit}`;
+
+    logger.info(url);
+    logger.info(accessToken);
+
+    try {
+      const response = HTTP.get(url, {
+        headers: {
+          'X-HMIS-TrustedApp-Id': config.appId,
+          Authorization: `HMISUserAuth session_token=${accessToken}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }).data;
+      logger.info(response);
+      return response;
+    } catch (err) {
+      // throw _.extend(
+      //   new Error(`Failed to get single household members from HMIS. ${err.message}`),
+      //   { response: err.response }
+      // );
+      logger.info(`Failed to get single household members from HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
   },
   postQuestionAnswer(category, data) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -668,7 +709,7 @@ HMISAPI = {
   },
   getClients() {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -701,7 +742,7 @@ HMISAPI = {
     const body = [];
     body.push(globalHouseholdObject);
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -722,12 +763,15 @@ HMISAPI = {
           },
         }
       ).data;
+
+      logger.info(response);
+
       HMISAPI.addMembersToHousehold(response[0].globalHouseholdId, globalHouseholdMembers);
       return response[0];
     } catch (err) {
       // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
       //                {response: err.response});
-      logger.info(`Failed to get client info from HMIS. ${err.message}`);
+      logger.info(`Failed to create global household in HMIS. ${err.message}`);
       logger.info(err.response);
       return false;
     }
@@ -735,7 +779,7 @@ HMISAPI = {
   addMembersToHousehold(globalHouseholdID, globalHouseholdMem) {
     const globalHouseholdMembers = globalHouseholdMem;
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -744,10 +788,15 @@ HMISAPI = {
       '{{global_household_uuid}}',
        globalHouseholdID
     );
+
+    logger.info(config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHouseholdMembersPath);
+    logger.info(accessToken);
+    logger.info({ members: globalHouseholdMembers });
+
     try {
       const response = HTTP.post(
         config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHouseholdMembersPath, {
-          data: globalHouseholdMembers,
+          data: { members: globalHouseholdMembers },
           headers: {
             'X-HMIS-TrustedApp-Id': config.appId,
             Authorization: `HMISUserAuth session_token=${accessToken}`,
@@ -759,29 +808,34 @@ HMISAPI = {
           },
         }
       ).data;
+      logger.info(response);
       return response;
     } catch (err) {
       // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
       //                {response: err.response});
-      logger.info(`Failed to get client info from HMIS. ${err.message}`);
+      logger.info(`Failed to add members in global household in HMIS. ${err.message}`);
       logger.info(err.response);
       return false;
     }
   },
   deleteGlobalHousehold(globalHouseholdID) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
     const accessToken = HMISAPI.getCurrentAccessToken();
-    const globalHouseholdMembersPath = config.hmisAPIEndpoints.globalHousehold.replace(
+    const globalHousehold = config.hmisAPIEndpoints.globalHousehold.replace(
       '{{global_household_uuid}}',
        globalHouseholdID
     );
+
+    logger.info(config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHousehold);
+    logger.info(accessToken);
+
     try {
       const response = HTTP.del(
-        config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHouseholdMembersPath, {
+        config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHousehold, {
           headers: {
             'X-HMIS-TrustedApp-Id': config.appId,
             Authorization: `HMISUserAuth session_token=${accessToken}`,
@@ -793,62 +847,36 @@ HMISAPI = {
           },
         }
       ).data;
+      logger.info(response);
       return response;
     } catch (err) {
       // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
       //                {response: err.response});
-      logger.info(`Failed to get client info from HMIS. ${err.message}`);
+      logger.info(`Failed to delete global household from HMIS. ${err.message}`);
       logger.info(err.response);
       return false;
     }
   },
-  getHousehold(globalHouseholdID) {
+  updateGlobalHousehold(globalHouseholdId, globalHouseholdMembers, globalHouseholdObject) {
+    const body = globalHouseholdObject;
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
     const accessToken = HMISAPI.getCurrentAccessToken();
-    const globalHouseholdMembersPath = config.hmisAPIEndpoints.globalHousehold.replace(
+    const globalHousehold = config.hmisAPIEndpoints.globalHousehold.replace(
       '{{global_household_uuid}}',
-       globalHouseholdID
+      globalHouseholdId
     );
-    try {
-      const response = HTTP.get(
-        config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHouseholdMembersPath, {
-          headers: {
-            'X-HMIS-TrustedApp-Id': config.appId,
-            Authorization: `HMISUserAuth session_token=${accessToken}`,
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
-          },
-        }
-      ).data;
-      return response;
-    } catch (err) {
-      // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
-      //                {response: err.response});
-      logger.info(`Failed to get client info from HMIS. ${err.message}`);
-      logger.info(err.response);
-      return false;
-    }
-  },
-  updateGlobalHousehold(globalHouseholdMembers, globalHouseholdObject) {
-    const body = [];
-    body.push(globalHouseholdObject);
-    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
-      throw new ServiceConfiguration.ConfigError();
-    }
 
-    const accessToken = HMISAPI.getCurrentAccessToken();
+    logger.info(config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHousehold);
+    logger.info(accessToken);
+    logger.info(body);
 
     try {
       const response = HTTP.put(
-        config.hmisAPIEndpoints.globalHouseholdBaseUrl + config.hmisAPIEndpoints.globalHouseholds, {
+        config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHousehold, {
           data: body,
           headers: {
             'X-HMIS-TrustedApp-Id': config.appId,
@@ -861,12 +889,13 @@ HMISAPI = {
           },
         }
       ).data;
-      HMISAPI.updateMembersToHousehold(response[0].globalHouseholdId, globalHouseholdMembers);
-      return response[0];
+      logger.info(JSON.stringify(response));
+      HMISAPI.updateMembersToHousehold(globalHouseholdId, globalHouseholdMembers);
+      return response;
     } catch (err) {
       // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
       //                {response: err.response});
-      logger.info(`Failed to get client info from HMIS. ${err.message}`);
+      logger.info(`Failed to update global household in HMIS. ${err.message}`);
       logger.info(err.response);
       return false;
     }
@@ -874,7 +903,7 @@ HMISAPI = {
   updateMembersToHousehold(globalHouseholdID, globalHouseholdMem) {
     const globalHouseholdMembers = globalHouseholdMem;
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -883,10 +912,15 @@ HMISAPI = {
       '{{global_household_uuid}}',
        globalHouseholdID
     );
+
+    logger.info(config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHouseholdMembersPath);
+    logger.info(accessToken);
+    logger.info({ members: globalHouseholdMembers });
+
     try {
       const response = HTTP.put(
         config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHouseholdMembersPath, {
-          data: globalHouseholdMembers,
+          data: { members: globalHouseholdMembers },
           headers: {
             'X-HMIS-TrustedApp-Id': config.appId,
             Authorization: `HMISUserAuth session_token=${accessToken}`,
@@ -898,38 +932,43 @@ HMISAPI = {
           },
         }
       ).data;
+      logger.info(JSON.stringify(response));
       return response;
     } catch (err) {
       // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
       //                {response: err.response});
-      logger.info(`Failed to get client info from HMIS. ${err.message}`);
+      logger.info(`Failed to update members of global household in HMIS. ${err.message}`);
       logger.info(err.response);
       return false;
     }
   },
-  getProjects(schemaVersion = 'v2015') {
+  getProjectsForPublish(from = 0, limit = 30, schemaVersion = 'v2015') {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
-    const accessToken = HMISAPI.getCurrentAccessToken();
+    const accessToken = HMISAPI.getCurrentAccessToken(false);
+
+    const baseUrl = config.hmisAPIEndpoints.clientBaseUrl;
+    const schemaPath = config.hmisAPIEndpoints[schemaVersion];
+    const projectsPath = config.hmisAPIEndpoints.projects;
+    const urlPah = `${baseUrl}${schemaPath}${projectsPath}`;
+    // const url = `${urlPah}?${querystring.stringify(params)}`;
+    // TODO: Check pagination params
+    const url = `${urlPah}?startIndex=${from}&maxItems=${limit}`;
 
     try {
-      const response = HTTP.get(
-        config.hmisAPIEndpoints.clientBaseUrl
-        + config.hmisAPIEndpoints[schemaVersion]
-        + config.hmisAPIEndpoints.projects, {
-          headers: {
-            'X-HMIS-TrustedApp-Id': config.appId,
-            Authorization: `HMISUserAuth session_token=${accessToken}`,
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-        }
-      ).data;
+      const response = HTTP.get(url, {
+        headers: {
+          'X-HMIS-TrustedApp-Id': config.appId,
+          Authorization: `HMISUserAuth session_token=${accessToken}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }).data;
       // TODO Get all projects. It's giving only 30 entries.
-      return response;
+      return response.projects;
     } catch (err) {
       // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
       //                {response: err.response});
@@ -940,7 +979,7 @@ HMISAPI = {
   },
   getProject(projectId, schemaVersion = 'v2015') {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -970,9 +1009,9 @@ HMISAPI = {
       return false;
     }
   },
-  createProject(projectName, projectCommonName, schemaVersion = 'v2015') {
+  createProjectSetup(projectName, projectCommonName, schemaVersion = 'v2015') {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -1016,7 +1055,7 @@ HMISAPI = {
   },
   getProjectGroups(from = 0, limit = 30) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -1055,7 +1094,7 @@ HMISAPI = {
   },
   getUserProfiles(from = 0, limit = 30) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -1094,7 +1133,7 @@ HMISAPI = {
   },
   getRoles(from = 0, limit = 30) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -1133,7 +1172,7 @@ HMISAPI = {
   },
   createSectionScores(surveyId, clientId, sectionId, sectionScore) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
     const body = { sectionScore };
@@ -1170,7 +1209,7 @@ HMISAPI = {
   },
   createUser(userObj) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -1211,7 +1250,7 @@ HMISAPI = {
   },
   updateUser(userId, userObj) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -1257,7 +1296,7 @@ HMISAPI = {
   },
   updateUserRoles(userId, rolesObj) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -1305,7 +1344,7 @@ HMISAPI = {
   },
   deleteUserRole(userId, roleId) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -1348,7 +1387,7 @@ HMISAPI = {
   },
   getUserForPublish(userId) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -1388,15 +1427,15 @@ HMISAPI = {
     question, questionGroupId = '95bdca23-5135-4552-9f11-819cab1aaa45'
   ) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
     const body = { question };
     const accessToken = HMISAPI.getCurrentAccessToken();
     logger.info(`Adding a question: ${JSON.stringify(body, null, 2)} `);
     const questionPath =
-      config.hmisAPIEndpoints.surveyServiceQuestions.
-      replace('{{questiongroupid}}', questionGroupId);
+      config.hmisAPIEndpoints.surveyServiceQuestions
+        .replace('{{questiongroupid}}', questionGroupId);
 
     logger.info(config.hmisAPIEndpoints.surveyServiceBaseUrl + questionPath);
     logger.info(accessToken);
@@ -1428,7 +1467,7 @@ HMISAPI = {
   ) {
     const body = { question };
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
     const accessToken = HMISAPI.getCurrentAccessToken();
@@ -1464,7 +1503,7 @@ HMISAPI = {
   },
   getSurveyServiceQuestion(questionId, questionGroupId = '95bdca23-5135-4552-9f11-819cab1aaa45') {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
     const accessToken = HMISAPI.getCurrentAccessToken();
@@ -1497,7 +1536,7 @@ HMISAPI = {
   },
   deleteSurveyServiceQuestion(questionId, qGroupId = '95bdca23-5135-4552-9f11-819cab1aaa45') {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
     const accessToken = HMISAPI.getCurrentAccessToken();
@@ -1530,7 +1569,7 @@ HMISAPI = {
   },
   deletePickListGroup(pickListGroupId) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
     const accessToken = HMISAPI.getCurrentAccessToken();
@@ -1562,7 +1601,7 @@ HMISAPI = {
   },
   createPickListGroup(pickListGroup) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
     const body = { pickListGroup };
@@ -1594,7 +1633,7 @@ HMISAPI = {
   },
   createPickListValues(pickListGroupId, pickListValues) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
     const body = { pickListValues };
@@ -1627,7 +1666,7 @@ HMISAPI = {
   },
   createSurvey(survey) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
     const body = { survey };
@@ -1660,7 +1699,7 @@ HMISAPI = {
   },
   createSection(surveySection, surveyId) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
     const body = { surveySection };
@@ -1693,7 +1732,7 @@ HMISAPI = {
   },
   createSurveyQuestionMappings(surveyId, sectionId, sectionQuestionMappings) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
     const body = { sectionQuestionMappings };
@@ -1728,7 +1767,7 @@ HMISAPI = {
   updateHmisSurvey(surveyId, survey) {
     const body = { survey };
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
     const accessToken = HMISAPI.getCurrentAccessToken();
@@ -1765,7 +1804,7 @@ HMISAPI = {
   updateHmisSurveySection(surveySection, surveyId, sectionId) {
     const body = { surveySection };
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
     const accessToken = HMISAPI.getCurrentAccessToken();
@@ -1801,7 +1840,7 @@ HMISAPI = {
   },
   getHmisSurveySections(surveyId) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
     const accessToken = HMISAPI.getCurrentAccessToken();
@@ -1832,7 +1871,7 @@ HMISAPI = {
   },
   getHmisSurveyQuestionMappings(surveyId, sectionId) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
     const accessToken = HMISAPI.getCurrentAccessToken();
@@ -1864,7 +1903,7 @@ HMISAPI = {
   },
   deleteHmisSurveyQuestionMapping(surveyId, sectionId, questionId) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -1897,7 +1936,7 @@ HMISAPI = {
   },
   deleteHmisSurveySection(surveyId, sectionId) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -1929,7 +1968,7 @@ HMISAPI = {
   },
   deleteQuestionMappings(surveyId, sectionId, questionIds) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
@@ -1938,7 +1977,7 @@ HMISAPI = {
       config.hmisAPIEndpoints.surveyQuestion.replace('{{surveyid}}', surveyId);
     sectionPath = sectionPath.replace('{{sectionid}}', sectionId);
     try {
-      for (let i = 0; i < questionIds.length; i++) {
+      for (let i = 0; i < questionIds.length; i += 1) {
         const url = sectionPath.replace('{{questionid}}', questionIds[i]);
         logger.info(`Deleting Mapping - ${url}`);
         const response = HTTP.del(
@@ -1963,18 +2002,18 @@ HMISAPI = {
       return false;
     }
   },
-  addResponseToHmis(clientId, surveyId, appid, sectionid, questionId, responseText) {
+  addResponseToHmis(clientId, surveyId, appId, sectionId, questionId, responseText) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (! config) {
+    if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
-    const responses = { responses: [ { questionId, responseText, sectionid, appid } ] };
+    const responses = { responses: [{ questionId, responseText, sectionId, appId }] };
     const body = { responses };
     const accessToken = HMISAPI.getCurrentAccessToken();
     let url = config.hmisAPIEndpoints.surveyServiceBaseUrl +
       config.hmisAPIEndpoints.responses.replace('{{clientid}}', clientId);
     url = url.replace('{{surveyid}}', surveyId);
-    logger.info(`HMISAPI Create Question Mapping : ${url} - ${JSON.stringify(body, null, 2)} `);
+    logger.info(`HMISAPI Create Response : ${url} - ${JSON.stringify(body, null, 2)} `);
     try {
       const response = HTTP.post(
         url, {
@@ -1994,6 +2033,39 @@ HMISAPI = {
       return response.response;
     } catch (err) {
       logger.info(`Failed to add responses in HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
+  deleteSurveyScores(surveyId, clientId) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (!config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+    const accessToken = HMISAPI.getCurrentAccessToken();
+    let url = config.hmisAPIEndpoints.surveyServiceBaseUrl +
+      config.hmisAPIEndpoints.responses.replace('{{clientid}}', clientId);
+    url = url.replace('{{surveyid}}', surveyId);
+    try {
+      const response = HTTP.del(
+        url, {
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          npmRequestOptions: {
+            rejectUnauthorized: false, // TODO remove when deploy
+          },
+        }
+      ).data;
+      logger.info(`HMISAPI Delete Survey Scores ${JSON.stringify(response)}`);
+      return true;
+    } catch (err) {
+      // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
+      //                {response: err.response});
+      logger.info(`Failed to delete old Survey scores from HMIS. ${err.message}`);
       logger.info(err.response);
       return false;
     }

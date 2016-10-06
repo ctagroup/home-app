@@ -14,14 +14,14 @@ Home Meteor App
 ```
 git clone git@github.com:ctagroup/home-app.git
 cd home-app
-git checkout meteor
+git checkout master
 meteor npm install
 meteor run
 ```
 
 ## Deploy instructions
 
-Meteor Up is used to deploy this app. Ref: https://github.com/arunoda/meteor-up/tree/mupx
+Meteor Up is used to deploy this app. Ref: https://github.com/kadirahq/meteor-up
 
 #### Deploy configs
 
@@ -35,12 +35,12 @@ Meteor Up is used to deploy this app. Ref: https://github.com/arunoda/meteor-up/
 
 #### First time steps
 
-- Install meteor-up. `npm install -g mupx`
+- Install meteor-up. `npm install -g mup`
 
 #### Deploy steps
 
 - Go to directory `./deploy/<server-dir>`.
-- Run `mupx deploy`. This command will initiate the deployment of the current version of project in your filesystem.
+- Run `mup deploy`. This command will initiate the deployment of the current version of project in your filesystem.
 
 ## Meteor Components in use
 

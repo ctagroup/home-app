@@ -4,14 +4,14 @@
 
 Meteor.methods(
   {
-    updateGlobalHousehold(globalHouseholdMembers, globalHouseholdObject) {
-      const getGlobalHousehold = HMISAPI.getHousehold(globalHouseholdObject.globalHouseholdId);
+    updateGlobalHousehold(globalHouseholdId, globalHouseholdMembers, globalHouseholdObject) {
       const globalObject = globalHouseholdObject;
-      globalObject.userCreate = getGlobalHousehold.userCreate;
-      globalObject.dateCreated = getGlobalHousehold.dateCreated;
-      const hmisClients = HMISAPI.updateGlobalHousehold(globalHouseholdMembers,
-          globalObject);
-      return hmisClients;
+      const globalHousehold = HMISAPI.updateGlobalHousehold(
+        globalHouseholdId,
+        globalHouseholdMembers,
+        globalObject
+      );
+      return globalHousehold;
     },
     createGlobalHousehold(globalHouseholdMembers, globalHouseholdObject) {
       const hmisClients = HMISAPI.createGlobalHousehold(globalHouseholdMembers,
@@ -50,8 +50,8 @@ Meteor.methods(
         ]
       );
       // Removing entries where we have data coming from HMIS.
-      for (let i = localClients.length - 1; i >= 0; i--) {
-        for (let j = 0; j < hmisClients.length; j++) {
+      for (let i = localClients.length - 1; i >= 0; i -= 1) {
+        for (let j = 0; j < hmisClients.length; j += 1) {
           if (localClients[i].personalId === hmisClients[j].clientId) {
                   // Remove.
             localClients.splice(i, 1);
@@ -81,23 +81,6 @@ Meteor.methods(
         );
       }
       return mergedClients;
-    },
-    getHouseholdClients(id) {
-      const selectedClients = [];
-      const clients = HMISAPI.getSingleGlobalHouseholdForPublish(id);
-      for (let i = 0; i < clients.length; i++) {
-        const clientDetails = {};
-        clientDetails.clientId = clients[i].globalClientId;
-        clientDetails.relationshipToHoh = clients[i].relationshipToHeadOfHousehold;
-        const clientInfo = HMISAPI.getClient(clients[i].globalClientId);
-        clientDetails.clientName =
-          `${clientInfo.firstName} ${clientInfo.middleName} ${clientInfo.lastName}`;
-        selectedClients.push(clientDetails);
-      }
-      return selectedClients;
-    },
-    getHousehold(id) {
-      return HMISAPI.getHousehold(id);
     },
   }
 );

@@ -48,7 +48,7 @@
     "LocationTracker": true,
     "housingUnits": true,
     "housingMatch": true,
-    "globalHousehold": true,
+    "globalHouseholds": true,
     "PreliminarySurvey": true,
     "SignaturePad": true,
     "SignaturePadConfig": true,
@@ -73,13 +73,15 @@
     "ResponseHelpers": true,
     "surveyFormatHelpers": true,
     "spdatScoreHelpers": true,
-    "projectSetup": true,
+    "projects": true,
     "projectGroups": true,
     "userProfiles": true,
     "hmisRoles": true,
     "singleHMISUser": true,
     "hmisQuesSync": true,
-    "hmisSurveySync": true
+    "hmisSurveySync": true,
+    "responseHmisHelpers": true,
+    "globalHouseholdsHelpers": true
   },
   "rules": {
     "no-underscore-dangle": [

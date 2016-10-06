@@ -18,50 +18,58 @@ Meteor.methods(
 
       let hmisClients = HMISAPI.searchClient(query, optionz.limit);
 
-      hmisClients = hmisClients.filter((client) => client.link);
+      hmisClients = hmisClients.filter(client => client.link);
 
-      const localClients = clients.aggregate(
-        [
-          {
-            $project: {
-              firstName: '$firstName',
-              middleName: '$middleName',
-              lastName: '$lastName',
-              personalId: '$personalId',
-              fullName: {
-                $concat: [
-                  '$firstName',
-                  ' ',
-                  '$middleName',
-                  ' ',
-                  '$lastName',
-                ],
+      let localClients = [];
+      if (!optionz.excludeLocalClients) {
+        localClients = clients.aggregate(
+          [
+            {
+              $project: {
+                firstName: '$firstName',
+                middleName: '$middleName',
+                lastName: '$lastName',
+                personalId: '$personalId',
+                fullName: {
+                  $concat: [
+                    '$firstName',
+                    ' ',
+                    '$middleName',
+                    ' ',
+                    '$lastName',
+                  ],
+                },
               },
             },
-          }, {
-            $match: {
-              fullName: new RegExp(query.split(' ').join('(.*)'), 'i'),
+            {
+              $match: {
+                fullName: new RegExp(query.split(' ').join('(.*)'), 'i'),
+              },
             },
-          }, {
-            $sort: {
-              firstName: 1,
+            {
+              $sort: {
+                firstName: 1,
+              },
             },
-          }, {
-            $limit: optionz.limit,
-          },
-        ]
-      );
-      // Removing entries where we have data coming from HMIS.
-      for (let i = localClients.length - 1; i >= 0; i--) {
-        for (let j = 0; j < hmisClients.length; j++) {
-          if (localClients[i].personalId === hmisClients[j].clientId) {
-                  // Remove.
-            localClients.splice(i, 1);
-            logger.info('Element Removed');
-            break;
+            {
+              $limit: optionz.limit,
+            },
+          ]
+        );
+
+        // Removing entries where we have data coming from HMIS.
+        for (let i = localClients.length - 1; i >= 0; i -= 1) {
+          for (let j = 0; j < hmisClients.length; j += 1) {
+            if (localClients[i].personalId === hmisClients[j].clientId) {
+              // Remove.
+              localClients.splice(i, 1);
+              logger.info('Element Removed');
+              break;
+            }
           }
         }
       }
+
       let mergedClients = [];
 
       if (localClients.length === 0 && hmisClients.length === 0) {
@@ -87,9 +95,8 @@ Meteor.methods(
               clientz._id = clientz.clientId;
               clientz.isHMISClient = true;
 
-              if (clientz.link.indexOf('v2015') !== -1) {
-                clientz.schema = 'v2015';
-              } else {
+              clientz.schema = 'v2015';
+              if (clientz.link.indexOf('v2014') !== -1) {
                 clientz.schema = 'v2014';
               }
 

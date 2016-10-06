@@ -3,20 +3,20 @@
  */
 
 Template.AppDeleteModal.events({
-  'click #confirm-delete'() {
+  'click #confirm-delete': () => {
     const collection = Session.get('admin_collection_name');
     const _id = Session.get('admin_id');
-    if (collection === 'globalHousehold') {
+    if (collection === 'globalHouseholds') {
       Meteor.call('deleteHousehold', _id, (e, r) => {
-        logger.log(e);
-        logger.log(r);
+        logger.info(e);
+        logger.info(r);
       });
       $('#app-delete-modal').modal('hide');
       location.reload();
     } else if (collection === 'housingUnits') {
       Meteor.call('deleteHousing', _id, (err, res) => {
-        logger.log(`Delete: ${err}`);
-        logger.log(`Delete: ${res}`);
+        logger.info(`Delete: ${err}`);
+        logger.info(`Delete: ${res}`);
       });
       $('#app-delete-modal').modal('hide');
       location.reload();
@@ -32,8 +32,8 @@ Template.AppDeleteModal.events({
       location.reload();
     } else {
       Meteor.call('adminRemoveDoc', collection, _id, (e, r) => {
-        logger.log(e);
-        logger.log(r);
+        logger.info(e);
+        logger.info(r);
       });
       $('#app-delete-modal').modal('hide');
     }

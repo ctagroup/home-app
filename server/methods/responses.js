@@ -8,6 +8,6 @@ Meteor.methods(
       // will send one at a time.
       return HMISAPI
         .addResponseToHmis(clientId, surveyId, appid, sectionid, questionId, responseText);
-    }
+    },
   }
 );
