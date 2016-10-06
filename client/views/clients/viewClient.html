@@ -149,6 +149,83 @@
               </div>
             {{/if}}
 
+      {{#if showGlobalHousehold}}
+        {{#if globalHouseholds}}
+          <div class="row">
+            <div class="col-xs-12">
+              <h3>
+                Global Household
+                <a class="btn btn-sm btn-primary" href="{{getGlobalHouseholdNewPath}}">Create Global Household</a>
+              </h3>
+              <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                  <thead>
+                    <tr>
+                      <th>Global Household</th>
+                      <th>Head of Household</th>
+                      <th>Date Created</th>
+                      <th>Date Updated</th>
+                      <th>User Created</th>
+                      <th>User Updated</th>
+                      <th>Active?</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {{#each globalHouseholds}}
+                      <tr>
+                        <td>
+                          <a href="{{getGlobalHouseholdEditPath globalHouseholdId}}">
+                            {{globalHouseholdId}}
+                          </a>
+                        </td>
+                        <td>
+                          <a href="{{getClientViewPath headOfHouseholdClient}}">
+                            {{headOfHouseholdClient.firstName}}
+                            {{headOfHouseholdClient.middleName}}
+                            {{headOfHouseholdClient.lastName}}
+                          </a>
+                        </td>
+                        <td>
+                          {{#if dateCreated.month and dateCreated.dayOfMonth and dateCreated.year}}
+                            {{dateCreated.month}}
+                            {{dateCreated.dayOfMonth}},
+                            {{dateCreated.year}}
+                          {{else}}
+                            -
+                          {{/if}}
+                        </td>
+                        <td>
+                          {{#if dateUpdated.month and dateUpdated.dayOfMonth and dateUpdated.year}}
+                            {{dateUpdated.month}}
+                            {{dateUpdated.dayOfMonth}},
+                            {{dateUpdated.year}}
+                          {{else}}
+                            -
+                          {{/if}}
+                        </td>
+                        <td>
+                          {{userCreateDetails.firstName}}
+                          {{userCreateDetails.lastName}}
+                        </td>
+                        <td>
+                          {{userUpdateDetails.firstName}}
+                          {{userUpdateDetails.lastName}}
+                        </td>
+                        <td>
+                          {{#unless inactive}}
+                            <i class="fa fa-check js-tooltip" data-toggle="tooltip" data-placement="right" title=""></i>
+                          {{/unless}}
+                        </td>
+                      </tr>
+                    {{/each}}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        {{/if}}
+      {{/if}}
+
       {{#if showReferralStatus}}
         <div class="row">
           <div class="col-xs-12">

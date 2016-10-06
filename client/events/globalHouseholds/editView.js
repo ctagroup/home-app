@@ -16,11 +16,11 @@ Template.globalHouseholdEditView.events(
         userCreate: globalHousehold.userCreate,
         userUpdate: user.services.HMIS.accountId,
       };
-      const globalHouseholdMembers = [];
+      const newGlobalHouseholdMembers = [];
       $('.globalHouseholdMembers').find('tr').each(
         (i, item) => {
           const optionArray = {
-            // houseHoldMembershipId: null,
+            householdMembershipId: $(item).find('.householdMembershipId').val(),
             globalClientId: $(item).find('.clientID').text(),
             relationshipToHeadOfHousehold: $(item).find('.relationshiptohoh').val(),
             // dateCreate: '',
@@ -29,17 +29,24 @@ Template.globalHouseholdEditView.events(
             // userUpdate: user.services.HMIS.accountId,
             globalHouseholdId,
           };
-          globalHouseholdMembers.push(optionArray);
+          newGlobalHouseholdMembers.push(optionArray);
         }
       );
-      Meteor.call('updateGlobalHousehold', globalHouseholdId, globalHouseholdMembers,
-        globalHouseholdObject, (err, res) => {
+      const oldGlobalHouseholdMembers = globalHousehold.clients;
+      Meteor.call(
+        'updateGlobalHousehold',
+        globalHouseholdId,
+        oldGlobalHouseholdMembers,
+        newGlobalHouseholdMembers,
+        globalHouseholdObject,
+        (err, res) => {
           if (err) {
             logger.log(err);
           } else {
             logger.log(res);
           }
-        });
+        }
+      );
     },
   }
 );

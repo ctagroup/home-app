@@ -183,11 +183,18 @@ HMISAPI = {
 
     const accessToken = HMISAPI.getCurrentAccessToken(useCurrentUserObject);
 
+    const baseUrl = config.hmisAPIEndpoints.clientBaseUrl;
+    const schemaPath = config.hmisAPIEndpoints[schema];
+    const clientPath = config.hmisAPIEndpoints.clients + clientId;
+    const urlPah = `${baseUrl}${schemaPath}${clientPath}`;
+    // const url = `${urlPah}?${querystring.stringify(params)}`;
+    const url = `${urlPah}`;
+
+    logger.info(url);
+    logger.info(accessToken);
+
     try {
-      const response = HTTP.get(
-        config.hmisAPIEndpoints.clientBaseUrl
-        + config.hmisAPIEndpoints[schema]
-        + config.hmisAPIEndpoints.clients + clientId, {
+      const response = HTTP.get(url, {
           headers: {
             'X-HMIS-TrustedApp-Id': config.appId,
             Authorization: `HMISUserAuth session_token=${accessToken}`,
@@ -470,9 +477,6 @@ HMISAPI = {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
-          },
         }
       ).data;
       logger.log(response);
@@ -508,9 +512,6 @@ HMISAPI = {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
-          },
         }
       ).data;
       return response[0];
@@ -542,9 +543,6 @@ HMISAPI = {
             Authorization: `HMISUserAuth session_token=${accessToken}`,
             Accept: 'application/json',
             'Content-Type': 'application/json',
-          },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
           },
         }
       ).data;
@@ -637,6 +635,44 @@ HMISAPI = {
       return false;
     }
   },
+  getGlobalHouseholdMemberships(clientId, page = 0, limit = 30) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (!config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+
+    const accessToken = this.getCurrentAccessToken();
+
+    const baseUrl = config.hmisAPIEndpoints.globalHouseholdBaseUrl;
+    const globalHouseholdForClientPath = config.hmisAPIEndpoints.globalHouseholdForClient;
+    const urlPah = `${baseUrl}${globalHouseholdForClientPath}`;
+    // const url = `${urlPah}?${querystring.stringify(params)}`;
+    const url = `${urlPah}?clientid=${clientId}&page=${page}&size=${limit}`;
+
+    logger.info(url);
+    logger.info(accessToken);
+
+    try {
+      const response = HTTP.get(url, {
+        headers: {
+          'X-HMIS-TrustedApp-Id': config.appId,
+          Authorization: `HMISUserAuth session_token=${accessToken}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }).data;
+      logger.info(response);
+      return response;
+    } catch (err) {
+      // throw _.extend(
+      //   new Error(`Failed to get single household details from HMIS. ${err.message}`),
+      //   { response: err.response }
+      // );
+      logger.info(`Failed to get global household memberships for client from HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
   getGlobalHouseholdMembersForPublish(globalHouseholdId, page = 0, limit = 30) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (!config) {
@@ -724,9 +760,6 @@ HMISAPI = {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
-          },
         }
       ).data;
       return response.Clients.clients;
@@ -757,9 +790,6 @@ HMISAPI = {
             Authorization: `HMISUserAuth session_token=${accessToken}`,
             Accept: 'application/json',
             'Content-Type': 'application/json',
-          },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
           },
         }
       ).data;
@@ -803,9 +833,6 @@ HMISAPI = {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
-          },
         }
       ).data;
       logger.info(response);
@@ -842,9 +869,6 @@ HMISAPI = {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
-          },
         }
       ).data;
       logger.info(response);
@@ -857,7 +881,7 @@ HMISAPI = {
       return false;
     }
   },
-  updateGlobalHousehold(globalHouseholdId, globalHouseholdMembers, globalHouseholdObject) {
+  updateGlobalHousehold(globalHouseholdId, globalHouseholdObject) {
     const body = globalHouseholdObject;
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (!config) {
@@ -884,13 +908,9 @@ HMISAPI = {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
-          },
         }
       ).data;
-      logger.info(JSON.stringify(response));
-      HMISAPI.updateMembersToHousehold(globalHouseholdId, globalHouseholdMembers);
+      logger.info(response);
       return response;
     } catch (err) {
       // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
@@ -927,9 +947,6 @@ HMISAPI = {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
-          },
         }
       ).data;
       logger.info(JSON.stringify(response));
@@ -938,6 +955,48 @@ HMISAPI = {
       // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
       //                {response: err.response});
       logger.info(`Failed to update members of global household in HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
+  deleteMemberFromHousehold(globalHouseholdId, clientId) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (!config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+
+    const accessToken = HMISAPI.getCurrentAccessToken();
+
+    const baseUrl = config.hmisAPIEndpoints.globalHouseholdBaseUrl;
+    const memberPath = config.hmisAPIEndpoints.globalHouseholdMember.replace(
+      '{{global_household_uuid}}',
+      globalHouseholdId
+    ).replace(
+      '{{member_id}}',
+      clientId
+    );
+    const urlPath = `${baseUrl}${memberPath}`;
+    const url = `${urlPath}`;
+
+    logger.info(url);
+    logger.info(accessToken);
+
+    try {
+      const response = HTTP.del(url, {
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        }
+      ).data;
+      logger.info(response);
+      return response;
+    } catch (err) {
+      // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
+      //                {response: err.response});
+      logger.info(`Failed to delete global household member from HMIS. ${err.message}`);
       logger.info(err.response);
       return false;
     }
@@ -955,7 +1014,6 @@ HMISAPI = {
     const projectsPath = config.hmisAPIEndpoints.projects;
     const urlPah = `${baseUrl}${schemaPath}${projectsPath}`;
     // const url = `${urlPah}?${querystring.stringify(params)}`;
-    // TODO: Check pagination params
     const url = `${urlPah}?startIndex=${from}&maxItems=${limit}`;
 
     try {
@@ -967,7 +1025,6 @@ HMISAPI = {
           'Content-Type': 'application/json',
         },
       }).data;
-      // TODO Get all projects. It's giving only 30 entries.
       return response.projects;
     } catch (err) {
       // throw _.extend(new Error("Failed to search clients in HMIS. " + err.message),
@@ -1194,9 +1251,6 @@ HMISAPI = {
             Authorization: `HMISUserAuth session_token=${accessToken}`,
             Accept: 'application/json',
             'Content-Type': 'application/json',
-          },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
           },
         }
       ).data;
@@ -1450,9 +1504,6 @@ HMISAPI = {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
-          },
         }
       ).data;
       return response.question;
@@ -1489,9 +1540,6 @@ HMISAPI = {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
-          },
         }
       ).data;
       return response;
@@ -1520,9 +1568,6 @@ HMISAPI = {
             Authorization: `HMISUserAuth session_token=${accessToken}`,
             Accept: 'application/json',
             'Content-Type': 'application/json',
-          },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
           },
         }
       ).data;
@@ -1554,9 +1599,6 @@ HMISAPI = {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
-          },
         }
       ).data;
       logger.info(`Delete question ${JSON.stringify(response)}`);
@@ -1583,9 +1625,6 @@ HMISAPI = {
             Authorization: `HMISUserAuth session_token=${accessToken}`,
             Accept: 'application/json',
             'Content-Type': 'application/json',
-          },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
           },
         }
       ).data;
@@ -1619,9 +1658,6 @@ HMISAPI = {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
-          },
         }
       ).data;
       return response.pickListGroup;
@@ -1650,9 +1686,6 @@ HMISAPI = {
             Authorization: `HMISUserAuth session_token=${accessToken}`,
             Accept: 'application/json',
             'Content-Type': 'application/json',
-          },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
           },
         }
       ).data;
@@ -1684,9 +1717,6 @@ HMISAPI = {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
-          },
         }
       ).data;
       logger.info(JSON.stringify(response, null, 2));
@@ -1716,9 +1746,6 @@ HMISAPI = {
             Authorization: `HMISUserAuth session_token=${accessToken}`,
             Accept: 'application/json',
             'Content-Type': 'application/json',
-          },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
           },
         }
       ).data;
@@ -1750,9 +1777,6 @@ HMISAPI = {
             Authorization: `HMISUserAuth session_token=${accessToken}`,
             Accept: 'application/json',
             'Content-Type': 'application/json',
-          },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
           },
         }
       ).data;
@@ -1787,9 +1811,6 @@ HMISAPI = {
             Authorization: `HMISUserAuth session_token=${accessToken}`,
             Accept: 'application/json',
             'Content-Type': 'application/json',
-          },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
           },
         }
       ).data;
@@ -1826,9 +1847,6 @@ HMISAPI = {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
-          },
         }
       ).data;
       return response;
@@ -1855,9 +1873,6 @@ HMISAPI = {
             Authorization: `HMISUserAuth session_token=${accessToken}`,
             Accept: 'application/json',
             'Content-Type': 'application/json',
-          },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
           },
         }
       ).data;
@@ -1887,9 +1902,6 @@ HMISAPI = {
             Authorization: `HMISUserAuth session_token=${accessToken}`,
             Accept: 'application/json',
             'Content-Type': 'application/json',
-          },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
           },
         }
       ).data;
@@ -1921,9 +1933,6 @@ HMISAPI = {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
-          },
         }
       ).data;
       logger.info(`Delete survey question Mapping ${JSON.stringify(response)}`);
@@ -1952,9 +1961,6 @@ HMISAPI = {
             Authorization: `HMISUserAuth session_token=${accessToken}`,
             Accept: 'application/json',
             'Content-Type': 'application/json',
-          },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
           },
         }
       ).data;
@@ -1987,9 +1993,6 @@ HMISAPI = {
               Authorization: `HMISUserAuth session_token=${accessToken}`,
               Accept: 'application/json',
               'Content-Type': 'application/json',
-            },
-            npmRequestOptions: {
-              rejectUnauthorized: false, // TODO remove when deploy
             },
           }
         ).data;
@@ -2024,9 +2027,6 @@ HMISAPI = {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
-          },
         }
       ).data;
       logger.info(JSON.stringify(response, null, 2));
@@ -2054,9 +2054,6 @@ HMISAPI = {
             Authorization: `HMISUserAuth session_token=${accessToken}`,
             Accept: 'application/json',
             'Content-Type': 'application/json',
-          },
-          npmRequestOptions: {
-            rejectUnauthorized: false, // TODO remove when deploy
           },
         }
       ).data;

@@ -11,9 +11,15 @@
       </tr>
       </thead>
       <tbody class="globalHouseholdMembers">
-      {{#each getGlobalHouseholdMembers}}
-        {{> singleGlobalHouseholdMember}}
-      {{/each}}
+      {{#if getGlobalHouseholdMembers}}
+        {{#each getGlobalHouseholdMembers}}
+          {{> singleGlobalHouseholdMember}}
+        {{/each}}
+      {{else}}
+        <tr class="no-household-members-found-row">
+          <td colspan="5" class="bg-warning text-warning">No Household members found. Search clients to add them into global household.</td>
+        </tr>
+      {{/if}}
       </tbody>
     </table>
   </div>
@@ -22,7 +28,11 @@
 <template name="singleGlobalHouseholdMember">
   <tr id={{globalClientId}}>
     <td class="clientID">{{globalClientId}}</td>
-    <td class="clientName">{{clientDetails.firstName}} {{clientDetails.middleName}} {{clientDetails.lastName}}</td>
+    <td class="clientName">
+      <a href="{{getClientViewPath clientDetails}}">
+        {{clientDetails.firstName}} {{clientDetails.middleName}} {{clientDetails.lastName}}
+      </a>
+    </td>
     <td>
       <select class="relationshiptohoh" name="relationshiptohoh">
         <option {{isRelationshipToHOHSelected relationshipToHeadOfHousehold '1'}} value="1">Self</option>
@@ -31,6 +41,7 @@
         <option {{isRelationshipToHOHSelected relationshipToHeadOfHousehold '4'}} value="4">Head of household’s other relation member (other relation to head of household)</option>
         <option {{isRelationshipToHOHSelected relationshipToHeadOfHousehold '5'}} value="5">Other:  non-relation member</option>
       </select>
+      <input type="hidden" name="householdMembershipId" class="householdMembershipId" value="{{householdMembershipId}}" />
     </td>
     <td>
       <input type="radio" class="ihoh" name="ishoh" value="{{globalClientId}}" {{isHOH globalClientId ../headOfHouseholdId}} />
