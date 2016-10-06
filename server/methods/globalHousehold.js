@@ -14,16 +14,19 @@ Meteor.methods(
         globalHouseholdObject
       );
 
-      const oldIds = oldGlobalHouseholdMembers.map((item) => item.globalClientId);
+      const oldIds = oldGlobalHouseholdMembers.map(item => item.globalClientId);
 
-      const newIds = newGlobalHouseholdMembers.map((item) => item.globalClientId);
+      const newIds = newGlobalHouseholdMembers.map(item => item.globalClientId);
 
-      const intersection = oldIds.filter((item) => newIds.indexOf(item) !== -1);
+      const intersection = oldIds.filter(item => newIds.indexOf(item) !== -1);
 
-      let membersToUpdate = [];
+      const membersToUpdate = [];
       for (let i = 0; i < oldGlobalHouseholdMembers.length; i += 1) {
         if (intersection.indexOf(oldGlobalHouseholdMembers[i].globalClientId) === -1) {
-          HMISAPI.deleteMemberFromHousehold(globalHouseholdId, oldGlobalHouseholdMembers[i].globalClientId);
+          HMISAPI.deleteMemberFromHousehold(
+            globalHouseholdId,
+            oldGlobalHouseholdMembers[i].globalClientId
+          );
         } else {
           membersToUpdate.push(
             _.findWhere(
@@ -41,7 +44,7 @@ Meteor.methods(
         HMISAPI.updateMembersToHousehold(globalHouseholdId, membersToUpdate);
       }
 
-      let membersToAdd = [];
+      const membersToAdd = [];
       for (let i = 0; i < newGlobalHouseholdMembers.length; i += 1) {
         if (newIds.indexOf(newGlobalHouseholdMembers[i].globalClientId) !== -1) {
           membersToAdd.push(newGlobalHouseholdMembers[i]);
