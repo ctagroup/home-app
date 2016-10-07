@@ -17,17 +17,19 @@ Template.globalHouseholdCreateView.events(
       const globalHouseholdMembers = [];
       $('.globalHouseholdMembers').find('tr').each(
         (i, item) => {
-          const optionArray = {
-            // houseHoldMembershipId: '',
-            globalClientId: $(item).find('.clientID').text(),
-            // dateCreated: '',
-            // dateUpdated: '',
-            // userCreate: user.services.HMIS.accountId,
-            // userUpdate: user.services.HMIS.accountId,
-            relationshipToHeadOfHousehold: $(item).find('.relationshiptohoh').val(),
-            // globalHouseholdId: '',
-          };
-          globalHouseholdMembers.push(optionArray);
+          if ( $('input[name=ishoh]:checked').val() !== $(item).find('.clientID').text() ) {
+            const optionArray = {
+              // houseHoldMembershipId: '',
+              globalClientId: $(item).find('.clientID').text(),
+              // dateCreated: '',
+              // dateUpdated: '',
+              // userCreate: user.services.HMIS.accountId,
+              // userUpdate: user.services.HMIS.accountId,
+              relationshipToHeadOfHousehold: $(item).find('.relationshiptohoh').val(),
+              // globalHouseholdId: '',
+            };
+            globalHouseholdMembers.push(optionArray);
+          }
         }
       );
       Meteor.call('createGlobalHousehold', globalHouseholdMembers,
