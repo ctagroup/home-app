@@ -773,14 +773,23 @@ HMISAPI = {
     }
   },
   createGlobalHousehold(globalHouseholdMembers, globalHouseholdObject) {
-    const body = [];
-    body.push(globalHouseholdObject);
+    const body = {
+      globalHouseholds: [
+        globalHouseholdObject,
+      ]
+    };
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
     const accessToken = HMISAPI.getCurrentAccessToken();
+
+    logger.info(
+      config.hmisAPIEndpoints.globalHouseholdBaseUrl + config.hmisAPIEndpoints.globalHouseholds
+    );
+    logger.info(accessToken);
+    logger.info(body);
 
     try {
       const response = HTTP.post(
