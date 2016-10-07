@@ -776,7 +776,7 @@ HMISAPI = {
     const body = {
       globalHouseholds: [
         globalHouseholdObject,
-      ]
+      ],
     };
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (!config) {

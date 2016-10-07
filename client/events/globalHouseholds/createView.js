@@ -17,7 +17,7 @@ Template.globalHouseholdCreateView.events(
       const globalHouseholdMembers = [];
       $('.globalHouseholdMembers').find('tr').each(
         (i, item) => {
-          if ( $('input[name=ishoh]:checked').val() !== $(item).find('.clientID').text() ) {
+          if ($('input[name=ishoh]:checked').val() !== $(item).find('.clientID').text()) {
             const optionArray = {
               // houseHoldMembershipId: '',
               globalClientId: $(item).find('.clientID').text(),
