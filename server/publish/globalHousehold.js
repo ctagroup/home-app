@@ -21,10 +21,14 @@ Meteor.publish(
       }
 
       for (let i = 0; i < globalHouseholds.length; i += 1) {
+        let schema = 'v2015';
+        if (globalHouseholds[i].links[0].rel.indexOf('v2014') !== -1) {
+          schema = 'v2014';
+        }
+
         globalHouseholds[i].headOfHouseholdClient = HMISAPI.getClient(
           globalHouseholds[i].headOfHouseholdId,
-          // TODO: default schema because we don't know the schema for now.
-          'v2015',
+          schema,
           // useCurrentUserObject
           false
         );
