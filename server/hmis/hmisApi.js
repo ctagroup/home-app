@@ -960,7 +960,7 @@ HMISAPI = {
       return false;
     }
   },
-  deleteMemberFromHousehold(globalHouseholdId, clientId) {
+  deleteMemberFromHousehold(globalHouseholdId, householdMembershipId) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (!config) {
       throw new ServiceConfiguration.ConfigError();
@@ -973,8 +973,8 @@ HMISAPI = {
       '{{global_household_uuid}}',
       globalHouseholdId
     ).replace(
-      '{{member_id}}',
-      clientId
+      '{{membership_id}}',
+      householdMembershipId
     );
     const urlPath = `${baseUrl}${memberPath}`;
     const url = `${urlPath}`;
