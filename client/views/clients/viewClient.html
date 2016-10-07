@@ -186,7 +186,7 @@
                           </a>
                         </td>
                         <td>
-                          {{#if dateCreated.month and dateCreated.dayOfMonth and dateCreated.year}}
+                          {{#if $and dateCreated.month dateCreated.dayOfMonth dateCreated.year}}
                             {{dateCreated.month}}
                             {{dateCreated.dayOfMonth}},
                             {{dateCreated.year}}
@@ -195,7 +195,7 @@
                           {{/if}}
                         </td>
                         <td>
-                          {{#if dateUpdated.month and dateUpdated.dayOfMonth and dateUpdated.year}}
+                          {{#if $and dateUpdated.month dateUpdated.dayOfMonth dateUpdated.year}}
                             {{dateUpdated.month}}
                             {{dateUpdated.dayOfMonth}},
                             {{dateUpdated.year}}
