@@ -25,7 +25,7 @@ Meteor.methods(
         if (intersection.indexOf(oldGlobalHouseholdMembers[i].globalClientId) === -1) {
           HMISAPI.deleteMemberFromHousehold(
             globalHouseholdId,
-            oldGlobalHouseholdMembers[i].globalClientId
+            oldGlobalHouseholdMembers[i].householdMembershipId
           );
         } else {
           membersToUpdate.push(
