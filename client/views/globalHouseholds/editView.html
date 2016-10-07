@@ -2,6 +2,13 @@
     {{>searchClient}}
     <div class="form-group">
       {{> globalHouseholdMembers}}
+      <div class="row">
+        <label class="col-lg-2 control-label">Is Active ?</label>
+        <div class="col-lg-10">
+          <label><input type="radio" name="inactive" value="false" {{isActive false}} /> Yes</label>
+          <label><input type="radio" name="inactive" value="true" {{isActive true}} /> No</label>
+        </div>
+      </div>
       <a href="/globalHouseholds" class="btn btn-large btn-primary updateHousehold">Update</a>
       <a href='/globalHouseholds' class="btn btn-large btn-primary">Cancel</a>
     </div>

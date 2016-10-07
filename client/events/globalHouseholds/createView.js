@@ -8,6 +8,7 @@ Template.globalHouseholdCreateView.events(
       const globalHouseholdObject = {
         // globalHouseholdId: null,
         headOfHouseholdId: $('input[name=ishoh]:checked').val(),
+        inactive: $('input[name=inactive]:checked').val(),
         // dateCreated: '',
         // dateUpdated: '',
         userCreate: user.services.HMIS.accountId,
