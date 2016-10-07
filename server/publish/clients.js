@@ -2,17 +2,9 @@
  * Created by udit on 15/07/16.
  */
 
-Meteor.publish(
-  'localClients', () => {
-    return clients.find({});
-  }
-);
+Meteor.publish('localClients', () => clients.find({}));
 
-Meteor.publish(
-  'singleLocalClient', (clientId) => {
-    return clients.find({ _id: clientId });
-  }
-);
+Meteor.publish('singleLocalClient', clientId => clients.find({ _id: clientId }));
 
 Meteor.publish(
   'singleHMISClient', function publishSingleHMISClient(clientId, schema) {

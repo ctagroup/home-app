@@ -125,6 +125,6 @@ Meteor.methods(
         };
       }
       return flag;
-    }
+    },
   }
 );
