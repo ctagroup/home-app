@@ -59,10 +59,14 @@ Meteor.publish(
           globalHouseholdMemberships[i].globalHouseholdId
         );
 
+        let hohSchema = 'v2015';
+        if (globalHousehold.links[0].rel.indexOf('v2014') !== -1) {
+          hohSchema = 'v2014';
+        }
+
         globalHousehold.headOfHouseholdClient = HMISAPI.getClient(
           globalHousehold.headOfHouseholdId,
-          // TODO: default schema because we don't know the schema for now.
-          'v2015',
+          hohSchema,
           // useCurrentUserObject
           false
         );
