@@ -11,6 +11,7 @@ Template.globalHouseholdEditView.events(
       const globalHouseholdObject = {
         globalHouseholdId,
         headOfHouseholdId: $('input[name=ishoh]:checked').val(),
+        inactive: $('input[name=inactive]:checked').val(),
         // dateCreated: '',
         // dateUpdated: '',
         userCreate: globalHousehold.userCreate,
