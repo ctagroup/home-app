@@ -31,14 +31,7 @@ Template.responseForm.helpers(
         return 'Dummy Client';
       }
 
-      let client = false;
-
-      if (Router.current().params && Router.current().params.query
-          && Router.current().params.query.isHMISClient && Router.current().params.query.link) {
-        client = Session.get('currentHMISClient') || false;
-      } else {
-        client = Template.instance().data.client;
-      }
+      const client = Template.instance().data.client;
 
       const fn = (client && client.firstName) ? client.firstName.trim() : '';
       const mn = (client && client.middleName) ? client.middleName.trim() : '';

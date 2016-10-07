@@ -289,13 +289,13 @@ HMISAPI = {
       return [];
     }
   },
-  getEnrollments(clientId, schema = 'v2015') {
+  getEnrollmentsForPublish(clientId, schema = 'v2015', from = 0, limit = 30) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
-    const accessToken = this.getCurrentAccessToken();
+    const accessToken = this.getCurrentAccessToken(false);
 
     let enrollments = [];
 
@@ -304,7 +304,7 @@ HMISAPI = {
     const enrollmentsPath = config.hmisAPIEndpoints.enrollments.replace('{{client_id}}', clientId);
     const urlPah = `${baseUrl}${schemaPath}${enrollmentsPath}`;
     // const url = `${urlPah}?${querystring.stringify(params)}`;
-    const url = `${urlPah}`;
+    const url = `${urlPah}?startIndex=${from}&maxItems=${limit}`;
 
     logger.info(url);
     logger.info(accessToken);
@@ -318,7 +318,7 @@ HMISAPI = {
           'Content-Type': 'application/json',
         },
       }).data;
-      enrollments = response.enrollments.enrollments;
+      enrollments = response.enrollments;
     } catch (err) {
       throw _.extend(
         new Error(`Failed to get housing units from HMIS. ${err.message}`),
@@ -328,13 +328,13 @@ HMISAPI = {
 
     return enrollments;
   },
-  getEnrollmentExits(clientId, enrollmentId, schema = 'v2015') {
+  getEnrollmentExitsForPublish(clientId, enrollmentId, schema = 'v2015') {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
-    const accessToken = this.getCurrentAccessToken();
+    const accessToken = this.getCurrentAccessToken(false);
 
     let exits = [];
 
@@ -634,13 +634,13 @@ HMISAPI = {
       return false;
     }
   },
-  getGlobalHouseholdMemberships(clientId, page = 0, limit = 30) {
+  getGlobalHouseholdMembershipsForPublish(clientId, page = 0, limit = 30) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
-    const accessToken = this.getCurrentAccessToken();
+    const accessToken = this.getCurrentAccessToken(false);
 
     const baseUrl = config.hmisAPIEndpoints.globalHouseholdBaseUrl;
     const globalHouseholdForClientPath = config.hmisAPIEndpoints.globalHouseholdForClient;
@@ -1001,7 +1001,7 @@ HMISAPI = {
       return false;
     }
   },
-  getProjectsForPublish(from = 0, limit = 30, schemaVersion = 'v2015') {
+  getProjectsForPublish(schemaVersion = 'v2015', from = 0, limit = 30) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (!config) {
       throw new ServiceConfiguration.ConfigError();
@@ -1034,7 +1034,7 @@ HMISAPI = {
       return false;
     }
   },
-  getProject(projectId, schemaVersion = 'v2015') {
+  getProjectForPublish(projectId, schemaVersion = 'v2015') {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (!config) {
       throw new ServiceConfiguration.ConfigError();
