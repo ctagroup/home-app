@@ -8,13 +8,12 @@ Meteor.publish(
     const self = this;
     _.each(
       AdminTables, (table, name) => {
-
         if (HomeConfig.collections[name].fetchCountFromHmis) {
           HomeConfig.collections[name].fetchCountFromHmis(self, name);
         } else {
           let count;
           let ready;
-          const id = new Mongo.ObjectID;
+          const id = new Mongo.ObjectID();
           count = 0;
           ready = false;
           handles.push(
@@ -32,13 +31,13 @@ Meteor.publish(
             )
           );
           ready = true;
-          return self.added('collectionsCount', id, { collection: name, count });
+          self.added('collectionsCount', id, { collection: name, count });
         }
       }
     );
     self.onStop(
-      () => _.each(handles, (handle) => handle.stop())
+      () => _.each(handles, handle => handle.stop())
     );
-    return self.ready();
+    self.ready();
   }
 );
