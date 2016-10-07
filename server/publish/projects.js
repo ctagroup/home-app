@@ -14,13 +14,14 @@ Meteor.publish(
 
       appProjectId = options.findOne({ option_name: 'appProjectId' });
 
-      const response = HMISAPI.getProjectsForPublish();
+      // TODO : Default Schema is 'v2015' for now.
+      const response = HMISAPI.getProjectsForPublish('v2015');
 
       projects = response.projects;
 
       // starting from 1. because we already got the 0th page in previous call
       for (let i = 1; (i * 30) < response.pagination.total; i += 1) {
-        const temp = HMISAPI.getProjectsForPublish(i * 30);
+        const temp = HMISAPI.getProjectsForPublish('v2015', i * 30);
         projects.push(...temp.projects);
       }
     } else {
