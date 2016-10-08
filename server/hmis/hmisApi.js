@@ -2210,12 +2210,13 @@ HMISAPI = {
         },
       }).data;
       logger.info(response);
-      return response;
+      history = response;
+      return history;
     } catch (err) {
       throw _.extend(
         new Error(`Failed to get referral status from HMIS. ${err.message}`),
         { response: err.response }
       );
     }
-  }
+  },
 };
