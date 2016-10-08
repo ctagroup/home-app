@@ -1,5 +1,5 @@
 <template name="housingMatchListView">
-    <p><a href="" class="btn btn-primary"> Get Matched Clients</a></p>
+    <p><a href="" class="btn btn-primary postHousingMatches"> Get Matched Clients</a></p>
     {{#if hasHousingMatch}}
         {{> ReactiveDatatable tableData=housingMatchData options=housingMatchTableOptions }}
     {{else}}
