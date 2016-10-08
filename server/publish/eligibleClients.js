@@ -25,15 +25,16 @@ Meteor.publish(
               false
             );
             eligibleClients[i].clientDetails.schema = schema;
-            logger.error(JSON.stringify(eligibleClients[i].clientDetails));
+            logger.info(JSON.stringify(eligibleClients[i].clientDetails));
           }
           // If client Id not found. So that we don't get any error.
           if (!eligibleClients[i].clientDetails) {
             const clientId = '';
             const firstName = '';
+            const middleName = '';
             const lastName = '';
             const schema = '';
-            eligibleClients[i].clientDetails = [{ clientId, firstName, lastName, schema }];
+            eligibleClients[i].clientDetails = { clientId, firstName, middleName, lastName, schema };
           }
           self.added('eligibleClients', eligibleClients[i].clientId, eligibleClients[i]);
         }
