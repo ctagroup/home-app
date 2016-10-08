@@ -8,17 +8,21 @@ Meteor.publish(
     let eligibleClients = [];
     if (self.userId) {
       HMISAPI.setCurrentUserId(self.userId);
-      const response = HMISAPI.getEligibleClientsForPublish();
-      eligibleClients = response.content;
+      eligibleClients = HMISAPI.getEligibleClientsForPublish();
       // according to the content received.
-      logger.info(`Eligible Clients: ${eligibleClients.length}`);
       // Ideally all should be returned here. Keeping it commented for now.
       // for (let i = 1; i < response.page.totalPages; i += 1) {
       //   const temp = HMISAPI.getEligibleClientsForPublish(i);
       //   eligibleClients.push(...temp.content);
       //   logger.info(`Temp: ${eligibleClients.length}`);
       // }
-      // TODO add self.added here.
+      if (eligibleClients) {
+        logger.info(`Publishing Eligible Clients: ${JSON.stringify(eligibleClients)}`);
+        for (let i = 0; i < eligibleClients.length; i += 1) {
+          // TODO Add client details (Name & link to profile) here.
+          self.added('eligibleClients', eligibleClients[i].clientId, eligibleClients[i]);
+        }
+      }
       self.ready();
     } else {
       HMISAPI.setCurrentUserId('');
