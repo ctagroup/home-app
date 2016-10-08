@@ -14,15 +14,16 @@ Template.viewClient.onRendered(() => {
       const total = HomeConfig.collections.clients.referralStatus.length;
       const percent = ((index + 1) / total) * 100;
 
+      const cssClass = HomeConfig.collections.clients.referralStatus[index].cssClass;
+
       $('.progress-bar').css({ width: `${percent}%` });
       $('.progress-bar').text(`${index + 1} / ${total}`);
-
-      const btnClass = HomeConfig.collections.clients.referralStatus[index].btnClass;
+      $('.progress-bar').removeClass()
+        .addClass(`progress-bar progress-bar-${cssClass} progress-bar-striped active`);
 
       $('#referral-timeline .navigation a').removeClass()
         .addClass('btn btn-sm btn-arrow-right btn-default');
-      $(e.currentTarget).removeClass('btn-default').addClass(btnClass);
-
+      $(e.currentTarget).removeClass('btn-default').addClass(`btn-${cssClass}`);
       // e.relatedTarget // previous tab
     });
   }

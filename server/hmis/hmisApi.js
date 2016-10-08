@@ -2181,4 +2181,41 @@ HMISAPI = {
     }
     return housingMatchList;
   },
+  getReferralStatusHistory(clientId) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (!config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+
+    const accessToken = this.getCurrentAccessToken(false);
+
+    let history = [];
+
+    const baseUrl = config.hmisAPIEndpoints.houseMatchingBaseUrl;
+    const statusPath = config.hmisAPIEndpoints.status.replace('{{clientId}}', clientId);
+    const urlPah = `${baseUrl}${statusPath}`;
+    // const url = `${urlPah}?${querystring.stringify(params)}`;
+    const url = `${urlPah}`;
+
+    logger.info(url);
+    logger.info(accessToken);
+
+    try {
+      const response = HTTP.get(url, {
+        headers: {
+          'X-HMIS-TrustedApp-Id': config.appId,
+          Authorization: `HMISUserAuth session_token=${accessToken}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }).data;
+      logger.info(response);
+      return response;
+    } catch (err) {
+      throw _.extend(
+        new Error(`Failed to get referral status from HMIS. ${err.message}`),
+        { response: err.response }
+      );
+    }
+  }
 };

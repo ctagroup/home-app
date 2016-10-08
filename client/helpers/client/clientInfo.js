@@ -63,11 +63,14 @@ Template.viewClient.helpers(
       return '';
     },
     isReferralStatusActiveButton(step) {
-      if (step === '1') {
-        const index = parseInt(step, 10);
-        return HomeConfig.collections.clients.referralStatus[index].btnClass;
+      if (step === 1) {
+        return `btn-${HomeConfig.collections.clients.referralStatus[step].cssClass}`;
       }
       return 'btn-default';
+    },
+    getProgressbarActiveStatus() {
+      const step = 1;
+      return `progress-bar-${HomeConfig.collections.clients.referralStatus[step].cssClass}`;
     },
     showReferralStatus() {
       return Roles.userIsInRole(Meteor.user(), ['Super Admin', 'Developer', 'Case Manager'])

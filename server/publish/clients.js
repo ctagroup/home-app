@@ -82,6 +82,8 @@ Meteor.publish(
       }
 
       client.globalHouseholds = globalHouseholds;
+
+      client.referralStatusHistory = HMISAPI.getReferralStatusHistory(clientId);
     } else {
       HMISAPI.setCurrentUserId('');
     }
