@@ -2076,4 +2076,60 @@ HMISAPI = {
       return false;
     }
   },
+  getEligibleClientsForPublish() {
+    // TODO to be written to get all eligible clients data.
+  },
+  getHousingMatchForPublish() {
+    // TODO write call for matching clients.
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (!config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+
+    const accessToken = this.getCurrentAccessToken(false);
+
+    let housingMatchList = [];
+
+    const baseUrl = config.hmisAPIEndpoints.houseMatchingBaseUrl;
+    const housingMatchPath = config.hmisAPIEndpoints.matches;
+    const urlPath = `${baseUrl}${housingMatchPath}`;
+    // const url = `${urlPath}?${querystring.stringify(params)}`;
+    // const url = `${urlPath}?page=${page}&size=${limit}`;
+    logger.info(urlPath);
+    logger.info(accessToken);
+
+    try {
+      const response = HTTP.get(urlPath, {
+        headers: {
+          'X-HMIS-TrustedApp-Id': config.appId,
+          Authorization: `HMISUserAuth session_token=${accessToken}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }).data;
+      housingMatchList = response.content;
+      const size = response.page.totalPages;
+      if (size > 0) {
+        for (let i = 1; i < response.page.totalPages - 1; i += 1) {
+          const url = `${urlPath}?page=${i}`;
+          const resp = HTTP.get(url, {
+            headers: {
+              'X-HMIS-TrustedApp-Id': config.appId,
+              Authorization: `HMISUserAuth session_token=${accessToken}`,
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+          }).data;
+          housingMatchList.push(...resp.content);
+        }
+      }
+      logger.info(`House Matching Result: ${JSON.stringify(housingMatchList)}`);
+    } catch (err) {
+      throw _.extend(
+        new Error(`Failed to get housing units from HMIS. ${err.message}`),
+        { response: err.response }
+      );
+    }
+    return housingMatchList;
+  },
 };
