@@ -11,9 +11,30 @@ Meteor.publish(
       eligibleClients = HMISAPI.getEligibleClientsForPublish();
       // according to the content received.
       if (eligibleClients) {
-        logger.info(`Publishing Eligible Clients: ${JSON.stringify(eligibleClients)}`);
         for (let i = 0; i < eligibleClients.length; i += 1) {
-          // TODO Add client details (Name & link to profile) here.
+          // Add client details (Name & link to profile) here.
+          if (eligibleClients[i].links) {
+            let schema = 'v2015';
+            if (eligibleClients[i].links[0].href.indexOf('v2014') !== -1) {
+              schema = 'v2014';
+            }
+            eligibleClients[i].clientDetails = HMISAPI.getClient(
+              eligibleClients[i].clientId,
+              schema,
+              // useCurrentUserObject
+              false
+            );
+            eligibleClients[i].clientDetails.schema = schema;
+            logger.error(JSON.stringify(eligibleClients[i].clientDetails));
+          }
+          // If client Id not found. So that we don't get any error.
+          if (!eligibleClients[i].clientDetails) {
+            const clientId = '';
+            const firstName = '';
+            const lastName = '';
+            const schema = '';
+            eligibleClients[i].clientDetails = [{ clientId, firstName, lastName, schema }];
+          }
           self.added('eligibleClients', eligibleClients[i].clientId, eligibleClients[i]);
         }
       }
