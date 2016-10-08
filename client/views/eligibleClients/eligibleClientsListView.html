@@ -1,5 +1,4 @@
 <template name="eligibleClientsListView">
-    <p><a href="" class="btn btn-primary"> ???</a></p>
     {{#if hasEligibleClients}}
         {{> ReactiveDatatable tableData=eligibleClientsData options=eligibleClientsTableOptions }}
     {{else}}
