@@ -34,7 +34,13 @@ Meteor.publish(
             const middleName = '';
             const lastName = '';
             const schema = '';
-            eligibleClients[i].clientDetails = { clientId, firstName, middleName, lastName, schema };
+            eligibleClients[i].clientDetails = {
+              clientId,
+              firstName,
+              middleName,
+              lastName,
+              schema,
+            };
           }
           self.added('eligibleClients', eligibleClients[i].clientId, eligibleClients[i]);
         }
