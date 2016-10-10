@@ -17,7 +17,7 @@ function getUniversalElements() {
     { category: 'Universal Data Elements' }
   ).fetch();
 
-  for (let i = 0; i < universalElements.length; i++) {
+  for (let i = 0; i < universalElements.length; i += 1) {
     const qName = universalElements[i].name;
 
     switch (qName) {
@@ -57,13 +57,13 @@ function getUniversalElements() {
 Template.viewClient.helpers(
   {
     isReferralStatusActive(step) {
-      if (step === '1') {
+      if (step <= 1) {
         return 'active';
       }
       return '';
     },
     isReferralStatusActiveButton(step) {
-      if (step === 1) {
+      if (step <= 1) {
         return `btn-${HomeConfig.collections.clients.referralStatus[step].cssClass}`;
       }
       return 'btn-default';
@@ -105,7 +105,7 @@ Template.viewClient.helpers(
       const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ name: text });
       if (question && question.options) {
-        for (let j = 0; j < question.options.length; j++) {
+        for (let j = 0; j < question.options.length; j += 1) {
           if (parseInt(question.options[j].value, 10) === parseInt(code, 10)) {
             definition = question.options[j].description;
             break;
