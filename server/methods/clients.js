@@ -126,5 +126,10 @@ Meteor.methods(
       }
       return flag;
     },
+	
+	updateClientMatchStatus(clientId,statusCode) {
+            return HMISAPI.updateClientMatchStatus(clientId,statusCode);
+    },
+
   }
 );
