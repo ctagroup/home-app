@@ -81,24 +81,14 @@ Template.viewClient.events(
 
       Router.go('selectSurvey', { _id: tmpl.data._id }, query);
     },
-	
-	    'click .btn-arrow-right'(event, tmpl){
+	  'click .btn-arrow-right'(event, tmpl) {
       logger.log('clicked status update' +event.currentTarget.dataset.step);
       const query = {};
-      const status = event.currentTarget.dataset.step ;
-
+      const status = event.currentTarget.dataset.step;
       const clientId = tmpl.data._id;
 
-      if (Router.current().params && Router.current().params.query
-        && Router.current().params.query.isHMISClient && Router.current().params.query.schema) {
-        query.query = {
-          isHMISClient: true,
-          schema: Router.current().params.query.schema,
-        };
-      }
-
       Meteor.call(
-        'updateClientMatchStatus',
+       'updateClientMatchStatus',
         clientId,
         status,
         (err, res) => {
@@ -111,6 +101,5 @@ Template.viewClient.events(
       );
 
     },
-	
   }
 );
