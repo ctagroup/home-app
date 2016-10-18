@@ -52,17 +52,17 @@ Meteor.methods(
       return user;
     },
     updateHMISUserRoles(userId, oldRoles, newRoles) {
-      const oldRoleIds = oldRoles.map((item) => item.id);
+      const oldRoleIds = oldRoles.map(item => item.id);
 
-      const newRoleIds = newRoles.map((item) => item.id);
+      const newRoleIds = newRoles.map(item => item.id);
 
-      const intersection = oldRoleIds.filter((item) => newRoleIds.indexOf(item) !== -1);
+      const intersection = oldRoleIds.filter(item => newRoleIds.indexOf(item) !== -1);
 
       const localUser = users.findOne({ _id: userId });
 
       HMISAPI.updateUserRoles(localUser.services.HMIS.accountId, newRoles);
 
-      for (let i = 0; i < oldRoles.length; i++) {
+      for (let i = 0; i < oldRoles.length; i += 1) {
         if (intersection.indexOf(oldRoles[i].id) === -1) {
           HMISAPI.deleteUserRole(localUser.services.HMIS.accountId, oldRoles[i].id);
         }

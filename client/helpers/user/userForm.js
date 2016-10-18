@@ -21,7 +21,7 @@ Template.userForm.helpers(
     },
     isRoleSelected(roleOptionId, currentRoles) {
       if (currentRoles) {
-        for (let i = 0; i < currentRoles.length; i++) {
+        for (let i = 0; i < currentRoles.length; i += 1) {
           if (roleOptionId === currentRoles[i].id) {
             return 'selected';
           }

@@ -18,15 +18,15 @@ if (typeof Accounts.onCreateUser !== 'undefined') {
             break;
         }
 
-        if (! email) {
+        if (!email) {
           return userz;
         }
 
         // see if any existing user has this email address, otherwise create new
         const existingUser = Meteor.users.findOne({ 'emails.address': email });
 
-        if (! existingUser) {
-          if (! userz.emails) {
+        if (!existingUser) {
+          if (!userz.emails) {
             userz.emails = [
               {
                 address: email,
@@ -38,18 +38,18 @@ if (typeof Accounts.onCreateUser !== 'undefined') {
         }
 
         // precaution, these will exist from accounts-password if used
-        if (! existingUser.services) {
+        if (!existingUser.services) {
           existingUser.services = {
             resume: {
               loginTokens: [],
             },
           };
         }
-        if (! existingUser.services.resume) {
+        if (!existingUser.services.resume) {
           existingUser.services.resume = { loginTokens: [] };
         }
 
-        if (! existingUser.emails) {
+        if (!existingUser.emails) {
           existingUser.emails = [
             {
               address: email,

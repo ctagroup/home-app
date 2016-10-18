@@ -44,10 +44,10 @@ function sectionComponents(originalSurveyComponentIDs, newSurveSectionIDs, newSu
   logger.log(`new section ID: ${newSurveSectionIDs}`);
 
   const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject('surveyQuestionsMaster');
-  const sectionComponent = surveyQuestionsMasterCollection.
-    find({ _id: originalSurveyComponentIDs }).fetch();
+  const sectionComponent = surveyQuestionsMasterCollection
+    .find({ _id: originalSurveyComponentIDs }).fetch();
 
-  for (let i = 0; i < sectionComponent.length; i++) {
+  for (let i = 0; i < sectionComponent.length; i += 1) {
     surveyTitle = surveyCopyTitle;
     // const originalSurveyId = surveyIDForCopy;
     const surveyCopySkipValue = sectionComponent[i].allowSkip;
@@ -81,8 +81,8 @@ function mainSection(mainSectionIDs, surveyingID) {
   const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject('surveyQuestionsMaster');
   const mainSections = surveyQuestionsMasterCollection.find({ _id: mainSectionIDs }).fetch();
 
-  const componentsIDs = surveyQuestionsMasterCollection.
-    find({ sectionID: mainSectionIDs }, { _id: 1 }).fetch();
+  const componentsIDs = surveyQuestionsMasterCollection
+    .find({ sectionID: mainSectionIDs }, { _id: 1 }).fetch();
   compIDs = [];
 
   const loopFunc = (error, result) => {
@@ -90,13 +90,13 @@ function mainSection(mainSectionIDs, surveyingID) {
       logger.log(error);
     } else {
       Session.set('SectionID', result);
-      for (let j = 0; j < componentsIDs.length; j++) {
+      for (let j = 0; j < componentsIDs.length; j += 1) {
         compIDs[j] = componentsIDs[j]._id;
         sectionComponents(compIDs[j], Session.get('SectionID'), surveyingID);
       }
     }
   };
-  for (let i = 0; i < mainSections.length; i++) {
+  for (let i = 0; i < mainSections.length; i += 1) {
     surveyTitle = surveyCopyTitle;
     // const originalSurveyId = surveyIDForCopy;
     const surveyCopySkipValue = mainSections[i].allowSkip;
@@ -126,10 +126,10 @@ function recordsForCopy(surveyingID) {
     // let sectionArray = new Array();
 
   const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject('surveyQuestionsMaster');
-  const AllRecordsForCopy = surveyQuestionsMasterCollection.
-    find({ surveyID: surveyIDForCopy }, { sectionID: 1 }).fetch();
+  const AllRecordsForCopy = surveyQuestionsMasterCollection
+    .find({ surveyID: surveyIDForCopy }, { sectionID: 1 }).fetch();
 
-  for (let i = 0; i < AllRecordsForCopy.length; i++) {
+  for (let i = 0; i < AllRecordsForCopy.length; i += 1) {
     originalSurveyUniqueIDs = AllRecordsForCopy[i]._id;
     surveyCopySectionID = AllRecordsForCopy[i].sectionID;
 
@@ -163,7 +163,7 @@ Template.surveyForm.events(
 
       $('.s_copy').val('Choose');
     },
-    'change .locked'(/* evt, tmpl*/) {
+    'change .locked': (/* evt, tmpl*/) => {
       checkSurveyLocked();
     },
     'click .save': (evt, tmpl) => {
@@ -187,13 +187,11 @@ Template.surveyForm.events(
         'addSurvey', title, active, copy, surveyID, stype, created, locked, (error, result) => {
           if (error) {
             logger.log(error);
-          } else {
-            if (result != null) {
-              if (copy) {
-                recordsForCopy(result);
-              } else {
-                logger.log(result);
-              }
+          } else if (result != null) {
+            if (copy) {
+              recordsForCopy(result);
+            } else {
+              logger.log(result);
             }
           }
         }
@@ -238,13 +236,13 @@ Template.surveyForm.events(
       }
       resetSurveyModal();
     },
-    'click .cancel'() {
+    'click .cancel': () => {
       resetSurveyModal();
     },
-    'click .close'() {
+    'click .close': () => {
       resetSurveyModal();
     },
-    'click .copy'() {
+    'click .copy': () => {
       const copy = $('#copy').is(':checked');
       if (copy) {
         $('.isCopyTrue').show();
@@ -260,7 +258,7 @@ Template.surveyForm.events(
         $('.active').show();
       }
     },
-    'click .remove'(/* evt, tmpl*/) {
+    'click .remove': (/* evt, tmpl*/) => {
       const surveyingID = $('#surveyID').val();
       Meteor.call(
         'removeSurvey', surveyingID, (error, result) => {
@@ -382,7 +380,7 @@ function registerDeleteOption() {
 
 function populateOptions(question) {
   let $optionsTag;
-  for (let i = 0; i < question.options.length; i++) {
+  for (let i = 0; i < question.options.length; i += 1) {
     if (question.options[i].description != null) {
       $optionsTag = `<tr  id='${i}' class='questionRow'><td>
         <input type='text' id='${i}.value' class='value' value='${question.options[i].value}'/>
@@ -401,14 +399,14 @@ function populateOptions(question) {
 
 Template.surveyViewTemplate.events(
   {
-    'click .addSurvey'(/* evt, tmpl*/) {
+    'click .addSurvey': (/* evt, tmpl*/) => {
       resetSurveyModal();
       $('.copy').show();
       $('.copylabel').show();
       $('.showWhenEdit').hide();
       $('.showWhenNew').show();
     },
-    'click .edit'(event) {
+    'click .edit': (event) => {
       const surveyCollection = HomeUtils.adminCollectionObject('surveys');
       const survey = surveyCollection.findOne({ _id: $(event.currentTarget).data('survey-id') });
       const copy = survey.copy;
@@ -459,7 +457,7 @@ Template.surveyViewTemplate.events(
 
 Template.questionViewTemplate.events(
   {
-    'click .addQuestion'(/* evt, tmpl*/) {
+    'click .addQuestion': (/* evt, tmpl*/) => {
       $('#aoptions').empty();
       resetQuestionModal();
       $('.showWhenEdit').hide();
@@ -467,7 +465,7 @@ Template.questionViewTemplate.events(
       $('#isUploaded').val('');
       setFields(false);
     },
-    'click .edit'(evt) {
+    'click .edit': (evt) => {
       evt.preventDefault();
       $('#aoptions').empty();
       // let txt1;
@@ -519,10 +517,10 @@ Template.questionForm.onRendered(() => {
 
 Template.questionForm.events(
   {
-    'click .optionadd'(/* evt, tmpl*/) {
+    'click .optionadd': (/* evt, tmpl*/) => {
       let optionLength = $('#aoptions').children().length;
       let optionsTag;
-      optionLength = optionLength + 1;
+      optionLength += 1;
       optionsTag = `<tr  id='${optionLength}' class='questionRow'><td><input type='text' 
         id='${optionLength}.value' class='value' value=''/></td>`;
 
@@ -543,7 +541,7 @@ Template.questionForm.events(
         }
       );
     },
-    'click .toggle'(/* evt, tmpl*/) {
+    'click .toggle': (/* evt, tmpl*/) => {
       const isCopy = $('#isCopy').is(':checked');
       if (isCopy) {
         $('.isCopySet').show();
@@ -551,7 +549,7 @@ Template.questionForm.events(
         $('.isCopySet').hide();
       }
     },
-    'change .q_copy'(/* evt , tmpl*/) {
+    'change .q_copy': (/* evt , tmpl*/) => {
       const value = $('#q_copy').val();
       // const text = value;
       // To be done
@@ -575,7 +573,7 @@ Template.questionForm.events(
         $('#q_audience').val(question2.audience).change();
       }
     },
-    'change .q_dataType'(evt /* , tmpl*/) {
+    'change .q_dataType': (evt /* , tmpl*/) => {
       const datatype = $(evt.target).val();
       if (datatype === 'Multiple Select' || datatype === 'Single Select') {
         $('#options,#options_label').removeClass('hide');
@@ -583,7 +581,7 @@ Template.questionForm.events(
         $('#options,#options_label').addClass('hide');
       }
     },
-    'change .q_category'(evt /* , tmpl*/) {
+    'change .q_category': (evt /* , tmpl*/) => {
       const datatype = $(evt.target).val();
       if (datatype === 'Other') {
         $('#category').removeClass('hide');
@@ -591,10 +589,10 @@ Template.questionForm.events(
         $('#category').addClass('hide');
       }
     },
-    'change .locked'(/* evt, tmpl*/) {
+    'change .locked': (/* evt, tmpl*/) => {
       checkLocked();
     },
-    'click .save'(event, tmpl) {
+    'click .save': (event, tmpl) => {
       // Getting all values from template. Also creating complete object acc to API.
       let category = tmpl.find('.q_category').value;
       if (category === 'Other') {
@@ -667,8 +665,19 @@ Template.questionForm.events(
         if (isUploaded) { // isUploaded by default contains the API Id.
           // Means it is already uploaded to HMIS Survey Service. We have the ID.
           const surveyServiceQuesId = isUploaded;
-          const ques = { name, question, category, options, dataType, qtype,
-            audience, locked, allowSkip, isCopy, surveyServiceQuesId };
+          const ques = {
+            name,
+            question,
+            category,
+            options,
+            dataType,
+            qtype,
+            audience,
+            locked,
+            allowSkip,
+            isCopy,
+            surveyServiceQuesId,
+          };
           hmisQuesSync.updatingQuesToHmis(ques);
           if (isUpdate === '1') {
             Meteor.call(
@@ -684,51 +693,69 @@ Template.questionForm.events(
               }
             );
           }
-        } else {
+        } else if (isUpdate === '1') {
           // It's not yet uploaded, upload it to HMIS first, then save the QID recvd in Mongo.
-          if (isUpdate === '1') {
-            Meteor.call(
-              'updateQuestion', questionID, category, name, question, dataType, options, qtype,
-              audience, locked, allowSkip, isCopy, (error, result) => {
-                if (error) {
-                  logger.error(`ERROR Mongo Update: ${error}`);
-                } else {
-                  logger.info(`Mongo Update: ${result}`);
-                  // Send the question Id also.
-                  const ques = { name, question, category, options, dataType, qtype,
-                    audience, locked, allowSkip, isCopy };
-                  hmisQuesSync.addingQuestionToHmis(ques, questionID);
-                  resetQuestionModal();
-                }
+          Meteor.call(
+            'updateQuestion', questionID, category, name, question, dataType, options, qtype,
+            audience, locked, allowSkip, isCopy, (error, result) => {
+              if (error) {
+                logger.error(`ERROR Mongo Update: ${error}`);
+              } else {
+                logger.info(`Mongo Update: ${result}`);
+                // Send the question Id also.
+                const ques = {
+                  name,
+                  question,
+                  category,
+                  options,
+                  dataType,
+                  qtype,
+                  audience,
+                  locked,
+                  allowSkip,
+                  isCopy,
+                };
+                hmisQuesSync.addingQuestionToHmis(ques, questionID);
+                resetQuestionModal();
               }
-            );
-          } else {
-            Meteor.call(
-              'addQuestion', category, name, question, dataType,
-              options, qtype, audience, locked, allowSkip, isCopy, (error, resultId) => {
-                if (error) {
-                  logger.error(`ERROR Mongo Add: ${error}`);
-                } else {
-                  logger.info(`Mongo Add: ${resultId}`);
-                  // send question Id also.
-                  const ques = { name, question, category, options, dataType, qtype,
-                    audience, locked, allowSkip, isCopy };
-                  hmisQuesSync.addingQuestionToHmis(ques, resultId);
-                  resetQuestionModal();
-                }
+            }
+          );
+        } else {
+          Meteor.call(
+            'addQuestion', category, name, question, dataType,
+            options, qtype, audience, locked, allowSkip, isCopy, (error, resultId) => {
+              if (error) {
+                logger.error(`ERROR Mongo Add: ${error}`);
+              } else {
+                logger.info(`Mongo Add: ${resultId}`);
+                // send question Id also.
+                const ques = {
+                  name,
+                  question,
+                  category,
+                  options,
+                  dataType,
+                  qtype,
+                  audience,
+                  locked,
+                  allowSkip,
+                  isCopy,
+                };
+                hmisQuesSync.addingQuestionToHmis(ques, resultId);
+                resetQuestionModal();
               }
-            );
-          }
+            }
+          );
         }
       }
     },
-    'click .cancel'() {
+    'click .cancel': () => {
       resetQuestionModal();
     },
-    'click .close'() {
+    'click .close': () => {
       resetQuestionModal();
     },
-    'click .remove'(/* evt, tmp1*/) {
+    'click .remove': (/* evt, tmp1*/) => {
       const questionID = $('#questionID').val();
       Meteor.call('deleteQuestion', questionID, (err, res) => {
         if (err) {
@@ -747,13 +774,13 @@ Session.setDefault('section_id', null);
 let skipVal;
 Template.surveyEditTemplate.events(
   {
-    'click .addQues'(event, tmpl) {
+    'click .addQues': (event, tmpl) => {
       // if(tmpl.find('.section').value!="Other" || tmpl.find('.section').value!="sectionSelect") {
-      // 	return;
+      // return;
       // }
       // else {
-      // 	alert('Select a Section');
-      // 	return false;
+      // alert('Select a Section');
+      // return false;
       // }
 
       const secValue = tmpl.find('.section').value;
@@ -765,7 +792,7 @@ Template.surveyEditTemplate.events(
       Session.set('section_id', tmpl.find('.section').value);
       return true;
     },
-    'click .addSection'(event, tmpl) {
+    'click .addSection': (event, tmpl) => {
       const surveyingTitle = tmpl.data.title;
       const surveyingId = tmpl.data._id;
       const content = tmpl.find('.sectionName').value;
@@ -799,9 +826,9 @@ Template.surveyEditTemplate.events(
 
             $('#section_val').val(sectionId);
             // if(section_id!=null){
-            // 	$('.sectionSelect').removeClass('hide');
+            // $('.sectionSelect').removeClass('hide');
             // } else {
-            // 	$('.sectionSelect').addClass('hide');
+            // $('.sectionSelect').addClass('hide');
             // }
 
 
@@ -809,11 +836,11 @@ Template.surveyEditTemplate.events(
             // 'surveyQuestionsMaster'
             // );
             // var section_name = surveyQuestionsMasterCollection.
-              // find({_id: section_id},{content:1,_id:0}).fetch();
+            // find({_id: section_id},{content:1,_id:0}).fetch();
             //
             // for(var i in section_name){
-            // 	logger.log("sec_name: " + section_id);
-            // 	$('#section_val').val(section_id);
+            // logger.log("sec_name: " + section_id);
+            // $('#section_val').val(section_id);
             //
             // }
             delete Session.keys.sectionId;
@@ -823,7 +850,7 @@ Template.surveyEditTemplate.events(
 
       $('#sectionName').val('');
     },
-    'click .addLabel'(event, tmpl) {
+    'click .addLabel': (event, tmpl) => {
       const surveyingTitle = tmpl.data.title;
       const surveyingId = tmpl.data._id;
       const content = tmpl.find('.labelName').value;
@@ -857,10 +884,10 @@ Template.surveyEditTemplate.events(
       $("#section_val option[value='sectionSelect']").val('Select a Section');
     },
 
-    'submit form'(event/* , tmpl*/) {
+    'submit form': (event/* , tmpl*/) => {
       event.preventDefault();
     },
-    'change .section'(event/* , tmp*/) {
+    'change .section': (event/* , tmp*/) => {
       const section = $(event.target).val();
       if (section === 'Other' || section === 'sectionSelect') {
         $('#sectionName').removeClass('hide');
@@ -873,7 +900,7 @@ Template.surveyEditTemplate.events(
 
 Template.sortableItemTarget.events(
   {
-    'dblclick .name'(event, template) {
+    'dblclick .name': (event, template) => {
       // Make the name editable. We should use an existing component, but it's
       // in a sorry state - https://github.com/arillo/meteor-x-editable/issues/1
       const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
@@ -883,7 +910,7 @@ Template.sortableItemTarget.events(
       const cont = surveyQuestionsMasterCollection.find({ _id: this._id },
           { content_type: 1, _id: 0 }).fetch();
       let contentType;
-      for (let i = 0; i < cont.length; i++) {
+      for (let i = 0; i < cont.length; i += 1) {
         contentType = cont[i].content_type;
       }
       if (contentType === 'question') {
@@ -905,7 +932,7 @@ Template.sortableItemTarget.events(
         input.focus();
       }
     },
-    'blur input[type=text]'(event, template) {
+    'blur input[type=text]': (event, template) => {
       // var cont = SurveyQuestionsSchema.find({_id:this._id},{content_type:1,_id:0}).fetch();
       //   for(var i in cont){
       //         var contentType = cont[i].content_type
@@ -941,7 +968,7 @@ Template.sortableItemTarget.events(
         );
       }
     },
-    'keydown input[type=text]'(event, template) {
+    'keydown input[type=text]': (event, template) => {
       if (event.which === 27) {
         // ESC - discard edits and keep existing value
         template.$('input').val(this.name);
@@ -953,7 +980,7 @@ Template.sortableItemTarget.events(
         event.target.blur();
       }
     },
-    'click .close'(/* event, template*/) {
+    'click .close': (/* event, template*/) => {
       // `this` is the data context set by the enclosing block helper (#each, here)
 
       Meteor.call(
@@ -983,7 +1010,7 @@ Template.sortableItemTarget.events(
 
 Template.sortableSectionItem.events(
   {
-    'click .close'(/* event, template*/) {
+    'click .close': (/* event, template*/) => {
       // `this` is the data context set by the enclosing block helper (#each, here)
       // Give out a warning here, before deleting.
       Meteor.call(
@@ -1016,16 +1043,16 @@ Template.typeDefinition.events(
 
 Template.selectQuestions.events(
   {
-    'click .selectques'(evt, tmpl) {
+    'click .selectques': (evt, tmpl) => {
       evt.preventDefault();
 
       const selected = tmpl.findAll('input[type=checkbox]:checked');
-      const array = selected.map((item) => item.value);
+      const array = selected.map(item => item.value);
       Session.set('selectedQuestions', array);
       const surveyId = tmpl.data._id;
       const surveyingTitle = tmpl.data.title;
       const arrayLength = array.length;
-      for (let i = 0; i < arrayLength; i ++) {
+      for (let i = 0; i < arrayLength; i += 1) {
         array[i] = array[i].substring(0, array[i].length - 1);
       }
       logger.log(`Ques: ${array}`);
@@ -1042,7 +1069,7 @@ Template.selectQuestions.events(
       );
       let order = maxRank(surveyId, 'question');
       logger.log(`skip val: ${order}`);
-      for (let i = 0; i < array.length; i ++) {
+      for (let i = 0; i < array.length; i += 1) {
         Meteor.call(
           'addSurveyQuestionMaster',
           surveyingTitle,
@@ -1051,7 +1078,7 @@ Template.selectQuestions.events(
           skipVal,
           'question',
           array[i],
-          order++,
+          order,
           (error, result) => {
             if (error) {
               logger.log(error);
@@ -1060,6 +1087,7 @@ Template.selectQuestions.events(
             }
           }
         );
+        order += 1;
       }
 
       Router.go('adminDashboardsurveysEdit', { _id: tmpl.data._id });

@@ -16,11 +16,11 @@ Template.responseForm.onRendered(
 
 Template.responseForm.events(
   {
-    'click .optionadd'(evt) {
+    'click .optionadd': (evt) => {
       const questionID = evt.currentTarget.id;
       let optionLength = $(`#aoptions${questionID}`).children().length;
       let optionsTag;
-      optionLength = optionLength + 1;
+      optionLength += 1;
       const deleteID = `${questionID}${optionLength}`;
       optionsTag = `<tr  id='${deleteID}' class='questionRow'>`;
 
@@ -63,7 +63,7 @@ Template.responseForm.events(
 
       let showflag = false;
 
-      for (let i = 0; i < element.length; i++) {
+      for (let i = 0; i < element.length; i += 1) {
         if ($(element[i]).val().toLowerCase() === 'others'
             || $(element[i]).val().toLowerCase() === 'other') {
           showflag = true;
@@ -77,7 +77,7 @@ Template.responseForm.events(
         $('.othersSpecify_multiple').addClass('hide');
       }
     },
-    'change .js-photo-input'(event) {
+    'change .js-photo-input': (event) => {
       const file = document.querySelector('.js-photo-input').files[0];
       const reader = new FileReader();
 
@@ -92,7 +92,7 @@ Template.responseForm.events(
         reader.readAsDataURL(file);
       }
     },
-    'click .js-take-photo'(event) {
+    'click .js-take-photo': (event) => {
       event.preventDefault();
       logger.log('clicked picture button');
       MeteorCamera.getPicture({}, (error, data) => {
@@ -108,7 +108,7 @@ Template.responseForm.events(
         }
       });
     },
-    'click .js-remove-photo'(event) {
+    'click .js-remove-photo': (event) => {
       event.preventDefault();
       logger.log('clicked remove picture button');
       $(event.currentTarget).closest('.quesList').find('.survey-single-photo-img')

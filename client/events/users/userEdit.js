@@ -26,7 +26,7 @@ Template.AdminDashboardusersEdit.onRendered(() => {
     const userID = Session.get('admin_id');
     const locationHistory = LocationTracker.getLocationHistory(userID);
 
-    for (let i = 0; i < locationHistory.length; i++) {
+    for (let i = 0; i < locationHistory.length; i += 1) {
       const path = poly.getPath();
 
       const latLong = new google.maps.LatLng(

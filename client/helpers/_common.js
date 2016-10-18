@@ -33,11 +33,11 @@
 // });
 
 UI.registerHelper(
-  'currentUserCan', (cap) => Roles.userIsInRole(Meteor.user(), cap)
+  'currentUserCan', cap => Roles.userIsInRole(Meteor.user(), cap)
 );
 
 Template.registerHelper(
-  'formatDate', (date) => (date ? moment(date).format('MM/DD/YYYY') : '')
+  'formatDate', date => (date ? moment(date).format('MM/DD/YYYY') : '')
 );
 
 Template.registerHelper(
@@ -72,7 +72,7 @@ UI.registerHelper(
 
 UI.registerHelper(
   'getGlobalHouseholdEditPath',
-  (_id) => Router.path('adminDashboardglobalHouseholdsEdit', { _id })
+  _id => Router.path('adminDashboardglobalHouseholdsEdit', { _id })
 );
 
 UI.registerHelper(
@@ -82,7 +82,7 @@ UI.registerHelper(
 
 UI.registerHelper(
   'getClientViewPath',
-  (client) => Router.path(
+  client => Router.path(
     'viewClient',
     { _id: client.clientId },
     { query: `isHMISClient=true&schema=${client.schema}` }
@@ -149,30 +149,6 @@ UI.registerHelper(
 
 UI.registerHelper('admin_sidebar_items', () => HomeDashboard.sidebarItems);
 
-UI.registerHelper('admin_omit_fields', () => {
-  let collection = undefined;
-  let globalz = undefined;
-
-  if (HomeConfig && HomeConfig.autoForm && HomeConfig.autoForm.omitFields) {
-    globalz = HomeConfig.autoForm.omitFields;
-  }
-
-  if (!Session.equals('admin_collection_name', 'Users') && HomeConfig && HomeConfig.collections
-      && HomeConfig.collections[Session.get('admin_collection_name')].omitFields === 'object') {
-    collection = HomeConfig.collections[Session.get('admin_collection_name')].omitFields;
-  }
-
-  if (typeof globalz === 'object' && typeof collection === 'object') {
-    return _.union(globalz, collection);
-  } else if (typeof globalz === 'object') {
-    return globalz;
-  } else if (typeof collection === 'object') {
-    return collection;
-  }
-
-  return {};
-});
-
 UI.registerHelper('AdminSchemas', () => HomeDashboard.schemas);
 
 UI.registerHelper('adminGetSkin', () => {
@@ -194,7 +170,7 @@ UI.registerHelper('adminGetUserSchema', () => {
   return schema;
 });
 
-UI.registerHelper('collectionLabel', (collection) => HomeDashboard.collectionLabel(collection));
+UI.registerHelper('collectionLabel', collection => HomeDashboard.collectionLabel(collection));
 
 UI.registerHelper('collectionsCount', (collection) => {
   if (collection === 'Users') {
@@ -219,7 +195,7 @@ UI.registerHelper('adminTemplate', (collection, mode) => {
 
 UI.registerHelper(
   'adminGetCollection',
-  (collection) => _.find(adminCollections(), (item) => item.name === collection)
+  collection => _.find(adminCollections(), item => item.name === collection)
 );
 
 UI.registerHelper('adminWidgets', () => {

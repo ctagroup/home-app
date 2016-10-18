@@ -7,10 +7,10 @@ Template.roleManager.helpers(
       let permissions = Roles.getAllRoles().fetch();
       let roles = homeRoles.find({}).fetch();
       roles = $.map(
-        roles, (role) => role.title
+        roles, role => role.title
       );
       permissions = $.grep(
-        permissions, (p) => $.inArray(p.name, roles) < 0
+        permissions, p => $.inArray(p.name, roles) < 0
       );
       return permissions;
     },

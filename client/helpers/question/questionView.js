@@ -20,7 +20,7 @@ Template.questionForm.helpers(
           {},
           { sort: { category: 1 }, fields: { category: true } }
         ).fetch().map(
-          (x) => x.category
+          x => x.category
         ), true
       );
       return distinctEntries;

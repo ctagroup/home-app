@@ -4,7 +4,7 @@
 
 Template.clientForm.events(
   {
-    'change #js-photo-input'() {
+    'change #js-photo-input': () => {
       const file = document.querySelector('#js-photo-input').files[0];
       const reader = new FileReader();
 
@@ -17,7 +17,7 @@ Template.clientForm.events(
         reader.readAsDataURL(file);
       }
     },
-    'click #js-take-photo'(event) {
+    'click #js-take-photo': (event) => {
       event.preventDefault();
       logger.log('clicked picture button');
       MeteorCamera.getPicture({}, (error, data) => {
@@ -30,7 +30,7 @@ Template.clientForm.events(
         }
       });
     },
-    'click #js-remove-photo'(event) {
+    'click #js-remove-photo': (event) => {
       event.preventDefault();
       logger.log('clicked remove picture button');
       $('#client-photo-img').attr('src', '');

@@ -32,19 +32,13 @@ AutoForm.hooks(
       },
     },
     admin_insert: {
-      onSubmit(insertDoc, updateDoc, currentDoc) {
+      onSubmit(insertDoc/* , updateDoc, currentDoc */) {
         const hook = this;
         Meteor.call('adminInsertDoc', insertDoc, Session.get('admin_collection_name'), (e) => {
           if (e) {
             hook.done(e);
           } else {
-            HomeUtils.adminCallback(
-              'onInsert',
-              [Session.get('admin_collection_name', insertDoc, updateDoc, currentDoc)],
-              (collection) => {
-                hook.done(null, collection);
-              }
-            );
+            hook.done(null);
           }
         });
         return false;
@@ -55,7 +49,7 @@ AutoForm.hooks(
       },
     },
     admin_update: {
-      onSubmit(insertDoc, updateDoc, currentDoc) {
+      onSubmit(insertDoc, updateDoc/* , currentDoc */) {
         const hook = this;
         Meteor.call(
           'adminUpdateDoc',
@@ -66,13 +60,7 @@ AutoForm.hooks(
             if (e) {
               hook.done(e);
             } else {
-              HomeUtils.adminCallback(
-                'onUpdate',
-                [Session.get('admin_collection_name', insertDoc, updateDoc, currentDoc)],
-                (collection) => {
-                  hook.done(null, collection);
-                }
-              );
+              hook.done(null);
             }
           }
         );

@@ -9,7 +9,7 @@ Template.createClient.onRendered(() => {
 
 Template.createClient.events(
   {
-    'click .save'(evt, tmpl) {
+    'click .save': (evt, tmpl) => {
       const firstName = tmpl.find('.firstName').value;
       const middleName = tmpl.find('.middleName').value;
       const lastName = tmpl.find('.lastName').value;

@@ -4,11 +4,11 @@
 
 Template.previewSurvey.events(
   {
-    'click .createSurvey'(evt /* , tmpl*/) {
+    'click .createSurvey': (evt /* , tmpl*/) => {
       evt.preventDefault();
       $('#confirmationModal').modal('show');
     },
-    'click .save_survey'(evt, tmpl) {
+    'click .save_survey': (evt, tmpl) => {
       const surveyID = tmpl.data._id;
       const created = true;
       // do all the survey syncing here.

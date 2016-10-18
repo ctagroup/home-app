@@ -14,9 +14,9 @@ Meteor.publish(
       userProfiles = response.profile;
       // according to the content received.
       logger.info(userProfiles.length);
-      for (let i = 0; (i * 30) < response.pagination.total; i++) {
+      for (let i = 0; (i * 30) < response.pagination.total; i += 1) {
         const temp = HMISAPI.getUserProfiles((i * 30), 30);
-        userProfiles.push.apply(userProfiles, temp.profile);
+        userProfiles.push(...temp.profile);
         logger.info(`Temp: ${userProfiles.length}`);
         _.each(temp.profile, (item) => {
           const tempItem = item;
