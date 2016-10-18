@@ -4,7 +4,7 @@
  * https://github.com/ilikenwf/nestedSortable
  *
  * Depends on:
- *	 jquery.ui.sortable.js 1.10+
+ * jquery.ui.sortable.js 1.10+
  *
  * Copyright (c) 2010-2016 Manuele J Sarfatti and contributors
  * Licensed under the MIT License

@@ -35,17 +35,17 @@ Template.viewClient.onDestroyed(() => {
 
 Template.viewClient.events(
   {
-    'click .edit'(evt, tmpl) {
+    'click .edit': (evt, tmpl) => {
       const query = {};
       if (tmpl.data.isHMISClient) {
         query.query = 'isHMISClient=true';
       }
       Router.go('adminDashboardclientsEdit', { _id: tmpl.data._id }, query);
     },
-    'click .back'() {
+    'click .back': () => {
       Router.go('adminDashboardclientsView');
     },
-    'click .add-to-hmis'(event, tmpl) {
+    'click .add-to-hmis': (event, tmpl) => {
       Meteor.call(
         'addClientToHMIS', tmpl.data._id, (error, result) => {
           if (error) {
@@ -68,7 +68,7 @@ Template.viewClient.events(
         }
       );
     },
-    'click .takeSurvey'(event, tmpl) {
+    'click .takeSurvey': (event, tmpl) => {
       const query = {};
 
       if (Router.current().params && Router.current().params.query
@@ -81,9 +81,8 @@ Template.viewClient.events(
 
       Router.go('selectSurvey', { _id: tmpl.data._id }, query);
     },
-	  'click .btn-arrow-right'(event, tmpl) {
-      logger.log('clicked status update' +event.currentTarget.dataset.step);
-      const query = {};
+    'click .btn-arrow-right': (event, tmpl) => {
+      logger.log(`clicked status update${event.currentTarget.dataset.step}`);
       const status = event.currentTarget.dataset.step;
       const clientId = tmpl.data._id;
 
@@ -99,7 +98,6 @@ Template.viewClient.events(
           }
         }
       );
-
     },
   }
 );

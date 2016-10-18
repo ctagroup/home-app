@@ -5,7 +5,7 @@
 
 Template.editClient.events(
   {
-    'click .update'(evt, tmpl) {
+    'click .update': (evt, tmpl) => {
       const firstName = tmpl.find('.firstName').value;
       const middleName = tmpl.find('.middleName').value;
       const lastName = tmpl.find('.lastName').value;
@@ -41,7 +41,7 @@ Template.editClient.events(
         }
       );
     },
-    'click .delete'(evt, tmpl) {
+    'click .delete': (evt, tmpl) => {
       Meteor.call(
         'removeClient', tmpl.data._id, (error) => {
           if (error) {
@@ -53,7 +53,7 @@ Template.editClient.events(
         }
       );
     },
-    'click .back'(evt, tmpl) {
+    'click .back': (evt, tmpl) => {
       Router.go('viewClient', { _id: tmpl.data._id });
     },
   }

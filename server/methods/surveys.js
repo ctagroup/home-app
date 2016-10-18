@@ -87,7 +87,7 @@ Meteor.methods(
         }
       ).fetch();
 
-      for (let i = 0; i < nextOrders.length; i++) {
+      for (let i = 0; i < nextOrders.length; i += 1) {
         surveyQuestionsMasterCollection.update(
           { _id: nextOrders[i]._id },
           { $set: { order: nextOrders[i].order - 1 } }
@@ -113,7 +113,7 @@ Meteor.methods(
         }
       ).fetch();
 
-      for (let i = 0; i < nextOrders.length; i++) {
+      for (let i = 0; i < nextOrders.length; i += 1) {
         surveyQuestionsMasterCollection.update(
           { _id: nextOrders[i]._id },
           { $set: { order: nextOrders[i].order - 1 } }
@@ -155,10 +155,10 @@ Meteor.methods(
       ).fetch();
       let sectionCount = 1;
       let questionCount;
-      for (let i = 0; i < sections.length; i++) {
+      for (let i = 0; i < sections.length; i += 1) {
         surveyQuestionsMasterCollection.update(
           { _id: sections[i]._id },
-          { $set: { order: sectionCount++ } }
+          { $set: { order: sectionCount } }
         );
         const questions = surveyQuestionsMasterCollection.find(
           { sectionID: sections[i]._id },
@@ -166,12 +166,14 @@ Meteor.methods(
           }
         ).fetch();
         questionCount = 1;
-        for (let j = 0; j < questions.length; j++) {
+        for (let j = 0; j < questions.length; j += 1) {
           surveyQuestionsMasterCollection.update(
             { _id: questions[j]._id },
-            { $set: { order: questionCount++ } }
+            { $set: { order: questionCount } }
           );
+          questionCount += 1;
         }
+        sectionCount += 1;
       }
     },
     removeSurveyCopyQuestionMaster(surveyCopyTitle) {

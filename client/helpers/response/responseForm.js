@@ -18,7 +18,7 @@ Template.responseForm.helpers(
         : Template.instance().data.survey._id;
       const sections = surveyFormatHelpers.getSections(surveyID);
       const surveyElements = [];
-      for (let i = 0; i < sections.length; i++) {
+      for (let i = 0; i < sections.length; i += 1) {
         surveyElements.push(sections[i]);
         Array.prototype.push.apply(surveyElements,
           surveyFormatHelpers.getQuestionsPerSection(sections[i]._id)
@@ -82,7 +82,7 @@ Template.responseForm.helpers(
 
       let flag = false;
 
-      for (let i = 0; i < questionsList.length; i++) {
+      for (let i = 0; i < questionsList.length; i += 1) {
         const type = questionsList[i].dataType;
         if (type === 'Textbox(String)') {
           flag = true;
@@ -114,7 +114,7 @@ Template.responseForm.helpers(
 
       let flag = false;
 
-      for (let i = 0; i < questionsList.length; i++) {
+      for (let i = 0; i < questionsList.length; i += 1) {
         const type = questionsList[i].dataType;
         if (type === 'Textbox(Integer)') {
           flag = true;
@@ -130,7 +130,7 @@ Template.responseForm.helpers(
 
       let flag = false;
 
-      for (let i = 0; i < questionsList.length; i++) {
+      for (let i = 0; i < questionsList.length; i += 1) {
         const type = questionsList[i].dataType;
         if (type === 'Boolean') {
           flag = true;
@@ -146,7 +146,7 @@ Template.responseForm.helpers(
 
       let flag = false;
 
-      for (let i = 0; i < questionsList.length; i++) {
+      for (let i = 0; i < questionsList.length; i += 1) {
         const type = questionsList[i].dataType;
         if (type === 'Single Select') {
           flag = true;
@@ -169,7 +169,7 @@ Template.responseForm.helpers(
 
       let flag = false;
 
-      for (let i = 0; i < questionsList.length; i++) {
+      for (let i = 0; i < questionsList.length; i += 1) {
         const type = questionsList[i].dataType;
         if (type === 'Multiple Select') {
           flag = true;
@@ -205,11 +205,11 @@ Template.responseForm.helpers(
       const responseRecords = responses.find(
         { surveyID: Router.current().params.survey_id }
       ).fetch();
-      for (let i = 0; i < responseRecords.length; i++) {
+      for (let i = 0; i < responseRecords.length; i += 1) {
         const sectionz = responseRecords[i].section;
-        for (let j = 0; j < sectionz.length; j++) {
+        for (let j = 0; j < sectionz.length; j += 1) {
           const responsesList = sectionz[j].response;
-          for (let k = 0; k < responsesList.length; k++) {
+          for (let k = 0; k < responsesList.length; k += 1) {
             const answers = responsesList[k].answer;
             flag = answers != null;
             break;
@@ -222,11 +222,11 @@ Template.responseForm.helpers(
       const responseSections = responses.find(
         { surveyID: Router.current().params._id }
       ).fetch();
-      for (let i = 0; i < responseSections.length; i++) {
+      for (let i = 0; i < responseSections.length; i += 1) {
         const sectionz = responseSections[i].section;
-        for (let j = 0; j < sectionz.length; j++) {
+        for (let j = 0; j < sectionz.length; j += 1) {
           const responsesList = sectionz[j].response;
-          for (let k = 0; k < responsesList.length; k++) {
+          for (let k = 0; k < responsesList.length; k += 1) {
             const answers = responsesList[k].answer;
             return answers;
           }
@@ -253,9 +253,9 @@ Template.responseForm.helpers(
         }
 
         const sections = responseSection.section;
-        for (let j = 0; j < sections.length; j++) {
+        for (let j = 0; j < sections.length; j += 1) {
           const response = sections[j].response;
-          for (let k = 0; k < response.length; k++) {
+          for (let k = 0; k < response.length; k += 1) {
             const quesIDs = response[k].questionID;
             const responseVal = response[k].answer;
             const questionsList = questions.find(
@@ -267,7 +267,7 @@ Template.responseForm.helpers(
               }
             ).fetch();
 
-            for (let i = 0; i < questionsList.length; i++) {
+            for (let i = 0; i < questionsList.length; i += 1) {
               const dataType = questionsList[i].dataType;
 
               if (dataType === 'Boolean') {
@@ -284,15 +284,15 @@ Template.responseForm.helpers(
       if (Router.current().route.getName() === 'adminDashboardresponsesEdit') {
         const responseSection = responses.findOne({ _id: Router.current().params._id });
 
-        if (! responseSection || ! responseSection.section) {
+        if (!responseSection || !responseSection.section) {
           return '';
         }
 
         const sections = responseSection.section;
 
-        for (let j = 0; j < sections.length; j ++) {
+        for (let j = 0; j < sections.length; j += 1) {
           const response = sections[j].response;
-          for (let k = 0; k < response.length; k ++) {
+          for (let k = 0; k < response.length; k += 1) {
             const quesIDs = response[k].questionID;
             const responseVal = response[k].answer;
             const questionsList = questions.find(
@@ -304,7 +304,7 @@ Template.responseForm.helpers(
               }
             ).fetch();
 
-            for (let i = 0; i < questionsList.length; i ++) {
+            for (let i = 0; i < questionsList.length; i += 1) {
               const dataType = questionsList[i].dataType;
               if (dataType === 'Single Select') {
                 return (responseVal === value) ? 'checked' : '';
@@ -319,14 +319,14 @@ Template.responseForm.helpers(
       if (Router.current().route.getName() === 'adminDashboardresponsesEdit') {
         const responseSection = responses.findOne({ _id: Router.current().params._id });
 
-        if (! responseSection || ! responseSection.section) {
+        if (!responseSection || !responseSection.section) {
           return '';
         }
 
         const sections = responseSection.section;
-        for (let j = 0; j < sections.length; j ++) {
+        for (let j = 0; j < sections.length; j += 1) {
           const response = sections[j].response;
-          for (let k = 0; k < response.length; k ++) {
+          for (let k = 0; k < response.length; k += 1) {
             const quesIDs = response[k].questionID;
 
             const responseVal = response[k].answer.split('|');
@@ -340,11 +340,11 @@ Template.responseForm.helpers(
               }
             ).fetch();
 
-            for (let i = 0; i < questionsList.length; i ++) {
+            for (let i = 0; i < questionsList.length; i += 1) {
               const dataType = questionsList[i].dataType;
 
               if (dataType === 'Multiple Select') {
-                for (let l = 0; l < responseVal.length; l ++) {
+                for (let l = 0; l < responseVal.length; l += 1) {
                   if (value === responseVal[i]) {
                     return 'checked';
                   }

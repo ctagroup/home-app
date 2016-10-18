@@ -24,7 +24,7 @@ Meteor.startup(
 
     // Check Roles of Developer Users
     const emails = HomeConfig.adminEmails;
-    for (let i = 0; i < emails; i ++) {
+    for (let i = 0; i < emails; i += 1) {
       const devUser = Meteor.users.find(
         {
           emails: {
@@ -35,7 +35,7 @@ Meteor.startup(
         }
       ).fetch();
       if (devUser.length > 0) {
-        if (! Roles.userIsInRole(devUser[0]._id, 'Developer')) {
+        if (!Roles.userIsInRole(devUser[0]._id, 'Developer')) {
           Meteor.call('addUserToRole', devUser[0]._id, 'Developer');
         }
       }

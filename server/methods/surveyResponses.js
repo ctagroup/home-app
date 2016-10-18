@@ -36,7 +36,7 @@ Meteor.methods(
     },
     sendScoresToHMIS(surveyId, clientId, score) {
       // Send scores section-wise here.
-      for (let i = 0; i < score.length; i++) {
+      for (let i = 0; i < score.length; i += 1) {
         const sectionId = score[i].sectionId;
         const sectionScore = { sectionScore: score[i].sectionScore };
         const sectionScoresId =
