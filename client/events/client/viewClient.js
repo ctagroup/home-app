@@ -21,8 +21,8 @@ Template.viewClient.onRendered(() => {
       $('.progress-bar').removeClass()
         .addClass(`progress-bar progress-bar-${cssClass} progress-bar-striped active`);
 
-      $('#referral-timeline .navigation a').removeClass()
-        .addClass('btn btn-sm btn-arrow-right btn-default');
+      // $('#referral-timeline .navigation a').removeClass()
+      //   .addClass('btn btn-sm btn-arrow-right btn-default');
       $(e.currentTarget).removeClass('btn-default').addClass(`btn-${cssClass}`);
       // e.relatedTarget // previous tab
     });
@@ -90,6 +90,7 @@ Template.viewClient.events(
        'updateClientMatchStatus',
         clientId,
         status,
+        'Comments from HOME App',
         (err, res) => {
           if (err) {
             logger.log(err);

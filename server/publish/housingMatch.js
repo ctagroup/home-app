@@ -43,6 +43,18 @@ Meteor.publish(
             schema,
           };
         }
+
+        // fetch client status
+        const referralStatus = HMISAPI.getReferralStatusHistory(
+          housingMatch[i].eligibleClients.clientId
+        );
+        // Sort based on Timestamp
+        referralStatus.sort((a, b) => {
+          const aTime = moment(a.dateUpdated, 'MM-DD-YYYY HH:mm:ss.SSS').unix();
+          const bTime = moment(b.dateUpdated, 'MM-DD-YYYY HH:mm:ss.SSS').unix();
+          return aTime - bTime;
+        });
+        housingMatch[i].eligibleClients.referralStatus = referralStatus;
       }
     } else {
       HMISAPI.setCurrentUserId('');
