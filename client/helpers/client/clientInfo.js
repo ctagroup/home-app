@@ -57,20 +57,78 @@ function getUniversalElements() {
 Template.viewClient.helpers(
   {
     isReferralStatusActive(step) {
-      if (step <= 1) {
+      const client = Router.current().data();
+
+      if (client.referralStatusHistory.length > 0) {
+        const lastStatus = client.referralStatusHistory[client.referralStatusHistory.length - 1];
+        if (step <= lastStatus.status) {
+          return 'active';
+        }
+      } else if (client.matchingScore && step <= 0) {
         return 'active';
       }
       return '';
     },
     isReferralStatusActiveButton(step) {
-      if (step <= 1) {
+      const client = Router.current().data();
+
+      if (client.referralStatusHistory.length > 0) {
+        const lastStatus = client.referralStatusHistory[client.referralStatusHistory.length - 1];
+        if (step <= lastStatus.status) {
+          return `btn-${HomeConfig.collections.clients.referralStatus[step].cssClass}`;
+        }
+      } else if (client.matchingScore && step <= 0) {
         return `btn-${HomeConfig.collections.clients.referralStatus[step].cssClass}`;
       }
       return 'btn-default';
     },
     getProgressbarActiveStatus() {
-      const step = 1;
-      return `progress-bar-${HomeConfig.collections.clients.referralStatus[step].cssClass}`;
+      const client = Router.current().data();
+      if (client.referralStatusHistory.length > 0) {
+        const lastStatus = client.referralStatusHistory[client.referralStatusHistory.length - 1];
+        const cssClass = HomeConfig.collections.clients.referralStatus[lastStatus.status].cssClass;
+        return `progress-bar-${cssClass}`;
+      } else if (client.matchingScore) {
+        const cssClass = HomeConfig.collections.clients.referralStatus[0].cssClass;
+        return `progress-bar-${cssClass}`;
+      }
+      return 'progress-bar-default';
+    },
+    getProgressbarWidth() {
+      const client = Router.current().data();
+      if (client.referralStatusHistory.length > 0) {
+        const lastStatus = client.referralStatusHistory[client.referralStatusHistory.length - 1];
+        const total = HomeConfig.collections.clients.referralStatus.length;
+        return `width: ${((lastStatus.status + 1) / total) * 100}%`;
+      } else if (client.matchingScore) {
+        const total = HomeConfig.collections.clients.referralStatus.length;
+        return `width: ${(1 / total) * 100}%`;
+      }
+      return 'width: 0%;';
+    },
+    getCurrentReferralStatus() {
+      const client = Router.current().data();
+      if (client.referralStatusHistory.length > 0) {
+        const lastStatus = client.referralStatusHistory[client.referralStatusHistory.length - 1];
+        return lastStatus.status + 1;
+      } else if (client.matchingScore) {
+        return 1;
+      }
+      return 0;
+    },
+    getStatusTooltip(step) {
+      const client = Router.current().data();
+      let history = HomeConfig.collections.clients.referralStatus[step].desc;
+      for (let i = 0; i < client.referralStatusHistory.length; i += 1) {
+        if (client.referralStatusHistory[i].status === step) {
+          let txt = client.referralStatusHistory[i].statusDescription;
+          if (client.referralStatusHistory[i].comments) {
+            txt = client.referralStatusHistory[i].comments;
+          }
+          history = `${history}<br />${client.referralStatusHistory[i].dateUpdated} - ${txt}`;
+        }
+      }
+      return history;
     },
     showReferralStatus() {
       return Roles.userIsInRole(Meteor.user(), ['Super Admin', 'Developer', 'Case Manager'])

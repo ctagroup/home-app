@@ -82,7 +82,8 @@
     "hmisSurveySync": true,
     "responseHmisHelpers": true,
     "globalHouseholdsHelpers": true,
-    "eligibleClients": true
+    "eligibleClients": true,
+    "referralStatusHelpers": true
   },
   "rules": {
     "no-underscore-dangle": [
