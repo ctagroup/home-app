@@ -131,12 +131,12 @@ Template.viewClient.helpers(
       return history;
     },
     showReferralStatus() {
-      return Roles.userIsInRole(Meteor.user(), ['Super Admin', 'Developer', 'Case Manager'])
+      return Roles.userIsInRole(Meteor.user(), ['System Admin', 'Developer', 'Case Manager'])
         && Router.current().data().clientId && Router.current().params.query.isHMISClient;
     },
     showGlobalHousehold() {
       return Roles.userIsInRole(
-        Meteor.user(), ['Super Admin', 'Developer', 'Case Manager', 'Surveyor']
+        Meteor.user(), ['System Admin', 'Developer', 'Case Manager', 'Surveyor']
       ) && Router.current().data().clientId && Router.current().params.query.isHMISClient;
     },
     alertMessages() {
