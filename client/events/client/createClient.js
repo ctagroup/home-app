@@ -22,18 +22,17 @@ Template.createClient.events(
       const gender = tmpl.find('.gender_category').value;
       const veteranStatus = tmpl.find('.veteranStatus_category').value;
       const disablingConditions = tmpl.find('.disablingConditions_category').value;
-      const residencePrior = tmpl.find('.residencePrior_category').value;
-      const entryDate = tmpl.find('.entryDate').value;
-      const exitDate = tmpl.find('.exitDate').value;
-      const destination = tmpl.find('.destinationCategory').value;
-      const relationship = tmpl.find('.relationtoHoH_category').value;
-      const loc = tmpl.find('.loc').value;
-      const shelter = tmpl.find('.timeOnStreets_category').value;
+      // const residencePrior = tmpl.find('.residencePrior_category').value;
+      // const entryDate = tmpl.find('.entryDate').value;
+      // const exitDate = tmpl.find('.exitDate').value;
+      // const destination = tmpl.find('.destinationCategory').value;
+      // const relationship = tmpl.find('.relationtoHoH_category').value;
+      // const loc = tmpl.find('.loc').value;
+      // const shelter = tmpl.find('.timeOnStreets_category').value;
       const signature = tmpl.find('.signature') ? tmpl.find('.signature').value : '';
       Meteor.call(
         'addClient', firstName, middleName, lastName, suffix, photo, ssn,
-        dob, race, ethnicity, gender, veteranStatus, disablingConditions, residencePrior, entryDate,
-        exitDate, destination, relationship, loc, shelter, signature,
+        dob, race, ethnicity, gender, veteranStatus, disablingConditions,signature,
         (error, result) => {
           if (error) {
             // console.log(error);
