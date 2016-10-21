@@ -9,10 +9,11 @@
       <h4>HOME App User Roles</h4>
       <img class="home-spinner hide" alt="spinner" src="/imgs/spinner.gif" />
       {{#each getUserRoles admin_current_id}}
-        <button class="btn btn-primary btn-xs {{#if isInRole 'Developer,Super Admin' }}btn-remove-role{{/if}}" role="{{this}}" user="{{admin_current_id}}">{{this}}</button>
+        <button class="btn btn-primary btn-xs {{#if isInRole 'Developer,System Admin' }}btn-remove-role{{/if}}" role="{{this}}" user="{{admin_current_id}}">{{this}}</button>
       {{/each}}
 
-      {{#if isInRole 'Developer,Super Admin'}}
+      {{my_console_log isInRole 'Developer,System Admin'}}
+      {{#if isInRole 'Developer,System Admin'}}
         {{#each getOtherRoles admin_current_id}}
           <button class="btn btn-default btn-xs btn-add-role" role="{{this}}" user="{{admin_current_id}}">{{this}}</button>
         {{/each}}
@@ -48,7 +49,7 @@
 
             {{> userForm}}
 
-            {{#if isInRole 'Developer,Super Admin'}}
+            {{#if isInRole 'Developer,System Admin'}}
               <div class="form-group">
                 <label class="col-md-4 control-label"></label>
                 <div class="col-md-8">
