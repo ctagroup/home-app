@@ -66,7 +66,6 @@ Template.searchClient.helpers(
           const query = {};
           if (dataObject.isHMISClient) {
             query.query = `isHMISClient=true&schema=${dataObject.schema}`;
-            Router.go('preliminarySurvey', { _id: dataObject._id }, query);
           }
           Router.go('viewClient', { _id: dataObject._id }, query);
         }

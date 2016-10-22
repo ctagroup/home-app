@@ -56,6 +56,37 @@ Meteor.methods(
             },
           ]
         );
+        
+
+        // for(let i= localClients.length-1 ; i >= 0; i++)
+        // {
+        //   for(let j=0; j < hmisClients.length; j+=1){
+        //     if(localClients[i].personalId ===hmisClients[i].clientId ){
+
+        //          const client = clients.findOne({ _id: clientID });
+
+        //                 if(client.signature === "")
+        //                 {
+        //                     Meteor.call("signaturePad", function(err, result){
+
+        //                         if(err) throw err;
+        //                         else
+        //                         {
+        //                           return result;
+        //                         }
+        //                     });
+        //                 }
+
+
+        //                        }
+        //       }
+        //     }
+
+
+
+
+
+
 
         // Removing entries where we have data coming from HMIS.
         for (let i = localClients.length - 1; i >= 0; i -= 1) {
