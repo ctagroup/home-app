@@ -88,6 +88,7 @@ Meteor.methods(
 
 
 
+
         // Removing entries where we have data coming from HMIS.
         for (let i = localClients.length - 1; i >= 0; i -= 1) {
           for (let j = 0; j < hmisClients.length; j += 1) {
