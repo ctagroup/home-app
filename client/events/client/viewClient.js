@@ -7,24 +7,13 @@ Template.viewClient.onRendered(() => {
   $('body').addClass('sidebar-collapse');
 
   if (Roles.userIsInRole(Meteor.user(), ['Developer', 'System Admin'])) {
-    $('a[data-toggle="tab"]').on('shown.bs.tab', (e) => {
-      // update progress
-      const step = $(e.target).data('step');
-      const index = parseInt(step, 10);
-      const total = HomeConfig.collections.clients.referralStatus.length;
-      const percent = ((index + 1) / total) * 100;
+    $('a[data-toggle="tab"]').on('shown.bs.tab', (/* e */) => {
 
-      const cssClass = HomeConfig.collections.clients.referralStatus[index].cssClass;
+    });
 
-      $('.progress-bar').css({ width: `${percent}%` });
-      $('.progress-bar').text(`${index + 1} / ${total}`);
-      $('.progress-bar').removeClass()
-        .addClass(`progress-bar progress-bar-${cssClass} progress-bar-striped active`);
-
-      $('#referral-timeline .navigation a').removeClass()
-        .addClass('btn btn-sm btn-arrow-right btn-default');
-      $(e.currentTarget).removeClass('btn-default').addClass(`btn-${cssClass}`);
-      // e.relatedTarget // previous tab
+    $('.js-summernote').summernote({
+      minHeight: 100,
+      fontNames: HomeConfig.fontFamilies,
     });
   }
 });
@@ -81,20 +70,57 @@ Template.viewClient.events(
 
       Router.go('selectSurvey', { _id: tmpl.data._id }, query);
     },
-    'click .btn-arrow-right': (event, tmpl) => {
-      logger.log(`clicked status update${event.currentTarget.dataset.step}`);
-      const status = event.currentTarget.dataset.step;
+    'click .js-close-referral-status-modal': () => {
+      $('#referralStatusComments').summernote('code', '');
+      $('#referral-status-step').val('');
+      $('#referralStatusUpdateCommentsModal').modal('hide');
+    },
+    'click .js-open-referral-status-modal': (event) => {
+      if (Roles.userIsInRole(Meteor.user(), ['Developer', 'System Admin'])) {
+        $('#referral-status-step').val($(event.currentTarget).data('step'));
+        $('#referralStatusUpdateCommentsModal').modal(
+          {
+            keyboard: false,
+            backdrop: false,
+          }
+        );
+      }
+    },
+    'click .js-update-referral-status': (event, tmpl) => {
+      // update progress
+      const step = $('#referral-status-step').val();
+      const index = parseInt(step, 10);
+      const total = HomeConfig.collections.clients.referralStatus.length;
+      const percent = ((index + 1) / total) * 100;
+
+      const cssClass = HomeConfig.collections.clients.referralStatus[index].cssClass;
+
+      logger.log(`clicked status update${step}`);
+      const status = step;
       const clientId = tmpl.data._id;
 
       Meteor.call(
        'updateClientMatchStatus',
         clientId,
         status,
+        $('#referralStatusComments').summernote('code'),
         (err, res) => {
           if (err) {
             logger.log(err);
           } else {
             logger.log(res);
+            $('.progress-bar').css({ width: `${percent}%` });
+            $('.progress-bar').text(`${index + 1} / ${total}`);
+            $('.progress-bar').removeClass()
+              .addClass(`progress-bar progress-bar-${cssClass} progress-bar-striped active`);
+
+            // $('#referral-timeline .navigation a').removeClass()
+            //   .addClass('btn btn-sm btn-arrow-right btn-default');
+            $(`#js-btn-step-${step}`).removeClass('btn-default').addClass(`btn-${cssClass}`);
+            // e.relatedTarget // previous tab
+
+            // close the modal
+            $('.js-close-referral-status-modal').click();
           }
         }
       );

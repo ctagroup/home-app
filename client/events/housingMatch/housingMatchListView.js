@@ -13,5 +13,24 @@ Template.housingMatchListView.events(
         }
       });
     },
+    'click .js-notify-agency-contact': (evt) => {
+      const clientId = $(evt.currentTarget).data('client-id');
+      Meteor.call(
+        'updateClientMatchStatus',
+        clientId,
+        // Agency Contact Status.
+        1,
+        'Comments from HOME App',
+        (err, res) => {
+          if (err) {
+            logger.log(err);
+          } else {
+            logger.log(res);
+            $(evt.currentTarget).parent().append(referralStatusHelpers.generateStatusTagMarkup(1));
+            $(evt.currentTarget).remove();
+          }
+        }
+      );
+    },
   }
 );
