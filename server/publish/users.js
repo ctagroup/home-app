@@ -24,6 +24,7 @@ Meteor.publish(
 
       if (localUser) {
         hmisUser = HMISAPI.getUserForPublish(localUser.services.HMIS.accountId);
+        hmisUser.projectsLinked = localUser.projectsLinked;
       }
     } else {
       HMISAPI.setCurrentUserId('');

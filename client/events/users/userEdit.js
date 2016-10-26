@@ -53,6 +53,15 @@ Template.AdminDashboardusersEdit.onRendered(() => {
     map.instance.fitBounds(bounds);       // auto-zoom
     map.instance.panToBounds(bounds);     // auto-center
   });
+
+  $('.projectsLinked').select2({
+    placeholder: 'Choose Projects',
+    width: '100%',
+    allowClear: true,
+    theme: 'classic',
+    width: 'resolve',
+  });
+
 });
 
 Template.AdminDashboardusersEdit.events({
@@ -121,6 +130,23 @@ Template.AdminDashboardusersEdit.events({
             }
           }
         );
+      }
+    });
+  },
+  'submit #save-linked-projects': (e, tmpl) => {
+    e.preventDefault();
+    const projectsLinked = $('.projectsLinked').val();
+
+    Meteor.call('updateLinkedProjects', Router.current().params._id, projectsLinked, (error, result) => {
+      if (error) {
+        logger.info(error);
+      } else {
+        logger.info(result);
+        const oldUrl = Router.current().url;
+        const qs = querystring.stringify(Router.current().params.query);
+        let cleanUrl = oldUrl.replace(qs, '');
+        cleanUrl = cleanUrl.replace('?', '');
+        Router.go(`${cleanUrl}?updated=1`);
       }
     });
   },
