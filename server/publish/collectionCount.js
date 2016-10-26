@@ -38,6 +38,6 @@ Meteor.publish(
     self.onStop(
       () => _.each(handles, handle => handle.stop())
     );
-    self.ready();
+    return self.ready();
   }
 );

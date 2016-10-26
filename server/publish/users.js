@@ -34,6 +34,6 @@ Meteor.publish(
       self.added('singleHMISUser', hmisUser.accountId, hmisUser);
     }
 
-    self.ready();
+    return self.ready();
   }
 );

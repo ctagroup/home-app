@@ -41,10 +41,10 @@ Meteor.publish(
         );
         self.added('globalHouseholds', globalHouseholds[i].globalHouseholdId, globalHouseholds[i]);
       }
-      self.ready();
     } else {
       HMISAPI.setCurrentUserId('');
     }
+    return self.ready();
   }
 );
 
@@ -84,6 +84,6 @@ Meteor.publish(
     if (globalHousehold) {
       self.added('globalHouseholds', globalHousehold.globalHouseholdId, globalHousehold);
     }
-    self.ready();
+    return self.ready();
   }
 );
