@@ -50,7 +50,7 @@ Template.AdminDashboardusersEdit.helpers(
       return '';
     },
     getProjectName(projectId) {
-      const project = projects.findOne({_id: projectId});
+      const project = projects.findOne({ _id: projectId });
       let projectName = projectId;
       if (project) {
         projectName = project.projectName;

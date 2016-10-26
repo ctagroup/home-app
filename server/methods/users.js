@@ -52,11 +52,11 @@ Meteor.methods(
       return user;
     },
     updateLinkedProjects(userId, projectsLinked) {
-        const _id = users.update(userId, {
-          $set: {
-            'projectsLinked': projectsLinked,
-          },
-        });
+      const _id = users.update(userId, {
+        $set: {
+          projectsLinked,
+        },
+      });
       return _id;
     },
     updateHMISUserRoles(userId, oldRoles, newRoles) {
