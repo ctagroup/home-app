@@ -38,6 +38,25 @@ Template.AdminDashboardusersEdit.helpers(
     getUserRoles(userId) {
       return HomeHelpers.getUserRoles(userId);
     },
+    getProjects() {
+      return projects.find({}).fetch();
+    },
+    isProjectSelected(projectId) {
+      const data = Router.current().data();
+      if (data.projectsLinked && data.projectsLinked.length > 0) {
+        return data.projectsLinked.indexOf(projectId) > -1 ? 'selected' : '';
+      }
+
+      return '';
+    },
+    getProjectName(projectId) {
+      const project = projects.findOne({_id: projectId});
+      let projectName = projectId;
+      if (project) {
+        projectName = project.projectName;
+      }
+      return projectName;
+    },
     locationHistoryMapOptions() {
       // Make sure the maps API has loaded
       if (GoogleMaps.loaded()) {

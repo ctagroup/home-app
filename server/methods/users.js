@@ -51,6 +51,14 @@ Meteor.methods(
 
       return user;
     },
+    updateLinkedProjects(userId, projectsLinked) {
+        const _id = users.update(userId, {
+          $set: {
+            'projectsLinked': projectsLinked,
+          },
+        });
+      return _id;
+    },
     updateHMISUserRoles(userId, oldRoles, newRoles) {
       const oldRoleIds = oldRoles.map(item => item.id);
 
