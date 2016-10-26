@@ -23,9 +23,9 @@ Meteor.publish(
           self.added('projectGroups', tempItem.projectGroupId, tempItem);
         });
       }
-      self.ready();
     } else {
       HMISAPI.setCurrentUserId('');
     }
+    return self.ready();
   }
 );

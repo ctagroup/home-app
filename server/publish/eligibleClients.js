@@ -45,9 +45,9 @@ Meteor.publish(
           self.added('eligibleClients', eligibleClients[i].clientId, eligibleClients[i]);
         }
       }
-      self.ready();
     } else {
       HMISAPI.setCurrentUserId('');
     }
+    return self.ready();
   }
 );

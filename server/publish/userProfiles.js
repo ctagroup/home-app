@@ -23,9 +23,9 @@ Meteor.publish(
           self.added('userProfiles', tempItem.id, tempItem);
         });
       }
-      self.ready();
     } else {
       HMISAPI.setCurrentUserId('');
     }
+    return self.ready();
   }
 );

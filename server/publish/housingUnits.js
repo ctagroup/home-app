@@ -23,14 +23,11 @@ Meteor.publish(
           tempItem.project = HMISAPI.getProjectForPublish(item.projectId);
           self.added('housingUnits', tempItem.housingInventoryId, tempItem);
         });
-        self.ready();
-      }
-      if (response.page.totalPages === 0) {
-        self.ready();   // Condition where there are no records.
       }
     } else {
       HMISAPI.setCurrentUserId('');
     }
+    return self.ready();
   }
 );
 
@@ -52,6 +49,6 @@ Meteor.publish(
       self.added('housingUnits', housingUnit.housingInventoryId, housingUnit);
     }
 
-    self.ready();
+    return self.ready();
   }
 );

@@ -65,6 +65,6 @@ Meteor.publish(
         self.added('housingMatch', housingMatch[i].reservationId, housingMatch[i]);
       }
     }
-    self.ready();
+    return self.ready();
   }
 );

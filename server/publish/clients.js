@@ -103,6 +103,6 @@ Meteor.publish(
     if (client) {
       self.added('clients', client.clientId, client);
     }
-    self.ready();
+    return self.ready();
   }
 );

@@ -35,6 +35,6 @@ Meteor.publish(
       self.added('projects', projects[i].projectId, projects[i]);
     }
 
-    self.ready();
+    return self.ready();
   }
 );
