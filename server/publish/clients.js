@@ -59,26 +59,28 @@ Meteor.publish(
           globalHouseholdMemberships[i].globalHouseholdId
         );
 
-        let hohSchema = 'v2015';
-        if (globalHousehold.links[0].rel.indexOf('v2014') !== -1) {
-          hohSchema = 'v2014';
+        if (globalHousehold) {
+          let hohSchema = 'v2015';
+          if (globalHousehold.links[0].rel.indexOf('v2014') !== -1) {
+            hohSchema = 'v2014';
+          }
+
+          globalHousehold.headOfHouseholdClient = HMISAPI.getClient(
+            globalHousehold.headOfHouseholdId,
+            hohSchema,
+            // useCurrentUserObject
+            false
+          );
+          globalHousehold.headOfHouseholdClient.schema = 'v2015';
+          globalHousehold.userCreateDetails = HMISAPI.getUserForPublish(
+            globalHousehold.userCreate
+          );
+          globalHousehold.userUpdateDetails = HMISAPI.getUserForPublish(
+            globalHousehold.userUpdate
+          );
+
+          globalHouseholds.push(globalHousehold);
         }
-
-        globalHousehold.headOfHouseholdClient = HMISAPI.getClient(
-          globalHousehold.headOfHouseholdId,
-          hohSchema,
-          // useCurrentUserObject
-          false
-        );
-        globalHousehold.headOfHouseholdClient.schema = 'v2015';
-        globalHousehold.userCreateDetails = HMISAPI.getUserForPublish(
-          globalHousehold.userCreate
-        );
-        globalHousehold.userUpdateDetails = HMISAPI.getUserForPublish(
-          globalHousehold.userUpdate
-        );
-
-        globalHouseholds.push(globalHousehold);
       }
 
       client.globalHouseholds = globalHouseholds;
