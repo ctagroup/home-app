@@ -14,14 +14,14 @@ Template.createClient.events(
       const middleName = tmpl.find('.middleName').value;
       const lastName = tmpl.find('.lastName').value;
       const suffix = tmpl.find('.suffix').value;
-      const photo = tmpl.find('.photo').value;
-      const ssn = tmpl.find('.ssn').value;
-      const dob = tmpl.find('.dob').value;
-      const race = tmpl.find('.race_category').value;
-      const ethnicity = tmpl.find('.ethnicity_category').value;
-      const gender = tmpl.find('.gender_category').value;
-      const veteranStatus = tmpl.find('.veteranStatus_category').value;
-      const disablingConditions = tmpl.find('.disablingConditions_category').value;
+      // const photo = tmpl.find('.photo').value;
+      // const ssn = tmpl.find('.ssn').value;
+      // const dob = tmpl.find('.dob').value;
+      // const race = tmpl.find('.race_category').value;
+      // const ethnicity = tmpl.find('.ethnicity_category').value;
+      // const gender = tmpl.find('.gender_category').value;
+      // const veteranStatus = tmpl.find('.veteranStatus_category').value;
+      // const disablingConditions = tmpl.find('.disablingConditions_category').value;
       // const residencePrior = tmpl.find('.residencePrior_category').value;
       // const entryDate = tmpl.find('.entryDate').value;
       // const exitDate = tmpl.find('.exitDate').value;
@@ -31,8 +31,7 @@ Template.createClient.events(
       // const shelter = tmpl.find('.timeOnStreets_category').value;
       const signature = tmpl.find('.signature') ? tmpl.find('.signature').value : '';
       Meteor.call(
-        'addClient', firstName, middleName, lastName, suffix, photo, ssn,
-        dob, race, ethnicity, gender, veteranStatus, disablingConditions,signature,
+        'addClient',  firstName , middleName , lastName , suffix , signature ,
         (error, result) => {
           if (error) {
             // console.log(error);

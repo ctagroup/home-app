@@ -9,14 +9,14 @@ Meteor.methods(
       middleName,
       lastName,
       suffix,
-      photo,
-      ssn,
-      dob,
-      race,
-      ethnicity,
-      gender,
-      veteranStatus,
-      disablingConditions,
+      // photo,
+      // ssn,
+      // dob,
+      // race,
+      // ethnicity,
+      // gender,
+      // veteranStatus,
+      // disablingConditions,
       // residencePrior,
       // entryDate,
       // exitDate,
@@ -32,14 +32,14 @@ Meteor.methods(
           middleName,
           lastName,
           suffix,
-          photo,
-          ssn,
-          dob,
-          race,
-          ethnicity,
-          gender,
-          veteranStatus,
-          disablingConditions,
+          // photo,
+          // ssn,
+          // dob,
+          // race,
+          // ethnicity,
+          // gender,
+          // veteranStatus,
+          // disablingConditions,
           // residencePrior,
           // entryDate,
           // exitDate,
@@ -111,7 +111,8 @@ Meteor.methods(
       let flag = false;
 
       if (personalId) {
-        clients.remove({ _id: client._id });
+       
+        // clients.remove({ _id: client._id });
         const clientBasePath = HomeConfig.hmisAPIEndpoints.clientBaseUrl.replace(
           HomeConfig.hmisAPIEndpoints.apiBaseUrl,
           ''
