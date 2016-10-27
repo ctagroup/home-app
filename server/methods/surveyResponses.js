@@ -18,7 +18,15 @@ Meteor.methods(
       );
       return responseRecords;
     },
-    updateSurveyResponse(responseID, surveyID, clientID, clientSchema, userID, mainSectionObject, status) {
+    updateSurveyResponse(
+      responseID,
+      surveyID,
+      clientID,
+      clientSchema,
+      userID,
+      mainSectionObject,
+      status
+    ) {
       const responsesCollection = HomeUtils.adminCollectionObject('responses');
       const responseRecords = responsesCollection.update(
         {
