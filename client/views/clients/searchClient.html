@@ -70,11 +70,7 @@
 <template name="clientTypeheadTemplate">
   <div>
     {{value}}
-    {{#if isHMISClient}}
-    <!-- {{>preliminarySurvey}} -->
       <span class="text-muted">(HMIS)</span>
-    
-    {{/if}}
   </div>
   {{#if dob}}
     <div class="text-muted">
