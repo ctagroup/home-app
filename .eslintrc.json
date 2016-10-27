@@ -1,5 +1,5 @@
 {
-  "extends": "airbnb",
+  "extends": "standard",
   "installedESLint": true,
   "plugins": [
     "react"
