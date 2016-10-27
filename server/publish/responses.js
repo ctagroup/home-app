@@ -7,7 +7,6 @@ Meteor.publish(
     const self = this;
 
     if (self.userId && typeof responses !== 'undefined') {
-
       HMISAPI.setCurrentUserId(self.userId);
 
       const responseList = responses.find().fetch();
