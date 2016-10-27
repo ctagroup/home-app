@@ -19,12 +19,3 @@ Meteor.publish(
     return surveyQuestionsMaster.find({});
   }
 );
-
-Meteor.publish(
-  'responses', () => {
-    if (typeof responses === 'undefined') {
-      return [];
-    }
-    return responses.find({});
-  }
-);

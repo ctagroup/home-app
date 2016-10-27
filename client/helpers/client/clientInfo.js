@@ -139,6 +139,9 @@ Template.viewClient.helpers(
         Meteor.user(), ['System Admin', 'Developer', 'Case Manager', 'Surveyor']
       ) && Router.current().data().clientId && Router.current().params.query.isHMISClient;
     },
+    showSurveyButton() {
+      return Router.current().data().clientId && Router.current().params.query.isHMISClient;
+    },
     alertMessages() {
       const params = Router.current().params;
 
