@@ -1,0 +1,13 @@
+<template name="responsesListView">
+  {{> adminAlert}}
+
+  {{#if hasDocuments}}
+    {{> tabular table=admin_table class="table dataTable"}}
+  {{else}}
+    <div class="alert alert-info">
+      <p>There are no visible items in this collection.</p>
+      <p><a href="{{newPath}}" class="btn btn-primary"><i class="fa fa-plus"></i> Add one</a></p>
+    </div>
+  {{/if}}
+
+</template>

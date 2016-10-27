@@ -268,7 +268,9 @@
                     <div class="form-group">
                         <div class="col-md-8">
                             <input class="btn btn-default back" value="Back" type="button">
-                            <input class="btn btn-success takeSurvey" value="Survey" type="button">
+                            {{#if showSurveyButton}}
+                              <input class="btn btn-success takeSurvey" value="Survey" type="button">
+                            {{/if}}
                             {{#unless personalId}}
                                 <input class="btn btn-success add-to-hmis js-tooltip" data-toggle="tooltip" value="Upload" title="This action uploads the client information to HMIS data server." type="button" />
                                 <input class="btn btn-warning edit" value="Edit" type="button" />
