@@ -128,7 +128,8 @@ HMISAPI = {
     if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
-
+    // const clientID = Meteor.findOne(_id : clientid);
+    
     const accessToken = HMISAPI.getCurrentAccessToken();
 
     const body = {
@@ -148,6 +149,7 @@ HMISAPI = {
         // Putting otherGender as null. Confirmed with Javier. Because it's of no use as of now.
         otherGender: 'null',
         veteranStatus: client.veteranStatus,
+       
       },
     };
 

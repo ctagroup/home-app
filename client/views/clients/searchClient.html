@@ -70,9 +70,7 @@
 <template name="clientTypeheadTemplate">
   <div>
     {{value}}
-    {{#if isHMISClient}}
       <span class="text-muted">(HMIS)</span>
-    {{/if}}
   </div>
   {{#if dob}}
     <div class="text-muted">
@@ -80,3 +78,13 @@
     </div>
   {{/if}}
 </template>
+
+<!-- <template name="signaturePad">
+  <div id="signature-pad" class="m-signature-pad">
+    <div class="m-signature-pad--body">
+      <canvas></canvas>
+    </div>
+  </div>
+  <div class="sign-above-description">Sign above</div>
+  <a href="#" class="btn btn-xs btn-default js-sign-clear">Clear</a>
+</template> -->
