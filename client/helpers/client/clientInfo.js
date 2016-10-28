@@ -5,7 +5,6 @@ let genderCategories;
 let veteranStatus;
 let ethnicityCategories;
 let raceCategories;
-let timesHomeless;
 let disablingCond;
 
 function getUniversalElements() {
@@ -29,9 +28,6 @@ function getUniversalElements() {
         break;
       case 'race':
         raceCategories = universalElements[i].options;
-        break;
-      case 'timesHomelesspastthreeyears':
-        timesHomeless = universalElements[i].options;
         break;
       case 'disablingCond':
         disablingCond = universalElements[i].options;
