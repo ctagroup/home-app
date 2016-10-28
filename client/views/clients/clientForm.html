@@ -29,22 +29,22 @@
 		</div>
 	</div>
 
-    <div class="form-group">
-        <label class="col-lg-3 control-label">Photo:</label>
-        <div class="col-lg-8">
-            <input class="photo" type="hidden" id="client-photo-value" value="{{photo}}" />
-            <img class="client-photo" id="client-photo-img" src="{{photo}}" />
-            {{#if isCordova}}
-              {{> cameraNative}}
-            {{else}}
-              {{#if isiOS or isAndroid}}
-                {{> cameraFileInput}}
-              {{else}}
-                {{> cameraNative}}
-              {{/if}}
-            {{/if}}
-        </div>
+  <div class="form-group">
+    <label class="col-lg-3 control-label">Photo:</label>
+    <div class="col-lg-8">
+      <input class="photo" type="hidden" id="client-photo-value" value="{{photo}}" />
+      <img class="client-photo" id="client-photo-img" src="{{photo}}" />
+      {{#if isCordova}}
+        {{> cameraNative}}
+      {{else}}
+        {{#if isiOS or isAndroid}}
+          {{> cameraFileInput}}
+        {{else}}
+          {{> cameraNative}}
+        {{/if}}
+      {{/if}}
     </div>
+  </div>
 
 	<div class="form-group">
 		<label class="col-lg-3 control-label">SSN:</label>
@@ -130,101 +130,6 @@
 				{{/each}}
 				{{#each getExtraDisablingCondition}}
 				<option selected="{{$eq this.value ../disablingConditions}}" value={{this.value}}>{{this.description}}</option>
-				{{/each}}
-			</select>
-		</div>
-	</div>
-
-	<div class="form-group">
-		<label class="col-lg-3 control-label">Residence Prior to Project Entry:</label>
-		<div class="col-lg-8">
-			<select class="form-control residencePrior_category" name="residencePrior_category" >
-				<option value=""></option>
-				{{#each getDefaultResidencePrior}}
-				<option selected="{{$eq this.value ../residencePrior}}" value={{this.value}}>{{this.description}}</option>
-				{{/each}}
-				{{#each getExtraResidencePrior}}
-				<option selected="{{$eq this.value ../residencePrior}}" value={{this.value}}>{{this.description}}</option>
-				{{/each}}
-			</select>
-		</div>
-	</div>
-
-	<div class="form-group">
-		<label class="col-lg-3 control-label">Project Entry Date:</label>
-		<div class="col-lg-8">
-			<input class="form-control entryDate" value={{getEntryDate}} >
-		</div>
-	</div>
-
-	<div class="form-group">
-		<label class="col-lg-3 control-label">Project Exit Date:</label>
-		<div class="col-lg-8">
-			<input class="form-control exitDate" value={{getExitDate}} >
-		</div>
-	</div>
-
-	<div class="form-group">
-		<label class="col-lg-3 control-label">Destination:</label>
-		<div class="col-lg-8">
-			<select class="form-control destinationCategory" name="destinationCategory" >
-				<option value=""></option>
-				{{#each getDefaultDestination}}
-				<option selected="{{$eq this.value ../destination}}" value={{this.value}}>{{this.description}}</option>
-				{{/each}}
-				{{#each getExtraDestination}}
-				<option selected="{{$eq this.value ../destination}}" value={{this.value}}>{{this.description}}</option>
-				{{/each}}
-			</select>
-		</div>
-	</div>
-
-	<!--<div class="form-group">-->
-		<!--<label class="col-lg-3 control-label">Personal ID:</label>-->
-		<!--<div class="col-lg-8">-->
-			<!--<input class="form-control personalId" value={{personalId}} type="text">-->
-		<!--</div>-->
-	<!--</div>-->
-
-	<!--<div class="form-group">-->
-		<!--<label class="col-lg-3 control-label">Household ID:</label>-->
-		<!--<div class="col-lg-8">-->
-			<!--<input class="form-control householdId" value={{householdId}} type="text">-->
-		<!--</div>-->
-	<!--</div>-->
-
-	<div class="form-group">
-		<label class="col-lg-3 control-label">Relationship to Head of Household:</label>
-		<div class="col-lg-8">
-			<select class="form-control relationtoHoH_category" name="relationtoHoH_category" >
-				<option value=""></option>
-				{{#each getDefaultRelationshipToHoh}}
-				<option selected="{{$eq this.value ../relationship}}" value={{this.value}}>{{this.description}}</option>
-				{{/each}}
-				{{#each getExtraRelationshipToHoh}}
-				<option selected="{{$eq this.value ../relationship}}" value={{this.value}}>{{this.description}}</option>
-				{{/each}}
-			</select>
-		</div>
-	</div>
-
-	<div class="form-group">
-		<label class="col-lg-3 control-label">Client Location:</label>
-		<div class="col-lg-8">
-			<input class="form-control loc" value={{location}} type="text">
-		</div>
-	</div>
-
-	<div class="form-group">
-		<label class="col-lg-3 control-label">Time on Streets Emergency Shelter or Safe Haven:</label>
-		<div class="col-lg-8">
-			<select class="form-control timeOnStreets_category" name="timeOnStreets_category" >
-				<option value=""></option>
-				{{#each getDefaultTimesHomeless}}
-				<option selected="{{$eq this.value ../shelter}}" value={{this.value}}>{{this.description}}</option>
-				{{/each}}
-				{{#each getExtraTimesHomeless}}
-				<option selected="{{$eq this.value ../shelter}}" value={{this.value}}>{{this.description}}</option>
 				{{/each}}
 			</select>
 		</div>

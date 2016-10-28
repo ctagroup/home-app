@@ -17,13 +17,6 @@ Meteor.methods(
       gender,
       veteranStatus,
       disablingConditions,
-      residencePrior,
-      entryDate,
-      exitDate,
-      destination,
-      relationship,
-      location,
-      shelter,
       signature
     ) {
       const client = clients.insert(
@@ -40,13 +33,6 @@ Meteor.methods(
           gender,
           veteranStatus,
           disablingConditions,
-          residencePrior,
-          entryDate,
-          exitDate,
-          destination,
-          relationship,
-          location,
-          shelter,
           signature,
         }
       );
@@ -65,14 +51,7 @@ Meteor.methods(
       ethnicity,
       gender,
       veteranStatus,
-      disablingConditions,
-      residencePrior,
-      entryDate,
-      exitDate,
-      destination,
-      relationship,
-      location,
-      shelter
+      disablingConditions
     ) {
       clients.update(
         clientID, {
@@ -89,13 +68,6 @@ Meteor.methods(
             gender,
             veteranStatus,
             disablingConditions,
-            residencePrior,
-            entryDate,
-            exitDate,
-            destination,
-            relationship,
-            location,
-            shelter,
           },
         }
       );
