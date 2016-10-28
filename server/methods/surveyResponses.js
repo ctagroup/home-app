@@ -4,11 +4,20 @@
 
 Meteor.methods(
   {
-    addSurveyResponse(surveyID, clientID, clientSchema, userID, mainSectionObject, status) {
+    addSurveyResponse(
+      surveyID,
+      clientID,
+      isHMISClient,
+      clientSchema,
+      userID,
+      mainSectionObject,
+      status
+    ) {
       const responsesCollection = HomeUtils.adminCollectionObject('responses');
       const responseRecords = responsesCollection.insert(
         {
           clientID,
+          isHMISClient,
           clientSchema,
           surveyID,
           userID,
@@ -22,6 +31,7 @@ Meteor.methods(
       responseID,
       surveyID,
       clientID,
+      isHMISClient,
       clientSchema,
       userID,
       mainSectionObject,
@@ -34,6 +44,7 @@ Meteor.methods(
         }, {
           $set: {
             clientID,
+            isHMISClient,
             clientSchema,
             surveyID,
             userID,
