@@ -44,6 +44,28 @@ Template.AdminDashboardusersNew.events(
         errors.push('Password should contain at least one special character from [! @ # $ * "].');
       }
 
+
+        // To set alert message if the fields are empty.
+         var elements = document.getElementsByTagName("INPUT");
+         var flag=0;
+           // var errorMessage =document.getElementsByTagName("span"); 
+      for(var i=0; i < elements.length; i++){
+            if(elements[i].value === "")
+          {
+            elements[i].style.borderColor="red";
+            flag=1;
+           
+         }
+}
+if(flag==1)
+{
+  alert("The required fields cannot be blank");
+}
+
+
+
+
+
       if (errors.length > 0) {
         const separator = '</p><p class="alert alert-danger">';
         const errorsHtml = `<p class="alert alert-danger">${errors.join(separator)}</p>`;

@@ -23,6 +23,27 @@ Template.createClient.events(
       const veteranStatus = tmpl.find('.veteranStatus_category').value;
       const disablingConditions = tmpl.find('.disablingConditions_category').value;
       const signature = tmpl.find('.signature') ? tmpl.find('.signature').value : '';
+
+    
+
+        // To set alert message if the fields are empty.
+         var elements = document.getElementsByTagName("INPUT");
+         var flag=0;
+           // var errorMessage =document.getElementsByTagName("span"); 
+      for(var i=0; i < elements.length; i++){
+            if(elements[i].value === "")
+          {
+            elements[i].style.borderColor="red";
+            flag=1;
+           
+         }
+}
+if(flag==1)
+{
+  alert("The required fields cannot be blank");
+}
+
+
       Meteor.call(
         'addClient', firstName, middleName, lastName, suffix, photo, ssn,
         dob, race, ethnicity, gender, veteranStatus, disablingConditions,
