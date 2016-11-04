@@ -1951,12 +1951,11 @@ HMISAPI = {
       return false;
     }
   },
-  addResponseToHmis(clientId, surveyId, appId, sectionId, questionId, responseText) {
+  addResponseToHmis(clientId, surveyId, responses) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
-    const responses = { responses: [{ questionId, responseText, sectionId, appId }] };
     const body = { responses };
     const accessToken = HMISAPI.getCurrentAccessToken();
     let url = config.hmisAPIEndpoints.surveyServiceBaseUrl +
