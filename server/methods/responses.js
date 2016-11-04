@@ -4,10 +4,14 @@
 
 Meteor.methods(
   {
-    sendResponse(clientId, surveyId, appid, sectionid, questionId, responseText) {
-      // will send one at a time.
+    sendResponse(clientId, surveyId, responses) {
+      // will send all at one time.
       return HMISAPI
-        .addResponseToHmis(clientId, surveyId, appid, sectionid, questionId, responseText);
+        .addResponseToHmis(clientId, surveyId, responses);
+    },
+    updateSubmissionIdForResponses(_id, submissionId) {
+      responses.update(_id, { $set: { submissionId } });
+      logger.info('Response Submission Id Added to mongo');
     },
   }
 );
