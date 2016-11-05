@@ -82,7 +82,7 @@ Meteor.methods(
         let flag = false;
 
 
-      if(client.firstName!==""||client.lastName!==""||client.suffix!==""||client.ssn!==""||client.dob!==""||client.race!==""||client.ethnicity!==""||client.gender!==""||client.veteranStatus!==""||client.disablingConditions!==""||client.signature!=="")
+      if(client.firstName!=="" && client.lastName!=="" && client.suffix!=="" && client.ssn!=="" && client.dob!=="" && client.race!=="" && client.ethnicity!=="" && client.gender!=="" && client.veteranStatus!=="" && client.disablingConditions!=="" && client.signature!=="")
       {
               const personalId = HMISAPI.createClient(client);
               flag= true;
