@@ -101,20 +101,20 @@ Meteor.publish(
 
       const housingUnit = HMISAPI.getHousingUnitForPublish(housingMatch.housingUnitId);
 
-      let schema = 'v2015';
+      let projectSchema = 'v2015';
       if (housingUnit.links && housingUnit.links.length > 0
           && housingUnit.links[0].rel.indexOf('v2014') !== -1) {
-        schema = 'v2014';
+        projectSchema = 'v2014';
       }
 
-      housingUnit.project = HMISAPI.getProjectForPublish(housingUnit.projectId, schema);
+      housingUnit.project = HMISAPI.getProjectForPublish(housingUnit.projectId, projectSchema);
 
       housingMatch.housingUnit = housingUnit;
 
       client.housingMatch = housingMatch;
 
       const matchingScore = HMISAPI.getClientScore(clientId);
-      const score = parseInt(matchingScore.replace('score :',''), 10);
+      const score = parseInt(matchingScore.replace('score :', ''), 10);
 
       client.matchingScore = score;
     } else {
