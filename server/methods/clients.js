@@ -99,8 +99,8 @@ Meteor.methods(
       return flag;
     },
 
-    updateClientMatchStatus(clientId, statusCode, comments) {
-      return HMISAPI.updateClientMatchStatus(clientId, statusCode, comments);
+    updateClientMatchStatus(clientId, statusCode, comments, recepients) {
+      return HMISAPI.updateClientMatchStatus(clientId, statusCode, comments, recepients);
     },
 
   }

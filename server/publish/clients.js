@@ -97,7 +97,26 @@ Meteor.publish(
       });
       client.referralStatusHistory = referralStatus;
 
-      client.matchingScore = HMISAPI.getClientScore(clientId);
+      const housingMatch = HMISAPI.getSingleHousingMatchForPublish(clientId);
+
+      const housingUnit = HMISAPI.getHousingUnitForPublish(housingMatch.housingUnitId);
+
+      let schema = 'v2015';
+      if (housingUnit.links && housingUnit.links.length > 0
+          && housingUnit.links[0].rel.indexOf('v2014') !== -1) {
+        schema = 'v2014';
+      }
+
+      housingUnit.project = HMISAPI.getProjectForPublish(housingUnit.projectId, schema);
+
+      housingMatch.housingUnit = housingUnit;
+
+      client.housingMatch = housingMatch;
+
+      const matchingScore = HMISAPI.getClientScore(clientId);
+      const score = parseInt(matchingScore.replace('score :',''), 10);
+
+      client.matchingScore = score;
     } else {
       HMISAPI.setCurrentUserId('');
     }

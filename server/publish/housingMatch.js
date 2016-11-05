@@ -55,6 +55,18 @@ Meteor.publish(
           return aTime - bTime;
         });
         housingMatch[i].eligibleClients.referralStatus = referralStatus;
+
+        const housingUnit = HMISAPI.getHousingUnitForPublish(housingMatch[i].housingUnitId);
+
+        let schema = 'v2015';
+        if (housingUnit.links && housingUnit.links.length > 0
+            && housingUnit.links[0].rel.indexOf('v2014') !== -1) {
+          schema = 'v2014';
+        }
+
+        housingUnit.project = HMISAPI.getProjectForPublish(housingUnit.projectId, schema);
+
+        housingMatch[i].housingUnit = housingUnit;
       }
     } else {
       HMISAPI.setCurrentUserId('');

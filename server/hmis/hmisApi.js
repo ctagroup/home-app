@@ -983,6 +983,9 @@ HMISAPI = {
     // const url = `${urlPah}?${querystring.stringify(params)}`;
     const url = `${urlPah}?startIndex=${from}&maxItems=${limit}`;
 
+    logger.info(url);
+    logger.info(accessToken);
+
     try {
       const response = HTTP.get(url, {
         headers: {
@@ -1006,6 +1009,12 @@ HMISAPI = {
     }
 
     const accessToken = HMISAPI.getCurrentAccessToken(false);
+
+    logger.info(config.hmisAPIEndpoints.clientBaseUrl
+                + config.hmisAPIEndpoints[schemaVersion]
+                + config.hmisAPIEndpoints.projects
+                + projectId);
+    logger.info(accessToken);
 
     try {
       const response = HTTP.get(
@@ -2108,12 +2117,47 @@ HMISAPI = {
       }
       logger.info(`House Matching Result: ${JSON.stringify(housingMatchList)}`);
     } catch (err) {
-      throw _.extend(
-        new Error(`Failed to get housing matching results from HMIS. ${err.message}`),
-        { response: err.response }
-      );
+      logger.info(`Failed to get housing matching results from HMIS. ${err.message}`);
+      logger.info(err.response);
+      return [];
     }
     return housingMatchList;
+  },
+  getSingleHousingMatchForPublish(clientId) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (!config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+
+    const accessToken = this.getCurrentAccessToken(false);
+
+    let housingMatch = false;
+
+    const baseUrl = config.hmisAPIEndpoints.houseMatchingBaseUrl;
+    const housingMatchPath = config.hmisAPIEndpoints.match.replace('{{clientId}}', clientId);
+    const urlPath = `${baseUrl}${housingMatchPath}`;
+    // const url = `${urlPath}?${querystring.stringify(params)}`;
+    // const url = `${urlPath}?page=${page}&size=${limit}`;
+    logger.info(urlPath);
+    logger.info(accessToken);
+
+    try {
+      const response = HTTP.get(urlPath, {
+        headers: {
+          'X-HMIS-TrustedApp-Id': config.appId,
+          Authorization: `HMISUserAuth session_token=${accessToken}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }).data;
+      housingMatch = response;
+      logger.info(`Single House Matching Result: ${JSON.stringify(housingMatch)}`);
+    } catch (err) {
+      logger.info(`Failed to get housing matching results from HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+    return housingMatch
   },
   getReferralStatusHistory(clientId) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
@@ -2185,20 +2229,20 @@ HMISAPI = {
       return false;
     }
   },
-  updateClientMatchStatus(clientId, statusCode, comments = '') {
+  updateClientMatchStatus(clientId, status, comments = '', recepients = []) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
-    logger.info(`clientid ${clientId} statusCode ${statusCode}`);
+    logger.info(`clientid ${clientId} statusCode ${status}`);
     const accessToken = this.getCurrentAccessToken(false);
 
     const baseUrl = config.hmisAPIEndpoints.houseMatchingBaseUrl;
     const statusPath = config.hmisAPIEndpoints.status.replace('{{clientId}}', clientId);
     const urlPah = `${baseUrl}${statusPath}`;
     const url = `${urlPah}`;
-    const body = { status: statusCode, comments };
+    const body = { status, comments, recepients };
     logger.info(url);
     logger.info(accessToken);
     logger.info(body);

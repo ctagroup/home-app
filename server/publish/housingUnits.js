@@ -20,7 +20,14 @@ Meteor.publish(
         logger.info(`Temp: ${housingUnits.length}`);
         _.each(temp.content, (item) => {
           const tempItem = item;
-          tempItem.project = HMISAPI.getProjectForPublish(item.projectId);
+
+          let schema = 'v2015';
+          if (item.links && item.links.length > 0
+              && item.links[0].rel.indexOf('v2014') !== -1) {
+            schema = 'v2014';
+          }
+
+          tempItem.project = HMISAPI.getProjectForPublish(item.projectId, schema);
           self.added('housingUnits', tempItem.housingInventoryId, tempItem);
         });
       }
@@ -41,6 +48,14 @@ Meteor.publish(
       HMISAPI.setCurrentUserId(self.userId);
 
       housingUnit = HMISAPI.getHousingUnitForPublish(housingUnitId);
+
+      let schema = 'v2015';
+      if (housingUnit.links && housingUnit.links.length > 0
+          && housingUnit.links[0].rel.indexOf('v2014') !== -1) {
+        schema = 'v2014';
+      }
+
+      housingUnit.project = HMISAPI.getProjectForPublish(housingUnit.projectId, schema);
     } else {
       HMISAPI.setCurrentUserId('');
     }
