@@ -29,7 +29,7 @@ Template.housingMatchListView.events(
           recepients = users.find({ projectsLinked: project.projectId }).fetch();
 
           if (recepients.length > 0) {
-            recepients = { 'toRecipients': recepients.map(item => item.emails[0].address) };
+            recepients = { toRecipients: recepients.map(item => item.emails[0].address) };
           }
         }
 
@@ -45,7 +45,8 @@ Template.housingMatchListView.events(
               logger.log(err);
             } else {
               logger.log(res);
-              $(evt.currentTarget).parent().append(referralStatusHelpers.generateStatusTagMarkup(1));
+              $(evt.currentTarget).parent()
+                .append(referralStatusHelpers.generateStatusTagMarkup(1));
               $(evt.currentTarget).remove();
             }
           }

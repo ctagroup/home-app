@@ -2157,7 +2157,7 @@ HMISAPI = {
       logger.info(err.response);
       return false;
     }
-    return housingMatch
+    return housingMatch;
   },
   getReferralStatusHistory(clientId) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });

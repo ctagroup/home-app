@@ -115,7 +115,7 @@ Template.viewClient.events(
           recepients = users.find({ projectsLinked: project.projectId }).fetch();
 
           if (recepients.length > 0) {
-            recepients = { 'toRecipients': recepients.map(item => item.emails[0].address) };
+            recepients = { toRecipients: recepients.map(item => item.emails[0].address) };
           }
         }
       }
