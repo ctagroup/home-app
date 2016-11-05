@@ -98,12 +98,34 @@ Template.viewClient.events(
       logger.log(`clicked status update${step}`);
       const status = step;
       const clientId = tmpl.data._id;
+      let recepients = [];
+
+      let reservation = false;
+      if (tmpl.data.housingMatch) {
+        reservation = tmpl.data.housingMatch;
+      }
+
+      if (reservation) {
+        let project = false;
+        if (reservation.housingUnit) {
+          project = reservation.housingUnit.project;
+        }
+
+        if (project) {
+          recepients = users.find({ projectsLinked: project.projectId }).fetch();
+
+          if (recepients.length > 0) {
+            recepients = { 'toRecipients': recepients.map(item => item.emails[0].address) };
+          }
+        }
+      }
 
       Meteor.call(
        'updateClientMatchStatus',
         clientId,
         status,
         $('#referralStatusComments').summernote('code'),
+        recepients,
         (err, res) => {
           if (err) {
             logger.log(err);
