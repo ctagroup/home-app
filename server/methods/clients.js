@@ -76,18 +76,31 @@ Meteor.methods(
       clients.remove({ _id: clientID });
     },
     addClientToHMIS(clientID) {
+
       const client = clients.findOne({ _id: clientID });
 
-      const personalId = HMISAPI.createClient(client);
+        let flag = false;
 
-      let flag = false;
+
+      if(client.firstName!==""||client.lastName!==""||client.suffix!==""||client.ssn!==""||client.dob!==""||client.race!==""||client.ethnicity!==""||client.gender!==""||client.veteranStatus!==""||client.disablingConditions!==""||client.signature!=="")
+      {
+              const personalId = HMISAPI.createClient(client);
+              flag= true;
+      }
+
+       else
+       {
+          flag=false;
+       } 
+
+      
 
       if (personalId) {
         clients.remove({ _id: client._id });
         const clientBasePath = HomeConfig.hmisAPIEndpoints.clientBaseUrl.replace(
           HomeConfig.hmisAPIEndpoints.apiBaseUrl,
           ''
-        );
+          );
         const schemaVersion = HomeConfig.hmisAPIEndpoints.v2015;
         const clientsPath = HomeConfig.hmisAPIEndpoints.clients;
         const url = `${clientBasePath}${schemaVersion}${clientsPath}/${personalId}`;
