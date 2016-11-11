@@ -2229,7 +2229,7 @@ HMISAPI = {
       return false;
     }
   },
-  updateClientMatchStatus(clientId, status, comments = '', recepients = []) {
+  updateClientMatchStatus(clientId, status, comments = '', recipients = []) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (!config) {
       throw new ServiceConfiguration.ConfigError();
@@ -2242,7 +2242,7 @@ HMISAPI = {
     const statusPath = config.hmisAPIEndpoints.status.replace('{{clientId}}', clientId);
     const urlPah = `${baseUrl}${statusPath}`;
     const url = `${urlPah}`;
-    const body = { status, comments, recepients };
+    const body = { status, comments, recipients };
     logger.info(url);
     logger.info(accessToken);
     logger.info(body);

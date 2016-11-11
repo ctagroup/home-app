@@ -98,7 +98,7 @@ Template.viewClient.events(
       logger.log(`clicked status update${step}`);
       const status = step;
       const clientId = tmpl.data._id;
-      let recepients = [];
+      let recipients = [];
 
       let reservation = false;
       if (tmpl.data.housingMatch) {
@@ -112,10 +112,10 @@ Template.viewClient.events(
         }
 
         if (project) {
-          recepients = users.find({ projectsLinked: project.projectId }).fetch();
+          recipients = users.find({ projectsLinked: project.projectId }).fetch();
 
-          if (recepients.length > 0) {
-            recepients = { toRecipients: recepients.map(item => item.emails[0].address) };
+          if (recipients.length > 0) {
+            recipients = { toRecipients: recipients.map(item => item.emails[0].address) };
           }
         }
       }
@@ -125,7 +125,7 @@ Template.viewClient.events(
         clientId,
         status,
         $('#referralStatusComments').summernote('code'),
-        recepients,
+        recipients,
         (err, res) => {
           if (err) {
             logger.log(err);
