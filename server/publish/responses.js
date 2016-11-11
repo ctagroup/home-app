@@ -20,7 +20,29 @@ Meteor.publish(
             false
           );
         } else {
-          responseList[i].clientDetails = clients.findOne({ _id: responseList[i].clientID });
+          const localClient = clients.findOne({ _id: responseList[i].clientID });
+
+          if (localClient) {
+            responseList[i].clientDetails = localClient;
+          } else {
+            const hmisClientSearch = HMISAPI.searchClient(
+              responseList[i].clientID,
+              // limit
+              10,
+              // useCurrentUserObject
+              false
+            );
+            if (hmisClientSearch.length > 0) {
+              responseList[i].clientDetails = hmisClientSearch[0];
+              responseList[i].isHMISClient = true;
+              let schema = 'v2015';
+              if (responseList[i].clientDetails.link
+                  && responseList[i].clientDetails.link.indexOf('v2014') !== -1) {
+                schema = 'v2014';
+              }
+              responseList[i].clientSchema = schema;
+            }
+          }
         }
         self.added('responses', responseList[i]._id, responseList[i]);
       }
@@ -48,7 +70,28 @@ Meteor.publish(
         );
         self.added('responses', response._id, response);
       } else if (response) {
-        response.clientDetails = clients.findOne({ _id: response.clientID });
+        const localClient = clients.findOne({ _id: response.clientID });
+        if (localClient) {
+          response.clientDetails = localClient;
+        } else {
+          const hmisClientSearch = HMISAPI.searchClient(
+            response.clientID,
+            // limit
+            10,
+            // useCurrentUserObject
+            false
+          );
+          if (hmisClientSearch.length > 0) {
+            response.clientDetails = hmisClientSearch[0];
+            response.isHMISClient = true;
+            let schema = 'v2015';
+            if (response.clientDetails.link
+                && response.clientDetails.link.indexOf('v2014') !== -1) {
+              schema = 'v2014';
+            }
+            response.clientSchema = schema;
+          }
+        }
         self.added('responses', response._id, response);
       }
     }
