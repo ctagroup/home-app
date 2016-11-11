@@ -24,12 +24,12 @@ Template.housingMatchListView.events(
           project = reservation.housingUnit.project;
         }
 
-        let recepients = [];
+        let recipients = [];
         if (project) {
-          recepients = users.find({ projectsLinked: project.projectId }).fetch();
+          recipients = users.find({ projectsLinked: project.projectId }).fetch();
 
-          if (recepients.length > 0) {
-            recepients = { toRecipients: recepients.map(item => item.emails[0].address) };
+          if (recipients.length > 0) {
+            recipients = { toRecipients: recipients.map(item => item.emails[0].address) };
           }
         }
 
@@ -39,7 +39,7 @@ Template.housingMatchListView.events(
           // Agency Contact Status.
           1,
           'Notified from HOME App Matching List',
-          recepients,
+          recipients,
           (err, res) => {
             if (err) {
               logger.log(err);
