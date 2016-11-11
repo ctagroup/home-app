@@ -235,13 +235,13 @@ HMISAPI = {
       return false;
     }
   },
-  searchClient(query, limit) {
+  searchClient(query, limit = 10, useCurrentUserObject = true) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (!config) {
       throw new ServiceConfiguration.ConfigError();
     }
 
-    const accessToken = HMISAPI.getCurrentAccessToken();
+    const accessToken = HMISAPI.getCurrentAccessToken(useCurrentUserObject);
 
     const params = {
       q: query,
