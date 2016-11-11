@@ -19,7 +19,7 @@ ecmascript@0.5.9              # Enable ECMAScript2015+ syntax in app code
 modules@0.7.7
 
 iron:router
-less@2.7.6
+less@2.7.7
 zimme:active-route
 useraccounts:bootstrap
 useraccounts:iron-routing
@@ -44,7 +44,6 @@ sergeyt:typeahead
 http@1.2.10
 oauth@1.1.12
 meteorhacks:aggregate
-momentjs:moment
 okgrow:router-autoscroll
 mdg:camera
 mdg:reload-on-resume
