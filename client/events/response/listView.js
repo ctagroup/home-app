@@ -12,7 +12,7 @@ Template.responsesListView.events(
       const survey
         = surveys.findOne({ _id: response.surveyID });
       if (survey.stype !== 'hud') {
-        responseHmisHelpers.sendResponseToHmis(responseId, (res) => {
+        responseHmisHelpers.sendResponseToHmis(responseId, {}, true, (res) => {
           if (!res) {
             // change the button back to what it was.
             $(`#${responseId}`).html('Upload to HMIS');
