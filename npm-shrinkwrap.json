@@ -558,6 +558,11 @@
         }
       }
     },
+    "moment": {
+      "version": "2.16.0",
+      "from": "moment@latest",
+      "resolved": "https://registry.npmjs.org/moment/-/moment-2.16.0.tgz"
+    },
     "regenerator-runtime": {
       "version": "0.9.6",
       "from": "regenerator-runtime@>=0.9.5 <0.10.0",

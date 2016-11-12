@@ -2,9 +2,10 @@
   "dependencies": {
     "babel-runtime": "^6.18.0",
     "datatables.net-bs": "^1.10.12",
+    "jquery": "^1.11.10",
     "meteor-node-stubs": "^0.2.3",
-    "winston": "^2.2.0",
-    "jquery": "^1.11.10"
+    "moment": "^2.16.0",
+    "winston": "^2.2.0"
   },
   "devDependencies": {
     "eslint": "^2.12.0",
