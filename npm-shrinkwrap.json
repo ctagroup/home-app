@@ -560,7 +560,7 @@
     },
     "moment": {
       "version": "2.16.0",
-      "from": "moment@latest",
+      "from": "https://registry.npmjs.org/moment/-/moment-2.16.0.tgz",
       "resolved": "https://registry.npmjs.org/moment/-/moment-2.16.0.tgz"
     },
     "regenerator-runtime": {
