@@ -87,8 +87,7 @@ Meteor.methods(
               const personalId = HMISAPI.createClient(client);
               flag= true;
       }
-
-       else
+      else
        {
           flag=false;
        } 

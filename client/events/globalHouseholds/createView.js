@@ -37,7 +37,8 @@ Template.globalHouseholdCreateView.events(
           if (err) {
             logger.log(err);
           } else {
-            logger.log(res);
+            alert(res);
+            // logger.log(res);
           }
         });
     },
