@@ -2,6 +2,8 @@
  * Created by udit on 08/07/16.
  */
 
+import moment from 'moment';
+
 // Tracker.autorun(() => {
   // if (Meteor.user()) {
     // const position = Geolocation.currentLocation();
