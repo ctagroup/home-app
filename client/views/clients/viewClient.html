@@ -127,8 +127,7 @@
                       <th>Head of Household</th>
                       <th>Date Created</th>
                       <th>Date Updated</th>
-                      <th>User Created</th>
-                      <th>User Updated</th>
+                      <th>User</th>
                       <th>Active?</th>
                     </tr>
                   </thead>
@@ -166,12 +165,8 @@
                           {{/if}}
                         </td>
                         <td>
-                          {{userCreateDetails.firstName}}
-                          {{userCreateDetails.lastName}}
-                        </td>
-                        <td>
-                          {{userUpdateDetails.firstName}}
-                          {{userUpdateDetails.lastName}}
+                          {{userDetails.firstName}}
+                          {{userDetails.lastName}}
                         </td>
                         <td>
                           {{#unless inactive}}
