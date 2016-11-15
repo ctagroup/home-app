@@ -33,11 +33,8 @@ Meteor.publish(
           false
         );
         globalHouseholds[i].headOfHouseholdClient.schema = 'v2015';
-        globalHouseholds[i].userCreateDetails = HMISAPI.getUserForPublish(
-          globalHouseholds[i].userCreate
-        );
-        globalHouseholds[i].userUpdateDetails = HMISAPI.getUserForPublish(
-          globalHouseholds[i].userUpdate
+        globalHouseholds[i].userDetails = HMISAPI.getUserForPublish(
+          globalHouseholds[i].userId
         );
         self.added('globalHouseholds', globalHouseholds[i].globalHouseholdId, globalHouseholds[i]);
       }
