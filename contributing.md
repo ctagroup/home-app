@@ -20,6 +20,12 @@ We are following [Airbnb JavaScript Style Guide](http://airbnb.io/javascript/).
     - `ln -s ../../.eslint-pre-commit pre-commit`
     - `cd ../../`
 
+# EditorConfig
+
+[EditorConfig](http://editorconfig.org/) helps following coding standards on its own. Lots of famous IDEs have plugins for EditorConfig support.
+
+There's a `.editorconfig` file (compatible with Airbnb Style Guide) put in the root of the project which will be helpful to the IDE plugins for EditorConfig.
+
 # Directory Structure
 
 ```
