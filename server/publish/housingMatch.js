@@ -2,6 +2,8 @@
  * Created by Anush-PC on 7/19/2016.
  */
 
+import moment from 'moment';
+
 Meteor.publish(
   'housingMatch', function publishHousingMatch() {
     const self = this;
