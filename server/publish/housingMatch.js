@@ -1,6 +1,7 @@
 /**
  * Created by Anush-PC on 7/19/2016.
  */
+import moment from 'moment';
 
 import moment from 'moment';
 
@@ -16,7 +17,7 @@ Meteor.publish(
       // Adding Dummy Data for testing.
 
       for (let i = 0; i < housingMatch.length; i += 1) {
-        if (housingMatch[i].links) {
+        if (housingMatch[i].links && housingMatch[i].links.length > 1) {
           let schema = 'v2015';
           if (housingMatch[i].links[1].href.indexOf('v2014') !== -1) {
             schema = 'v2014';
