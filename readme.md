@@ -42,6 +42,32 @@ Meteor Up is used to deploy this app. Ref: https://github.com/kadirahq/meteor-up
 - Go to directory `./deploy/<server-dir>`.
 - Run `mup deploy`. This command will initiate the deployment of the current version of project in your filesystem.
 
+## Mongo DB Backup & Restore from Docker Server
+
+### Dump
+
+```
+docker run \
+ --rm \
+ --link mongodb:mongo \
+ -v /home/ubuntu/backup-dir:/backup \
+ mongo \
+ bash -c 'mongodump --out /backup --host $MONGO_PORT_27017_TCP_ADDR'
+```
+
+### Restore
+
+```
+docker run \
+ --rm \
+ --link mongodb:mongo \
+ -v /home/ubuntu/home-app/meteor-mongodb\ backup/dump-2016-08-15:/backup \
+ mongo \
+ bash -c 'mongorestore --drop -d home-monterey /backup/home-cta --host $MONGO_PORT_27017_TCP_ADDR'
+```
+
+Ref: https://gist.github.com/desaiuditd/53fbfa61d564e2a9d84376e1237fdd36
+
 ## Meteor Components in use
 
 - Iron Router : https://github.com/iron-meteor/iron-router
