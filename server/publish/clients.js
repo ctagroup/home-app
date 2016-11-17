@@ -1,6 +1,7 @@
 /**
  * Created by udit on 15/07/16.
  */
+import moment from 'moment';
 
 Meteor.publish('localClients', () => clients.find({}));
 

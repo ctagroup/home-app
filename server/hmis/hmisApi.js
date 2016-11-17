@@ -1,6 +1,8 @@
 /**
  * Created by udit on 08/04/16.
  */
+import moment from 'moment';
+
 const querystring = require('querystring');
 
 HMISAPI = {
