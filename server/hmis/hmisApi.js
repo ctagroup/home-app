@@ -2231,6 +2231,38 @@ HMISAPI = {
       return false;
     }
   },
+  postHousingMatchScores() {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (!config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+    const body = { };
+    const accessToken = HMISAPI.getCurrentAccessToken();
+    const baseUrl = config.hmisAPIEndpoints.houseMatchingBaseUrl;
+    const housingMatchScoresPath = config.hmisAPIEndpoints.scores;
+    const urlPath = `${baseUrl}${housingMatchScoresPath}`;
+    logger.info(urlPath);
+    logger.info(accessToken);
+    try {
+      const response = HTTP.post(
+        urlPath, {
+          data: body,
+          headers: {
+            'X-HMIS-TrustedApp-Id': config.appId,
+            Authorization: `HMISUserAuth session_token=${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        }
+      ).data;
+      logger.info(JSON.stringify(response, null, 2));
+      return response;
+    } catch (err) {
+      logger.info(`Failed to post housing match scores in HMIS. ${err.message}`);
+      logger.info(err.response);
+      return false;
+    }
+  },
   updateClientMatchStatus(clientId, status, comments = '', recipients = []) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (!config) {

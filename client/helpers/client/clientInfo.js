@@ -1,7 +1,6 @@
 /**
  * Created by Kavi on 4/9/16.
  */
-
 import moment from 'moment';
 
 let genderCategories;
