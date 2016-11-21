@@ -5,6 +5,12 @@
 Meteor.publish(
   'projects', function publishProjects() {
     const self = this;
+    let stopFunction = false;
+    self.unblock();
+
+    self.onStop(() => {
+      stopFunction = true;
+    });
 
     let projects = [];
     let appProjectId = '';
@@ -20,7 +26,7 @@ Meteor.publish(
       projects = response.projects;
 
       // starting from 1. because we already got the 0th page in previous call
-      for (let i = 1; (i * 30) < response.pagination.total; i += 1) {
+      for (let i = 1; (i * 30) < response.pagination.total && !stopFunction; i++) {
         const temp = HMISAPI.getProjectsForPublish('v2015', i * 30);
         projects.push(...temp.projects);
       }
@@ -33,6 +39,7 @@ Meteor.publish(
         projects[i].isAppProject = true;
       }
       self.added('projects', projects[i].projectId, projects[i]);
+      self.ready();
     }
 
     return self.ready();

@@ -10,6 +10,13 @@ Meteor.publish('singleLocalClient', clientId => clients.find({ _id: clientId }))
 Meteor.publish(
   'singleHMISClient', function publishSingleHMISClient(clientId, schema) {
     const self = this;
+    let stopFunction = false;
+    self.unblock();
+
+    self.onStop(() => {
+      stopFunction = true;
+    });
+
     let client = false;
     if (self.userId) {
       HMISAPI.setCurrentUserId(self.userId);
@@ -22,12 +29,12 @@ Meteor.publish(
       response = HMISAPI.getEnrollmentsForPublish(clientId, schema);
       enrollments = response.enrollments;
 
-      for (let i = 1; (i * 30) < response.pagination.total; i += 1) {
+      for (let i = 1; (i * 30) < response.pagination.total && !stopFunction; i++) {
         const temp = HMISAPI.getEnrollmentsForPublish(clientId, schema, i * 30);
         enrollments.push(...temp.enrollments);
       }
 
-      for (let i = 0; i < enrollments.length; i += 1) {
+      for (let i = 0; i < enrollments.length && !stopFunction; i++) {
         enrollments[i].exits = HMISAPI.getEnrollmentExitsForPublish(
           clientId,
           enrollments[i].enrollmentId,
@@ -49,13 +56,13 @@ Meteor.publish(
       response = HMISAPI.getGlobalHouseholdMembershipsForPublish(clientId);
       globalHouseholdMemberships = response.content;
 
-      for (let i = 1; i < response.page.totalPages; i += 1) {
+      for (let i = 1; i < response.page.totalPages && !stopFunction; i++) {
         const temp = HMISAPI.getGlobalHouseholdMembershipsForPublish(clientId, i);
         globalHouseholdMemberships.push(...temp.content);
       }
 
       const globalHouseholds = [];
-      for (let i = 0; i < globalHouseholdMemberships.length; i += 1) {
+      for (let i = 0; i < globalHouseholdMemberships.length && !stopFunction; i++) {
         const globalHousehold = HMISAPI.getSingleGlobalHouseholdForPublish(
           globalHouseholdMemberships[i].globalHouseholdId
         );
