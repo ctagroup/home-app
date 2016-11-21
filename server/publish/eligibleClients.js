@@ -5,13 +5,20 @@
 Meteor.publish(
   'eligibleClients', function publishEligibleClients() {
     const self = this;
+    let stopFunction = false;
+    self.unblock();
+
+    self.onStop(() => {
+      stopFunction = true;
+    });
+
     let eligibleClients = [];
     if (self.userId) {
       HMISAPI.setCurrentUserId(self.userId);
       eligibleClients = HMISAPI.getEligibleClientsForPublish();
       // according to the content received.
       if (eligibleClients) {
-        for (let i = 0; i < eligibleClients.length; i += 1) {
+        for (let i = 0; i < eligibleClients.length && !stopFunction; i++) {
           // Add client details (Name & link to profile) here.
           if (eligibleClients[i].links && eligibleClients[i].links.length > 0) {
             let schema = 'v2015';
@@ -43,6 +50,7 @@ Meteor.publish(
             };
           }
           self.added('eligibleClients', eligibleClients[i].clientId, eligibleClients[i]);
+          self.ready();
         }
       }
     } else {

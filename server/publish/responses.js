@@ -5,13 +5,19 @@
 Meteor.publish(
   'responses', function publishResponses() {
     const self = this;
+    let stopFunction = false;
+    self.unblock();
+
+    self.onStop(() => {
+      stopFunction = true;
+    });
 
     if (self.userId && typeof responses !== 'undefined') {
       HMISAPI.setCurrentUserId(self.userId);
 
       const responseList = responses.find().fetch();
 
-      for (let i = 0; i < responseList.length; i += 1) {
+      for (let i = 0; i < responseList.length && !stopFunction; i++) {
         if (responseList[i].isHMISClient && responseList[i].clientSchema) {
           responseList[i].clientDetails = HMISAPI.getClient(
             responseList[i].clientID,
@@ -45,6 +51,7 @@ Meteor.publish(
           }
         }
         self.added('responses', responseList[i]._id, responseList[i]);
+        self.ready();
       }
     }
 
@@ -93,6 +100,7 @@ Meteor.publish(
           }
         }
         self.added('responses', response._id, response);
+        self.ready();
       }
     }
 

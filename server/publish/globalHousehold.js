@@ -5,6 +5,12 @@
 Meteor.publish(
   'globalHouseholds', function publishGlobalHouseholds() {
     const self = this;
+    let stopFunction = false;
+    self.unblock();
+
+    self.onStop(() => {
+      stopFunction = true;
+    });
 
     let globalHouseholds = [];
     if (self.userId) {
@@ -14,13 +20,13 @@ Meteor.publish(
       // according to the content received.
       logger.info(globalHouseholds.length);
       // starting from 1. because we already got the 0th page in previous call
-      for (let i = 1; i < response.page.totalPages; i += 1) {
+      for (let i = 1; i < response.page.totalPages && !stopFunction; i++) {
         const temp = HMISAPI.getGlobalHouseholdsForPublish(i);
         globalHouseholds.push(...temp.content);
         logger.info(`Temp: ${globalHouseholds.length}`);
       }
 
-      for (let i = 0; i < globalHouseholds.length; i += 1) {
+      for (let i = 0; i < globalHouseholds.length && !stopFunction; i++) {
         let schema = 'v2015';
         if (globalHouseholds[i].links[0].rel.indexOf('v2014') !== -1) {
           schema = 'v2014';
@@ -37,6 +43,7 @@ Meteor.publish(
           globalHouseholds[i].userId
         );
         self.added('globalHouseholds', globalHouseholds[i].globalHouseholdId, globalHouseholds[i]);
+        self.ready();
       }
     } else {
       HMISAPI.setCurrentUserId('');
@@ -48,6 +55,13 @@ Meteor.publish(
 Meteor.publish(
   'singleGlobalHousehold', function publishSingleGlobalHousehold(globalHouseholdId) {
     const self = this;
+    let stopFunction = false;
+    self.unblock();
+
+    self.onStop(() => {
+      stopFunction = true;
+    });
+
     let globalHousehold = false;
     if (self.userId) {
       HMISAPI.setCurrentUserId(self.userId);
@@ -56,13 +70,13 @@ Meteor.publish(
       globalHousehold.clients = response.content;
 
       // starting from 1. because we already got the 0th page in previous call
-      for (let i = 1; i < response.page.totalPages; i += 1) {
+      for (let i = 1; i < response.page.totalPages && !stopFunction; i++) {
         const temp = HMISAPI.getGlobalHouseholdMembersForPublish(globalHouseholdId, i);
         globalHousehold.clients.push(...temp.content);
         logger.info(`Temp: ${globalHousehold.clients.length}`);
       }
 
-      for (let i = 0; i < globalHousehold.clients.length; i += 1) {
+      for (let i = 0; i < globalHousehold.clients.length && !stopFunction; i++) {
         let schema = 'v2015';
         if (globalHousehold.clients[i].links[0].rel.indexOf('v2014') !== -1) {
           schema = 'v2014';

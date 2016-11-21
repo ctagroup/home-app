@@ -5,6 +5,12 @@
 Meteor.publish(
   'userProfiles', function publishUserProfiles() {
     const self = this;
+    let stopFunction = false;
+    self.unblock();
+
+    self.onStop(() => {
+      stopFunction = true;
+    });
 
     let userProfiles = [];
 
@@ -14,14 +20,15 @@ Meteor.publish(
       userProfiles = response.profile;
       // according to the content received.
       logger.info(userProfiles.length);
-      for (let i = 0; (i * 30) < response.pagination.total; i += 1) {
+      for (let i = 0; (i * 30) < response.pagination.total && !stopFunction; i++) {
         const temp = HMISAPI.getUserProfiles((i * 30), 30);
         userProfiles.push(...temp.profile);
         logger.info(`Temp: ${userProfiles.length}`);
-        _.each(temp.profile, (item) => {
-          const tempItem = item;
+        for (let j = 0; j < temp.profile.length && !stopFunction; j++) {
+          const tempItem = temp.profile[j];
           self.added('userProfiles', tempItem.id, tempItem);
-        });
+          self.ready();
+        }
       }
     } else {
       HMISAPI.setCurrentUserId('');

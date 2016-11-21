@@ -5,6 +5,12 @@
 Meteor.publish(
   'hmisRoles', function publishHMISRoles() {
     const self = this;
+    let stopFunction = false;
+    self.unblock();
+
+    self.onStop(() => {
+      stopFunction = true;
+    });
 
     let hmisRoles = [];
 
@@ -14,14 +20,15 @@ Meteor.publish(
       hmisRoles = response.role;
       // according to the content received.
       logger.info(hmisRoles.length);
-      for (let i = 0; (i * 30) < response.pagination.total; i += 1) {
+      for (let i = 0; (i * 30) < response.pagination.total && !stopFunction; i++) {
         const temp = HMISAPI.getRoles((i * 30), 30);
         hmisRoles.push(...temp.role);
         logger.info(`Temp: ${hmisRoles.length}`);
-        _.each(temp.role, (item) => {
-          const tempItem = item;
+        for (let j = 0; j < temp.role.length && !stopFunction; j++) {
+          const tempItem = temp.role[j];
           self.added('hmisRoles', tempItem.id, tempItem);
-        });
+          self.ready();
+        }
       }
     } else {
       HMISAPI.setCurrentUserId('');

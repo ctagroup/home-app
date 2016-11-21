@@ -5,6 +5,12 @@
 Meteor.publish(
   'housingUnits', function publishHousingUnits() {
     const self = this;
+    let stopFunction = false;
+    self.unblock();
+
+    self.onStop(() => {
+      stopFunction = true;
+    });
 
     let housingUnits = [];
 
@@ -14,11 +20,12 @@ Meteor.publish(
       housingUnits = response.content;
       // according to the content received.
       logger.info(housingUnits.length);
-      for (let i = 0; i < response.page.totalPages; i += 1) {
+      for (let i = 0; i < response.page.totalPages && !stopFunction; i++) {
         const temp = HMISAPI.getHousingUnitsForPublish(i);
         housingUnits.push(...temp.content);
         logger.info(`Temp: ${housingUnits.length}`);
-        _.each(temp.content, (item) => {
+        for (let j = 0; j < temp.content.length && !stopFunction; j++) {
+          const item = temp.content[j];
           const tempItem = item;
 
           let schema = 'v2015';
@@ -29,7 +36,8 @@ Meteor.publish(
 
           tempItem.project = HMISAPI.getProjectForPublish(item.projectId, schema);
           self.added('housingUnits', tempItem.housingInventoryId, tempItem);
-        });
+          self.ready();
+        }
       }
     } else {
       HMISAPI.setCurrentUserId('');

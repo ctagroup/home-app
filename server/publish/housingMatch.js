@@ -7,6 +7,12 @@ import moment from 'moment';
 Meteor.publish(
   'housingMatch', function publishHousingMatch() {
     const self = this;
+    let stopFunction = false;
+    self.unblock();
+
+    self.onStop(() => {
+      stopFunction = true;
+    });
 
     let housingMatch = [];
     if (self.userId) {
@@ -15,7 +21,7 @@ Meteor.publish(
       // according to the content received.
       // Adding Dummy Data for testing.
 
-      for (let i = 0; i < housingMatch.length; i += 1) {
+      for (let i = 0; i < housingMatch.length && !stopFunction; i++) {
         if (housingMatch[i].links && housingMatch[i].links.length > 1) {
           let schema = 'v2015';
           if (housingMatch[i].links[1].href.indexOf('v2014') !== -1) {
@@ -69,16 +75,14 @@ Meteor.publish(
         housingUnit.project = HMISAPI.getProjectForPublish(housingUnit.projectId, schema);
 
         housingMatch[i].housingUnit = housingUnit;
+
+        self.added('housingMatch', housingMatch[i].reservationId, housingMatch[i]);
+        self.ready();
       }
     } else {
       HMISAPI.setCurrentUserId('');
     }
-    if (housingMatch) {
-      logger.info(`Publishing Housing Match: ${housingMatch.length}`);
-      for (let i = 0; i < housingMatch.length; i += 1) {
-        self.added('housingMatch', housingMatch[i].reservationId, housingMatch[i]);
-      }
-    }
+
     return self.ready();
   }
 );
