@@ -42,6 +42,28 @@ Meteor Up is used to deploy this app. Ref: https://github.com/kadirahq/meteor-up
 - Go to directory `./deploy/<server-dir>`.
 - Run `mup deploy`. This command will initiate the deployment of the current version of project in your filesystem.
 
+## SSL Certificate
+
+Login to Server with SSH using `home.pem` key to perform following actions.
+
+### Enable
+
+```
+sudo ee site update home.ctagroup.org --letsencrypt
+```
+
+### Disable
+
+```
+sudo ee site update home.ctagroup.org --letsencrypt=off
+```
+
+### Renew
+
+```
+sudo ee site update home.ctagroup.org --letsencrypt=renew
+```
+
 ## Mongo DB Backup & Restore from Docker Server
 
 ### Dump
