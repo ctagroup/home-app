@@ -22,7 +22,8 @@ Meteor.publish(
 
       const localUser = users.findOne({ _id: userId });
 
-      if (localUser && localUser.HMIS && localUser.HMIS.accountId) {
+      if (localUser && localUser.services
+          && localUser.services.HMIS && localUser.services.HMIS.accountId) {
         hmisUser = HMISAPI.getUserForPublish(localUser.services.HMIS.accountId);
 
         if (localUser.projectsLinked) {
