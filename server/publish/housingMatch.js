@@ -21,7 +21,7 @@ Meteor.publish(
       // according to the content received.
       // Adding Dummy Data for testing.
 
-      for (let i = 0; i < housingMatch.length && !stopFunction; i++) {
+      for (let i = 0; i < housingMatch.length && !stopFunction; i += 1) {
         if (housingMatch[i].links && housingMatch[i].links.length > 1) {
           let schema = 'v2015';
           if (housingMatch[i].links[1].href.indexOf('v2014') !== -1) {

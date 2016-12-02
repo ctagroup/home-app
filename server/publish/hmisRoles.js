@@ -20,11 +20,11 @@ Meteor.publish(
       hmisRoles = response.role;
       // according to the content received.
       logger.info(hmisRoles.length);
-      for (let i = 0; (i * 30) < response.pagination.total && !stopFunction; i++) {
+      for (let i = 0; (i * 30) < response.pagination.total && !stopFunction; i += 1) {
         const temp = HMISAPI.getRoles((i * 30), 30);
         hmisRoles.push(...temp.role);
         logger.info(`Temp: ${hmisRoles.length}`);
-        for (let j = 0; j < temp.role.length && !stopFunction; j++) {
+        for (let j = 0; j < temp.role.length && !stopFunction; j += 1) {
           const tempItem = temp.role[j];
           self.added('hmisRoles', tempItem.id, tempItem);
           self.ready();

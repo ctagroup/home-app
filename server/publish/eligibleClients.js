@@ -18,7 +18,7 @@ Meteor.publish(
       eligibleClients = HMISAPI.getEligibleClientsForPublish();
       // according to the content received.
       if (eligibleClients) {
-        for (let i = 0; i < eligibleClients.length && !stopFunction; i++) {
+        for (let i = 0; i < eligibleClients.length && !stopFunction; i += 1) {
           // Add client details (Name & link to profile) here.
           if (eligibleClients[i].links && eligibleClients[i].links.length > 0) {
             let schema = 'v2015';

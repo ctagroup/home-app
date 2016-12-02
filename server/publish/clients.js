@@ -29,12 +29,12 @@ Meteor.publish(
       response = HMISAPI.getEnrollmentsForPublish(clientId, schema);
       enrollments = response.enrollments;
 
-      for (let i = 1; (i * 30) < response.pagination.total && !stopFunction; i++) {
+      for (let i = 1; (i * 30) < response.pagination.total && !stopFunction; i += 1) {
         const temp = HMISAPI.getEnrollmentsForPublish(clientId, schema, i * 30);
         enrollments.push(...temp.enrollments);
       }
 
-      for (let i = 0; i < enrollments.length && !stopFunction; i++) {
+      for (let i = 0; i < enrollments.length && !stopFunction; i += 1) {
         enrollments[i].exits = HMISAPI.getEnrollmentExitsForPublish(
           clientId,
           enrollments[i].enrollmentId,
@@ -56,13 +56,13 @@ Meteor.publish(
       response = HMISAPI.getGlobalHouseholdMembershipsForPublish(clientId);
       globalHouseholdMemberships = response.content;
 
-      for (let i = 1; i < response.page.totalPages && !stopFunction; i++) {
+      for (let i = 1; i < response.page.totalPages && !stopFunction; i += 1) {
         const temp = HMISAPI.getGlobalHouseholdMembershipsForPublish(clientId, i);
         globalHouseholdMemberships.push(...temp.content);
       }
 
       const globalHouseholds = [];
-      for (let i = 0; i < globalHouseholdMemberships.length && !stopFunction; i++) {
+      for (let i = 0; i < globalHouseholdMemberships.length && !stopFunction; i += 1) {
         const globalHousehold = HMISAPI.getSingleGlobalHouseholdForPublish(
           globalHouseholdMemberships[i].globalHouseholdId
         );

@@ -17,7 +17,7 @@ Meteor.publish(
 
       const responseList = responses.find().fetch();
 
-      for (let i = 0; i < responseList.length && !stopFunction; i++) {
+      for (let i = 0; i < responseList.length && !stopFunction; i += 1) {
         if (responseList[i].isHMISClient && responseList[i].clientSchema) {
           responseList[i].clientDetails = HMISAPI.getClient(
             responseList[i].clientID,

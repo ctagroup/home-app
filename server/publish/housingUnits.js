@@ -20,11 +20,11 @@ Meteor.publish(
       housingUnits = response.content;
       // according to the content received.
       logger.info(housingUnits.length);
-      for (let i = 0; i < response.page.totalPages && !stopFunction; i++) {
+      for (let i = 0; i < response.page.totalPages && !stopFunction; i += 1) {
         const temp = HMISAPI.getHousingUnitsForPublish(i);
         housingUnits.push(...temp.content);
         logger.info(`Temp: ${housingUnits.length}`);
-        for (let j = 0; j < temp.content.length && !stopFunction; j++) {
+        for (let j = 0; j < temp.content.length && !stopFunction; j += 1) {
           const item = temp.content[j];
           const tempItem = item;
 
