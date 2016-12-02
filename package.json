@@ -1,7 +1,6 @@
 {
   "dependencies": {
     "babel-runtime": "^6.18.0",
-    "bcrypt": "^0.8.7",
     "datatables.net-bs": "^1.10.12",
     "jquery": "^1.11.10",
     "meteor-node-stubs": "^0.2.3",
