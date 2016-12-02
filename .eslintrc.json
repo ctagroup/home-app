@@ -83,7 +83,8 @@
     "responseHmisHelpers": true,
     "globalHouseholdsHelpers": true,
     "eligibleClients": true,
-    "referralStatusHelpers": true
+    "referralStatusHelpers": true,
+    "Houston": true
   },
   "rules": {
     "no-underscore-dangle": [

@@ -14,12 +14,12 @@ jquery@1.11.10                  # Helpful client-side library
 tracker@1.1.1                 # Meteor's client-side reactive programming library
 
 es5-shim@4.6.15                # ECMAScript 5 compatibility for older browsers.
-ecmascript@0.5.9              # Enable ECMAScript2015+ syntax in app code
+ecmascript@0.6.1              # Enable ECMAScript2015+ syntax in app code
 
 modules@0.7.7
 
 iron:router
-less@2.7.7
+less@2.7.8
 zimme:active-route
 useraccounts:bootstrap
 useraccounts:iron-routing
@@ -65,3 +65,7 @@ mizzao:jquery-ui
 natestrauser:select2
 zuuk:stale-session
 shell-server@0.2.1
+# accounts-password is added because of houston:admin. Because there was a build error for npm-bcrypt.
+# So don't remove accounts-password, if you want to keep houston:admin
+accounts-password
+houston:admin
