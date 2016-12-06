@@ -40,7 +40,7 @@ Template.responsesListView.events(
                 'sendScoresToHMIS', survey.apiSurveyServiceId, response.clientID, score,
                 (er, re) => {
                   if (er) {
-                    logger.log(er);
+                    Meteor.call('updateResponseStatus', responseId, 'Completed', () => {});
                   } else {
                     logger.log(re);
                   }
@@ -58,15 +58,17 @@ Template.responsesListView.events(
                 // change button to completed.
                 $(`#${responseId}`).parent()
                   .html(htmlOk);
+
+                Meteor.call('updateResponseStatus', responseId, 'Completed', () => {});
               });
+            } else {
+              Meteor.call('updateResponseStatus', responseId, 'Completed', () => {});
             }
           });
         });
       } else {
         // TODO Upload for HUD.
       }
-
-      Meteor.call('updateResponseStatus', responseId, 'Completed', () => {});
     },
   }
 );
