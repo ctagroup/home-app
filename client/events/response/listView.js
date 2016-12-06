@@ -53,7 +53,8 @@ Template.responsesListView.events(
                   'Submitted' +
                   '</span>' +
                   '<br>' +
-                  `<a id="${responseId}" href="#" class="btn UploadResponses"> (Re-Upload to HMIS)</a>`;
+                  `<a id="${responseId}" href="#" class="btn UploadResponses">` +
+                  '(Re-Upload to HMIS)</a>';
                 // change button to completed.
                 $(`#${responseId}`).parent()
                   .html(htmlOk);
