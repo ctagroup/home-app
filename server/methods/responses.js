@@ -13,5 +13,8 @@ Meteor.methods(
       responses.update(_id, { $set: { submissionId } });
       logger.info('Response Submission Id Added to mongo');
     },
+    updateResponseStatus(_id, responsestatus) {
+      responses.update(_id, { $set: { responsestatus } });
+    },
   }
 );
