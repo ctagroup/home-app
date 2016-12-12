@@ -25,42 +25,45 @@ Meteor.methods(
           = surveys.findOne({ _id: response.surveyID });
         if (survey.stype !== 'hud') {
           Meteor.call('updateResponseStatus', responseId, 'Uploading');
-
-          responseHmisHelpers.sendResponseToHmis(responseId, {}, true, (res) => {
-            if (res) {
-              // Calculate the scores now and send them too.
-              let score;
-              // Send response Id, survey Id and fromDb to true to score helpers.
-              switch (survey.stype) {
-                case 'spdat-t':
-                  score = spdatScoreHelpers.calcSpdatTayScore(survey._id, responseId, true);
-                  // upload the scores too.
-                  break;
-                case 'spdat-f':
-                  score = spdatScoreHelpers.calcSpdatFamilyScore(survey._id, responseId, true);
-                  break;
-                case 'spdat-s':
-                  score = spdatScoreHelpers.calcSpdatSingleScore(survey._id, responseId, true);
-                  break;
-                default:
-                  score = 0;
-                  // Should be other than VI-SPDAT.
-                  break;
-              }
-                  // On getting the scores, update them.
-              Meteor.call('sendScoresToHMIS', survey.apiSurveyServiceId,
-                                      response.clientID, score);
-
-              // save the submission Id.
-              Meteor.call('updateSubmissionIdForResponses', responseId, res.submissionId);
+          const sendResponseToHmisSync = Meteor.wrapAsync(
+            responseHmisHelpers.sendResponseToHmis);
+          const res = sendResponseToHmisSync(responseId, {}, true);
+          if (res) {
+            // Calculate the scores now and send them too.
+            let score;
+            // Send response Id, survey Id and fromDb to true to score helpers.
+            switch (survey.stype) {
+              case 'spdat-t':
+                score = spdatScoreHelpers.calcSpdatTayScore(survey._id, responseId, true);
+                // upload the scores too.
+                break;
+              case 'spdat-f':
+                score = spdatScoreHelpers.calcSpdatFamilyScore(survey._id, responseId, true);
+                break;
+              case 'spdat-s':
+                score = spdatScoreHelpers.calcSpdatSingleScore(survey._id, responseId, true);
+                break;
+              default:
+                score = 0;
+                // Should be other than VI-SPDAT.
+                break;
             }
-          });
+            // On getting the scores, update them.
+            Meteor.call('sendScoresToHMIS', survey.apiSurveyServiceId,
+                                    response.clientID, score);
+
+            // save the submission Id.
+            Meteor.call('updateSubmissionIdForResponses', responseId, res.submissionId);
+          } else {
+            throw new Meteor.Error('Error sending Response to Hmis');
+          }
         } else {
           throw new Meteor.Error('Response upload for HUD not implemented');
         }
       } catch (e) {
         logger.error(e);
-        throw (e);
+        logger.error(e.details);
+        throw e;
       } finally {
         Meteor.call('updateResponseStatus', responseId, 'Completed');
       }
