@@ -13,6 +13,7 @@ Template.responsesListView.events(
       Meteor.call('uploadResponse', responseId, (err) => {
         if (err) {
           parent.html(originalHtml);
+          alert('Error uploading response to HMIS.');
         } else {
           const htmlOk = '<span class="text-success">' +
                   '<i class="fa fa-check"></i> ' +

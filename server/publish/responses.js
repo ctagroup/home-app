@@ -76,6 +76,7 @@ Meteor.publish(
           false
         );
         self.added('responses', response._id, response);
+        self.ready();
       } else if (response) {
         const localClient = clients.findOne({ _id: response.clientID });
         if (localClient) {
