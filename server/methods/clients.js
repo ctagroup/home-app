@@ -97,7 +97,7 @@ Meteor.methods(
         };
 
         responses.update({ clientID },
-          { $set: { clientID: flag._id, clientSchema: schemaVersion, isHMISClient: true } },
+          { $set: { clientID: flag._id, clientSchema: 'v2015', isHMISClient: true } },
           { multi: true }
         );
       }
