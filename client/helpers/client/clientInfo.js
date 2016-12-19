@@ -232,9 +232,8 @@ Template.clientForm.helpers(
       let date = '';
 
       if (this && this.dob) {
-        date = moment(this.dob).format('MM/DD/YYYY');
+        date = moment(this.dob).format('YYYY-MM-DD');
       }
-
       return date;
     },
     getDefaultRace() {
