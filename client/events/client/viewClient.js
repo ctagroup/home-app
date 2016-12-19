@@ -47,6 +47,7 @@ Template.viewClient.events(
                 addedToHMIS: 1,
                 isHMISClient: true,
                 link: result.link,
+                schema: 'v2015',
               };
               clientId = result._id;
               query = querystring.stringify(params);
