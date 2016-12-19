@@ -171,8 +171,8 @@ HMISAPI = {
 
       return response.client.clientId;
     } catch (err) {
-      logger.info(`Failed to create client in HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to create client in HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -206,8 +206,8 @@ HMISAPI = {
 
       return response.client;
     } catch (err) {
-      logger.info(`Failed to get client info from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to get client info from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -233,8 +233,8 @@ HMISAPI = {
 
       return response.client;
     } catch (err) {
-      logger.info(`Failed to get client info from HMIS with URL. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to get client info from HMIS with URL. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -279,8 +279,8 @@ HMISAPI = {
 
       return clients;
     } catch (err) {
-      logger.info(`Failed to search clients in HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to search clients in HMIS. ${err.message}`);
+      logger.error(err.response);
       return [];
     }
   },
@@ -315,8 +315,8 @@ HMISAPI = {
       }).data;
       enrollments = response.enrollments;
     } catch (err) {
-      logger.info(`Failed to get housing units from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to get housing units from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
 
@@ -357,8 +357,8 @@ HMISAPI = {
       }).data;
       exits = response.exits.exits;
     } catch (err) {
-      logger.info(`Failed to get housing units from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to get housing units from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
 
@@ -394,8 +394,8 @@ HMISAPI = {
       }).data;
       housingUnits = response;
     } catch (err) {
-      logger.info(`Failed to get housing units from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to get housing units from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
 
@@ -435,8 +435,8 @@ HMISAPI = {
       logger.info(response);
       housingUnit = response;
     } catch (err) {
-      logger.info(`Failed to get housing unit from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to get housing unit from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
 
@@ -472,8 +472,8 @@ HMISAPI = {
       logger.log(response);
       return response[0];
     } catch (err) {
-      logger.info(`Failed to get client info from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to get client info from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -506,8 +506,8 @@ HMISAPI = {
       ).data;
       return response[0];
     } catch (err) {
-      logger.info(`Failed to get client info from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to get client info from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -539,8 +539,8 @@ HMISAPI = {
       logger.info(`Delete housing unit ${JSON.stringify(response)}`);
       return response;
     } catch (err) {
-      logger.info(`Failed to get client info from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to get client info from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -575,8 +575,8 @@ HMISAPI = {
       logger.info(response);
       globalHouseholds = response;
     } catch (err) {
-      logger.info(`Failed to get global Household from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to get global Household from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
 
@@ -613,8 +613,8 @@ HMISAPI = {
       logger.info(response);
       return response;
     } catch (err) {
-      logger.info(`Failed to get single household details from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to get single household details from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -647,10 +647,10 @@ HMISAPI = {
       logger.info(response);
       return response;
     } catch (err) {
-      logger.info(
+      logger.error(
         `Failed to get global household memberships for client from HMIS. ${err.message}`
       );
-      logger.info(err.response);
+      logger.error(err.response);
       return false;
     }
   },
@@ -685,8 +685,8 @@ HMISAPI = {
       logger.info(response);
       return response;
     } catch (err) {
-      logger.info(`Failed to get single household members from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to get single household members from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -712,8 +712,8 @@ HMISAPI = {
         }
       ).data;
     } catch (err) {
-      logger.info(`Failed to post answers to HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to post answers to HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
 
@@ -740,8 +740,8 @@ HMISAPI = {
       ).data;
       return response.Clients.clients;
     } catch (err) {
-      logger.info(`Failed to get client info from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to get client info from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -782,8 +782,8 @@ HMISAPI = {
       HMISAPI.addMembersToHousehold(response[0].globalHouseholdId, globalHouseholdMembers);
       return response[0];
     } catch (err) {
-      logger.info(`Failed to create global household in HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to create global household in HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -819,8 +819,8 @@ HMISAPI = {
       logger.info(response);
       return response;
     } catch (err) {
-      logger.info(`Failed to add members in global household in HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to add members in global household in HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -853,8 +853,8 @@ HMISAPI = {
       logger.info(response);
       return response;
     } catch (err) {
-      logger.info(`Failed to delete global household from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to delete global household from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -890,8 +890,8 @@ HMISAPI = {
       logger.info(response);
       return response;
     } catch (err) {
-      logger.info(`Failed to update global household in HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to update global household in HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -927,8 +927,8 @@ HMISAPI = {
       logger.info(JSON.stringify(response));
       return response;
     } catch (err) {
-      logger.info(`Failed to update members of global household in HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to update members of global household in HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -966,8 +966,8 @@ HMISAPI = {
       logger.info(response);
       return response;
     } catch (err) {
-      logger.info(`Failed to delete global household member from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to delete global household member from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -1000,8 +1000,8 @@ HMISAPI = {
       }).data;
       return response.projects;
     } catch (err) {
-      logger.info(`Failed to get projects from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to get projects from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -1036,8 +1036,8 @@ HMISAPI = {
 
       return response.project;
     } catch (err) {
-      logger.info(`Failed to get project info from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to get project info from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -1078,8 +1078,8 @@ HMISAPI = {
 
       return response.project.projectId;
     } catch (err) {
-      logger.info(`Failed to create project in HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to create project in HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -1114,8 +1114,8 @@ HMISAPI = {
       logger.info(response);
       projectGroups = response.projectgroups;
     } catch (err) {
-      logger.info(`Failed to get project groups from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to get project groups from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
 
@@ -1152,8 +1152,8 @@ HMISAPI = {
       logger.info(response);
       userProfiles = response.profiles;
     } catch (err) {
-      logger.info(`Failed to get user profiles from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to get user profiles from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
 
@@ -1190,8 +1190,8 @@ HMISAPI = {
       logger.info(response);
       roles = response.roles;
     } catch (err) {
-      logger.info(`Failed to get roles from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to get roles from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
 
@@ -1226,8 +1226,8 @@ HMISAPI = {
       ).data;
       return response;
     } catch (err) {
-      logger.info(`Failed to save scores in HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to save scores in HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -1265,8 +1265,8 @@ HMISAPI = {
 
       return response;
     } catch (err) {
-      logger.info(`Failed to create user in HMIS. ${err.message}`);
-      logger.info(JSON.stringify(err.response));
+      logger.error(`Failed to create user in HMIS. ${err.message}`);
+      logger.error(JSON.stringify(err.response));
       return false;
     }
   },
@@ -1309,8 +1309,8 @@ HMISAPI = {
 
       return response;
     } catch (err) {
-      logger.info(`Failed to update user in HMIS. ${err.message}`);
-      logger.info(JSON.stringify(err.response));
+      logger.error(`Failed to update user in HMIS. ${err.message}`);
+      logger.error(JSON.stringify(err.response));
       return false;
     }
   },
@@ -1355,8 +1355,8 @@ HMISAPI = {
 
       return response;
     } catch (err) {
-      logger.info(`Failed to update user roles in HMIS. ${err.message}`);
-      logger.info(JSON.stringify(err.response));
+      logger.error(`Failed to update user roles in HMIS. ${err.message}`);
+      logger.error(JSON.stringify(err.response));
       return false;
     }
   },
@@ -1396,8 +1396,8 @@ HMISAPI = {
 
       return response;
     } catch (err) {
-      logger.info(`Failed to delete user role in HMIS. ${err.message}`);
-      logger.info(JSON.stringify(err.response));
+      logger.error(`Failed to delete user role in HMIS. ${err.message}`);
+      logger.error(JSON.stringify(err.response));
       return false;
     }
   },
@@ -1432,8 +1432,8 @@ HMISAPI = {
 
       return response.account;
     } catch (err) {
-      logger.info(`Failed to get user from HMIS. ${err.message}`);
-      logger.info(JSON.stringify(err.response));
+      logger.error(`Failed to get user from HMIS. ${err.message}`);
+      logger.error(JSON.stringify(err.response));
       return false;
     }
   },
@@ -1468,8 +1468,8 @@ HMISAPI = {
       ).data;
       return response.question;
     } catch (err) {
-      logger.info(`Failed to add question in HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to add question in HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -1504,8 +1504,8 @@ HMISAPI = {
       ).data;
       return response;
     } catch (err) {
-      logger.info(`Failed to update question in HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to update question in HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -1534,8 +1534,8 @@ HMISAPI = {
       logger.info(`HMISAPI get Question: ${JSON.stringify(response)}`);
       return response.question;
     } catch (err) {
-      logger.info(`Failed to get question from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to get question from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -1564,8 +1564,8 @@ HMISAPI = {
       logger.info(`Delete question ${JSON.stringify(response)}`);
       return response;
     } catch (err) {
-      logger.info(`Failed to delete question from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to delete question from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -1591,8 +1591,8 @@ HMISAPI = {
       logger.info(`HMISAPI Delete PLG ${JSON.stringify(response)}`);
       return response;
     } catch (err) {
-      logger.info(`Failed to delete pick list group from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to delete pick list group from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -1620,8 +1620,8 @@ HMISAPI = {
       ).data;
       return response.pickListGroup;
     } catch (err) {
-      logger.info(`Failed to add Pick List Group in HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to add Pick List Group in HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -1650,8 +1650,8 @@ HMISAPI = {
       logger.info(JSON.stringify(response, null, 2));
       return response.pickListValues;
     } catch (err) {
-      logger.info(`Failed to add Pick List Values in HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to add Pick List Values in HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -1680,8 +1680,8 @@ HMISAPI = {
       logger.info(JSON.stringify(response, null, 2));
       return response.survey;
     } catch (err) {
-      logger.info(`Failed to add Survey in HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to add Survey in HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -1710,8 +1710,8 @@ HMISAPI = {
       logger.info(JSON.stringify(response, null, 2));
       return response.surveySection;
     } catch (err) {
-      logger.info(`Failed to add Survey section in HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to add Survey section in HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -1741,8 +1741,8 @@ HMISAPI = {
       logger.info(JSON.stringify(response, null, 2));
       return true;
     } catch (err) {
-      logger.info(`Failed to add question Mapping in HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to add question Mapping in HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -1775,8 +1775,8 @@ HMISAPI = {
       response = true;
       return response;
     } catch (err) {
-      logger.info(`Failed to update survey in HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to update survey in HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -1809,8 +1809,8 @@ HMISAPI = {
       ).data;
       return response;
     } catch (err) {
-      logger.info(`Failed to update survey section in HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to update survey section in HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -1837,8 +1837,8 @@ HMISAPI = {
       logger.info(`HMISAPI get sections: ${JSON.stringify(response, null, 2)}`);
       return response.surveySections.surveySections;
     } catch (err) {
-      logger.info(`Failed to get sections from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to get sections from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -1866,8 +1866,8 @@ HMISAPI = {
       logger.info(`HMISAPI get Question Mappings: ${JSON.stringify(response, null, 2)}`);
       return response.sectionQuestionMappings.sectionQuestionMappings;
     } catch (err) {
-      logger.info(`Failed to get question from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to get question from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -1896,8 +1896,8 @@ HMISAPI = {
       logger.info(`Delete survey question Mapping ${JSON.stringify(response)}`);
       return response;
     } catch (err) {
-      logger.info(`Failed to delete question mapping from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to delete question mapping from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -1925,8 +1925,8 @@ HMISAPI = {
       logger.info(`Delete survey sections ${JSON.stringify(response)}`);
       return response;
     } catch (err) {
-      logger.info(`Failed to delete sections from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to delete sections from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -1958,8 +1958,8 @@ HMISAPI = {
       }
       return true;
     } catch (err) {
-      logger.info(`Failed to delete mappings from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to delete mappings from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -1989,8 +1989,8 @@ HMISAPI = {
       logger.info(JSON.stringify(response, null, 2));
       return response.response;
     } catch (err) {
-      logger.info(`Failed to add responses in HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to add responses in HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -2017,8 +2017,8 @@ HMISAPI = {
       logger.info(`HMISAPI Delete Survey Scores ${JSON.stringify(response)}`);
       return true;
     } catch (err) {
-      logger.info(`Failed to delete old Survey scores from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to delete old Survey scores from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -2120,8 +2120,8 @@ HMISAPI = {
       }
       logger.info(`House Matching Result: ${JSON.stringify(housingMatchList)}`);
     } catch (err) {
-      logger.info(`Failed to get housing matching results from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to get housing matching results from HMIS. ${err.message}`);
+      logger.error(err.response);
       return [];
     }
     return housingMatchList;
@@ -2156,8 +2156,8 @@ HMISAPI = {
       housingMatch = response;
       logger.info(`Single House Matching Result: ${JSON.stringify(housingMatch)}`);
     } catch (err) {
-      logger.info(`Failed to get housing matching results from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to get housing matching results from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
     return housingMatch;
@@ -2227,8 +2227,8 @@ HMISAPI = {
       logger.info(JSON.stringify(response, null, 2));
       return response;
     } catch (err) {
-      logger.info(`Failed to post matched clients in HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to post matched clients in HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -2259,8 +2259,8 @@ HMISAPI = {
       logger.info(JSON.stringify(response, null, 2));
       return response;
     } catch (err) {
-      logger.info(`Failed to post housing match scores in HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to post housing match scores in HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -2294,8 +2294,8 @@ HMISAPI = {
       logger.info(response);
       return response;
     } catch (err) {
-      logger.info(`Failed to update referral status from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to update referral status from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
@@ -2331,8 +2331,8 @@ HMISAPI = {
       score = response;
       return score;
     } catch (err) {
-      logger.info(`Failed to get client score from HMIS. ${err.message}`);
-      logger.info(err.response);
+      logger.error(`Failed to get client score from HMIS. ${err.message}`);
+      logger.error(err.response);
       return false;
     }
   },
