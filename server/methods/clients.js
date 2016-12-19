@@ -95,7 +95,13 @@ Meteor.methods(
           _id: personalId,
           link: url,
         };
+
+        responses.update({ clientID },
+          { $set: { clientID: flag._id, clientSchema: schemaVersion, isHMISClient: true } },
+          { multi: true }
+        );
       }
+
       return flag;
     },
 
