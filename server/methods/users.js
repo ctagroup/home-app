@@ -51,6 +51,13 @@ Meteor.methods(
 
       return user;
     },
+    changeHMISPassword(currentPassword, newPassword, confirmNewPassword) {
+      try {
+        return HMISAPI.changePassword(currentPassword, newPassword, confirmNewPassword);
+      } catch (err) {
+        throw new Meteor.Error(err.error);
+      }
+    },
     updateLinkedProjects(userId, projectsLinked) {
       const _id = users.update(userId, {
         $set: {

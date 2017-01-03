@@ -78,5 +78,8 @@ Template.AdminDashboardusersEdit.helpers(
 
       return {};
     },
+    isLoggedUser() {
+      return Meteor.user()._id === Router.current().params._id;
+    },
   }
 );
