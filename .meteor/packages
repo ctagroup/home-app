@@ -69,3 +69,4 @@ shell-server@0.2.1
 # So don't remove accounts-password, if you want to keep houston:admin
 accounts-password
 houston:admin
+themeteorchef:bert

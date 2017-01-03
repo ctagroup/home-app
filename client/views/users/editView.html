@@ -64,6 +64,21 @@
     </div>
   </div>
 
+  {{#if isLoggedUser}}
+    <div class="box box-default">
+      <div class="box-body">
+        <h4>Change Password</h4>
+        <div class="row">
+          <div class="col-md-6 col-md-offset-1">
+            <form form id="change-password" class="form-horizontal" role="form">
+              {{> changePasswordForm}}
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  {{/if}}
+
   <div class="box box-default">
     <div class="box-body">
       <h4>Linked Projects</h4>

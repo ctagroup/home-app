@@ -84,7 +84,8 @@
     "globalHouseholdsHelpers": true,
     "eligibleClients": true,
     "referralStatusHelpers": true,
-    "Houston": true
+    "Houston": true,
+    "Bert": true
   },
   "rules": {
     "no-underscore-dangle": [

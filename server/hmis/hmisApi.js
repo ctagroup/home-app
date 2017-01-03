@@ -1314,6 +1314,41 @@ HMISAPI = {
       return false;
     }
   },
+  changePassword(currentPassword, newPassword, confirmNewPassword) {
+    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    if (!config) {
+      throw new ServiceConfiguration.ConfigError();
+    }
+    const accessToken = this.getCurrentAccessToken();
+
+    const baseUrl = config.hmisAPIEndpoints.userServiceBaseUrl;
+    const changePasswordPath = config.hmisAPIEndpoints.selfPasswordChanges;
+    const url = `${baseUrl}${changePasswordPath}`;
+
+    const body = { passwordChange: { currentPassword, newPassword, confirmNewPassword } };
+
+    try {
+      const response = HTTP.put(url, {
+        data: body,
+        headers: {
+          'X-HMIS-TrustedApp-Id': config.appId,
+          Authorization: `HMISUserAuth session_token=${accessToken}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }).data;
+
+      logger.info(JSON.stringify(response, null, '\t'));
+
+      return response;
+    } catch (err) {
+      logger.error(`Failed to change password. ${err.message}`);
+      logger.error(JSON.stringify(err.response));
+      const e = JSON.parse(err.response.content);
+      const errorStr = e.errors.error[0].code;
+      throw new Meteor.Error(errorStr);
+    }
+  },
   updateUserRoles(userId, rolesObj) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (!config) {

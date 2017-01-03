@@ -4,6 +4,12 @@
 
 const querystring = require('querystring');
 
+const checkPassword = (pass) => {
+  const regExp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$*])(?=.{8,16})');
+
+  return regExp.test(pass);
+};
+
 Template.AdminDashboardusersEdit.onRendered(() => {
   GoogleMaps.load(
     {
@@ -151,5 +157,35 @@ Template.AdminDashboardusersEdit.events({
         }
       }
     );
+  },
+  'submit #change-password': (e, tmpl) => {
+    e.preventDefault();
+    const currentPassword = tmpl.find('.current-password').value;
+    const newPassword = tmpl.find('.new-password').value;
+    const confirmNewPassword = tmpl.find('.confirm-new-password').value;
+
+    if (newPassword !== confirmNewPassword) {
+      Bert.alert('Password and Password confirmation must match.', 'danger', 'growl-top-right');
+      return;
+    }
+
+    if (!checkPassword(newPassword)) {
+      Bert.alert('The password must contain 8 to 16 characters long, It must contain at least one lowercase character, one uppercase character, one number, and one of the following special characters !@#$*', 'danger', 'growl-top-right'); // eslint-disable-line
+
+      return;
+    }
+
+    Meteor.call('changeHMISPassword', currentPassword,
+    newPassword, confirmNewPassword, (err) => {
+      if (err) {
+        if (err.error === 'ERR_CODE_INVALID_CURRENT_PASSWORD') {
+          Bert.alert('The specified current password does not match with the password stored in the database.', 'danger', 'growl-top-right'); // eslint-disable-line
+        } else {
+          Bert.alert('Error changing password. Please try again.', 'danger', 'growl-top-right');
+        }
+      } else {
+        Bert.alert('Your password was changed.', 'success', 'growl-top-right');
+      }
+    });
   },
 });

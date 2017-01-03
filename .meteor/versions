@@ -47,6 +47,7 @@ ephemer:reactive-datatables@1.1.0
 es5-shim@4.6.15
 fastclick@1.0.13
 fortawesome:fontawesome@4.7.0
+fourseven:scss@3.8.1
 geojson-utils@1.0.10
 google@1.1.15
 hb5:meteor-is.js@0.0.1
@@ -133,6 +134,7 @@ templating@1.2.15
 templating-compiler@1.2.15
 templating-runtime@1.2.15
 templating-tools@1.0.5
+themeteorchef:bert@2.1.1
 tmeasday:paginated-subscription@0.2.4
 tracker@1.1.1
 tsega:bootstrap3-datetimepicker@4.17.37_1
