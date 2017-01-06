@@ -2087,7 +2087,7 @@ HMISAPI = {
       eligibleClientList = response.content;
       const size = response.page.totalPages;
       if (size > 0) {
-        for (let i = 1; i < size - 1; i += 1) {
+        for (let i = 1; i <= size; i += 1) {
           const url = `${urlPath}?page=${i}`;
           const resp = HTTP.get(url, {
             headers: {
@@ -2140,7 +2140,7 @@ HMISAPI = {
       housingMatchList = response.content;
       const size = response.page.totalPages;
       if (size > 0) {
-        for (let i = 1; i < response.page.totalPages - 1; i += 1) {
+        for (let i = 1; i <= size; i += 1) {
           const url = `${urlPath}?page=${i}`;
           const resp = HTTP.get(url, {
             headers: {
