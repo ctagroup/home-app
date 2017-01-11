@@ -90,6 +90,13 @@ docker run \
 
 Ref: https://gist.github.com/desaiuditd/53fbfa61d564e2a9d84376e1237fdd36
 
+## Access MongoDB on the Server
+
+- Login to the server with SSH.
+- `docker exec -it mongodb mongo home-cta`
+
+Ref: https://github.com/kadirahq/meteor-up/#accessing-the-database
+
 ## Meteor Components in use
 
 - Iron Router : https://github.com/iron-meteor/iron-router
