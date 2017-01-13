@@ -6,7 +6,7 @@
   <div class="box box-default">
     <div class="box-body">
 
-      <h4>HOME App User Roles</h4>
+      <h4>User Roles</h4>
       <img class="home-spinner hide" alt="spinner" src="/imgs/spinner.gif" />
       {{#each getUserRoles admin_current_id}}
         <button class="btn btn-primary btn-xs {{#if isInRole 'Developer,System Admin' }}btn-remove-role{{/if}}" role="{{this}}" user="{{admin_current_id}}">{{this}}</button>
@@ -40,7 +40,7 @@
 
   <div class="box box-default">
     <div class="box-body">
-      <h4>HMIS Profile</h4>
+      <h4>Profile</h4>
       <label class="label {{getHMISStatusLabel status}}">{{status}}</label><br /><br />
 
       <div class="row">
@@ -53,7 +53,7 @@
               <div class="form-group">
                 <label class="col-md-4 control-label"></label>
                 <div class="col-md-8">
-                  <input type="submit" class="btn btn-large btn-success" value="Save HMIS Profile" />
+                  <input type="submit" class="btn btn-large btn-success" value="Save Profile" />
                 </div>
               </div>
             {{/if}}
