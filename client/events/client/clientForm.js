@@ -2,6 +2,13 @@
  * Created by udit on 01/08/16.
  */
 
+Template.clientForm.onRendered(() => {
+  // to load the script on run time and then put the mask for ssn
+  $.getScript('https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.8/jquery.mask.js', () => {
+    $('.ssn').mask('000-00-0000');
+  });
+});
+
 Template.clientForm.events(
   {
     'change #js-photo-input': () => {
