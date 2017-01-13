@@ -1,8 +1,8 @@
 <template name="responsesListView">
   {{> adminAlert}}
 
-  {{#if hasDocuments}}
-    {{> tabular table=admin_table class="table dataTable"}}
+  {{#if hasResponses}}
+    {{> ReactiveDatatable tableData=responsesData options=responsesTableOptions }}
   {{else}}
     <div class="alert alert-info">
       <p>There are no visible items in this collection.</p>

@@ -15,7 +15,7 @@ Template.responseForm.helpers(
     surveyQuesContents() {
       const surveyID = (Router.current().route.getName() === 'previewSurvey')
         ? Router.current().params._id
-        : Template.instance().data.survey._id;
+        : this.survey._id;
       const sections = surveyFormatHelpers.getSections(surveyID);
       const surveyElements = [];
       for (let i = 0; i < sections.length; i += 1) {
@@ -31,7 +31,7 @@ Template.responseForm.helpers(
         return 'Dummy Client';
       }
 
-      const client = Template.instance().data.client;
+      const client = this.client;
 
       const fn = (client && client.firstName) ? client.firstName.trim() : '';
       const mn = (client && client.middleName) ? client.middleName.trim() : '';
