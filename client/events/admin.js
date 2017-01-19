@@ -521,7 +521,7 @@ Template.questionForm.events(
       let optionLength = $('#aoptions').children().length;
       let optionsTag;
       optionLength += 1;
-      optionsTag = `<tr  id='${optionLength}' class='questionRow'><td><input type='text' 
+      optionsTag = `<tr  id='${optionLength}' class='questionRow'><td><input type='text'
         id='${optionLength}.value' class='value' value=''/></td>`;
 
       optionsTag += `<td>
@@ -980,11 +980,9 @@ Template.sortableItemTarget.events(
         event.target.blur();
       }
     },
-    'click .close': (/* event, template*/) => {
-      // `this` is the data context set by the enclosing block helper (#each, here)
-
+    'click .remove-item': (event, template) => {
       Meteor.call(
-        'removeSurveyQuestionMaster', this._id, (error, result) => {
+        'removeSurveyQuestionMaster', template.data._id, (error, result) => {
           if (error) {
             logger.log(error);
           } else {
@@ -1010,11 +1008,9 @@ Template.sortableItemTarget.events(
 
 Template.sortableSectionItem.events(
   {
-    'click .close': (/* event, template*/) => {
-      // `this` is the data context set by the enclosing block helper (#each, here)
-      // Give out a warning here, before deleting.
+    'click .remove-section': (event, template) => {
       Meteor.call(
-        'removeSurveyQuestionMasterSection', this._id, (error, result) => {
+        'removeSurveyQuestionMasterSection', template.data._id, (error, result) => {
           if (error) {
             logger.log(error);
           } else {
