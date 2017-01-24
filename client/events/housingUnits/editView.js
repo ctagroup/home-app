@@ -40,5 +40,8 @@ Template.housingUnitEditView.events(
         }
       );
     },
+    'click .cancel_housing': () => {
+      history.back();
+    },
   }
 );
