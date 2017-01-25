@@ -17,7 +17,14 @@ Meteor.publish(
 
       const responseList = responses.find().fetch();
 
-      for (let i = 0; i < responseList.length && !stopFunction; i += 1) {
+      // Publish the local data first, so the user can get a quick feedback.
+      for (let i = 0, len = responseList.length; i < len; i++) {
+        self.added('responses', responseList[i]._id, responseList[i]);
+      }
+      self.ready();
+
+      // Get the non local data and publish it as soon as it's available.
+      for (let i = 0, len = responseList.length; i < len && !stopFunction; i++) {
         if (responseList[i].isHMISClient && responseList[i].clientSchema) {
           responseList[i].clientDetails = HMISAPI.getClient(
             responseList[i].clientID,
