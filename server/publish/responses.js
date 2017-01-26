@@ -25,8 +25,9 @@ Meteor.publish(
 
       // Get the non local data and publish it as soon as it's available.
       for (let i = 0, len = responseList.length; i < len && !stopFunction; i++) {
+        const response = {};
         if (responseList[i].isHMISClient && responseList[i].clientSchema) {
-          responseList[i].clientDetails = HMISAPI.getClient(
+          response.clientDetails = HMISAPI.getClient(
             responseList[i].clientID,
             responseList[i].clientSchema,
             // useCurrentUserObject
@@ -36,7 +37,7 @@ Meteor.publish(
           const localClient = clients.findOne({ _id: responseList[i].clientID });
 
           if (localClient) {
-            responseList[i].clientDetails = localClient;
+            response.clientDetails = localClient;
           } else {
             const hmisClientSearch = HMISAPI.searchClient(
               responseList[i].clientID,
@@ -46,19 +47,21 @@ Meteor.publish(
               false
             );
             if (hmisClientSearch.length > 0) {
-              responseList[i].clientDetails = hmisClientSearch[0];
-              responseList[i].isHMISClient = true;
+              response.clientDetails = hmisClientSearch[0];
+              response.isHMISClient = true;
               let schema = 'v2015';
-              if (responseList[i].clientDetails.link
-                  && responseList[i].clientDetails.link.indexOf('v2014') !== -1) {
+              if (response.clientDetails.link
+                  && response.clientDetails.link.indexOf('v2014') !== -1) {
                 schema = 'v2014';
               }
-              responseList[i].clientSchema = schema;
+              response.clientSchema = schema;
             }
           }
         }
-        self.added('responses', responseList[i]._id, responseList[i]);
-        self.ready();
+        self.changed('responses', responseList[i]._id, response);
+        if (i % 5 === 0) {
+          self.ready();
+        }
       }
     }
 

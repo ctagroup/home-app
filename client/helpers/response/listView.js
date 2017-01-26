@@ -8,6 +8,8 @@ Template.responsesListView.helpers(
       return {
         columns: HomeConfig.collections.responses.tableColumns,
         dom: HomeConfig.adminTablesDom,
+        processing: true,
+        deferRender: true,
       };
     },
     responsesData() {
