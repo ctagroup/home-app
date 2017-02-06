@@ -87,8 +87,9 @@ Template.viewClient.events(
         );
       }
     },
-    'click .js-update-referral-status': (event, tmpl) => {
+    'submit #update-referral-status': (event, tmpl) => {
       // update progress
+      event.preventDefault();
       const step = $('#referral-status-step').val();
       const index = parseInt(step, 10);
       const total = HomeConfig.collections.clients.referralStatus.length;
@@ -99,7 +100,17 @@ Template.viewClient.events(
       logger.log(`clicked status update${step}`);
       const status = step;
       const clientId = tmpl.data._id;
-      let recipients = [];
+      const recipients = { toRecipients: [], ccRecipients: [], bccRecipients: [] };
+
+      const user = Meteor.user();
+      if (user && user.emails) {
+        recipients.toRecipients = [user.emails[0].address];
+      }
+
+      const emails = $('#recipients').val();
+      if (emails) {
+        recipients.toRecipients = recipients.toRecipients.concat(emails.split(','));
+      }
 
       let reservation = false;
       if (tmpl.data.housingMatch) {
@@ -113,11 +124,8 @@ Template.viewClient.events(
         }
 
         if (project) {
-          recipients = users.find({ projectsLinked: project.projectId }).fetch();
-
-          if (recipients.length > 0) {
-            recipients = { toRecipients: recipients.map(item => item.emails[0].address) };
-          }
+          const linkedUsers = users.find({ projectsLinked: project.projectId }).fetch();
+          recipients.ccRecipients = linkedUsers.map(u => u.emails[0].address);
         }
       }
 
@@ -130,6 +138,7 @@ Template.viewClient.events(
         (err, res) => {
           if (err) {
             logger.log(err);
+            Bert.alert('Error updating client match status.', 'danger', 'growl-top-right');
           } else {
             logger.log(res);
             $('.progress-bar').css({ width: `${percent}%` });
