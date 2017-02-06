@@ -106,7 +106,11 @@ Meteor.methods(
     },
 
     updateClientMatchStatus(clientId, statusCode, comments, recipients) {
-      return HMISAPI.updateClientMatchStatus(clientId, statusCode, comments, recipients);
+      const ret = HMISAPI.updateClientMatchStatus(clientId, statusCode, comments, recipients);
+      if (!ret) {
+        throw new Meteor.Error('Error updating client match status.');
+      }
+      return ret;
     },
 
   }
