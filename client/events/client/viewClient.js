@@ -26,8 +26,8 @@ Template.viewClient.events(
   {
     'click .edit': (evt, tmpl) => {
       const query = {};
-      if (tmpl.data.isHMISClient) {
-        query.query = 'isHMISClient=true';
+      if (tmpl.data.schema) {
+        query.query = `schema=${tmpl.data.schema}`;
       }
       Router.go('adminDashboardclientsEdit', { _id: tmpl.data._id }, query);
     },
