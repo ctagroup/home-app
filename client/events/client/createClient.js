@@ -38,5 +38,8 @@ Template.createClient.events(
         }
       );
     },
+    'click .cancel-client-creation': () => {
+      history.back();
+    },
   }
 );
