@@ -3,7 +3,7 @@
  */
 import moment from 'moment';
 
-Meteor.publish('localClients', () => clients.find({}));
+Meteor.publish('clients', () => clients.find({}));
 
 Meteor.publish('singleLocalClient', clientId => clients.find({ _id: clientId }));
 

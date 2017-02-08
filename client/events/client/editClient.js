@@ -36,16 +36,15 @@ Template.editClient.events(
       Meteor.call(
         'removeClient', tmpl.data._id, (error) => {
           if (error) {
-            // console.log(error);
+            Bert.alert('Error deleting client.', 'danger', 'growl-top-right');
           } else {
-            // console.log(result);
             Router.go('adminDashboardclientsView', {}, { query: 'deleted=1' });
           }
         }
       );
     },
-    'click .back': (evt, tmpl) => {
-      Router.go('viewClient', { _id: tmpl.data._id });
+    'click .back': () => {
+      history.back();
     },
   }
 );
