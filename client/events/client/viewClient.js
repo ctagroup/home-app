@@ -157,5 +157,9 @@ Template.viewClient.events(
         }
       );
     },
+    'click .getResponses'(evt, tmpl) {
+      const clientID = tmpl.data._id;
+      Router.go(`/responses?clientID=${clientID}`);
+    },
   }
 );

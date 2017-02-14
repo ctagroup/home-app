@@ -3,7 +3,7 @@
  */
 
 Meteor.publish(
-  'responses', function publishResponses() {
+  'responses', function publishResponses(clientID) {
     const self = this;
     let stopFunction = false;
     self.unblock();
@@ -14,9 +14,11 @@ Meteor.publish(
 
     if (self.userId && typeof responses !== 'undefined') {
       HMISAPI.setCurrentUserId(self.userId);
-
-      const responseList = responses.find().fetch();
-
+      let query = {};
+      if (clientID) {
+        query = { clientID };
+      }
+      const responseList = responses.find(query).fetch();
       // Publish the local data first, so the user can get a quick feedback.
       for (let i = 0, len = responseList.length; i < len; i++) {
         self.added('responses', responseList[i]._id, responseList[i]);
