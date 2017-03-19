@@ -230,10 +230,10 @@ Template.clientForm.helpers(
     },
     getDOB() {
       let date = '';
-
       if (this && this.dob) {
-        date = moment(this.dob).format('YYYY-MM-DD');
+        date = moment.utc(this.dob).format('YYYY-MM-DD');
       }
+
       return date;
     },
     getDefaultRace() {
