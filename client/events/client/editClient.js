@@ -10,6 +10,8 @@ Template.editClient.events(
       const middleName = tmpl.find('.middleName').value;
       const lastName = tmpl.find('.lastName').value;
       const suffix = tmpl.find('.suffix').value;
+      const emailAddress = tmpl.find('.emailAddress').value;
+      const phoneNumber = tmpl.find('.phoneNumber').value;
       const photo = tmpl.find('.photo').value;
       const ssn = tmpl.find('.ssn').value;
       const dob = tmpl.find('.dob').value;
@@ -20,7 +22,7 @@ Template.editClient.events(
       const disablingConditions = tmpl.find('.disablingConditions_category').value;
       Meteor.call(
         'updateClient', tmpl.data._id, firstName, middleName, lastName,
-        suffix, photo, ssn, dob, race, ethnicity, gender, veteranStatus,
+        suffix, emailAddress, phoneNumber, photo, ssn, dob, race, ethnicity, gender, veteranStatus,
         disablingConditions,
         (error, result) => {
           if (error) {

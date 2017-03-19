@@ -151,6 +151,8 @@ HMISAPI = {
         otherGender: 'null',
         veteranStatus: client.veteranStatus,
         sourceSystemId: client._id,
+        phoneNumber: client.phoneNumber,
+        emailAddress: client.emailAddress,
       },
     };
 
