@@ -4,13 +4,19 @@
 
 Template.globalHouseholdEditView.events(
   {
-    'click .updateHousehold': () => {
+    'click .updateHousehold': (evt) => {
+      evt.preventDefault();
+      const headOfHouseholdId = $('input[name=ishoh]:checked').val();
+      if (!headOfHouseholdId) {
+        Bert.alert('You must pick up a Head of Household.', 'danger', 'growl-top-right');
+        return;
+      }
       const user = users.findOne({ _id: Meteor.userId() });
       const globalHouseholdId = Router.current().params._id;
       const globalHousehold = globalHouseholds.findOne({ _id: globalHouseholdId });
       const globalHouseholdObject = {
         globalHouseholdId,
-        headOfHouseholdId: $('input[name=ishoh]:checked').val(),
+        headOfHouseholdId,
         inactive: $('input[name=inactive]:checked').val(),
         // dateCreated: '',
         // dateUpdated: '',
@@ -48,6 +54,9 @@ Template.globalHouseholdEditView.events(
           }
         }
       );
+    },
+    'click .cancelUpdateHousehold'() {
+      history.back();
     },
   }
 );

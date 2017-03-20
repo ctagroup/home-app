@@ -3,11 +3,17 @@
  */
 Template.globalHouseholdCreateView.events(
   {
-    'click .createHousehold': () => {
+    'click .createHousehold': (evt) => {
+      evt.preventDefault();
+      const headOfHouseholdId = $('input[name=ishoh]:checked').val();
+      if (!headOfHouseholdId) {
+        Bert.alert('You must pick up a Head of Household.', 'danger', 'growl-top-right');
+        return;
+      }
       const user = users.findOne({ _id: Meteor.userId() });
       const globalHouseholdObject = {
         // globalHouseholdId: null,
-        headOfHouseholdId: $('input[name=ishoh]:checked').val(),
+        headOfHouseholdId,
         inactive: $('input[name=inactive]:checked').val(),
         // dateCreated: '',
         // dateUpdated: '',
@@ -40,6 +46,9 @@ Template.globalHouseholdCreateView.events(
             logger.log(res);
           }
         });
+    },
+    'click .cancelCreateHousehold'() {
+      history.back();
     },
   }
 );

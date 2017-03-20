@@ -1,5 +1,6 @@
 <template name="globalHouseholdEditView">
-    {{>searchClient}}
+  {{>searchClient}}
+  <form>
     <div class="form-group">
       {{> globalHouseholdMembers}}
       <div class="row">
@@ -9,7 +10,8 @@
           <label><input type="radio" name="inactive" value="true" {{isActive true}} /> No</label>
         </div>
       </div>
-      <a href="/globalHouseholds" class="btn btn-large btn-primary updateHousehold">Update</a>
-      <a href='/globalHouseholds' class="btn btn-large btn-primary">Cancel</a>
+      <input type="submit" value="Update" class="btn btn-large btn-primary updateHousehold"/>
+      <input type="button" class="btn btn-large btn-primary cancelUpdateHousehold" value="Cancel"/>
     </div>
+  </form>
 </template>
