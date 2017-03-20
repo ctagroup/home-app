@@ -1,5 +1,6 @@
 <template name="globalHouseholdCreateView">
-    {{>searchClient}}
+  {{>searchClient}}
+  <form>
     <div class="form-group">
       {{> globalHouseholdMembers}}
       <div class="row">
@@ -9,7 +10,8 @@
           <label><input type="radio" name="inactive" value="true" /> No</label>
         </div>
       </div>
-      <a href="/globalHouseholds" class="btn btn-large btn-primary createHousehold">Create</a>
-      <a href='/globalHouseholds' class="btn btn-large btn-primary">Cancel</a>
+      <input type="submit" value="Create" class="btn btn-large btn-primary createHousehold"/>
+      <input type="button" class="btn btn-large btn-primary cancelCreateHousehold" value="Cancel"/>
     </div>
+  </form>
 </template>
