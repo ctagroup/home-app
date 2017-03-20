@@ -236,6 +236,9 @@ Template.clientForm.helpers(
 
       return date;
     },
+    selected(item) {
+      return this.value == item;
+    },
     getDefaultRace() {
       return [
         {
