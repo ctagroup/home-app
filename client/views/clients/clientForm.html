@@ -79,10 +79,10 @@
 			<select class="form-control race_category" name="race_category" >
 				<option value=""></option>
 				{{#each getDefaultRace}}
-				<option selected="{{$eq this.value ../race}}" value={{this.value}}>{{this.description}}</option>
+					<option selected="{{selected ../race}}" value={{this.value}}>{{this.description}}</option>
 				{{/each}}
 				{{#each getExtraRace}}
-				<option selected="{{$eq this.value ../race}}" value={{this.value}}>{{this.description}}</option>
+					<option selected="{{selected ../race}}" value={{this.value}}>{{this.description}}</option>
 				{{/each}}
 			</select>
 		</div>
@@ -94,10 +94,10 @@
 			<select class="form-control ethnicity_category" name="ethnicity_category" >
 				<option value=""></option>
 				{{#each getDefaultEthnicity}}
-				<option selected="{{$eq this.value ../ethnicity}}" value={{this.value}}>{{this.description}}</option>
+				<option selected="{{selected ../ethnicity}}" value={{this.value}}>{{this.description}}</option>
 				{{/each}}
 				{{#each getExtraEthnicity}}
-				<option selected="{{$eq this.value ../ethnicity}}" value={{this.value}}>{{this.description}}</option>
+				<option selected="{{selected ../ethnicity}}" value={{this.value}}>{{this.description}}</option>
 				{{/each}}
 			</select>
 		</div>
@@ -109,10 +109,10 @@
 			<select class="form-control gender_category" name="gender_category" >
 				<option value=""></option>
 				{{#each getDefaultGender}}
-				<option selected="{{$eq this.value ../gender}}" value={{this.value}}>{{this.description}}</option>
+				<option selected="{{selected ../gender}}" value={{this.value}}>{{this.description}}</option>
 				{{/each}}
 				{{#each getExtraGender}}
-				<option selected="{{$eq this.value ../gender}}" value={{this.value}}>{{this.description}}</option>
+				<option selected="{{selected ../gender}}" value={{this.value}}>{{this.description}}</option>
 				{{/each}}
 			</select>
 		</div>
@@ -124,10 +124,10 @@
 			<select class="form-control veteranStatus_category" name="veteranStatus_category" >
 				<option value=""></option>
 				{{#each getDefaultVeteranStatus}}
-				<option selected="{{$eq this.value ../veteranStatus}}" value={{this.value}}>{{this.description}}</option>
+				<option selected="{{selected ../veteranStatus}}" value={{this.value}}>{{this.description}}</option>
 				{{/each}}
 				{{#each getExtraVeteranStatus}}
-				<option selected="{{$eq this.value ../veteranStatus}}" value={{this.value}}>{{this.description}}</option>
+				<option selected="{{selected ../veteranStatus}}" value={{this.value}}>{{this.description}}</option>
 				{{/each}}
 			</select>
 		</div>
@@ -139,10 +139,10 @@
 			<select class="form-control disablingConditions_category" name="disablingConditions_category" >
 				<option value=""></option>
 				{{#each getDefaultDisablingCondition}}
-				<option selected="{{$eq this.value ../disablingConditions}}" value={{this.value}}>{{this.description}}</option>
+				<option selected="{{selected ../disablingConditions}}" value={{this.value}}>{{this.description}}</option>
 				{{/each}}
 				{{#each getExtraDisablingCondition}}
-				<option selected="{{$eq this.value ../disablingConditions}}" value={{this.value}}>{{this.description}}</option>
+				<option selected="{{selected ../disablingConditions}}" value={{this.value}}>{{this.description}}</option>
 				{{/each}}
 			</select>
 		</div>
