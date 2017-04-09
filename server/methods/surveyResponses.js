@@ -71,5 +71,18 @@ Meteor.methods(
     deleteOldScores(surveyId, clientId) {
       return HMISAPI.deleteSurveyScores(surveyId, clientId);
     },
+
+    removeSurveyResponse(responseId) {
+      check(responseId, String);
+      const response = responses.findOne(responseId);
+      const canBeRemoved = false;
+      if (!response) {
+        throw new Meteor.Error(404, 'Response does not exists');
+      }
+      if (!canBeRemoved) {
+        throw new Meteor.Error(403, 'You are not authorized to remove this response');
+      }
+      responses.remove(responseId);
+    },
   }
 );
