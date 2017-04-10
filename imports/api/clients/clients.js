@@ -1,10 +1,28 @@
 /**
- * Created by Kavi on 4/8/16.
+ * Created by pgorecki on 09.04.17.
  */
 
-clients = new Meteor.Collection('clients');
+import { Mongo } from 'meteor/mongo';
+import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
-Schemas.clients = new SimpleSchema(
+
+class ClientsCollection extends Mongo.Collection {
+  insert(doc, callback) {
+    return super.insert(doc, callback);
+  }
+
+  update(selector, modifier) {
+    return super.update(selector, modifier);
+  }
+
+  remove(selector) {
+    return super.remove(selector);
+  }
+}
+
+export const Clients = new ClientsCollection('clients');
+
+Clients.schema = new SimpleSchema(
   {
     firstName: {
       type: String,
@@ -75,4 +93,10 @@ Schemas.clients = new SimpleSchema(
   }
 );
 
-clients.attachSchema(Schemas.clients);
+Clients.attachSchema(Clients.schema);
+
+Clients.deny({
+  insert() { return true; },
+  update() { return true; },
+  remove() { return true; },
+});

@@ -11,9 +11,18 @@
     "meteor": true
   },
   "globals": {
+    // mocha globals
+    "describe": true,
+    "context": true,
+    "before": true,
+    "beforeEach": true,
+    "after": true,
+    "afterEach": true,
+    "it": true,
+    "expect": true,
+
     "Messages": true,
     "HMISAPI": true,
-    "clients": true,
     "Sortable": true,
     "OAuth": true,
     "logger": true,
@@ -96,6 +105,7 @@
           "_redirectUri"
         ]
       }
-    ]
+    ],
+    "import/no-unresolved": ["error", { "ignore": ["^meteor/", "^/"] }]
   }
 }
