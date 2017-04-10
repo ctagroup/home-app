@@ -74,15 +74,16 @@ Meteor.methods(
 
     removeSurveyResponse(responseId) {
       check(responseId, String);
-      const response = responses.findOne(responseId);
-      const canBeRemoved = false;
+      const responsesCollection = HomeUtils.adminCollectionObject('responses');
+      const response = responsesCollection.findOne(responseId);
+      const canBeRemoved = true;
       if (!response) {
         throw new Meteor.Error(404, 'Response does not exists');
       }
       if (!canBeRemoved) {
         throw new Meteor.Error(403, 'You are not authorized to remove this response');
       }
-      responses.remove(responseId);
+      responsesCollection.remove(responseId);
     },
   }
 );

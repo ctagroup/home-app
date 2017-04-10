@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "babel-runtime": "^6.18.0",
+    "bcrypt": "^1.0.2",
     "datatables.net-bs": "^1.10.12",
     "jquery": "^1.11.10",
     "meteor-node-stubs": "^0.2.3",
@@ -8,11 +9,11 @@
     "winston": "^2.2.0"
   },
   "devDependencies": {
-    "eslint": "^2.12.0",
+    "eslint": "^2.13.1",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-plugin-import": "^1.8.1",
     "eslint-plugin-jsx-a11y": "^1.5.1",
-    "eslint-plugin-react": "^5.1.1"
+    "eslint-plugin-react": "^5.2.2"
   },
   "scripts": {
     "lint": "eslint ."

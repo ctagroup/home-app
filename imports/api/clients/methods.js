@@ -1,9 +1,6 @@
-/**
- * Created by udit on 20/06/16.
- */
+import { Clients } from './clients'
 
-Meteor.methods(
-  {
+Meteor.methods({
     addClient(
       firstName,
       middleName,
@@ -21,7 +18,7 @@ Meteor.methods(
       disablingConditions,
       signature
     ) {
-      const client = clients.insert(
+      const client = Clients.insert(
         {
           firstName,
           middleName,
@@ -59,7 +56,7 @@ Meteor.methods(
       veteranStatus,
       disablingConditions
     ) {
-      clients.update(
+      Clients.update(
         clientID, {
           $set: {
             firstName,
@@ -80,18 +77,20 @@ Meteor.methods(
         }
       );
     },
+
     removeClient(clientID) {
-      clients.remove({ _id: clientID });
+      Clients.remove({ _id: clientID });
     },
+
     addClientToHMIS(clientID) {
-      const client = clients.findOne({ _id: clientID });
+      const client = Clients.findOne({ _id: clientID });
 
       const personalId = HMISAPI.createClient(client);
 
       let flag = false;
 
       if (personalId) {
-        clients.remove({ _id: client._id });
+        Clients.remove({ _id: client._id });
         const clientBasePath = HomeConfig.hmisAPIEndpoints.clientBaseUrl.replace(
           HomeConfig.hmisAPIEndpoints.apiBaseUrl,
           ''
