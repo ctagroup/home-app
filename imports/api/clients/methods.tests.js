@@ -1,3 +1,1 @@
-/**
- * Created by pgorecki on 09.04.17.
- */
+/* eslint prefer-arrow-callback: "off", func-names: "off" */

@@ -1,6 +1,9 @@
 /**
  * Created by udit on 07/04/16.
  */
+
+import { Clients } from '/imports/api/clients/clients';
+
 Meteor.methods(
   {
     searchClient(query, options) {
@@ -22,7 +25,7 @@ Meteor.methods(
 
       let localClients = [];
       if (!optionz.excludeLocalClients) {
-        localClients = clients.aggregate(
+        localClients = Clients.aggregate(
           [
             {
               $project: {

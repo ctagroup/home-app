@@ -2,6 +2,8 @@
  * Created by udit on 27/10/16.
  */
 
+import { Clients } from '/imports/api/clients/clients';
+
 Meteor.publish(
   'responses', function publishResponses(clientID) {
     const self = this;
@@ -36,7 +38,7 @@ Meteor.publish(
             false
           );
         } else {
-          const localClient = clients.findOne({ _id: responseList[i].clientID });
+          const localClient = Clients.findOne({ _id: responseList[i].clientID });
 
           if (localClient) {
             response.clientDetails = localClient;
@@ -90,7 +92,7 @@ Meteor.publish(
         self.added('responses', response._id, response);
         self.ready();
       } else if (response) {
-        const localClient = clients.findOne({ _id: response.clientID });
+        const localClient = Clients.findOne({ _id: response.clientID });
         if (localClient) {
           response.clientDetails = localClient;
         } else {

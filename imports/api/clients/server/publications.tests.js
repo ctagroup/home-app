@@ -1,4 +1,4 @@
-/* eslint prefer-arrow-callback: "off" */
+/* eslint prefer-arrow-callback: "off", func-names: "off" */
 
 import { PublicationCollector } from 'meteor/johanbrook:publication-collector';
 import { chai } from 'meteor/practicalmeteor:chai';
