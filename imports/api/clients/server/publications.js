@@ -5,12 +5,29 @@
 import moment from 'moment';
 import { Clients } from '../clients';
 
+/* eslint prefer-arrow-callback: "off" */
 
-Meteor.publish('clients', () => Clients.find({}));
+Meteor.publish('clients', function publishAllClients() {
+  if (!this.userId) {
+    return [];
+  }
+  // TODO: check permissions to get the data
+  return Clients.find();
+});
 
-Meteor.publish('singleLocalClient', clientId => Clients.find({ _id: clientId }));
+Meteor.publish('singleLocalClient', function publishLocalClient(clientId) {
+  if (!this.userId) {
+    return [];
+  }
+  // TODO: check permissions to get the data
+  return Clients.find({ _id: clientId });
+});
 
 Meteor.publish('singleHMISClient', function publishSingleHMISClient(clientId, schema) {
+  if (!this.userId) {
+    return [];
+  }
+  // TODO: check permissions to get the data
   const self = this;
   let stopFunction = false;
   self.unblock();
