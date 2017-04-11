@@ -21,4 +21,3 @@ describe('clients', function () {
     });
   });
 });
-
