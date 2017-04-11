@@ -19,6 +19,13 @@ meteor npm install
 meteor run
 ```
 
+## Testing
+
+To run tests:
+```
+meteor test --driver-package practicalmeteor:mocha --port 4000
+```
+
 ## Deploy instructions
 
 Meteor Up is used to deploy this app. Ref: https://github.com/kadirahq/meteor-up
