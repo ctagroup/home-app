@@ -2,6 +2,8 @@
  * Created by Anush-PC on 8/1/2016.
  */
 
+import { Clients } from '/imports/api/clients/clients';
+
 Meteor.methods(
   {
     updateGlobalHousehold(
@@ -68,7 +70,7 @@ Meteor.methods(
     },
     getClients() {
       const hmisClients = HMISAPI.getClients();
-      const localClients = clients.aggregate(
+      const localClients = Clients.aggregate(
         [
           {
             $project: {
