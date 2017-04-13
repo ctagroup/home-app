@@ -44,7 +44,7 @@ export class ApiRegistry {
 
   getApi(name) {
     if (!this.apis.hasOwnProperty(name)) {
-      throw new Meteor.Error('ApiRegistry', `Api ${name} is not registered`);
+      throw new Error(`Api "${name}" is not registered`);
     }
     return this.apis[name];
   }

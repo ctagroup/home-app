@@ -1,14 +1,24 @@
 import moment from 'moment';
 import { ApiEndpoint, HmisApiRegistry } from './api-registry';
 
-const CLIENT_BASE_URL = 'https://www.hmislynk.com/hmis-clientapi/rest';
+const BASE_URL = 'https://www.hmislynk.com/hmis-clientapi/rest';
 
 export class ClientApi extends ApiEndpoint {
 
-  getClient() {}
+  getClient(clientId, schema = 'v2015') {
+    const url = `${BASE_URL}/${schema}/clients/${clientId}`;
+    const headers = this.getRequestHeaders();
+    let response;
+    try {
+      response = HTTP.get(url, { headers }).data;
+    } catch (err) {
+      this.throwApiError(url, headers, err);
+    }
+    return response.client;
+  }
 
   getClients() {
-    const url = `${CLIENT_BASE_URL}/clients/`;
+    const url = `${BASE_URL}/clients`;
     const headers = this.getRequestHeaders();
     let response;
     try {
@@ -44,7 +54,7 @@ export class ClientApi extends ApiEndpoint {
     };
 
     const headers = this.getRequestHeaders();
-    const url = `${CLIENT_BASE_URL}/${schema}/clients/`;
+    const url = `${BASE_URL}/${schema}/clients`;
 
     let result = false;
     try {
@@ -59,19 +69,37 @@ export class ClientApi extends ApiEndpoint {
     return result;
   }
 
-  getClientFromUrl() {}
+  getClientFromUrl() {
+    throw new Error('Not yet implemented');
+  }
 
-  searchClient() {}
+  searchClient() {
+    throw new Error('Not yet implemented');
+  }
 
-  getEnrollmentsForPublish() {}
+  getEnrollmentsForPublish() {
+    throw new Error('Not yet implemented');
+  }
 
-  getEnrollmentExitsForPublish() {}
+  getEnrollmentExitsForPublish() {
+    throw new Error('Not yet implemented');
+  }
 
-  createProjectSetup() {}
-  getProjectsForPublish() {}
-  getProjectForPublish() {}
+  createProjectSetup() {
+    throw new Error('Not yet implemented');
+  }
 
-  postQuestionAnswer() {}
+  getProjectsForPublish() {
+    throw new Error('Not yet implemented');
+  }
+
+  getProjectForPublish() {
+    throw new Error('Not yet implemented');
+  }
+
+  postQuestionAnswer() {
+    throw new Error('Not yet implemented');
+  }
 }
 
 HmisApiRegistry.addApi('client', ClientApi);
