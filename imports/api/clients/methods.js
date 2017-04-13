@@ -41,7 +41,7 @@ Meteor.methods({
     return client;
   },
   updateClient(
-    clientID,
+    clientId,
     firstName,
     middleName,
     lastName,
@@ -58,7 +58,7 @@ Meteor.methods({
     disablingConditions
   ) {
     Clients.update(
-      clientID, {
+      clientId, {
         $set: {
           firstName,
           middleName,
@@ -79,76 +79,50 @@ Meteor.methods({
     );
   },
 
-  removeClient(clientID) {
-    Clients.remove({ _id: clientID });
+  removeClient(clientId) {
+    Clients.remove({ _id: clientId });
   },
 
-  addClientToHMIS(clientID) {
-    check(clientID, String);
+  addClientToHMIS(clientId) {
+    check(clientId, String);
 
-    const client = Clients.findOne({ _id: clientID });
+    const client = Clients.findOne(clientId);
 
-    const c = HmisClient.create(Meteor.userId());
+    if (!client) {
+      throw new Meteor.Error('methods.addClientToHMIS.not-found', `Client ${clientId} not found`);
+    }
 
-    const personalId = c.api('client').createClient(client);
+    const hc = HmisClient.create(Meteor.userId());
+    const personalId = hc.api('client').createClient(client);
 
-    let flag = false;
-
+    logger.info(`client ${clientId} is now known as ${personalId}`);
     /*
      Old api redirected to this link after success:
      https://home.ctagroup.org/clients/9b60cb11-5c3a-4d5b-942d-90dde4d5dc63?addedToHMIS=1&isHMISClient=true&link=%2Fhmis-clientapi%2Frest%2Fv2015%2Fclients%2F%2F9b60cb11-5c3a-4d5b-942d-90dde4d5dc63&schema=v2015
-     */
-
-    if (personalId) {
-      // Clients.remove({ _id: client._id });
-      const clientBasePath = HomeConfig.hmisAPIEndpoints.clientBaseUrl.replace(
-        HomeConfig.hmisAPIEndpoints.apiBaseUrl,
-        ''
-      );
-      const schemaVersion = HomeConfig.hmisAPIEndpoints.v2015;
-      const clientsPath = HomeConfig.hmisAPIEndpoints.clients;
-      const url = `${clientBasePath}${schemaVersion}${clientsPath}/${personalId}`;
-      flag = {
-        _id: personalId,
-        link: url,
-      };
-      logger.debug(flag);
-      /*
-      responses.update({ clientID },
-        { $set: { clientID: flag._id, clientSchema: 'v2015', isHMISClient: true } },
-        { multi: true }
-      );
-      */
-    }
-
-    throw new Meteor.Error('not impl', 'Method not yet implemented');
-
-    /*
-    const personalId = HMISAPI.createClient(client);
-
-    let flag = false;
-
-    if (personalId) {
-      Clients.remove({ _id: client._id });
-      const clientBasePath = HomeConfig.hmisAPIEndpoints.clientBaseUrl.replace(
-        HomeConfig.hmisAPIEndpoints.apiBaseUrl,
-        ''
-      );
-      const schemaVersion = HomeConfig.hmisAPIEndpoints.v2015;
-      const clientsPath = HomeConfig.hmisAPIEndpoints.clients;
-      const url = `${clientBasePath}${schemaVersion}${clientsPath}/${personalId}`;
-      flag = {
-        _id: personalId,
-        link: url,
-      };
-
-      responses.update({ clientID },
-        { $set: { clientID: flag._id, clientSchema: 'v2015', isHMISClient: true } },
-        { multi: true }
-      );
-    }
-     return flag;
     */
+
+    let result = false;
+
+    if (personalId) {
+      Clients.remove({ _id: clientId });
+
+      const clientBasePath = HomeConfig.hmisAPIEndpoints.clientBaseUrl.replace(
+        HomeConfig.hmisAPIEndpoints.apiBaseUrl,
+        ''
+      );
+      const schemaVersion = HomeConfig.hmisAPIEndpoints.v2015;
+      const clientsPath = HomeConfig.hmisAPIEndpoints.clients;
+      const url = `${clientBasePath}${schemaVersion}${clientsPath}/${personalId}`;
+      result = {
+        _id: personalId,
+        link: url,
+      };
+      responses.update({ clientId },
+        { $set: { clientID: personalId, clientSchema: 'v2015', isHMISClient: true } },
+        { multi: true }
+      );
+    }
+    return result;
   },
 
   updateClientMatchStatus(clientId, statusCode, comments, recipients) {

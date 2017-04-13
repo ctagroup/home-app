@@ -4,6 +4,15 @@ export class ApiEndpoint {
     this.accessToken = accessToken;
   }
 
+  getRequestHeaders() {
+    return {
+      'X-HMIS-TrustedApp-Id': this.appId,
+      Authorization: `HMISUserAuth session_token=${this.accessToken}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    };
+  }
+
   throwApiError(url, requestHeaders, httpError) {
     logger.error('api error', {
       url,
