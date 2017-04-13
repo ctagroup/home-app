@@ -18,6 +18,7 @@ describe('hmis-api', function () {
       const client = new HmisClient('userId', 'appId', 'appSecret', registry);
       chai.assert.equal(client.api('dummy').bar(), 'baz');
     });
+
     it('will throw an error if unknown api is used', function () {
       const emptyRegistry = new ApiRegistry();
       const client = new HmisClient('userId', 'appId', 'appSecret', emptyRegistry);
