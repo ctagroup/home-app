@@ -35,10 +35,14 @@ Template.viewClient.events(
       Router.go('adminDashboardclientsView');
     },
     'click .add-to-hmis': (event, tmpl) => {
+      tmpl.statusMessage.set();
       Meteor.call(
         'addClientToHMIS', tmpl.data._id, (error, result) => {
           if (error) {
-            logger.log(error);
+            tmpl.statusMessage.set({
+              message: error.reason || error.error,
+              status: 'error',
+            });
           } else {
             let query = 'addClientToHMISError=1';
             let clientId = tmpl.data._id;
@@ -52,7 +56,6 @@ Template.viewClient.events(
               clientId = result._id;
               query = querystring.stringify(params);
             }
-
             Router.go('viewClient', { _id: clientId }, { query });
           }
         }
