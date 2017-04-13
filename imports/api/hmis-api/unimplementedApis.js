@@ -72,14 +72,3 @@ class SurveyServiceApi {
   addResponseToHmis() {}
   deleteSurveyScores() {}
 }
-
-class HouseMatchingApi {
-  getEligibleClientsForPublish() {}
-  getHousingMatchForPublish() {}
-  getSingleHousingMatchForPublish() {}
-  getReferralStatusHistory() {}
-  postHousingMatch() {}
-  postHousingMatchScores() {}
-  updateClientMatchStatus() {}
-  getClientScore() {}
-}
