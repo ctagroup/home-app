@@ -17,7 +17,10 @@ Meteor.publish(
 
     try {
       const hc = HmisClient.create(this.userId);
-      const eligibleClients = hc.api('house-matching').getEligibleClients();
+      let eligibleClients = hc.api('house-matching').getEligibleClients();
+
+      // filter by ignoreMatchProcess field
+      eligibleClients = _.filter(eligibleClients, (c) => c.ignoreMatchProcess === false);
 
       // populate the list without the details
       for (let i = 0; i < eligibleClients.length && !stopFunction; i += 1) {
