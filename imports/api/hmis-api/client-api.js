@@ -1,5 +1,6 @@
 import moment from 'moment';
-import { ApiEndpoint, HmisApiRegistry } from './api-registry';
+import { HmisApiRegistry } from './api-registry';
+import { ApiEndpoint } from './api-endpoint';
 
 const BASE_URL = 'https://www.hmislynk.com/hmis-clientapi/rest';
 
@@ -7,26 +8,12 @@ export class ClientApi extends ApiEndpoint {
 
   getClient(clientId, schema = 'v2015') {
     const url = `${BASE_URL}/${schema}/clients/${clientId}`;
-    const headers = this.getRequestHeaders();
-    let response;
-    try {
-      response = HTTP.get(url, { headers }).data;
-    } catch (err) {
-      this.throwApiError(url, headers, err);
-    }
-    return response.client;
+    return this.doGet(url).client;
   }
 
   getClients() {
     const url = `${BASE_URL}/clients`;
-    const headers = this.getRequestHeaders();
-    let response;
-    try {
-      response = HTTP.get(url, { headers }).data;
-    } catch (err) {
-      this.throwApiError(url, headers, err);
-    }
-    return response.Clients.clients;
+    return this.doGet(url).Clients.clients;
   }
 
   createClient(client, schema = 'v2015') {
@@ -53,20 +40,8 @@ export class ClientApi extends ApiEndpoint {
       },
     };
 
-    const headers = this.getRequestHeaders();
     const url = `${BASE_URL}/${schema}/clients`;
-
-    let result = false;
-    try {
-      const response = HTTP.post(url, {
-        data: body,
-        headers,
-      }).data;
-      result = response.client.clientId;
-    } catch (err) {
-      this.throwApiError(url, headers, err);
-    }
-    return result;
+    return this.doPost(url, body).client.clientId;
   }
 
   getClientFromUrl() {

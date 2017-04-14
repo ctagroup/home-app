@@ -1,23 +1,28 @@
-import { ApiEndpoint, HmisApiRegistry } from './api-registry';
+import { HmisApiRegistry } from './api-registry';
+import { ApiEndpoint } from './api-endpoint';
 
 const BASE_URL = 'https://www.hmislynk.com/house-matching-api';
 
 class HouseMatchingApi extends ApiEndpoint {
+  updateEligibleClient(client) {
+    const url = `${BASE_URL}/eligibleclients/${client.clientId}`;
+    return this.doPut(url, client);
+  }
+
+  getEligibleClient(clientId) {
+    const url = `${BASE_URL}/eligibleclients/${clientId}`;
+    return this.doGet(url);
+  }
+
   getEligibleClients(pageNumber = 0) {
-    const headers = this.getRequestHeaders();
     const url = `${BASE_URL}/eligibleclients?page=${pageNumber}&size=1000`;
-    let eligibleClients = [];
-    try {
-      const response = HTTP.get(url, { headers }).data;
-      eligibleClients = response.content;
-      if (response.page.number < response.page.totalPages - 1) {
-        eligibleClients = _.union(
-          eligibleClients,
-          this.getEligibleClients(response.page.number + 1)
-        );
-      }
-    } catch (err) {
-      this.throwApiError(url, headers, err);
+    const response = this.doGet(url);
+    let eligibleClients = response.content;
+    if (response.page.number < response.page.totalPages - 1) {
+      eligibleClients = _.union(
+        eligibleClients,
+        this.getEligibleClients(response.page.number + 1)
+      );
     }
     return eligibleClients;
   }
