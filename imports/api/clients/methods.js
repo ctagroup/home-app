@@ -89,7 +89,7 @@ Meteor.methods({
     const client = Clients.findOne(clientId);
 
     if (!client) {
-      throw new Meteor.Error('methods.addClientToHMIS.not-found', `Client ${clientId} not found`);
+      throw new Meteor.Error('404', `Client ${clientId} not found`);
     }
 
     const hc = HmisClient.create(Meteor.userId());

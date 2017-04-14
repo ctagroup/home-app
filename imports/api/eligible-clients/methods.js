@@ -1,0 +1,29 @@
+import { HmisClient } from '../hmis-api';
+
+Meteor.methods({
+  ignoreMatchProcess(clientId, ignoreMatchProcess, remarks = '') {
+    check(clientId, String);
+    check(ignoreMatchProcess, Boolean);
+    check(remarks, String);
+
+    let eligibleClient;
+
+    if (Meteor.userId()) {
+      const hc = HmisClient.create(Meteor.userId());
+
+      // get client details
+      eligibleClient = hc.api('house-matching').getEligibleClient(clientId);
+
+      // update the client status
+      eligibleClient.ignoreMatchProcess = ignoreMatchProcess;
+      eligibleClient.remarks = remarks;
+      delete eligibleClient.links;
+      hc.api('house-matching').updateEligibleClient(eligibleClient);
+
+      // return updated eligible client object to the client
+    } else {
+      throw new Meteor.Error('403', 'You are not authorized to perform this action');
+    }
+    return eligibleClient;
+  },
+});

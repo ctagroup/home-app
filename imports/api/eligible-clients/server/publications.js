@@ -48,7 +48,7 @@ Meteor.publish(
         }
       }
     } catch (err) {
-      logger.error(err);
+      logger.error('publish eligibleClients', err);
     }
     return self.ready();
   }

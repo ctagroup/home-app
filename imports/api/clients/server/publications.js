@@ -1,9 +1,6 @@
-/**
- * Created by pgorecki on 09.04.17.
- */
-
 import moment from 'moment';
 import { Clients } from '../clients';
+import { HmisClient } from '/imports/api/hmis-api';
 
 /* eslint prefer-arrow-callback: "off" */
 
@@ -37,10 +34,22 @@ Meteor.publish('singleHMISClient', function publishSingleHMISClient(clientId, sc
   });
 
   let client = false;
-  if (self.userId) {
-    HMISAPI.setCurrentUserId(self.userId);
-    client = HMISAPI.getClient(clientId, schema, false);
+
+  try {
+    const hc = HmisClient.create(this.userId);
+    client = hc.api('client').getClient(clientId, schema);
     client.schema = schema;
+    client.isHMISClient = true;
+
+    try {
+      const eligibleClient = hc.api('house-matching').getEligibleClient(clientId);
+      client.eligibleClient = eligibleClient;
+    } catch (err) {
+      // do nothing
+    }
+
+    // TODO: move old api calls to the new one
+    HMISAPI.setCurrentUserId(self.userId);
 
     let response = '';
 
@@ -143,8 +152,8 @@ Meteor.publish('singleHMISClient', function publishSingleHMISClient(clientId, sc
     const score = parseInt(matchingScore.replace('score :', ''), 10);
 
     client.matchingScore = score;
-  } else {
-    HMISAPI.setCurrentUserId('');
+  } catch (err) {
+    logger.error('publish singleHMISClient', err);
   }
 
   if (client) {
