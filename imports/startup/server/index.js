@@ -5,4 +5,5 @@
 import '../../api/clients/methods';
 import '../../api/clients/server/publications';
 
+import '../../api/eligible-clients/methods';
 import '../../api/eligible-clients/server/publications';

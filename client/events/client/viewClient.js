@@ -164,5 +164,44 @@ Template.viewClient.events(
       const clientID = tmpl.data._id;
       Router.go(`/responses?clientID=${clientID}`);
     },
+
+    'click .addToHousingList'(evt, tmpl) {
+      const clientId = tmpl.data._id;
+      Meteor.call('ignoreMatchProcess', clientId, false, (err) => {
+        if (err) {
+          Bert.alert(err.reason || err.error, 'danger', 'growl-top-right');
+        } else {
+          Bert.alert('Client added to the matching process', 'success', 'growl-top-right');
+
+          // TODO: it would be better to directly update the client's document in MongoDb
+          // however, there is no client-side only collection for clients to update
+          // and current client is not held on the server side as well
+          window.location.reload();
+        }
+      });
+    },
+
+    'click .removeFromHousingList'(evt, tmpl) {
+      const clientId = tmpl.data._id;
+      const remarks = $('#removalRemarks').val();
+
+      if (remarks.trim().length === 0) {
+        Bert.alert('Remarks are required', 'danger', 'growl-top-right');
+        $('#removalRemarks').focus();
+        return;
+      }
+      Meteor.call('ignoreMatchProcess', clientId, true, remarks, (err) => {
+        if (err) {
+          Bert.alert(err.reason || err.error, 'danger', 'growl-top-right');
+        } else {
+          Bert.alert('Client removed for the matching process', 'success', 'growl-top-right');
+
+          // TODO: it would be better to directly update the client's document in MongoDb
+          // however, there is no client-side only collection for clients to update
+          // and current client is not held on the server side as well
+          window.location.reload();
+        }
+      });
+    },
   }
 );
