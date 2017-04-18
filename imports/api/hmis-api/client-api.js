@@ -34,6 +34,7 @@ export class ClientApi extends ApiEndpoint {
         // Putting otherGender as null. Confirmed with Javier. Because it's of no use as of now.
         otherGender: 'null',
         veteranStatus: client.veteranStatus,
+        disablingConditions: client.disablingConditions,
         sourceSystemId: client._id,
         phoneNumber: client.phoneNumber,
         emailAddress: client.emailAddress,
@@ -62,6 +63,7 @@ export class ClientApi extends ApiEndpoint {
         // Putting otherGender as null. Confirmed with Javier. Because it's of no use as of now.
         otherGender: 'null',
         veteranStatus: client.veteranStatus,
+        disablingConditions: client.disablingConditions,
         sourceSystemId: client._id,
         phoneNumber: client.phoneNumber,
         emailAddress: client.emailAddress,
