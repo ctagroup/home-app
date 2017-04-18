@@ -2,7 +2,7 @@
  * Created by udit on 07/04/16.
  */
 
-import { PendingClients } from '/imports/api/clients/pending-clients';
+import { PendingClients } from '/imports/api/pending-clients/pending-clients';
 
 Meteor.methods(
   {

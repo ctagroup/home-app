@@ -2,6 +2,7 @@
  * Created by Kavi on 4/5/16.
  */
 const querystring = require('querystring');
+import { Clients } from '/imports/api/clients/clients';
 
 Template.viewClient.onRendered(() => {
   $('body').addClass('sidebar-collapse');
@@ -162,16 +163,17 @@ Template.viewClient.events(
 
     'click .addToHousingList'(evt, tmpl) {
       const clientId = tmpl.data._id;
-      Meteor.call('ignoreMatchProcess', clientId, false, (err) => {
+      Meteor.call('ignoreMatchProcess', clientId, false, (err, res) => {
         if (err) {
           Bert.alert(err.reason || err.error, 'danger', 'growl-top-right');
         } else {
           Bert.alert('Client added to the matching process', 'success', 'growl-top-right');
-
-          // TODO: it would be better to directly update the client's document in MongoDb
-          // however, there is no client-side only collection for clients to update
-          // and current client is not held on the server side as well
-          window.location.reload();
+          // We simulate update in client-side collection
+          // Sadly, this cannot be done in meteor call (isSimulation)
+          Clients._collection.update(clientId, { $set: { // eslint-disable-line
+            'eligibleClient.ignoreMatchProcess': res.ignoreMatchProcess,
+            'eligibleClient.remarks': res.remarks,
+          } });
         }
       });
     },
@@ -185,16 +187,17 @@ Template.viewClient.events(
         $('#removalRemarks').focus();
         return;
       }
-      Meteor.call('ignoreMatchProcess', clientId, true, remarks, (err) => {
+      Meteor.call('ignoreMatchProcess', clientId, true, remarks, (err, res) => {
         if (err) {
           Bert.alert(err.reason || err.error, 'danger', 'growl-top-right');
         } else {
           Bert.alert('Client removed for the matching process', 'success', 'growl-top-right');
-
-          // TODO: it would be better to directly update the client's document in MongoDb
-          // however, there is no client-side only collection for clients to update
-          // and current client is not held on the server side as well
-          window.location.reload();
+          // We simulate update in client-side collection
+          // Sadly, this cannot be done in meteor call (isSimulation)
+          Clients._collection.update(clientId, { $set: { // eslint-disable-line
+            'eligibleClient.ignoreMatchProcess': res.ignoreMatchProcess,
+            'eligibleClient.remarks': res.remarks,
+          } });
         }
       });
     },

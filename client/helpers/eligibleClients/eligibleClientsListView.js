@@ -1,12 +1,13 @@
 /**
  * Created by Mj on 10/7/2016.
  */
+import { EligibleClients } from '/imports/api/eligible-clients/eligible-clients';
 
 Template.eligibleClientsListView.helpers(
   {
     // Add all helpers here.
     hasEligibleClients() {
-      return eligibleClients.find({}).fetch();
+      return EligibleClients.find({}).fetch();
     },
     eligibleClientsTableOptions() {
       return {
@@ -15,7 +16,7 @@ Template.eligibleClientsListView.helpers(
       };
     },
     eligibleClientsData() {
-      return () => eligibleClients.find({}).fetch();
+      return () => EligibleClients.find({}).fetch();
     },
   }
 );

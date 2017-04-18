@@ -42,18 +42,16 @@ Template.editClient.events(
 
     'click .delete': (evt, tmpl) => {
       const client = tmpl.data;
-      const methodName = client.clientId ? 'removePendingClient' : 'removePendingClient';
+      const methodName = client.clientId ? 'removeClient' : 'removePendingClient';
 
-      Meteor.call(
-        methodName, client._id, (error) => {
-          if (error) {
-            Bert.alert(error.reason || error.error, 'danger', 'growl-top-right');
-          } else {
-            Bert.alert('Client deleted', 'success', 'growl-top-right');
-            Router.go('adminDashboardclientsView');
-          }
+      Meteor.call(methodName, client._id, (error) => {
+        if (error) {
+          Bert.alert(error.reason || error.error, 'danger', 'growl-top-right');
+        } else {
+          Bert.alert('Client deleted', 'success', 'growl-top-right');
+          Router.go('adminDashboardclientsView');
         }
-      );
+      });
     },
 
     'click .back': () => {

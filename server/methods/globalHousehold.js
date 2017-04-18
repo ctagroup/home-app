@@ -2,7 +2,6 @@
  * Created by Anush-PC on 8/1/2016.
  */
 
-import { PendingClients } from '/imports/api/clients/pending-clients';
 
 Meteor.methods(
   {
@@ -68,6 +67,7 @@ Meteor.methods(
       const hmisClients = HMISAPI.deleteGlobalHousehold(globalHouseholdId);
       return hmisClients;
     },
+    /*
     getClients() {
       const hmisClients = HMISAPI.getClients();
       const localClients = PendingClients.aggregate(
@@ -128,5 +128,6 @@ Meteor.methods(
       }
       return mergedClients;
     },
+    */
   }
 );

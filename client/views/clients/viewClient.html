@@ -239,10 +239,10 @@
                         <div class="col-md-8">
                             <input class="btn btn-default back" value="Back" type="button">
                             <input class="btn btn-success takeSurvey" value="Survey" type="button">
-                            {{#unless personalId}}
+                            {{#unless isHMISClient}}
                                 <input class="btn btn-success add-to-hmis js-tooltip" data-toggle="tooltip" value="Upload" title="This action uploads the client information to HMIS data server." type="button" />
-                                <input class="btn btn-warning edit" value="Edit" type="button" />
                             {{/unless}}
+                            <input class="btn btn-warning edit" value="Edit" type="button" />
                             <input class="btn btn-success getResponses" value="Responses" type="button">
                         </div>
                     </div>

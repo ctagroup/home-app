@@ -1,28 +1,9 @@
 import moment from 'moment';
-import { PendingClients } from '../pending-clients';
 import { HmisClient } from '/imports/api/hmis-api';
 
-/* eslint prefer-arrow-callback: "off" */
 
-Meteor.publish('pendingClients', function publishAllPendingClients() {
-  if (!this.userId) {
-    return [];
-  }
-  // TODO: check permissions to get the data
-  return PendingClients.find();
-});
-
-Meteor.publish('pendingClient', function publishPendingClient(clientId) {
-  if (!this.userId) {
-    return [];
-  }
-  // TODO: check permissions to get the data
-  return PendingClients.find({ _id: clientId });
-});
-
-
-Meteor.publish('client', function publishHmisClient(clientId, schema) {
-  logger.warn('publish client is obsolete - use getClient method instead');
+Meteor.publish('client', function publishSingleClient(clientId, schema = 'v2015') {
+  console.log('publishing client', clientId);
 
   if (!this.userId) {
     return [];
@@ -160,7 +141,7 @@ Meteor.publish('client', function publishHmisClient(clientId, schema) {
   }
 
   if (client) {
-    self.added('clients', client.clientId, client);
+    self.added('localClients', client.clientId, client);
   }
   return self.ready();
 });
