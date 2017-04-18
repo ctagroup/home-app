@@ -148,7 +148,7 @@ Template.viewClient.helpers(
       return message;
     },
     getText(text, code) {
-      let definition = code;
+      let definition = code === undefined ? '?' : code;
       const questionCollection = HomeUtils.adminCollectionObject('questions');
       const question = questionCollection.findOne({ name: text });
       if (question && question.options) {
