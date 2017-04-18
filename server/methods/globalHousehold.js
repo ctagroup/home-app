@@ -2,7 +2,7 @@
  * Created by Anush-PC on 8/1/2016.
  */
 
-import { Clients } from '/imports/api/clients/clients';
+import { PendingClients } from '/imports/api/clients/pending-clients';
 
 Meteor.methods(
   {
@@ -70,7 +70,7 @@ Meteor.methods(
     },
     getClients() {
       const hmisClients = HMISAPI.getClients();
-      const localClients = Clients.aggregate(
+      const localClients = PendingClients.aggregate(
         [
           {
             $project: {

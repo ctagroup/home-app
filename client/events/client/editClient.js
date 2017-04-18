@@ -6,6 +6,7 @@
 Template.editClient.events(
   {
     'click .update': (evt, tmpl) => {
+      evt.preventDefault();
       const firstName = tmpl.find('.firstName').value;
       const middleName = tmpl.find('.middleName').value;
       const lastName = tmpl.find('.lastName').value;
@@ -20,31 +21,41 @@ Template.editClient.events(
       const gender = tmpl.find('.gender_category').value;
       const veteranStatus = tmpl.find('.veteranStatus_category').value;
       const disablingConditions = tmpl.find('.disablingConditions_category').value;
-      Meteor.call(
-        'updateClient', tmpl.data._id, firstName, middleName, lastName,
+
+      const client = tmpl.data;
+      const methodName = client.clientId ? 'updateClient' : 'updatePendingClient';
+      const query = client.clientId ? { isHMISClient: true, schema: 'v2015' } : {};
+
+      Meteor.call(methodName, client._id, { firstName, middleName, lastName,
         suffix, emailAddress, phoneNumber, photo, ssn, dob, race, ethnicity, gender, veteranStatus,
-        disablingConditions,
-        (error, result) => {
+        disablingConditions },
+        (error) => {
           if (error) {
-            logger.log(error);
+            Bert.alert(error.reason || error.error, 'danger', 'growl-top-right');
           } else {
-            logger.log(result);
-            Router.go('viewClient', { _id: tmpl.data._id });
+            Bert.alert('Client updated', 'success', 'growl-top-right');
+            Router.go('viewClient', { _id: client._id }, { query });
           }
         }
       );
     },
+
     'click .delete': (evt, tmpl) => {
+      const client = tmpl.data;
+      const methodName = client.clientId ? 'removePendingClient' : 'removePendingClient';
+
       Meteor.call(
-        'removeClient', tmpl.data._id, (error) => {
+        methodName, client._id, (error) => {
           if (error) {
-            Bert.alert('Error deleting client.', 'danger', 'growl-top-right');
+            Bert.alert(error.reason || error.error, 'danger', 'growl-top-right');
           } else {
-            Router.go('adminDashboardclientsView', {}, { query: 'deleted=1' });
+            Bert.alert('Client deleted', 'success', 'growl-top-right');
+            Router.go('adminDashboardclientsView');
           }
         }
       );
     },
+
     'click .back': () => {
       history.back();
     },

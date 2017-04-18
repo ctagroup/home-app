@@ -2,7 +2,7 @@
  * Created by udit on 07/04/16.
  */
 
-import { Clients } from '/imports/api/clients/clients';
+import { PendingClients } from '/imports/api/clients/pending-clients';
 
 Meteor.methods(
   {
@@ -25,7 +25,7 @@ Meteor.methods(
 
       let localClients = [];
       if (!optionz.excludeLocalClients) {
-        localClients = Clients.aggregate(
+        localClients = PendingClients.aggregate(
           [
             {
               $project: {

@@ -20,9 +20,9 @@ class ClientsCollection extends Mongo.Collection {
   }
 }
 
-export const Clients = new ClientsCollection('clients');
+export const PendingClients = new ClientsCollection('clients');
 
-Clients.schema = new SimpleSchema(
+PendingClients.schema = new SimpleSchema(
   {
     firstName: {
       type: String,
@@ -93,9 +93,9 @@ Clients.schema = new SimpleSchema(
   }
 );
 
-Clients.attachSchema(Clients.schema);
+PendingClients.attachSchema(PendingClients.schema);
 
-Clients.deny({
+PendingClients.deny({
   insert() { return true; },
   update() { return true; },
   remove() { return true; },

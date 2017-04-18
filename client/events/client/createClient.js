@@ -25,17 +25,17 @@ Template.createClient.events(
       const veteranStatus = tmpl.find('.veteranStatus_category').value;
       const disablingConditions = tmpl.find('.disablingConditions_category').value;
       const signature = tmpl.find('.signature') ? tmpl.find('.signature').value : '';
-      Meteor.call(
-        'addClient', firstName, middleName, lastName, suffix,
+
+      Meteor.call('addPendingClient', firstName, middleName, lastName, suffix,
         emailAddress, phoneNumber, photo, ssn, dob, race, ethnicity,
         gender, veteranStatus, disablingConditions,
         signature,
         (error, result) => {
           if (error) {
-            // console.log(error);
+            Bert.alert(error.reason || error.error, 'danger', 'growl-top-right');
           } else {
             const clientId = result;
-            // console.log(result);
+            Bert.alert('New client added', 'success', 'growl-top-right');
             Router.go('viewClient', { _id: clientId });
           }
         }

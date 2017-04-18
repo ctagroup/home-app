@@ -1,26 +1,29 @@
 import moment from 'moment';
-import { Clients } from '../clients';
+import { PendingClients } from '../pending-clients';
 import { HmisClient } from '/imports/api/hmis-api';
 
 /* eslint prefer-arrow-callback: "off" */
 
-Meteor.publish('clients', function publishAllClients() {
+Meteor.publish('pendingClients', function publishAllPendingClients() {
   if (!this.userId) {
     return [];
   }
   // TODO: check permissions to get the data
-  return Clients.find();
+  return PendingClients.find();
 });
 
-Meteor.publish('singleLocalClient', function publishLocalClient(clientId) {
+Meteor.publish('pendingClient', function publishPendingClient(clientId) {
   if (!this.userId) {
     return [];
   }
   // TODO: check permissions to get the data
-  return Clients.find({ _id: clientId });
+  return PendingClients.find({ _id: clientId });
 });
 
-Meteor.publish('singleHMISClient', function publishSingleHMISClient(clientId, schema) {
+
+Meteor.publish('client', function publishHmisClient(clientId, schema) {
+  logger.warn('publish client is obsolete - use getClient method instead');
+
   if (!this.userId) {
     return [];
   }

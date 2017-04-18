@@ -2,7 +2,7 @@
  * Created by udit on 27/10/16.
  */
 
-import { Clients } from '/imports/api/clients/clients';
+import { PendingClients } from '/imports/api/clients/pending-clients';
 
 Meteor.publish(
   'responses', function publishResponses(clientID) {
@@ -38,7 +38,7 @@ Meteor.publish(
             false
           );
         } else {
-          const localClient = Clients.findOne({ _id: responseList[i].clientID });
+          const localClient = PendingClients.findOne({ _id: responseList[i].clientID });
 
           if (localClient) {
             response.clientDetails = localClient;
@@ -92,7 +92,7 @@ Meteor.publish(
         self.added('responses', response._id, response);
         self.ready();
       } else if (response) {
-        const localClient = Clients.findOne({ _id: response.clientID });
+        const localClient = PendingClients.findOne({ _id: response.clientID });
         if (localClient) {
           response.clientDetails = localClient;
         } else {

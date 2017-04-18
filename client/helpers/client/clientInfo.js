@@ -3,8 +3,6 @@
  */
 import moment from 'moment';
 
-import { ReactiveVar } from 'meteor/reactive-var';
-
 let genderCategories;
 let veteranStatus;
 let ethnicityCategories;
@@ -43,7 +41,6 @@ function getUniversalElements() {
 }
 
 Template.viewClient.onCreated(() => {
-  Template.instance().statusMessage = new ReactiveVar();
 });
 
 Template.viewClient.helpers(
@@ -148,17 +145,6 @@ Template.viewClient.helpers(
         /* eslint-enable */
       }
 
-      // TODO: move to a different template
-      const statusMessage = Template.instance().statusMessage.get();
-      if (statusMessage) {
-        switch (statusMessage.status) {
-          case 'error':
-            message = `<p class=\"notice bg-danger text-danger\">${statusMessage.message}</p>`;
-            break;
-          default:
-            message = `<p class=\"notice bg-success text-success\">${statusMessage.message}</p>`;
-        }
-      }
       return message;
     },
     getText(text, code) {

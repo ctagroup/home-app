@@ -35,27 +35,22 @@ Template.viewClient.events(
       Router.go('adminDashboardclientsView');
     },
     'click .add-to-hmis': (event, tmpl) => {
-      tmpl.statusMessage.set();
       Meteor.call(
-        'addClientToHMIS', tmpl.data._id, (error, result) => {
+        'uploadPendingClientToHmis', tmpl.data._id, (error, result) => {
           if (error) {
-            tmpl.statusMessage.set({
-              message: error.reason || error.error,
-              status: 'error',
-            });
+            Bert.alert(error.reason || error.error, 'danger', 'growl-top-right');
           } else {
             let query = 'addClientToHMISError=1';
             let clientId = tmpl.data._id;
             if (result) {
               const params = {
-                addedToHMIS: 1,
                 isHMISClient: true,
-                link: result.link,
                 schema: 'v2015',
               };
               clientId = result._id;
               query = querystring.stringify(params);
             }
+            Bert.alert('Client uploaded to HMIS', 'success', 'growl-top-right');
             Router.go('viewClient', { _id: clientId }, { query });
           }
         }
