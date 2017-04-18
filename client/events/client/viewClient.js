@@ -3,6 +3,7 @@
  */
 const querystring = require('querystring');
 import { Clients } from '/imports/api/clients/clients';
+import { RecentClients } from '/imports/api/recent-clients';
 
 Template.viewClient.onRendered(() => {
   $('body').addClass('sidebar-collapse');
@@ -52,6 +53,8 @@ Template.viewClient.events(
               query = querystring.stringify(params);
             }
             Bert.alert('Client uploaded to HMIS', 'success', 'growl-top-right');
+
+            RecentClients.remove(tmpl.data._id);
             Router.go('viewClient', { _id: clientId }, { query });
           }
         }
