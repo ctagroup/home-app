@@ -6,25 +6,25 @@
 
 import { chai } from 'meteor/practicalmeteor:chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { Clients } from './clients';
+import { PendingClients } from './pending-clients';
 
 
-describe('api/clients', () => {
+describe('api/pending-clients', () => {
   beforeEach(() => {
     resetDatabase();
   });
 
-  it('client can be added to a collection', () => {
-    Clients.insert({
+  it('pending client can be added to a collection', () => {
+    PendingClients.insert({
       firstName: 'John',
       lastName: 'Doe',
     });
-    chai.assert.equal(Clients.find().count(), 1);
+    chai.assert.equal(PendingClients.find().count(), 1);
   });
 
-  it('adding client without a first name will throw an error', () => {
+  it('adding pending client without a first name will throw an error', () => {
     chai.assert.throws(() => {
-      Clients.insert({
+      PendingClients.insert({
         lastName: 'Doe',
       });
     }, Error);

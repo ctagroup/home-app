@@ -2,7 +2,7 @@
  * Created by udit on 02/08/16.
  */
 
-import { Clients } from '/imports/api/clients/clients';
+import { PendingClients } from '/imports/api/clients/pending-clients';
 
 Template.selectSurvey.helpers(
   {
@@ -10,7 +10,7 @@ Template.selectSurvey.helpers(
       return surveys.find({ created: true }).fetch();
     },
     getSurveyedClient() {
-      return Clients.find().fetch();
+      return PendingClients.find().fetch();
     },
   }
 );

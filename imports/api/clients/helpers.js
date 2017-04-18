@@ -1,9 +1,5 @@
-/**
- * Created by pgorecki on 09.04.17.
- */
+import { PendingClients } from './pending-clients';
 
-import { Clients } from './clients';
-
-Clients.helpers({
+PendingClients.helpers({
   // TODO: add helpers for clients here
 });

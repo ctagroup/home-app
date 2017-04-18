@@ -44,6 +44,35 @@ export class ClientApi extends ApiEndpoint {
     return this.doPost(url, body).client.clientId;
   }
 
+  updateClient(clientId, client, schema = 'v2015') {
+    const body = {
+      client: {
+        firstName: client.firstName,
+        middleName: client.middleName,
+        lastName: client.lastName,
+        nameSuffix: client.suffix,
+        nameDataQuality: 1,
+        ssn: client.ssn,
+        ssnDataQuality: 1,
+        dob: moment(client.dob).format('x'),
+        dobDataQuality: 1,
+        race: client.race,
+        ethnicity: client.ethnicity,
+        gender: client.gender,
+        // Putting otherGender as null. Confirmed with Javier. Because it's of no use as of now.
+        otherGender: 'null',
+        veteranStatus: client.veteranStatus,
+        sourceSystemId: client._id,
+        phoneNumber: client.phoneNumber,
+        emailAddress: client.emailAddress,
+      },
+    };
+
+    const url = `${BASE_URL}/${schema}/clients/${clientId}`;
+    const result = this.doPut(url, body);
+    return result;
+  }
+
   getClientFromUrl() {
     throw new Error('Not yet implemented');
   }

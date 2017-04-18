@@ -2,13 +2,13 @@
 
 import { PublicationCollector } from 'meteor/johanbrook:publication-collector';
 import { chai } from 'meteor/practicalmeteor:chai';
-import { Clients } from '../clients';
+import { PendingClients } from '../pending-clients';
 import './publications';
 
 describe('clients', function () {
   describe('publications', function () {
     it('lists 0 clients if user is not authenticated', function (done) {
-      Clients.insert({
+      PendingClients.insert({
         firstName: 'client1',
         lastName: 'client1',
       });
