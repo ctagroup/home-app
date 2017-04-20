@@ -13,8 +13,9 @@ Template.responsesListView.events(
       Meteor.call('uploadResponse', responseId, (err) => {
         if (err) {
           parent.html(originalHtml);
-          alert(err.reason || err.error);
+          Bert.alert(err.reason || err.error, 'danger', 'growl-top-right');
         } else {
+          Bert.alert('Response uploaded', 'success', 'growl-top-right');
           const htmlOk = '<span class="text-success">' +
                   '<i class="fa fa-check"></i> ' +
                   'Submitted' +
