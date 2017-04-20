@@ -1,7 +1,4 @@
-/**
- * Created by Anush-PC on 8/1/2016.
- */
-
+import { HmisClient } from '/imports/api/hmis-api';
 
 Meteor.methods(
   {
@@ -58,11 +55,15 @@ Meteor.methods(
 
       return globalHousehold;
     },
+
     createGlobalHousehold(globalHouseholdMembers, globalHouseholdObject) {
-      const hmisClients = HMISAPI.createGlobalHousehold(globalHouseholdMembers,
-          globalHouseholdObject);
-      return hmisClients;
+      const hc = HmisClient.create(Meteor.userId());
+      return hc.api('global-household').createGlobalHousehold(
+        globalHouseholdMembers,
+        globalHouseholdObject
+      );
     },
+
     deleteHousehold(globalHouseholdId) {
       const hmisClients = HMISAPI.deleteGlobalHousehold(globalHouseholdId);
       return hmisClients;

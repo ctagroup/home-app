@@ -58,12 +58,15 @@ export class ApiEndpoint {
       requestHeaders,
       httpError,
     });
-
     const code = httpError.response ? httpError.response.statusCode : 0;
     let message = '';
     try {
       const content = JSON.parse(httpError.response.content);
-      message = content.errors.error[0].message;
+      if (_.isArray(content.error)) {
+        message = content.error[0].message;
+      } else {
+        message = content.errors.error[0].message;
+      }
     } catch (err) {
       message = httpError.message || 'An error has occurred';
     }
