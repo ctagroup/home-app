@@ -79,9 +79,7 @@ export class SurveyApi extends ApiEndpoint {
   addResponseToHmis(clientId, surveyId, responses) {
     const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/responses`;
     const body = { responses };
-    const response = this.doPost(url, body).response;
-    console.debug('xxxx', response);
-    return response;
+    return this.doPost(url, body).response;
   }
 
   deleteSurveyScores() {
