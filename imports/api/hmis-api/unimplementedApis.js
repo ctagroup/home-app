@@ -20,26 +20,3 @@ class UserServiceApi {
   deleteUserRole() {}
   getUserForPublish() {}
 }
-
-class SurveyServiceApi {
-  createSectionScores() {}
-  createSurveyServiceQuestions() {}
-  updateSurveyServiceQuestion() {}
-  getSurveyServiceQuestion() {}
-  deleteSurveyServiceQuestion() {}
-  deletePickListGroup() {}
-  createPickListGroup() {}
-  createPickListValues() {}
-  createSurvey() {}
-  createSection() {}
-  createSurveyQuestionMappings() {}
-  updateHmisSurvey() {}
-  updateHmisSurveySection() {}
-  getHmisSurveySections() {}
-  getHmisSurveyQuestionMappings() {}
-  deleteHmisSurveyQuestionMapping() {}
-  deleteHmisSurveySection() {}
-  deleteQuestionMappings() {}
-  addResponseToHmis() {}
-  deleteSurveyScores() {}
-}

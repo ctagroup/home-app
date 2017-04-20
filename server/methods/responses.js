@@ -1,13 +1,15 @@
 /**
  * Created by Mj on 10/1/2016.
  */
+import { HmisClient } from '/imports/api/hmis-api';
 
 Meteor.methods(
   {
     sendResponse(clientId, surveyId, responses) {
+      const hc = HmisClient.create(Meteor.userId());
+
       // will send all at one time.
-      return HMISAPI
-        .addResponseToHmis(clientId, surveyId, responses);
+      return hc.api('survey').addResponseToHmis(clientId, surveyId, responses);
     },
     updateSubmissionIdForResponses(_id, submissionId) {
       responses.update(_id, { $set: { submissionId } });
@@ -25,9 +27,11 @@ Meteor.methods(
           = surveys.findOne({ _id: response.surveyID });
         if (survey.stype !== 'hud') {
           Meteor.call('updateResponseStatus', responseId, 'Uploading');
+
           const sendResponseToHmisSync = Meteor.wrapAsync(
             responseHmisHelpers.sendResponseToHmis);
           const res = sendResponseToHmisSync(responseId, {}, true);
+
           if (res) {
             // Calculate the scores now and send them too.
             let score;
