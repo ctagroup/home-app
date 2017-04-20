@@ -1,19 +1,5 @@
 /* eslint no-unused-vars: "off" */
 
-class OAuthApi {
-  renewAccessToken() {
-
-  }
-
-  getUserAccessToken() {
-
-  }
-
-  getCurrentAccessToken() {
-
-  }
-}
-
 class HousingApi {
   createHousingUnit() {}
   updateHousingUnit() {}
@@ -21,21 +7,6 @@ class HousingApi {
 
   getHousingUnitsForPublish() {}
   getHousingUnitForPublish() {}
-}
-
-class GlobalHouseHoldsApi {
-  createGlobalHousehold() {}
-  updateGlobalHousehold() {}
-  deleteGlobalHousehold() {}
-
-  addMembersToHousehold() {}
-  updateMembersToHousehold() {}
-  deleteMemberFromHousehold() {}
-
-  getGlobalHouseholdsForPublish() {}
-  getSingleGlobalHouseholdForPublish() {}
-  getGlobalHouseholdMembershipsForPublish() {}
-  getGlobalHouseholdMembersForPublish() {}
 }
 
 class UserServiceApi {

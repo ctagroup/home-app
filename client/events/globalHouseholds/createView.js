@@ -39,11 +39,13 @@ Template.globalHouseholdCreateView.events(
         }
       );
       Meteor.call('createGlobalHousehold', globalHouseholdMembers,
-        globalHouseholdObject, (err, res) => {
-          if (err) {
-            logger.log(err);
+        globalHouseholdObject, (error) => {
+          if (error) {
+            Bert.alert(error.reason || error.error, 'danger', 'growl-top-right');
           } else {
-            logger.log(res);
+            Bert.alert('New household created', 'success', 'growl-top-right');
+            // TODO: redirect to a new household
+            // console.log(result);
           }
         });
     },
