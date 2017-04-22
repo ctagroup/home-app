@@ -16,7 +16,7 @@ Template.selectSurvey.events(
       };
 
       if (Router.current().params && Router.current().params.query
-          && Router.current().params.query.isHMISClient && Router.current().params.query.schema) {
+          && Router.current().params.query.schema) {
         query.isHMISClient = true;
         query.schema = Router.current().params.query.schema;
       }
@@ -29,7 +29,7 @@ Template.selectSurvey.events(
       const query = {};
 
       if (Router.current().params && Router.current().params.query
-          && Router.current().params.query.isHMISClient && Router.current().params.query.schema) {
+          && Router.current().params.query.schema) {
         query.isHMISClient = true;
         query.schema = Router.current().params.query.schema;
       }
