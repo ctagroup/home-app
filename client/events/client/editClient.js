@@ -24,11 +24,11 @@ Template.editClient.events(
 
       const client = tmpl.data;
       const methodName = client.clientId ? 'updateClient' : 'updatePendingClient';
-      const query = client.clientId ? { isHMISClient: true, schema: 'v2015' } : {};
+      const query = client.clientId ? { isHMISClient: true, schema: client.schema } : {};
 
       Meteor.call(methodName, client._id, { firstName, middleName, lastName,
         suffix, emailAddress, phoneNumber, photo, ssn, dob, race, ethnicity, gender, veteranStatus,
-        disablingConditions },
+        disablingConditions }, client.schema,
         (error) => {
           if (error) {
             Bert.alert(error.reason || error.error, 'danger', 'growl-top-right');
