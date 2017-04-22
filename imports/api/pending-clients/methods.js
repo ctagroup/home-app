@@ -107,7 +107,11 @@ Meteor.methods({
     let result = false;
 
     if (personalId) {
-      PendingClients.remove({ _id: clientId });
+      PendingClients.remove(clientId);
+      responses.update({ clientID: clientId },
+        { $set: { clientID: personalId, clientSchema: 'v2015', isHMISClient: true } },
+        { multi: true }
+      );
 
       // TODO: use new API
       const clientBasePath = HomeConfig.hmisAPIEndpoints.clientBaseUrl.replace(
@@ -122,10 +126,6 @@ Meteor.methods({
         link: url,
         deletedId: clientId,
       };
-      responses.update({ clientId },
-        { $set: { clientID: personalId, clientSchema: 'v2015', isHMISClient: true } },
-        { multi: true }
-      );
     }
     return result;
   },
