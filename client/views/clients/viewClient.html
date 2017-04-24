@@ -265,6 +265,8 @@
                     <h3>Matching Eligibility Status</h3>
                     {{#unless ignoreMatchProcess}}
                     <input id="removalRemarks" class="form-control" type="text" name="removalRemarks" placeholder="Removal notes">
+                    {{else}}
+                        <p><strong>Removal notes: </strong>{{remarks}}</p>
                     {{/unless}}
                 </div>
                     {{#if ignoreMatchProcess }}
