@@ -52,6 +52,19 @@ export class ApiEndpoint {
     return response.data;
   }
 
+  doDel(url) {
+    const options = {
+      headers: this.getRequestHeaders(),
+    };
+    let response = false;
+    try {
+      response = HTTP.del(url, options);
+    } catch (err) {
+      this.throwApiError(url, options, err);
+    }
+    return response.data;
+  }
+
   throwApiError(url, requestHeaders, httpError) {
     logger.error('api error', {
       url,
@@ -70,7 +83,7 @@ export class ApiEndpoint {
     } catch (err) {
       message = httpError.message || 'An error has occurred';
     }
-    throw new Meteor.Error('hmis.api', `${message} (${code})`);
+    throw new Meteor.Error('hmis.api', `${message} (${code})`, { code });
   }
 
 }

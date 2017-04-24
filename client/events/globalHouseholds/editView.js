@@ -46,11 +46,11 @@ Template.globalHouseholdEditView.events(
         oldGlobalHouseholdMembers,
         newGlobalHouseholdMembers,
         globalHouseholdObject,
-        (err, res) => {
+        (err) => {
           if (err) {
-            logger.log(err);
+            Bert.alert(err.reason || err.error, 'danger', 'growl-top-right');
           } else {
-            logger.log(res);
+            Bert.alert('Household updated', 'success', 'growl-top-right');
           }
         }
       );

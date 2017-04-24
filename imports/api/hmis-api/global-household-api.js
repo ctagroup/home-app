@@ -4,253 +4,79 @@ import { ApiEndpoint } from './api-endpoint';
 const BASE_URL = 'https://www.hmislynk.com/global-household-api';
 
 class GlobalHouseHoldApi extends ApiEndpoint {
-  createGlobalHousehold(globalHouseholdMembers, globalHouseholdObject) {
+  createGlobalHousehold(householdMembers, householdObject) {
     const url = `${BASE_URL}/global-households`;
     const body = {
       globalHouseholds: [
-        globalHouseholdObject,
+        householdObject,
       ],
     };
     const household = this.doPost(url, body)[0];
-    this.addMembersToHousehold(household.globalHouseholdId, globalHouseholdMembers);
+    this.addMembersToHousehold(household.globalHouseholdId, householdMembers);
     return household;
   }
 
-  updateGlobalHousehold(globalHouseholdId, globalHouseholdObject) {
-    // TODO: use new api
-    const body = globalHouseholdObject;
-    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (!config) {
-      throw new ServiceConfiguration.ConfigError();
-    }
-
-    const accessToken = HMISAPI.getCurrentAccessToken();
-    const globalHousehold = config.hmisAPIEndpoints.globalHousehold.replace(
-      '{{global_household_uuid}}',
-      globalHouseholdId
-    );
-
-    logger.info(config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHousehold);
-    logger.info(accessToken);
-    logger.info(body);
-
-    try {
-      const response = HTTP.put(
-        config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHousehold, {
-          data: body,
-          headers: {
-            'X-HMIS-TrustedApp-Id': config.appId,
-            Authorization: `HMISUserAuth session_token=${accessToken}`,
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-        }
-      ).data;
-      logger.info(response);
-      return response;
-    } catch (err) {
-      logger.error(`Failed to update global household in HMIS. ${err.message}`);
-      logger.error(err.response);
-      return false;
-    }
+  updateGlobalHousehold(householdId, householdObject) {
+    const url = `${BASE_URL}/global-households/${householdId}`;
+    const body = householdObject;
+    return this.doPut(url, body);
   }
 
-  deleteGlobalHousehold(globalHouseholdID) {
-    // TODO: use new api
-    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (!config) {
-      throw new ServiceConfiguration.ConfigError();
-    }
-
-    const accessToken = HMISAPI.getCurrentAccessToken();
-    const globalHousehold = config.hmisAPIEndpoints.globalHousehold.replace(
-      '{{global_household_uuid}}',
-      globalHouseholdID
-    );
-
-    logger.info(config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHousehold);
-    logger.info(accessToken);
-
-    try {
-      const response = HTTP.del(
-        config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHousehold, {
-          headers: {
-            'X-HMIS-TrustedApp-Id': config.appId,
-            Authorization: `HMISUserAuth session_token=${accessToken}`,
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-        }
-      ).data;
-      logger.info(response);
-      return response;
-    } catch (err) {
-      logger.error(`Failed to delete global household from HMIS. ${err.message}`);
-      logger.error(err.response);
-      return false;
-    }
+  deleteGlobalHousehold(householdId) {
+    const url = `${BASE_URL}/global-households/${householdId}`;
+    return this.doDel(url);
   }
 
-  addMembersToHousehold(globalHouseholdID, globalHouseholdMembers) {
-    const url = `${BASE_URL}/global-households/${globalHouseholdID}/members`;
+  addMembersToHousehold(householdId, householdMembers) {
+    const url = `${BASE_URL}/global-households/${householdId}/members`;
     const body = {
-      members: globalHouseholdMembers,
+      members: householdMembers,
     };
     return this.doPost(url, body);
   }
 
-  updateMembersToHousehold(globalHouseholdID, globalHouseholdMem) {
-    const globalHouseholdMembers = globalHouseholdMem;
-    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (!config) {
-      throw new ServiceConfiguration.ConfigError();
-    }
-
-    const accessToken = HMISAPI.getCurrentAccessToken();
-    const globalHouseholdMembersPath = config.hmisAPIEndpoints.globalHouseholdMembers.replace(
-      '{{global_household_uuid}}',
-      globalHouseholdID
-    );
-
-    logger.info(config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHouseholdMembersPath);
-    logger.info(accessToken);
-    logger.info({ members: globalHouseholdMembers });
-
-    try {
-      const response = HTTP.put(
-        config.hmisAPIEndpoints.globalHouseholdBaseUrl + globalHouseholdMembersPath, {
-          data: { members: globalHouseholdMembers },
-          headers: {
-            'X-HMIS-TrustedApp-Id': config.appId,
-            Authorization: `HMISUserAuth session_token=${accessToken}`,
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-        }
-      ).data;
-      logger.info(JSON.stringify(response));
-      return response;
-    } catch (err) {
-      logger.error(`Failed to update members of global household in HMIS. ${err.message}`);
-      logger.error(err.response);
-      return false;
-    }
+  updateMembersOfHousehold(householdId, householdMembers) {
+    // WARNING: will update existing members only,
+    // will not replace current members with householdMembers
+    const url = `${BASE_URL}/global-households/${householdId}/members`;
+    const body = { members: householdMembers };
+    return this.doPut(url, body);
   }
 
-  deleteMemberFromHousehold(globalHouseholdId, householdMembershipId) {
-    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (!config) {
-      throw new ServiceConfiguration.ConfigError();
-    }
-
-    const accessToken = HMISAPI.getCurrentAccessToken();
-
-    const baseUrl = config.hmisAPIEndpoints.globalHouseholdBaseUrl;
-    const memberPath = config.hmisAPIEndpoints.globalHouseholdMember.replace(
-      '{{global_household_uuid}}',
-      globalHouseholdId
-    ).replace(
-      '{{membership_id}}',
-      householdMembershipId
-    );
-    const urlPath = `${baseUrl}${memberPath}`;
-    const url = `${urlPath}`;
-
-    logger.info(url);
-    logger.info(accessToken);
-
-    try {
-      const response = HTTP.del(url, {
-        headers: {
-          'X-HMIS-TrustedApp-Id': config.appId,
-          Authorization: `HMISUserAuth session_token=${accessToken}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      }).data;
-      logger.info(response);
-      return response;
-    } catch (err) {
-      logger.error(`Failed to delete global household member from HMIS. ${err.message}`);
-      logger.error(err.response);
-      return false;
-    }
+  deleteMemberFromHousehold(householdId, membershipId) {
+    const url = `${BASE_URL}/global-households/${householdId}/members/${membershipId}`;
+    return this.doDel(url);
   }
 
-  getGlobalHouseholdsForPublish(page = 0, limit = 30) {
-    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (!config) {
-      throw new ServiceConfiguration.ConfigError();
+  getHouseholds(page = 0, limit = 30) {
+    const url = `${BASE_URL}/global-households?page=${page}&limit=${limit}`;
+    const response = this.doGet(url);
+    let globalHouseholds = response.content;
+    if (response.page.number < response.page.totalPages - 1) {
+      globalHouseholds = _.union(
+        globalHouseholds,
+        this.getHouseholds(response.page.number + 1, response.page.size)
+      );
     }
-
-    const accessToken = this.getCurrentAccessToken(false);
-
-    let globalHouseholds = [];
-
-    const baseUrl = config.hmisAPIEndpoints.globalHouseholdBaseUrl;
-    const globalHouseholdPath = config.hmisAPIEndpoints.globalHouseholds;
-    const urlPah = `${baseUrl}${globalHouseholdPath}`;
-    // const url = `${urlPah}?${querystring.stringify(params)}`;
-    const url = `${urlPah}?page=${page}&size=${limit}`;
-
-    logger.info(url);
-    logger.info(accessToken);
-
-    try {
-      const response = HTTP.get(url, {
-        headers: {
-          'X-HMIS-TrustedApp-Id': config.appId,
-          Authorization: `HMISUserAuth session_token=${accessToken}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      }).data;
-      logger.info(response);
-      globalHouseholds = response;
-    } catch (err) {
-      logger.error(`Failed to get global Household from HMIS. ${err.message}`);
-      logger.error(err.response);
-      return false;
-    }
-
     return globalHouseholds;
   }
 
-  getSingleGlobalHouseholdForPublish(globalHouseholdId) {
-    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (!config) {
-      throw new ServiceConfiguration.ConfigError();
+  getHousehold(householdId) {
+    const url = `${BASE_URL}/global-households/${householdId}`;
+    return this.doGet(url);
+  }
+
+  getHouseholdMembers(householdId, page = 0, size = 1000) {
+    const url = `${BASE_URL}/global-households/${householdId}/members?page=${page}&size=${size}`;
+    const response = this.doGet(url);
+    let householdMembers = response.content;
+    if (response.page.number < response.page.totalPages - 1) {
+      householdMembers = _.union(
+        householdMembers,
+        this.getHouseholdMembers(householdId, response.page.number + 1, response.page.size)
+      );
     }
-
-    const accessToken = this.getCurrentAccessToken(false);
-
-    const baseUrl = config.hmisAPIEndpoints.globalHouseholdBaseUrl;
-    const singleGlobalHouseholdPath = config.hmisAPIEndpoints.globalHousehold.replace(
-      '{{global_household_uuid}}',
-      globalHouseholdId
-    );
-    const urlPah = `${baseUrl}${singleGlobalHouseholdPath}`;
-    const url = `${urlPah}`;
-
-    logger.info(url);
-    logger.info(accessToken);
-
-    try {
-      const response = HTTP.get(url, {
-        headers: {
-          'X-HMIS-TrustedApp-Id': config.appId,
-          Authorization: `HMISUserAuth session_token=${accessToken}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      }).data;
-      logger.info(response);
-      return response;
-    } catch (err) {
-      logger.error(`Failed to get single household details from HMIS. ${err.message}`);
-      logger.error(err.response);
-      return false;
-    }
+    return householdMembers;
   }
 
   getGlobalHouseholdMembershipsForPublish(clientId, page = 0, limit = 30) {
@@ -290,42 +116,6 @@ class GlobalHouseHoldApi extends ApiEndpoint {
     }
   }
 
-  getGlobalHouseholdMembersForPublish(globalHouseholdId, page = 0, limit = 30) {
-    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (!config) {
-      throw new ServiceConfiguration.ConfigError();
-    }
-
-    const accessToken = this.getCurrentAccessToken(false);
-
-    const baseUrl = config.hmisAPIEndpoints.globalHouseholdBaseUrl;
-    const singleGlobalHouseholdPath = config.hmisAPIEndpoints.globalHouseholdMembers.replace(
-      '{{global_household_uuid}}',
-      globalHouseholdId
-    );
-    const urlPah = `${baseUrl}${singleGlobalHouseholdPath}`;
-    const url = `${urlPah}?page=${page}&size=${limit}`;
-
-    logger.info(url);
-    logger.info(accessToken);
-
-    try {
-      const response = HTTP.get(url, {
-        headers: {
-          'X-HMIS-TrustedApp-Id': config.appId,
-          Authorization: `HMISUserAuth session_token=${accessToken}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      }).data;
-      logger.info(response);
-      return response;
-    } catch (err) {
-      logger.error(`Failed to get single household members from HMIS. ${err.message}`);
-      logger.error(err.response);
-      return false;
-    }
-  }
 }
 
 HmisApiRegistry.addApi('global-household', GlobalHouseHoldApi);

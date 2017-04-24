@@ -14,14 +14,14 @@ class HouseMatchingApi extends ApiEndpoint {
     return this.doGet(url);
   }
 
-  getEligibleClients(pageNumber = 0) {
-    const url = `${BASE_URL}/eligibleclients?page=${pageNumber}&size=1000`;
+  getEligibleClients(pageNumber = 0, size = 1000) {
+    const url = `${BASE_URL}/eligibleclients?page=${pageNumber}&size=${size}`;
     const response = this.doGet(url);
     let eligibleClients = response.content;
     if (response.page.number < response.page.totalPages - 1) {
       eligibleClients = _.union(
         eligibleClients,
-        this.getEligibleClients(response.page.number + 1)
+        this.getEligibleClients(response.page.number + 1, response.page.size)
       );
     }
     return eligibleClients;
