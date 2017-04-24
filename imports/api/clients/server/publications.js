@@ -3,8 +3,6 @@ import { HmisClient } from '/imports/api/hmis-api';
 
 
 Meteor.publish('client', function publishSingleClient(clientId, schema = 'v2015') {
-  console.log('publishing client', clientId);
-
   if (!this.userId) {
     return [];
   }

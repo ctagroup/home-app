@@ -10,3 +10,6 @@ import '../../api/pending-clients/server/publications';
 
 import '../../api/eligible-clients/methods';
 import '../../api/eligible-clients/server/publications';
+
+import '../../api/global-households/methods';
+import '../../api/global-households/server/publications';
