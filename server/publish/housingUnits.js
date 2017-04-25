@@ -1,6 +1,7 @@
 /**
  * Created by udit on 15/07/16.
  */
+import { logger } from '/imports/utils/logger';
 
 Meteor.publish(
   'housingUnits', function publishHousingUnits() {

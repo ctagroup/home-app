@@ -2,6 +2,7 @@
  * Created by udit on 08/04/16.
  */
 import moment from 'moment';
+import { logger } from '/imports/utils/logger';
 
 const querystring = require('querystring');
 

@@ -1,6 +1,7 @@
 /**
  * Created by udit on 10/02/16.
  */
+import { logger } from '/imports/utils/logger';
 
 // let surveyCopyId;
 let surveyIDForCopy;

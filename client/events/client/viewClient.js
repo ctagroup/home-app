@@ -4,6 +4,7 @@
 const querystring = require('querystring');
 import { Clients } from '/imports/api/clients/clients';
 import { RecentClients } from '/imports/api/recent-clients';
+import { logger } from '/imports/utils/logger';
 
 Template.viewClient.onRendered(() => {
   $('body').addClass('sidebar-collapse');

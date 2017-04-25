@@ -1,6 +1,7 @@
 /**
  * Created by udit on 26/07/16.
  */
+import { logger } from '/imports/utils/logger';
 
 Template.roleManager.events(
   {

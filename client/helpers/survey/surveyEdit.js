@@ -1,3 +1,4 @@
+import { logger } from '/imports/utils/logger';
 
 Template.surveyEditTemplate.helpers(
   {

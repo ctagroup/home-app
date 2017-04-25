@@ -1,3 +1,5 @@
+import { logger } from '/imports/utils/logger';
+
 Session.setDefault('selectedQuestions', null);
 
 Template.selectQuestions.helpers(

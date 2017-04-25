@@ -1,6 +1,7 @@
 /**
  * Created by udit on 03/08/16.
  */
+import { logger } from '/imports/utils/logger';
 
 Template.responseForm.onRendered(
   () => {

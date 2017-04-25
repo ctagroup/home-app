@@ -4,5 +4,9 @@
     "staleSessionHeartbeatInterval": 60000,
     "staleSessionPurgeInterval": 60000,
     "staleSessionActivityEvents": "mousemove click keydown"
+  },
+  "sentry": {
+    "level": "warn",
+    "dsn": ""
   }
 }

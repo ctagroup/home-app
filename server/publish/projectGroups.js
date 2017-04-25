@@ -1,6 +1,7 @@
 /**
  * Created by udit on 02/09/16.
  */
+import { logger } from '/imports/utils/logger';
 
 Meteor.publish(
   'projectGroups', function publishProjectGroups() {

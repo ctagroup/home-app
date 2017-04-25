@@ -1,6 +1,7 @@
 /**
  * Created by udit on 08/07/16.
  */
+import { logger } from '/imports/utils/logger';
 
 const querystring = require('querystring');
 

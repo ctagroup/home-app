@@ -1,8 +1,8 @@
 /**
  * Created by udit on 08/07/16.
  */
-
 import moment from 'moment';
+import { logger } from '/imports/utils/logger';
 
 // Tracker.autorun(() => {
   // if (Meteor.user()) {

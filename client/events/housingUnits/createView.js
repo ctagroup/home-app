@@ -1,6 +1,7 @@
 /**
  * Created by Mj on 24-Aug-16.
  */
+import { logger } from '/imports/utils/logger';
 
 Template.housingUnitCreateView.events(
   {

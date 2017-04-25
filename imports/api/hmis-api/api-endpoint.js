@@ -1,3 +1,5 @@
+import { logger } from '/imports/utils/logger';
+
 export class ApiEndpoint {
   constructor(appId, accessToken) {
     this.appId = appId;
@@ -66,9 +68,10 @@ export class ApiEndpoint {
   }
 
   throwApiError(url, requestHeaders, httpError) {
-    logger.error('api error', {
+    logger.error('HMIS API', {
       url,
       requestHeaders,
+      json_data: requestHeaders.data ? JSON.stringify(requestHeaders.data) : '',
       httpError,
     });
     const code = httpError.response ? httpError.response.statusCode : 0;

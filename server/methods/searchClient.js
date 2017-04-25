@@ -1,6 +1,7 @@
 /**
  * Created by udit on 07/04/16.
  */
+import { logger } from '/imports/utils/logger';
 
 import { PendingClients } from '/imports/api/pending-clients/pending-clients';
 

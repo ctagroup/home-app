@@ -1,6 +1,7 @@
 /**
  * Created by udit on 01/08/16.
  */
+import { logger } from '/imports/utils/logger';
 
 Template.clientForm.onRendered(() => {
   // to load the script on run time and then put the mask for ssn and PN
