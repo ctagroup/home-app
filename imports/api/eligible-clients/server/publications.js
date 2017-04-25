@@ -1,4 +1,5 @@
 import { HmisClient } from '/imports/api/hmis-api';
+import { logger } from '/imports/utils/logger';
 
 Meteor.publish('eligibleClients', function publishEligibleClients() {
   const self = this;

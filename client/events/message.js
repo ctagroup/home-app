@@ -1,3 +1,5 @@
+import { logger } from '/imports/utils/logger';
+
 Template.newMessage.events(
   {
     'submit .new-message': (e) => {

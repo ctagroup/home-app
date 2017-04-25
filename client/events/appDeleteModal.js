@@ -1,6 +1,7 @@
 /**
  * Created by udit on 27/07/16.
  */
+import { logger } from '/imports/utils/logger';
 
 Template.AppDeleteModal.events({
   'click #confirm-delete': () => {

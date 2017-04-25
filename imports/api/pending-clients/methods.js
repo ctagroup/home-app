@@ -1,5 +1,7 @@
 import { PendingClients } from './pending-clients';
 import { HmisClient } from '/imports/api/hmis-api';
+import { logger } from '/imports/utils/logger';
+
 
 Meteor.methods({
   addPendingClient(

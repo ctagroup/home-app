@@ -25,7 +25,6 @@
     "HMISAPI": true,
     "Sortable": true,
     "OAuth": true,
-    "logger": true,
     "moment": true,
     "HomeConfig": true,
     "adminCollectionObject": true,

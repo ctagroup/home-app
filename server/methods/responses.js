@@ -2,6 +2,7 @@
  * Created by Mj on 10/1/2016.
  */
 import { HmisClient } from '/imports/api/hmis-api';
+import { logger } from '/imports/utils/logger';
 
 Meteor.methods(
   {

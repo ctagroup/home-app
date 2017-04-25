@@ -1,16 +1,5 @@
-/**
- * Created by udit on 21/06/16.
- */
+import { logger } from '/imports/utils/logger';
 
-import winston from 'winston';
-
-logger = new (winston.Logger)(
-  {
-    transports: [
-      new (winston.transports.Console)(),
-    ],
-  }
-);
 Meteor.methods(
   {
     logToServerConsoleLog(msg) {

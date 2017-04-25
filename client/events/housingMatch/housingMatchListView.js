@@ -1,6 +1,7 @@
 /**
  * Created by Mj on 10/8/2016.
  */
+import { logger } from '/imports/utils/logger';
 
 Template.housingMatchListView.events(
   {

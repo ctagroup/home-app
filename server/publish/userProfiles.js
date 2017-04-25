@@ -1,6 +1,7 @@
 /**
  * Created by udit on 04/09/16.
  */
+import { logger } from '/imports/utils/logger';
 
 Meteor.publish(
   'userProfiles', function publishUserProfiles() {

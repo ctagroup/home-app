@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { HmisClient } from '/imports/api/hmis-api';
+import { logger } from '/imports/utils/logger';
 
 
 Meteor.publish('client', function publishSingleClient(clientId, schema = 'v2015') {

@@ -1,6 +1,7 @@
 /**
  * Created by udit on 16/11/16.
  */
+import { logger } from '/imports/utils/logger';
 
 Template.eligibleClientsListView.events(
   {
