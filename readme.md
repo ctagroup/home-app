@@ -46,7 +46,7 @@ Meteor Up is used to deploy this app. Ref: https://github.com/kadirahq/meteor-up
 
 #### Deploy steps
 
-- Go to directory `./deploy/<server-dir>`.
+- Go to directory `./.deploy/<server-dir>`.
 - Run `mup deploy`. This command will initiate the deployment of the current version of project in your filesystem.
 
 ## SSL Certificate
