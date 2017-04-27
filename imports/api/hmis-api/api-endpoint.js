@@ -17,12 +17,15 @@ export class ApiEndpoint {
 
   doGet(url) {
     const headers = this.getRequestHeaders();
+    const options = { headers };
+    logger.debug('HMIS API:get', { url, options });
     let response = false;
     try {
-      response = HTTP.get(url, { headers });
+      response = HTTP.get(url, options);
     } catch (err) {
       this.throwApiError(url, headers, err);
     }
+    logger.debug('HMIS API:get response', response);
     return response.data;
   }
 
@@ -31,13 +34,15 @@ export class ApiEndpoint {
       headers: this.getRequestHeaders(),
       data,
     };
+    logger.debug('HMIS API:post', { url, options });
     let response = false;
     try {
-      response = HTTP.post(url, options).data;
+      response = HTTP.post(url, options);
     } catch (err) {
       this.throwApiError(url, options, err);
     }
-    return response;
+    logger.debug('HMIS API:post response', response);
+    return response.data;
   }
 
   doPut(url, data) {
@@ -45,12 +50,14 @@ export class ApiEndpoint {
       headers: this.getRequestHeaders(),
       data,
     };
+    logger.debug('HMIS API:put', { url, options });
     let response = false;
     try {
       response = HTTP.put(url, options);
     } catch (err) {
       this.throwApiError(url, options, err);
     }
+    logger.debug('HMIS API:put response', response);
     return response.data;
   }
 
@@ -58,12 +65,14 @@ export class ApiEndpoint {
     const options = {
       headers: this.getRequestHeaders(),
     };
+    logger.debug('HMIS API:del', { url, options });
     let response = false;
     try {
       response = HTTP.del(url, options);
     } catch (err) {
       this.throwApiError(url, options, err);
     }
+    logger.debug('HMIS API:del response', response);
     return response.data;
   }
 
