@@ -94,9 +94,7 @@ UI.registerHelper(
 UI.registerHelper('hasDocuments', () => {
   let flag = false;
 
-  const count = collectionsCount.findOne({
-    collection: Session.get('admin_collection_name'),
-  });
+  const count = collectionsCount.findOne(Session.get('admin_collection_name'));
 
   if (count && count.count && count.count > 0) {
     flag = true;
@@ -175,6 +173,7 @@ UI.registerHelper('adminGetUserSchema', () => {
 UI.registerHelper('collectionLabel', collection => HomeDashboard.collectionLabel(collection));
 
 UI.registerHelper('collectionsCount', (collection) => {
+  console.log(collection);
   if (collection === 'Users') {
     return Meteor.users.find().count();
   }
