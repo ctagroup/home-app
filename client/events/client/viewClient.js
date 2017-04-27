@@ -29,22 +29,24 @@ Template.viewClient.events(
   {
     'click .edit': (evt, tmpl) => {
       const query = {};
-      if (tmpl.data.schema) {
-        query.query = `schema=${tmpl.data.schema}`;
+      const client = tmpl.data.client;
+      if (client.schema) {
+        query.query = `schema=${client.schema}`;
       }
-      Router.go('adminDashboardclientsEdit', { _id: tmpl.data._id }, query);
+      Router.go('adminDashboardclientsEdit', { _id: client._id }, query);
     },
     'click .back': () => {
       Router.go('adminDashboardclientsView');
     },
     'click .add-to-hmis': (event, tmpl) => {
+      const client = tmpl.data.client;
       Meteor.call(
-        'uploadPendingClientToHmis', tmpl.data._id, (error, result) => {
+        'uploadPendingClientToHmis', client._id, (error, result) => {
           if (error) {
             Bert.alert(error.reason || error.error, 'danger', 'growl-top-right');
           } else {
             let query = 'addClientToHMISError=1';
-            let clientId = tmpl.data._id;
+            let clientId = client._id;
             if (result) {
               const params = {
                 isHMISClient: true,
@@ -55,7 +57,7 @@ Template.viewClient.events(
             }
             Bert.alert('Client uploaded to HMIS', 'success', 'growl-top-right');
 
-            RecentClients.remove(tmpl.data._id);
+            RecentClients.remove(client._id);
             Router.go('viewClient', { _id: clientId }, { query });
           }
         }
@@ -72,7 +74,7 @@ Template.viewClient.events(
         };
       }
 
-      Router.go('selectSurvey', { _id: tmpl.data._id }, query);
+      Router.go('selectSurvey', { _id: tmpl.data.client._id }, query);
     },
     'click .js-close-referral-status-modal': () => {
       $('#referralStatusComments').summernote('code', '');
@@ -102,7 +104,8 @@ Template.viewClient.events(
 
       logger.log(`clicked status update${step}`);
       const status = step;
-      const clientId = tmpl.data._id;
+      const client = tmpl.data.client;
+      const clientId = client._id;
       const recipients = { toRecipients: [], ccRecipients: [], bccRecipients: [] };
 
       const user = Meteor.user();
@@ -116,8 +119,8 @@ Template.viewClient.events(
       }
 
       let reservation = false;
-      if (tmpl.data.housingMatch) {
-        reservation = tmpl.data.housingMatch;
+      if (client.housingMatch) {
+        reservation = client.housingMatch;
       }
 
       if (reservation) {
@@ -161,12 +164,12 @@ Template.viewClient.events(
       );
     },
     'click .getResponses'(evt, tmpl) {
-      const clientID = tmpl.data._id;
+      const clientID = tmpl.data.client._id;
       Router.go(`/responses?clientID=${clientID}`);
     },
 
     'click .addToHousingList'(evt, tmpl) {
-      const clientId = tmpl.data._id;
+      const clientId = tmpl.data.client._id;
       Meteor.call('ignoreMatchProcess', clientId, false, (err, res) => {
         if (err) {
           Bert.alert(err.reason || err.error, 'danger', 'growl-top-right');
@@ -183,7 +186,7 @@ Template.viewClient.events(
     },
 
     'click .removeFromHousingList'(evt, tmpl) {
-      const clientId = tmpl.data._id;
+      const clientId = tmpl.data.client._id;
       const remarks = $('#removalRemarks').val();
 
       if (remarks.trim().length === 0) {

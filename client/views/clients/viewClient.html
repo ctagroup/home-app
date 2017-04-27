@@ -1,9 +1,8 @@
 <template name="viewClient">
+{{#with client}}
     <div id="viewClient_content">
             <div class="row client-profile-container">
-
                 {{{alertMessages}}}
-
                 {{#if eligibleClient.ignoreMatchProcess }}
                 <div class="col-xs-12">
                     <div class="alert alert-danger">
@@ -246,12 +245,12 @@
                     <div class="form-group">
                         <div class="col-md-8">
                             <input class="btn btn-default back" value="Back" type="button">
-                            <input class="btn btn-success takeSurvey" value="Survey" type="button">
+                            {{#if ../showSurveyButton }}<input class="btn btn-success takeSurvey" value="Survey" type="button">{{/if}}
                             {{#unless isHMISClient}}
-                                <input class="btn btn-success add-to-hmis js-tooltip" data-toggle="tooltip" value="Upload" title="This action uploads the client information to HMIS data server." type="button" />
+                                {{#if ../showUploadButton }}<input class="btn btn-success add-to-hmis js-tooltip" data-toggle="tooltip" value="Upload" title="This action uploads the client information to HMIS data server." type="button" />{{/if}}
                             {{/unless}}
-                            <input class="btn btn-warning edit" value="Edit" type="button" />
-                            <input class="btn btn-success getResponses" value="Responses" type="button">
+                            {{#if ../showEditButton }}<input class="btn btn-warning edit" value="Edit" type="button" />{{/if}}
+                            {{#if ../showResponsesButton }}<input class="btn btn-success getResponses" value="Responses" type="button">{{/if}}
                         </div>
                     </div>
                 </div>
@@ -278,7 +277,7 @@
         </div>
     {{/with}}
 
-
+{{/with}}
 </template>
 
 <template name="referralStatusUpdateComments">
