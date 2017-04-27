@@ -86,7 +86,7 @@ export class HmisClient {
   loadAuthData() {
     const user = this.usersCollection.findOne({ _id: this.userId });
     if (!user) {
-      throw new Meteor.Error('hmis.api', 'User not found');
+      throw new Meteor.Error('hmis.api', `User ${this.userId} not found`);
     }
 
     if (!(user.services && user.services.HMIS)) {

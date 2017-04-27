@@ -178,9 +178,8 @@ UI.registerHelper('collectionsCount', (collection) => {
   if (collection === 'Users') {
     return Meteor.users.find().count();
   }
-
-  const rows = collectionsCount.findOne({ collection });
-  return rows ? rows.count : 0;
+  const doc = collectionsCount.findOne(collection);
+  return doc ? doc.count : 0;
 });
 
 UI.registerHelper('adminTemplate', (collection, mode) => {
