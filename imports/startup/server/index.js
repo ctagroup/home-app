@@ -1,3 +1,5 @@
+import '../../api/collections-count/server/publications';
+
 import '../../api/clients/methods';
 import '../../api/clients/server/publications';
 
