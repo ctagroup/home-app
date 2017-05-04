@@ -173,7 +173,6 @@ UI.registerHelper('adminGetUserSchema', () => {
 UI.registerHelper('collectionLabel', collection => HomeDashboard.collectionLabel(collection));
 
 UI.registerHelper('collectionsCount', (collection) => {
-  console.log(collection);
   if (collection === 'Users') {
     return Meteor.users.find().count();
   }
