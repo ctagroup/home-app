@@ -2,6 +2,8 @@
  * Created by udit on 01/08/16.
  */
 
+import { Clients } from '/imports/api/clients/clients';
+
 
 Template.editClient.events(
   {
@@ -29,11 +31,12 @@ Template.editClient.events(
       Meteor.call(methodName, client._id, { firstName, middleName, lastName,
         suffix, emailAddress, phoneNumber, photo, ssn, dob, race, ethnicity, gender, veteranStatus,
         disablingConditions }, client.schema,
-        (error) => {
+        (error, result) => {
           if (error) {
             Bert.alert(error.reason || error.error, 'danger', 'growl-top-right');
           } else {
             Bert.alert('Client updated', 'success', 'growl-top-right');
+            Clients._collection.update(client._id, { $set: result });  // eslint-disable-line
             Router.go('viewClient', { _id: client._id }, { query });
           }
         }
