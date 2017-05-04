@@ -4,6 +4,7 @@ import { PendingClients } from '/imports/api/pending-clients/pending-clients';
 
 function publishCounts(collection, collectionName, publication) {
   let count = 0;
+  publication.changed('collectionsCount', collectionName, { count });
   const handle = collection.find().observeChanges({
     added() {
       count += 1;
