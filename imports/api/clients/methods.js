@@ -3,33 +3,9 @@ import { HmisClient } from '../hmis-api';
 
 Meteor.methods({
   updateClient(clientId, client, schema = 'v2015') {
-    if (this.isSimulation) {
-      // client-side part
-      return Clients.update(
-        clientId, {
-          $set: {
-            firstName: client.firstName,
-            middleName: client.middleName,
-            lastName: client.lastName,
-            suffix: client.suffix,
-            emailAddress: client.emailAddress,
-            phoneNumber: client.phoneNumber,
-            photo: client.photo,
-            ssn: client.ssn,
-            dob: client.dob,
-            race: client.race,
-            ethnicity: client.ethnicity,
-            gender: client.gender,
-            veteranStatus: client.veteranStatus,
-            disablingConditions: client.disablingConditions,
-          },
-        }
-      );
-    }
-
-    // server-side part
     const hc = HmisClient.create(Meteor.userId());
-    return hc.api('client').updateClient(clientId, client, schema);
+    hc.api('client').updateClient(clientId, client, schema);
+    return client;
   },
 
   removeClient(clientId) { // eslint-disable-line
