@@ -27,33 +27,41 @@ Meteor.publish('globalHouseholds', function publishHouseholds() {
   }
   self.ready();
 
-  // load details
   for (let i = 0; i < globalHouseholds.length && !stopFunction; i += 1) {
     const household = globalHouseholds[i];
-    try {
-      const client = hc.api('client').getClient(household.headOfHouseholdId, household.schema);
-      client.schema = household.schema;
-      // TODO: add client into dedicated collection
-      household.headOfHouseholdClient = client;
-      // self.added('localClients', household.headOfHouseholdId, client);
-    } catch (e) {
-      household.headOfHouseholdClient = { error: e.details.code };
-      // self.added('localClients', household.headOfHouseholdId, { error: e.details.code });
-    }
 
-    if (household.userId) {
-      // TODO: add account into dedicated collection
+    Meteor.setTimeout(() => {
       try {
-        household.userDetails = hc.api('user-service').getUser(household.userId).account;
+        const client = hc.api('client').getClient(household.headOfHouseholdId, household.schema);
+        client.schema = household.schema;
+        household.headOfHouseholdClient = client;
       } catch (e) {
-        household.userDetails = { error: e.details.code };
+        household.headOfHouseholdClient = { error: e.details.code };
       }
-    } else {
-      household.userDetails = { error: 404 };
-    }
-    self.added('localGlobalHouseholds', household.globalHouseholdId, household);
-  }
 
+      // TODO: add client (headOfHouseholdClient) into dedicated collection
+      // self.added('localClients', household.headOfHouseholdId, client);
+
+      self.changed('localGlobalHouseholds', household.globalHouseholdId, {
+        headOfHouseholdClient: household.headOfHouseholdClient,
+      });
+    }, 0);
+
+    Meteor.setTimeout(() => {
+      if (household.userId) {
+        try {
+          household.userDetails = hc.api('user-service').getUser(household.userId).account;
+        } catch (e) {
+          household.userDetails = { error: e.details.code };
+        }
+      } else {
+        household.userDetails = { error: 404 };
+      }
+      self.changed('localGlobalHouseholds', household.globalHouseholdId, {
+        userDetails: household.userDetails,
+      });
+    }, 0);
+  }
   return self.ready();
 });
 
