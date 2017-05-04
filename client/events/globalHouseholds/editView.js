@@ -2,6 +2,8 @@
  * Created by Anush-PC on 8/1/2016.
  */
 
+import { GlobalHouseholds } from '/imports/api/global-households/global-households';
+
 Template.globalHouseholdEditView.events(
   {
     'click .updateHousehold': (evt) => {
@@ -13,7 +15,7 @@ Template.globalHouseholdEditView.events(
       }
       const user = users.findOne({ _id: Meteor.userId() });
       const globalHouseholdId = Router.current().params._id;
-      const globalHousehold = globalHouseholds.findOne({ _id: globalHouseholdId });
+      const globalHousehold = GlobalHouseholds.findOne({ _id: globalHouseholdId });
       const globalHouseholdObject = {
         globalHouseholdId,
         headOfHouseholdId,

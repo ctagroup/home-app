@@ -1,10 +1,14 @@
 /**
  * Created by Anush-PC on 7/19/2016.
  */
+
+import { GlobalHouseholds } from '/imports/api/global-households/global-households';
+
+
 Template.globalHouseholdListView.helpers(
   {
     hasGlobalHousehold() {
-      return globalHouseholds.find({}).fetch();
+      return GlobalHouseholds.find({}).fetch();
     },
     globalHouseholdTableOptions() {
       // Deep Copy to avoid reference to the same array.
@@ -35,7 +39,7 @@ Template.globalHouseholdListView.helpers(
       };
     },
     globalHouseholdData() {
-      return () => globalHouseholds.find({}).fetch();
+      return () => GlobalHouseholds.find({}).fetch();
     },
   }
 );

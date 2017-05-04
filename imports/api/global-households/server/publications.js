@@ -23,7 +23,7 @@ Meteor.publish('globalHouseholds', function publishHouseholds() {
     if (household.links[0].rel.indexOf('v2014') !== -1) {
       household.schema = 'v2014';
     }
-    self.added('globalHouseholds', household.globalHouseholdId, household);
+    self.added('localGlobalHouseholds', household.globalHouseholdId, household);
   }
   self.ready();
 
@@ -51,7 +51,7 @@ Meteor.publish('globalHouseholds', function publishHouseholds() {
     } else {
       household.userDetails = { error: 404 };
     }
-    self.added('globalHouseholds', household.globalHouseholdId, household);
+    self.added('localGlobalHouseholds', household.globalHouseholdId, household);
   }
 
   return self.ready();
@@ -85,7 +85,7 @@ Meteor.publish('singleGlobalHousehold', function publishHousehold(globalHousehol
     client.clientDetails = hc.api('client').getClient(client.globalClientId, schema);
     client.clientDetails.schema = schema;
   }
-  self.added('globalHouseholds', household.globalHouseholdId, household);
+  self.added('localGlobalHouseholds', household.globalHouseholdId, household);
 
   return self.ready();
 });

@@ -1,11 +1,12 @@
 /**
  * Created by udit on 03/10/16.
  */
+import { GlobalHouseholds } from '/imports/api/global-households/global-households';
 
 Template.globalHouseholdMembers.helpers(
   {
     getGlobalHouseholdMembers() {
-      const globalHousehold = globalHouseholds.findOne({ _id: Router.current().params._id });
+      const globalHousehold = GlobalHouseholds.findOne({ _id: Router.current().params._id });
       if (globalHousehold) {
         return globalHousehold.clients;
       }
