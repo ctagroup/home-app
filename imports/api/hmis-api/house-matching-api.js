@@ -45,8 +45,12 @@ class HouseMatchingApi extends ApiEndpoint {
   updateClientMatchStatus() {
     throw new Error('Not yet implemented');
   }
-  getClientScore() {
-    throw new Error('Not yet implemented');
+
+  getClientScore(clientId) {
+    const url = `${BASE_URL}/scores/client/${clientId}`;
+    const rawScore = this.doGet(url);
+    const score = parseInt(rawScore.replace('score :', ''), 10);
+    return score;
   }
 }
 

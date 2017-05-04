@@ -102,9 +102,8 @@ Meteor.publish('client', function publishSingleClient(clientId, schema = 'v2015'
     client.globalHouseholds = globalHouseholds;
 
     // fetch client status
-    const referralStatus = HMISAPI.getReferralStatusHistory(
-      clientId
-    );
+    const referralStatus = HMISAPI.getReferralStatusHistory(clientId);
+
     // Sort based on Timestamp
     referralStatus.sort((a, b) => {
       const aTime = moment(a.dateUpdated, 'MM-DD-YYYY HH:mm:ss.SSS').unix();
@@ -131,10 +130,8 @@ Meteor.publish('client', function publishSingleClient(clientId, schema = 'v2015'
       client.housingMatch = housingMatch;
     }
 
-    const matchingScore = HMISAPI.getClientScore(clientId);
-    const score = parseInt(matchingScore.replace('score :', ''), 10);
-
-    client.matchingScore = score;
+    const matchingScore = hc.api('house-matching').getClientScore(clientId);
+    client.matchingScore = matchingScore;
   } catch (err) {
     logger.error('publish singleHMISClient', err);
   }
