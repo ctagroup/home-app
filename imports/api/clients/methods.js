@@ -1,4 +1,3 @@
-import { Clients } from './clients';
 import { HmisClient } from '../hmis-api';
 
 Meteor.methods({
