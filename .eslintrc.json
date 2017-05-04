@@ -56,7 +56,6 @@
     "LocationTracker": true,
     "housingUnits": true,
     "housingMatch": true,
-    "globalHouseholds": true,
     "PreliminarySurvey": true,
     "SignaturePad": true,
     "SignaturePadConfig": true,
