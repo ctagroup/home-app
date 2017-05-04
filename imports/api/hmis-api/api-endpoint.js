@@ -25,7 +25,7 @@ export class ApiEndpoint {
     } catch (err) {
       this.throwApiError(url, headers, err);
     }
-    logger.debug('HMIS API:get response', response);
+    logger.debug(`HMIS API:get response (${url})`, response);
     return response.data;
   }
 
@@ -41,7 +41,7 @@ export class ApiEndpoint {
     } catch (err) {
       this.throwApiError(url, options, err);
     }
-    logger.debug('HMIS API:post response', response);
+    logger.debug('HMIS API:post response (${url})', response);
     return response.data;
   }
 
@@ -50,7 +50,7 @@ export class ApiEndpoint {
       headers: this.getRequestHeaders(),
       data,
     };
-    logger.debug('HMIS API:put', { url, options });
+    logger.debug('HMIS API:put (${url})', { url, options });
     let response = false;
     try {
       response = HTTP.put(url, options);
@@ -72,7 +72,7 @@ export class ApiEndpoint {
     } catch (err) {
       this.throwApiError(url, options, err);
     }
-    logger.debug('HMIS API:del response', response);
+    logger.debug('HMIS API:del response (${url})', response);
     return response.data;
   }
 
