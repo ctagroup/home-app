@@ -1,6 +1,5 @@
 import { HmisClient } from '../hmis-api';
 
-
 Meteor.methods({
   getEligibleClients() {
     if (!Meteor.userId()) {
