@@ -15,6 +15,27 @@ export class ApiEndpoint {
     };
   }
 
+  promisedGet(url) {
+    return new Promise((resolve, reject) => {
+      const headers = this.getRequestHeaders();
+      const options = { headers };
+      logger.debug('HMIS API:get (promise)', { url, options });
+      HTTP.get(url, options, (err, res) => {
+        if (err) {
+          console.log('we have an error');
+          try {
+            this.throwApiError(url, headers, err);
+          } catch (e) {
+            console.log('rejecting');
+            reject(e);
+          }
+        } else {
+          resolve(res.data);
+        }
+      });
+    });
+  }
+
   doGet(url) {
     const headers = this.getRequestHeaders();
     const options = { headers };

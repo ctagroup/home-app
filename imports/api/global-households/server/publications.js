@@ -30,37 +30,42 @@ Meteor.publish('globalHouseholds', function publishHouseholds() {
   for (let i = 0; i < globalHouseholds.length && !stopFunction; i += 1) {
     const household = globalHouseholds[i];
 
-    Meteor.setTimeout(() => {
-      try {
-        const client = hc.api('client').getClient(household.headOfHouseholdId, household.schema);
-        client.schema = household.schema;
+
+    // TODO: add client (headOfHouseholdClient) into dedicated collection
+    // self.added('localClients', household.headOfHouseholdId, client);
+    hc.api('client').promiseGetClient(household.headOfHouseholdId, household.schema)
+      .then((client) => {
         household.headOfHouseholdClient = client;
-      } catch (e) {
+        household.headOfHouseholdClient.schema = household.schema;
+      })
+      .catch((e) => {
         household.headOfHouseholdClient = { error: e.details.code };
-      }
-
-      // TODO: add client (headOfHouseholdClient) into dedicated collection
-      // self.added('localClients', household.headOfHouseholdId, client);
-
-      self.changed('localGlobalHouseholds', household.globalHouseholdId, {
-        headOfHouseholdClient: household.headOfHouseholdClient,
+      })
+      .then(() => {
+        self.changed('localGlobalHouseholds', household.globalHouseholdId, {
+          headOfHouseholdClient: household.headOfHouseholdClient,
+        });
       });
-    }, 0);
 
-    Meteor.setTimeout(() => {
-      if (household.userId) {
-        try {
-          household.userDetails = hc.api('user-service').getUser(household.userId).account;
-        } catch (e) {
-          household.userDetails = { error: e.details.code };
-        }
-      } else {
-        household.userDetails = { error: 404 };
-      }
+    if (household.userId) {
+      hc.api('user-service').promiseGetUser(household.userId)
+        .then((account) => {
+          household.userDetails = account;
+        })
+        .catch((e) => {
+          household.headOfHouseholdClient = { error: e.details.code };
+        })
+        .then(() => {
+          self.changed('localGlobalHouseholds', household.globalHouseholdId, {
+            userDetails: household.userDetails,
+          });
+        });
+    } else {
+      household.userDetails = { error: 404 };
       self.changed('localGlobalHouseholds', household.globalHouseholdId, {
         userDetails: household.userDetails,
       });
-    }, 0);
+    }
   }
   return self.ready();
 });
