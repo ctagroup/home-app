@@ -46,9 +46,9 @@ Template.viewClient.onCreated(() => {
 Template.viewClient.helpers(
   {
     isReferralStatusActive(step) {
-      const client = Router.current().data();
+      const client = Router.current().data().client;
 
-      if (client.referralStatusHistory.length > 0) {
+      if (client.referralStatusHistory && client.referralStatusHistory.length > 0) {
         const lastStatus = client.referralStatusHistory[client.referralStatusHistory.length - 1];
         if (step <= lastStatus.status) {
           return 'active';
@@ -59,9 +59,9 @@ Template.viewClient.helpers(
       return '';
     },
     isReferralStatusActiveButton(step) {
-      const client = Router.current().data();
+      const client = Router.current().data().client;
 
-      if (client.referralStatusHistory.length > 0) {
+      if (client.referralStatusHistory && client.referralStatusHistory.length > 0) {
         const lastStatus = client.referralStatusHistory[client.referralStatusHistory.length - 1];
         if (step <= lastStatus.status) {
           return `btn-${HomeConfig.collections.clients.referralStatus[step].cssClass}`;
@@ -72,8 +72,8 @@ Template.viewClient.helpers(
       return 'btn-default';
     },
     getProgressbarActiveStatus() {
-      const client = Router.current().data();
-      if (client.referralStatusHistory.length > 0) {
+      const client = Router.current().data().client;
+      if (client.referralStatusHistory && client.referralStatusHistory.length > 0) {
         const lastStatus = client.referralStatusHistory[client.referralStatusHistory.length - 1];
         const cssClass = HomeConfig.collections.clients.referralStatus[lastStatus.status].cssClass;
         return `progress-bar-${cssClass}`;
@@ -84,8 +84,8 @@ Template.viewClient.helpers(
       return 'progress-bar-default';
     },
     getProgressbarWidth() {
-      const client = Router.current().data();
-      if (client.referralStatusHistory.length > 0) {
+      const client = Router.current().data().client;
+      if (client.referralStatusHistory && client.referralStatusHistory.length > 0) {
         const lastStatus = client.referralStatusHistory[client.referralStatusHistory.length - 1];
         const total = HomeConfig.collections.clients.referralStatus.length;
         return `width: ${((lastStatus.status + 1) / total) * 100}%`;
@@ -96,8 +96,8 @@ Template.viewClient.helpers(
       return 'width: 0%;';
     },
     getCurrentReferralStatus() {
-      const client = Router.current().data();
-      if (client.referralStatusHistory.length > 0) {
+      const client = Router.current().data().client;
+      if (client.referralStatusHistory && client.referralStatusHistory.length > 0) {
         const lastStatus = client.referralStatusHistory[client.referralStatusHistory.length - 1];
         return lastStatus.status + 1;
       } else if (client.matchingScore) {
@@ -106,27 +106,29 @@ Template.viewClient.helpers(
       return 0;
     },
     getStatusTooltip(step) {
-      const client = Router.current().data();
+      const client = Router.current().data().client;
       let history = HomeConfig.collections.clients.referralStatus[step].desc;
-      for (let i = 0; i < client.referralStatusHistory.length; i += 1) {
-        if (client.referralStatusHistory[i].status === step) {
-          let txt = client.referralStatusHistory[i].statusDescription;
-          if (client.referralStatusHistory[i].comments) {
-            txt = client.referralStatusHistory[i].comments;
+      if (client.referralStatusHistory) {
+        for (let i = 0; i < client.referralStatusHistory.length; i += 1) {
+          if (client.referralStatusHistory[i].status === step) {
+            let txt = client.referralStatusHistory[i].statusDescription;
+            if (client.referralStatusHistory[i].comments) {
+              txt = client.referralStatusHistory[i].comments;
+            }
+            history = `${history}<br />${client.referralStatusHistory[i].dateUpdated} - ${txt}`;
           }
-          history = `${history}<br />${client.referralStatusHistory[i].dateUpdated} - ${txt}`;
         }
       }
       return history;
     },
     showReferralStatus() {
       return Roles.userIsInRole(Meteor.user(), ['System Admin', 'Developer', 'Case Manager'])
-        && Router.current().data().clientId && Router.current().params.query.schema;
+        && Router.current().data().client.clientId && Router.current().params.query.schema;
     },
     showGlobalHousehold() {
       return Roles.userIsInRole(
         Meteor.user(), ['System Admin', 'Developer', 'Case Manager', 'Surveyor']
-      ) && Router.current().data().clientId && Router.current().params.query.schema;
+      ) && Router.current().data().client.clientId && Router.current().params.query.schema;
     },
     alertMessages() {
       const params = Router.current().params;

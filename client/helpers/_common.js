@@ -217,3 +217,5 @@ UI.registerHelper('getTemplateData', () => {
   const tmpl = Template.instance();
   return tmpl.data;
 });
+
+UI.registerHelper('isUndefined', (v) => v === undefined);
