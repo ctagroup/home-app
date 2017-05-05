@@ -41,12 +41,18 @@ Meteor.publish('eligibleClients', function publishEligibleClients() {
         if (eligibleClients[i].links[0].href.indexOf('v2014') !== -1) {
           schema = 'v2014';
         }
-        const clientDetails = hc.api('client').getClient(eligibleClients[i].clientId, schema);
-        clientDetails.schema = schema;
 
-        self.changed('localEligibleClients', eligibleClients[i].clientId, {
-          clientDetails,
-        });
+        hc.api('client').promiseGetClient(eligibleClients[i].clientId, schema)
+          .then((client) => {
+            const clientDetails = client;
+            clientDetails.schema = schema;
+            self.changed('localEligibleClients', eligibleClients[i].clientId, {
+              clientDetails,
+            });
+          })
+          .catch((e) => {
+            logger.error(e);
+          });
       }
     }
   } catch (err) {
