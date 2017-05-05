@@ -83,6 +83,7 @@
                     </div>
                 </div>
             </div>
+            {{#if isUndefined enrollments}}<p>Loading enrollments...</p>{{/if}}
             {{#if enrollments}}
               <div class="row">
                 <div class="col-xs-12">
@@ -127,6 +128,7 @@
             {{/if}}
 
       {{#if showGlobalHousehold}}
+        {{#if isUndefined globalHouseholds}}<p>Loading households...</p>{{/if}}
         {{#if globalHouseholds}}
           <div class="row">
             <div class="col-xs-12">
@@ -203,58 +205,61 @@
       {{/if}}
 
       {{#if showReferralStatus}}
-        <div class="row">
-          <div class="col-xs-12">
-            <h3>Referral Status</h3>
+        {{#if isUndefined referralStatusHistory}}
+            <p>Loading referral status history...</p>
+        {{else}}
             <div class="row">
-              <div class="col-xs-9 my-center-block">
-                <div id="referral-timeline">
+                <div class="col-xs-12">
+                    <h3>Referral Status</h3>
+                    <div class="row">
+                        <div class="col-xs-9 my-center-block">
+                            <div id="referral-timeline">
 
-                  <div class="navigation">
-                    {{#each HomeConfig.collections.clients.referralStatus}}
-                      <span class="css-tooltip-button-span" data-toggle="tooltip" data-html="true" title="{{getStatusTooltip step}}">
+                                <div class="navigation">
+                                    {{#each HomeConfig.collections.clients.referralStatus}}
+                                        <span class="css-tooltip-button-span" data-toggle="tooltip" data-html="true" title="{{getStatusTooltip step}}">
                         <a id="js-btn-step-{{step}}" class="btn {{isReferralStatusActiveButton step}} btn-sm btn-arrow-right js-open-referral-status-modal js-tooltip"
                            href="#step{{step}}" data-toggle="tab" data-step="{{step}}">{{title}}</a>
                       </span>
-                    {{/each}}
-                  </div>
+                                    {{/each}}
+                                </div>
 
-                  <div class="progress">
-                    <div class="progress-bar {{getProgressbarActiveStatus}} progress-bar-striped active"
-                         role="progressbar" aria-valuenow="{{getCurrentReferralStatus}}" aria-valuemin="1"
-                         aria-valuemax="{{HomeConfig.collections.clients.referralStatus.length}}"
-                         style="{{getProgressbarWidth}}">
-                      {{getCurrentReferralStatus}} / {{HomeConfig.collections.clients.referralStatus.length}}
-                    </div>
-                  </div>
+                                <div class="progress">
+                                    <div class="progress-bar {{getProgressbarActiveStatus}} progress-bar-striped active"
+                                         role="progressbar" aria-valuenow="{{getCurrentReferralStatus}}" aria-valuemin="1"
+                                         aria-valuemax="{{HomeConfig.collections.clients.referralStatus.length}}"
+                                         style="{{getProgressbarWidth}}">
+                                        {{getCurrentReferralStatus}} / {{HomeConfig.collections.clients.referralStatus.length}}
+                                    </div>
+                                </div>
 
-                  {{> referralStatusUpdateComments}}
+                                {{> referralStatusUpdateComments}}
 
-                </div>
+                            </div>
 
-              </div>
-            </div>
-          </div>
-        </div>
-      {{/if}}
-
-
-            <div class="row margin-top-35">
-                <!-- edit form column -->
-                <div class="col-xs-12">
-                    <div class="form-group">
-                        <div class="col-md-8">
-                            <input class="btn btn-default back" value="Back" type="button">
-                            {{#if ../showSurveyButton }}<input class="btn btn-success takeSurvey" value="Survey" type="button">{{/if}}
-                            {{#unless isHMISClient}}
-                                {{#if ../showUploadButton }}<input class="btn btn-success add-to-hmis js-tooltip" data-toggle="tooltip" value="Upload" title="This action uploads the client information to HMIS data server." type="button" />{{/if}}
-                            {{/unless}}
-                            {{#if ../showEditButton }}<input class="btn btn-warning edit" value="Edit" type="button" />{{/if}}
-                            {{#if ../showResponsesButton }}<input class="btn btn-success getResponses" value="Responses" type="button">{{/if}}
                         </div>
                     </div>
                 </div>
             </div>
+        {{/if}}
+      {{/if}}
+
+        <div class="row margin-top-35">
+            <!-- edit form column -->
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <div class="col-md-8">
+                        <input class="btn btn-default back" value="Back" type="button">
+                        {{#if ../showSurveyButton }}<input class="btn btn-success takeSurvey" value="Survey" type="button">{{/if}}
+                        {{#unless isHMISClient}}
+                            {{#if ../showUploadButton }}<input class="btn btn-success add-to-hmis js-tooltip" data-toggle="tooltip" value="Upload" title="This action uploads the client information to HMIS data server." type="button" />{{/if}}
+                        {{/unless}}
+                        {{#if ../showEditButton }}<input class="btn btn-warning edit" value="Edit" type="button" />{{/if}}
+                        {{#if ../showResponsesButton }}<input class="btn btn-success getResponses" value="Responses" type="button">{{/if}}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     {{#with eligibleClient}}
