@@ -1,12 +1,11 @@
-/**
- * Created by udit on 28/07/16.
- */
+import { AppController } from './controllers';
+
 
 Router.route(
   'roleManager', {
     path: '/roles',
     template: 'roleManager',
-    controller: 'AppController',
+    controller: AppController,
     action() {
       this.render();
     },

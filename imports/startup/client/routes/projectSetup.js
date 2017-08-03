@@ -1,12 +1,10 @@
-/**
- * Created by udit on 22/08/16.
- */
+import { AppController } from './controllers';
 
 Router.route(
   'projectSetup', {
     path: '/projectSetup',
     template: 'projectSetup',
-    controller: 'AppController',
+    controller: AppController,
     waitOn() {
       return Meteor.subscribe('projects');
     },
