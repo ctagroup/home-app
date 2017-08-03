@@ -2,7 +2,7 @@ import Tabular from 'meteor/aldeed:tabular';
 import { Template } from 'meteor/templating';
 import moment from 'moment';
 import { Meteor } from 'meteor/meteor';
-import { EligibleClients } from '/imports/api/eligible-clients/eligible-clients';
+import EligibleClients from '/imports/api/eligibleClients/eligibleClients';
 import { EligibleClientsCache } from '/imports/both/cached-subscriptions';
 
 

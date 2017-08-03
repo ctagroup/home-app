@@ -1,7 +1,7 @@
 import { HmisClient } from '/imports/api/hmis-api';
 import { logger } from '/imports/utils/logger';
 
-Meteor.publish('eligibleClients', function publishEligibleClients() {
+Meteor.publish('eligibleClients.list', function publishEligibleClients() {
   const self = this;
   let stopFunction = false;
   self.unblock();

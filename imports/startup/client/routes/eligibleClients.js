@@ -1,4 +1,4 @@
-import { Clients } from '/imports/api/clients/clients';
+import EligibleClients from '/imports/api/eligibleClients/eligibleClients';
 import { AppController } from './controllers';
 
 
@@ -6,6 +6,15 @@ Router.route('adminDashboardeligibleClientsView', {
   path: '/eligibleClients',
   template: 'AdminDashboardView',
   controller: AppController,
+  waitOn() {
+    return Meteor.subscribe('eligibleClients.list');
+  },
+  data() {
+    console.log(EligibleClients.find().count());
+    return {
+      admin_collection: EligibleClients,
+    };
+  },
 });
 
 Router.route('adminDashboardeligibleClientsNew', {

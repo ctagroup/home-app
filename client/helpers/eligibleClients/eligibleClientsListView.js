@@ -1,7 +1,7 @@
 /**
  * Created by Mj on 10/7/2016.
  */
-import { EligibleClients } from '/imports/api/eligible-clients/eligible-clients';
+import EligibleClients from '/imports/api/eligibleClients/eligibleClients';
 
 Template.eligibleClientsListView.helpers(
   {
