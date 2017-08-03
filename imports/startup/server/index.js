@@ -6,8 +6,8 @@ import '../../api/clients/server/publications';
 import '../../api/pending-clients/methods';
 import '../../api/pending-clients/server/publications';
 
-import '../../api/eligible-clients/methods';
-import '../../api/eligible-clients/server/publications';
+import '../../api/eligibleClients/methods';
+import '../../api/eligibleClients/server/publications';
 
 import '../../api/global-households/methods';
 import '../../api/global-households/server/publications';
