@@ -1,27 +1,19 @@
-/**
- * Created by udit on 28/07/16.
- */
-
 import { CollectionsCountCache } from '/imports/both/cached-subscriptions';
 
-/**
- * Route Controller to check on users.
- */
-HomeController = RouteController.extend(
+
+export const ContentController = RouteController.extend(
   {
-    onBeforeAction() {
-      Meteor.call('checkDevUser');
-      this.next();
-    },
+    layoutTemplate: 'ContentLayout',
   }
 );
 
-AppController = HomeController.extend({
+
+export const AppController = RouteController.extend({
   layoutTemplate: 'AppLayout',
   waitOn() {
-    return [
-      CollectionsCountCache.subscribe('collectionsCount'),
-    ];
+    console.warn('TODO: enable collectionsCount sub');
+    return [];
+    // return Meteor.userId() ? CollectionsCountCache.subscribe('collectionsCount') : [];
   },
   onBeforeAction() {
     Session.set('adminSuccess', null);
@@ -38,9 +30,3 @@ AppController = HomeController.extend({
     this.next();
   },
 });
-
-ContentController = HomeController.extend(
-  {
-    layoutTemplate: 'ContentLayout',
-  }
-);

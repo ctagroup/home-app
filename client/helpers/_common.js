@@ -103,7 +103,8 @@ UI.registerHelper('hasDocuments', () => {
   return flag;
 });
 
-UI.registerHelper('AdminTables', AdminTables);
+// TODO: is it required?
+// UI.registerHelper('AdminTables', AdminTables);
 
 adminCollections = () => {
   let collections = {};

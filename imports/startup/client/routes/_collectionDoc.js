@@ -6,6 +6,7 @@
 import Tabular from 'meteor/aldeed:tabular';
 /* eslint-enable */
 
+/*
 AdminTables = {};
 
 defaultColumns = () => [
@@ -262,3 +263,5 @@ if (HomeConfig && HomeConfig.collections) {
   adminCreateTables(HomeConfig.collections);
   adminCreateRoutes(HomeConfig.collections);
 }
+
+*/
