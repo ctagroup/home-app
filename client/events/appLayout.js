@@ -23,3 +23,6 @@ Template.AppLayout.events({
     }
   },
 });
+
+Template.AppLayout.helpers({
+});

@@ -16,6 +16,7 @@ export const AppController = RouteController.extend({
     // return Meteor.userId() ? CollectionsCountCache.subscribe('collectionsCount') : [];
   },
   onBeforeAction() {
+    // TODO: ????
     Session.set('adminSuccess', null);
     Session.set('adminError', null);
     Session.set('admin_title', '');
