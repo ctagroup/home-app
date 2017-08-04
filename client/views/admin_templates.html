@@ -31,7 +31,7 @@
 </template>
 
 <template name="AdminDashboardView">
-	{{> adminAlert}}
+  {{> adminAlert}}
 	{{#if adminTemplate admin_collection_name 'view'}}
 		{{#with adminTemplate admin_collection_name 'view'}}
 		{{> UI.dynamic template=name data=getTemplateData }}
@@ -45,7 +45,7 @@
 				<p><a href="{{newPath}}" class="btn btn-primary"><i class="fa fa-plus"></i> Add one</a></p>
 			</div>
 		{{/if}}
-	{{/if}}
+  {{/if}}
 </template>
 
 <template name="adminAlert">
