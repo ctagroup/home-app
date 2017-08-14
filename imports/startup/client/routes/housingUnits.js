@@ -1,11 +1,22 @@
 import { Clients } from '/imports/api/clients/clients';
+import { HousingUnitsCache, ProjectsCache } from '/imports/both/cached-subscriptions';
 import { AppController } from './controllers';
 
+const title = 'Housing Units';
 
 Router.route('adminDashboardhousingUnitsView', {
   path: '/housingUnits',
-  template: 'AdminDashboardView',
+  template: 'housingUnitsListView',
   controller: AppController,
+  waitOn() {
+    return HousingUnitsCache.subscribe('housingUnits');
+  },
+  data() {
+    return {
+      title,
+      subtitle: 'View',
+    };
+  },
 });
 
 Router.route('adminDashboardhousingUnitsNew', {
@@ -13,13 +24,7 @@ Router.route('adminDashboardhousingUnitsNew', {
   template: 'AdminDashboardNew',
   controller: AppController,
   waitOn() {
-    /*
-      Meteor.subscribe('collectionDoc', collectionName, HomeUtils.parseID(this.params._id));
-      if (collection.templates && collection.templates.edit && collection.templates.edit.waitOn) {
-        collection.templates.edit.waitOn();
-      }
-    */
-    return [];
+    return ProjectsCache.subscribe('projects');
   },
   action() {
     this.render();
@@ -61,17 +66,14 @@ Router.route('adminDashboardhousingUnitsEdit', {
     this.render();
   },
   waitOn() {
-    return [];
-  },
-  onBeforeAction() {
-
-  },
-  onAfterAction() {
-
+    const _id = Router.current().params._id;
+    return [
+      Meteor.subscribe('singleHousingUnit', _id),
+      ProjectsCache.subscribe('projects'),
+    ];
   },
   data() {
-    return {
-      admin_collection: Clients,
-    };
+    const _id = Router.current().params._id;
+    return housingUnits.findOne({ _id });
   },
 });

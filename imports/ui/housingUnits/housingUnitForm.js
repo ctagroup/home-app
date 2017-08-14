@@ -1,6 +1,7 @@
 /**
- * Created by Mj on 24-Aug-16.
+ * Created by udit on 05/10/16.
  */
+
 Template.housingUnitForm.helpers(
   {
     getBedsCurrent() {
@@ -28,3 +29,11 @@ Template.housingUnitForm.helpers(
     },
   }
 );
+
+Template.housingUnitForm.onRendered(() => {
+  $('.project_id').select2({
+    placeholder: 'Select a project',
+    allowClear: true,
+    theme: 'classic',
+  });
+});
