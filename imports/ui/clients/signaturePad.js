@@ -1,3 +1,5 @@
+import './signaturePad.html';
+
 Template.signaturePad.onRendered(() => {
   const wrapper = document.getElementById('signature-pad');
   const canvas = wrapper.querySelector('canvas');

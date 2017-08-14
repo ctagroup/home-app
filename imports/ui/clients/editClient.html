@@ -1,13 +1,11 @@
 <template name="editClient">
 	<div id="editClient_content">
+    {{#with client}}
 			<h3 class="page-header">{{firstName}} {{lastName}}</h3>
 			<div class="row">
-				<!-- edit form column -->
 				<div class="col-md-8 col-sm-6 col-xs-12 personal-info">
 					<form class="form-horizontal" role="form">
-
 						{{> clientForm}}
-
 						<div class="form-group">
 							<label class="col-md-3 control-label"></label>
 							<div class="col-md-8">
@@ -18,6 +16,7 @@
 						</div>
 					</form>
 				</div>
-			</div>
+      </div>
+    {{/with}}
   </div>
 </template>

@@ -1,11 +1,10 @@
 <template name="housingMatchListView">
     <p><a href="" class="btn btn-primary postHousingMatches"> Get Matched Clients</a></p>
-    {{#if hasHousingMatch}}
-        {{> ReactiveDatatable tableData=housingMatchData options=housingMatchTableOptions }}
+    {{#if hasData}}
+        {{> ReactiveDatatable tableData=tableData options=tableOptions }}
     {{else}}
         <div class="alert alert-info">
             <p>There are no visible items in this collection.</p>
         </div>
     {{/if}}
-
 </template>
