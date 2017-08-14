@@ -104,7 +104,6 @@ Router.route(
   }
 );
 
-
 Router.route('adminDashboardclientsEdit', {
   path: '/clients/:_id/edit',
   template: 'editClient',
@@ -126,6 +125,42 @@ Router.route('adminDashboardclientsEdit', {
     };
   },
 });
+
+Router.route(
+  '/clients/:_id/select-survey', {
+    name: 'selectSurvey',
+    template: 'selectSurvey',
+    controller: AppController,
+    waitOn() {
+      const _id = Router.current().params._id;
+      if (this.params.query && this.params.query.schema) {
+        return Meteor.subscribe('client', _id, this.params.query.schema);
+      }
+      return Meteor.subscribe('pendingClient', _id);
+    },
+    onBeforeAction() {
+      // TODO: permissions
+      /*
+      const collection = HomeConfig.collections.clients;
+      if (collection.userRoles) {
+        if (!Roles.userIsInRole(Meteor.user(), collection.userRoles)) {
+          Router.go('notEnoughPermission');
+        }
+      }
+      */
+      this.next();
+    },
+    data() {
+      const params = Router.current().params;
+      const client = PendingClients.findOne(params._id) || Clients.findOne(params._id);
+      return {
+        title: 'Clients',
+        subtitle: `Select Survey: ${this.params._id}`,
+        client,
+      };
+    },
+  }
+);
 
 
 Router.onBeforeAction(
@@ -162,38 +197,5 @@ Router.onBeforeAction(
     this.next();
   }, {
     only: ['viewClient', 'selectSurvey', 'adminDashboardresponsesNew'],
-  }
-);
-
-
-Router.route(
-  '/clients/:_id/select-survey', {
-    name: 'selectSurvey',
-    template: 'selectSurvey',
-    controller: 'AppController',
-    waitOn() {
-      if (this.params.query && this.params.query.schema) {
-        const _id = Router.current().params._id;
-        return Meteor.subscribe('client', _id, this.params.query.schema);
-      }
-
-      const _id = Router.current().params._id;
-      return Meteor.subscribe('pendingClient', _id);
-    },
-    onBeforeAction() {
-      const collection = HomeConfig.collections.clients;
-      if (collection.userRoles) {
-        if (!Roles.userIsInRole(Meteor.user(), collection.userRoles)) {
-          Router.go('notEnoughPermission');
-        }
-      }
-      this.next();
-    },
-    onAfterAction() {
-      Session.set('admin_title', HomeDashboard.collectionLabel('clients'));
-      Session.set('admin_subtitle', `Select Survey: ${this.params._id}`);
-      Session.set('admin_collection_name', 'clients');
-      Session.set('admin_id', HomeUtils.parseID(this.params._id));
-    },
   }
 );
