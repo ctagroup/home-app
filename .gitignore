@@ -1,6 +1,7 @@
 .meteor/local
 .meteor/meteorite
 .idea
+.vscode
 node_modules
 *.log
 
