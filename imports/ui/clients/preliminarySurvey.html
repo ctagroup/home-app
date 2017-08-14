@@ -1,35 +1,3 @@
-<template name="createClient">
-    <!--<div id="content">-->
-        <!--{{> appNav}}-->
-        <!--<div class="container">-->
-            <!--<h3 class="page-header">Create Profile</h3>-->
-            <div class="row">
-				<!-- edit form column -->
-                <div class="col-md-8 col-sm-6 col-xs-12 personal-info">
-                    <form id="create-client-form" class="form-horizontal" role="form">
-
-	                    {{> clientForm}}
-
-                        <div class="form-group">
-                            <label class="col-md-3 control-label"></label>
-                            <div class="col-md-8">
-                                <input class="btn btn-primary save" value="Submit" type="button">
-                                <input class="btn btn-default cancel-client-creation" value="Cancel" type="button">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        <!--</div>-->
-
-		<!--{{> footer}}-->
-
-    <!--</div>-->
-
-    {{> preliminarySurvey}}
-
-</template>
-
 <template name="preliminarySurvey">
   <div class="modal fade modal-fullscreen" id="preliminarySurveyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -103,14 +71,4 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
-</template>
-
-<template name="signaturePad">
-  <div id="signature-pad" class="m-signature-pad">
-    <div class="m-signature-pad--body">
-      <canvas></canvas>
-    </div>
-  </div>
-  <div class="sign-above-description">Sign above</div>
-  <a href="#" class="btn btn-xs btn-default js-sign-clear">Clear</a>
 </template>
