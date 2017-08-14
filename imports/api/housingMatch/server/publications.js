@@ -1,11 +1,7 @@
-/**
- * Created by Anush-PC on 7/19/2016.
- */
-
 import moment from 'moment';
 
 Meteor.publish(
-  'housingMatch', function publishHousingMatch() {
+  'housingMatch.list', function publishHousingMatch() {
     const self = this;
     let stopFunction = false;
     self.unblock();
@@ -76,7 +72,7 @@ Meteor.publish(
 
         housingMatch[i].housingUnit = housingUnit;
 
-        self.added('housingMatch', housingMatch[i].reservationId, housingMatch[i]);
+        self.added('localHousingMatch', housingMatch[i].reservationId, housingMatch[i]);
         self.ready();
       }
     } else {
