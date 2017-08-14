@@ -1,7 +1,22 @@
-/**
- * Created by Mj on 10/8/2016.
- */
 import { logger } from '/imports/utils/logger';
+import HousingMatch from '/imports/api/housingMatch/housingMatch';
+import './housingMatchListView.html';
+
+Template.housingMatchListView.helpers({
+  hasData() {
+    console.log(HousingMatch.find().fetch(), 'xxx');
+    return HousingMatch.find().count() > 0;
+  },
+  tableOptions() {
+    return {
+      columns: HomeConfig.collections.housingMatch.tableColumns,
+      dom: HomeConfig.adminTablesDom,
+    };
+  },
+  tableData() {
+    return () => HousingMatch.find().fetch();
+  },
+});
 
 Template.housingMatchListView.events(
   {
