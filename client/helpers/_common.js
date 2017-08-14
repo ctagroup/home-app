@@ -30,7 +30,7 @@ Template.AppEditBtn.helpers(
   {
     path() {
       const data = Template.instance().data;
-      return Router.path(`adminDashboard${Session.get('admin_collection_name')}Edit`, {
+      return Router.path(data.path, {
         _id: data._id,
       });
     },
