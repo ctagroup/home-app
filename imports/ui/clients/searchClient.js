@@ -1,7 +1,29 @@
-/**
- * Created by udit on 07/04/16.
- */
 import { logger } from '/imports/utils/logger';
+import PendingClients from '/imports/api/pending-clients/pending-clients';
+import './searchClient.html';
+
+
+const tableOptions = {
+  columns: [
+    {
+      name: '_id',
+      label: 'Client Name',
+      render(value) {
+        const client = PendingClients.findOne({ _id: value });
+        const name = (`${client.firstName.trim()} ${client.lastName.trim()}`).trim();
+        return `<a href="/clients/${value}">${name}</a>`;
+      },
+    },
+    {
+      name: 'dob',
+      label: 'Date of Birth',
+      render(value) {
+        return moment(value).format('MM/DD/YYYY');
+      },
+    },
+  ],
+};
+
 
 const debouncedSearch = _.debounce((query, options, callback) => {
   Meteor.call('searchClient', query, options, (err, res) => {
@@ -82,5 +104,19 @@ Template.searchClient.helpers(
       }
       return '';
     },
+  }
+);
+
+Template.searchClient.events(
+  {
+    'click .client-search-icon-container': () => {
+      $('#search-client-keyword').focus();
+    },
+  }
+);
+
+Template.searchClient.onRendered(
+  () => {
+    Meteor.typeahead.inject();
   }
 );
