@@ -1,3 +1,7 @@
+import './clientForm.js';
+import './preliminarySurvey.js';
+import './createClient.html';
+
 Template.createClient.onRendered(() => {
   const template = Template.instance();
   template.autorun(() => {

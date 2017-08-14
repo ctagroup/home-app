@@ -2,16 +2,89 @@ import { logger } from '/imports/utils/logger';
 import HousingMatch from '/imports/api/housingMatch/housingMatch';
 import './housingMatchListView.html';
 
+const tableOptions = {
+  columns: [
+    {
+      title: 'Reservation ID',
+      data: 'reservationId',
+    },
+    {
+      title: 'Client',
+      data: 'reservationId', // note: access nested data like this
+      render(value, type, doc) {
+        const client = doc.eligibleClients.clientDetails;
+
+        let displayName = `${client.firstName} ${client.middleName} ${client.lastName}`;
+        displayName = displayName.trim();
+
+        if (!displayName) {
+          displayName = doc.eligibleClients.clientId;
+        }
+
+        if (client.schema) {
+          const url = Router.path(
+            'viewClient',
+            { _id: client.clientId },
+            { query: `isHMISClient=true&schema=${client.schema}` }
+          );
+          return `<a href="${url}">${displayName}</a>`;
+        }
+
+        return displayName;
+      },
+    },
+    {
+      title: 'Housing Unit ID',
+      data: 'housingUnitId',
+      render(value, type, doc) {
+        return `<a href="/housingUnits/${value}/edit">${doc.housingUnit.aliasName}</a>`;
+      },
+    },
+    {
+      title: 'Match Date',
+      data: 'matchDate',
+    },
+    {
+      title: 'User ID',
+      data: 'userId',
+    },
+    {
+      title: 'Match Status',
+      data: 'eligibleClients', // note: access nested data like this
+      render(value) {
+        if (value.matched) {
+          return 'Matched';
+        }
+        return 'Unmatched';
+      },
+    },
+    {
+      title: '',
+      data: 'reservationId',
+      render(value, type, doc) {
+        const allStatus = doc.eligibleClients.referralStatus;
+        if (allStatus.length > 0) {
+          const lastStatus = allStatus[allStatus.length - 1];
+          return referralStatusHelpers.generateStatusTagMarkup(
+            lastStatus.status,
+            lastStatus.dateUpdated
+          );
+        }
+        return `<button
+          class="btn btn-sm btn-default js-notify-agency-contact"
+          data-reservation-id="${doc.reservationId}">Notify</button>`;
+      },
+    },
+  ],
+  dom: HomeConfig.adminTablesDom,
+};
+
 Template.housingMatchListView.helpers({
   hasData() {
-    console.log(HousingMatch.find().fetch(), 'xxx');
     return HousingMatch.find().count() > 0;
   },
   tableOptions() {
-    return {
-      columns: HomeConfig.collections.housingMatch.tableColumns,
-      dom: HomeConfig.adminTablesDom,
-    };
+    return tableOptions;
   },
   tableData() {
     return () => HousingMatch.find().fetch();
