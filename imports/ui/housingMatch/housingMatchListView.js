@@ -1,6 +1,18 @@
 import { logger } from '/imports/utils/logger';
 import HousingMatch from '/imports/api/housingMatch/housingMatch';
+import ReferralStatusList from '/imports/ui/clients/referralStatusList';
 import './housingMatchListView.html';
+
+
+function generateStatusTagMarkup(statusCode, timestamp = '') {
+  const status = ReferralStatusList[statusCode];
+  let timestampStr = '';
+  if (timestamp) {
+    timestampStr = `${timestamp} - `;
+  }
+  return `<span data-toggle="tooltip" title="${timestampStr}${status.desc}"
+    class="js-tooltip label label-${status.cssClass}">${status.title}</span>`;
+}
 
 const tableOptions = {
   columns: [
@@ -65,10 +77,7 @@ const tableOptions = {
         const allStatus = doc.eligibleClients.referralStatus;
         if (allStatus.length > 0) {
           const lastStatus = allStatus[allStatus.length - 1];
-          return referralStatusHelpers.generateStatusTagMarkup(
-            lastStatus.status,
-            lastStatus.dateUpdated
-          );
+          return generateStatusTagMarkup(lastStatus.status, lastStatus.dateUpdated);
         }
         return `<button
           class="btn btn-sm btn-default js-notify-agency-contact"
@@ -134,8 +143,7 @@ Template.housingMatchListView.events(
               logger.log(err);
             } else {
               logger.log(res);
-              $(evt.currentTarget).parent()
-                .append(referralStatusHelpers.generateStatusTagMarkup(1));
+              $(evt.currentTarget).parent().append(generateStatusTagMarkup(1));
               $(evt.currentTarget).remove();
             }
           }
