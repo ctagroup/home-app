@@ -1,9 +1,4 @@
-/**
- * Created by udit on 13/12/15.
- */
-questions = new Meteor.Collection('questions');
-
-Schemas.questions = new SimpleSchema(
+const QuestionSchema = new SimpleSchema(
   {
     name: {
       type: String,
@@ -77,4 +72,4 @@ Schemas.questions = new SimpleSchema(
   }
 );
 
-questions.attachSchema(Schemas.questions);
+export default QuestionSchema;

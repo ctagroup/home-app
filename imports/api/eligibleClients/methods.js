@@ -34,4 +34,8 @@ Meteor.methods({
     }
     return eligibleClient;
   },
+
+  postHousingMatchScores() {
+    return HMISAPI.postHousingMatchScores();
+  },
 });
