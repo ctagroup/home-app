@@ -59,7 +59,7 @@ Router.route('adminDashboardhousingUnitsNew', {
 });
 
 Router.route('adminDashboardhousingUnitsEdit', {
-  path: '/housingUnits/edit',
+  path: '/housingUnits/:_id/edit',
   template: 'AdminDashboardEdit',
   controller: AppController,
   action() {

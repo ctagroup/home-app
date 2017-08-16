@@ -1,6 +1,6 @@
 import { HmisClient } from '/imports/api/hmis-api';
 
-Meteor.publish('globalHouseholds', function publishHouseholds() {
+Meteor.publish('globalHouseholds.list', function publishHouseholds() {
   if (!this.userId) {
     return [];
   }
@@ -71,7 +71,7 @@ Meteor.publish('globalHouseholds', function publishHouseholds() {
 });
 
 
-Meteor.publish('singleGlobalHousehold', function publishHousehold(globalHouseholdId) {
+Meteor.publish('globalHouseholds.one', function publishHousehold(globalHouseholdId) {
   if (!this.userId) {
     return [];
   }
