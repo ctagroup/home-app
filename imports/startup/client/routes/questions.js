@@ -4,8 +4,17 @@ import { AppController } from './controllers';
 
 Router.route('adminDashboardquestionsView', {
   path: '/questions',
-  template: 'AdminDashboardView',
+  template: 'questionsListView',
   controller: AppController,
+  waitOn() {
+    return Meteor.subscribe('questions');
+  },
+  data() {
+    return {
+      title: 'Questions',
+      subtitle: 'View',
+    };
+  },
 });
 
 Router.route('adminDashboardquestionsNew', {
