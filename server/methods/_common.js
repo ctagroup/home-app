@@ -15,6 +15,7 @@ Meteor.methods(
       return HomeUtils.adminCollectionObject(collection).remove({ _id });
     },
     checkDevUser() {
+      // TODO: move this to server startup
       let adminEmails = [];
       const user = Meteor.users.findOne({ _id: this.userId });
       const developerPermissions = HomeConfig.defaultRolePermissions.Developer;

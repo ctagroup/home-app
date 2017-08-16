@@ -1,4 +1,4 @@
-import '/imports/api/collections-count/server/publications';
+import '/imports/api/collectionsCount/server/publications';
 
 import '/imports/api/clients/methods';
 import '/imports/api/clients/server/publications';
