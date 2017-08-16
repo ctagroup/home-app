@@ -1,5 +1,5 @@
 import { HmisCounts } from '/imports/server/hmis-counts';
-import { PendingClients } from '/imports/api/pending-clients/pending-clients';
+import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 
 
 function publishCounts(collection, collectionName, publication) {

@@ -50,13 +50,13 @@
         </div>
       {{/if}}
 
-      {{#if hasDocuments}}
+      {{#if hasPendingClients}}
         <hr />
         <h4 class="text-center">Pending Clients</h4>
         <div class="row">
           <div class="col-xs-8 my-center-block">
             <div class="row pending-clients-container">
-              {{> tabular table=admin_table class="table dataTable"}}
+              {{> ReactiveDatatable tableData=tableData options=tableOptions }}
             </div>
           </div>
         </div>

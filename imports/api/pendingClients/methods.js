@@ -1,4 +1,4 @@
-import { PendingClients } from './pending-clients';
+import { PendingClients } from './pendingClients';
 import { HmisClient } from '/imports/api/hmis-api';
 import { logger } from '/imports/utils/logger';
 

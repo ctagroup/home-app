@@ -1,5 +1,5 @@
 import { Clients } from '/imports/api/clients/clients';
-import { PendingClients } from '/imports/api/pending-clients/pending-clients';
+import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import { RecentClients } from '/imports/api/recent-clients';
 import { AppController } from './controllers';
 
@@ -9,7 +9,7 @@ Router.route('adminDashboardclientsView', {
   template: 'searchClient',
   controller: AppController,
   waitOn() {
-    return Meteor.subscribe('pendingClients');
+    return Meteor.subscribe('pendingClients.all');
   },
   data() {
     return {
@@ -45,7 +45,7 @@ Router.route(
         ];
       }
       return [
-        Meteor.subscribe('pendingClient', id),
+        Meteor.subscribe('pendingClients.one', id),
         Meteor.subscribe('responses', id),
       ];
     },
@@ -113,7 +113,7 @@ Router.route('adminDashboardclientsEdit', {
     if (this.params.query && this.params.query.schema) {
       return Meteor.subscribe('client', id, this.params.query.schema);
     }
-    return Meteor.subscribe('pendingClient', id);
+    return Meteor.subscribe('pendingClients.one', id);
   },
   data() {
     const params = Router.current().params;
@@ -136,7 +136,7 @@ Router.route(
       if (this.params.query && this.params.query.schema) {
         return Meteor.subscribe('client', _id, this.params.query.schema);
       }
-      return Meteor.subscribe('pendingClient', _id);
+      return Meteor.subscribe('pendingClients.one', _id);
     },
     onBeforeAction() {
       // TODO: permissions
