@@ -67,8 +67,8 @@
 </template>
 
 <template name="AppEditBtn">
-	<a href="{{path}}" class="hidden-xs btn btn-xs btn-primary"><i class="fa fa-pencil"></i></a>
-	<a href="{{path}}" class="visible-xs btn btn-sm btn-primary"><i class="fa fa-pencil"></i>Edit</a>
+	<a href="{{pathFor route=this.path data=data}}" class="hidden-xs btn btn-xs btn-primary"><i class="fa fa-pencil"></i></a>
+	<a href="{{pathFor route=this.path data=data}}" class="visible-xs btn btn-sm btn-primary"><i class="fa fa-pencil"></i>Edit</a>
 </template>
 
 <template name="AppDeleteBtn">

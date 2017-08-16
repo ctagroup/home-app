@@ -1,0 +1,26 @@
+<template name="globalHouseholdMembers">
+  <div class="col-xs-12">
+    <table class="table table-bordered table-striped table-hover">
+      <thead>
+      <tr>
+        <th>Client ID</th>
+        <th>Client Name</th>
+        <th>Relationship to Head of Household</th>
+        <th>Is Head of Household?</th>
+        <th> Delete Member</th>
+      </tr>
+      </thead>
+      <tbody class="globalHouseholdMembers">
+      {{#if getGlobalHouseholdMembers}}
+        {{#each getGlobalHouseholdMembers}}
+          {{> singleGlobalHouseholdMember}}
+        {{/each}}
+      {{else}}
+        <tr class="no-household-members-found-row">
+          <td colspan="5" class="bg-warning text-warning">No Household members found. Search clients to add them into global household.</td>
+        </tr>
+      {{/if}}
+      </tbody>
+    </table>
+  </div>
+</template>

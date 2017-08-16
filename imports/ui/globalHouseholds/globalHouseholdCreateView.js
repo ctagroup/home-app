@@ -1,6 +1,6 @@
-/**
- * Created by Anush-PC on 8/1/2016.
- */
+import './globalHouseholdMembers';
+import './globalHouseholdCreateView.html';
+
 Template.globalHouseholdCreateView.events(
   {
     'click .createHousehold': (evt) => {
@@ -12,11 +12,8 @@ Template.globalHouseholdCreateView.events(
       }
       const user = users.findOne({ _id: Meteor.userId() });
       const globalHouseholdObject = {
-        // globalHouseholdId: null,
         headOfHouseholdId,
         inactive: $('input[name=inactive]:checked').val(),
-        // dateCreated: '',
-        // dateUpdated: '',
         userCreate: user.services.HMIS.accountId,
         userUpdate: user.services.HMIS.accountId,
       };
@@ -25,14 +22,8 @@ Template.globalHouseholdCreateView.events(
         (i, item) => {
           if ($('input[name=ishoh]:checked').val() !== $(item).find('.clientID').text()) {
             const optionArray = {
-              // houseHoldMembershipId: '',
               globalClientId: $(item).find('.clientID').text(),
-              // dateCreated: '',
-              // dateUpdated: '',
-              // userCreate: user.services.HMIS.accountId,
-              // userUpdate: user.services.HMIS.accountId,
               relationshipToHeadOfHousehold: $(item).find('.relationshiptohoh').val(),
-              // globalHouseholdId: '',
             };
             globalHouseholdMembers.push(optionArray);
           }

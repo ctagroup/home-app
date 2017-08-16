@@ -1,77 +1,46 @@
-import { Clients } from '/imports/api/clients/clients';
+import { GlobalHouseholdsCache } from '/imports/both/cached-subscriptions';
 import { AppController } from './controllers';
 
 
 Router.route('adminDashboardglobalHouseholdsView', {
   path: '/globalHouseholds',
-  template: 'AdminDashboardView',
+  template: 'globalHouseholdListView',
   controller: AppController,
+  waitOn() {
+    return GlobalHouseholdsCache.subscribe('globalHouseholds.list');
+  },
+  data() {
+    return {
+      title: 'Households',
+      subtitle: 'View',
+    };
+  },
 });
 
 Router.route('adminDashboardglobalHouseholdsNew', {
   path: '/globalHouseholds/new',
-  template: 'AdminDashboardNew',
+  template: 'globalHouseholdCreateView',
   controller: AppController,
-  waitOn() {
-    /*
-      Meteor.subscribe('collectionDoc', collectionName, HomeUtils.parseID(this.params._id));
-      if (collection.templates && collection.templates.edit && collection.templates.edit.waitOn) {
-        collection.templates.edit.waitOn();
-      }
-    */
-    return [];
-  },
-  action() {
-    this.render();
-  },
-  onBeforeAction() {
-    /*
-    if (collection.userRoles) {
-      if (!Roles.userIsInRole(Meteor.user(), collection.userRoles)) {
-        Router.go('notEnoughPermission');
-      }
-    }
-    */
-    this.next();
-  },
-  onAfterAction() {
-    /*
-    Session.set('admin_title', HomeDashboard.collectionLabel(collectionName));
-    Session.set('admin_subtitle', 'Create new');
-    Session.set('admin_collection_page', 'new');
-    Session.set('admin_collection_name', collectionName);
-    if (collection.templates && collection.templates.new
-        && collection.templates.new.onAfterAction) {
-      collection.templates.new.onAfterAction();
-    }
-    */
-  },
   data() {
     return {
-      admin_collection: Clients,
+      title: 'Households',
+      subtitle: 'New',
     };
   },
 });
 
 Router.route('adminDashboardglobalHouseholdsEdit', {
-  path: '/globalHouseholds/edit',
-  template: 'AdminDashboardEdit',
+  path: '/globalHouseholds/:_id/edit',
+  template: 'globalHouseholdEditView',
   controller: AppController,
-  action() {
-    this.render();
-  },
   waitOn() {
-    return [];
-  },
-  onBeforeAction() {
-
-  },
-  onAfterAction() {
-
+    const _id = Router.current().params._id;
+    return Meteor.subscribe('globalHouseholds.one', _id);
   },
   data() {
     return {
-      admin_collection: Clients,
+      title: 'Households',
+      subtitle: 'Edit',
     };
   },
 });

@@ -1,8 +1,18 @@
-/**
- * Created by Anush-PC on 8/1/2016.
- */
+import GlobalHouseholds from '/imports/api/globalHouseholds/globalHouseholds';
+import './globalHouseholdEditView.html';
 
-import { GlobalHouseholds } from '/imports/api/global-households/global-households';
+
+Template.globalHouseholdEditView.helpers(
+  {
+    isActive(currentVal) {
+      const globalHousehold = GlobalHouseholds.findOne({ _id: Router.current().params._id });
+      if (globalHousehold && globalHousehold.inactive === currentVal) {
+        return 'checked';
+      }
+      return '';
+    },
+  }
+);
 
 Template.globalHouseholdEditView.events(
   {

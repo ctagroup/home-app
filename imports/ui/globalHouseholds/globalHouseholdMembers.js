@@ -1,6 +1,19 @@
-/**
- * Created by udit on 02/10/16.
- */
+import GlobalHouseholds from '/imports/api/globalHouseholds/globalHouseholds';
+import './singleGlobalHouseholdMember';
+import './globalHouseholdMembers.html';
+
+
+Template.globalHouseholdMembers.helpers(
+  {
+    getGlobalHouseholdMembers() {
+      const globalHousehold = GlobalHouseholds.findOne({ _id: Router.current().params._id });
+      if (globalHousehold) {
+        return globalHousehold.clients;
+      }
+      return [];
+    },
+  }
+);
 
 Template.globalHouseholdMembers.events(
   {

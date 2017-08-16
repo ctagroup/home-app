@@ -12,5 +12,5 @@ import '/imports/api/eligibleClients/server/publications';
 import '/imports/api/housingMatch/methods';
 import '/imports/api/housingMatch/server/publications';
 
-import '../../api/global-households/methods';
-import '../../api/global-households/server/publications';
+import '/imports/api/globalHouseholds/methods';
+import '/imports/api/globalHouseholds/server/publications';
