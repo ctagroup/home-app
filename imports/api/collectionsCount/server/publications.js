@@ -1,9 +1,12 @@
 import { HmisCounts } from '/imports/server/hmis-counts';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
+import Questions from '/imports/api/questions/questions';
+import Surveys from '/imports/api/surveys/surveys';
+import Responses from '/imports/api/responses/responses';
 
 
 function publishCounts(collection, collectionName, publication) {
-  let count = 0;
+  let count = collection.find().count();
   publication.changed('collectionsCount', collectionName, { count });
   const handle = collection.find().observeChanges({
     added() {
@@ -22,9 +25,13 @@ Meteor.publish('collectionsCount', function publishCollectionCount() {
   const handles = [];
   const self = this;
 
-  _.each(AdminTables, (table, name) => {
-    self.added('collectionsCount', name, { count: '.' });
-  });
+  // self.added('collectionsCount', 'clients', PendingClients.find().count());
+  // self.added('collectionsCount', 'questions', Questions.find().count());
+  handles.push(publishCounts(PendingClients, 'clients', this));
+  handles.push(publishCounts(Questions, 'questions', this));
+  handles.push(publishCounts(Surveys, 'surveys', this));
+  handles.push(publishCounts(Responses, 'responses', this));
+  handles.push(publishCounts(Meteor.users, 'users', this));
   self.ready();
 
   const counter = new HmisCounts(this.userId);
@@ -40,11 +47,6 @@ Meteor.publish('collectionsCount', function publishCollectionCount() {
     }, 0);
   });
 
-  handles.push(publishCounts(PendingClients, 'clients', this));
-  handles.push(publishCounts(questions, 'questions', this));
-  handles.push(publishCounts(surveys, 'surveys', this));
-  handles.push(publishCounts(responses, 'responses', this));
-  handles.push(publishCounts(users, 'users', this));
 
   self.onStop(
     () => _.each(handles, handle => handle.stop())
