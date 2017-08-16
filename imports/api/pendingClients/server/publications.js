@@ -1,8 +1,8 @@
-import { PendingClients } from '../pending-clients';
+import { PendingClients } from '../pendingClients';
 
 /* eslint prefer-arrow-callback: "off" */
 
-Meteor.publish('pendingClients', function publishAllPendingClients() {
+Meteor.publish('pendingClients.all', function publishAllPendingClients() {
   if (!this.userId) {
     return [];
   }
@@ -10,7 +10,7 @@ Meteor.publish('pendingClients', function publishAllPendingClients() {
   return PendingClients.find();
 });
 
-Meteor.publish('pendingClient', function publishPendingClient(clientId) {
+Meteor.publish('pendingClients.one', function publishPendingClient(clientId) {
   if (!this.userId) {
     return [];
   }

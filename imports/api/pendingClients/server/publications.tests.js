@@ -2,7 +2,7 @@
 
 import { PublicationCollector } from 'meteor/johanbrook:publication-collector';
 import { chai } from 'meteor/practicalmeteor:chai';
-import { PendingClients } from '../pending-clients';
+import { PendingClients } from '../pendingClients';
 import './publications';
 
 describe('clients', function () {

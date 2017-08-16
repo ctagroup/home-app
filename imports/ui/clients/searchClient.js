@@ -1,13 +1,14 @@
+import moment from 'moment';
 import { logger } from '/imports/utils/logger';
-import PendingClients from '/imports/api/pending-clients/pending-clients';
+import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import './searchClient.html';
 
 
 const tableOptions = {
   columns: [
     {
-      name: '_id',
-      label: 'Client Name',
+      title: 'Client Name',
+      data: '_id',
       render(value) {
         const client = PendingClients.findOne({ _id: value });
         const name = (`${client.firstName.trim()} ${client.lastName.trim()}`).trim();
@@ -15,13 +16,14 @@ const tableOptions = {
       },
     },
     {
-      name: 'dob',
-      label: 'Date of Birth',
+      title: 'Date of Birth',
+      data: 'dob',
       render(value) {
         return moment(value).format('MM/DD/YYYY');
       },
     },
   ],
+  dom: HomeConfig.adminTablesDom,
 };
 
 
@@ -49,6 +51,18 @@ const debouncedSearch = _.debounce((query, options, callback) => {
 
 Template.searchClient.helpers(
   {
+    hasPendingClients() {
+      console.log(PendingClients);
+      return PendingClients.find().count() > 0;
+    },
+    tableOptions() {
+      return tableOptions;
+    },
+    tableData() {
+      return () => PendingClients.find().fetch();
+    },
+
+
     isGlobalHousehold() {
       const route = Router.current().location.get().path.split('/')[1];
       return route === 'globalHouseholds';

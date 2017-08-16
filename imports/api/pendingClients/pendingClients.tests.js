@@ -6,10 +6,10 @@
 
 import { chai } from 'meteor/practicalmeteor:chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { PendingClients } from './pending-clients';
+import { PendingClients } from './pendingClients';
 
 
-describe('api/pending-clients', () => {
+describe('api/pendingClients', () => {
   beforeEach(() => {
     resetDatabase();
   });

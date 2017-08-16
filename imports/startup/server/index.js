@@ -1,10 +1,10 @@
-import '../../api/collections-count/server/publications';
+import '/imports/api/collections-count/server/publications';
 
-import '../../api/clients/methods';
-import '../../api/clients/server/publications';
+import '/imports/api/clients/methods';
+import '/imports/api/clients/server/publications';
 
-import '../../api/pending-clients/methods';
-import '../../api/pending-clients/server/publications';
+import '/imports/api/pendingClients/methods';
+import '/imports/api/pendingClients/server/publications';
 
 import '/imports/api/eligibleClients/methods';
 import '/imports/api/eligibleClients/server/publications';

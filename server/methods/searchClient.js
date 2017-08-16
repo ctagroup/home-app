@@ -3,7 +3,7 @@
  */
 import { logger } from '/imports/utils/logger';
 
-import { PendingClients } from '/imports/api/pending-clients/pending-clients';
+import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 
 Meteor.methods(
   {
