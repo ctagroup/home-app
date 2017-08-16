@@ -53,25 +53,6 @@ Surveys.schema = new SimpleSchema({
   created: {
     type: Boolean,
   },
-  // author: {
-  //  type: String,
-  //  regEx: SimpleSchema.RegEx.Id,
-  //  autoValue: function () {
-  //    if ( this.isInsert ) {
-  //      return Meteor.userId();
-  //    }
-  //  },
-  //  autoform: {
-  //    options: function () {
-  //      return _.map(Meteor.users.find().fetch(), function (user) {
-  //        return {
-  //          label: user.emails[0].address.toLowerCase(),
-  //          value: user._id
-  //        };
-  //      } );
-  //    }
-  //  }
-  // }
 });
 
 Surveys.attachSchema(Surveys.schema);

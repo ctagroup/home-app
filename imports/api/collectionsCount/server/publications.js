@@ -7,7 +7,8 @@ import Responses from '/imports/api/responses/responses';
 
 function publishCounts(collection, collectionName, publication) {
   let count = collection.find().count();
-  publication.changed('collectionsCount', collectionName, { count });
+  publication.added('collectionsCount', collectionName, { count });
+
   const handle = collection.find().observeChanges({
     added() {
       count += 1;
@@ -25,8 +26,6 @@ Meteor.publish('collectionsCount', function publishCollectionCount() {
   const handles = [];
   const self = this;
 
-  // self.added('collectionsCount', 'clients', PendingClients.find().count());
-  // self.added('collectionsCount', 'questions', Questions.find().count());
   handles.push(publishCounts(PendingClients, 'clients', this));
   handles.push(publishCounts(Questions, 'questions', this));
   handles.push(publishCounts(Surveys, 'surveys', this));
@@ -41,10 +40,11 @@ Meteor.publish('collectionsCount', function publishCollectionCount() {
     housingUnits: counter.getHousingUnitsCount,
     globalHouseholds: counter.getGlobalHouseholdsCount,
   }, (fn, name) => {
-    Meteor.setTimeout(() => {
+    self.added('collectionsCount', name, { count: 0 });
+    Meteor.defer(() => {
       const count = fn.bind(counter)();
       self.changed('collectionsCount', name, { count });
-    }, 0);
+    });
   });
 
 
