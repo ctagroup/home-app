@@ -61,18 +61,6 @@ UI.registerHelper(
   )
 );
 
-UI.registerHelper('hasDocuments', () => {
-  let flag = false;
-
-  const count = collectionsCount.findOne(Session.get('admin_collection_name'));
-
-  if (count && count.count && count.count > 0) {
-    flag = true;
-  }
-
-  return flag;
-});
-
 // TODO: is it required?
 // UI.registerHelper('AdminTables', AdminTables);
 
@@ -147,14 +135,6 @@ UI.registerHelper('adminGetUserSchema', () => {
 
 UI.registerHelper('collectionLabel', collection => HomeDashboard.collectionLabel(collection));
 
-UI.registerHelper('collectionsCount', (collection) => {
-  if (collection === 'Users') {
-    return Meteor.users.find().count();
-  }
-  const doc = collectionsCount.findOne(collection);
-  return doc ? doc.count : 0;
-});
-
 UI.registerHelper('adminTemplate', (collection, mode) => {
   let template = false;
 
@@ -171,14 +151,6 @@ UI.registerHelper(
   'adminGetCollection',
   collection => _.find(adminCollections(), item => item.name === collection)
 );
-
-UI.registerHelper('adminWidgets', () => {
-  let widgets = [];
-  if (HomeConfig && HomeConfig.dashboard && HomeConfig.dashboard.widgets) {
-    widgets = HomeConfig.dashboard.widgets;
-  }
-  return widgets;
-});
 
 UI.registerHelper('adminUserEmail', (emails) => {
   let email = false;

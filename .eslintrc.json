@@ -58,7 +58,6 @@
     "SignaturePad": true,
     "SignaturePadConfig": true,
     "is": true,
-    "collectionsCount": true,
     "defaultColumns": true,
     "adminCreateTables": true,
     "adminCreateRouteViewOptions": true,
