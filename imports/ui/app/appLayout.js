@@ -1,9 +1,10 @@
-Template.AppLayout.onRendered(
-  () => {
-    $('body').addClass('sidebar-mini skin-home fixed');
-    $('body').tooltip({ selector: '.js-tooltip' });
-  }
-);
+import './appHeader';
+import './appSidebar';
+import './appDeleteModal';
+import './appLayout.html';
+
+Template.AppLayout.helpers({
+});
 
 Template.AppLayout.events({
   'click .btn-delete': (e) => {
@@ -24,5 +25,9 @@ Template.AppLayout.events({
   },
 });
 
-Template.AppLayout.helpers({
-});
+Template.AppLayout.onRendered(
+  () => {
+    $('body').addClass('sidebar-mini skin-home fixed');
+    $('body').tooltip({ selector: '.js-tooltip' });
+  }
+);

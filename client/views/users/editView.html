@@ -12,7 +12,6 @@
         <button class="btn btn-primary btn-xs {{#if isInRole 'Developer,System Admin' }}btn-remove-role{{/if}}" role="{{this}}" user="{{admin_current_id}}">{{this}}</button>
       {{/each}}
 
-      {{log isInRole 'Developer,System Admin'}}
       {{#if isInRole 'Developer,System Admin'}}
         {{#each getOtherRoles admin_current_id}}
           <button class="btn btn-default btn-xs btn-add-role" role="{{this}}" user="{{admin_current_id}}">{{this}}</button>

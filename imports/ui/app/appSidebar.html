@@ -1,0 +1,30 @@
+<template name="AppSidebar">
+  <aside class="main-sidebar">
+    <ul class="sidebar-menu nav">
+      <li class="{{isActiveRoute 'dashboard'}}">
+        <a href="{{pathFor 'dashboard'}}">
+          <i class="fa fa-dashboard"></i><span>Dashboard</span>
+        </a>
+      </li>
+    </ul>
+    <ul class="sidebar-menu nav">
+      {{#each collectionsMenuItems}}
+        <li class="{{isActivePath path=path}}">
+          <a href="{{pathFor route=path}}">
+            <i class="fa {{icon}}"></i><span>{{name}}</span>
+          </a>
+        </li>
+      {{/each}}
+    </ul>
+
+    <ul class="sidebar-menu nav">
+      {{#each adminMenuItems}}
+        <li class="{{isActivePath path=path}}">
+          <a href="{{pathFor route=path}}">
+            <i class="fa {{icon}}"></i><span>{{name}}</span>
+          </a>
+        </li>
+      {{/each}}
+    </ul>
+  </aside>
+</template>

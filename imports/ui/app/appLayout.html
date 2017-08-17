@@ -1,0 +1,16 @@
+<template name="AppLayout">
+  {{> AppHeader }}
+  {{> AppSidebar }}
+  <div class="content-wrapper">
+    <section class="content-header">
+      <h1>
+        {{ this.title }}
+        <small>{{ this.subtitle }}</small>
+      </h1>
+    </section>
+    <section class="content">
+      {{> yield }}
+    </section>
+  </div>
+  {{> AppDeleteModal }}
+</template>
