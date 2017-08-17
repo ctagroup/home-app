@@ -6,7 +6,7 @@ import Responses from '/imports/api/responses/responses';
 
 
 function publishCounts(collection, collectionName, publication) {
-  let count = collection.find().count();
+  let count = 0;
   publication.added('collectionsCount', collectionName, { count });
 
   const handle = collection.find().observeChanges({
@@ -23,6 +23,10 @@ function publishCounts(collection, collectionName, publication) {
 }
 
 Meteor.publish('collectionsCount', function publishCollectionCount() {
+  if (!this.userId) {
+    return [];
+  }
+
   const handles = [];
   const self = this;
 
@@ -31,7 +35,6 @@ Meteor.publish('collectionsCount', function publishCollectionCount() {
   handles.push(publishCounts(Surveys, 'surveys', this));
   handles.push(publishCounts(Responses, 'responses', this));
   handles.push(publishCounts(Meteor.users, 'users', this));
-  self.ready();
 
   const counter = new HmisCounts(this.userId);
   _.map({
@@ -40,13 +43,13 @@ Meteor.publish('collectionsCount', function publishCollectionCount() {
     housingUnits: counter.getHousingUnitsCount,
     globalHouseholds: counter.getGlobalHouseholdsCount,
   }, (fn, name) => {
-    self.added('collectionsCount', name, { count: 0 });
+    self.added('collectionsCount', name, { count: 0, loading: true });
     Meteor.defer(() => {
       const count = fn.bind(counter)();
-      self.changed('collectionsCount', name, { count });
+      self.changed('collectionsCount', name, { count, loading: false });
     });
   });
-
+  self.ready();
 
   self.onStop(
     () => _.each(handles, handle => handle.stop())

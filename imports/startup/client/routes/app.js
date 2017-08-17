@@ -3,15 +3,15 @@ import { AppController } from './controllers';
 
 Router.route('dashboard', {
   path: '/dashboard',
-  template: 'Dashboard',
+  template: 'dashboard',
   controller: AppController,
-  action() {
-    this.render();
+  waitOn() {
+    return Meteor.subscribe('collectionsCount');
   },
-  onAfterAction() {
-    Session.set('admin_title', 'Dashboard');
-    Session.set('admin_collection_name', '');
-    Session.set('admin_collection_page', '');
+  data() {
+    return {
+      title: 'Dashboard',
+    };
   },
 });
 
