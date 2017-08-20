@@ -1,11 +1,8 @@
-/**
- * Created by udit on 27/10/16.
- */
-
+import Responses from '/imports/api/responses/responses';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 
 Meteor.publish(
-  'responses', function publishResponses(clientID) {
+  'responses.all', function publishResponses(clientID) {
     const self = this;
     let stopFunction = false;
     self.unblock();
@@ -14,13 +11,13 @@ Meteor.publish(
       stopFunction = true;
     });
 
-    if (self.userId && typeof responses !== 'undefined') {
+    if (self.userId) {
       HMISAPI.setCurrentUserId(self.userId);
       let query = {};
       if (clientID) {
         query = { clientID };
       }
-      const responseList = responses.find(query).fetch();
+      const responseList = Responses.find(query).fetch();
       // Publish the local data first, so the user can get a quick feedback.
       for (let i = 0, len = responseList.length; i < len; i++) {
         self.added('responses', responseList[i]._id, responseList[i]);
@@ -74,7 +71,7 @@ Meteor.publish(
 );
 
 Meteor.publish(
-  'singleResponse', function publishSingleResponse(responseId) {
+  'responses.one', function publishSingleResponse(responseId) {
     const self = this;
 
     if (self.userId && typeof responses !== 'undefined') {

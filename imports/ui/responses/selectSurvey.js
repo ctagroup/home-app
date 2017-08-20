@@ -1,8 +1,17 @@
-/**
- * Created by udit on 02/08/16.
- */
-
 const querystring = require('querystring');
+import { PendingClients } from '/imports/api/pendingClients/pendingClients';
+
+
+Template.selectSurvey.helpers(
+  {
+    getCreatedSurvey() {
+      return surveys.find({ created: true }).fetch();
+    },
+    getSurveyedClient() {
+      return PendingClients.find().fetch();
+    },
+  }
+);
 
 Template.selectSurvey.events(
   {
