@@ -1,5 +1,5 @@
 import { logger } from '/imports/utils/logger';
-
+import './responseForm.html';
 
 Template.responseForm.helpers(
   {

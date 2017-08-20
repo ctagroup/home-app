@@ -1,10 +1,9 @@
-/**
- * Created by udit on 02/08/16.
- */
-
 const querystring = require('querystring');
+import './responseForm';
+import './responsesNew.html';
 
-Template.createResponse.events(
+
+Template.responsesNew.events(
   {
     'click .pause_survey': (evt, tmpl) => {
       ResponseHelpers.saveResponse('Paused', tmpl);
