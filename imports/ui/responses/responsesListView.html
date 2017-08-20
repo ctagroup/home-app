@@ -1,0 +1,11 @@
+<template name="responsesListView">
+  {{#if hasData}}
+    {{> ReactiveDatatable tableData=tableData options=tableOptions }}
+  {{else}}
+    <div class="alert alert-info">
+      <p>There are no responses to show.</p>
+      <p><a href="{{pathFor 'adminDashboardresponsesNew'}}" class="btn btn-primary"><i class="fa fa-plus"></i> Add Response</a></p>
+    </div>
+  {{/if}}
+
+</template>

@@ -1,15 +1,6 @@
-/**
- * Created by udit on 15/07/16.
- */
+import Surveys from '/imports/api/surveys/surveys';
 
-Meteor.publish(
-  'surveys', () => {
-    if (typeof surveys === 'undefined') {
-      return [];
-    }
-    return surveys.find({});
-  }
-);
+Meteor.publish('surveys.all', () => Surveys.find());
 
 Meteor.publish(
   'surveyQuestionsMaster', () => {

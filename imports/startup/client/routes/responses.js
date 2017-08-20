@@ -1,11 +1,24 @@
 import { Clients } from '/imports/api/clients/clients';
 import { AppController } from './controllers';
+import '/imports/ui/responses/responsesListView';
 
 
 Router.route('adminDashboardresponsesView', {
   path: '/responses',
-  template: 'AdminDashboardView',
+  template: Template.responsesListView,
   controller: AppController,
+  waitOn() {
+    return [
+      Meteor.subscribe('responses.all'),
+      Meteor.subscribe('surveys.all'),
+    ];
+  },
+  data() {
+    return {
+      title: 'Responses',
+      subtitle: 'View',
+    };
+  },
 });
 
 Router.route('adminDashboardresponsesNew', {
