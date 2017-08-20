@@ -2,6 +2,7 @@ import { Clients } from '/imports/api/clients/clients';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import { RecentClients } from '/imports/api/recent-clients';
 import { AppController } from './controllers';
+import '/imports/ui/clients/clientNotFound';
 
 
 Router.route('adminDashboardclientsView', {
@@ -38,15 +39,15 @@ Router.route(
     controller: AppController,
     waitOn() {
       const id = Router.current().params._id;
-      if (this.params.query && this.params.query.schema) {
+      if (this.params.query.schema) {
         return [
           Meteor.subscribe('client', id, this.params.query.schema),
-          Meteor.subscribe('responses', id),
+          Meteor.subscribe('responses.all', id),
         ];
       }
       return [
         Meteor.subscribe('pendingClients.one', id),
-        Meteor.subscribe('responses', id),
+        Meteor.subscribe('responses.all', id),
       ];
     },
 
@@ -165,36 +166,34 @@ Router.route(
 
 Router.onBeforeAction(
   function clientAction() {
-    const that = this;
-
     const routeName = this.route.getName();
 
-    let clientID = this.params._id;
+    let clientId = this.params._id;
 
     if (routeName === 'adminDashboardresponsesNew') {
-      clientID = this.params.query.client_id;
+      clientId = this.params.query.clientId;
     }
 
-    const client = PendingClients.findOne(clientID) || Clients.findOne(clientID);
+    const client = PendingClients.findOne(clientId) || Clients.findOne(clientId);
 
     const viewClientRoute = Router.routes.viewClient;
     if (!client) {
-      that.render('clientNotFound');
-    } else if (this.params.query && this.params.query.schema) {
-      client.personalId = client.clientId;
-      client.isHMISClient = true;
-      client.schema = this.params.query.schema;
-      client.url = viewClientRoute.path(
-        { _id: client.clientId },
-        { query: `schema=${this.params.query.schema}` }
-      );
+      this.render('clientNotFound');
     } else {
-      client.url = viewClientRoute.path({ _id: client._id });
+      if (this.params.query && this.params.query.schema) {
+        client.personalId = client.clientId;
+        client.isHMISClient = true;
+        client.schema = this.params.query.schema;
+        client.url = viewClientRoute.path(
+          { _id: client.clientId },
+          { query: `schema=${this.params.query.schema}` }
+        );
+      } else {
+        client.url = viewClientRoute.path({ _id: client._id });
+      }
+      RecentClients.upsert(client);
+      this.next();
     }
-
-    RecentClients.upsert(client);
-
-    this.next();
   }, {
     only: ['viewClient', 'selectSurvey', 'adminDashboardresponsesNew'],
   }
