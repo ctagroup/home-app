@@ -1,4 +1,5 @@
 import { logger } from '/imports/utils/logger';
+import Responses from '/imports/api/responses/responses';
 import './responseForm.html';
 
 Template.responseForm.helpers(
@@ -201,7 +202,7 @@ Template.responseForm.helpers(
     responseExists() {
       let flag = false;
 
-      const responseRecords = responses.find(
+      const responseRecords = Responses.find(
         { surveyID: Router.current().params.survey_id }
       ).fetch();
       for (let i = 0; i < responseRecords.length; i += 1) {
@@ -245,7 +246,7 @@ Template.responseForm.helpers(
     },
     isChecked(type) {
       if (Router.current().route.getName() === 'adminDashboardresponsesEdit') {
-        const responseSection = responses.findOne({ _id: Router.current().params._id });
+        const responseSection = Responses.findOne({ _id: Router.current().params._id });
 
         if (!responseSection || !responseSection.section) {
           return '';
@@ -281,7 +282,7 @@ Template.responseForm.helpers(
     },
     isSelected(value) {
       if (Router.current().route.getName() === 'adminDashboardresponsesEdit') {
-        const responseSection = responses.findOne({ _id: Router.current().params._id });
+        const responseSection = Responses.findOne({ _id: Router.current().params._id });
 
         if (!responseSection || !responseSection.section) {
           return '';
@@ -316,7 +317,7 @@ Template.responseForm.helpers(
     },
     isSelectedMultiple(value) {
       if (Router.current().route.getName() === 'adminDashboardresponsesEdit') {
-        const responseSection = responses.findOne({ _id: Router.current().params._id });
+        const responseSection = Responses.findOne({ _id: Router.current().params._id });
 
         if (!responseSection || !responseSection.section) {
           return '';

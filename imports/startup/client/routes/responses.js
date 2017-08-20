@@ -1,7 +1,9 @@
-import { Clients } from '/imports/api/clients/clients';
+import Responses from '/imports/api/responses/responses';
+import Surveys from '/imports/api/surveys/surveys';
 import { AppController } from './controllers';
 import '/imports/ui/responses/responsesListView';
 import '/imports/ui/responses/responsesNew';
+import '/imports/ui/responses/responsesEdit';
 
 
 Router.route('adminDashboardresponsesView', {
@@ -44,23 +46,21 @@ Router.route('adminDashboardresponsesNew', {
 
 Router.route('adminDashboardresponsesEdit', {
   path: '/responses/:_id/edit',
-  template: 'AdminDashboardEdit',
+  template: Template.responsesEdit,
   controller: AppController,
-  action() {
-    this.render();
-  },
   waitOn() {
-    return [];
-  },
-  onBeforeAction() {
-
-  },
-  onAfterAction() {
-
+    return [
+      Meteor.subscribe('responses.one', this.params._id),
+      Meteor.subscribe('surveys.all'),
+    ];
   },
   data() {
+    const response = Responses.findOne(this.params._id);
     return {
-      admin_collection: Clients,
+      title: 'Responses',
+      subtitle: 'Edit',
+      response,
+      survey: response && Surveys.findOne(response.surveyID),
     };
   },
 });

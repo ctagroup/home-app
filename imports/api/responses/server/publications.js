@@ -74,10 +74,10 @@ Meteor.publish(
   'responses.one', function publishSingleResponse(responseId) {
     const self = this;
 
-    if (self.userId && typeof responses !== 'undefined') {
+    if (self.userId) {
       HMISAPI.setCurrentUserId(self.userId);
 
-      const response = responses.findOne({ _id: responseId });
+      const response = Responses.findOne({ _id: responseId });
 
       if (response && response.isHMISClient && response.clientSchema) {
         response.clientDetails = HMISAPI.getClient(

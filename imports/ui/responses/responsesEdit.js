@@ -1,9 +1,13 @@
-Template.editResponse.helpers(
+import Responses from '/imports/api/responses/responses';
+import './responseForm.js';
+import './responsesEdit.html';
+
+Template.responsesEdit.helpers(
   {
     paused() {
       let flag = false;
 
-      const responseRecord = responses.findOne({ _id: Router.current().params._id });
+      const responseRecord = Responses.findOne({ _id: Router.current().params._id });
 
       if (responseRecord && responseRecord.responsestatus) {
         const status = responseRecord.responsestatus;
@@ -21,7 +25,7 @@ Template.editResponse.helpers(
   }
 );
 
-Template.editResponse.events(
+Template.responsesEdit.events(
   {
     'click .savePaused_survey': (evt, tmpl) => {
       ResponseHelpers.savePausedSurvey('Pause_Submit', tmpl);
