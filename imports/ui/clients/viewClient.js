@@ -1,8 +1,10 @@
 const querystring = require('querystring');
 import { Clients } from '/imports/api/clients/clients';
 import { RecentClients } from '/imports/api/recent-clients';
+import Questions from '/imports/api/questions/questions';
 import { logger } from '/imports/utils/logger';
 import ReferralStatusList from './referralStatusList';
+
 import './viewClient.html';
 
 Template.viewClient.helpers(
@@ -119,8 +121,7 @@ Template.viewClient.helpers(
     },
     getText(text, code) {
       let definition = code === undefined ? '?' : code;
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const question = questionCollection.findOne({ name: text });
+      const question = Questions.findOne({ name: text });
       if (question && question.options) {
         for (let j = 0; j < question.options.length; j += 1) {
           if (parseInt(question.options[j].value, 10) === parseInt(code, 10)) {
@@ -225,10 +226,8 @@ Template.viewClient.events(
     'click .takeSurvey': (event, tmpl) => {
       const query = {};
 
-      if (Router.current().params && Router.current().params.query
-        && Router.current().params.query.schema) {
+      if (Router.current().params.query.schema) {
         query.query = {
-          isHMISClient: true,
           schema: Router.current().params.query.schema,
         };
       }

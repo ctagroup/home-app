@@ -3,6 +3,7 @@ import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import { RecentClients } from '/imports/api/recent-clients';
 import { AppController } from './controllers';
 import '/imports/ui/clients/clientNotFound';
+import '/imports/ui/clients/selectSurvey';
 
 
 Router.route('adminDashboardclientsView', {
@@ -130,26 +131,20 @@ Router.route('adminDashboardclientsEdit', {
 Router.route(
   '/clients/:_id/select-survey', {
     name: 'selectSurvey',
-    template: 'selectSurvey',
+    template: Template.selectSurvey,
     controller: AppController,
     waitOn() {
       const _id = Router.current().params._id;
-      if (this.params.query && this.params.query.schema) {
-        return Meteor.subscribe('client', _id, this.params.query.schema);
+      if (this.params.query.schema) {
+        return [
+          Meteor.subscribe('client', _id, this.params.query.schema),
+          Meteor.subscribe('surveys.all'),
+        ];
       }
-      return Meteor.subscribe('pendingClients.one', _id);
-    },
-    onBeforeAction() {
-      // TODO: permissions
-      /*
-      const collection = HomeConfig.collections.clients;
-      if (collection.userRoles) {
-        if (!Roles.userIsInRole(Meteor.user(), collection.userRoles)) {
-          Router.go('notEnoughPermission');
-        }
-      }
-      */
-      this.next();
+      return [
+        Meteor.subscribe('pendingClients.one', _id),
+        Meteor.subscribe('surveys.all'),
+      ];
     },
     data() {
       const params = Router.current().params;
