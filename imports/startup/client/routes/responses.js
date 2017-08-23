@@ -67,6 +67,7 @@ Router.route('adminDashboardresponsesEdit', {
     return [
       Meteor.subscribe('responses.one', this.params._id),
       Meteor.subscribe('surveys.all'),
+      Meteor.subscribe('questions.all'),
     ];
   },
   data() {
