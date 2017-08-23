@@ -1,11 +1,13 @@
-const querystring = require('querystring');
+import querystring from 'querystring';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
+import Surveys from '/imports/api/surveys/surveys';
+import './selectSurvey.html';
 
 
 Template.selectSurvey.helpers(
   {
     getCreatedSurvey() {
-      return surveys.find({ created: true }).fetch();
+      return Surveys.find({ created: true }).fetch();
     },
     getSurveyedClient() {
       return PendingClients.find().fetch();
@@ -24,9 +26,7 @@ Template.selectSurvey.events(
         survey_id: surveyID,
       };
 
-      if (Router.current().params && Router.current().params.query
-          && Router.current().params.query.schema) {
-        query.isHMISClient = true;
+      if (Router.current().params.query.schema) {
         query.schema = Router.current().params.query.schema;
       }
 
@@ -37,9 +37,7 @@ Template.selectSurvey.events(
     'click .backToClient': () => {
       const query = {};
 
-      if (Router.current().params && Router.current().params.query
-          && Router.current().params.query.schema) {
-        query.isHMISClient = true;
+      if (Router.current().params.query.schema) {
         query.schema = Router.current().params.query.schema;
       }
 
