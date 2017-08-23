@@ -64,7 +64,6 @@ Template.eligibleClientsListView.helpers({
     return EligibleClients.find().count() > 0;
   },
   tableData() {
-    console.log('aaa');
     return () => EligibleClients.find({}).fetch();
   },
   tableOptions() {

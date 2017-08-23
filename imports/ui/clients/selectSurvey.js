@@ -22,8 +22,8 @@ Template.selectSurvey.events(
       const clientID = Router.current().params._id;
 
       const query = {
-        client_id: clientID,
-        survey_id: surveyID,
+        clientId: clientID,
+        surveyId: surveyID,
       };
 
       if (Router.current().params.query.schema) {

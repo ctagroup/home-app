@@ -30,9 +30,9 @@ Template.housingUnitEditView.events(
       };
       logger.info(`Create Housing: ${JSON.stringify(housingObject, null, 2)}`);
       Meteor.call('updateHouseUnit', housingObject,
-        (error, result) => {
-          if (error) {
-            // console.log(error);
+        (err, result) => {
+          if (err) {
+            Bert.alert(err.reason || err.error, 'error', 'growl-top-right');
           } else {
             // receives complete object and not just client ID.
             logger.info(result);
