@@ -2,6 +2,7 @@ import { Clients } from '/imports/api/clients/clients';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import { RecentClients } from '/imports/api/recent-clients';
 import { AppController } from './controllers';
+import Responses from '/imports/api/responses/responses';
 import '/imports/ui/clients/clientNotFound';
 import '/imports/ui/clients/selectSurvey';
 
@@ -42,7 +43,7 @@ Router.route(
       const id = Router.current().params._id;
       if (this.params.query.schema) {
         return [
-          Meteor.subscribe('client', id, this.params.query.schema),
+          Meteor.subscribe('clients.one', id, this.params.query.schema),
           Meteor.subscribe('responses.all', id),
         ];
       }
@@ -64,11 +65,11 @@ Router.route(
       // External Surveyor redirects
       const clientID = Router.current().params._id;
       if (Roles.userIsInRole(Meteor.userId(), 'External Surveyor')) {
-        const pausedResponse = responses.findOne({
+        const pausedResponse = Responses.findOne({
           clientID,
           responsestatus: 'Paused',
         });
-        const hasNoResponses = responses.find({ clientID }).count() === 0;
+        const hasNoResponses = Responses.find({ clientID }).count() === 0;
         const hmisClient = Clients.findOne(clientID);
         const query = hmisClient ? { schema: hmisClient.schema } : {};
 
@@ -113,7 +114,7 @@ Router.route('adminDashboardclientsEdit', {
   waitOn() {
     const id = Router.current().params._id;
     if (this.params.query && this.params.query.schema) {
-      return Meteor.subscribe('client', id, this.params.query.schema);
+      return Meteor.subscribe('clients.one', id, this.params.query.schema);
     }
     return Meteor.subscribe('pendingClients.one', id);
   },
@@ -137,7 +138,7 @@ Router.route(
       const _id = Router.current().params._id;
       if (this.params.query.schema) {
         return [
-          Meteor.subscribe('client', _id, this.params.query.schema),
+          Meteor.subscribe('clients.one', _id, this.params.query.schema),
           Meteor.subscribe('surveys.all'),
         ];
       }

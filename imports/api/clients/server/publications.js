@@ -3,7 +3,7 @@ import { HmisClient } from '/imports/api/hmis-api';
 import { logger } from '/imports/utils/logger';
 
 
-Meteor.publish('client', function publishSingleClient(clientId, schema = 'v2015') {
+Meteor.publish('clients.one', function publishSingleClient(clientId, schema = 'v2015') {
   if (!this.userId) {
     return [];
   }

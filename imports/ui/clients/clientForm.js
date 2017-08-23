@@ -41,7 +41,6 @@ function getUniversalElements() {
 }
 
 Template.clientForm.onRendered(() => {
-  console.log('xxxx');
   // to load the script on run time and then put the mask for ssn and PN
   $.getScript('https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.8/jquery.mask.js', () => {
     $('.ssn').mask('000-00-0000');

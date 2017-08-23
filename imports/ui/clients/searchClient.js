@@ -52,7 +52,6 @@ const debouncedSearch = _.debounce((query, options, callback) => {
 Template.searchClient.helpers(
   {
     hasPendingClients() {
-      console.log(PendingClients);
       return PendingClients.find().count() > 0;
     },
     tableOptions() {

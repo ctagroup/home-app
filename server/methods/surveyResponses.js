@@ -2,6 +2,7 @@
  * Created by udit on 26/07/16.
  */
 import { logger } from '/imports/utils/logger';
+import Responses from '/imports/api/responses/responses';
 
 Meteor.methods(
   {
@@ -14,8 +15,7 @@ Meteor.methods(
       mainSectionObject,
       status
     ) {
-      const responsesCollection = HomeUtils.adminCollectionObject('responses');
-      const responseRecords = responsesCollection.insert(
+      const responseRecords = Responses.insert(
         {
           clientID,
           isHMISClient,
@@ -38,8 +38,7 @@ Meteor.methods(
       mainSectionObject,
       status
     ) {
-      const responsesCollection = HomeUtils.adminCollectionObject('responses');
-      const responseRecords = responsesCollection.update(
+      const responseRecords = Responses.update(
         {
           _id: responseID,
         }, {
@@ -75,8 +74,7 @@ Meteor.methods(
 
     removeSurveyResponse(responseId) {
       check(responseId, String);
-      const responsesCollection = HomeUtils.adminCollectionObject('responses');
-      const response = responsesCollection.findOne(responseId);
+      const response = Responses.findOne(responseId);
       const canBeRemoved = true;
       if (!response) {
         throw new Meteor.Error(404, 'Response does not exists');
@@ -84,7 +82,7 @@ Meteor.methods(
       if (!canBeRemoved) {
         throw new Meteor.Error(403, 'You are not authorized to remove this response');
       }
-      responsesCollection.remove(responseId);
+      Responses.remove(responseId);
     },
   }
 );

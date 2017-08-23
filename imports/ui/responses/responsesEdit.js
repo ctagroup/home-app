@@ -37,7 +37,7 @@ Template.responsesEdit.events(
       if (confirm('Are you sure you want to remove this response?') === true) {
         ResponseHelpers.removePausedSurvey(tmpl, (err) => {
           if (err) {
-            alert(err);
+            Bert.alert(err.reason || err.error, 'danger', 'growl-top-right');
           } else {
             Router.go('adminDashboardresponsesView');
           }

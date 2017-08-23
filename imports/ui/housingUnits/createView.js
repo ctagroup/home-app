@@ -28,9 +28,9 @@ Template.housingUnitCreateView.events(
       };
       logger.info(`Create Housing: ${JSON.stringify(housingObject, null, 2)}`);
       Meteor.call('createHouseUnit', housingObject,
-        (error, result) => {
-          if (error) {
-            // console.log(error);
+        (err, result) => {
+          if (err) {
+            Bert.alert(err.reason || err.error, 'error', 'growl-top-right');
           } else {
             logger.info(result);
             Router.go('/housingUnits');

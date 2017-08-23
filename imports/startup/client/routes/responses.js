@@ -1,3 +1,5 @@
+import { Clients } from '/imports/api/clients/clients';
+import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import Responses from '/imports/api/responses/responses';
 import Surveys from '/imports/api/surveys/surveys';
 import { AppController } from './controllers';
@@ -30,16 +32,29 @@ Router.route('adminDashboardresponsesNew', {
   controller: AppController,
   waitOn() {
     const { clientId, schema } = this.params.query;
-    if (clientId) {
-      return schema ? Meteor.subscribe('clients.one', clientId, schema)
-        : Meteor.subscribe('pendingClients.one', clientId);
+    if (schema) {
+      return [
+        Meteor.subscribe('clients.one', clientId, schema),
+        Meteor.subscribe('surveys.all'),
+        Meteor.subscribe('questions.all'),
+      ];
     }
-    return [];
+    return [
+      Meteor.subscribe('pendingClients.one', clientId),
+      Meteor.subscribe('surveys.all'),
+      Meteor.subscribe('questions.all'),
+    ];
   },
   data() {
+    const { clientId, surveyId } = this.params.query;
+    const survey = Surveys.findOne(surveyId);
+    const client = PendingClients.findOne(clientId) || Clients.findOne(clientId);
+
     return {
       title: 'Responses',
       subtitle: 'New',
+      survey,
+      client,
     };
   },
 });

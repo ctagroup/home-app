@@ -1,3 +1,4 @@
+import Questions from '/imports/api/questions/questions';
 import { logger } from '/imports/utils/logger';
 import { populateOptions, resetQuestionModal, setFields } from '/imports/ui/questions/helpers';
 import './questionForm.html';
@@ -71,7 +72,7 @@ Template.questionForm.events(
       // const text = value;
       // To be done
       if (value != null) {
-        const question2 = questions.findOne({ _id: value });
+        const question2 = Questions.findOne({ _id: value });
         $('#q_category').val(question2.category).change();
         $('#q_name').val(question2.name);
         $('#question').summernote('code', question2.question);

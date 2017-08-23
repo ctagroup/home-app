@@ -1,11 +1,13 @@
 import { logger } from '/imports/utils/logger';
+import Questions from '/imports/api/questions/questions';
 import Responses from '/imports/api/responses/responses';
+import { getSurveySections, getSurveyQuestionsPerSection } from '/imports/api/surveys/helpers';
 import './responseForm.html';
 
 Template.responseForm.helpers(
   {
     isMTV(contentQuesId) {
-      const question = questions.findOne({ _id: contentQuesId });
+      const question = Questions.findOne({ _id: contentQuesId });
       let dataType = '';
       if (question && question.dataType) {
         dataType = question.dataType;
@@ -16,12 +18,12 @@ Template.responseForm.helpers(
       const surveyID = (Router.current().route.getName() === 'previewSurvey')
         ? Router.current().params._id
         : this.survey._id;
-      const sections = surveyFormatHelpers.getSections(surveyID);
+      const sections = getSurveySections(surveyID);
       const surveyElements = [];
       for (let i = 0; i < sections.length; i += 1) {
         surveyElements.push(sections[i]);
         Array.prototype.push.apply(surveyElements,
-          surveyFormatHelpers.getQuestionsPerSection(sections[i]._id)
+          getSurveyQuestionsPerSection(sections[i]._id)
         );
       }
       return ResponseHelpers.surveyContents(surveyElements, null);
@@ -58,14 +60,14 @@ Template.responseForm.helpers(
       return contentType === 'question';
     },
     displayQuesContents(contentQuesId) {
-      const question = questions.findOne({ _id: contentQuesId });
+      const question = Questions.findOne({ _id: contentQuesId });
       return question.question;
     },
     checkAudience(content) {
       return ResponseHelpers.checkAudience(content);
     },
     wysiwygLabel(contentQuesId) {
-      const question = questions.findOne({ _id: contentQuesId });
+      const question = Questions.findOne({ _id: contentQuesId });
 
       let dataType = '';
 
@@ -76,7 +78,7 @@ Template.responseForm.helpers(
       return dataType === 'label';
     },
     textboxString(contentQuesId) {
-      const questionsList = questions.find(
+      const questionsList = Questions.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
 
@@ -92,7 +94,7 @@ Template.responseForm.helpers(
       return flag;
     },
     wysiwygEditor(contentQuesId) {
-      const question = questions.findOne({ _id: contentQuesId });
+      const question = Questions.findOne({ _id: contentQuesId });
       let dataType = '';
       if (question && question.dataType) {
         dataType = question.dataType;
@@ -100,7 +102,7 @@ Template.responseForm.helpers(
       return dataType === 'wysiwyg';
     },
     isDate(contentQuesId) {
-      const question = questions.findOne({ _id: contentQuesId });
+      const question = Questions.findOne({ _id: contentQuesId });
       let dataType = '';
       if (question && question.dataType) {
         dataType = question.dataType;
@@ -108,7 +110,7 @@ Template.responseForm.helpers(
       return dataType === 'date';
     },
     textboxNumber(contentQuesId) {
-      const questionsList = questions.find(
+      const questionsList = Questions.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
 
@@ -124,7 +126,7 @@ Template.responseForm.helpers(
       return flag;
     },
     booleanTF(contentQuesId) {
-      const questionsList = questions.find(
+      const questionsList = Questions.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
 
@@ -140,7 +142,7 @@ Template.responseForm.helpers(
       return flag;
     },
     singleSelect(contentQuesId) {
-      const questionsList = questions.find(
+      const questionsList = Questions.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
 
@@ -156,14 +158,14 @@ Template.responseForm.helpers(
       return flag;
     },
     singleOptions(contentQuesId) {
-      const questionsList = questions.find(
+      const questionsList = Questions.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
 
       return questionsList[0].options;
     },
     multipleSelect(contentQuesId) {
-      const questionsList = questions.find(
+      const questionsList = Questions.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
 
@@ -179,7 +181,7 @@ Template.responseForm.helpers(
       return flag;
     },
     singlePhoto(contentQuesId) {
-      const question = questions.findOne({ _id: contentQuesId });
+      const question = Questions.findOne({ _id: contentQuesId });
 
       let dataType = '';
 
@@ -203,7 +205,7 @@ Template.responseForm.helpers(
       let flag = false;
 
       const responseRecords = Responses.find(
-        { surveyID: Router.current().params.survey_id }
+        { surveyID: Router.current().params.surveyId }
       ).fetch();
       for (let i = 0; i < responseRecords.length; i += 1) {
         const sectionz = responseRecords[i].section;
@@ -219,7 +221,7 @@ Template.responseForm.helpers(
       return flag;
     },
     surveyContents() {
-      const responseSections = responses.find(
+      const responseSections = Responses.find(
         { surveyID: Router.current().params._id }
       ).fetch();
       for (let i = 0; i < responseSections.length; i += 1) {
@@ -258,7 +260,7 @@ Template.responseForm.helpers(
           for (let k = 0; k < response.length; k += 1) {
             const quesIDs = response[k].questionID;
             const responseVal = response[k].answer;
-            const questionsList = questions.find(
+            const questionsList = Questions.find(
               {
                 _id: quesIDs,
               }, {
@@ -295,7 +297,7 @@ Template.responseForm.helpers(
           for (let k = 0; k < response.length; k += 1) {
             const quesIDs = response[k].questionID;
             const responseVal = response[k].answer;
-            const questionsList = questions.find(
+            const questionsList = Questions.find(
               {
                 _id: quesIDs,
               }, {
@@ -331,7 +333,7 @@ Template.responseForm.helpers(
 
             const responseVal = response[k].answer.split('|');
 
-            const questionsList = questions.find(
+            const questionsList = Questions.find(
               {
                 _id: quesIDs,
               }, {

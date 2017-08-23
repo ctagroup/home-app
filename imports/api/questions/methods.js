@@ -1,6 +1,4 @@
-/**
- * Created by udit on 26/07/16.
- */
+import Questions from '/imports/api/questions/questions';
 import { logger } from '/imports/utils/logger';
 
 Meteor.methods(
@@ -101,7 +99,7 @@ Meteor.methods(
       questionsCollection.remove({ _id });
     },
     putSurveyApiId(_id, surveyServiceQuesId) {
-      questions.update(_id, { $set: { surveyServiceQuesId } });
+      Questions.update(_id, { $set: { surveyServiceQuesId } });
       logger.info(`Successfully updated SSQId: ${surveyServiceQuesId}`);
     },
   }

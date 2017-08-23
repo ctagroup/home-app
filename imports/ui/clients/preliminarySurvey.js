@@ -103,7 +103,7 @@ Template.preliminarySurvey.events(
       event.preventDefault();
       const signaturePad = Router.current().params.signaturePad;
       if (signaturePad.isEmpty()) {
-        alert('Please provide signature first.');
+        Bert.alert('Please provide signature first.', 'error', 'growl-top-right');
       } else {
         $('#create-client-form .signature').val(signaturePad.toDataURL());
         $('#create-client-form .signature-img').attr('src', signaturePad.toDataURL());

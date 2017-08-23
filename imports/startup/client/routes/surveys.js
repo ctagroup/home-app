@@ -1,5 +1,6 @@
 import { Clients } from '/imports/api/clients/clients';
 import { AppController } from './controllers';
+import Surveys from '/imports/api/surveys/surveys';
 
 
 Router.route('adminDashboardsurveysView', {
@@ -130,7 +131,7 @@ Router.route(
     },
     data() {
       const surveyID = this.params._id;
-      return surveys.findOne({ _id: surveyID });
+      return Surveys.findOne({ _id: surveyID });
     },
   }
 );

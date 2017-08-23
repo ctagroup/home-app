@@ -1,9 +1,8 @@
-/**
- * Created by udit on 07/03/16.
- */
-surveyQuestionsMaster = new Meteor.Collection('surveyQuestionsMaster');
+import { Mongo } from 'meteor/mongo';
 
-Schemas.surveyQuestionsMaster = new SimpleSchema(
+const SurveyQuestionsMaster = new Mongo.Collection('surveyQuestionsMaster');
+
+SurveyQuestionsMaster.schema = new SimpleSchema(
   {
     surveyID: {
       type: String,
@@ -35,9 +34,9 @@ Schemas.surveyQuestionsMaster = new SimpleSchema(
   }
 );
 
-surveyQuestionsMaster.attachSchema(Schemas.surveyQuestionsMaster);
+SurveyQuestionsMaster.attachSchema(SurveyQuestionsMaster.schema);
 
-surveyQuestionsMaster.allow(
+SurveyQuestionsMaster.allow(
   {
     update(userId, doc, fieldNames, modifier) {
       if (fieldNames.length !== 1 || fieldNames[0] !== 'order') return false;
@@ -54,3 +53,6 @@ surveyQuestionsMaster.allow(
     },
   }
 );
+
+
+export default SurveyQuestionsMaster;

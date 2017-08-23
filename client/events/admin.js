@@ -1,8 +1,6 @@
-/**
- * Created by udit on 10/02/16.
- */
 import { logger } from '/imports/utils/logger';
 import { maxRank } from '/imports/ui/surveys/helpers';
+import Surveys from '/imports/api/surveys/surveys';
 
 // let surveyCopyId;
 let surveyIDForCopy;
@@ -158,7 +156,7 @@ Template.surveyForm.events(
     'change .s_copy': (event) => {
       surveyIDForCopy = $(event.target).val();
 
-      const surveyRecord = surveys.findOne({ _id: surveyIDForCopy });
+      const surveyRecord = Surveys.findOne({ _id: surveyIDForCopy });
 
       document.getElementById('copyof_surveytitle').value = surveyRecord.title;
       document.getElementById('copy_active').checked = surveyRecord.active;

@@ -14,6 +14,7 @@ Meteor.publish('pendingClients.one', function publishPendingClient(clientId) {
   if (!this.userId) {
     return [];
   }
+
   // TODO: check permissions to get the data
   return PendingClients.find({ _id: clientId });
 });

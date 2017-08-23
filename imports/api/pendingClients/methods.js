@@ -1,6 +1,7 @@
 import { PendingClients } from './pendingClients';
 import { HmisClient } from '/imports/api/hmis-api';
 import { logger } from '/imports/utils/logger';
+import Responses from '/imports/api/responses/responses';
 
 
 Meteor.methods({
@@ -101,16 +102,12 @@ Meteor.methods({
     const personalId = hc.api('client').createClient(client);
 
     logger.info(`client ${clientId} is now known as ${personalId}`);
-    /*
-     Old api redirected to this link after success:
-     https://home.ctagroup.org/clients/9b60cb11-5c3a-4d5b-942d-90dde4d5dc63?addedToHMIS=1&isHMISClient=true&link=%2Fhmis-clientapi%2Frest%2Fv2015%2Fclients%2F%2F9b60cb11-5c3a-4d5b-942d-90dde4d5dc63&schema=v2015
-    */
 
     let result = false;
 
     if (personalId) {
       PendingClients.remove(clientId);
-      responses.update({ clientID: clientId },
+      Responses.update({ clientID: clientId },
         { $set: { clientID: personalId, clientSchema: 'v2015', isHMISClient: true } },
         { multi: true }
       );

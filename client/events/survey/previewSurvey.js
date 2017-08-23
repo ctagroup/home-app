@@ -2,6 +2,8 @@
  * Created by udit on 04/08/16.
  */
 import { logger } from '/imports/utils/logger';
+import Surveys from '/imports/api/surveys/surveys';
+
 
 Template.previewSurvey.events(
   {
@@ -13,7 +15,7 @@ Template.previewSurvey.events(
       const surveyID = tmpl.data._id;
       const created = true;
       // do all the survey syncing here.
-      const surveyDetails = surveys.findOne({ _id: surveyID });
+      const surveyDetails = Surveys.findOne({ _id: surveyID });
       if (surveyDetails.apiSurveyServiceId) {
         // update survey online.
         hmisSurveySync.updateSurveyToHmis(surveyDetails);

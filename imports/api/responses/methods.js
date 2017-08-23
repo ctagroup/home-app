@@ -1,5 +1,8 @@
 import { HmisClient } from '/imports/api/hmis-api';
 import { logger } from '/imports/utils/logger';
+import Surveys from '/imports/api/surveys/surveys';
+import Responses from '/imports/api/responses/responses';
+
 
 Meteor.methods(
   {
@@ -10,19 +13,19 @@ Meteor.methods(
       return hc.api('survey').addResponseToHmis(clientId, surveyId, responses);
     },
     updateSubmissionIdForResponses(_id, submissionId) {
-      responses.update(_id, { $set: { submissionId } });
+      Responses.update(_id, { $set: { submissionId } });
       logger.info('Response Submission Id Added to mongo');
     },
     updateResponseStatus(_id, responsestatus) {
-      responses.update(_id, { $set: { responsestatus } });
+      Responses.update(_id, { $set: { responsestatus } });
     },
     uploadResponse(responseId) {
       this.unblock();
       // Checking if SPDAT or HUD. If SPDAT, then only upload.
       try {
-        const response = responses.findOne({ _id: responseId });
+        const response = Responses.findOne({ _id: responseId });
         const survey
-          = surveys.findOne({ _id: response.surveyID });
+          = Surveys.findOne({ _id: response.surveyID });
         if (survey.stype !== 'hud') {
           Meteor.call('updateResponseStatus', responseId, 'Uploading');
 
