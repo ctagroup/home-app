@@ -115,7 +115,7 @@ Template.housingMatchListView.events(
     'click .js-notify-agency-contact': (evt) => {
       const reservationId = $(evt.currentTarget).data('reservation-id');
 
-      const reservation = housingMatch.findOne({ reservationId });
+      const reservation = HousingMatch.findOne({ reservationId });
 
       if (reservation) {
         let project = false;

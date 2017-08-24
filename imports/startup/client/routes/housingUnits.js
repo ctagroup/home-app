@@ -1,5 +1,7 @@
 import { Clients } from '/imports/api/clients/clients';
+import HousingUnits from '/imports/api/housingUnits/housingUnits';
 import { HousingUnitsCache, ProjectsCache } from '/imports/both/cached-subscriptions';
+import '/imports/ui/housingUnits/housingUnitsEditView';
 import { AppController } from './controllers';
 
 const title = 'Housing Units';
@@ -9,7 +11,7 @@ Router.route('adminDashboardhousingUnitsView', {
   template: 'housingUnitsListView',
   controller: AppController,
   waitOn() {
-    return HousingUnitsCache.subscribe('housingUnits');
+    return HousingUnitsCache.subscribe('housingUnits.all');
   },
   data() {
     return {
@@ -60,20 +62,22 @@ Router.route('adminDashboardhousingUnitsNew', {
 
 Router.route('adminDashboardhousingUnitsEdit', {
   path: '/housingUnits/:_id/edit',
-  template: 'AdminDashboardEdit',
+  template: Template.housingUnitEditView,
   controller: AppController,
-  action() {
-    this.render();
-  },
   waitOn() {
-    const _id = Router.current().params._id;
+    const _id = this.params._id;
     return [
-      Meteor.subscribe('singleHousingUnit', _id),
+      Meteor.subscribe('housingUnits.one', _id),
       ProjectsCache.subscribe('projects'),
     ];
   },
   data() {
-    const _id = Router.current().params._id;
-    return housingUnits.findOne({ _id });
+    const _id = this.params._id;
+    const housingUnit = HousingUnits.findOne({ _id });
+    return {
+      title: 'Housing Units',
+      subtitle: 'Edit',
+      housingUnit,
+    };
   },
 });

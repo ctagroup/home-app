@@ -29,7 +29,6 @@ export function deleteHouseholdButton() {
     title: 'Delete',
     render() { return ''; },
     createdCell(node, _id) {
-      window.xxx = node;
       const templateData = {
         _id,
         message: `Are you sure you want to delete household ${_id}?`,
@@ -52,14 +51,15 @@ export function deleteHousingUnitButton() {
     data: '_id',
     title: 'Delete',
     render() { return ''; },
-    createdCell(node, _id) {
+    createdCell(node, _id, rowData) {
+      const name = rowData.aliasName || _id;
       const templateData = {
         _id,
-        message: `Are you sure you want to delete housing unit ${_id}?`,
-        method: 'deleteHousing',
+        message: `Are you sure you want to delete housing unit ${name}?`,
+        method: 'housingUnits.delete',
         args: [_id],
         onSuccess() {
-          location.reload();
+          // Meteor.setTimeout(() => location.reload(), 1500);
         },
       };
       Blaze.renderWithData(Template.DataTableDeleteButton, templateData, node);

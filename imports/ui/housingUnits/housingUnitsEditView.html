@@ -1,0 +1,14 @@
+<template name="housingUnitEditView">
+  {{#with housingUnit}}
+  <form id="create-housing-form" class="form-horizontal" role="form">
+    {{>housingUnitForm}}
+    <div class="form-group">
+      <label class="col-md-3 control-label"></label>
+      <div class="col-md-8">
+        <a class="btn btn-large btn-warning update_housing">Update</a>
+        <a class="btn btn-large btn-default cancel_housing">Cancel</a>
+      </div>
+    </div>
+  </form>
+  {{/with}}
+</template>

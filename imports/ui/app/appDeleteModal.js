@@ -5,11 +5,11 @@ import './appDeleteModal.html';
 
 Template.AppDeleteModal.helpers({
   title() {
-    const ctx = getAppContext('deleteModal') || {};
+    const ctx = getAppContext('appDeleteModal') || {};
     return ctx.title || 'Confirm delete';
   },
   text() {
-    const ctx = getAppContext('deleteModal') || {};
+    const ctx = getAppContext('appDeleteModal') || {};
     return ctx.message || 'Are you sure?';
   },
 });

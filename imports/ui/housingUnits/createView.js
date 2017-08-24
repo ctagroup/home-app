@@ -27,7 +27,7 @@ Template.housingUnitCreateView.events(
         aliasName,
       };
       logger.info(`Create Housing: ${JSON.stringify(housingObject, null, 2)}`);
-      Meteor.call('createHouseUnit', housingObject,
+      Meteor.call('housingUnits.create', housingObject,
         (err, result) => {
           if (err) {
             Bert.alert(err.reason || err.error, 'error', 'growl-top-right');
