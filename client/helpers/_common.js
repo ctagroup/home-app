@@ -26,16 +26,6 @@ UI.registerHelper('currentUserGravatar', () => HomeHelpers.getCurrentUserGravata
 
 UI.registerHelper('currentUserFullName', () => HomeHelpers.getCurrentUserFullName());
 
-Template.AppEditBtn.helpers(
-  {
-    path() {
-      const data = Template.instance().data;
-      return Router.path(data.path, {
-        _id: data._id,
-      });
-    },
-  }
-);
 
 UI.registerHelper(
   'newPath',

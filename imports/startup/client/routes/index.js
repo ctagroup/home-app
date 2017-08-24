@@ -13,20 +13,6 @@ import './roleManager';
 import './openingScript';
 import './projectSetup';
 
-AccountsTemplates.configureRoute('signIn', {
-  name: 'signIn',
-  path: '/login',
-  template: 'login',
-  redirect: '/dashboard',
-  layoutTemplate: 'ContentLayout',
-});
-
-/*
-AccountsTemplates.configureRoute('ensureSignedIn', {
-  template: 'login',
-  layoutTemplate: 'ContentLayout',
-});
-*/
 
 // Prompt for sign in form in case of all routes except the following
 Router.plugin(
@@ -39,3 +25,11 @@ Router.plugin(
     ]),
   }
 );
+
+AccountsTemplates.configureRoute('signIn', {
+  name: 'signIn',
+  path: '/login',
+  template: 'login',
+  redirect: '/dashboard',
+  layoutTemplate: 'ContentLayout',
+});

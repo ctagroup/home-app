@@ -7,7 +7,7 @@ Router.route('adminDashboardquestionsView', {
   template: 'questionsListView',
   controller: AppController,
   waitOn() {
-    return Meteor.subscribe('questions');
+    return Meteor.subscribe('questions.all');
   },
   data() {
     return {
