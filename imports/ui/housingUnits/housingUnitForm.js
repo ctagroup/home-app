@@ -1,6 +1,5 @@
-/**
- * Created by udit on 05/10/16.
- */
+import './housingUnitForm.html';
+
 
 Template.housingUnitForm.helpers(
   {

@@ -71,7 +71,7 @@ export class ApiEndpoint {
       headers: this.getRequestHeaders(),
       data,
     };
-    logger.debug('HMIS API:put (${url})', { url, options });
+    logger.debug('HMIS API:put', { url, options });
     let response = false;
     try {
       response = HTTP.put(url, options);
