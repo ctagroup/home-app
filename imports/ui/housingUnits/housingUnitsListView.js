@@ -7,10 +7,23 @@ const tableOptions = {
     {
       title: 'Name',
       data: 'aliasName',
+      render(value, _, rowData) {
+        console.log(value);
+        return value || rowData._id;
+      },
     },
     {
       title: 'Project',
-      data: 'project.projectName',
+      data: 'project',
+      render(value) {
+        if (value.loading) {
+          return 'Loading...';
+        }
+        if (value.error) {
+          return value.error;
+        }
+        return value.projectName;
+      },
     },
     {
       title: 'Vacant?',

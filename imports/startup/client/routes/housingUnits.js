@@ -1,4 +1,3 @@
-import { Clients } from '/imports/api/clients/clients';
 import HousingUnits from '/imports/api/housingUnits/housingUnits';
 import { HousingUnitsCache, ProjectsCache } from '/imports/both/cached-subscriptions';
 import '/imports/ui/housingUnits/housingUnitsCreateView';

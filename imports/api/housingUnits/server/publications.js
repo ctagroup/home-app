@@ -1,7 +1,4 @@
-/**
- * Created by udit on 15/07/16.
- */
-import { logger } from '/imports/utils/logger';
+import { HmisClient } from '/imports/api/hmis-api';
 
 Meteor.publish(
   'housingUnits.all', function publishAllHousingUnits() {
@@ -13,66 +10,60 @@ Meteor.publish(
       stopFunction = true;
     });
 
-    let housingUnits = [];
+    const hc = HmisClient.create(this.userId);
+    let housingUnits = hc.api('housing').getHousingUnits();
+    housingUnits = _.filter(housingUnits, (c) => !c.deleted);
 
-    if (self.userId) {
-      HMISAPI.setCurrentUserId(self.userId);
-      const response = HMISAPI.getHousingUnitsForPublish();
-      housingUnits = response.content;
-      // according to the content received.
-      logger.info(housingUnits.length);
-      for (let i = 0; i < response.page.totalPages && !stopFunction; i += 1) {
-        const temp = HMISAPI.getHousingUnitsForPublish(i);
-        housingUnits.push(...temp.content);
-        logger.info(`Temp: ${housingUnits.length}`);
-        for (let j = 0; j < temp.content.length && !stopFunction; j += 1) {
-          const item = temp.content[j];
-          const tempItem = item;
+    // populate the list without the details
+    for (let i = 0; i < housingUnits.length && !stopFunction; i += 1) {
+      housingUnits[i].project = { loading: true };
+      self.added('housingUnits', housingUnits[i].housingInventoryId, housingUnits[i]);
+    }
+    self.ready();
 
+    const projectsCache = {};
+    for (let i = 0; i < housingUnits.length && !stopFunction; i += 1) {
+      const projectId = housingUnits[i].projectId;
+      let project;
+      if (!projectsCache[projectId]) {
+        try {
           let schema = 'v2015';
-          if (item.links && item.links.length > 0
-              && item.links[0].rel.indexOf('v2014') !== -1) {
+          if (housingUnits[i].links && housingUnits[i].links.length > 0
+              && housingUnits[i].links[0].rel.indexOf('v2014') !== -1) {
             schema = 'v2014';
           }
-
-          tempItem.project = HMISAPI.getProjectForPublish(item.projectId, schema);
-          self.added('housingUnits', tempItem.housingInventoryId, tempItem);
-          self.ready();
+          project = hc.api('client').getProject(housingUnits[i].projectId, schema);
+        } catch (e) {
+          project = { error: 404 };
         }
+        projectsCache[projectId] = project;
       }
-    } else {
-      HMISAPI.setCurrentUserId('');
+
+      housingUnits[i].project = projectsCache[projectId];
+      self.changed('housingUnits', housingUnits[i].housingInventoryId, housingUnits[i]);
     }
-    return self.ready();
   }
 );
 
 Meteor.publish(
   'housingUnits.one', function publishOneHousingUnit(housingUnitId) {
-    const self = this;
+    const hc = HmisClient.create(this.userId);
+    const housingUnit = hc.api('housing').getHousingUnit(housingUnitId);
 
-    let housingUnit = false;
-
-    if (self.userId) {
-      HMISAPI.setCurrentUserId(self.userId);
-
-      housingUnit = HMISAPI.getHousingUnitForPublish(housingUnitId);
-
-      let schema = 'v2015';
-      if (housingUnit.links && housingUnit.links.length > 0
-          && housingUnit.links[0].rel.indexOf('v2014') !== -1) {
-        schema = 'v2014';
-      }
-
-      housingUnit.project = HMISAPI.getProjectForPublish(housingUnit.projectId, schema);
-    } else {
-      HMISAPI.setCurrentUserId('');
+    let schema = 'v2015';
+    if (housingUnit.links && housingUnit.links.length > 0
+        && housingUnit.links[0].rel.indexOf('v2014') !== -1) {
+      schema = 'v2014';
     }
 
-    if (housingUnit) {
-      self.added('housingUnits', housingUnit.housingInventoryId, housingUnit);
+    try {
+      const project = hc.api('client').getProject(housingUnit.projectId, schema);
+      housingUnit.project = project;
+    } catch (e) {
+      housingUnit.project = { error: 404 };
     }
 
-    return self.ready();
+    this.added('housingUnits', housingUnit.housingInventoryId, housingUnit);
+    this.ready();
   }
 );
