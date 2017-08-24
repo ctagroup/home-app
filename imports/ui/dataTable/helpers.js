@@ -55,7 +55,7 @@ export function deleteHousingUnitButton() {
       const name = rowData.aliasName || _id;
       const templateData = {
         _id,
-        message: `Are you sure you want to delete housing unit ${name}?`,
+        message: `Are you sure you want to delete housing unit ${name} (${_id})?`,
         method: 'housingUnits.delete',
         args: [_id],
         onSuccess() {

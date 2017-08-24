@@ -1,6 +1,7 @@
 import { Clients } from '/imports/api/clients/clients';
 import HousingUnits from '/imports/api/housingUnits/housingUnits';
 import { HousingUnitsCache, ProjectsCache } from '/imports/both/cached-subscriptions';
+import '/imports/ui/housingUnits/housingUnitsCreateView';
 import '/imports/ui/housingUnits/housingUnitsEditView';
 import { AppController } from './controllers';
 
@@ -23,7 +24,7 @@ Router.route('adminDashboardhousingUnitsView', {
 
 Router.route('adminDashboardhousingUnitsNew', {
   path: '/housingUnits/new',
-  template: 'AdminDashboardNew',
+  template: Template.housingUnitCreateView,
   controller: AppController,
   waitOn() {
     return ProjectsCache.subscribe('projects');

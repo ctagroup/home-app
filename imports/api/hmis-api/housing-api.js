@@ -16,7 +16,7 @@ class HousingApi extends ApiEndpoint {
 
   deleteHousingUnit(id) {
     const url = `${BASE_URL}/housing-units/${id}`;
-    return this.doDelete(url);
+    return this.doDel(url);
   }
 
   getHousingUnitsForPublish() {

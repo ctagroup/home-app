@@ -1,7 +1,5 @@
-/**
- * Created by Mj on 24-Aug-16.
- */
-import { logger } from '/imports/utils/logger';
+import './housingUnitForm';
+import './housingUnitsCreateView.html';
 
 Template.housingUnitCreateView.events(
   {
@@ -14,26 +12,23 @@ Template.housingUnitCreateView.events(
       const inactive = tmpl.find('input[name="inactive"]:checked').value;
       const inService = tmpl.find('input[name="in_service"]:checked').value;
       const vacant = tmpl.find('input[name="vacant"]:checked').value;
-      // Printing.
       const housingObject = {
         inactive,
         bedsCurrent,
         projectId,
-        userId: Meteor.user().services.HMIS.id,
         bedsCapacity,
         familyUnit,
         inService,
         vacant,
         aliasName,
       };
-      logger.info(`Create Housing: ${JSON.stringify(housingObject, null, 2)}`);
       Meteor.call('housingUnits.create', housingObject,
-        (err, result) => {
+        (err) => {
           if (err) {
-            Bert.alert(err.reason || err.error, 'error', 'growl-top-right');
+            Bert.alert(err.reason || err.error, 'danger', 'growl-top-right');
           } else {
-            logger.info(result);
-            Router.go('/housingUnits');
+            Bert.alert('Housing unit created!', 'success', 'growl-top-right');
+            // Router.go('/housingUnits');
           }
         }
       );
