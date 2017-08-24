@@ -1,3 +1,4 @@
+import { TableDom } from '/imports/ui/dataTable/helpers';
 import { populateOptions, resetQuestionModal, setFields } from '/imports/ui/questions/helpers';
 import moment from 'moment';
 import Questions from '/imports/api/questions/questions';
@@ -66,7 +67,7 @@ const tableOptions = {
       },
     },
   ],
-  dom: HomeConfig.adminTablesDom,
+  dom: TableDom,
 };
 
 

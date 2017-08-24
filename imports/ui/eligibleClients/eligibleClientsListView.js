@@ -1,4 +1,5 @@
 import { logger } from '/imports/utils/logger';
+import { TableDom } from '/imports/ui/dataTable/helpers';
 import EligibleClients from '/imports/api/eligibleClients/eligibleClients';
 import './eligibleClientsListView.html';
 
@@ -55,7 +56,7 @@ const tableOptions = {
       data: 'matched',
     },
   ],
-  dom: HomeConfig.adminTablesDom,
+  dom: TableDom,
 };
 
 

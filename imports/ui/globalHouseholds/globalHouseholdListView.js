@@ -1,3 +1,4 @@
+import { deleteHouseholdButton, editButton, TableDom } from '/imports/ui/dataTable/helpers';
 import GlobalHouseholds from '/imports/api/globalHouseholds/globalHouseholds';
 import './globalHouseholdListView.html';
 
@@ -70,42 +71,11 @@ const tableOptions = {
         return value ? '' : '<i class="fa fa-check js-tooltip" data-toggle="tooltip" data-placement="right" title=""></i>'; // eslint-disable-line max-len
       },
     },
-    HomeConfig.documentEditButton('adminDashboardglobalHouseholdsEdit'),
-    HomeConfig.appDelButton,
+    editButton('adminDashboardglobalHouseholdsEdit'),
+    deleteHouseholdButton(),
   ],
-  dom: HomeConfig.adminTablesDom,
+  dom: TableDom,
 };
-
-/*
-      tableColumns: [
-      ],
-      templates: {
-        view: {
-          name: 'globalHouseholdListView',
-          data() {
-            return {};
-          },
-          waitOn() {
-
-          },
-        },
-        edit: {
-          name: 'globalHouseholdEditView',
-          waitOn() {
-            const _id = Router.current().params._id;
-            return Meteor.subscribe('singleGlobalHousehold', _id);
-          },
-          data() {
-            const _id = Router.current().params._id;
-            return GlobalHouseholds.findOne({ _id });
-          },
-        },
-        new: {
-          name: 'globalHouseholdCreateView',
-        },
-      },
-
-*/
 
 Template.globalHouseholdListView.helpers({
   hasData() {

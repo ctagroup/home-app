@@ -1,3 +1,4 @@
+import { deleteHousingUnitButton, editButton, TableDom } from '/imports/ui/dataTable/helpers';
 import HousingUnits from '/imports/api/housingUnits/housingUnits';
 import './housingUnitsListView.html';
 
@@ -15,15 +16,13 @@ const tableOptions = {
       title: 'Vacant?',
       data: 'vacant',
       render(value) {
-        /* eslint-disable */
-        return value ? '<i class="fa fa-check js-tooltip" data-toggle="tooltip" data-placement="right" title=""></i>' : '';
-        /* eslint-enable */
+        return value ? '<i class="fa fa-check js-tooltip" data-toggle="tooltip" data-placement="right" title=""></i>' : ''; // eslint-disable-line max-len
       },
     },
-    HomeConfig.documentEditButton('adminDashboardhousingUnitsEdit'),
-    HomeConfig.appDelButton,
+    editButton('adminDashboardhousingUnitsEdit'),
+    deleteHousingUnitButton(),
   ],
-  dom: HomeConfig.adminTablesDom,
+  dom: TableDom,
   stateSave: true,
   processing: true,
 };

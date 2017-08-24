@@ -1,3 +1,4 @@
+import { TableDom } from '/imports/ui/dataTable/helpers';
 import moment from 'moment';
 import Responses from '/imports/api/responses/responses';
 import Surveys from '/imports/api/surveys/surveys';
@@ -100,7 +101,7 @@ const tableOptions = {
       },
     },
   ],
-  dom: HomeConfig.adminTablesDom,
+  dom: TableDom,
   processing: true,
   deferRender: true,
 };

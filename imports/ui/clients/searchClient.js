@@ -1,7 +1,9 @@
 import moment from 'moment';
 import { logger } from '/imports/utils/logger';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
+import { TableDom } from '/imports/ui/dataTable/helpers';
 import './searchClient.html';
+
 
 
 const tableOptions = {
@@ -23,7 +25,7 @@ const tableOptions = {
       },
     },
   ],
-  dom: HomeConfig.adminTablesDom,
+  dom: TableDom,
 };
 
 

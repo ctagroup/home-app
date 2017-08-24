@@ -1,3 +1,4 @@
+import { TableDom } from '/imports/ui/dataTable/helpers';
 import { logger } from '/imports/utils/logger';
 import HousingMatch from '/imports/api/housingMatch/housingMatch';
 import ReferralStatusList from '/imports/ui/clients/referralStatusList';
@@ -85,7 +86,7 @@ const tableOptions = {
       },
     },
   ],
-  dom: HomeConfig.adminTablesDom,
+  dom: TableDom,
 };
 
 Template.housingMatchListView.helpers({
