@@ -1,0 +1,12 @@
+<template name="housingUnitCreateView">
+  <form id="create-housing-form" class="form-horizontal" role="form">
+    {{>housingUnitForm}}
+    <div class="form-group">
+      <label class="col-md-3 control-label"></label>
+      <div class="col-md-8">
+        <a class="btn btn-large btn-primary createHousing">Create</a>
+        <a  href='{{pathFor 'adminDashboardhousingUnitsView'}}' class="btn btn-large btn-default cancelHousing">Cancel</a>
+      </div>
+    </div>
+  </form>
+</template>
