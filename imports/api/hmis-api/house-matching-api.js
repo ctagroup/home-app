@@ -4,16 +4,6 @@ import { ApiEndpoint } from './api-endpoint';
 const BASE_URL = 'https://www.hmislynk.com/house-matching-api';
 
 class HouseMatchingApi extends ApiEndpoint {
-  updateEligibleClient(client) {
-    const url = `${BASE_URL}/eligibleclients/${client.clientId}`;
-    return this.doPut(url, client);
-  }
-
-  getEligibleClient(clientId) {
-    const url = `${BASE_URL}/eligibleclients/${clientId}`;
-    return this.doGet(url);
-  }
-
   getEligibleClients(pageNumber = 0, size = 1000) {
     const url = `${BASE_URL}/eligibleclients?page=${pageNumber}&size=${size}`;
     const response = this.doGet(url);
@@ -25,6 +15,16 @@ class HouseMatchingApi extends ApiEndpoint {
       );
     }
     return eligibleClients;
+  }
+
+  getEligibleClient(clientId) {
+    const url = `${BASE_URL}/eligibleclients/${clientId}`;
+    return this.doGet(url);
+  }
+
+  updateEligibleClient(client) {
+    const url = `${BASE_URL}/eligibleclients/${client.clientId}`;
+    return this.doPut(url, client);
   }
 
   getHousingMatchForPublish() {
