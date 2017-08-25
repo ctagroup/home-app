@@ -26,3 +26,6 @@ import '/imports/api/housingMatch/server/publications';
 
 import '/imports/api/globalHouseholds/methods';
 import '/imports/api/globalHouseholds/server/publications';
+
+import '/imports/api/users/methods';
+import '/imports/api/users/server/publications';

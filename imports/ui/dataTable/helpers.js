@@ -68,3 +68,27 @@ export function deleteHousingUnitButton() {
     orderable: false,
   };
 }
+
+
+export function deleteUserButton() {
+  return {
+    data: '_id',
+    title: 'Delete',
+    render() { return ''; },
+    createdCell(node, _id, rowData) {
+      const name = '';
+      const templateData = {
+        _id,
+        message: `Are you sure you want to delete user ${name} (${_id})?`,
+        method: 'users.delete',
+        args: [_id],
+        onSuccess() {
+          // Meteor.setTimeout(() => location.reload(), 1500);
+        },
+      };
+      Blaze.renderWithData(Template.DataTableDeleteButton, templateData, node);
+    },
+    width: '45px',
+    orderable: false,
+  };
+}
