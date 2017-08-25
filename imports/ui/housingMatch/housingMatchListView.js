@@ -2,6 +2,7 @@ import { TableDom } from '/imports/ui/dataTable/helpers';
 import { logger } from '/imports/utils/logger';
 import HousingMatch from '/imports/api/housingMatch/housingMatch';
 import ReferralStatusList from '/imports/ui/clients/referralStatusList';
+import Users from '/imports/api/users/users';
 import './housingMatchListView.html';
 
 
@@ -125,8 +126,7 @@ Template.housingMatchListView.events(
 
         let recipients = [];
         if (project) {
-          recipients = users.find({ projectsLinked: project.projectId }).fetch();
-
+          recipients = Users.find({ projectsLinked: project.projectId }).fetch();
           if (recipients.length > 0) {
             recipients = { toRecipients: recipients.map(item => item.emails[0].address) };
           }

@@ -1,4 +1,4 @@
-<template name="userForm">
+<template name="hmisProfile">
 
   <div class="form-group">
     <div class="col-lg-12 errors"></div>
@@ -44,40 +44,4 @@
       </div>
     </div>
   {{/unless}}
-
-  <!--<div class="form-group">-->
-    <!--<label class="col-lg-4 control-label">Project Group:</label>-->
-    <!--<div class="col-lg-8">-->
-      <!--<select class="projectGroup form-control" required>-->
-        <!--<option>Select Project Group</option>-->
-        <!--{{#each getProjectGroups}}-->
-          <!--<option value="{{projectGroupId}}" {{isProjectGroupSelected projectGroupId ../projectGroup.projectGroupId}}>{{projectGroupCode}} - {{projectGroupName}}</option>-->
-        <!--{{/each}}-->
-      <!--</select>-->
-    <!--</div>-->
-  <!--</div>-->
-
-  <div class="form-group">
-    <label class="col-lg-4 control-label">Role:</label>
-    <div class="col-lg-8">
-      <select class="role form-control" multiple {{editFormDisabled}}>
-        <option>Select Role</option>
-        {{#each getHMISRoles}}
-          <option value="{{id}}" {{isRoleSelected id ../roles}}>{{roleName}}</option>
-        {{/each}}
-      </select>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-lg-4 control-label">Profile:</label>
-    <div class="col-lg-8">
-      <select class="userProfile form-control" {{editFormDisabled}}>
-        <option>Select User Profile</option>
-        {{#each getUserProfiles}}
-          <option value="{{id}}" {{isProfileSelected id ../profile.id}}>{{profileName}}</option>
-        {{/each}}
-      </select>
-    </div>
-  </div>
 </template>

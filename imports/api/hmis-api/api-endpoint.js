@@ -25,7 +25,7 @@ export class ApiEndpoint {
       HTTP.get(url, options, (err, res) => {
         if (err) {
           try {
-            this.throwApiError(url, headers, err, DETAILED_GET_LOGS)
+            this.throwApiError(url, headers, err, DETAILED_GET_LOGS);
           } catch (e) {
             reject(e);
           }
