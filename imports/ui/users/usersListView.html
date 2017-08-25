@@ -1,0 +1,10 @@
+<template name="usersListView">
+  <p><a href="#" class="btn btn-primary postHousingMatches"> Create User</a></p>
+  {{#if hasData}}
+    {{> ReactiveDatatable tableData=tableData options=tableOptions }}
+  {{else}}
+    <div class="alert alert-info">
+      <p>There are no users to display.</p>
+    </div>
+  {{/if}}
+</template>

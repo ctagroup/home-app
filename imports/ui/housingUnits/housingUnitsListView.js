@@ -8,7 +8,6 @@ const tableOptions = {
       title: 'Name',
       data: 'aliasName',
       render(value, _, rowData) {
-        console.log(value);
         return value || rowData._id;
       },
     },

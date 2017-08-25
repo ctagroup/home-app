@@ -1,17 +1,101 @@
-/**
- * Created by udit on 08/07/16.
- */
 import { logger } from '/imports/utils/logger';
-
-const querystring = require('querystring');
+import querystring from 'querystring';
+import './usersEditView.html';
 
 const checkPassword = (pass) => {
   const regExp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$*])(?=.{8,16})');
-
   return regExp.test(pass);
 };
 
-Template.AdminDashboardusersEdit.onRendered(() => {
+
+Template.usersEditView.helpers(
+  {
+    getHMISStatusLabel(status) {
+      let cssclass = '';
+      switch (status) {
+        case 'ACTIVE':
+          cssclass = 'label-success';
+          break;
+        case 'INACTIVE':
+          cssclass = 'label-danger';
+          break;
+        case 'PENDING':
+          cssclass = 'label-warning';
+          break;
+        default:
+          cssclass = '';
+      }
+      return cssclass;
+    },
+    debugAPIMode() {
+      return (Router.current().params.query && Router.current().params.query.debugHMIS);
+    },
+    printHMISData() {
+      const user = users.findOne({ _id: Router.current().params._id });
+      return JSON.stringify(user.services.HMIS, null, '\t');
+    },
+    showUpdatedMessage() {
+      if (Router.current().params.query && Router.current().params.query.updated) {
+        return '<div class="alert alert-success admin-alert">' +
+          'User information is saved successfully.' +
+        '</div>';
+      }
+      return '';
+    },
+    getOtherRoles(userId) {
+      return HomeHelpers.getOtherRoles(userId);
+    },
+    getUserRoles(userId) {
+      return HomeHelpers.getUserRoles(userId);
+    },
+    getProjects() {
+      return projects.find({}).fetch();
+    },
+    isProjectSelected(projectId) {
+      const data = Router.current().data();
+      if (data.projectsLinked && data.projectsLinked.length > 0) {
+        return data.projectsLinked.indexOf(projectId) > -1 ? 'selected' : '';
+      }
+
+      return '';
+    },
+    getProjectName(projectId) {
+      const project = projects.findOne({ _id: projectId });
+      let projectName = projectId;
+      if (project) {
+        projectName = project.projectName;
+      }
+      return projectName;
+    },
+    locationHistoryMapOptions() {
+      // Make sure the maps API has loaded
+      if (GoogleMaps.loaded()) {
+        let center = new google.maps.LatLng(0, -180);
+
+        const userID = Session.get('admin_id');
+
+        if (userID) {
+          const lastPosition = LocationTracker.getLastPosition(userID);
+          center = new google.maps.LatLng(lastPosition.lat, lastPosition.long);
+        }
+
+        // Map initialization options
+        return {
+          center,
+          zoom: 5,
+        };
+      }
+
+      return {};
+    },
+    isLoggedUser() {
+      return Meteor.user()._id === Router.current().params._id;
+    },
+  }
+);
+
+
+Template.usersEditView.onRendered(() => {
   GoogleMaps.load(
     {
       key: HomeConfig.googleMaps.apiKey,
@@ -68,7 +152,7 @@ Template.AdminDashboardusersEdit.onRendered(() => {
   });
 });
 
-Template.AdminDashboardusersEdit.events({
+Template.usersEditView.events({
   'click .btn-add-role': (e) => {
     logger.info('adding user');
     $('.home-spinner').removeClass('hide').addClass('show');

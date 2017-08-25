@@ -1,11 +1,20 @@
 import { Clients } from '/imports/api/clients/clients';
 import { AppController } from './controllers';
-
+import '/imports/ui/users/usersListView.js';
 
 Router.route('adminDashboardusersView', {
   path: '/users',
-  template: 'AdminDashboardView',
+  template: Template.usersListView,
   controller: AppController,
+  waitOn() {
+    return Meteor.subscribe('users.all');
+  },
+  data() {
+    return {
+      title: 'Users',
+      subtitle: 'List',
+    };
+  },
 });
 
 Router.route('adminDashboardusersNew', {
