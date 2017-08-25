@@ -1,3 +1,4 @@
+import Users from '/imports/api/users/users';
 import './globalHouseholdMembers';
 import './globalHouseholdCreateView.html';
 
@@ -10,7 +11,7 @@ Template.globalHouseholdCreateView.events(
         Bert.alert('You must pick up a Head of Household.', 'danger', 'growl-top-right');
         return;
       }
-      const user = users.findOne({ _id: Meteor.userId() });
+      const user = Users.findOne({ _id: Meteor.userId() });
       const globalHouseholdObject = {
         headOfHouseholdId,
         inactive: $('input[name=inactive]:checked').val(),

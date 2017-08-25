@@ -1,9 +1,8 @@
-/**
- * Created by udit on 04/09/16.
- */
 import { logger } from '/imports/utils/logger';
+import './hmisProfile.js';
+import './usersCreateView.html';
 
-Template.AdminDashboardusersNew.events(
+Template.usersCreateView.events(
   {
     'submit #create-user': (evt, tmpl) => {
       evt.preventDefault();

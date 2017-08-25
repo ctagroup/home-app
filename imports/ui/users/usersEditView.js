@@ -1,6 +1,46 @@
-import { logger } from '/imports/utils/logger';
 import querystring from 'querystring';
+import { logger } from '/imports/utils/logger';
+import HomeRoles from '/imports/config/roles';
+import Users from '/imports/api/users/users';
+import './changePasswordForm.html';
 import './usersEditView.html';
+
+Template.updateUserForm.helpers({
+  schema() {
+    return new SimpleSchema({
+      'services.HMIS': {
+        type: new SimpleSchema({
+          firstName: {
+            type: String,
+            optional: true,
+          },
+          middleName: {
+            type: String,
+            optional: true,
+          },
+          lastName: {
+            type: String,
+            optional: true,
+          },
+          emailAddress: {
+            type: String,
+            optional: true,
+          },
+          password: {
+            type: String,
+            optional: true,
+          },
+        }),
+      },
+      roles: {
+        type: [String],
+        allowedValues: HomeRoles,
+      },
+    });
+  },
+});
+
+
 
 const checkPassword = (pass) => {
   const regExp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$*])(?=.{8,16})');
@@ -8,8 +48,16 @@ const checkPassword = (pass) => {
 };
 
 
-Template.usersEditView.helpers(
-  {
+Template.usersEditView.helpers({
+  userRoles() {
+    const userId = Meteor.userId();
+    return HomeRoles.map(role => ({
+      role,
+      selected: Roles.userIsInRole(userId, role),
+    }));
+  },
+
+
     getHMISStatusLabel(status) {
       let cssclass = '';
       switch (status) {
@@ -31,7 +79,7 @@ Template.usersEditView.helpers(
       return (Router.current().params.query && Router.current().params.query.debugHMIS);
     },
     printHMISData() {
-      const user = users.findOne({ _id: Router.current().params._id });
+      const user = Users.findOne({ _id: Router.current().params._id });
       return JSON.stringify(user.services.HMIS, null, '\t');
     },
     showUpdatedMessage() {
@@ -182,7 +230,7 @@ Template.usersEditView.events({
 
     const newRoles = hmisRoles.find({ id: { $in: roleIds } }).fetch();
 
-    const localUser = users.findOne({ _id: Router.current().params._id });
+    const localUser = Users.findOne({ _id: Router.current().params._id });
     const hmisUser = singleHMISUser.findOne({ _id: localUser.services.HMIS.accountId });
     const oldRoles = hmisUser.roles;
 

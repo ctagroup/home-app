@@ -1,38 +1,33 @@
-<template name="usersListView">
+<template name="updateUserForm">
+  {{ log this.user }}
+  {{> quickForm schema=schema doc=this.user id="updateUserForm" type="update"}}
+</template>
+
+
+<template name="usersEditView">
   <div class="box box-default">
     <div class="box-body">
       <h4>User Roles</h4>
       <img class="home-spinner hide" alt="spinner" src="/imgs/spinner.gif" />
-      {{#each getUserRoles admin_current_id}}
-        <button class="btn btn-primary btn-xs {{#if isInRole 'Developer,System Admin' }}btn-remove-role{{/if}}" role="{{this}}" user="{{admin_current_id}}">{{this}}</button>
+      {{#each userRoles}}
+        <button class="btn btn-primary btn-xs {{#if this.selected }}btn-remove-role{{/if}}" role="{{this.role}}" user="{{admin_current_id}}">
+          {{this.role}}
+        </button>
       {{/each}}
-
-      {{#if isInRole 'Developer,System Admin'}}
-        {{#each getOtherRoles admin_current_id}}
-          <button class="btn btn-default btn-xs btn-add-role" role="{{this}}" user="{{admin_current_id}}">{{this}}</button>
-        {{/each}}
-        {{#if getUserRoles admin_current_id}}
-          <p style="margin-top:5px;">Click a role to toggle it.</p>
-        {{else}}
-          <p>User not in any roles. Click a role to add it to a user.</p>
-        {{/if}}
-      {{else}}
-        {{#unless getUserRoles admin_current_id}}
-          <p style="margin-top:5px;">User not in any roles.</p>
-        {{/unless}}
-      {{/if}}
+      <p style="margin-top:5px;">Click a role to toggle it.</p>
     </div>
   </div>
 
   <div class="box box-default">
     <div class="box-body">
-      <h4>Profile</h4>
-      <label class="label {{getHMISStatusLabel status}}">{{status}}</label><br /><br />
+      <h4>HMIS Profile</h4>
       <div class="row">
         <div class="col-md-6 col-md-offset-1">
           <form id="edit-user" class="form-horizontal" role="form">
-            {{> userForm}}
-            {{#if isInRole 'Developer,System Admin'}}
+            {{#with user.services.HMIS}}
+              {{> hmisProfile}}
+            {{/with}}
+            {{#if canUpdateProfile}}
               <div class="form-group">
                 <label class="col-md-4 control-label"></label>
                 <div class="col-md-8">

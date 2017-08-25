@@ -75,7 +75,7 @@ export function deleteUserButton() {
     data: '_id',
     title: 'Delete',
     render() { return ''; },
-    createdCell(node, _id, rowData) {
+    createdCell(node, _id) {
       const name = '';
       const templateData = {
         _id,
