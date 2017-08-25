@@ -1,5 +1,7 @@
 import { logger } from '/imports/utils/logger';
 
+const DETAILED_GET_LOGS = false;
+
 export class ApiEndpoint {
   constructor(appId, accessToken) {
     this.appId = appId;
@@ -19,14 +21,12 @@ export class ApiEndpoint {
     return new Promise((resolve, reject) => {
       const headers = this.getRequestHeaders();
       const options = { headers };
-      logger.debug('HMIS API:get (promise)', { url, options });
+      logger.debug('HMIS API:get (promise)', DETAILED_GET_LOGS ? { url, options } : url);
       HTTP.get(url, options, (err, res) => {
         if (err) {
-          console.log('we have an error');
           try {
-            this.throwApiError(url, headers, err);
+            this.throwApiError(url, headers, err, DETAILED_GET_LOGS)
           } catch (e) {
-            console.log('rejecting');
             reject(e);
           }
         } else {
@@ -39,14 +39,17 @@ export class ApiEndpoint {
   doGet(url) {
     const headers = this.getRequestHeaders();
     const options = { headers };
-    logger.debug('HMIS API:get', { url, options });
+    logger.debug('HMIS API:get req', DETAILED_GET_LOGS ? { url, options } : url);
+
     let response = false;
     try {
       response = HTTP.get(url, options);
     } catch (err) {
-      this.throwApiError(url, headers, err);
+      this.throwApiError(url, headers, err, DETAILED_GET_LOGS);
     }
-    logger.debug(`HMIS API:get response (${url})`, response);
+    logger.debug(`HMIS API:get res (${url})`,
+      DETAILED_GET_LOGS ? response : response.statusCode
+    );
     return response.data;
   }
 
@@ -97,13 +100,21 @@ export class ApiEndpoint {
     return response.data;
   }
 
-  throwApiError(url, requestHeaders, httpError) {
-    logger.error('HMIS API', {
-      url,
-      requestHeaders,
-      json_data: requestHeaders.data ? JSON.stringify(requestHeaders.data) : '',
-      httpError,
-    });
+  throwApiError(url, requestHeaders, httpError, logDetails = true) {
+    if (logDetails) {
+      logger.error('HMIS API', {
+        url,
+        requestHeaders,
+        json_data: requestHeaders.data ? JSON.stringify(requestHeaders.data) : '',
+        httpError,
+      });
+    } else {
+      logger.error('HMIS API', {
+        url,
+        statusCode: httpError.response.statusCode,
+      });
+    }
+
     const code = httpError.response ? httpError.response.statusCode : 0;
     let message = '';
     try {
