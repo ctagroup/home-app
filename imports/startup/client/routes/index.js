@@ -12,24 +12,4 @@ import './users';
 import './roleManager';
 import './openingScript';
 import './projectSetup';
-
-
-// Prompt for sign in form in case of all routes except the following
-Router.plugin(
-  'ensureSignedIn', {
-    except: _.pluck(AccountsTemplates.routes, 'name').concat([
-      'root',
-      'privacy',
-      'termsOfUse',
-      'notEnoughPermission',
-    ]),
-  }
-);
-
-AccountsTemplates.configureRoute('signIn', {
-  name: 'signIn',
-  path: '/login',
-  template: 'login',
-  redirect: '/dashboard',
-  layoutTemplate: 'ContentLayout',
-});
+import './plugins';
