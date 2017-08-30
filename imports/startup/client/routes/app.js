@@ -1,4 +1,6 @@
 import { AppController } from './controllers';
+import '/imports/ui/content/logout';
+import '/imports/ui/app/notEnoughPermissions';
 
 
 Router.route('dashboard', {
@@ -16,9 +18,9 @@ Router.route('dashboard', {
 });
 
 Router.route(
-  '/not-enough-permission', {
-    name: 'notEnoughPermission',
-    template: 'notEnoughPermission',
+  '/not-enough-permissions', {
+    name: Template.NotEnoughPermissions,
+    template: Template.NotEnoughPermission,
     controller: AppController,
   }
 );
@@ -26,13 +28,15 @@ Router.route(
 Router.route(
   '/logout', {
     name: 'logout',
-    template: 'logout',
+    template: Template.Logout,
     onBeforeAction() {
       AccountsTemplates.logout();
       this.next();
     },
   }
 );
+
+
 
 /*
 Router.route(

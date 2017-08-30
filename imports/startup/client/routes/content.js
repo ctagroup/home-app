@@ -1,9 +1,12 @@
 import { ContentController } from './controllers';
+import '/imports/ui/content/home';
+import '/imports/ui/content/privacy';
+import '/imports/ui/content/termsOfUse';
 
 Router.route(
   '/', {
     name: 'root',
-    template: 'home',
+    template: Template.Home,
     controller: ContentController,
   }
 );
@@ -11,7 +14,7 @@ Router.route(
 Router.route(
   '/privacy', {
     name: 'privacy',
-    template: 'privacy',
+    template: Template.Privacy,
     controller: ContentController,
   }
 );
@@ -19,7 +22,7 @@ Router.route(
 Router.route(
   '/terms-of-use', {
     name: 'termsOfUse',
-    template: 'termsOfUse',
+    template: Template.TermsOfUse,
     controller: ContentController,
   }
 );
