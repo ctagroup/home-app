@@ -102,8 +102,9 @@ export class ClientApi extends ApiEndpoint {
     throw new Error('Not yet implemented');
   }
 
-  getProjectsForPublish() {
-    throw new Error('Not yet implemented');
+  getProjects() {
+    const url = `${BASE_URL}/v2015/projects?startIndex=0&maxItems=10000`;
+    return this.doGet(url).projects.projects;
   }
 
   getProject(projectId, schema = 2015) {
