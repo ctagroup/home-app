@@ -33,7 +33,7 @@ Router.route('adminDashboardusersNew', {
 
 Router.route('adminDashboardusersEdit', {
   path: '/users/:_id/edit',
-  template: Template.updateUserForm,
+  template: Template.usersEditView,
   controller: AppController,
   waitOn() {
     return Meteor.subscribe('users.one', this.params._id);

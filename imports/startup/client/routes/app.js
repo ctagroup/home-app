@@ -36,8 +36,6 @@ Router.route(
   }
 );
 
-
-
 /*
 Router.route(
   '/chat/', {
