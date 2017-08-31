@@ -22,6 +22,11 @@ Meteor.methods({
       'services.HMIS.emailAddress': doc.services.HMIS.emailAddress,
     } });
 
+    // TODO: permissions, only admin can do it
+    Users.update(userId, { $set: {
+      projectsLinked: doc.projectsLinked,
+    } });
+
     const hmisId = Users.findOne(userId).services.HMIS.accountId;
     const api = HmisClient.create(this.userId).api('user-service');
 
@@ -36,12 +41,29 @@ Meteor.methods({
     // TODO: update HMIS user roles?
     // api.updateUserRoles(hmisId, doc.services.HMIS.roles);
 
-    // TODO: update linked projects
     // TODO: change HMIS password
   },
 
-  'users.getHmisRoles'() {
+  'users.hmisRoles'() {
+    // TODO: permissions
     return this.userId && HmisClient.create(this.userId).api('user-service').getRoles();
+  },
+  'users.projects.all'() {
+    if (!this.userId) {
+      throw new Meteor.Error('403', 'Forbidden');
+    }
+    const projects = HmisClient.create(this.userId).api('client').getProjects();
+    return projects.map(p => ({
+      projectId: p.projectId,
+      projectName: p.projectName,
+    }));
+
+    /*
+    if (Roles.userIsInRole(this.userId, DefaultAdminAccessRoles) {
+
+    }
+    return  && ;
+    */
   },
 
 

@@ -7,6 +7,7 @@ import './usersEditView.html';
 Template.usersEditView.helpers({
   schema() {
     const hmisRoles = Template.instance().hmisRoles.get() || [];
+    const projectsLinked = Template.instance().projectsLinked.get() || [];
     return new SimpleSchema({
       'services.HMIS': {
         type: new SimpleSchema({
@@ -63,6 +64,20 @@ Template.usersEditView.helpers({
           },
         },
       },
+      projectsLinked: {
+        type: [String],
+        allowedValues: projectsLinked.map(p => p.projectId),
+        optional: true,
+        autoform: {
+          afFieldInput: {
+            type: 'select-checkbox',
+            options: projectsLinked.map(p => ({
+              value: p.projectId,
+              label: p.projectName,
+            })),
+          },
+        },
+      },
       /*
       passwordChange: {
         label: 'Change Password',
@@ -107,7 +122,9 @@ AutoForm.addHooks('updateUserForm', {
 
 Template.usersEditView.onCreated(function onCreated() {
   this.hmisRoles = new ReactiveVar();
-  Meteor.call('users.getHmisRoles', (err, res) => res && this.hmisRoles.set(res));
+  this.projectsLinked = new ReactiveVar();
+  Meteor.call('users.projects.all', (err, res) => res && this.projectsLinked.set(res));
+  Meteor.call('users.hmisRoles', (err, res) => res && this.hmisRoles.set(res));
 });
 
 
