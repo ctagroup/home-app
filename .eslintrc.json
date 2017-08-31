@@ -70,8 +70,6 @@
     "spdatScoreHelpers": true,
     "projects": true,
     "projectGroups": true,
-    //"userProfiles": true,
-    "hmisRoles": true,
     "singleHMISUser": true,
     "hmisQuesSync": true,
     "hmisSurveySync": true,

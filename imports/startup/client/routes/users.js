@@ -1,4 +1,5 @@
 import Users from '/imports/api/users/users';
+import { fullName } from '/imports/api/utils';
 import { AppController } from './controllers';
 import '/imports/ui/users/usersListView.js';
 import '/imports/ui/users/usersCreateView.js';
@@ -41,9 +42,11 @@ Router.route('adminDashboardusersEdit', {
   data() {
     const userId = Meteor.userId();
     const user = Users.findOne(this.params._id);
+    // TODO: display user HMIS status
+    const data = user && user.services && user.services.HMIS || {};
     return {
       title: 'Users',
-      subtitle: 'Edit',
+      subtitle: `Edit ${fullName(data)} (${data.status})`,
       user,
       canUpdateProfile: Roles.userIsInRole(userId, ['Developer', 'System Admin']),
     };

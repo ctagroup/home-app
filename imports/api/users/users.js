@@ -1,3 +1,44 @@
+SimpleSchema.messages({
+  passwordMismatch: 'Passwords do not match',
+  wrongPasswordFormat: 'The password must contain 8 to 16 characters long, It must contain at least one lowercase character, one uppercase character, one number, and one of the following special characters !@#$*', // eslint-disable-line max-len
+});
+
+export const ChangePasswordSchema = new SimpleSchema({
+  currentPassword: {
+    type: String,
+    autoform: {
+      afFieldInput: { type: 'password' },
+    },
+  },
+  newPassword: {
+    type: String,
+    min: 8,
+    custom() {
+      const regExp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$*])(?=.{8,16})');
+      if (!regExp.test(this.value)) {
+        return 'wrongPasswordFormat';
+      }
+      return undefined;
+    },
+    autoform: {
+      afFieldInput: { type: 'password' },
+    },
+  },
+  confirmNewPassword: {
+    type: String,
+    min: 8,
+    custom() {
+      if (this.value !== this.field('newPassword')) {
+        return 'passwordMismatch';
+      }
+      return undefined;
+    },
+    autoform: {
+      afFieldInput: { type: 'password' },
+    },
+  },
+});
+
 const GeoCoordinatesSchema = new SimpleSchema(
   {
     lat: {
