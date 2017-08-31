@@ -1,15 +1,14 @@
-/**
- * Created by udit on 26/07/16.
- */
 import { logger } from '/imports/utils/logger';
-import Users from '/imports/api/users/users';
+import Users, { ChangePasswordSchema } from '/imports/api/users/users';
 import { HmisClient } from '/imports/api/hmis-api';
 
 Meteor.methods({
   'users.create'() {
+    // TODO: doc should be validated by SimpleSchema
   },
 
   'users.update'(userId, doc) {
+    // TODO: doc should be validated by SimpleSchema
     const roles = doc.roles[Roles.GLOBAL_GROUP];
     logger.info(`Setting roles of user ${userId} to`, roles);
     Roles.setUserRoles(userId, roles, Roles.GLOBAL_GROUP);
@@ -43,7 +42,13 @@ Meteor.methods({
 
     // TODO: change HMIS password
   },
-
+  'users.changeOwnPassword'(passwordChange) {
+    check(passwordChange, ChangePasswordSchema);
+    const { currentPassword, newPassword, confirmNewPassword } = passwordChange;
+    const api = HmisClient.create(this.userId).api('user-service');
+    const result = api.changeOwnPassword(currentPassword, newPassword, confirmNewPassword);
+    return result;
+  },
   'users.hmisRoles'() {
     // TODO: permissions
     return this.userId && HmisClient.create(this.userId).api('user-service').getRoles();

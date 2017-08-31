@@ -1,151 +1,20 @@
 import { ReactiveVar } from 'meteor/reactive-var';
-import HomeRoles from '/imports/config/roles';
-import './changePasswordForm.html';
+import './userEditForm';
+import './changePasswordForm';
 import './usersEditView.html';
 
-// SimpleSchema.debug = true;
 Template.usersEditView.helpers({
-  schema() {
-    const hmisRoles = Template.instance().hmisRoles.get() || [];
-    const projectsLinked = Template.instance().projectsLinked.get() || [];
-    return new SimpleSchema({
-      'services.HMIS': {
-        type: new SimpleSchema({
-          firstName: {
-            type: String,
-            optional: true,
-          },
-          middleName: {
-            type: String,
-            optional: true,
-          },
-          lastName: {
-            type: String,
-            optional: true,
-          },
-          gender: {
-            type: Number,
-            allowedValues: [0, 1],
-            autoform: {
-              options: [
-                { value: 0, label: 'Male' },
-                { value: 1, label: 'Female' },
-              ],
-            },
-            optional: true,
-          },
-          emailAddress: {
-            type: String,
-            optional: true,
-          },
-          roles: {
-            type: [String],
-            allowedValues: hmisRoles.map(r => r.id),
-            optional: true,
-            autoform: {
-              afFieldInput: {
-                type: 'select-checkbox',
-                options: hmisRoles.map(r => ({
-                  value: r.id,
-                  label: r.roleDescription,
-                })),
-              },
-            },
-          },
-        }),
-      },
-      'roles.__global_roles__': {
-        label: 'HOME roles',
-        type: [String],
-        allowedValues: HomeRoles,
-        autoform: {
-          afFieldInput: {
-            type: 'select-checkbox',
-          },
-        },
-      },
-      projectsLinked: {
-        type: [String],
-        allowedValues: projectsLinked.map(p => p.projectId),
-        optional: true,
-        autoform: {
-          afFieldInput: {
-            type: 'select-checkbox',
-            options: projectsLinked.map(p => ({
-              value: p.projectId,
-              label: p.projectName,
-            })),
-          },
-        },
-      },
-      /*
-      passwordChange: {
-        label: 'Change Password',
-        type: new SimpleSchema({
-          currentPassword: {
-            type: String,
-            optional: true,
-          },
-          newPassword: {
-            type: String,
-            optional: true,
-          },
-          confirmNewPassword: {
-            type: String,
-            optional: true,
-          },
-        }),
-      },
-      */
-    });
+  hmisRoles() {
+    return Template.instance().hmisRoles.get();
   },
-
-
-});
-
-AutoForm.addHooks('updateUserForm', {
-  onSubmit: function submit(insertDoc, updateDoc, currentDoc) {
-    this.event.preventDefault();
-    Meteor.call('users.update', currentDoc._id, insertDoc, (err, res) => {
-      this.done(err, res);
-    });
-    return false;
+  projectsLinked() {
+    return Template.instance().projectsLinked.get();
   },
-  onSuccess() {
-    Bert.alert('User updated', 'success', 'growl-top-right');
+  isLogggedInUser() {
+    return this.user._id === Meteor.userId();
   },
-  onError(formType, err) {
-    console.log(err);
-    Bert.alert(err.reason || err.error, 'danger', 'growl-top-right');
-  },
-});
-
-Template.usersEditView.onCreated(function onCreated() {
-  this.hmisRoles = new ReactiveVar();
-  this.projectsLinked = new ReactiveVar();
-  Meteor.call('users.projects.all', (err, res) => res && this.projectsLinked.set(res));
-  Meteor.call('users.hmisRoles', (err, res) => res && this.hmisRoles.set(res));
-});
-
-
-/*
-const checkPassword = (pass) => {
-  const regExp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$*])(?=.{8,16})');
-  return regExp.test(pass);
-};
-
-Template.usersEditView.helpers({
-
-  userRoles() {
-    const userId = Meteor.userId();
-    return HomeRoles.map(role => ({
-      role,
-      selected: Roles.userIsInRole(userId, role),
-    }));
-  },
-
-  getHmisStatusLabel(status) {
-    switch (status) {
+  getHmisStatusLabel() {
+    switch (this.user.HMIS.status) {
       case 'ACTIVE':
         return 'label-success';
       case 'INACTIVE':
@@ -157,72 +26,40 @@ Template.usersEditView.helpers({
     }
   },
   /*
-    debugAPIMode() {
-      return (Router.current().params.query && Router.current().params.query.debugHMIS);
-    },
-    printHMISData() {
-      const user = Users.findOne({ _id: Router.current().params._id });
-      return JSON.stringify(user.services.HMIS, null, '\t');
-    },
-    showUpdatedMessage() {
-      if (Router.current().params.query && Router.current().params.query.updated) {
-        return '<div class="alert alert-success admin-alert">' +
-          'User information is saved successfully.' +
-        '</div>';
-      }
-      return '';
-    },
-    getOtherRoles(userId) {
-      return HomeHelpers.getOtherRoles(userId);
-    },
-    getUserRoles(userId) {
-      return HomeHelpers.getUserRoles(userId);
-    },
-    getProjects() {
-      return projects.find({}).fetch();
-    },
-    isProjectSelected(projectId) {
-      const data = Router.current().data();
-      if (data.projectsLinked && data.projectsLinked.length > 0) {
-        return data.projectsLinked.indexOf(projectId) > -1 ? 'selected' : '';
+  locationHistoryMapOptions() {
+    // Make sure the maps API has loaded
+    if (GoogleMaps.loaded()) {
+      let center = new google.maps.LatLng(0, -180);
+
+      const userID = Session.get('admin_id');
+
+      if (userID) {
+        const lastPosition = LocationTracker.getLastPosition(userID);
+        center = new google.maps.LatLng(lastPosition.lat, lastPosition.long);
       }
 
-      return '';
-    },
-    getProjectName(projectId) {
-      const project = projects.findOne({ _id: projectId });
-      let projectName = projectId;
-      if (project) {
-        projectName = project.projectName;
-      }
-      return projectName;
-    },
-    locationHistoryMapOptions() {
-      // Make sure the maps API has loaded
-      if (GoogleMaps.loaded()) {
-        let center = new google.maps.LatLng(0, -180);
+      // Map initialization options
+      return {
+        center,
+        zoom: 5,
+      };
+    }
 
-        const userID = Session.get('admin_id');
-
-        if (userID) {
-          const lastPosition = LocationTracker.getLastPosition(userID);
-          center = new google.maps.LatLng(lastPosition.lat, lastPosition.long);
-        }
-
-        // Map initialization options
-        return {
-          center,
-          zoom: 5,
-        };
-      }
-
-      return {};
-    },
-    isLoggedUser() {
-      return Meteor.user()._id === Router.current().params._id;
-    },
-});
+    return {};
+  },
   */
+});
+
+Template.usersEditView.onCreated(function onCreated() {
+  this.hmisRoles = new ReactiveVar();
+  this.projectsLinked = new ReactiveVar();
+  Meteor.call('users.projects.all', (err, res) => res && this.projectsLinked.set(res));
+  Meteor.call('users.hmisRoles', (err, res) => res && this.hmisRoles.set(res));
+});
+
+Template.usersEditView.helpers({
+
+});
 
 Template.usersEditView.onRendered(() => {
   GoogleMaps.load(
@@ -350,28 +187,6 @@ Template.usersEditView.events({
         );
       }
     });
-  },
-  'submit #save-linked-projects': (e) => {
-    e.preventDefault();
-    const projectsLinked = $('.projectsLinked').val();
-
-    Meteor.call(
-      'updateLinkedProjects',
-      Router.current().params._id,
-      projectsLinked,
-      (error, result) => {
-        if (error) {
-          logger.info(error);
-        } else {
-          logger.info(result);
-          const oldUrl = Router.current().url;
-          const qs = querystring.stringify(Router.current().params.query);
-          let cleanUrl = oldUrl.replace(qs, '');
-          cleanUrl = cleanUrl.replace('?', '');
-          Router.go(`${cleanUrl}?updated=1`);
-        }
-      }
-    );
   },
   'submit #change-password': (e, tmpl) => {
     e.preventDefault();

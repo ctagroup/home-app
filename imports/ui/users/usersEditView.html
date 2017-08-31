@@ -1,5 +1,9 @@
 <template name="usersEditView">
-  {{> quickForm schema=schema doc=this.user id="updateUserForm"}}
+  {{> userEditForm user=this.user projectsLinked=projectsLinked hmisRoles=hmisRoles}}
+  {{#if isLogggedInUser}}
+    <hr />
+    {{> changePasswordForm}}
+  {{/if}}
 </template>
 
 

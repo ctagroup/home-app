@@ -10,6 +10,7 @@ const fields = {
   'services.HMIS.lastName': 1,
   'services.HMIS.gender': 1,
   'services.HMIS.roles': 1,
+  'services.HMIS.status': 1,
   projectsLinked: 1, // TODO: is it required??
 };
 
