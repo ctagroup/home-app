@@ -11,8 +11,7 @@ Meteor.publish(
     });
 
     const hc = HmisClient.create(this.userId);
-    let housingUnits = hc.api('housing').getHousingUnits();
-    housingUnits = _.filter(housingUnits, (c) => !c.deleted);
+    const housingUnits = hc.api('housing').getHousingUnits();
 
     // populate the list without the details
     for (let i = 0; i < housingUnits.length && !stopFunction; i += 1) {

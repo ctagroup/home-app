@@ -3,9 +3,49 @@
  */
 import { logger } from '/imports/utils/logger';
 import Users from '/imports/api/users/users';
+import { HmisClient } from '/imports/api/hmis-api';
 
-Meteor.methods(
-  {
+Meteor.methods({
+  'users.create'() {
+  },
+
+  'users.update'(userId, doc) {
+    const roles = doc.roles[Roles.GLOBAL_GROUP];
+    logger.info(`Setting roles of user ${userId} to`, roles);
+    Roles.setUserRoles(userId, roles, Roles.GLOBAL_GROUP);
+
+    Users.update(userId, { $set: {
+      'services.HMIS.firstName': doc.services.HMIS.firstName,
+      'services.HMIS.middleName': doc.services.HMIS.middleName,
+      'services.HMIS.lastName': doc.services.HMIS.lastName,
+      'services.HMIS.gender': doc.services.HMIS.gender,
+      'services.HMIS.emailAddress': doc.services.HMIS.emailAddress,
+    } });
+
+    const hmisId = Users.findOne(userId).services.HMIS.accountId;
+    const api = HmisClient.create(this.userId).api('user-service');
+
+    api.updateUser(hmisId, {
+      firstName: doc.services.HMIS.firstName,
+      middleName: doc.services.HMIS.middleName,
+      lastName: doc.services.HMIS.lastName,
+      gender: doc.services.HMIS.gender,
+      emailAddress: doc.services.HMIS.emailAddress,
+    });
+
+    // TODO: update HMIS user roles?
+    // api.updateUserRoles(hmisId, doc.services.HMIS.roles);
+
+    // TODO: update linked projects
+    // TODO: change HMIS password
+  },
+
+  'users.getHmisRoles'() {
+    return this.userId && HmisClient.create(this.userId).api('user-service').getRoles();
+  },
+
+
+/*
     createHMISUser(userObj) {
       const user = HMISAPI.createUser(userObj);
 
@@ -31,23 +71,6 @@ Meteor.methods(
             ],
           }
         );
-        logger.info(_id);
-      }
-
-      return user;
-    },
-    updateHMISUser(userId, userObj) {
-      const localUser = Users.findOne({ _id: userId });
-
-      const user = HMISAPI.updateUser(localUser.services.HMIS.accountId, userObj);
-
-      if (user) {
-        const _id = Users.update(userId, {
-          $set: {
-            'services.HMIS.firstName': userObj.firstName,
-            'services.HMIS.lastName': userObj.lastName,
-          },
-        });
         logger.info(_id);
       }
 
@@ -101,9 +124,8 @@ Meteor.methods(
               to: user.email,
               from: HomeConfig.fromEmail,
               subject: 'Your account has been created',
-              /* eslint-disable */
-              html: `You've just had an account created for ${Meteor.absoluteUrl()} with password ${doc.password}`,
-              /* eslint-enable */
+              html: `You've just had an account
+              created for ${Meteor.absoluteUrl()} with password ${doc.password}`,
             });
           }
           if (!doc.sendPassword) {
@@ -138,5 +160,5 @@ Meteor.methods(
       }
       return false;
     },
-  }
-);
+*/
+});

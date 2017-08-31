@@ -1,12 +1,12 @@
-import querystring from 'querystring';
-import { logger } from '/imports/utils/logger';
+import { ReactiveVar } from 'meteor/reactive-var';
 import HomeRoles from '/imports/config/roles';
-import Users from '/imports/api/users/users';
 import './changePasswordForm.html';
 import './usersEditView.html';
 
-Template.updateUserForm.helpers({
+// SimpleSchema.debug = true;
+Template.usersEditView.helpers({
   schema() {
+    const hmisRoles = Template.instance().hmisRoles.get() || [];
     return new SimpleSchema({
       'services.HMIS': {
         type: new SimpleSchema({
@@ -22,33 +22,103 @@ Template.updateUserForm.helpers({
             type: String,
             optional: true,
           },
+          gender: {
+            type: Number,
+            allowedValues: [0, 1],
+            autoform: {
+              options: [
+                { value: 0, label: 'Male' },
+                { value: 1, label: 'Female' },
+              ],
+            },
+            optional: true,
+          },
           emailAddress: {
             type: String,
             optional: true,
           },
-          password: {
+          roles: {
+            type: [String],
+            allowedValues: hmisRoles.map(r => r.id),
+            optional: true,
+            autoform: {
+              afFieldInput: {
+                type: 'select-checkbox',
+                options: hmisRoles.map(r => ({
+                  value: r.id,
+                  label: r.roleDescription,
+                })),
+              },
+            },
+          },
+        }),
+      },
+      'roles.__global_roles__': {
+        label: 'HOME roles',
+        type: [String],
+        allowedValues: HomeRoles,
+        autoform: {
+          afFieldInput: {
+            type: 'select-checkbox',
+          },
+        },
+      },
+      /*
+      passwordChange: {
+        label: 'Change Password',
+        type: new SimpleSchema({
+          currentPassword: {
+            type: String,
+            optional: true,
+          },
+          newPassword: {
+            type: String,
+            optional: true,
+          },
+          confirmNewPassword: {
             type: String,
             optional: true,
           },
         }),
       },
-      roles: {
-        type: [String],
-        allowedValues: HomeRoles,
-      },
+      */
     });
+  },
+
+
+});
+
+AutoForm.addHooks('updateUserForm', {
+  onSubmit: function submit(insertDoc, updateDoc, currentDoc) {
+    this.event.preventDefault();
+    Meteor.call('users.update', currentDoc._id, insertDoc, (err, res) => {
+      this.done(err, res);
+    });
+    return false;
+  },
+  onSuccess() {
+    Bert.alert('User updated', 'success', 'growl-top-right');
+  },
+  onError(formType, err) {
+    console.log(err);
+    Bert.alert(err.reason || err.error, 'danger', 'growl-top-right');
   },
 });
 
+Template.usersEditView.onCreated(function onCreated() {
+  this.hmisRoles = new ReactiveVar();
+  Meteor.call('users.getHmisRoles', (err, res) => res && this.hmisRoles.set(res));
+});
 
 
+/*
 const checkPassword = (pass) => {
   const regExp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$*])(?=.{8,16})');
   return regExp.test(pass);
 };
 
-
 Template.usersEditView.helpers({
+
   userRoles() {
     const userId = Meteor.userId();
     return HomeRoles.map(role => ({
@@ -57,24 +127,19 @@ Template.usersEditView.helpers({
     }));
   },
 
-
-    getHMISStatusLabel(status) {
-      let cssclass = '';
-      switch (status) {
-        case 'ACTIVE':
-          cssclass = 'label-success';
-          break;
-        case 'INACTIVE':
-          cssclass = 'label-danger';
-          break;
-        case 'PENDING':
-          cssclass = 'label-warning';
-          break;
-        default:
-          cssclass = '';
-      }
-      return cssclass;
-    },
+  getHmisStatusLabel(status) {
+    switch (status) {
+      case 'ACTIVE':
+        return 'label-success';
+      case 'INACTIVE':
+        return 'label-danger';
+      case 'PENDING':
+        return 'label-warning';
+      default:
+        return '';
+    }
+  },
+  /*
     debugAPIMode() {
       return (Router.current().params.query && Router.current().params.query.debugHMIS);
     },
@@ -139,9 +204,8 @@ Template.usersEditView.helpers({
     isLoggedUser() {
       return Meteor.user()._id === Router.current().params._id;
     },
-  }
-);
-
+});
+  */
 
 Template.usersEditView.onRendered(() => {
   GoogleMaps.load(
@@ -201,6 +265,7 @@ Template.usersEditView.onRendered(() => {
 });
 
 Template.usersEditView.events({
+  /*
   'click .btn-add-role': (e) => {
     logger.info('adding user');
     $('.home-spinner').removeClass('hide').addClass('show');
@@ -303,7 +368,10 @@ Template.usersEditView.events({
     }
 
     if (!checkPassword(newPassword)) {
-      Bert.alert('The password must contain 8 to 16 characters long, It must contain at least one lowercase character, one uppercase character, one number, and one of the following special characters !@#$*', 'danger', 'growl-top-right'); // eslint-disable-line
+      Bert.alert('The password must contain 8 to 16 characters long, It must contain at
+      least one lowercase character, one uppercase character, one number,
+       and one of the following special
+      characters !@#$*', 'danger', 'growl-top-right'); // eslint-disable-line
 
       return;
     }
@@ -312,7 +380,9 @@ Template.usersEditView.events({
     newPassword, confirmNewPassword, (err) => {
       if (err) {
         if (err.error === 'ERR_CODE_INVALID_CURRENT_PASSWORD') {
-          Bert.alert('The specified current password does not match with the password stored in the database.', 'danger', 'growl-top-right'); // eslint-disable-line
+          Bert.alert('The specified current password does not match with the
+          password stored in the database.',
+          'danger', 'growl-top-right'); // eslint-disable-line
         } else {
           Bert.alert('Error changing password. Please try again.', 'danger', 'growl-top-right');
         }
@@ -321,4 +391,5 @@ Template.usersEditView.events({
       }
     });
   },
+  */
 });

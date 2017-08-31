@@ -6,33 +6,44 @@ const BASE_URL = 'https://www.hmislynk.com/hmis-user-service/rest';
 
 
 class UserServiceApi extends ApiEndpoint {
+  createUser() {
+    throw new Error('Not yet implemented');
+  }
+
+  updateUser(userId, data) {
+    const url = `${BASE_URL}/accounts/${userId}`;
+    return this.doPut(url, { account: data });
+  }
+
+  updateUserRoles(userId, roles) {
+    const url = `${BASE_URL}/accounts/${userId}/roles`;
+    return this.doPut(url, { roles });
+  }
+
   getProjectGroups() {
     throw new Error('Not yet implemented');
   }
 
   getUserProfiles() {
-    throw new Error('Not yet implemented');
+    const url = `${BASE_URL}/profiles?startIndex=0&maxItems=10000`;
+    return this.doGet(url).profiles.profile;
   }
 
   getRoles() {
-    throw new Error('Not yet implemented');
+    const url = `${BASE_URL}/roles?startIndex=0&maxItems=10000`;
+    return this.doGet(url).roles.role;
   }
 
-  createUser() {
-    throw new Error('Not yet implemented');
+  changeOwnPassword(currentPassword, newPassword, confirmNewPassword) {
+    const url = `${BASE_URL}/accounts/self/passwordchanges`;
+    const passwordChange = {
+      currentPassword,
+      newPassword,
+      confirmNewPassword,
+    };
+    return this.doPut(url, { passwordChange });
   }
 
-  updateUser() {
-    throw new Error('Not yet implemented');
-  }
-
-  changePassword() {
-    throw new Error('Not yet implemented');
-  }
-
-  updateUserRoles() {
-    throw new Error('Not yet implemented');
-  }
 
   deleteUserRole() {
     throw new Error('Not yet implemented');
