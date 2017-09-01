@@ -68,7 +68,6 @@
     "AdminLTEOptions": true,
     "ResponseHelpers": true,
     "spdatScoreHelpers": true,
-    "projects": true,
     "projectGroups": true,
     "singleHMISUser": true,
     "hmisQuesSync": true,

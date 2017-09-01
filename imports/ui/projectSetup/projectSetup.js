@@ -1,13 +1,10 @@
-/**
- * Created by udit on 22/08/16.
- */
+import Projects from '/imports/api/projects/projects';
+import './projectSetup.html';
 
-Template.projectSetup.onRendered(() => {
-  $('#existingProjects').select2({
-    placeholder: 'Select a project',
-    allowClear: true,
-    theme: 'classic',
-  });
+Template.projectSetup.helpers({
+  getProjects() {
+    return Projects.find().fetch();
+  },
 });
 
 Template.projectSetup.events(
@@ -44,3 +41,11 @@ Template.projectSetup.events(
     },
   }
 );
+
+Template.projectSetup.onRendered(() => {
+  $('#existingProjects').select2({
+    placeholder: 'Select a project',
+    allowClear: true,
+    theme: 'classic',
+  });
+});

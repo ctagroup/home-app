@@ -1,30 +1,22 @@
 import { AppController } from './controllers';
+import Projects from '/imports/api/projects/projects';
+import '/imports/ui/projectSetup/projectSetup';
 
 Router.route(
   'projectSetup', {
     path: '/projectSetup',
-    template: 'projectSetup',
+    template: Template.projectSetup,
     controller: AppController,
     waitOn() {
-      return Meteor.subscribe('projects');
-    },
-    action() {
-      this.render();
+      return Meteor.subscribe('projects.list');
     },
     data() {
-      const project = projects.findOne({ isAppProject: true });
-      return { project };
-    },
-    onBeforeAction() {
-      if (!Roles.userIsInRole(Meteor.user(), ['Developers', 'System Admin'])) {
-        Router.go('notEnoughPermission');
-      }
-      this.next();
-    },
-    onAfterAction() {
-      Session.set('admin_title', 'Project Setup');
-      // Session.set('admin_collection_name', 'roles');
-      // Session.set('admin_collection_page', '');
+      const project = Projects.findOne({ isAppProject: true });
+      console.log(Projects.find().fetch());
+      return {
+        title: 'Project Setup',
+        project,
+      };
     },
   }
 );

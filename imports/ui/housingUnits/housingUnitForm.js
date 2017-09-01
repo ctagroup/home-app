@@ -1,3 +1,4 @@
+import Projects from '/imports/api/projects/projects';
 import './housingUnitForm.html';
 
 
@@ -20,7 +21,7 @@ Template.housingUnitForm.helpers(
       return Template.currentData().bedsCurrent;
     },
     getProjects() {
-      return projects.find({}).fetch();
+      return Projects.find().fetch();
     },
     isProjectSelected(projectId) {
       const data = Router.current().data();
