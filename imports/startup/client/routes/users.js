@@ -42,7 +42,6 @@ Router.route('adminDashboardusersEdit', {
   data() {
     const userId = Meteor.userId();
     const user = Users.findOne(this.params._id);
-    // TODO: display user HMIS status
     const data = user && user.services && user.services.HMIS || {};
     return {
       title: 'Users',

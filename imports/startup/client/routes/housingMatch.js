@@ -6,7 +6,10 @@ Router.route('adminDashboardhousingMatchView', {
   template: 'housingMatchListView',
   controller: AppController,
   waitOn() {
-    return Meteor.subscribe('housingMatch.list');
+    return [
+      Meteor.subscribe('housingMatch.list'),
+      Meteor.subscribe('housingUnits.list'),
+    ];
   },
   data() {
     return {

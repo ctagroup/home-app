@@ -27,8 +27,17 @@ class HouseMatchingApi extends ApiEndpoint {
     return this.doPut(url, client);
   }
 
-  getHousingMatchForPublish() {
-    throw new Error('Not yet implemented');
+  getHousingMatch(pageNumber = 0, size = 1000) {
+    const url = `${BASE_URL}/matches?page=${pageNumber}&size=${size}`;
+    const response = this.doGet(url);
+    let housingMatches = response.content;
+    if (response.page.number < response.page.totalPages - 1) {
+      housingMatches = _.union(
+        housingMatches,
+        this.getHousingMatches(response.page.number + 1, response.page.size)
+      );
+    }
+    return housingMatches;
   }
   getSingleHousingMatchForPublish() {
     throw new Error('Not yet implemented');

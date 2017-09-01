@@ -11,7 +11,7 @@ Router.route('adminDashboardhousingUnitsView', {
   template: 'housingUnitsListView',
   controller: AppController,
   waitOn() {
-    return HousingUnitsCache.subscribe('housingUnits.all');
+    return HousingUnitsCache.subscribe('housingUnits.list');
   },
   data() {
     return {
