@@ -1,11 +1,16 @@
-import { Clients } from '/imports/api/clients/clients';
 import { AppController } from './controllers';
+import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 
 
 Router.route('adminDashboardquestionsView', {
   path: '/questions',
   template: 'questionsListView',
   controller: AppController,
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+    },
+  },
   waitOn() {
     return Meteor.subscribe('questions.all');
   },
@@ -21,44 +26,13 @@ Router.route('adminDashboardquestionsNew', {
   path: '/questions/new',
   template: 'AdminDashboardNew',
   controller: AppController,
-  waitOn() {
-    /*
-      Meteor.subscribe('collectionDoc', collectionName, HomeUtils.parseID(this.params._id));
-      if (collection.templates && collection.templates.edit && collection.templates.edit.waitOn) {
-        collection.templates.edit.waitOn();
-      }
-    */
-    return [];
-  },
-  action() {
-    this.render();
-  },
-  onBeforeAction() {
-    /*
-    if (collection.userRoles) {
-      if (!Roles.userIsInRole(Meteor.user(), collection.userRoles)) {
-        Router.go('notEnoughPermission');
-      }
-    }
-    */
-    this.next();
-  },
-  onAfterAction() {
-    /*
-    Session.set('admin_title', HomeDashboard.collectionLabel(collectionName));
-    Session.set('admin_subtitle', 'Create new');
-    Session.set('admin_collection_page', 'new');
-    Session.set('admin_collection_name', collectionName);
-    if (collection.templates && collection.templates.new
-        && collection.templates.new.onAfterAction) {
-      collection.templates.new.onAfterAction();
-    }
-    */
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+    },
   },
   data() {
-    return {
-      admin_collection: Clients,
-    };
+    return {};
   },
 });
 
@@ -66,21 +40,12 @@ Router.route('adminDashboardquestionsEdit', {
   path: '/questions/edit',
   template: 'AdminDashboardEdit',
   controller: AppController,
-  action() {
-    this.render();
-  },
-  waitOn() {
-    return [];
-  },
-  onBeforeAction() {
-
-  },
-  onAfterAction() {
-
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+    },
   },
   data() {
-    return {
-      admin_collection: Clients,
-    };
+    return {};
   },
 });

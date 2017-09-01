@@ -3,6 +3,7 @@ import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import { RecentClients } from '/imports/api/recent-clients';
 import { AppController } from './controllers';
 import Responses from '/imports/api/responses/responses';
+import { ClientsAccessRoles } from '/imports/config/permissions';
 import '/imports/ui/clients/clientNotFound';
 import '/imports/ui/clients/selectSurvey';
 
@@ -11,6 +12,11 @@ Router.route('adminDashboardclientsView', {
   path: '/clients',
   template: 'searchClient',
   controller: AppController,
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), ClientsAccessRoles);
+    },
+  },
   waitOn() {
     return Meteor.subscribe('pendingClients.all');
   },
@@ -26,6 +32,11 @@ Router.route('adminDashboardclientsNew', {
   path: '/clients/new',
   template: 'createClient',
   controller: AppController,
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), ClientsAccessRoles);
+    },
+  },
   data() {
     return {
       title: 'Clients',
@@ -39,30 +50,13 @@ Router.route(
     name: 'viewClient',
     template: 'viewClient',
     controller: AppController,
-    waitOn() {
-      const id = Router.current().params._id;
-      if (this.params.query.schema) {
-        return [
-          Meteor.subscribe('clients.one', id, this.params.query.schema),
-          Meteor.subscribe('responses.all', id),
-        ];
-      }
-      return [
-        Meteor.subscribe('pendingClients.one', id),
-        Meteor.subscribe('responses.all', id),
-      ];
+    authorize: {
+      allow() {
+        return Roles.userIsInRole(Meteor.userId(), ClientsAccessRoles);
+      },
     },
-
     onBeforeAction() {
-      const collection = HomeConfig.collections.clients;
-
-      if (collection.userRoles) {
-        if (!Roles.userIsInRole(Meteor.userId(), collection.userRoles)) {
-          Router.go('notEnoughPermission');
-        }
-      }
-
-      // External Surveyor redirects
+      // Redirect External Surveyor
       const clientID = Router.current().params._id;
       if (Roles.userIsInRole(Meteor.userId(), 'External Surveyor')) {
         const pausedResponse = Responses.findOne({
@@ -90,7 +84,19 @@ Router.route(
       }
       this.next();
     },
-
+    waitOn() {
+      const id = Router.current().params._id;
+      if (this.params.query.schema) {
+        return [
+          Meteor.subscribe('clients.one', id, this.params.query.schema),
+          Meteor.subscribe('responses.all', id),
+        ];
+      }
+      return [
+        Meteor.subscribe('pendingClients.one', id),
+        Meteor.subscribe('responses.all', id),
+      ];
+    },
     data() {
       const isExtSurveyor = Roles.userIsInRole(Meteor.userId(), 'External Surveyor');
       const pendingClient = PendingClients.findOne({ _id: this.params._id });
@@ -111,6 +117,11 @@ Router.route('adminDashboardclientsEdit', {
   path: '/clients/:_id/edit',
   template: 'editClient',
   controller: AppController,
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), ClientsAccessRoles);
+    },
+  },
   waitOn() {
     const id = Router.current().params._id;
     if (this.params.query && this.params.query.schema) {
@@ -134,6 +145,11 @@ Router.route(
     name: 'selectSurvey',
     template: Template.selectSurvey,
     controller: AppController,
+    authorize: {
+      allow() {
+        return Roles.userIsInRole(Meteor.userId(), ClientsAccessRoles);
+      },
+    },
     waitOn() {
       const _id = Router.current().params._id;
       if (this.params.query.schema) {

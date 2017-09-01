@@ -36,4 +36,5 @@ export const ResponsesAccessRoles = [
   'Developer',
   'System Admin',
   'Case Manager',
+  'Surveyor',
 ];
