@@ -11,13 +11,6 @@ export class ClientApi extends ApiEndpoint {
     return this.doGet(url).client;
   }
 
-  promiseGetClient(clientId, schema = 'v2015') {
-    const url = `${BASE_URL}/${schema}/clients/${clientId}`;
-    return this.promisedGet(url).then((data) => new Promise((resolve) => {
-      resolve(data.client);
-    }));
-  }
-
   getClients() {
     const url = `${BASE_URL}/clients`;
     return this.doGet(url).Clients.clients;

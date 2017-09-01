@@ -18,7 +18,6 @@ const tableOptions = {
           return client.error;
         }
 
-
         const { firstName, middleName, lastName } = client;
 
         let displayName = `${firstName || ''} ${middleName || ''} ${lastName || ''}`;

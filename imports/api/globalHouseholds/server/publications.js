@@ -1,8 +1,9 @@
+import { eachLimit } from 'async';
 import { HmisClient } from '/imports/api/hmis-api';
 
 Meteor.publish('globalHouseholds.list', function publishHouseholds() {
   if (!this.userId) {
-    return [];
+    return;
   }
 
   const self = this;
@@ -19,6 +20,8 @@ Meteor.publish('globalHouseholds.list', function publishHouseholds() {
   // send initial data
   for (let i = 0; i < globalHouseholds.length && !stopFunction; i += 1) {
     const household = globalHouseholds[i];
+    household.headOfHouseholdClient = { loading: true };
+    household.userDetails = household.userId ? { loading: true } : {};
     household.schema = 'v2015';
     if (household.links[0].rel.indexOf('v2014') !== -1) {
       household.schema = 'v2014';
@@ -27,47 +30,57 @@ Meteor.publish('globalHouseholds.list', function publishHouseholds() {
   }
   self.ready();
 
+  const clientsQueue = [];
+  const usersQueue = [];
   for (let i = 0; i < globalHouseholds.length && !stopFunction; i += 1) {
     const household = globalHouseholds[i];
-
-
-    // TODO: add client (headOfHouseholdClient) into dedicated collection
-    // self.added('localClients', household.headOfHouseholdId, client);
-    hc.api('client').promiseGetClient(household.headOfHouseholdId, household.schema)
-      .then((client) => {
-        household.headOfHouseholdClient = client;
-        household.headOfHouseholdClient.schema = household.schema;
-      })
-      .catch((e) => {
-        household.headOfHouseholdClient = { error: e.details.code };
-      })
-      .then(() => {
-        self.changed('localGlobalHouseholds', household.globalHouseholdId, {
-          headOfHouseholdClient: household.headOfHouseholdClient,
-        });
-      });
-
+    clientsQueue.push({
+      globalHouseholdId: household.globalHouseholdId,
+      clientId: household.headOfHouseholdId,
+      schema: household.schema,
+    });
     if (household.userId) {
-      hc.api('user-service').promiseGetUser(household.userId)
-        .then((account) => {
-          household.userDetails = account;
-        })
-        .catch((e) => {
-          household.headOfHouseholdClient = { error: e.details.code };
-        })
-        .then(() => {
-          self.changed('localGlobalHouseholds', household.globalHouseholdId, {
-            userDetails: household.userDetails,
-          });
-        });
-    } else {
-      household.userDetails = { error: 404 };
-      self.changed('localGlobalHouseholds', household.globalHouseholdId, {
-        userDetails: household.userDetails,
+      usersQueue.push({
+        globalHouseholdId: household.globalHouseholdId,
+        userId: household.userId,
       });
     }
   }
-  return self.ready();
+
+  eachLimit(clientsQueue, Meteor.settings.connectionLimit, (data, callback) => {
+    const { globalHouseholdId, clientId, schema } = data;
+    let clientDetails;
+    Meteor.defer(() => {
+      try {
+        clientDetails = hc.api('client').getClient(clientId, schema);
+        clientDetails.schema = schema;
+      } catch (e) {
+        clientDetails = { error: e.reason };
+      }
+      self.changed('localGlobalHouseholds', globalHouseholdId, {
+        headOfHouseholdClient: clientDetails,
+      });
+      callback();
+    });
+  });
+
+  console.log(usersQueue);
+
+  eachLimit(usersQueue, Meteor.settings.connectionLimit, (data, callback) => {
+    const { globalHouseholdId, userId } = data;
+    let userDetails;
+    Meteor.defer(() => {
+      try {
+        userDetails = hc.api('user-service').getUser(userId);
+      } catch (e) {
+        userDetails = { error: e.reason };
+      }
+      self.changed('localGlobalHouseholds', globalHouseholdId, {
+        userDetails,
+      });
+      callback();
+    });
+  });
 });
 
 
