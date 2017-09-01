@@ -1,4 +1,3 @@
-import { logger } from '/imports/utils/logger';
 import './hmisProfile.js';
 import './usersCreateView.html';
 
@@ -6,6 +5,9 @@ Template.usersCreateView.events(
   {
     'submit #create-user': (evt, tmpl) => {
       evt.preventDefault();
+      // TODO: create new users
+      console.log(tmpl);
+      /*
 
       $(tmpl.find('.errors')).html('');
 
@@ -78,6 +80,7 @@ Template.usersCreateView.events(
           }
         });
       }
+      */
     },
   }
 );
