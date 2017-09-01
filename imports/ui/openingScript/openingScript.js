@@ -1,3 +1,6 @@
+import './openingScript.html';
+
+
 Template.openingScript.helpers(
   {
     getOpeningScript() {
