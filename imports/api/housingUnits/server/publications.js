@@ -1,7 +1,7 @@
 import { HmisClient } from '/imports/api/hmis-api';
 
 Meteor.publish(
-  'housingUnits.all', function publishAllHousingUnits() {
+  'housingUnits.list', function publishAllHousingUnits() {
     const self = this;
     let stopFunction = false;
     self.unblock();

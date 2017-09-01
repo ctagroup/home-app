@@ -11,7 +11,10 @@ export class HmisCounts {
   }
 
   getHousingMatchCount() {
+    const hc = HmisClient.create(this.userId);
+    return hc.api('house-matching').getHousingMatch().length;
     // TODO: use new api
+    /*
     const self = this;
     let count;
     if (self.userId) {
@@ -24,6 +27,7 @@ export class HmisCounts {
       }
     }
     return count;
+    */
   }
 
   getHousingUnitsCount() {

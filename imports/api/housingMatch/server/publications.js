@@ -1,4 +1,6 @@
 import moment from 'moment';
+import { HmisClient } from '/imports/api/hmis-api';
+import { logger } from '/imports/utils/logger';
 
 Meteor.publish(
   'housingMatch.list', function publishHousingMatch() {
@@ -10,8 +12,43 @@ Meteor.publish(
       stopFunction = true;
     });
 
+    if (!this.userId) {
+      return [];
+    }
+
+    try {
+      const hc = HmisClient.create(this.userId);
+      const housingMatch = hc.api('house-matching').getHousingMatch();
+      const housingUnits = hc.api('housing').getHousingUnits();
+
+      console.log(housingMatch);
+      console.log(housingUnits);
+
+      // populate the list without the details
+      for (let i = 0; i < housingMatch.length && !stopFunction; i += 1) {
+        housingMatch[i].eligibleClients.clientDetails = {
+          clientId: '',
+          firstName: '',
+          middleName: '',
+          lastName: '',
+          schema: '',
+        };
+        self.added('localHousingMatch', housingMatch[i].reservationId, housingMatch[i]);
+      }
+      self.ready();
+
+      // Add client details (Name & link to profile) here.
+    } catch (err) {
+      logger.error('housingMatch.list', err);
+    }
+
+    /*
+
+
     let housingMatch = [];
     if (self.userId) {
+
+
       HMISAPI.setCurrentUserId(self.userId);
       housingMatch = HMISAPI.getHousingMatchForPublish();
       // according to the content received.
@@ -80,5 +117,6 @@ Meteor.publish(
     }
 
     return self.ready();
+    */
   }
 );
