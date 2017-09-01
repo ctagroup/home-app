@@ -3,8 +3,10 @@
     "staleSessionInactivityTimeout": 900000,
     "staleSessionHeartbeatInterval": 60000,
     "staleSessionPurgeInterval": 60000,
-    "staleSessionActivityEvents": "mousemove click keydown"
+    "staleSessionActivityEvents": "mousemove click keydown",
+    "version": "1.1"
   },
+  "connectionLimit": 8, 
   "sentry": {
     "level": "warn",
     "dsn": ""

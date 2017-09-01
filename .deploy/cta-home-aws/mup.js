@@ -6,7 +6,7 @@ module.exports = {
       // pem:
       // password:
       // or leave blank for authenticate from ssh-agent
-      pem: '/Users/udit/.ssh/home.pem',
+      pem: '/home/pgorecki/.ssh/home-cta.pem',
     },
   },
 
