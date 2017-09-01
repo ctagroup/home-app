@@ -53,13 +53,6 @@ class UserServiceApi extends ApiEndpoint {
     const url = `${BASE_URL}/accounts/${accountId}`;
     return this.doGet(url).account;
   }
-
-  promiseGetUser(accountId) {
-    const url = `${BASE_URL}/accounts/${accountId}`;
-    return this.promisedGet(url).then((data) => new Promise((resolve) => {
-      resolve(data.account);
-    }));
-  }
 }
 
 HmisApiRegistry.addApi('user-service', UserServiceApi);

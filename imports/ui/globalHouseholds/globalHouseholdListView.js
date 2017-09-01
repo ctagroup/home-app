@@ -1,5 +1,6 @@
 import { deleteHouseholdButton, editButton, TableDom } from '/imports/ui/dataTable/helpers';
 import GlobalHouseholds from '/imports/api/globalHouseholds/globalHouseholds';
+import { fullName } from '/imports/api/utils';
 import './globalHouseholdListView.html';
 
 
@@ -13,19 +14,19 @@ const tableOptions = {
       title: 'Head of HouseHold',
       data: 'globalHouseholdId', // note: access nested data like this
       render(val, type, doc) {
-        if (doc.headOfHouseholdClient) {
-          const hoh = doc.headOfHouseholdClient;
-          const fName = hoh.firstName ? hoh.firstName : '';
-          const mName = hoh.middleName ? hoh.middleName : '';
-          const lName = hoh.lastName ? hoh.lastName : '';
-          const url = Router.path(
-            'viewClient',
-            { _id: hoh.clientId },
-            { query: `isHMISClient=true&schema=${hoh.schema}` }
-          );
-          return `<a href="${url}">${fName} ${mName} ${lName}</a>`;
+        const client = doc.headOfHouseholdClient;
+        if (client.loading) {
+          return 'Loading...';
         }
-        return '-';
+        if (client.error) {
+          return client.error;
+        }
+        const url = Router.path(
+          'viewClient',
+          { _id: client.clientId },
+          { query: `schema=${client.schema}` }
+        );
+        return `<a href="${url}">${fullName(client)}</a>`;
       },
     },
     {
@@ -52,15 +53,14 @@ const tableOptions = {
       title: 'User',
       data: 'globalHouseholdId', // note: access nested data like this
       render(val, type, doc) {
-        if (doc.userDetails === undefined) {
-          return 'loading...';
+        const user = doc.userDetails;
+        if (user.loading) {
+          return 'Loading...';
         }
-        if (doc.userDetails.error) {
-          return doc.userDetails.error;
+        if (user.error) {
+          return user.error;
         }
-        const fName = doc.userDetails.firstName;
-        const lName = doc.userDetails.lastName;
-        return `${fName} ${lName}`;
+        return fullName(user);
       },
     },
     {
