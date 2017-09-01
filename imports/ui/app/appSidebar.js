@@ -65,11 +65,13 @@ const allCollectionsMenuItems = [
 ];
 
 const adminMenuItems = [
+  /*
   {
     name: 'Role Manager',
     icon: 'fa-user-secret',
     path: 'roleManager',
   },
+  */
   {
     name: 'Opening Script',
     icon: 'fa-comment',
