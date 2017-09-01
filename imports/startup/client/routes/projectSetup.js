@@ -12,7 +12,6 @@ Router.route(
     },
     data() {
       const project = Projects.findOne({ isAppProject: true });
-      console.log(Projects.find().fetch());
       return {
         title: 'Project Setup',
         project,
