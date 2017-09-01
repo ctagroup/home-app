@@ -1,3 +1,5 @@
+import { logger } from '/imports/utils/logger';
+
 import '/imports/api/collectionsCount/server/publications';
 
 import '/imports/api/clients/methods';
@@ -32,3 +34,10 @@ import '/imports/api/users/server/publications';
 
 import '/imports/api/projects/methods';
 import '/imports/api/projects/server/publications';
+
+Meteor.startup(() => {
+  Meteor.settings = _.extend({
+    connectionLimit: 10,
+  }, Meteor.settings);
+  logger.info('Starting with settings', Meteor.settings);
+});

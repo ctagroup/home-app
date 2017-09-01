@@ -11,6 +11,14 @@ const tableOptions = {
       title: 'Client',
       render(value, type, doc) {
         const client = doc.clientDetails;
+        if (client.loading) {
+          return 'Loading...';
+        }
+        if (client.error) {
+          return client.error;
+        }
+
+
         const { firstName, middleName, lastName } = client;
 
         let displayName = `${firstName || ''} ${middleName || ''} ${lastName || ''}`;

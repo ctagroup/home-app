@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "async": "http://registry.npmjs.org/async/-/async-1.0.0.tgz",
     "babel-runtime": "^6.18.0",
     "datatables.net-bs": "^1.10.12",
     "jquery": "^1.11.10",
