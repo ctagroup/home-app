@@ -4,119 +4,66 @@ import { logger } from '/imports/utils/logger';
 
 Meteor.publish(
   'housingMatch.list', function publishHousingMatch() {
-    const self = this;
     let stopFunction = false;
-    self.unblock();
 
-    self.onStop(() => {
+    this.onStop(() => {
       stopFunction = true;
     });
 
     if (!this.userId) {
-      return [];
+      return;
     }
 
     try {
       const hc = HmisClient.create(this.userId);
       const housingMatch = hc.api('house-matching').getHousingMatch();
-      const housingUnits = hc.api('housing').getHousingUnits();
-
-      console.log(housingMatch);
-      console.log(housingUnits);
 
       // populate the list without the details
       for (let i = 0; i < housingMatch.length && !stopFunction; i += 1) {
-        housingMatch[i].eligibleClients.clientDetails = {
-          clientId: '',
-          firstName: '',
-          middleName: '',
-          lastName: '',
-          schema: '',
-        };
-        self.added('localHousingMatch', housingMatch[i].reservationId, housingMatch[i]);
+        const eligibleClients = housingMatch[i].eligibleClients;
+        eligibleClients.clientDetails = { loading: true };
+        eligibleClients.referralStatus = { loading: true };
+        this.added('localHousingMatch', housingMatch[i].reservationId, housingMatch[i]);
       }
-      self.ready();
+      this.ready();
 
-      // Add client details (Name & link to profile) here.
-    } catch (err) {
-      logger.error('housingMatch.list', err);
-    }
-
-    /*
-
-
-    let housingMatch = [];
-    if (self.userId) {
-
-
-      HMISAPI.setCurrentUserId(self.userId);
-      housingMatch = HMISAPI.getHousingMatchForPublish();
-      // according to the content received.
-      // Adding Dummy Data for testing.
-
+      // load client details and history
       for (let i = 0; i < housingMatch.length && !stopFunction; i += 1) {
-        if (housingMatch[i].links && housingMatch[i].links.length > 1) {
+        Meteor.defer(() => {
+          const eligibleClients = housingMatch[i].eligibleClients;
           let schema = 'v2015';
           if (housingMatch[i].links[1].href.indexOf('v2014') !== -1) {
             schema = 'v2014';
           }
-          housingMatch[i].eligibleClients.clientDetails = HMISAPI.getClient(
-            housingMatch[i].eligibleClients.clientId,
-            schema,
-            // useCurrentUserObject
-            false
-          );
-          housingMatch[i].eligibleClients.clientDetails.schema = schema;
-        }
 
-        // If client Id not found. So that we don't get any error.
-        if (!housingMatch[i].eligibleClients.clientDetails) {
-          const clientId = '';
-          const firstName = '';
-          const middleName = '';
-          const lastName = '';
-          const schema = '';
-          housingMatch[i].eligibleClients.clientDetails = {
-            clientId,
-            firstName,
-            middleName,
-            lastName,
-            schema,
-          };
-        }
+          const clientId = eligibleClients.clientId;
+          // fetch client details
+          try {
+            const details = hc.api('client').getClient(clientId, schema);
+            eligibleClients.clientDetails = details;
+          } catch (e) {
+            eligibleClients.error = e.reason;
+          }
 
-        // fetch client status
-        const referralStatus = HMISAPI.getReferralStatusHistory(
-          housingMatch[i].eligibleClients.clientId
-        );
-        // Sort based on Timestamp
-        referralStatus.sort((a, b) => {
-          const aTime = moment(a.dateUpdated, 'MM-DD-YYYY HH:mm:ss.SSS').unix();
-          const bTime = moment(b.dateUpdated, 'MM-DD-YYYY HH:mm:ss.SSS').unix();
-          return aTime - bTime;
+          // fetch status history
+          try {
+            const history = hc.api('house-matching').getReferralStatusHistory(clientId);
+            history.sort((a, b) => {
+              const aTime = moment(a.dateUpdated, 'MM-DD-YYYY HH:mm:ss.SSS').unix();
+              const bTime = moment(b.dateUpdated, 'MM-DD-YYYY HH:mm:ss.SSS').unix();
+              return aTime - bTime;
+            });
+            eligibleClients.referralStatus = history;
+          } catch (e) {
+            eligibleClients.referralStatus = { error: e.reason };
+          }
+          this.changed('localHousingMatch', housingMatch[i].reservationId, {
+            eligibleClients,
+          });
         });
-        housingMatch[i].eligibleClients.referralStatus = referralStatus;
-
-        const housingUnit = HMISAPI.getHousingUnitForPublish(housingMatch[i].housingUnitId);
-
-        let schema = 'v2015';
-        if (housingUnit.links && housingUnit.links.length > 0
-            && housingUnit.links[0].rel.indexOf('v2014') !== -1) {
-          schema = 'v2014';
-        }
-
-        housingUnit.project = HMISAPI.getProjectForPublish(housingUnit.projectId, schema);
-
-        housingMatch[i].housingUnit = housingUnit;
-
-        self.added('localHousingMatch', housingMatch[i].reservationId, housingMatch[i]);
-        self.ready();
       }
-    } else {
-      HMISAPI.setCurrentUserId('');
+    } catch (err) {
+      logger.error('housingMatch.list', err);
     }
-
-    return self.ready();
-    */
   }
 );

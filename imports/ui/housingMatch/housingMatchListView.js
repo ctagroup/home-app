@@ -1,6 +1,8 @@
 import { TableDom } from '/imports/ui/dataTable/helpers';
 import { logger } from '/imports/utils/logger';
+import { fullName } from '/imports/api/utils';
 import HousingMatch from '/imports/api/housingMatch/housingMatch';
+import HousingUnits from '/imports/api/housingUnits/housingUnits';
 import ReferralStatusList from '/imports/ui/clients/referralStatusList';
 import Users from '/imports/api/users/users';
 import './housingMatchListView.html';
@@ -26,32 +28,30 @@ const tableOptions = {
       title: 'Client',
       data: 'reservationId', // note: access nested data like this
       render(value, type, doc) {
-        const client = doc.eligibleClients.clientDetails;
-
-        let displayName = `${client.firstName} ${client.middleName} ${client.lastName}`;
-        displayName = displayName.trim();
-
-        if (!displayName) {
-          displayName = doc.eligibleClients.clientId;
+        const client = doc.eligibleClients;
+        if (client.loading) {
+          return 'Loading...';
+        } else if (client.error) {
+          return client.error;
         }
-
-        if (client.schema) {
+        const name = fullName(client.clientDetails) || client.clientId;
+        if (client.clientDetails.schema) {
           const url = Router.path(
             'viewClient',
             { _id: client.clientId },
-            { query: `isHMISClient=true&schema=${client.schema}` }
+            { query: `schema=${client.schema}` }
           );
-          return `<a href="${url}">${displayName}</a>`;
+          return `<a href="${url}">${name}</a>`;
         }
-
-        return displayName;
+        return name;
       },
     },
     {
       title: 'Housing Unit ID',
       data: 'housingUnitId',
       render(value, type, doc) {
-        return `<a href="/housingUnits/${value}/edit">${doc.housingUnit.aliasName}</a>`;
+        const aliasName = doc.housingUnit.aliasName || value;
+        return `<a href="/housingUnits/${value}/edit">${aliasName}</a>`;
       },
     },
     {
@@ -73,13 +73,20 @@ const tableOptions = {
       },
     },
     {
-      title: '',
+      title: 'Ref',
       data: 'reservationId',
       render(value, type, doc) {
-        const allStatus = doc.eligibleClients.referralStatus;
-        if (allStatus.length > 0) {
-          const lastStatus = allStatus[allStatus.length - 1];
-          return generateStatusTagMarkup(lastStatus.status, lastStatus.dateUpdated);
+        const status = doc.eligibleClients.referralStatus;
+        if (status.loading) {
+          return 'Loading...';
+        }
+        if (status.error) {
+          return status.error;
+        }
+
+        if (status.length > 0) {
+          const last = status[status.length - 1];
+          return generateStatusTagMarkup(last.status, last.dateUpdated);
         }
         return `<button
           class="btn btn-sm btn-default js-notify-agency-contact"
@@ -98,58 +105,59 @@ Template.housingMatchListView.helpers({
     return tableOptions;
   },
   tableData() {
-    return () => HousingMatch.find().fetch();
+    return () => {
+      const housingMatch = HousingMatch.find().fetch();
+      return housingMatch.map(m => {
+        const housingUnit = HousingUnits.findOne(m.housingUnitId);
+        const aliasName = housingUnit ? housingUnit.aliasName : m.housingUnitId;
+        return _.extend(m, {
+          housingUnit: {
+            aliasName,
+          },
+        });
+      });
+    };
   },
 });
 
-Template.housingMatchListView.events(
-  {
-    'click .postHousingMatches': () => {
-      Meteor.call('postHousingMatches', (error, result) => {
-        if (error) {
-          logger.error(`postHousingMatches - ${error}`);
-        } else {
-          logger.info(`postHousingMatches - ${result}`);
-        }
-      });
-    },
-    'click .js-notify-agency-contact': (evt) => {
-      const reservationId = $(evt.currentTarget).data('reservation-id');
+Template.housingMatchListView.events({
+  'click .postHousingMatches': () => {
+    Meteor.call('postHousingMatches', (error, result) => {
+      if (error) {
+        logger.error(`postHousingMatches - ${error}`);
+      } else {
+        logger.info(`postHousingMatches - ${result}`);
+      }
+    });
+  },
+  'click .js-notify-agency-contact': (evt) => {
+    const reservationId = $(evt.currentTarget).data('reservation-id');
+    const housingMatch = HousingMatch.findOne(reservationId);
+    const housingUnit = housingMatch && HousingUnits.findOne(housingMatch.housingUnitId);
 
-      const reservation = HousingMatch.findOne({ reservationId });
-
-      if (reservation) {
-        let project = false;
-        if (reservation.housingUnit) {
-          project = reservation.housingUnit.project;
-        }
-
-        let recipients = [];
-        if (project) {
-          recipients = Users.find({ projectsLinked: project.projectId }).fetch();
-          if (recipients.length > 0) {
-            recipients = { toRecipients: recipients.map(item => item.emails[0].address) };
-          }
-        }
-
-        Meteor.call(
-          'updateClientMatchStatus',
-          reservation.eligibleClients.clientId,
-          // Agency Contact Status.
-          1,
+    if (housingUnit) {
+      const projectId = housingUnit.projectId;
+      const recipients = Users.find({ projectsLinked: projectId }).fetch();
+      if (recipients.length > 0) {
+        const data = { toRecipients: recipients.map(item => item.emails[0].address) };
+        Meteor.call('updateClientMatchStatus',
+          housingMatch.eligibleClients.clientId,
+          1, // Agency Contact Status.
           'Notified from HOME App Matching List',
-          recipients,
-          (err, res) => {
+          data,
+          (err) => {
             if (err) {
-              logger.log(err);
+              Bert.alert(err.reason || err.error, 'danger', 'growl-top-right');
             } else {
-              logger.log(res);
+              Bert.alert('Notified', 'danger', 'growl-top-right');
               $(evt.currentTarget).parent().append(generateStatusTagMarkup(1));
               $(evt.currentTarget).remove();
             }
           }
         );
+      } else {
+        Bert.alert('Nobody to notify', 'warning', 'growl-top-right');
       }
-    },
-  }
-);
+    }
+  },
+});
