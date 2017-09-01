@@ -7,8 +7,9 @@ Router.route('adminDashboardhousingMatchView', {
   controller: AppController,
   waitOn() {
     return [
+      Meteor.subscribe('housingUnits.list', false),
+      // Meteor.subscribe('projects.list'),
       Meteor.subscribe('housingMatch.list'),
-      Meteor.subscribe('housingUnits.list'),
     ];
   },
   data() {

@@ -29,3 +29,6 @@ import '/imports/api/globalHouseholds/server/publications';
 
 import '/imports/api/users/methods';
 import '/imports/api/users/server/publications';
+
+import '/imports/api/projects/methods';
+import '/imports/api/projects/server/publications';

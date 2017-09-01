@@ -1,7 +1,7 @@
 import { HmisClient } from '/imports/api/hmis-api';
 
 Meteor.publish(
-  'housingUnits.list', function publishAllHousingUnits() {
+  'housingUnits.list', function publishAllHousingUnits(fetchProjectsDetails = true) {
     const self = this;
     let stopFunction = false;
     self.unblock();
@@ -20,26 +20,27 @@ Meteor.publish(
     }
     self.ready();
 
-    const projectsCache = {};
-    for (let i = 0; i < housingUnits.length && !stopFunction; i += 1) {
-      const projectId = housingUnits[i].projectId;
-      let project;
-      if (!projectsCache[projectId]) {
-        try {
-          let schema = 'v2015';
-          if (housingUnits[i].links && housingUnits[i].links.length > 0
-              && housingUnits[i].links[0].rel.indexOf('v2014') !== -1) {
-            schema = 'v2014';
+    if (fetchProjectsDetails) {
+      const projectsCache = {};
+      for (let i = 0; i < housingUnits.length && !stopFunction; i += 1) {
+        const projectId = housingUnits[i].projectId;
+        let project;
+        if (!projectsCache[projectId]) {
+          try {
+            let schema = 'v2015';
+            if (housingUnits[i].links && housingUnits[i].links.length > 0
+                && housingUnits[i].links[0].rel.indexOf('v2014') !== -1) {
+              schema = 'v2014';
+            }
+            project = hc.api('client').getProject(housingUnits[i].projectId, schema);
+          } catch (e) {
+            project = { error: 404 };
           }
-          project = hc.api('client').getProject(housingUnits[i].projectId, schema);
-        } catch (e) {
-          project = { error: 404 };
+          projectsCache[projectId] = project;
         }
-        projectsCache[projectId] = project;
+        housingUnits[i].project = projectsCache[projectId];
+        self.changed('housingUnits', housingUnits[i].housingInventoryId, housingUnits[i]);
       }
-
-      housingUnits[i].project = projectsCache[projectId];
-      self.changed('housingUnits', housingUnits[i].housingInventoryId, housingUnits[i]);
     }
   }
 );

@@ -1,6 +1,6 @@
 export function fullName(user) {
   if (!user) {
-    return '';
+    return undefined;
   }
   const parts = [];
   if (user.firstName) {

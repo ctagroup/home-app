@@ -42,8 +42,9 @@ class HouseMatchingApi extends ApiEndpoint {
   getSingleHousingMatchForPublish() {
     throw new Error('Not yet implemented');
   }
-  getReferralStatusHistory() {
-    throw new Error('Not yet implemented');
+  getReferralStatusHistory(clientId) {
+    const url = `${BASE_URL}/matches/client/${clientId}/status`;
+    return this.doGet(url);
   }
   postHousingMatch() {
     throw new Error('Not yet implemented');
