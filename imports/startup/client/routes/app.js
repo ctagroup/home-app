@@ -7,6 +7,7 @@ Router.route('dashboard', {
   path: '/dashboard',
   template: 'dashboard',
   controller: AppController,
+  onBeforeAction: ['authenticate'],
   waitOn() {
     return Meteor.subscribe('collectionsCount');
   },

@@ -2,6 +2,7 @@ import { Clients } from '/imports/api/clients/clients';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import Responses from '/imports/api/responses/responses';
 import Surveys from '/imports/api/surveys/surveys';
+import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import { AppController } from './controllers';
 import '/imports/ui/responses/responsesListView';
 import '/imports/ui/responses/responsesNew';
@@ -12,6 +13,12 @@ Router.route('adminDashboardresponsesView', {
   path: '/responses',
   template: Template.responsesListView,
   controller: AppController,
+  onBeforeAction() {
+    if (!Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles)) {
+      Router.go('notEnoughPermission');
+    }
+    this.next();
+  },
   waitOn() {
     return [
       Meteor.subscribe('responses.all'),
@@ -30,6 +37,11 @@ Router.route('adminDashboardresponsesNew', {
   path: '/responses/new',
   template: Template.responsesNew,
   controller: AppController,
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+    },
+  },
   waitOn() {
     const { clientId, schema } = this.params.query;
     if (schema) {
@@ -63,6 +75,11 @@ Router.route('adminDashboardresponsesEdit', {
   path: '/responses/:_id/edit',
   template: Template.responsesEdit,
   controller: AppController,
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+    },
+  },
   waitOn() {
     return [
       Meteor.subscribe('responses.one', this.params._id),

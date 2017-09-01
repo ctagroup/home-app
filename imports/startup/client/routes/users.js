@@ -1,4 +1,5 @@
 import Users from '/imports/api/users/users';
+import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import { fullName } from '/imports/api/utils';
 import { AppController } from './controllers';
 import '/imports/ui/users/usersListView.js';
@@ -9,6 +10,11 @@ Router.route('adminDashboardusersView', {
   path: '/users',
   template: Template.usersListView,
   controller: AppController,
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+    },
+  },
   waitOn() {
     return Meteor.subscribe('users.all');
   },
@@ -24,6 +30,11 @@ Router.route('adminDashboardusersNew', {
   path: '/users/new',
   template: Template.usersCreateView,
   controller: AppController,
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+    },
+  },
   data() {
     return {
       title: 'Users',
@@ -36,6 +47,11 @@ Router.route('adminDashboardusersEdit', {
   path: '/users/:_id/edit',
   template: Template.usersEditView,
   controller: AppController,
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+    },
+  },
   waitOn() {
     return Meteor.subscribe('users.one', this.params._id);
   },

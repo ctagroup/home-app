@@ -74,3 +74,4 @@ practicalmeteor:mocha
 xolvio:cleaner
 johanbrook:publication-collector
 meteorhacks:subs-manager
+zimme:iron-router-auth

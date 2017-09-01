@@ -1,16 +1,12 @@
 import '/imports/ui/content/login';
 
-// Prompt for sign in form in case of all routes except the following
-Router.plugin(
-  'ensureSignedIn', {
-    except: _.pluck(AccountsTemplates.routes, 'name').concat([
-      'root',
-      'privacy',
-      'termsOfUse',
-      'notEnoughPermissions',
-    ]),
-  }
-);
+const publicRoutes = [
+  'root',
+  'privacy',
+  'termsOfUse',
+  'notEnoughPermissions',
+  'signIn',
+];
 
 AccountsTemplates.configureRoute('signIn', {
   name: 'signIn',
@@ -18,4 +14,13 @@ AccountsTemplates.configureRoute('signIn', {
   template: 'Login',
   redirect: '/dashboard',
   layoutTemplate: 'ContentLayout',
+});
+
+
+Router.plugin('auth', {
+  except: publicRoutes,
+  authenticate: {
+    home: 'root',
+    route: 'signIn',
+  },
 });
