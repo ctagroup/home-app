@@ -6,9 +6,11 @@
     "staleSessionActivityEvents": "mousemove click keydown",
     "version": "1.1"
   },
-  "connectionLimit": 8, 
+  "connectionLimit": 8,
   "sentry": {
     "level": "warn",
     "dsn": ""
-  }
+  },
+  "appId": null,
+  "appSecret": null
 }
