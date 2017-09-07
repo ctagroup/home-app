@@ -5,8 +5,13 @@ import './createClient.html';
 Template.createClient.onRendered(() => {
   const template = Template.instance();
   template.autorun(() => {
-    if (!PreliminarySurvey.showPreliminarySurvey()) {
-      PreliminarySurvey.showReleaseOfInformation();
+    if (PreliminarySurvey.showPreliminarySurvey()) {
+      $('#preliminarySurveyModal').modal(
+        {
+          keyboard: false,
+          backdrop: false,
+        }
+      );
     }
   });
 });

@@ -1,5 +1,8 @@
 import { logger } from '/imports/utils/logger';
 
+import '/imports/api/appSettings/methods';
+import '/imports/api/appSettings/server/publications';
+
 import '/imports/api/collectionsCount/server/publications';
 
 import '/imports/api/clients/methods';
@@ -34,6 +37,11 @@ import '/imports/api/users/server/publications';
 
 import '/imports/api/projects/methods';
 import '/imports/api/projects/server/publications';
+
+import '/imports/api/openingScript/methods';
+
+import '/imports/startup/server/migrations';
+
 
 Meteor.startup(() => {
   Meteor.settings = _.extend({

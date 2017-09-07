@@ -1,10 +1,7 @@
 <template name="openingScript">
-  {{> adminAlert}}
   {{> quickForm
     id="openingScriptForm"
-    schema="Schemas.openingScript"
-    type="method"
-    meteormethod="saveOpeningScript"
+    schema=getOpeningScriptSchema
     template="bootstrap3"
     label-class="sr-only"
     afFieldInput-placeholder="schemaLabel"

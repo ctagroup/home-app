@@ -1,3 +1,4 @@
+import OpeningScript from '/imports/api/openingScript/openingScript';
 import moment from 'moment';
 import { logger } from '/imports/utils/logger';
 import './clientForm.html';
@@ -164,17 +165,7 @@ Template.clientForm.helpers(
       return disablingCond;
     },
     skipReleaseOfInformation() {
-      const releaseOfInformationSkip = options.findOne(
-        { option_name: 'preClientProfileQuestions.releaseOfInformation.skip' }
-      );
-
-      let flag = false;
-
-      if (releaseOfInformationSkip && releaseOfInformationSkip.option_value) {
-        flag = true;
-      }
-
-      return flag;
+      return OpeningScript.skipReleaseOfInformation();
     },
   }
 );
