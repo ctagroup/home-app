@@ -7,7 +7,6 @@ Template.openingScript.helpers({
     return OpeningScript.schema;
   },
   getOpeningScript() {
-    console.log(OpeningScript.data());
     return OpeningScript.data();
   },
 });

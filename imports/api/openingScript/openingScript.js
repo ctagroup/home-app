@@ -2,21 +2,13 @@ import AppSettings from '/imports/api/appSettings/appSettings';
 
 class OpeningScriptClass {
   data() {
-    const data = AppSettings.get('openingScript');
-    console.log(data, AppSettings.find().fetch());
-
-    console.log(this.schema.clean({}));
-    return data;
-    /*
-
-    return , {
+    return AppSettings.get('openingScript') || {
       openingScript: {
-        dvQuestion: {},
-        housingServiceQuestion: {},
+        dv: {},
+        housingService: {},
         releaseOfInformation: {},
       },
-    });
-    */
+    };
   }
 
   save(value) {
@@ -39,7 +31,7 @@ class OpeningScriptClass {
     return this.data().openingScript.housingService.skip || false;
   }
 
-  getHousingServiceQuestion() {
+  housingServiceQuestion() {
     return this.data().openingScript.housingService.question || '';
   }
 
@@ -47,7 +39,7 @@ class OpeningScriptClass {
     return this.data().openingScript.releaseOfInformation.skip || '';
   }
 
-  getReleaseOfInformation() {
+  releaseOfInformation() {
     return this.data().openingScript.releaseOfInformation.info || '';
   }
 

@@ -8,19 +8,19 @@ Template.preliminarySurvey.helpers({
     return OpeningScript.skipDvQuestion();
   },
   dvQuestion() {
-    return OpeningScript.getDvQuestion();
+    return OpeningScript.dvQuestion();
   },
   skipHousingServiceQuestion() {
     return OpeningScript.skipHousingServiceQuestion();
   },
   housingServiceQuestion() {
-    return OpeningScript.getHousingServiceQuestion();
+    return OpeningScript.housingServiceQuestion();
   },
   hotlineInfo() {
-    return OpeningScript.getHotlineInfo();
+    return OpeningScript.hotlineInfo();
   },
   releaseOfInformation() {
-    return OpeningScript.getReleaseOfInformation();
+    return OpeningScript.releaseOfInformation();
   },
 });
 

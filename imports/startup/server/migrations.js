@@ -28,13 +28,13 @@ Meteor.startup(() => {
         hotlineInfo: AppSettings.get('preClientProfileQuestions.dvQuestion.hotlineInfo', ''),
         skip: AppSettings.get('preClientProfileQuestions.dvQuestion.skip', false),
       },
+      housingService: {
+        question: AppSettings.get('preClientProfileQuestions.housingServiceQuestion.question', ''),
+        skip: AppSettings.get('preClientProfileQuestions.housingServiceQuestion.skip', false),
+      },
       releaseOfInformation: {
         info: AppSettings.get('preClientProfileQuestions.releaseOfInformation.info', ''),
         skip: AppSettings.get('preClientProfileQuestions.releaseOfInformation.skip', false),
-      },
-      housingServiceQuestion: {
-        question: AppSettings.get('preClientProfileQuestions.housingServiceQuestion.question', ''),
-        skip: AppSettings.get('preClientProfileQuestions.housingServiceQuestion.skip', false),
       },
     };
 

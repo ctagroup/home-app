@@ -10,6 +10,11 @@ let raceCategories;
 let disablingCond;
 
 function getUniversalElements() {
+  /*
+
+  // I commented it out because there were no questions in the DB that
+  // could extend any of the select options
+
   // TODO: move to router??
   const questionsCollection = HomeUtils.adminCollectionObject('questions');
   const universalElements = questionsCollection.find(
@@ -39,6 +44,7 @@ function getUniversalElements() {
         break;
     }
   }
+  */
 }
 
 Template.clientForm.onRendered(() => {

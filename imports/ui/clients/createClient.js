@@ -1,3 +1,4 @@
+import OpeningScript from '/imports/api/openingScript/openingScript';
 import './clientForm.js';
 import './preliminarySurvey.js';
 import './createClient.html';
@@ -5,7 +6,7 @@ import './createClient.html';
 Template.createClient.onRendered(() => {
   const template = Template.instance();
   template.autorun(() => {
-    if (PreliminarySurvey.showPreliminarySurvey()) {
+    if (OpeningScript.showPreliminarySurvey()) {
       $('#preliminarySurveyModal').modal(
         {
           keyboard: false,

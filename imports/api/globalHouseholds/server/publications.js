@@ -64,8 +64,6 @@ Meteor.publish('globalHouseholds.list', function publishHouseholds() {
     });
   });
 
-  console.log(usersQueue);
-
   eachLimit(usersQueue, Meteor.settings.connectionLimit, (data, callback) => {
     const { globalHouseholdId, userId } = data;
     let userDetails;
