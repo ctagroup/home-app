@@ -1086,44 +1086,6 @@ HMISAPI = {
       return false;
     }
   },
-  getProjectGroups(from = 0, limit = 30) {
-    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (!config) {
-      throw new ServiceConfiguration.ConfigError();
-    }
-
-    const accessToken = this.getCurrentAccessToken(false);
-
-    let projectGroups = [];
-
-    const baseUrl = config.hmisAPIEndpoints.userServiceBaseUrl;
-    const projectGroupsPath = config.hmisAPIEndpoints.projectGroups;
-    const urlPah = `${baseUrl}${projectGroupsPath}`;
-    // const url = `${urlPah}?${querystring.stringify(params)}`;
-    const url = `${urlPah}?startIndex=${from}&maxItems=${limit}`;
-
-    logger.info(url);
-    logger.info(accessToken);
-
-    try {
-      const response = HTTP.get(url, {
-        headers: {
-          'X-HMIS-TrustedApp-Id': config.appId,
-          Authorization: `HMISUserAuth session_token=${accessToken}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      }).data;
-      logger.info(response);
-      projectGroups = response.projectgroups;
-    } catch (err) {
-      logger.error(`Failed to get project groups from HMIS. ${err.message}`);
-      logger.error(err.response);
-      return false;
-    }
-
-    return projectGroups;
-  },
   getUserProfiles(from = 0, limit = 30) {
     const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (!config) {

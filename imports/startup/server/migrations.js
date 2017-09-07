@@ -9,7 +9,7 @@ Meteor.startup(() => {
     version++;
     logger.info(`Updating to version ${version}`);
     AppSettings.find({ option_name: { $exists: true } }).fetch().forEach((entry) => {
-      AppSettings.insert({
+      AppSettings.set({
         _id: entry.option_name,
         value: entry.option_value,
       });

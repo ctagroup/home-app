@@ -21,6 +21,7 @@ class UserServiceApi extends ApiEndpoint {
   }
 
   getProjectGroups() {
+    // https://www.hmislynk.com/hmis-user-service/rest/projectgroups
     throw new Error('Not yet implemented');
   }
 
