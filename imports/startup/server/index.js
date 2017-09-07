@@ -41,6 +41,7 @@ import '/imports/api/projects/server/publications';
 import '/imports/api/openingScript/methods';
 
 import '/imports/startup/server/migrations';
+import '/imports/startup/server/accounts';
 
 
 Meteor.startup(() => {
