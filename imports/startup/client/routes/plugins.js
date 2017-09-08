@@ -1,12 +1,11 @@
 import '/imports/ui/content/login';
 
-const publicRoutes = [
-  'root',
-  'privacy',
-  'termsOfUse',
-  'notEnoughPermissions',
-  'signIn',
-];
+
+AccountsTemplates.configure({
+  privacyUrl: 'privacy',
+  termsUrl: 'terms-of-use',
+  hideSignUpLink: true,
+});
 
 AccountsTemplates.configureRoute('signIn', {
   name: 'signIn',
@@ -16,6 +15,13 @@ AccountsTemplates.configureRoute('signIn', {
   layoutTemplate: 'ContentLayout',
 });
 
+const publicRoutes = [
+  'root',
+  'privacy',
+  'termsOfUse',
+  'notEnoughPermissions',
+  'signIn',
+];
 
 Router.plugin('auth', {
   except: publicRoutes,

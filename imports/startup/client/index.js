@@ -1,7 +1,7 @@
 import '/imports/api/clients/methods';
 
+import '/imports/ui/templateHelpers';
 import '/imports/ui/dashboard/dashboard';
-
 import '/imports/ui/clients/searchClient';
 import '/imports/ui/clients/createClient';
 import '/imports/ui/clients/editClient';
