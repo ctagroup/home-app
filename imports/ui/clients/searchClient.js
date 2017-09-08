@@ -4,6 +4,32 @@ import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import { TableDom } from '/imports/ui/dataTable/helpers';
 import './searchClient.html';
 
+// TODO: move to dedicated template
+function generateMemberHtml(client) {
+  return `<tr id="${client.clientId}">
+            <td class="clientID">${client.clientId}</td>
+            <td class="clientName">${client.clientName}</td>
+            <td>
+              <select class="relationshiptohoh" name="relationshiptohoh">
+                <option value="1">Self</option>
+                <option value="2">Head of household’s child</option>
+                <option value="3">Head of household’s spouse or partner</option>
+                <option value="4">
+                  Head of household’s other relation member (other relation to head of household)
+                </option>
+                <option value="5">Other:  non-relation member</option>
+              </select>
+              <input type="hidden" name="householdMembershipId" class="householdMembershipId"
+                value="" />
+            </td>
+            <td>
+              <input type="radio" class="ihoh" name="ishoh" value=${client.clientId} />
+            </td>
+            <td>
+              <a href="#" class="btn btn-danger deleteMember"><i class="fa fa-remove"></i></a>
+            </td>
+          </tr>`;
+}
 
 
 const tableOptions = {
@@ -90,7 +116,7 @@ Template.searchClient.helpers(
             `${dataObject.firstName} ${dataObject.middleName} ${dataObject.lastName}`;
 
           if ($('.globalHouseholdMembers').find(`#${client.clientId}`).length < 1) {
-            $('.globalHouseholdMembers').append(globalHouseholdsHelpers.generateMemberHtml(client));
+            $('.globalHouseholdMembers').append(generateMemberHtml(client));
             $('.no-household-members-found-row').remove();
           }
         }
