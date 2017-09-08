@@ -32,7 +32,6 @@
     "Roles": true,
     "RouteController": true,
     "rolePermissions": true,
-    "homeRoles": true,
     "Schemas": true,
     "HomeHelpers": true,
     "HomeDashboard": true,
