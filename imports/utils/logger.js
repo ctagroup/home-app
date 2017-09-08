@@ -48,7 +48,7 @@ if (Meteor.isServer) {
         release: moment(new Date()).format('YYYY-MM-DD'),
       }),
     ],
-  });
+  });  
 }
 
 export const logger = log;
