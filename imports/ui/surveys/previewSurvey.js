@@ -4,6 +4,14 @@
 import { logger } from '/imports/utils/logger';
 import Surveys from '/imports/api/surveys/surveys';
 
+Template.previewSurvey.helpers(
+  {
+    editSurveyPath(id) {
+      return Router.path('adminDashboardsurveysEdit', { _id: id });
+    },
+  }
+);
+
 
 Template.previewSurvey.events(
   {

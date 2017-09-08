@@ -22,6 +22,7 @@ Router.route('adminDashboardquestionsView', {
   },
 });
 
+/*
 Router.route('adminDashboardquestionsNew', {
   path: '/questions/new',
   template: 'AdminDashboardNew',
@@ -49,3 +50,4 @@ Router.route('adminDashboardquestionsEdit', {
     return {};
   },
 });
+*/
