@@ -83,8 +83,7 @@ Template.questionsListView.helpers({
   },
 
   questionList() {
-    const questionCollection = HomeUtils.adminCollectionObject('questions');
-    return questionCollection.find({}).fetch();
+    return Questions.find({}).fetch();
   },
 
 });
@@ -104,8 +103,7 @@ Template.questionsListView.events(
       $('#aoptions').empty();
       // let txt1;
       // let optionsTag;
-      const questionsCollection = HomeUtils.adminCollectionObject('questions');
-      const question = questionsCollection.findOne({ _id: $(evt.currentTarget).data('survey-id') });
+      const question = Questions.findOne({ _id: $(evt.currentTarget).data('survey-id') });
 
       $('#q_category').val(question.category).change();
       $('#q_name').val(question.name);

@@ -1,4 +1,5 @@
 import OpeningScript from '/imports/api/openingScript/openingScript';
+import SignaturePadConfig from '/imports/ui/signaturePadConfig';
 import './signaturePad.js';
 import './preliminarySurvey.html';
 

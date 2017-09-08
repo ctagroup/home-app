@@ -1,3 +1,5 @@
+import Surveys from '/imports/api/surveys/surveys';
+import Questions from '/imports/api/questions/questions';
 import { logger } from '/imports/utils/logger';
 import { maxRank } from '/imports/ui/surveys/helpers';
 
@@ -7,15 +9,13 @@ Session.setDefault('selectedQuestions', null);
 Template.selectQuestions.helpers(
   {
     questionList() {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const surveysCollection = HomeUtils.adminCollectionObject('surveys');
-      const survey = surveysCollection.findOne({ _id: Router.current().params._id });
+      const survey = Surveys.findOne({ _id: Router.current().params._id });
       logger.log(`survey type=${survey.stype}`);
       logger.log(`survey id to select questions=${Router.current().params._id}`);
       if (survey.stype.match('spdat')) {
-        return questionCollection.find({ qtype: 'spdat' }).fetch();
+        return Questions.find({ qtype: 'spdat' }).fetch();
       }
-      return questionCollection.find({ qtype: survey.stype }).fetch();
+      return Questions.find({ qtype: survey.stype }).fetch();
     },
   }
 );
@@ -40,9 +40,8 @@ Template.selectQuestions.events(
       }
       logger.log(`Ques: ${array}`);
       // get section's Id which is at the bottom.
-      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
-        'surveyQuestionsMaster'
-      );
+      const surveyQuestionsMasterCollection = null; // ...
+      // ... HomeUtils.adminCollectionObject('surveyQuestionsMaster');
       const lastSection = surveyQuestionsMasterCollection.findOne(
         { $and: [
           { surveyID: surveyId },

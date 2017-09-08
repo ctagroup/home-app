@@ -1,4 +1,6 @@
 export function maxRank(surveyingId, type) {
+  console.log('Not implemented', surveyingId, type);
+  /*
   let newOrder;
   const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject('surveyQuestionsMaster');
   const lastSection = surveyQuestionsMasterCollection.findOne(
@@ -28,4 +30,5 @@ export function maxRank(surveyingId, type) {
     }
   }
   return newOrder;
+  */
 }

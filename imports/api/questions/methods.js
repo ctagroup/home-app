@@ -7,8 +7,7 @@ Meteor.methods(
       category, name, question, dataType, options,
       qtype, audience, locked, allowSkip, isCopy, surveyServiceQuesId
     ) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      questionCollection.insert(
+      Questions.insert(
         {
           category,
           name,
@@ -44,8 +43,7 @@ Meteor.methods(
       isCopy,
       surveyServiceQuesId
     ) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      questionCollection.update(
+      Questions.update(
         questionID, {
           $set: {
             category,
@@ -82,8 +80,7 @@ Meteor.methods(
       return HMISAPI.createSurveyServiceQuestions(question);
     },
     deleteQuestion(_id) {
-      const questionsCollection = HomeUtils.adminCollectionObject('questions');
-      const question = questionsCollection.findOne({ _id });
+      const question = Questions.findOne({ _id });
       if (question.surveyServiceQuesId) {
         const apiQuestion = HMISAPI.getSurveyServiceQuestion(question.surveyServiceQuesId);
         // Get details to see PLG exists for it or not?
@@ -96,7 +93,7 @@ Meteor.methods(
         logger.info(`Delete Question : ${JSON.stringify(delQuestionResponse)}`);
       }
       // Removing from Mongo.
-      questionsCollection.remove({ _id });
+      Questions.remove({ _id });
     },
     putSurveyApiId(_id, surveyServiceQuesId) {
       Questions.update(_id, { $set: { surveyServiceQuesId } });

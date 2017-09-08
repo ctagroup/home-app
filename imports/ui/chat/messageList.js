@@ -1,11 +1,9 @@
-/**
- * Created by kavyagautam on 5/17/16.
- */
+import Messages from '/imports/api/messages/messages';
 
 Template.messageList.helpers(
   {
     messages() {
-      return messages.find().fetch();
+      return Messages.find().fetch();
     },
   }
 );

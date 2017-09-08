@@ -1,3 +1,4 @@
+import SignaturePadConfig from '/imports/ui/signaturePadConfig';
 import './signaturePad.html';
 
 Template.signaturePad.onRendered(() => {

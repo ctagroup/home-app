@@ -1,4 +1,4 @@
-SignaturePadConfig = {
+const SignaturePadConfig = {
   // Adjust canvas coordinate space taking into account pixel ratio,
   // to make it look crisp on mobile devices.
   // This also causes canvas to be cleared.
@@ -15,3 +15,5 @@ SignaturePadConfig = {
     canvas.getContext('2d').scale(ratio, ratio);
   },
 };
+
+export default SignaturePadConfig;

@@ -1,16 +1,16 @@
-import { logger } from '/imports/utils/logger';
+import Questions from '/imports/api/questions/questions';
 
 Template.surveyEditTemplate.helpers(
   {
     questionList() {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      return questionCollection.find({}).fetch();
+      return Questions.find({}).fetch();
     },
     existingSelectedQuestions() {
       const qIds = Session.get('selectedQuestions');
       return qIds != null;
     },
     getSection() {
+      /*
       const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
         'surveyQuestionsMaster'
       );
@@ -27,6 +27,7 @@ Template.surveyEditTemplate.helpers(
         ).fetch().reverse()
       );
       return distinctEntries;
+      */
     },
   }
 );
@@ -37,8 +38,7 @@ Template.sortableItemTarget.helpers(
       return !(String(type) === String('question'));
     },
     quesName(qId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const question = questionCollection.findOne({ _id: qId });
+      const question = Questions.findOne({ _id: qId });
 
       let val = '';
 
@@ -49,8 +49,7 @@ Template.sortableItemTarget.helpers(
       return val;
     },
     quesLabel(qId) {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      const question = questionCollection.findOne({ _id: qId });
+      const question = Questions.findOne({ _id: qId });
 
       let val = '';
 
@@ -83,6 +82,8 @@ Template.typeDefinition.onRendered(() => {
     doNotClear: true,
     opacity: 0.2,
     update(event, ui) {
+      console.log('not implemented', event, ui);
+      /*
       // Details of element after it has been dropped.
       const movedElement = ui.item.get(0);
       const movedElementDetails = Blaze.getData(movedElement);
@@ -199,6 +200,7 @@ Template.typeDefinition.onRendered(() => {
         { $set: { order: newIndex } }
       );
       logger.log(`Q$ #${oldIndex} #${newIndex}`);
+      */
     },
   });
 });
@@ -206,6 +208,7 @@ Template.typeDefinition.onRendered(() => {
 Template.typeDefinition.helpers(
   {
     showPreview() {
+      /*
       const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
         'surveyQuestionsMaster'
       );
@@ -213,8 +216,10 @@ Template.typeDefinition.helpers(
           { surveyID: Router.current().params._id }
         ).count()
         > 0;
+      */
     },
     attributes() {
+      /*
       const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
         'surveyQuestionsMaster'
       );
@@ -226,6 +231,7 @@ Template.typeDefinition.helpers(
           sort: { order: 1 },
         }
       );
+      */
     },
   }
 );
@@ -233,6 +239,7 @@ Template.typeDefinition.helpers(
 Template.sortableSectionItem.helpers(
   {
     sectionQuestions() {
+      /*
       const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
         'surveyQuestionsMaster'
       );
@@ -241,6 +248,7 @@ Template.sortableSectionItem.helpers(
         { sort: { order: 1 },
         } // section ID retrieved from parent Data elements.
       );
+      */
     },
   }
 );

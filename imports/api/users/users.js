@@ -69,6 +69,18 @@ const LocationEntrySchema = new SimpleSchema(
   }
 );
 
+const UserCountrySchema = new SimpleSchema(
+  {
+    name: {
+      type: String,
+    },
+    code: {
+      type: String,
+      regEx: /^[A-Z]{2}$/,
+    },
+  }
+);
+
 const UserProfileSchema = new SimpleSchema(
   {
     firstName: {
@@ -102,7 +114,7 @@ const UserProfileSchema = new SimpleSchema(
       optional: true,
     },
     country: {
-      type: Schemas.UserCountry,
+      type: UserCountrySchema,
       optional: true,
     },
   }

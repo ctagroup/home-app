@@ -43,7 +43,8 @@ function sectionComponents(originalSurveyComponentIDs, newSurveSectionIDs, newSu
   logger.log(`Sub sections: ${originalSurveyComponentIDs}`);
   logger.log(`new section ID: ${newSurveSectionIDs}`);
 
-  const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject('surveyQuestionsMaster');
+  const surveyQuestionsMasterCollection = null; // ...
+  // ... HomeUtils.adminCollectionObject('surveyQuestionsMaster');
   const sectionComponent = surveyQuestionsMasterCollection
     .find({ _id: originalSurveyComponentIDs }).fetch();
 
@@ -78,7 +79,8 @@ function sectionComponents(originalSurveyComponentIDs, newSurveSectionIDs, newSu
 
 let compIDs;
 function mainSection(mainSectionIDs, surveyingID) {
-  const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject('surveyQuestionsMaster');
+  const surveyQuestionsMasterCollection = null;// ...
+  // ... HomeUtils.adminCollectionObject('surveyQuestionsMaster');
   const mainSections = surveyQuestionsMasterCollection.find({ _id: mainSectionIDs }).fetch();
 
   const componentsIDs = surveyQuestionsMasterCollection
@@ -125,7 +127,8 @@ function recordsForCopy(surveyingID) {
   newSurveyID = surveyingID;
     // let sectionArray = new Array();
 
-  const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject('surveyQuestionsMaster');
+  const surveyQuestionsMasterCollection = null; // ...
+  // ... HomeUtils.adminCollectionObject('surveyQuestionsMaster');
   const AllRecordsForCopy = surveyQuestionsMasterCollection
     .find({ surveyID: surveyIDForCopy }, { sectionID: 1 }).fetch();
 
@@ -295,7 +298,7 @@ Template.surveyViewTemplate.events(
       $('.showWhenNew').show();
     },
     'click .edit': (event) => {
-      const surveyCollection = HomeUtils.adminCollectionObject('surveys');
+      const surveyCollection = Surveys;
       const survey = surveyCollection.findOne({ _id: $(event.currentTarget).data('survey-id') });
       const copy = survey.copy;
       $('.copy').hide();
@@ -477,9 +480,8 @@ Template.sortableItemTarget.events(
     'dblclick .name': (event, template) => {
       // Make the name editable. We should use an existing component, but it's
       // in a sorry state - https://github.com/arillo/meteor-x-editable/issues/1
-      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
-        'surveyQuestionsMaster'
-      );
+      const surveyQuestionsMasterCollection = null; // ...
+      // ... HomeUtils.adminCollectionObject('surveyQuestionsMaster');
       let input;
       const cont = surveyQuestionsMasterCollection.find({ _id: this._id },
           { content_type: 1, _id: 0 }).fetch();
@@ -566,9 +568,8 @@ Template.sortableItemTarget.events(
       );
 
       // custom code, working on a specific collection
-      const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject(
-        'surveyQuestionsMaster'
-      );
+      const surveyQuestionsMasterCollection = null; // ...
+      // ... HomeUtils.adminCollectionObject('surveyQuestionsMaster');
       if (surveyQuestionsMasterCollection.find({}).count() === 0) {
         Meteor.setTimeout(
           () => {

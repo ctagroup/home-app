@@ -100,9 +100,11 @@ Router.route(
       Session.set('admin_collection_page', '');
     },
     data() {
+      /*
       const surveyID = this.params._id;
       const surveyCollection = HomeUtils.adminCollectionObject('surveys');
       return surveyCollection.findOne({ _id: surveyID });
+      */
     },
   }
 );

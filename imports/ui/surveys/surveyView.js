@@ -1,8 +1,9 @@
+import Surveys from '/imports/api/surveys/surveys';
+
 Template.surveyViewTemplate.helpers(
   {
     surveyList() {
-      const surveyCollection = HomeUtils.adminCollectionObject('surveys');
-      return surveyCollection.find({}).fetch();
+      return Surveys.find().fetch();
     },
   }
 );
@@ -10,8 +11,7 @@ Template.surveyViewTemplate.helpers(
 Template.surveyForm.helpers(
   {
     surveyList() {
-      const surveyCollection = HomeUtils.adminCollectionObject('surveys');
-      return surveyCollection.find({}).fetch();
+      return Surveys.find().fetch();
     },
   }
 );

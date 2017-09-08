@@ -43,6 +43,7 @@ import '/imports/api/openingScript/methods';
 import '/imports/startup/server/migrations';
 import '/imports/startup/server/accounts';
 import '/imports/startup/server/admins';
+import '/imports/startup/server/mergeAccountsPatch';
 
 
 Meteor.startup(() => {

@@ -15,13 +15,11 @@ function checkLocked() {
 Template.questionForm.helpers(
   {
     questionList() {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
-      return questionCollection.find({}).fetch();
+      return Questions.find({}).fetch();
     },
     getQuestionCategory() {
-      const questionCollection = HomeUtils.adminCollectionObject('questions');
       const distinctEntries = _.uniq(
-        questionCollection.find(
+        Questions.find(
           {},
           { sort: { category: 1 }, fields: { category: true } }
         ).fetch().map(
