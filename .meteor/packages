@@ -68,7 +68,6 @@ shell-server@0.2.1
 # accounts-password is added because of houston:admin. Because there was a build error for npm-bcrypt.
 # So don't remove accounts-password, if you want to keep houston:admin
 accounts-password
-houston:admin
 themeteorchef:bert
 practicalmeteor:mocha
 xolvio:cleaner

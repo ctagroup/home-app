@@ -29,7 +29,6 @@ coffeescript@1.11.1_4
 cunneen:signature-pad@1.5.3
 dburles:collection-helpers@1.1.0
 dburles:google-maps@1.1.5
-dburles:mongo-collection-instances@0.3.4
 ddp@1.2.5
 ddp-client@1.3.2
 ddp-common@1.2.8
@@ -52,7 +51,6 @@ geojson-utils@1.0.10
 google@1.1.15
 hb5:meteor-is.js@0.0.1
 hot-code-push@1.0.4
-houston:admin@2.0.7
 html-tools@1.0.11
 htmljs@1.0.11
 http@1.2.10
@@ -70,7 +68,6 @@ jparker:crypto-core@0.1.0
 jparker:crypto-md5@0.1.1
 jparker:gravatar@0.5.1
 jquery@1.11.10
-lai:collection-extensions@0.1.4
 launch-screen@1.1.0
 less@2.7.8
 livedata@1.0.18
@@ -142,7 +139,6 @@ templating-compiler@1.2.15
 templating-runtime@1.2.15
 templating-tools@1.0.5
 themeteorchef:bert@2.1.1
-tmeasday:paginated-subscription@0.2.4
 tmeasday:test-reporter-helpers@0.2.1
 tracker@1.1.1
 tsega:bootstrap3-datetimepicker@4.17.37_1

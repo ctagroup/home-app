@@ -63,7 +63,6 @@
     "globalHouseholdsHelpers": true,
     "eligibleClients": true,
     "referralStatusHelpers": true,
-    "Houston": true,
     "Bert": true
   },
   "rules": {
