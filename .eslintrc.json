@@ -34,7 +34,6 @@
     "rolePermissions": true,
     "Schemas": true,
     "HomeHelpers": true,
-    "HomeDashboard": true,
     "AutoForm": true,
     "SimpleSchema": true,
     "Gravatar": true,
