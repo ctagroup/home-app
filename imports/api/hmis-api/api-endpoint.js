@@ -2,11 +2,14 @@ import { logger } from '/imports/utils/logger';
 
 const DETAILED_GET_LOGS = false;
 
+let counter = 0;
+
 export class ApiEndpoint {
   constructor(appId, accessToken) {
     this.appId = appId;
     this.accessToken = accessToken;
     this.logGetDetails = DETAILED_GET_LOGS;
+    this.correlationId = counter++;
   }
 
   debug(value = true) {
@@ -26,7 +29,7 @@ export class ApiEndpoint {
   doGet(url) {
     const headers = this.getRequestHeaders();
     const options = { headers };
-    logger.debug('HMIS API:get req', this.logGetDetails ? { url, options } : url);
+    logger.debug(`HMIS API:get#${this.correlationId} (${url})`, this.logGetDetails ? options : '');
 
     let response = false;
     try {
@@ -34,7 +37,8 @@ export class ApiEndpoint {
     } catch (err) {
       this.throwApiError(url, headers, err, this.logGetDetails);
     }
-    logger.debug(`HMIS API:get res (${url})`,
+    delete response.content;
+    logger.debug(`HMIS API:get#${this.correlationId} res (${url})`,
       this.logGetDetails ? response : response.statusCode
     );
     return response.data;
@@ -45,14 +49,15 @@ export class ApiEndpoint {
       headers: this.getRequestHeaders(),
       data,
     };
-    logger.debug('HMIS API:post', { url, options });
+    logger.debug(`HMIS API:post#${this.correlationId}`, { url, options });
     let response = false;
     try {
       response = HTTP.post(url, options);
     } catch (err) {
       this.throwApiError(url, options, err);
     }
-    logger.debug('HMIS API:post response (${url})', response);
+    delete response.content;
+    logger.debug(`HMIS API:post#${this.correlationId} res (${url})`, response);
     return response.data;
   }
 
@@ -61,14 +66,15 @@ export class ApiEndpoint {
       headers: this.getRequestHeaders(),
       data,
     };
-    logger.debug('HMIS API:put', { url, options });
+    logger.debug(`HMIS API:put#${this.correlationId}`, { url, options });
     let response = false;
     try {
       response = HTTP.put(url, options);
     } catch (err) {
       this.throwApiError(url, options, err);
     }
-    logger.debug('HMIS API:put response', response);
+    delete response.content;
+    logger.debug(`HMIS API:put#${this.correlationId} res (${url})`, response);
     return response.data;
   }
 
@@ -76,14 +82,15 @@ export class ApiEndpoint {
     const options = {
       headers: this.getRequestHeaders(),
     };
-    logger.debug('HMIS API:del', { url, options });
+    logger.debug(`HMIS API:del#${this.correlationId}`, { url, options });
     let response = false;
     try {
       response = HTTP.del(url, options);
     } catch (err) {
       this.throwApiError(url, options, err);
     }
-    logger.debug('HMIS API:del response (${url})', response);
+    delete response.content;
+    logger.debug(`HMIS API:del#${this.correlationId} res (${url})`, response);
     return response.data;
   }
 

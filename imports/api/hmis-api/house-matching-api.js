@@ -1,3 +1,4 @@
+import { logger } from '/imports/utils/logger';
 import { HmisApiRegistry } from './api-registry';
 import { ApiEndpoint } from './api-endpoint';
 
@@ -7,6 +8,11 @@ class HouseMatchingApi extends ApiEndpoint {
   getEligibleClients(pageNumber = 0, size = 9999) {
     const url = `${BASE_URL}/eligibleclients?page=${pageNumber}&size=${size}`;
     const response = this.doGet(url);
+    if (response === null) {
+      logger.warn('HouseMatchingApi.getEligibleClients returned null response');
+      // see https://github.com/servinglynk/hmis-lynk-open-source-docs/issues/337
+      return [];
+    }
     let eligibleClients = response.content;
     if (response.page.number < response.page.totalPages - 1) {
       eligibleClients = _.union(
