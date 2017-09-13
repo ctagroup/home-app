@@ -1,7 +1,9 @@
 import { HmisClient } from '/imports/api/hmis-api';
+import { logger } from '/imports/utils/logger';
 
 Meteor.publish(
   'housingUnits.list', function publishAllHousingUnits(fetchProjectsDetails = true) {
+    logger.info(`PUB[${this.userId}]: housingUnits.list`);
     const self = this;
     let stopFunction = false;
     self.unblock();
@@ -22,6 +24,7 @@ Meteor.publish(
 
     if (fetchProjectsDetails) {
       const projectsCache = {};
+      // TODO: use async data loading
       for (let i = 0; i < housingUnits.length && !stopFunction; i += 1) {
         const projectId = housingUnits[i].projectId;
         let project;
@@ -47,6 +50,7 @@ Meteor.publish(
 
 Meteor.publish(
   'housingUnits.one', function publishOneHousingUnit(housingUnitId) {
+    logger.info(`PUB[${this.userId}]: housingUnits.one`, housingUnitId);
     const hc = HmisClient.create(this.userId);
     const housingUnit = hc.api('housing').getHousingUnit(housingUnitId);
 
