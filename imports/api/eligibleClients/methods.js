@@ -1,7 +1,9 @@
+import { logger } from '/imports/utils/logger';
 import { HmisClient } from '../hmis-api';
 
 Meteor.methods({
   getEligibleClients() {
+    logger.info(`METHOD[${Meteor.userId()}]: getEligibleClients()`);
     if (!Meteor.userId()) {
       throw new Meteor.Error(401, 'Unauthorized');
     }
@@ -11,6 +13,7 @@ Meteor.methods({
   },
 
   ignoreMatchProcess(clientId, ignoreMatchProcess, remarks = '') {
+    logger.info(`METHOD[${Meteor.userId()}]: ignoreMatchProcess(${clientId}, ${ignoreMatchProcess})`); // eslint-disable-line max-len
     check(clientId, String);
     check(ignoreMatchProcess, Boolean);
     check(remarks, String);
@@ -36,6 +39,8 @@ Meteor.methods({
   },
 
   postHousingMatchScores() {
-    return HMISAPI.postHousingMatchScores();
+    logger.info(`METHOD[${Meteor.userId()}]: postHousingMatchScores()`);
+    const hc = HmisClient.create(Meteor.userId());
+    return hc.api('house-matching').postHousingMatchScores();
   },
 });
