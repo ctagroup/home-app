@@ -1,6 +1,5 @@
 import { HmisApiRegistry } from './api-registry';
 import { ApiEndpoint } from './api-endpoint';
-import { logger } from '/imports/utils/logger';
 
 const BASE_URL = 'https://www.hmislynk.com/global-household-api';
 

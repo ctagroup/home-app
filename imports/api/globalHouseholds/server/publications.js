@@ -1,7 +1,9 @@
+import { logger } from '/imports/utils/logger';
 import { eachLimit } from 'async';
 import { HmisClient } from '/imports/api/hmis-api';
 
 Meteor.publish('globalHouseholds.list', function publishHouseholds() {
+  logger.info(`PUB[${this.userId}]: globalHouseholds.list`);
   if (!this.userId) {
     return;
   }
@@ -83,6 +85,7 @@ Meteor.publish('globalHouseholds.list', function publishHouseholds() {
 
 
 Meteor.publish('globalHouseholds.one', function publishHousehold(globalHouseholdId) {
+  logger.info(`PUB[${this.userId}]: globalHouseholds.one`, globalHouseholdId);
   if (!this.userId) {
     return [];
   }
