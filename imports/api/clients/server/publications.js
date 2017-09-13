@@ -4,7 +4,7 @@ import { logger } from '/imports/utils/logger';
 
 
 Meteor.publish('clients.one', function publishSingleClient(clientId, schema = 'v2015') {
-  logger.info(`PUBLISH: clients.one(${clientId}, ${schema}) -> ${this.userId}`);
+  logger.info(`PUB[${this.userId}]: clients.one(${clientId}, ${schema})`);
   if (!this.userId) {
     return [];
   }
@@ -33,31 +33,29 @@ Meteor.publish('clients.one', function publishSingleClient(clientId, schema = 'v
       try {
         eligibleClient = hc.api('house-matching').getEligibleClient(clientId);
       } catch (e) {
-        eligibleClient = { error: e.details.code };
+        eligibleClient = { error: e.reason };
       }
       self.changed('localClients', client.clientId, { eligibleClient });
     }, 0);
 
     Meteor.setTimeout(() => {
-      const enrollments = hc.api('client').getClientEnrollments(clientId, schema);
-
-      for (let i = 0; i < enrollments.length && !stopFunction; i += 1) {
-        const exits = hc.api('client').getClientsEnrollmentExits(
-          clientId,
-          enrollments[i].enrollmentId,
-          schema
-        );
-
-        if (exits.length > 0) {
-          enrollments[i].exits = exits[0];
-        } else {
-          enrollments[i].exits = false;
+      try {
+        const enrollments = hc.api('client').getClientEnrollments(clientId, schema);
+        for (let i = 0; i < enrollments.length && !stopFunction; i += 1) {
+          const exits = hc.api('client').getClientsEnrollmentExits(
+            clientId, enrollments[i].enrollmentId, schema
+          );
+          if (exits.length > 0) {
+            enrollments[i].exits = exits[0];
+          } else {
+            enrollments[i].exits = false;
+          }
+          enrollments[i].project = hc.api('client').getProject(enrollments[i].projectid, schema);
         }
-
-        enrollments[i].project = hc.api('client').getProject(enrollments[i].projectid, schema);
+        self.changed('localClients', client.clientId, { enrollments });
+      } catch (e) {
+        logger.warn(e);
       }
-
-      self.changed('localClients', client.clientId, { enrollments });
     }, 0);
 
     Meteor.setTimeout(() => {
@@ -96,40 +94,44 @@ Meteor.publish('clients.one', function publishSingleClient(clientId, schema = 'v
 
     Meteor.setTimeout(() => {
       // fetch client status
-      const referralStatusHistory = hc.api('house-matching').getReferralStatusHistory(clientId);
-
-      // Sort based on Timestamp
-      referralStatusHistory.sort((a, b) => {
-        const aTime = moment(a.dateUpdated, 'MM-DD-YYYY HH:mm:ss.SSS').unix();
-        const bTime = moment(b.dateUpdated, 'MM-DD-YYYY HH:mm:ss.SSS').unix();
-        return aTime - bTime;
-      });
-
-      self.changed('localClients', client.clientId, { referralStatusHistory });
+      try {
+        const referralStatusHistory = hc.api('house-matching').getReferralStatusHistory(clientId);
+        // Sort based on Timestamp
+        referralStatusHistory.sort((a, b) => {
+          const aTime = moment(a.dateUpdated, 'MM-DD-YYYY HH:mm:ss.SSS').unix();
+          const bTime = moment(b.dateUpdated, 'MM-DD-YYYY HH:mm:ss.SSS').unix();
+          return aTime - bTime;
+        });
+        self.changed('localClients', client.clientId, { referralStatusHistory });
+      } catch (e) {
+        logger.warn(e);
+      }
     }, 0);
 
     Meteor.setTimeout(() => {
-      const housingMatch = hc.api('house-matching').getHousingMatch(clientId);
-
-      if (housingMatch) {
+      try {
+        const housingMatch = hc.api('house-matching').getHousingMatch(clientId);
         const housingUnit = hc.api('housing').getHousingUnit(housingMatch.housingUnitId);
-
         let projectSchema = 'v2015';
         if (housingUnit.links && housingUnit.links.length > 0
           && housingUnit.links[0].rel.indexOf('v2014') !== -1) {
           projectSchema = 'v2014';
         }
-
         housingUnit.project = hc.api('client').getProject(housingUnit.projectId, projectSchema);
-
         housingMatch.housingUnit = housingUnit;
+        self.changed('localClients', client.clientId, { housingMatch });
+      } catch (e) {
+        logger.warn(e);
       }
-      self.changed('localClients', client.clientId, { housingMatch });
     }, 0);
 
     Meteor.setTimeout(() => {
-      const matchingScore = hc.api('house-matching').getClientScore(clientId);
-      self.changed('localClients', client.clientId, { matchingScore });
+      try {
+        const matchingScore = hc.api('house-matching').getClientScore(clientId);
+        self.changed('localClients', client.clientId, { matchingScore });
+      } catch (e) {
+        logger.warn(e);
+      }
     }, 0);
   } catch (err) {
     logger.error('publish singleHMISClient', err);

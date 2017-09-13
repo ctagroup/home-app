@@ -34,7 +34,7 @@ Meteor.publish(
             }
             project = hc.api('client').getProject(housingUnits[i].projectId, schema);
           } catch (e) {
-            project = { error: 404 };
+            project = { error: e.reason };
           }
           projectsCache[projectId] = project;
         }
@@ -60,7 +60,7 @@ Meteor.publish(
       const project = hc.api('client').getProject(housingUnit.projectId, schema);
       housingUnit.project = project;
     } catch (e) {
-      housingUnit.project = { error: 404 };
+      housingUnit.project = { error: e.reason };
     }
 
     this.added('housingUnits', housingUnit.housingInventoryId, housingUnit);

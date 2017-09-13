@@ -81,7 +81,7 @@ class GlobalHouseHoldApi extends ApiEndpoint {
   }
 
   getGlobalHouseholdMemberships(clientId, page = 0, limit = 9999) {
-    const url = `${BASE_URL}/global-households/members?clientid=${clientId}&page=${page}&size=${limit}`; // eslint-disable-line max-len
+    const url = `${BASE_URL}/members?clientid=${clientId}&page=${page}&size=${limit}`; // eslint-disable-line max-len
     return this.doGet(url);
   }
 

@@ -16,14 +16,14 @@ Meteor.methods({
   },
 
   updateClientMatchStatus(clientId, statusCode, comments, recipients) {
-    const ret = HMISAPI.updateClientMatchStatus(clientId, statusCode, comments, recipients);
-    if (!ret) {
-      throw new Meteor.Error('Error updating client match status.');
-    }
-    return ret;
+    const hc = HmisClient.create(Meteor.userId());
+    return hc.api('house-matching').updateClientMatchStatus(
+      clientId, statusCode, comments, recipients
+    );
   },
 
   searchClient(query, options) {
+    logger.info(`METHOD[${Meteor.userId()}]: searchClient(${query})`);
     const optionz = options || {};
 
     // guard against client-side DOS: hard limit to 50
