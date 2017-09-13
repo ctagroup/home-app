@@ -4,7 +4,7 @@ import { ApiEndpoint } from './api-endpoint';
 const BASE_URL = 'https://www.hmislynk.com/house-matching-api';
 
 class HouseMatchingApi extends ApiEndpoint {
-  getEligibleClients(pageNumber = 0, size = 1000) {
+  getEligibleClients(pageNumber = 0, size = 9999) {
     const url = `${BASE_URL}/eligibleclients?page=${pageNumber}&size=${size}`;
     const response = this.doGet(url);
     let eligibleClients = response.content;
@@ -27,9 +27,12 @@ class HouseMatchingApi extends ApiEndpoint {
     return this.doPut(url, client);
   }
 
-  getHousingMatch(pageNumber = 0, size = 1000) {
+  getHousingMatches(pageNumber = 0, size = 9999) {
     const url = `${BASE_URL}/matches?page=${pageNumber}&size=${size}`;
     const response = this.doGet(url);
+    if (!response) {
+      return [];
+    }
     let housingMatches = response.content;
     if (response.page.number < response.page.totalPages - 1) {
       housingMatches = _.union(
@@ -39,21 +42,31 @@ class HouseMatchingApi extends ApiEndpoint {
     }
     return housingMatches;
   }
-  getSingleHousingMatchForPublish() {
-    throw new Error('Not yet implemented');
+
+  getHousingMatch(clientId) {
+    const url = `${BASE_URL}/matches/client/${clientId}`;
+    return this.doGet(url);
   }
+
   getReferralStatusHistory(clientId) {
     const url = `${BASE_URL}/matches/client/${clientId}/status`;
     return this.doGet(url);
   }
+
   postHousingMatch() {
-    throw new Error('Not yet implemented');
+    const url = `${BASE_URL}/matches`;
+    const body = {};
+    return this.doPost(url, body);
   }
   postHousingMatchScores() {
-    throw new Error('Not yet implemented');
+    const url = `${BASE_URL}/scores`;
+    const body = {}
+    return this.doPost(url, body);
   }
-  updateClientMatchStatus() {
-    throw new Error('Not yet implemented');
+  updateClientMatchStatus(clientId, status, comments = '', recipients = []) {
+    const url = `${BASE_URL}/matches/client/${clientId}/status`;
+    const body = { status, comments, recipients };
+    return this.doPut(url, body);
   }
 
   getClientScore(clientId) {

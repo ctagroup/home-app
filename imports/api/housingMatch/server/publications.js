@@ -16,23 +16,23 @@ Meteor.publish(
 
     try {
       const hc = HmisClient.create(this.userId);
-      const housingMatch = hc.api('house-matching').getHousingMatch();
+      const housingMatches = hc.api('house-matching').getHousingMatches();
 
       // populate the list without the details
-      for (let i = 0; i < housingMatch.length && !stopFunction; i += 1) {
-        const eligibleClients = housingMatch[i].eligibleClients;
+      for (let i = 0; i < housingMatches.length && !stopFunction; i += 1) {
+        const eligibleClients = housingMatches[i].eligibleClients;
         eligibleClients.clientDetails = { loading: true };
         eligibleClients.referralStatus = { loading: true };
-        this.added('localHousingMatch', housingMatch[i].reservationId, housingMatch[i]);
+        this.added('localHousingMatch', housingMatches[i].reservationId, housingMatch[i]);
       }
       this.ready();
 
       // load client details and history
-      for (let i = 0; i < housingMatch.length && !stopFunction; i += 1) {
+      for (let i = 0; i < housingMatches.length && !stopFunction; i += 1) {
         Meteor.defer(() => {
-          const eligibleClients = housingMatch[i].eligibleClients;
+          const eligibleClients = housingMatches[i].eligibleClients;
           let schema = 'v2015';
-          if (housingMatch[i].links[1].href.indexOf('v2014') !== -1) {
+          if (housingMatches[i].links[1].href.indexOf('v2014') !== -1) {
             schema = 'v2014';
           }
 
@@ -57,7 +57,7 @@ Meteor.publish(
           } catch (e) {
             eligibleClients.referralStatus = { error: e.reason };
           }
-          this.changed('localHousingMatch', housingMatch[i].reservationId, {
+          this.changed('localHousingMatch', housingMatches[i].reservationId, {
             eligibleClients,
           });
         });

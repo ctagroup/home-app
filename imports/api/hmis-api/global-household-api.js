@@ -67,7 +67,7 @@ class GlobalHouseHoldApi extends ApiEndpoint {
     return this.doGet(url);
   }
 
-  getHouseholdMembers(householdId, page = 0, size = 1000) {
+  getHouseholdMembers(householdId, page = 0, size = 9999) {
     const url = `${BASE_URL}/global-households/${householdId}/members?page=${page}&size=${size}`;
     const response = this.doGet(url);
     let householdMembers = response.content;
@@ -80,41 +80,9 @@ class GlobalHouseHoldApi extends ApiEndpoint {
     return householdMembers;
   }
 
-  getGlobalHouseholdMembershipsForPublish(clientId, page = 0, limit = 30) {
-    const config = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
-    if (!config) {
-      throw new ServiceConfiguration.ConfigError();
-    }
-
-    const accessToken = this.getCurrentAccessToken(false);
-
-    const baseUrl = config.hmisAPIEndpoints.globalHouseholdBaseUrl;
-    const globalHouseholdForClientPath = config.hmisAPIEndpoints.globalHouseholdForClient;
-    const urlPah = `${baseUrl}${globalHouseholdForClientPath}`;
-    // const url = `${urlPah}?${querystring.stringify(params)}`;
-    const url = `${urlPah}?clientid=${clientId}&page=${page}&size=${limit}`;
-
-    logger.info(url);
-    logger.info(accessToken);
-
-    try {
-      const response = HTTP.get(url, {
-        headers: {
-          'X-HMIS-TrustedApp-Id': config.appId,
-          Authorization: `HMISUserAuth session_token=${accessToken}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      }).data;
-      logger.info(response);
-      return response;
-    } catch (err) {
-      logger.error(
-        `Failed to get global household memberships for client from HMIS. ${err.message}`
-      );
-      logger.error(err.response);
-      return false;
-    }
+  getGlobalHouseholdMemberships(clientId, page = 0, limit = 9999) {
+    const url = `${BASE_URL}/global-households/members?clientid=${clientId}&page=${page}&size=${limit}`; // eslint-disable-line max-len
+    return this.doGet(url);
   }
 
 }

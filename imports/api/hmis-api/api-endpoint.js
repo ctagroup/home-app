@@ -6,6 +6,12 @@ export class ApiEndpoint {
   constructor(appId, accessToken) {
     this.appId = appId;
     this.accessToken = accessToken;
+    this.logGetDetails = DETAILED_GET_LOGS;
+  }
+
+  debug(value = true) {
+    this.logGetDetails = value;
+    return this;
   }
 
   getRequestHeaders() {
@@ -20,16 +26,16 @@ export class ApiEndpoint {
   doGet(url) {
     const headers = this.getRequestHeaders();
     const options = { headers };
-    logger.debug('HMIS API:get req', DETAILED_GET_LOGS ? { url, options } : url);
+    logger.debug('HMIS API:get req', this.logGetDetails ? { url, options } : url);
 
     let response = false;
     try {
       response = HTTP.get(url, options);
     } catch (err) {
-      this.throwApiError(url, headers, err, DETAILED_GET_LOGS);
+      this.throwApiError(url, headers, err, this.logGetDetails);
     }
     logger.debug(`HMIS API:get res (${url})`,
-      DETAILED_GET_LOGS ? response : response.statusCode
+      this.logGetDetails ? response : response.statusCode
     );
     return response.data;
   }

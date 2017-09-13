@@ -4,6 +4,7 @@ import { logger } from '/imports/utils/logger';
 
 
 Meteor.publish('clients.one', function publishSingleClient(clientId, schema = 'v2015') {
+  logger.info(`PUBLISH: clients.one(${clientId}, ${schema}) -> ${this.userId}`);
   if (!this.userId) {
     return [];
   }
@@ -37,53 +38,35 @@ Meteor.publish('clients.one', function publishSingleClient(clientId, schema = 'v
       self.changed('localClients', client.clientId, { eligibleClient });
     }, 0);
 
-    // TODO: move old api calls to the new one
-    HMISAPI.setCurrentUserId(self.userId);
-
     Meteor.setTimeout(() => {
-      let response = '';
-      let enrollments = [];
-      response = HMISAPI.getEnrollmentsForPublish(clientId, schema);
-      enrollments = response.enrollments;
-
-      for (let i = 1; (i * 30) < response.pagination.total && !stopFunction; i += 1) {
-        const temp = HMISAPI.getEnrollmentsForPublish(clientId, schema, i * 30);
-        enrollments.push(...temp.enrollments);
-      }
+      const enrollments = hc.api('client').getClientEnrollments(clientId, schema);
 
       for (let i = 0; i < enrollments.length && !stopFunction; i += 1) {
-        enrollments[i].exits = HMISAPI.getEnrollmentExitsForPublish(
+        const exits = hc.api('client').getClientsEnrollmentExits(
           clientId,
           enrollments[i].enrollmentId,
           schema
         );
 
-        if (enrollments[i].exits.length > 0) {
-          enrollments[i].exits = enrollments[i].exits[0];
+        if (exits.length > 0) {
+          enrollments[i].exits = exits[0];
         } else {
           enrollments[i].exits = false;
         }
 
-        enrollments[i].project = HMISAPI.getProjectForPublish(enrollments[i].projectid, schema);
+        enrollments[i].project = hc.api('client').getProject(enrollments[i].projectid, schema);
       }
 
       self.changed('localClients', client.clientId, { enrollments });
     }, 0);
 
     Meteor.setTimeout(() => {
-      let response = '';
-      let globalHouseholdMemberships = [];
-      response = HMISAPI.getGlobalHouseholdMembershipsForPublish(clientId);
-      globalHouseholdMemberships = response.content;
-
-      for (let i = 1; i < response.page.totalPages && !stopFunction; i += 1) {
-        const temp = HMISAPI.getGlobalHouseholdMembershipsForPublish(clientId, i);
-        globalHouseholdMemberships.push(...temp.content);
-      }
+      const globalHouseholdMemberships = hc.api('global-household')
+        .getGlobalHouseholdMemberships(clientId);
 
       const globalHouseholds = [];
       for (let i = 0; i < globalHouseholdMemberships.length && !stopFunction; i += 1) {
-        const globalHousehold = HMISAPI.getSingleGlobalHouseholdForPublish(
+        const globalHousehold = hc.api('global-household').getHouseHold(
           globalHouseholdMemberships[i].globalHouseholdId
         );
 
@@ -93,14 +76,14 @@ Meteor.publish('clients.one', function publishSingleClient(clientId, schema = 'v
             hohSchema = 'v2014';
           }
 
-          globalHousehold.headOfHouseholdClient = HMISAPI.getClient(
+          client = hc.api('client').getClient(clientId, schema);
+
+          globalHousehold.headOfHouseholdClient = hc.api('client').getClient(
             globalHousehold.headOfHouseholdId,
-            hohSchema,
-            // useCurrentUserObject
-            false
+            hohSchema
           );
           globalHousehold.headOfHouseholdClient.schema = 'v2015';
-          globalHousehold.userDetails = HMISAPI.getUserForPublish(
+          globalHousehold.userDetails = hc.api('user-service').getUser(
             globalHousehold.userId
           );
 
@@ -113,7 +96,7 @@ Meteor.publish('clients.one', function publishSingleClient(clientId, schema = 'v
 
     Meteor.setTimeout(() => {
       // fetch client status
-      const referralStatusHistory = HMISAPI.getReferralStatusHistory(clientId);
+      const referralStatusHistory = hc.api('house-matching').getReferralStatusHistory(clientId);
 
       // Sort based on Timestamp
       referralStatusHistory.sort((a, b) => {
@@ -126,10 +109,10 @@ Meteor.publish('clients.one', function publishSingleClient(clientId, schema = 'v
     }, 0);
 
     Meteor.setTimeout(() => {
-      const housingMatch = HMISAPI.getSingleHousingMatchForPublish(clientId);
+      const housingMatch = hc.api('house-matching').getHousingMatch(clientId);
 
       if (housingMatch) {
-        const housingUnit = HMISAPI.getHousingUnitForPublish(housingMatch.housingUnitId);
+        const housingUnit = hc.api('housing').getHousingUnit(housingMatch.housingUnitId);
 
         let projectSchema = 'v2015';
         if (housingUnit.links && housingUnit.links.length > 0
@@ -137,7 +120,7 @@ Meteor.publish('clients.one', function publishSingleClient(clientId, schema = 'v
           projectSchema = 'v2014';
         }
 
-        housingUnit.project = HMISAPI.getProjectForPublish(housingUnit.projectId, projectSchema);
+        housingUnit.project = hc.api('client').getProject(housingUnit.projectId, projectSchema);
 
         housingMatch.housingUnit = housingUnit;
       }

@@ -12,7 +12,7 @@ export class HmisCounts {
 
   getHousingMatchCount() {
     const hc = HmisClient.create(this.userId);
-    return hc.api('house-matching').getHousingMatch().length;
+    return hc.api('house-matching').getHousingMatches().length;
   }
 
   getHousingUnitsCount() {

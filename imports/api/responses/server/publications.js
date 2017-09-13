@@ -1,5 +1,6 @@
 import Responses from '/imports/api/responses/responses';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
+import { HmisClient } from '/imports/api/hmis-api';
 
 Meteor.publish(
   'responses.all', function publishResponses(clientID) {
@@ -11,8 +12,9 @@ Meteor.publish(
       stopFunction = true;
     });
 
+    const hc = HmisClient.create(this.userId);
+
     if (self.userId) {
-      HMISAPI.setCurrentUserId(self.userId);
       let query = {};
       if (clientID) {
         query = { clientID };
@@ -28,11 +30,9 @@ Meteor.publish(
       for (let i = 0, len = responseList.length; i < len && !stopFunction; i++) {
         const response = {};
         if (responseList[i].isHMISClient && responseList[i].clientSchema) {
-          response.clientDetails = HMISAPI.getClient(
+          response.clientDetails = hc.api('client').getClient(
             responseList[i].clientID,
-            responseList[i].clientSchema,
-            // useCurrentUserObject
-            false
+            responseList[i].clientSchema
           );
         } else {
           const localClient = PendingClients.findOne({ _id: responseList[i].clientID });

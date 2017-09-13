@@ -26,9 +26,6 @@ Meteor.methods({
   searchClient(query, options) {
     const optionz = options || {};
 
-    logger.info(query);
-    logger.info(optionz);
-
     // guard against client-side DOS: hard limit to 50
     if (optionz.limit) {
       optionz.limit = Math.min(50, Math.abs(optionz.limit));
@@ -36,7 +33,8 @@ Meteor.methods({
       optionz.limit = 50;
     }
 
-    let hmisClients = HMISAPI.searchClient(query, optionz.limit);
+    const hc = HmisClient.create(Meteor.userId());
+    let hmisClients = hc.api('client').searchClient(query, optionz.limit);
 
     hmisClients = hmisClients.filter(client => client.link);
 
