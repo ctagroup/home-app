@@ -4,6 +4,7 @@ import { logger } from '/imports/utils/logger';
 
 Meteor.publish(
   'housingMatch.list', function publishHousingMatch() {
+    logger.info(`PUB[${this.userId}]: housingMatch.list`);
     let stopFunction = false;
 
     this.onStop(() => {
@@ -23,12 +24,13 @@ Meteor.publish(
         const eligibleClients = housingMatches[i].eligibleClients;
         eligibleClients.clientDetails = { loading: true };
         eligibleClients.referralStatus = { loading: true };
-        this.added('localHousingMatch', housingMatches[i].reservationId, housingMatch[i]);
+        this.added('localHousingMatch', housingMatches[i].reservationId, housingMatches[i]);
       }
       this.ready();
 
       // load client details and history
       for (let i = 0; i < housingMatches.length && !stopFunction; i += 1) {
+        // TODO: use async eachLimit
         Meteor.defer(() => {
           const eligibleClients = housingMatches[i].eligibleClients;
           let schema = 'v2015';

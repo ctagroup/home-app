@@ -35,8 +35,10 @@ class HouseMatchingApi extends ApiEndpoint {
 
   getHousingMatches(pageNumber = 0, size = 9999) {
     const url = `${BASE_URL}/matches?page=${pageNumber}&size=${size}`;
-    const response = this.doGet(url);
+    const response = this.debug().doGet(url);
     if (!response) {
+      // see https://github.com/servinglynk/hmis-lynk-open-source-docs/issues/337
+      logger.warn('HouseMatchingApi.getHousingMatches returned null response', response);
       return [];
     }
     let housingMatches = response.content;
