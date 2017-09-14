@@ -23,6 +23,7 @@ Meteor.methods({
     signature
   ) {
     // TODO: check permissions
+    logger.info(`METHOD[${Meteor.userId()}]: addPendingClient`);
 
     const client = PendingClients.insert(
       {
@@ -47,6 +48,8 @@ Meteor.methods({
   },
 
   updatePendingClient(clientId, client) {
+    logger.info(`METHOD[${Meteor.userId()}]: updatePendingClient`, clientId, client);
+
     // TODO: check permissions
 
     if (!PendingClients.findOne(clientId)) {
@@ -82,6 +85,7 @@ Meteor.methods({
   },
 
   removePendingClient(clientId) {
+    logger.info(`METHOD[${Meteor.userId()}]: removePendingClient`, clientId);
     // TODO: check permissions
     if (!PendingClients.findOne(clientId)) {
       throw new Meteor.Error('404', 'Pending client not found');
@@ -89,7 +93,8 @@ Meteor.methods({
     PendingClients.remove({ _id: clientId });
   },
 
-  uploadPendingClientToHmis(clientId) {
+  uploadPendingClientToHmis(clientId, schema) {
+    logger.info(`METHOD[${Meteor.userId()}]: uploadPendingClientToHmis`, clientId);
     check(clientId, String);
 
     const client = PendingClients.findOne(clientId);
@@ -99,11 +104,9 @@ Meteor.methods({
     }
 
     const hc = HmisClient.create(Meteor.userId());
-    const personalId = hc.api('client').createClient(client);
+    const personalId = hc.api('client').createClient(client, schema);
 
-    logger.info(`client ${clientId} is now known as ${personalId}`);
-
-    let result = false;
+    logger.info(`client ${clientId} is now known in HMIS as ${personalId}`);
 
     if (personalId) {
       PendingClients.remove(clientId);
@@ -111,23 +114,7 @@ Meteor.methods({
         { $set: { clientID: personalId, clientSchema: 'v2015', isHMISClient: true } },
         { multi: true }
       );
-
-      // TODO: use new API
-      const clientBasePath = HomeConfig.hmisAPIEndpoints.clientBaseUrl.replace(
-        HomeConfig.hmisAPIEndpoints.apiBaseUrl,
-        ''
-      );
-      const schemaVersion = HomeConfig.hmisAPIEndpoints.v2015;
-      const clientsPath = HomeConfig.hmisAPIEndpoints.clients;
-      const url = `${clientBasePath}${schemaVersion}${clientsPath}/${personalId}`;
-      result = {
-        _id: personalId,
-        link: url,
-        deletedId: clientId,
-      };
     }
-    return result;
+    return personalId;
   },
-
-
 });
