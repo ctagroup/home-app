@@ -1,12 +1,10 @@
-/**
- * Created by udit on 26/07/16.
- */
 import { logger } from '/imports/utils/logger';
 import Surveys from '/imports/api/surveys/surveys';
 import SurveyQuestionsMaster from '/imports/api/surveys/surveyQuestionsMaster';
 
 Meteor.methods({
   addSurvey(title, active, copy, surveyCopyID, stype, created, locked) {
+    logger.info(`METHOD[${Meteor.userId()}]: addSurvey`);
     const surveyID = Surveys.insert(
       {
         title,
@@ -20,15 +18,22 @@ Meteor.methods({
     );
     return surveyID;
   },
+
   updateSurvey(surveyID, title, stype, active, locked) {
+    logger.info(`METHOD[${Meteor.userId()}]: updateSurvey`);
     return Surveys.update(surveyID, { $set: { title, stype, active, locked } });
   },
+
   updateCreatedSurvey(surveyID, created) {
+    logger.info(`METHOD[${Meteor.userId()}]: updateCreatedSurvey`);
     Surveys.update(surveyID, { $set: { created } });
   },
+
   removeSurvey(surveyID) {
+    logger.info(`METHOD[${Meteor.userId()}]: removeSurvey`);
     Surveys.remove({ _id: surveyID });
   },
+
   addSurveyQuestionMaster(
     surveyTitle,
     surveyID,
@@ -38,6 +43,7 @@ Meteor.methods({
     content,
     order
   ) {
+    logger.info(`METHOD[${Meteor.userId()}]: addSurveyQuestionMaster`);
     const surveyQues = SurveyQuestionsMaster.insert(
       {
         surveyTitle,
@@ -51,6 +57,8 @@ Meteor.methods({
     );
     return surveyQues;
   },
+
+  /*
   updateSurveyQuestionMaster(_id, content) {
     SurveyQuestionsMaster.update({ _id }, { $set: { content } });
   },
@@ -148,6 +156,7 @@ Meteor.methods({
   removeSurveyCopyQuestionMaster(surveyCopyTitle) {
     SurveyQuestionsMaster.remove({ surveyTitle: surveyCopyTitle });
   },
+  /*
   creatingHMISSurvey(surveyTitle, surveyOwner, tagValue, locked, copySurveyId) {
     const survey = { surveyTitle, surveyOwner, tagValue, locked, copySurveyId };
     return HMISAPI.createSurvey(survey);
@@ -209,4 +218,5 @@ Meteor.methods({
   deleteQuesMappings(surveyId, sectionId, questionIds) {
     return HMISAPI.deleteQuestionMappings(surveyId, sectionId, questionIds);
   },
+  */
 });
