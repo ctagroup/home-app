@@ -35,7 +35,7 @@ export class ApiEndpoint {
     try {
       response = HTTP.get(url, options);
     } catch (err) {
-      this.throwApiError(url, headers, err, this.logGetDetails);
+      this.throwApiError('get', url, headers, err, this.logGetDetails);
     }
     delete response.content;
     logger.debug(`HMIS API:get#${this.correlationId} res (${url})`,
@@ -49,12 +49,12 @@ export class ApiEndpoint {
       headers: this.getRequestHeaders(),
       data,
     };
-    logger.debug(`HMIS API:post#${this.correlationId}`, { url, options });
+    logger.debug(`HMIS API:post#${this.correlationId} ${url}`, options);
     let response = false;
     try {
       response = HTTP.post(url, options);
     } catch (err) {
-      this.throwApiError(url, options, err);
+      this.throwApiError('post', url, options, err);
     }
     delete response.content;
     logger.debug(`HMIS API:post#${this.correlationId} res (${url})`, response);
@@ -66,12 +66,12 @@ export class ApiEndpoint {
       headers: this.getRequestHeaders(),
       data,
     };
-    logger.debug(`HMIS API:put#${this.correlationId}`, { url, options });
+    logger.debug(`HMIS API:put#${this.correlationId} (${url})`, options );
     let response = false;
     try {
       response = HTTP.put(url, options);
     } catch (err) {
-      this.throwApiError(url, options, err);
+      this.throwApiError('put', url, options, err);
     }
     delete response.content;
     logger.debug(`HMIS API:put#${this.correlationId} res (${url})`, response);
@@ -82,31 +82,34 @@ export class ApiEndpoint {
     const options = {
       headers: this.getRequestHeaders(),
     };
-    logger.debug(`HMIS API:del#${this.correlationId}`, { url, options });
+    logger.debug(`HMIS API:del#${this.correlationId} (${url})`, options );
     let response = false;
     try {
       response = HTTP.del(url, options);
     } catch (err) {
-      this.throwApiError(url, options, err);
+      this.throwApiError('del', url, options, err);
     }
     delete response.content;
     logger.debug(`HMIS API:del#${this.correlationId} res (${url})`, response);
     return response.data;
   }
 
-  throwApiError(url, requestHeaders, httpError, logDetails = true) {
+  throwApiError(op, url, requestHeaders, httpError, logDetails = true) {
     if (logDetails) {
-      logger.error('HMIS API', {
-        url,
+      logger.error(`HMIS API:${op}#${this.correlationId} res(${url})`, {
         requestHeaders,
         json_data: requestHeaders.data ? JSON.stringify(requestHeaders.data) : '',
         httpError,
       });
     } else {
-      logger.error('HMIS API', {
-        url,
-        statusCode: httpError.response.statusCode,
-      });
+      const code = httpError.response.statusCode;
+      switch (code) {
+        case 404:
+          logger.warn(`HMIS API:${op}#${this.correlationId} res(${url})`, code);
+          break;
+        default:
+          logger.error(`HMIS API:${op}#${this.correlationId} res(${url})`, code);
+      }
     }
 
     const code = httpError.response ? httpError.response.statusCode : 0;
