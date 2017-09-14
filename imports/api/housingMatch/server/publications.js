@@ -1,3 +1,4 @@
+import { eachLimit } from 'async';
 import moment from 'moment';
 import { HmisClient } from '/imports/api/hmis-api';
 import { logger } from '/imports/utils/logger';
@@ -28,23 +29,34 @@ Meteor.publish(
       }
       this.ready();
 
-      // load client details and history
+      const queue = [];
       for (let i = 0; i < housingMatches.length && !stopFunction; i += 1) {
-        // TODO: use async eachLimit
-        Meteor.defer(() => {
-          const eligibleClients = housingMatches[i].eligibleClients;
-          let schema = 'v2015';
-          if (housingMatches[i].links[1].href.indexOf('v2014') !== -1) {
-            schema = 'v2014';
-          }
+        let schema = 'v2015';
+        if (housingMatches[i].links[1].href.indexOf('v2014') !== -1) {
+          schema = 'v2014';
+        }
+        queue.push({
+          i,
+          clientId: housingMatches[i].eligibleClients.clientId,
+          schema,
+        });
+      }
 
-          const clientId = eligibleClients.clientId;
+      eachLimit(queue, Meteor.settings.connectionLimit, (data, callback) => {
+        if (stopFunction) {
+          callback();
+          return;
+        }
+        Meteor.defer(() => {
+          const { i, clientId, schema } = data;
+          const eligibleClients = housingMatches[i].eligibleClients;
           // fetch client details
           try {
             const details = hc.api('client').getClient(clientId, schema);
             eligibleClients.clientDetails = details;
+            eligibleClients.clientDetails.schema = schema;
           } catch (e) {
-            eligibleClients.error = e.reason;
+            eligibleClients.clientDetails = { error: e.reason };
           }
 
           // fetch status history
@@ -59,13 +71,12 @@ Meteor.publish(
           } catch (e) {
             eligibleClients.referralStatus = { error: e.reason };
           }
-          this.changed('localHousingMatch', housingMatches[i].reservationId, {
-            eligibleClients,
-          });
+          this.changed('localHousingMatch', housingMatches[i].reservationId, { eligibleClients });
+          callback();
         });
-      }
+      });
     } catch (err) {
-      logger.error('housingMatch.list', err);
+      logger.error('eligibleClients.list', err);
     }
   }
 );

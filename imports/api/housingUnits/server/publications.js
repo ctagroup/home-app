@@ -1,3 +1,4 @@
+import { eachLimit } from 'async';
 import { HmisClient } from '/imports/api/hmis-api';
 import { logger } from '/imports/utils/logger';
 
@@ -16,35 +17,54 @@ Meteor.publish(
     const housingUnits = hc.api('housing').getHousingUnits();
 
     // populate the list without the details
+    const queue = [];
     for (let i = 0; i < housingUnits.length && !stopFunction; i += 1) {
-      housingUnits[i].project = { loading: true };
+      if (fetchProjectsDetails && housingUnits[i].projectId) {
+        housingUnits[i].project = { loading: true };
+        let schema = 'v2015';
+        if (housingUnits[i].links && housingUnits[i].links.length > 0
+          && housingUnits[i].links[0].rel.indexOf('v2014') !== -1) {
+          schema = 'v2014';
+        }
+        queue.push({
+          i,
+          projectId: housingUnits[i].projectId,
+          schema,
+        });
+      }
       self.added('housingUnits', housingUnits[i].housingInventoryId, housingUnits[i]);
     }
     self.ready();
 
-    if (fetchProjectsDetails) {
-      const projectsCache = {};
-      // TODO: use async data loading
-      for (let i = 0; i < housingUnits.length && !stopFunction; i += 1) {
-        const projectId = housingUnits[i].projectId;
-        let project;
-        if (!projectsCache[projectId]) {
+    const projectsCache = {};
+    eachLimit(queue, Meteor.settings.connectionLimit, (data, callback) => {
+      if (stopFunction) {
+        callback();
+        return;
+      }
+      const { i, projectId, schema } = data;
+
+      if (!projectsCache[projectId]) {
+        // get project and cache it
+        Meteor.defer(() => {
+          let project;
           try {
-            let schema = 'v2015';
-            if (housingUnits[i].links && housingUnits[i].links.length > 0
-                && housingUnits[i].links[0].rel.indexOf('v2014') !== -1) {
-              schema = 'v2014';
-            }
-            project = hc.api('client').getProject(housingUnits[i].projectId, schema);
+            project = hc.api('client').getProject(projectId, schema);
           } catch (e) {
             project = { error: e.reason };
           }
           projectsCache[projectId] = project;
-        }
+          housingUnits[i].project = projectsCache[projectId];
+          self.changed('housingUnits', housingUnits[i].housingInventoryId, housingUnits[i]);
+          callback();
+        });
+      } else {
+        // react project from cache
         housingUnits[i].project = projectsCache[projectId];
         self.changed('housingUnits', housingUnits[i].housingInventoryId, housingUnits[i]);
+        callback();
       }
-    }
+    });
   }
 );
 

@@ -52,6 +52,7 @@ Meteor.publish('globalHouseholds.list', function publishHouseholds() {
   eachLimit(clientsQueue, Meteor.settings.connectionLimit, (data, callback) => {
     if (stopFunction) {
       callback();
+      return;
     }
     const { globalHouseholdId, clientId, schema } = data;
     let clientDetails;
@@ -72,6 +73,7 @@ Meteor.publish('globalHouseholds.list', function publishHouseholds() {
   eachLimit(usersQueue, Meteor.settings.connectionLimit, (data, callback) => {
     if (stopFunction) {
       callback();
+      return;
     }
     const { globalHouseholdId, userId } = data;
     let userDetails;

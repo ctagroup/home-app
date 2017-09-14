@@ -26,7 +26,7 @@ Meteor.publish('responses.all', function publishResponses(clientId) {
       if (isHMISClient && clientSchema) {
         response.clientDetails = { loading: true };
         queue.push({
-          i,
+          responseId: responses[i]._id,
           clientID,
           clientSchema,
         });
@@ -41,9 +41,11 @@ Meteor.publish('responses.all', function publishResponses(clientId) {
     eachLimit(queue, Meteor.settings.connectionLimit, (data, callback) => {
       if (stopFunction) {
         callback();
+        return;
       }
+      // TODO: add cache
       Meteor.defer(() => {
-        const { i, clientID, schema } = data;
+        const { responseId, clientID, schema } = data;
         let clientDetails;
         try {
           clientDetails = hc.api('client').getClient(clientID, schema);
@@ -51,8 +53,7 @@ Meteor.publish('responses.all', function publishResponses(clientId) {
         } catch (e) {
           clientDetails = { error: e.reason };
         }
-        responses[i].clientDetails = clientDetails;
-        self.changed('responses', responses[i]._id, responses[i]);
+        self.changed('responses', responseId, { clientDetails });
         callback();
       });
     });

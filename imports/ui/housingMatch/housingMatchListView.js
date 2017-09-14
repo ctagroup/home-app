@@ -28,18 +28,20 @@ const tableOptions = {
       title: 'Client',
       data: 'reservationId', // note: access nested data like this
       render(value, type, doc) {
-        const client = doc.eligibleClients;
-        if (client.loading) {
+        const clientId = doc.eligibleClients.clientId;
+        const clientDetails = doc.eligibleClients.clientDetails;
+        if (clientDetails.loading) {
           return 'Loading...';
-        } else if (client.error) {
-          return client.error;
         }
-        const name = fullName(client.clientDetails) || client.clientId;
-        if (client.clientDetails.schema) {
+        if (clientDetails.error) {
+          return clientDetails.error;
+        }
+        const name = fullName(clientDetails) || clientId;
+        if (clientDetails.schema) {
           const url = Router.path(
             'viewClient',
-            { _id: client.clientId },
-            { query: `schema=${client.schema}` }
+            { _id: clientId },
+            { query: `schema=${clientDetails.schema}` }
           );
           return `<a href="${url}">${name}</a>`;
         }
