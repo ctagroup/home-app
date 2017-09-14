@@ -1,9 +1,10 @@
+import { logger } from '/imports/utils/logger';
 import { HmisClient } from '/imports/api/hmis-api';
 import AppSettings from '/imports/api/appSettings/appSettings';
 
-// import { logger } from '/imports/utils/logger';
 
 Meteor.publish('projects.list', function publishAllProjects() {
+  logger.info(`PUB[${this.userId}]: projects.list`);
   if (!this.userId) {
     return;
   }
