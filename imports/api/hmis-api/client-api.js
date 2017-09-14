@@ -1,4 +1,5 @@
 import moment from 'moment';
+import querystring from 'querystring';
 import { HmisApiRegistry } from './api-registry';
 import { ApiEndpoint } from './api-endpoint';
 
@@ -75,38 +76,60 @@ export class ClientApi extends ApiEndpoint {
     return result;
   }
 
-  getClientFromUrl() {
-    throw new Error('Not yet implemented');
+  getClientFromUrl(apiUrl) {
+    return this.doGet(`https://www.hmislynk.com${apiUrl}`).client;
   }
 
-  searchClient() {
-    throw new Error('Not yet implemented');
+  searchClient(query, limit = 10) {
+    const params = {
+      q: query,
+      maxItems: limit,
+      sort: 'firstName',
+      order: 'asc',
+    };
+    const url = `${BASE_URL}/search/client?${querystring.stringify(params)}`;
+    return this.doGet(url).searchResults.items;
   }
 
-  getEnrollmentsForPublish() {
-    throw new Error('Not yet implemented');
+  getClientEnrollments(clientId, schema = 'v2015', start = 0, limit = 9999) {
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments?startIndex=${start}&maxItems=${limit}`; // eslint-disable-line max-len
+    return this.doGet(url).enrollments;
   }
 
-  getEnrollmentExitsForPublish() {
-    throw new Error('Not yet implemented');
+  getClientsEnrollmentExits(clientId, enrollmentId, schema = 'v2015') {
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/exits`; // eslint-disable-line max-len
+    return this.doGet(url).exits.exits;
   }
 
-  createProjectSetup() {
-    throw new Error('Not yet implemented');
+  createProjectSetup(projectName, projectCommonName, schema = 'v2015') {
+    const url = `${BASE_URL}/${schema}/projects`;
+    const body = {
+      project: {
+        projectName,
+        projectCommonName,
+        continuumProject: 0,
+        projectType: 14, // Coordinated Assessment
+        residentialAffiliation: 0,
+        targetPopulation: 4,  // NA - Not Applicable
+        trackingMethod: 0,
+      },
+    };
+    return this.doPost(url, body).project.projectId;
   }
 
-  getProjects() {
-    const url = `${BASE_URL}/v2015/projects?startIndex=0&maxItems=10000`;
-    return this.doGet(url).projects.projects;
+  getProjects(schema = 'v2015', start = 0, limit = 30) {
+    const url = `${BASE_URL}/${schema}/projects?startIndex=${start}&maxItems=${limit}`;
+    return this.doGet(url).projects;
   }
 
-  getProject(projectId, schema = 2015) {
+  getProject(projectId, schema = 'v2015') {
     const url = `${BASE_URL}/${schema}/projects/${projectId}`;
     return this.doGet(url).project;
   }
 
-  postQuestionAnswer() {
-    throw new Error('Not yet implemented');
+  postQuestionAnswer(category, data) {
+    const url = `${BASE_URL}/${category}`;
+    return this.doPost(url, data);
   }
 }
 

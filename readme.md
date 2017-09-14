@@ -11,12 +11,14 @@ Home Meteor App
 
 ## How to Run on local machine
 
+Maker a local copy `settings.local.json` of the file `settings.json`
+
 ```
 git clone git@github.com:ctagroup/home-app.git
 cd home-app
 git checkout master
 meteor npm install
-meteor run
+meteor run --settings settings.local.json
 ```
 
 ## Testing
@@ -103,6 +105,23 @@ Ref: https://gist.github.com/desaiuditd/53fbfa61d564e2a9d84376e1237fdd36
 - `docker exec -it mongodb mongo home-cta`
 
 Ref: https://github.com/kadirahq/meteor-up/#accessing-the-database
+
+
+## Coding guidelines
+
+Each publication and method should log its details:
+
+```
+logger.info(`PUB[${this.userId}]: name`, params);
+logger.info(`METHOD[${Meteor.userId()}]: name`, params);
+```
+
+Each method call should use Bert to report succes/error in the following way:
+
+```
+Bert.alert('message', 'success', 'growl-top-right');
+Bert.alert(err.reason || err.error || err.message, 'danger', 'growl-top-right');
+```
 
 ## Meteor Components in use
 

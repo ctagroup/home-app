@@ -2,89 +2,121 @@ import { HmisApiRegistry } from './api-registry';
 import { ApiEndpoint } from './api-endpoint';
 
 const BASE_URL = 'https://www.hmislynk.com/survey-api/rest';
+const DEFAULT_GROUP_ID = '95bdca23-5135-4552-9f11-819cab1aaa45';
 
 export class SurveyApi extends ApiEndpoint {
-  createSectionScores() {
-    throw new Error('Not yet implemented');
+
+  createSurvey(survey) {
+    const url = `${BASE_URL}/surveys`;
+    const body = { survey };
+    return this.doPost(url, body).survey;
   }
 
-  createSurveyServiceQuestions() {
-    throw new Error('Not yet implemented');
+  updateSurvey(surveyId, survey) {
+    const url = `${BASE_URL}/surveys/{surveyId}`;
+    const body = { survey };
+    return this.doPut(url, body);
   }
 
-  updateSurveyServiceQuestion() {
-    throw new Error('Not yet implemented');
+  createQuestion(question, groupId = DEFAULT_GROUP_ID) {
+    const url = `${BASE_URL}/questiongroups/${groupId}/questions`;
+    const body = { question };
+    return this.doPost(url, body).question;
   }
 
-  getSurveyServiceQuestion() {
-    throw new Error('Not yet implemented');
+  getQuestion(questionId, groupId = DEFAULT_GROUP_ID) {
+    const url = `${BASE_URL}/questiongroups/${groupId}/questions/${questionId}`;
+    return this.doGet(url).question;
   }
 
-  deleteSurveyServiceQuestion() {
-    throw new Error('Not yet implemented');
+  updateQuestion(question, questionId, groupId = DEFAULT_GROUP_ID) {
+    const url = `${BASE_URL}/questiongroups/${groupId}/questions/${questionId}`;
+    const body = { question };
+    return this.doPut(url, body);
   }
 
-  deletePickListGroup() {
-    throw new Error('Not yet implemented');
+  deleteQuestion(questionId, groupId = DEFAULT_GROUP_ID) {
+    const url = `${BASE_URL}/questiongroups/${groupId}/questions/${questionId}`;
+    return this.doDel(url);
   }
 
-  createPickListGroup() {
-    throw new Error('Not yet implemented');
+  createPickListGroup(pickListGroup) {
+    const url = `${BASE_URL}/picklistgroups`;
+    const body = { pickListGroup };
+    return this.doPost(url, body).pickListGroup;
   }
 
-  createPickListValues() {
-    throw new Error('Not yet implemented');
+  deletePickListGroup(pickListGroupId) {
+    const url = `${BASE_URL}/picklistgroups/${pickListGroupId}`;
+    return this.doDel(url);
   }
 
-  createSurvey() {
-    throw new Error('Not yet implemented');
+  createPickListValues(pickListGroupId, pickListValues) {
+    const url = `${BASE_URL}/picklistgroups/${pickListGroupId}/picklistvalues`;
+    const body = { pickListValues };
+    return this.doPost(url, body).pickListValues;
   }
 
-  createSection() {
-    throw new Error('Not yet implemented');
+  getSurveySections(surveyId) {
+    const url = `${BASE_URL}/surveys/${surveyId}/surveysections`;
+    return this.doGet(url).surveySections.surveySections;
   }
 
-  createSurveyQuestionMappings() {
-    throw new Error('Not yet implemented');
+  createSurveySection(surveySection, surveyId) {
+    const url = `${BASE_URL}/surveys/${surveyId}/surveysections`;
+    const body = { surveySection };
+    return this.doPost(url, body).surveySection;
   }
 
-  updateHmisSurvey() {
-    throw new Error('Not yet implemented');
+  updateSurveySection(surveySection, surveyId, sectionId) {
+    const url = `${BASE_URL}/surveys/${surveyId}/surveysections/${sectionId}`;
+    const body = { surveySection };
+    return this.doPut(url, body);
   }
 
-  updateHmisSurveySection() {
-    throw new Error('Not yet implemented');
+  deleteSurveySection(surveyId, sectionId) {
+    const url = `${BASE_URL}/surveys/${surveyId}/surveysections/${sectionId}`;
+    return this.doDel(url);
   }
 
-  getHmisSurveySections() {
-    throw new Error('Not yet implemented');
+  getQuestionMappings(surveyId, sectionId) {
+    const url = `${BASE_URL}/surveys/${surveyId}/surveysections/${sectionId}/questions`;
+    return this.doGet(url).sectionQuestionMappings.sectionQuestionMappings;
   }
 
-  getHmisSurveyQuestionMappings() {
-    throw new Error('Not yet implemented');
+  createQuestionMappings(surveyId, sectionId, sectionQuestionMappings) {
+    const url = `${BASE_URL}/surveys/${surveyId}/surveysections/${sectionId}/questions`;
+    const body = { sectionQuestionMappings };
+    return this.doPost(url, body);
   }
 
-  deleteHmisSurveyQuestionMapping() {
-    throw new Error('Not yet implemented');
+  deleteQuestionMapping(surveyId, sectionId, questionId) {
+    const url = `${BASE_URL}/surveys/${surveyId}/surveysections/${sectionId}/questions/${questionId}`; // eslint-disable-line max-len
+    return this.doDel(url);
   }
 
-  deleteHmisSurveySection() {
-    throw new Error('Not yet implemented');
+  deleteQuestionMappings(surveyId, sectionId, questionIds) {
+    questionIds.forEach(id => this.deleteQuestionMapping(surveyId, sectionId, id));
+    return true;
   }
 
-  deleteQuestionMappings() {
-    throw new Error('Not yet implemented');
-  }
-
-  addResponseToHmis(clientId, surveyId, responses) {
+  sendResponses(clientId, surveyId, responses) {
     const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/responses`;
     const body = { responses };
-    return this.doPost(url, body).response;
+    return this.doPost(url, body).response.response;
   }
 
-  deleteSurveyScores() {
-    throw new Error('Not yet implemented');
+  deleteResponses(surveyId, clientId) {
+    const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/responses`;
+    return this.doDel(url);
   }
+
+  createSectionScores(surveyId, clientId, sectionId, sectionScore) {
+    const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/sections/${sectionId}/scores`;
+    const body = { sectionScore };
+    return this.doPost(url, body);
+  }
+
 }
 
 HmisApiRegistry.addApi('survey', SurveyApi);

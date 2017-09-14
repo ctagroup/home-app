@@ -6,8 +6,10 @@ const BASE_URL = 'https://www.hmislynk.com/hmis-user-service/rest';
 
 
 class UserServiceApi extends ApiEndpoint {
-  createUser() {
-    throw new Error('Not yet implemented');
+  createUser(account) {
+    const url = `${BASE_URL}/accounts`;
+    const body = { account };
+    return this.doPost(url, body);
   }
 
   updateUser(userId, data) {
@@ -16,8 +18,13 @@ class UserServiceApi extends ApiEndpoint {
   }
 
   updateUserRoles(userId, roles) {
+    const body = {
+      roles: {
+        role: roles,
+      },
+    };
     const url = `${BASE_URL}/accounts/${userId}/roles`;
-    return this.doPut(url, { roles });
+    return this.doPut(url, body);
   }
 
   getProjectGroups() {
@@ -25,13 +32,13 @@ class UserServiceApi extends ApiEndpoint {
     throw new Error('Not yet implemented');
   }
 
-  getUserProfiles() {
-    const url = `${BASE_URL}/profiles?startIndex=0&maxItems=10000`;
+  getUserProfiles(start = 0, limit = 1000) {
+    const url = `${BASE_URL}/profiles?startIndex=${start}&maxItems=${limit}`;
     return this.doGet(url).profiles.profile;
   }
 
-  getRoles() {
-    const url = `${BASE_URL}/roles?startIndex=0&maxItems=10000`;
+  getRoles(start = 0, limit = 30) {
+    const url = `${BASE_URL}/roles?startIndex=${start}&maxItems=${limit}`;
     return this.doGet(url).roles.role;
   }
 
@@ -46,8 +53,9 @@ class UserServiceApi extends ApiEndpoint {
   }
 
 
-  deleteUserRole() {
-    throw new Error('Not yet implemented');
+  deleteUserRole(userId, roleId) {
+    const url = `${BASE_URL}/accounts/${userId}/roles/${roleId}`;
+    return this.doDel(url);
   }
 
   getUser(accountId) {

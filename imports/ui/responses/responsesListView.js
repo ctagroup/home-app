@@ -2,7 +2,9 @@ import { TableDom } from '/imports/ui/dataTable/helpers';
 import moment from 'moment';
 import Responses from '/imports/api/responses/responses';
 import Surveys from '/imports/api/surveys/surveys';
+import { fullName } from '/imports/api/utils';
 import './responsesListView.html';
+
 
 
 const tableOptions = {
@@ -25,31 +27,25 @@ const tableOptions = {
       title: 'Client',
       render(value, type, doc) {
         const response = doc;
-        const client = response.clientDetails;
+        const clientDetails = response.clientDetails;
 
-        if (client) {
-          let displayName = `${client.firstName} ${client.middleName} ${client.lastName}`;
-          displayName = displayName.trim();
-
-          if (!displayName) {
-            displayName = response.clientID;
-          }
-
-          let url = Router.path(
-            'viewClient',
-            { _id: response.clientID }
-          );
-          if (response.isHMISClient && response.clientSchema) {
-            url = Router.path(
-              'viewClient',
-              { _id: response.clientID },
-              { query: `isHMISClient=true&schema=${response.clientSchema}` }
-            );
-          }
-          return `<a href="${url}">${displayName}</a>`;
+        if (clientDetails.loading) {
+          return 'Loading...';
+        }
+        if (clientDetails.error) {
+          return clientDetails.error;
         }
 
-        return response.clientID;
+        const displayName = fullName(clientDetails) || response.clientID;
+
+        let url = Router.path('viewClient', { _id: response.clientID });
+        if (response.isHMISClient && response.clientSchema) {
+          url = Router.path('viewClient',
+            { _id: response.clientID },
+            { query: `schema=${response.clientSchema}` }
+          );
+        }
+        return `<a href="${url}">${displayName}</a>`;
       },
     },
     {

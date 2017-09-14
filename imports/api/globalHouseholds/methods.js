@@ -1,7 +1,9 @@
+import { logger } from '/imports/utils/logger';
 import { HmisClient } from '/imports/api/hmis-api';
 
 Meteor.methods({
   createGlobalHousehold(globalHouseholdMembers, globalHouseholdObject) {
+    logger.info(`METHOD[${Meteor.userId()}]: createGlobalHousehold`, globalHouseholdMembers, globalHouseholdObject); // eslint-disable-line max-len
     const hc = HmisClient.create(Meteor.userId());
     return hc.api('global-household').createGlobalHousehold(
       globalHouseholdMembers,
@@ -10,6 +12,7 @@ Meteor.methods({
   },
 
   updateGlobalHousehold(householdId, oldMembers, newMembers, householdObject) {
+    logger.info(`METHOD[${Meteor.userId()}]: updateGlobalHousehold`, householdId);
     const hc = HmisClient.create(Meteor.userId());
     hc.api('global-household').updateGlobalHousehold(householdId, householdObject);
 
@@ -54,8 +57,9 @@ Meteor.methods({
   },
 
   deleteHousehold(globalHouseholdId) {
-    const hmisClients = HMISAPI.deleteGlobalHousehold(globalHouseholdId);
-    return hmisClients;
+    logger.info(`METHOD[${Meteor.userId()}]: deleteHousehold`, globalHouseholdId);
+    const hc = HmisClient.create(Meteor.userId());
+    return hc.api('global-household').deleteGlobalHousehold(globalHouseholdId);
   },
 
 });

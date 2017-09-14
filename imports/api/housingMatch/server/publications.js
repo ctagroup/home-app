@@ -1,9 +1,11 @@
+import { eachLimit } from 'async';
 import moment from 'moment';
 import { HmisClient } from '/imports/api/hmis-api';
 import { logger } from '/imports/utils/logger';
 
 Meteor.publish(
   'housingMatch.list', function publishHousingMatch() {
+    logger.info(`PUB[${this.userId}]: housingMatch.list`);
     let stopFunction = false;
 
     this.onStop(() => {
@@ -16,33 +18,45 @@ Meteor.publish(
 
     try {
       const hc = HmisClient.create(this.userId);
-      const housingMatch = hc.api('house-matching').getHousingMatch();
+      const housingMatches = hc.api('house-matching').getHousingMatches();
 
       // populate the list without the details
-      for (let i = 0; i < housingMatch.length && !stopFunction; i += 1) {
-        const eligibleClients = housingMatch[i].eligibleClients;
+      for (let i = 0; i < housingMatches.length && !stopFunction; i += 1) {
+        const eligibleClients = housingMatches[i].eligibleClients;
         eligibleClients.clientDetails = { loading: true };
         eligibleClients.referralStatus = { loading: true };
-        this.added('localHousingMatch', housingMatch[i].reservationId, housingMatch[i]);
+        this.added('localHousingMatch', housingMatches[i].reservationId, housingMatches[i]);
       }
       this.ready();
 
-      // load client details and history
-      for (let i = 0; i < housingMatch.length && !stopFunction; i += 1) {
-        Meteor.defer(() => {
-          const eligibleClients = housingMatch[i].eligibleClients;
-          let schema = 'v2015';
-          if (housingMatch[i].links[1].href.indexOf('v2014') !== -1) {
-            schema = 'v2014';
-          }
+      const queue = [];
+      for (let i = 0; i < housingMatches.length && !stopFunction; i += 1) {
+        let schema = 'v2015';
+        if (housingMatches[i].links[1].href.indexOf('v2014') !== -1) {
+          schema = 'v2014';
+        }
+        queue.push({
+          i,
+          clientId: housingMatches[i].eligibleClients.clientId,
+          schema,
+        });
+      }
 
-          const clientId = eligibleClients.clientId;
+      eachLimit(queue, Meteor.settings.connectionLimit, (data, callback) => {
+        if (stopFunction) {
+          callback();
+          return;
+        }
+        Meteor.defer(() => {
+          const { i, clientId, schema } = data;
+          const eligibleClients = housingMatches[i].eligibleClients;
           // fetch client details
           try {
             const details = hc.api('client').getClient(clientId, schema);
             eligibleClients.clientDetails = details;
+            eligibleClients.clientDetails.schema = schema;
           } catch (e) {
-            eligibleClients.error = e.reason;
+            eligibleClients.clientDetails = { error: e.reason };
           }
 
           // fetch status history
@@ -57,13 +71,12 @@ Meteor.publish(
           } catch (e) {
             eligibleClients.referralStatus = { error: e.reason };
           }
-          this.changed('localHousingMatch', housingMatch[i].reservationId, {
-            eligibleClients,
-          });
+          this.changed('localHousingMatch', housingMatches[i].reservationId, { eligibleClients });
+          callback();
         });
-      }
+      });
     } catch (err) {
-      logger.error('housingMatch.list', err);
+      logger.error('eligibleClients.list', err);
     }
   }
 );

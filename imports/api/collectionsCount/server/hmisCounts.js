@@ -1,6 +1,6 @@
 import { HmisClient } from '/imports/api/hmis-api';
 
-export class HmisCounts {
+class HmisCounts {
   constructor(userId) {
     this.userId = userId;
   }
@@ -12,7 +12,7 @@ export class HmisCounts {
 
   getHousingMatchCount() {
     const hc = HmisClient.create(this.userId);
-    return hc.api('house-matching').getHousingMatch().length;
+    return hc.api('house-matching').getHousingMatches().length;
   }
 
   getHousingUnitsCount() {
@@ -25,3 +25,5 @@ export class HmisCounts {
     return hc.api('global-household').getHouseholds().length;
   }
 }
+
+export default HmisCounts;

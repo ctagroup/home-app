@@ -3,6 +3,7 @@ import { HmisClient } from '/imports/api/hmis-api';
 import { logger } from '/imports/utils/logger';
 
 Meteor.publish('eligibleClients.list', function publishEligibleClients() {
+  logger.info(`PUB[${this.userId}]: eligibleClients.list()`);
   const self = this;
   let stopFunction = false;
   self.unblock();
@@ -17,10 +18,7 @@ Meteor.publish('eligibleClients.list', function publishEligibleClients() {
 
   try {
     const hc = HmisClient.create(this.userId);
-    let eligibleClients = hc.api('house-matching').getEligibleClients();
-
-    // filter by ignoreMatchProcess field
-    eligibleClients = _.filter(eligibleClients, (c) => c.ignoreMatchProcess === false);
+    const eligibleClients = hc.api('house-matching').getEligibleClients();
 
     // populate the list without the details
     for (let i = 0; i < eligibleClients.length && !stopFunction; i += 1) {
@@ -45,6 +43,10 @@ Meteor.publish('eligibleClients.list', function publishEligibleClients() {
     }
 
     eachLimit(queue, Meteor.settings.connectionLimit, (data, callback) => {
+      if (stopFunction) {
+        callback();
+        return;
+      }
       Meteor.defer(() => {
         const { clientId, schema } = data;
         let clientDetails;
@@ -59,7 +61,7 @@ Meteor.publish('eligibleClients.list', function publishEligibleClients() {
       });
     });
   } catch (err) {
-    logger.error('publish eligibleClients', err);
+    logger.error('eligibleClients.list', err);
   }
   return self.ready();
 });

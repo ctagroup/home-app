@@ -23,7 +23,6 @@
 
     "SignaturePad": true,
 
-    "HMISAPI": true,
     "Sortable": true,
     "OAuth": true,
     "moment": true,

@@ -1,4 +1,3 @@
-import { logger } from '/imports/utils/logger';
 import { TableDom } from '/imports/ui/dataTable/helpers';
 import EligibleClients from '/imports/api/eligibleClients/eligibleClients';
 import './eligibleClientsListView.html';
@@ -83,11 +82,11 @@ Template.eligibleClientsListView.events(
   {
     'click .postHousingMatchScores': () => {
       Meteor.call(
-        'postHousingMatchScores', (error, result) => {
-          if (error) {
-            logger.error(`postHousingMatchScores - ${error}`);
+        'postHousingMatchScores', (err, res) => {
+          if (err) {
+            Bert.alert(err.reason || err.error || err.message, 'danger', 'growl-top-right');
           } else {
-            logger.info(`postHousingMatchScores - ${result}`);
+            Bert.alert(`${res}`, 'success', 'growl-top-right');
           }
         }
       );
