@@ -1,121 +1,93 @@
+import { eachLimit } from 'async';
 import Responses from '/imports/api/responses/responses';
+import { logger } from '/imports/utils/logger';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import { HmisClient } from '/imports/api/hmis-api';
 
-Meteor.publish(
-  'responses.all', function publishResponses(clientID) {
-    const self = this;
-    let stopFunction = false;
-    self.unblock();
+Meteor.publish('responses.all', function publishResponses(clientId) {
+  logger.info(`PUB[${this.userId}]: responses.all`, clientId);
+  const self = this;
+  let stopFunction = false;
+  self.unblock();
 
-    self.onStop(() => {
-      stopFunction = true;
+  self.onStop(() => {
+    stopFunction = true;
+  });
+
+  const hc = HmisClient.create(this.userId);
+
+  if (self.userId) {
+    const queue = [];
+    const responses = (clientId ? Responses.find(clientId) : Responses.find()).fetch();
+    // Publish the local data first, so the user can get a quick feedback.
+    for (let i = 0, len = responses.length; i < len; i++) {
+      const response = responses[i];
+      const { isHMISClient, clientID, clientSchema } = response;
+      if (isHMISClient && clientSchema) {
+        response.clientDetails = { loading: true };
+        queue.push({
+          i,
+          clientID,
+          clientSchema,
+        });
+      } else {
+        response.clientDetails = PendingClients.findOne({ _id: clientID })
+        || { error: 'client not found (404)' };
+      }
+      self.added('responses', responses[i]._id, responses[i]);
+    }
+    self.ready();
+
+    eachLimit(queue, Meteor.settings.connectionLimit, (data, callback) => {
+      if (stopFunction) {
+        callback();
+      }
+      Meteor.defer(() => {
+        const { i, clientID, schema } = data;
+        let clientDetails;
+        try {
+          clientDetails = hc.api('client').getClient(clientID, schema);
+          clientDetails.schema = schema;
+        } catch (e) {
+          clientDetails = { error: e.reason };
+        }
+        responses[i].clientDetails = clientDetails;
+        self.changed('responses', responses[i]._id, responses[i]);
+        callback();
+      });
     });
+  }
+  return self.ready();
+});
 
-    const hc = HmisClient.create(this.userId);
 
-    if (self.userId) {
-      let query = {};
-      if (clientID) {
-        query = { clientID };
+Meteor.publish('responses.one', function publishSingleResponse(responseId) {
+  logger.info(`PUB[${this.userId}]: responses.one`, responseId);
+  const self = this;
+  const hc = HmisClient.create(this.userId);
+
+  if (self.userId) {
+    const response = Responses.findOne({ _id: responseId });
+    if (!response) {
+      return [];
+    }
+
+    const { isHMISClient, clientID, clientSchema } = response;
+
+    if (isHMISClient && clientSchema) {
+      try {
+        response.clientDetails = hc.api('client').getClient(clientID, clientSchema);
+      } catch (e) {
+        response.clientDetails = { error: e.reason };
       }
-      const responseList = Responses.find(query).fetch();
-      // Publish the local data first, so the user can get a quick feedback.
-      for (let i = 0, len = responseList.length; i < len; i++) {
-        self.added('responses', responseList[i]._id, responseList[i]);
-      }
+      self.added('responses', response._id, response);
       self.ready();
-
-      // Get the non local data and publish it as soon as it's available.
-      for (let i = 0, len = responseList.length; i < len && !stopFunction; i++) {
-        const response = {};
-        if (responseList[i].isHMISClient && responseList[i].clientSchema) {
-          response.clientDetails = hc.api('client').getClient(
-            responseList[i].clientID,
-            responseList[i].clientSchema
-          );
-        } else {
-          const localClient = PendingClients.findOne({ _id: responseList[i].clientID });
-
-          if (localClient) {
-            response.clientDetails = localClient;
-          } else {
-            const hmisClientSearch = HMISAPI.searchClient(
-              responseList[i].clientID,
-              // limit
-              10,
-              // useCurrentUserObject
-              false
-            );
-            if (hmisClientSearch.length > 0) {
-              response.clientDetails = hmisClientSearch[0];
-              response.isHMISClient = true;
-              let schema = 'v2015';
-              if (response.clientDetails.link
-                  && response.clientDetails.link.indexOf('v2014') !== -1) {
-                schema = 'v2014';
-              }
-              response.clientSchema = schema;
-            }
-          }
-        }
-        self.changed('responses', responseList[i]._id, response);
-        if (i % 5 === 0) {
-          self.ready();
-        }
-      }
+    } else {
+      const localClient = PendingClients.findOne({ _id: response.clientID });
+      response.clientDetails = localClient;
     }
-
-    return self.ready();
+    self.added('responses', response._id, response);
   }
-);
 
-Meteor.publish(
-  'responses.one', function publishSingleResponse(responseId) {
-    const self = this;
-
-    if (self.userId) {
-      HMISAPI.setCurrentUserId(self.userId);
-
-      const response = Responses.findOne({ _id: responseId });
-
-      if (response && response.isHMISClient && response.clientSchema) {
-        response.clientDetails = HMISAPI.getClient(
-          response.clientID,
-          response.clientSchema,
-          // useCurrentUserObject
-          false
-        );
-        self.added('responses', response._id, response);
-        self.ready();
-      } else if (response) {
-        const localClient = PendingClients.findOne({ _id: response.clientID });
-        if (localClient) {
-          response.clientDetails = localClient;
-        } else {
-          const hmisClientSearch = HMISAPI.searchClient(
-            response.clientID,
-            // limit
-            10,
-            // useCurrentUserObject
-            false
-          );
-          if (hmisClientSearch.length > 0) {
-            response.clientDetails = hmisClientSearch[0];
-            response.isHMISClient = true;
-            let schema = 'v2015';
-            if (response.clientDetails.link
-                && response.clientDetails.link.indexOf('v2014') !== -1) {
-              schema = 'v2014';
-            }
-            response.clientSchema = schema;
-          }
-        }
-        self.added('responses', response._id, response);
-        self.ready();
-      }
-    }
-
-    return self.ready();
-  }
-);
+  return self.ready();
+});

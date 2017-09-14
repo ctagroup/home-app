@@ -43,6 +43,9 @@ Meteor.publish('eligibleClients.list', function publishEligibleClients() {
     }
 
     eachLimit(queue, Meteor.settings.connectionLimit, (data, callback) => {
+      if (stopFunction) {
+        callback();
+      }
       Meteor.defer(() => {
         const { clientId, schema } = data;
         let clientDetails;
