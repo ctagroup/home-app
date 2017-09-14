@@ -4,5 +4,7 @@
     "staleSessionHeartbeatInterval": 60000,
     "staleSessionPurgeInterval": 60000,
     "staleSessionActivityEvents": "mousemove click keydown"
-  }
+  },
+  "appId": "...",
+  "appSecret": "..."
 }
