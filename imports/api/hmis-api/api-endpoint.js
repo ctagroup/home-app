@@ -122,8 +122,13 @@ export class ApiEndpoint {
         message = content.errors.error[0].message;
       }
     } catch (err) {
-      message = httpError.message || 'An error has occurred';
+      message = `${httpError.message}` || 'An error has occurred';
     }
+
+    if (code === 500) {
+      message = 'HMIS API Server Error';
+    }
+
     throw new Meteor.Error('hmis.api', `${message} (${code})`, { code });
   }
 
