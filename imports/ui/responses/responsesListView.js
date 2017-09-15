@@ -51,8 +51,11 @@ const tableOptions = {
     {
       data: 'timestamp',
       title: 'Date Updated',
-      render(value) {
-        return moment(value).format('MM/DD/YYYY');
+      render(value, type) {
+        if (type === 'sort') {
+          return value;
+        }
+        return moment(value).format('MM/DD/YYYY h:mm A');
       },
     },
     {
@@ -64,6 +67,9 @@ const tableOptions = {
         const responseDetails = doc;
         const subId = responseDetails.submissionId;
         switch (value) {
+          case 'Paused':
+            val = '<span class="text-muted"><i class="fa fa-pause"></i> Paused</span>';
+            break;
           case 'Completed':
             if (subId) {
               val = '<span class="text-success">' +
@@ -82,9 +88,6 @@ const tableOptions = {
               }
             }
             break;
-          case 'Paused':
-            val = '<span class="text-muted"><i class="fa fa-pause"></i> Paused</span>';
-            break;
           case 'Uploading':
             val = '<i class="fa fa-spinner fa-pulse"></i>';
             break;
@@ -96,6 +99,9 @@ const tableOptions = {
         return val;
       },
     },
+  ],
+  order: [
+    [2, 'desc'],
   ],
   dom: TableDom,
   processing: true,
@@ -111,6 +117,14 @@ Template.responsesListView.helpers({
   },
   tableData() {
     return () => Responses.find().fetch();
+  },
+  clientDoesNotExist() {
+    return this.clientId && !this.client;
+  },
+  newResponsePath() {
+    const { clientId, schema } = Router.current().params.query;
+    const query = schema ? { schema } : {};
+    return Router.path('selectSurvey', { _id: clientId }, { query });
   },
 });
 

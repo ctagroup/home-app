@@ -62,6 +62,9 @@ const tableOptions = {
       data: 'matched',
     },
   ],
+  order: [
+    [0, 'asc'],
+  ],
   dom: TableDom,
 };
 

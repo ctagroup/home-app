@@ -9,7 +9,7 @@ Meteor.methods({
     logger.info(`METHOD[${Meteor.userId()}]: sendResponse`, clientId, surveyId, responses);
     const hc = HmisClient.create(Meteor.userId());
     // will send all at one time.
-    return hc.api('survey').addResponseToHmis(clientId, surveyId, responses);
+    return hc.api('survey').sendResponses(clientId, surveyId, responses);
   },
 
   updateSubmissionIdForResponses(_id, submissionId) {
@@ -31,11 +31,13 @@ Meteor.methods({
       if (survey.stype !== 'hud') {
         Meteor.call('updateResponseStatus', responseId, 'Uploading');
 
+        logger.debug('sending response to HMIS', responseId);
         const sendResponseToHmisSync = Meteor.wrapAsync(
           responseHmisHelpers.sendResponseToHmis);
         const res = sendResponseToHmisSync(responseId, {}, true);
 
         if (res) {
+          logger.debug('calculating response score', responseId);
           // Calculate the scores now and send them too.
           let score;
           // Send response Id, survey Id and fromDb to true to score helpers.
@@ -56,10 +58,13 @@ Meteor.methods({
               break;
           }
           // On getting the scores, update them.
+          logger.debug('sending score to HMIS', responseId, score);
+
           Meteor.call('sendScoresToHMIS', survey.apiSurveyServiceId,
                                   response.clientID, score);
 
           // save the submission Id.
+          logger.debug('updating submission id', responseId);
           Meteor.call('updateSubmissionIdForResponses', responseId, res.submissionId);
         } else {
           throw new Meteor.Error('Error sending Response to Hmis');

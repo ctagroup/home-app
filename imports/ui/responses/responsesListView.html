@@ -1,11 +1,18 @@
 <template name="responsesListView">
-  {{#if hasData}}
-    {{> ReactiveDatatable tableData=tableData options=tableOptions }}
-  {{else}}
+  {{#if clientDoesNotExist}}
     <div class="alert alert-info">
-      <p>There are no responses to show.</p>
-      <p><a href="{{pathFor 'adminDashboardresponsesNew'}}" class="btn btn-primary"><i class="fa fa-plus"></i> Add Response</a></p>
+      <p>Client <b>{{clientId}}</b> does not exist.</p>
     </div>
+  {{else}}
+    {{#if clientId}}
+      <p><a href="{{newResponsePath}}" class="btn btn-primary"><i class="fa fa-plus"></i> Survey client</a></p>
+    {{/if}}
+    {{#if hasData}}
+      {{> ReactiveDatatable tableData=tableData options=tableOptions }}
+    {{else}}
+      <div class="alert alert-info">
+        <p>There are no responses to show.</p>
+      </div>
+    {{/if}}
   {{/if}}
-
 </template>

@@ -129,7 +129,7 @@ Template.searchClient.helpers(
         } else {
           const query = {};
           if (dataObject.isHMISClient) {
-            query.query = `isHMISClient=true&schema=${dataObject.schema}`;
+            query.query = `schema=${dataObject.schema}`;
           }
           Router.go('viewClient', { _id: dataObject._id }, query);
         }

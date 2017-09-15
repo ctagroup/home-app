@@ -259,7 +259,9 @@
                             {{#if ../showUploadButton }}<input class="btn btn-success add-to-hmis js-tooltip" data-toggle="tooltip" value="Upload" title="This action uploads the client information to HMIS data server." type="button" />{{/if}}
                         {{/unless}}
                         {{#if ../showEditButton }}<input class="btn btn-warning edit" value="Edit" type="button" />{{/if}}
-                        {{#if ../showResponsesButton }}<input class="btn btn-success getResponses" value="Responses" type="button">{{/if}}
+                        {{#if ../showResponsesButton }}
+                          <a href="{{clientResponsesPath}}" class="btn btn-success">Responses</a>
+                        {{/if}}
                     </div>
                 </div>
             </div>

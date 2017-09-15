@@ -10,6 +10,12 @@ import './viewClient.html';
 
 Template.viewClient.helpers(
   {
+    clientResponsesPath() {
+      const clientId = Router.current().params._id;
+      const schema = Router.current().params.query.schema;
+      const query = { clientId, schema };
+      return Router.path('adminDashboardresponsesView', {}, { query });
+    },
     isReferralStatusActive(step) {
       const client = Router.current().data().client;
 
@@ -294,10 +300,6 @@ Template.viewClient.events(
           }
         }
       );
-    },
-    'click .getResponses'(evt, tmpl) {
-      const clientID = tmpl.data.client._id;
-      Router.go(`/responses?clientID=${clientID}`);
     },
 
     'click .addToHousingList'(evt, tmpl) {

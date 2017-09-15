@@ -36,6 +36,7 @@ if (Meteor.isServer) {
       new winston.transports.Console({
         level: 'debug',
         prettyPrint: true,
+        stderrLevels: ['error'],
         handleExceptions: true,
         json: false,
         colorize: true,

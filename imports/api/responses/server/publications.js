@@ -18,7 +18,9 @@ Meteor.publish('responses.all', function publishResponses(clientId) {
 
   if (self.userId) {
     const queue = [];
-    const responses = (clientId ? Responses.find(clientId) : Responses.find()).fetch();
+    const responses = (
+      clientId ? Responses.find({ clientID: clientId }) : Responses.find()
+    ).fetch();
     // Publish the local data first, so the user can get a quick feedback.
     for (let i = 0, len = responses.length; i < len; i++) {
       const response = responses[i];
@@ -61,7 +63,6 @@ Meteor.publish('responses.all', function publishResponses(clientId) {
   return self.ready();
 });
 
-
 Meteor.publish('responses.one', function publishSingleResponse(responseId) {
   logger.info(`PUB[${this.userId}]: responses.one`, responseId);
   const self = this;
@@ -89,6 +90,5 @@ Meteor.publish('responses.one', function publishSingleResponse(responseId) {
     }
     self.added('responses', response._id, response);
   }
-
   return self.ready();
 });

@@ -3,6 +3,7 @@ import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import Responses from '/imports/api/responses/responses';
 import Surveys from '/imports/api/surveys/surveys';
 import { DefaultAdminAccessRoles } from '/imports/config/permissions';
+import { fullName } from '/imports/api/utils';
 import { AppController } from './controllers';
 import '/imports/ui/responses/responsesListView';
 import '/imports/ui/responses/responsesNew';
@@ -14,21 +15,37 @@ Router.route('adminDashboardresponsesView', {
   template: Template.responsesListView,
   controller: AppController,
   onBeforeAction() {
+    // TODO: move to authorize fcn.
     if (!Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles)) {
       Router.go('notEnoughPermission');
     }
     this.next();
   },
   waitOn() {
-    return [
-      Meteor.subscribe('responses.all'),
+    const { clientId, schema } = this.params.query;
+
+    const subscriptions = [
+      Meteor.subscribe('responses.all', clientId),
       Meteor.subscribe('surveys.all'),
     ];
+
+    if (clientId) {
+      if (schema) {
+        subscriptions.push(Meteor.subscribe('clients.one', clientId, schema, false));
+      } else {
+        subscriptions.push(Meteor.subscribe('pendingClients.one', clientId));
+      }
+    }
+    return subscriptions;
   },
   data() {
+    const { clientId } = this.params.query;
+    const client = PendingClients.findOne(clientId) || Clients.findOne(clientId);
     return {
       title: 'Responses',
-      subtitle: 'View',
+      subtitle: clientId ? fullName(client) : 'View',
+      client,
+      clientId,
     };
   },
 });
@@ -65,6 +82,10 @@ Router.route('adminDashboardresponsesNew', {
     return {
       title: 'Responses',
       subtitle: 'New',
+      response: {
+        clientDetails: client,
+        responsestatus: 'new',
+      },
       survey,
       client,
     };
