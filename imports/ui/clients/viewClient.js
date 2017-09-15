@@ -1,5 +1,6 @@
 const querystring = require('querystring');
 import { Clients } from '/imports/api/clients/clients';
+import Users from '/imports/api/users/users';
 import { RecentClients } from '/imports/api/recent-clients';
 import Questions from '/imports/api/questions/questions';
 import { logger } from '/imports/utils/logger';
@@ -88,37 +89,22 @@ Template.viewClient.helpers(
       }
       return history;
     },
+
     showEnrollments() {
       return !Router.current().data().isPendingClient;
     },
+
     showReferralStatus() {
       return Roles.userIsInRole(Meteor.user(), ['System Admin', 'Developer', 'Case Manager'])
         && Router.current().data().client.clientId && Router.current().params.query.schema;
     },
+
     showGlobalHousehold() {
       return Roles.userIsInRole(
         Meteor.user(), ['System Admin', 'Developer', 'Case Manager', 'Surveyor']
       ) && Router.current().data().client.clientId && Router.current().params.query.schema;
     },
-    alertMessages() {
-      const params = Router.current().params;
 
-      let message = '';
-
-      if (params && params.query && params.query.updated) {
-        message = "<p class='notice bg-success text-success'>Client is updated successfully.</p>";
-      } else if (params && params.query && params.query.addedToHMIS) {
-        /* eslint-disable */
-        message = "<p class='notice bg-success text-success'>Client is added to HMIS successfully.</p>";
-        /* eslint-enable */
-      } else if (params && params.query && params.query.addClientToHMISError) {
-        /* eslint-disable */
-        message = "<p class='notice bg-danger text-danger'>Something went wrong while adding the client to HMIS. Please contact the administrator.</p>";
-        /* eslint-enable */
-      }
-
-      return message;
-    },
     getText(text, code) {
       let definition = code === undefined ? '?' : code;
       const question = Questions.findOne({ name: text });
@@ -170,7 +156,6 @@ Template.viewClient.helpers(
           default: return definition;
         }
       }
-      /* eslint-disable */
       if (text === 'veteranStatus' || text === 'disablingcondition') {
         switch (code) {
           case 0:
@@ -202,16 +187,15 @@ Template.viewClient.events(
       const client = tmpl.data.client;
       const schema = 'v2015';
       Meteor.call('uploadPendingClientToHmis', client._id, schema, (error, result) => {
-          if (error) {
-            Bert.alert(error.reason || error.error, 'danger', 'growl-top-right');
-          } else {
-            RecentClients.remove(client._id);
-            Bert.alert('Client uploaded to HMIS', 'success', 'growl-top-right');
-            query = querystring.stringify({ schema });
-            Router.go('viewClient', { _id: result }, { query });
-          }
+        if (error) {
+          Bert.alert(error.reason || error.error, 'danger', 'growl-top-right');
+        } else {
+          RecentClients.remove(client._id);
+          Bert.alert('Client uploaded to HMIS', 'success', 'growl-top-right');
+          const query = querystring.stringify({ schema });
+          Router.go('viewClient', { _id: result }, { query });
         }
-      );
+      });
     },
     'click .takeSurvey': (event, tmpl) => {
       const query = {};
@@ -278,7 +262,7 @@ Template.viewClient.events(
         }
 
         if (project) {
-          const linkedUsers = users.find({ projectsLinked: project.projectId }).fetch();
+          const linkedUsers = Users.find({ projectsLinked: project.projectId }).fetch();
           recipients.ccRecipients = linkedUsers.map(u => u.emails[0].address);
         }
       }

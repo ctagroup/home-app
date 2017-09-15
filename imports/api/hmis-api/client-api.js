@@ -93,7 +93,7 @@ export class ClientApi extends ApiEndpoint {
 
   getClientEnrollments(clientId, schema = 'v2015', start = 0, limit = 9999) {
     const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments?startIndex=${start}&maxItems=${limit}`; // eslint-disable-line max-len
-    return this.doGet(url).enrollments;
+    return this.doGet(url).enrollments.enrollments;
   }
 
   getClientsEnrollmentExits(clientId, enrollmentId, schema = 'v2015') {

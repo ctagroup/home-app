@@ -66,7 +66,7 @@ export class ApiEndpoint {
       headers: this.getRequestHeaders(),
       data,
     };
-    logger.debug(`HMIS API:put#${this.correlationId} (${url})`, options );
+    logger.debug(`HMIS API:put#${this.correlationId} (${url})`, options);
     let response = false;
     try {
       response = HTTP.put(url, options);
@@ -82,7 +82,7 @@ export class ApiEndpoint {
     const options = {
       headers: this.getRequestHeaders(),
     };
-    logger.debug(`HMIS API:del#${this.correlationId} (${url})`, options );
+    logger.debug(`HMIS API:del#${this.correlationId} (${url})`, options);
     let response = false;
     try {
       response = HTTP.del(url, options);
