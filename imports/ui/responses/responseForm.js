@@ -1,3 +1,4 @@
+import HomeConfig from '/imports/config/homeConfig';
 import { fullName } from '/imports/api/utils';
 import { logger } from '/imports/utils/logger';
 import Questions from '/imports/api/questions/questions';

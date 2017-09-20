@@ -1,4 +1,5 @@
 import AppSettings from '/imports/api/appSettings/appSettings';
+import HomeConfig from '/imports/config/homeConfig';
 
 class OpeningScriptClass {
   data() {
@@ -69,7 +70,7 @@ const OpeningScriptSchema = new SimpleSchema({
         class: 'editor', // optional
         settings: {
           minHeight: 100,             // set minimum height of editor
-          fontNames: HomeConfig.fontFamilies,
+          fontNames: HomeConfig.gontFamilies,
         }, // summernote options goes here
       },
     },

@@ -1,4 +1,5 @@
-HomeConfig = {
+
+const HomeConfig = {
   name: 'H O M E',
   fontFamilies: [
     'Arial',
@@ -14,9 +15,9 @@ HomeConfig = {
     'Times New Roman',
     'Verdana',
   ],
-  googleMaps: {
-    apiKey: 'AIzaSyC2dPMYEhEoqnUe8LQZK9SVemORszJ-NgE',
-  },
+
+  /*
+
   hmisAPIEndpoints: {
     apiBaseUrl: 'https://www.hmislynk.com',
     oauthBaseUrl: 'https://www.hmislynk.com/hmis-authorization-service/rest',
@@ -77,4 +78,7 @@ HomeConfig = {
     eligibleClient: '/eligibleclients/{{clientId}}',
     clientScore: '/scores/client/{{clientId}}',
   },
+  */
 };
+
+export default HomeConfig;

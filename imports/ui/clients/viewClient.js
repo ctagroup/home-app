@@ -5,6 +5,7 @@ import { RecentClients } from '/imports/api/recent-clients';
 import Questions from '/imports/api/questions/questions';
 import { logger } from '/imports/utils/logger';
 import ReferralStatusList from './referralStatusList';
+import HomeConfig from '/imports/config/homeConfig';
 
 import './viewClient.html';
 

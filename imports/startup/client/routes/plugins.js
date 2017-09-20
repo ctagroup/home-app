@@ -30,3 +30,7 @@ Router.plugin('auth', {
     route: 'signIn',
   },
 });
+
+Router.configure({
+  authenticate: 'signIn',
+});

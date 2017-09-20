@@ -86,7 +86,7 @@ Router.route(
       this.render();
     },
     onBeforeAction() {
-      const collection = HomeConfig.collections.surveys;
+      const collection = null; // HomeConfig.collections.surveys;
       if (collection.userRoles) {
         if (!Roles.userIsInRole(Meteor.user(), collection.userRoles)) {
           Router.go('notEnoughPermission');
@@ -118,7 +118,7 @@ Router.route(
       this.render();
     },
     onBeforeAction() {
-      const collection = HomeConfig.collections.surveys;
+      const collection = null; // HomeConfig.collections.surveys;
       if (collection.userRoles) {
         if (!Roles.userIsInRole(Meteor.user(), collection.userRoles)) {
           Router.go('notEnoughPermission');

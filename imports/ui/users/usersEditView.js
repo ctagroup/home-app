@@ -64,7 +64,7 @@ Template.usersEditView.helpers({
 Template.usersEditView.onRendered(() => {
   GoogleMaps.load(
     {
-      key: HomeConfig.googleMaps.apiKey,
+      key: Meteor.settings.public.googleMaps.apiKey,
     }
   );
 
