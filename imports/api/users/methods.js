@@ -1,6 +1,6 @@
 import { logger } from '/imports/utils/logger';
 import Users, { ChangePasswordSchema } from '/imports/api/users/users';
-import { HmisClient } from '/imports/api/hmis-api';
+import { HmisClient } from '/imports/api/hmisApi';
 
 Meteor.methods({
   'users.create'() {

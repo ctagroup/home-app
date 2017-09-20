@@ -1,5 +1,5 @@
-import { HmisApiRegistry } from './api-registry';
-import { ApiEndpoint } from './api-endpoint';
+import { HmisApiRegistry } from './apiRegistry';
+import { ApiEndpoint } from './apiEndpoint';
 
 const BASE_URL = 'https://www.hmislynk.com/survey-api/rest';
 const DEFAULT_GROUP_ID = '95bdca23-5135-4552-9f11-819cab1aaa45';

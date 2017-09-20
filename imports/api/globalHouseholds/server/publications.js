@@ -1,6 +1,6 @@
 import { logger } from '/imports/utils/logger';
 import { eachLimit } from 'async';
-import { HmisClient } from '/imports/api/hmis-api';
+import { HmisClient } from '/imports/api/hmisApi';
 
 Meteor.publish('globalHouseholds.list', function publishHouseholds() {
   logger.info(`PUB[${this.userId}]: globalHouseholds.list`);

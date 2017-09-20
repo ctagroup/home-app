@@ -1,4 +1,4 @@
-import { HmisClient } from '/imports/api/hmis-api';
+import { HmisClient } from '/imports/api/hmisApi';
 
 class HmisCounts {
   constructor(userId) {

@@ -1,6 +1,6 @@
 import querystring from 'querystring';
 
-import { HmisApiRegistry } from './api-registry';
+import { HmisApiRegistry } from './apiRegistry';
 
 const OAUTH_BASE_URL = 'https://www.hmislynk.com/hmis-authorization-service/rest';
 

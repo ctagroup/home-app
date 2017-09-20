@@ -1,7 +1,7 @@
 /* eslint prefer-arrow-callback: "off", func-names: "off" */
 
 import { chai } from 'meteor/practicalmeteor:chai';
-import { HmisClient, ApiRegistry } from './hmis-client';
+import { HmisClient, ApiRegistry } from './hmisClient';
 
 class DummyApi {
   bar() {
@@ -9,7 +9,7 @@ class DummyApi {
   }
 }
 
-describe('hmis-api', function () {
+describe('hmisApi', function () {
   describe('client', function () {
     it('can use dummy api', function () {
       const registry = new ApiRegistry();

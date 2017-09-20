@@ -1,5 +1,5 @@
 import { eachLimit } from 'async';
-import { HmisClient } from '/imports/api/hmis-api';
+import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
 
 Meteor.publish('eligibleClients.list', function publishEligibleClients() {
@@ -18,7 +18,7 @@ Meteor.publish('eligibleClients.list', function publishEligibleClients() {
 
   try {
     const hc = HmisClient.create(this.userId);
-    const eligibleClients = hc.api('house-matching').getEligibleClients();
+    const eligibleClients = hc.api('house-matching').debug().getEligibleClients();
 
     // populate the list without the details
     for (let i = 0; i < eligibleClients.length && !stopFunction; i += 1) {

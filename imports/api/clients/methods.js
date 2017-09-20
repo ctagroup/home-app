@@ -1,6 +1,6 @@
 import { logger } from '/imports/utils/logger';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
-import { HmisClient } from '/imports/api/hmis-api';
+import { HmisClient } from '/imports/api/hmisApi';
 
 Meteor.methods({
   updateClient(clientId, client, schema = 'v2015') {

@@ -1,5 +1,5 @@
 import { logger } from '/imports/utils/logger';
-import { HmisClient } from '/imports/api/hmis-api';
+import { HmisClient } from '/imports/api/hmisApi';
 import AppSettings from '/imports/api/appSettings/appSettings';
 
 

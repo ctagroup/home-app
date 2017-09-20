@@ -1,5 +1,5 @@
 import { PendingClients } from './pendingClients';
-import { HmisClient } from '/imports/api/hmis-api';
+import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
 import Responses from '/imports/api/responses/responses';
 

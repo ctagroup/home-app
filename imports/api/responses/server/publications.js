@@ -2,7 +2,7 @@ import { eachLimit } from 'async';
 import Responses from '/imports/api/responses/responses';
 import { logger } from '/imports/utils/logger';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
-import { HmisClient } from '/imports/api/hmis-api';
+import { HmisClient } from '/imports/api/hmisApi';
 
 Meteor.publish('responses.all', function publishResponses(clientId) {
   logger.info(`PUB[${this.userId}]: responses.all`, clientId);

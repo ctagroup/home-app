@@ -1,5 +1,5 @@
-import { HmisApiRegistry } from './api-registry';
-import { ApiEndpoint } from './api-endpoint';
+import { HmisApiRegistry } from './apiRegistry';
+import { ApiEndpoint } from './apiEndpoint';
 
 
 const BASE_URL = 'https://www.hmislynk.com/inventory-api/rest';

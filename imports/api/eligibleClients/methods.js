@@ -1,5 +1,5 @@
 import { logger } from '/imports/utils/logger';
-import { HmisClient } from '../hmis-api';
+import { HmisClient } from '../hmisApi';
 
 Meteor.methods({
   getEligibleClients() {

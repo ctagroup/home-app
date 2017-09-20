@@ -1,5 +1,5 @@
 import Users from '/imports/api/users/users';
-import { HmisClient } from '/imports/api/hmis-api';
+import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
 
 const fields = {
