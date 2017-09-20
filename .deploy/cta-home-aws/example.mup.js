@@ -1,9 +1,12 @@
 module.exports = {
   servers: {
     one: {
-      host: '54.191.131.191',
-      username: 'ubuntu',
-      pem: '/home/pgorecki/.ssh/home-cta.pem',
+      host: '127.0.0.1',
+      username: 'user',
+      // pem:
+      // password:
+      // or leave blank for authenticate from ssh-agent
+      pem: '/full/path/to/key.pem',
     },
   },
 
@@ -24,6 +27,8 @@ module.exports = {
       ROOT_URL: 'https://home.ctagroup.org',
       MONGO_URL: 'mongodb://localhost/meteor',
     },
+
+    // dockerImage: 'kadirahq/meteord'
     deployCheckWaitTime: 60,
   },
 
