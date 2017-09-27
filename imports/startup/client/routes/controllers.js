@@ -13,11 +13,12 @@ export const ContentController = RouteController.extend({
 export const AppController = RouteController.extend({
   layoutTemplate: Template.AppLayout,
   onBeforeAction() {
-    console.log('AppCtr', Meteor.userId());
     this.next();
   },
   waitOn() {
-    console.log('wait on', Meteor.userId());
+    if (!Meteor.userId()) {
+      Router.go('signIn');
+    }
     return [
       CollectionsCountCache.subscribe('collectionsCount'),
       CollectionsCountCache.subscribe('appSettings'),

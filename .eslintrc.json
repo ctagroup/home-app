@@ -46,6 +46,8 @@
         ]
       }
     ],
-    "import/no-unresolved": ["error", { "ignore": ["^meteor/", "^/"] }]
+    "import/no-unresolved": ["error", { "ignore": ["^meteor/", "^/"] }],
+    "react/prefer-stateless-function": "off",
+    "react/prop-types": "off"
   }
 }

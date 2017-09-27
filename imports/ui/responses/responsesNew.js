@@ -1,8 +1,61 @@
-const querystring = require('querystring');
-import './responseForm';
+// const querystring = require('querystring');
+import { Template } from 'meteor/templating';
+import SurveyForm from '/imports/ui/components/SurveyForm';
 import './responsesNew.html';
 
 
+Template.responsesNew.helpers({
+  component() {
+    return SurveyForm;
+  },
+  definition() {
+    return {
+      title: 'Hardcoded survey',
+      id: 1234,
+      variables: {
+        foo: 1,
+        bar: 1,
+      },
+      sections: [
+        {
+          id: 'section1',
+          title: 'Section 1',
+          questions: [
+            {
+              id: 'question1',
+              title: 'Survey Location',
+              type: 'text',
+              required: true,
+            },
+            {
+              id: 'question2',
+              title: 'Survey Time',
+              type: 'text',
+              rules: [
+                {
+                  question: 'question1',
+                  any: [
+                    ['==', 'foo'],
+                    ['==', 'bar'],
+                  ],
+                  then: ['hide', ['set', 'foo', 1]],
+                },
+                {
+                  otherwise: ['show'],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+  },
+});
+
+
+
+
+/*
 Template.responsesNew.events(
   {
     'click .pause_survey': (evt, tmpl) => {
@@ -28,3 +81,4 @@ Template.responsesNew.events(
     },
   }
 );
+*/
