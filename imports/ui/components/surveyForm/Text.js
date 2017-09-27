@@ -21,9 +21,10 @@ export default class Text extends React.Component {
       });
     }
     Object.keys(translations).forEach(t => {
-      console.log(t, translations[t]); // split-join
+      const value = `TODO: ${translations[t]}`;
+      out = out.split(t).join(value);
     });
-    return text;
+    return out;
   }
 
   render() {
