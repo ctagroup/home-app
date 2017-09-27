@@ -1,49 +1,118 @@
 // const querystring = require('querystring');
 import { Template } from 'meteor/templating';
-import SurveyForm from '/imports/ui/components/SurveyForm';
+import Survey from '/imports/ui/components/surveyForm/Survey';
 import './responsesNew.html';
 
 
 Template.responsesNew.helpers({
   component() {
-    return SurveyForm;
+    return Survey;
   },
   definition() {
     return {
       title: 'Hardcoded survey',
-      id: 1234,
+      id: 1,
       variables: {
-        foo: 1,
-        bar: 1,
+        score: 0,
       },
       sections: [
         {
           id: 'section1',
           title: 'Section 1',
-          questions: [
+          items: [
             {
               id: 'question1',
+              type: 'question',
               title: 'Survey Location',
-              type: 'text',
+              category: 'text',
               required: true,
             },
             {
               id: 'question2',
-              title: 'Survey Time',
-              type: 'text',
+              type: 'question',
+              title: 'What is 2+2',
+              category: 'text',
               rules: [
                 {
-                  question: 'question1',
-                  any: [
-                    ['==', 'foo'],
-                    ['==', 'bar'],
-                  ],
-                  then: ['hide', ['set', 'foo', 1]],
+                  always: ['hide'],
                 },
                 {
-                  otherwise: ['show'],
+                  value: 'values.question1',
+                  any: [['!=', '']],
+                  then: ['show'],
+                },
+                {
+                  value: 'values.question2',
+                  any: [
+                    ['==', 4],
+                  ],
+                  then: [
+                    ['add', 'score', 1],
+                  ],
                 },
               ],
+            },
+            {
+              id: 'question3',
+              type: 'question',
+              title: 'Enter a number larger that 3 and less or equal than 12',
+              category: 'text',
+              rules: [
+                {
+                  always: ['hide'],
+                },
+                {
+                  value: 'values.question1',
+                  any: [['!=', '']],
+                  then: ['show'],
+                },
+                {
+                  value: 'values.question3',
+                  all: [
+                    ['>', 3],
+                    ['<=', 12],
+                  ],
+                  then: [
+                    ['add', 'score', 1],
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: 'section2',
+          title: 'Section 2',
+          items: [
+            {
+              id: 'question4',
+              type: 'question',
+              title: 'How long is your beard?',
+              text: 'In centimeters...',
+              category: 'text',
+              required: true,
+              rules: [
+                {
+                  always: ['hide'],
+                },
+                {
+                  value: 'client.gender',
+                  any: [['==', 1]],
+                  then: ['show'],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: 'section3',
+          title: 'Summary',
+          items: [
+            {
+              id: 'text1',
+              type: 'text',
+              title: 'Final score',
+              text: 'Your final score is {{score}}. {{foo}}.',
             },
           ],
         },
@@ -51,8 +120,6 @@ Template.responsesNew.helpers({
     };
   },
 });
-
-
 
 
 /*

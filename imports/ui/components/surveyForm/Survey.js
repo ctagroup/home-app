@@ -1,15 +1,15 @@
 import React from 'react';
-import SurveySection from '/imports/ui/components/SurveySection';
+import { computeFormState } from '/imports/api/surveys/computations';
+import Section from '/imports/ui/components/surveyForm/Section';
+
+// http://localhost:3000/responses/new?clientId=FzFxvqMDjE8w2nAMP&surveyId=Choose
 
 
-export default class SurveyForm extends React.Component {
+export default class Survey extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    this.state = {
-      values: {},
-      variables: props.variables,
-    };
+    this.state = computeFormState(this.props.definition, {}, { client: props.client });
   }
 
   handleChange(name, value) {
@@ -19,21 +19,19 @@ export default class SurveyForm extends React.Component {
     if (!value) {
       delete values[name];
     }
-    this.setState({ values });
+
+    const formState = computeFormState(this.props.definition, values, { client: this.props.client });
+    this.setState(formState);
   }
 
   renderSections() {
     const sections = this.props.definition.sections || [];
-    const formValues = {
-      questions: this.state.values,
-      variables: this.state.variables,
-      client: this.props.client,
-    };
+    const formState = this.state;
     return sections.map(section => (
-      <SurveySection
+      <Section
         key={section.id}
         section={section}
-        values={formValues}
+        formState={formState}
         onChange={this.handleChange}
       />
     ));
