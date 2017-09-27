@@ -23,7 +23,7 @@ Meteor.methods({
 
     // TODO: permissions, only admin can do it
     Users.update(userId, { $set: {
-      projectsLinked: doc.projectsLinked,
+      projectsLinked: doc.projectsLinked || [],
     } });
 
     const hmisId = Users.findOne(userId).services.HMIS.accountId;

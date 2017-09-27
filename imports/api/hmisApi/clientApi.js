@@ -117,9 +117,9 @@ export class ClientApi extends ApiEndpoint {
     return this.doPost(url, body).project.projectId;
   }
 
-  getProjects(schema = 'v2015', start = 0, limit = 30) {
+  getProjects(schema = 'v2015', start = 0, limit = 9999) {
     const url = `${BASE_URL}/${schema}/projects?startIndex=${start}&maxItems=${limit}`;
-    return this.doGet(url).projects;
+    return this.doGet(url).projects.projects;
   }
 
   getProject(projectId, schema = 'v2015') {
