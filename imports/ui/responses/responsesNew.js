@@ -10,6 +10,174 @@ Template.responsesNew.helpers({
   },
   definition() {
     return {
+      title: 'VI-SPDAT Familiy 2.0',
+      id: 1,
+      variables: {
+        'children.rows': 10,
+      },
+      items: [
+        {
+          id: 'section1',
+          type: 'section',
+          title: 'Basic Information',
+          items: [
+            {
+              id: 'parent1',
+              type: 'section',
+              title: 'Parent 1',
+              items: [
+                {
+                  id: 'parent1FirstName',
+                  type: 'question',
+                  category: 'text',
+                  title: 'First Name',
+                },
+                {
+                  id: 'parent1LastName',
+                  type: 'question',
+                  category: 'text',
+                  title: 'Last Name',
+                },
+                {
+                  id: 'parent1Dob',
+                  type: 'question',
+                  category: 'date',
+                  title: 'Date of Birth',
+                },
+                {
+                  id: 'parent1Age',
+                  type: 'question',
+                  category: 'number',
+                  title: 'Age',
+                },
+              ],
+            },
+            {
+              id: 'parent2',
+              type: 'section',
+              title: 'Parent 2',
+              skip: 'Skip if second parent currently not part of the household',
+              items: [
+                {
+                  id: 'parent2FirstName',
+                  type: 'question',
+                  category: 'text',
+                  title: 'First Name',
+                },
+                {
+                  id: 'parent2LastName',
+                  type: 'question',
+                  category: 'text',
+                  title: 'Last Name',
+                },
+                {
+                  id: 'parent2Dob',
+                  type: 'question',
+                  category: 'date',
+                  title: 'Date of Birth',
+                },
+                {
+                  id: 'parent2Age',
+                  type: 'question',
+                  category: 'number',
+                  title: 'Age',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: 'section2',
+          type: 'section',
+          title: 'Section 2',
+          items: [
+            {
+              id: 'children',
+              title: 'Children',
+              type: 'grid',
+              rows: 2,
+              columns: [
+                {
+                  id: 'children.firstName',
+                  type: 'question',
+                  title: 'First Name',
+                  category: 'text',
+                },
+                {
+                  id: 'children.age',
+                  type: 'question',
+                  title: 'Age',
+                  category: 'text',
+                },
+              ],
+            },
+          ],
+          rules: [
+            {
+
+            },
+            {
+              always: [
+                ['rows', 'variables.numChildren'],
+              ],
+            },
+          ],
+        },
+        {
+          id: 'summary',
+          type: 'text',
+          title: 'Summary',
+          text: 'TODO: summary',
+          rules: [
+            {
+              // score - 1st
+              any: [
+                ['<=', 'values.parent1age', 60],
+                ['<=', 'values.parent2age', 60],
+              ],
+              then: [['set', 'score1', 1]],
+            },
+            {
+              // family score: single parent with 2 children
+              all: [
+                ['==', 'parent2.skip', 1],
+                ['>=', 'variables.numChildren', 2],
+              ],
+              then: [['set', 'scoreFamilySize', 1]],
+            },
+            {
+              // family score: single parent with young children
+              all: [
+                ['==', 'parent2.skip', 1],
+                ['<=', 'min(values.children.age)', 11],
+              ],
+              then: [['set', 'scoreFamilySize', 1]],
+            },
+            {
+              // family score: single parent with pregnancy
+              all: [
+                ['==', 'parent2.skip', 1],
+                ['==', 'values.currentPregnancy', 'y'],
+              ],
+              then: [['set', 'scoreFamilySize', 1]],
+            },
+            {
+              // family score: 2 parent and 3+ children or 6yr old or pregnancy
+              any: [
+                ['>=', 'variables.numChildren', 3],
+                ['<=', 'min(values.children.age)', 6],
+                ['==', 'values.currentPregnancy', 'y'],
+              ],
+              then: [['set', 'scoreFamilySize', 1]],
+            },
+          ],
+        },
+      ],
+    };
+  },
+  /*
+  definition2() {
+    return {
       title: 'Hardcoded survey',
       id: 1,
       variables: {
@@ -119,6 +287,7 @@ Template.responsesNew.helpers({
       ],
     };
   },
+  */
 });
 
 

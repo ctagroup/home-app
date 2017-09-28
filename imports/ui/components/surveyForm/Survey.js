@@ -20,29 +20,24 @@ export default class Survey extends React.Component {
       delete values[name];
     }
 
-    const formState = computeFormState(this.props.definition, values, { client: this.props.client });
+    const formState = computeFormState(
+      this.props.definition,
+      values,
+      { client: this.props.client }
+    );
     this.setState(formState);
   }
 
-  renderSections() {
-    const sections = this.props.definition.sections || [];
+  render() {
+    const root = this.props.definition;
     const formState = this.state;
-    return sections.map(section => (
+    return (
       <Section
-        key={section.id}
-        section={section}
+        item={root}
         formState={formState}
         onChange={this.handleChange}
+        level={1}
       />
-    ));
-  }
-
-  render() {
-    return (
-      <div>
-        <h1>{this.props.definition.title}</h1>
-        {this.renderSections()}
-      </div>
     );
   }
 }

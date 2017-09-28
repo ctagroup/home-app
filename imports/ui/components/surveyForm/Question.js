@@ -15,7 +15,7 @@ export default class Question extends React.Component {
     const isDisabled = this.props.formState.variables[`${id}.disabled`];
     return (
       <div>
-        <h3>{title}</h3>
+        <h6>{title}</h6>
         <p>{text}</p>
         <input
           type="text"
