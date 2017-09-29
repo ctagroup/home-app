@@ -7,8 +7,7 @@ export default class Grid extends React.Component {
   }
 
   handleChange(event) {
-    console.log('changed!!', event.target);
-    //this.props.onChange(this.props.item.id, event.target.value);
+    this.props.onChange(this.props.item.id, event.target.value);
   }
 
   renderHeader() {
@@ -22,6 +21,7 @@ export default class Grid extends React.Component {
   }
 
   renderCell(r, c) {
+    const values = this.props.formState.values;
     const { columns } = this.props.item;
     const item = columns[c];
     const cellId = `${item.id}.${r}`;
@@ -29,7 +29,7 @@ export default class Grid extends React.Component {
       type="text"
       id={cellId}
       name={cellId}
-      value={cellId}
+      value={values[cellId]}
       onChange={this.handleChange}
     />);
   }
@@ -54,8 +54,12 @@ export default class Grid extends React.Component {
   }
 
   render() {
-    const { id, title, text, required } = this.props.item;
-    const isDisabled = this.props.formState.variables[`${id}.disabled`];
+    const { id, title, text } = this.props.item;
+    const isHidden = this.props.formState.props[`${id}.hidden`];
+    if (isHidden) {
+      return null;
+    }
+
     return (
       <div>
         <h6>{title}</h6>

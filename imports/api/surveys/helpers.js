@@ -1,14 +1,5 @@
 import SurveyQuestionsMaster from '/imports/api/surveys/surveyQuestionsMaster'; // old code
 
-
-
-
-
-
-
-
-// old code
-
 export function getSurveySections(surveyId) {
   // Receive surveyId for which the sections have to be sent.
   return SurveyQuestionsMaster.find(

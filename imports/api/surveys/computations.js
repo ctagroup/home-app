@@ -1,52 +1,91 @@
+function castType(v) {
+  const result = parseFloat(v);
+  if (!isNaN(result)) {
+    return result;
+  }
+  return v;
+}
+
 export function getValueByPath(obj, str) {
   // see also: https://lodash.com/docs/4.17.4#get
   try {
-    return str.split('.').reduce((o, i) => o[i], obj) || '';
+    return str.split('.').reduce((o, i) => o[i], obj);
   } catch (e) {
     return undefined;
   }
 }
 
-function evaluateCondition(operator, operand1, operand2) {
+export function applyReducers(value, args = []) {
+  let result = value;
+  while (args.length > 0) {
+    const reducer = args.shift();
+    switch (reducer) {
+      case 'min':
+        result = Math.min(result);
+        break;
+      default:
+        console.warn('Unknown reducer', reducer);
+        break;
+    }
+  }
+  return result;
+}
+
+export function evaluateCondition(operator, operand1, operand2) {
+  const value1 = castType(operand1);
+  const value2 = castType(operand2);
   switch (operator) {
     case '==':
-      return operand1 == operand2; // eslint-disable-line eqeqeq
+      return value1 == value2; // eslint-disable-line eqeqeq
     case '!=':
-      return operand1 != operand2; // eslint-disable-line eqeqeq
+      return value1 != value2; // eslint-disable-line eqeqeq
     case '<':
-      return operand1 < operand2;
+      return value1 < value2;
     case '>':
-      return operand1 > operand2;
+      return value1 > value2;
     case '<=':
-      return operand1 <= operand2;
+      return value1 <= value2;
     case '>=':
-      return operand1 >= operand2;
+      return value1 >= value2;
     default:
       console.warn('Unknown operator', operator);
       return undefined;
   }
 }
 
+export function evaluateOperand(operand, formState = {}) {
+  let args;
+  if (typeof(operand.split) === 'function') {
+    args = operand.split(':');
+  } else {
+    args = [operand];
+  }
 
-function evaluateRule(rule = {}, formState) {
-  const operand1 = getValueByPath(formState, rule.value);
-  // console.log('evr', rule, operand1);
+  const value = getValueByPath(formState, args.shift());
+  if (value !== undefined) {
+    return applyReducers(castType(value), args);
+  }
+  return applyReducers(castType(operand), args);
+}
 
+export function evaluateRule(rule = {}, formState) {
   if (rule.always) {
     return rule.always;
-  } else if (rule.any) {
+  } else if (rule.any && rule.any.length > 0) {
     for (let i = 0; i < rule.any.length; i++) {
       const operator = rule.any[i][0];
-      const operand2 = rule.any[i][1];
+      const operand1 = evaluateOperand(rule.any[i][1], formState);
+      const operand2 = evaluateOperand(rule.any[i][2], formState);
       if (evaluateCondition(operator, operand1, operand2) === true) {
         return rule.then;
       }
     }
-  } else if (rule.all) {
+  } else if (rule.all && rule.all.length > 0) {
     for (let i = 0; i < rule.all.length; i++) {
       let result = true;
       const operator = rule.all[i][0];
-      const operand2 = rule.all[i][1];
+      const operand1 = evaluateOperand(rule.all[i][1], formState);
+      const operand2 = evaluateOperand(rule.all[i][2], formState);
       if (evaluateCondition(operator, operand1, operand2) === false) {
         result = false;
         break;
@@ -73,7 +112,7 @@ function evaluateRules(rules = [], formState) {
   return allResults;
 }
 
-function applyResults(id, results, formState) {
+export function applyResults(results, formState, currentId) {
   results.forEach((result) => {
     let args;
     if (typeof(result) === 'string') {
@@ -82,46 +121,48 @@ function applyResults(id, results, formState) {
       args = result.slice(0);
     }
     const action = args.shift();
+    let current;
+    let value;
     switch (action) {
       case 'show':
-        Object.assign(formState.variables, { [`${id}.disabled`]: false });
+        Object.assign(formState.props, { [`${currentId}.hidden`]: false });
         break;
       case 'hide':
-        Object.assign(formState.variables, { [`${id}.disabled`]: true });
+        Object.assign(formState.props, { [`${currentId}.hidden`]: true });
         break;
       case 'set':
-        Object.assign(formState.variables, { [args[0]]: args[1] });
+        value = evaluateOperand(args[1], formState);
+        Object.assign(formState.variables, { [args[0]]: value });
         break;
       case 'add':
-        Object.assign(formState.variables, { [args[0]]: formState.variables[args[0]] + args[1] });
+        current = formState.variables[args[0]] || 0;
+        value = evaluateOperand(args[1], formState);
+        Object.assign(formState.variables, { [args[0]]: current + value });
         break;
       default:
-        console.warn('unknown action', id, action, args);
+        console.warn(`unknown action in ${currentId}`, action, args);
         break;
     }
   });
   return formState;
 }
 
-
-export function computeFormState(definition, values, otherData) {
-  // console.log(definition, values, otherData);
-  const formState = Object.assign({
-    values,
-    variables: Object.assign({}, definition.variables),
-  }, otherData);
-  // console.log('** recomputing form', definition, formState);
-
-  const sections = definition.sections || [];
-  sections.forEach((section) => {
-    const items = section.items || [];
-    items.forEach((item) => {
-      const results = evaluateRules(item.rules, formState);
-      console.log('applying results for', item.id, results);
-      applyResults(item.id, results, formState);
-    });
+function computeItemState(currentItem, formState) {
+  const newState = Object.assign({}, formState);
+  const items = currentItem.items || [];
+  items.forEach((item) => {
+    Object.assign(newState, computeItemState(item, newState));
   });
+  const results = evaluateRules(currentItem.rules, newState);
+  return applyResults(results, newState, currentItem.id);
+}
 
-  console.log('** recomputing done', formState);
-  return formState;
+
+export function computeFormState(definition, values, props, otherData) {
+  const formState = Object.assign({
+    variables: Object.assign({}, definition.variables),
+    values,
+    props,
+  }, otherData);
+  return computeItemState(definition, formState);
 }

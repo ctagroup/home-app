@@ -46,14 +46,14 @@ export default class Section extends React.Component {
     const skipText = typeof(skip) === 'string' ? skip : 'Skip this section';
     const checked = this.getSkipValue();
     return (
-      <div>
+      <label>
         <input
           type="checkbox"
           onChange={this.handleChange}
           checked={checked}
         />
         {skipText}
-      </div>
+      </label>
     );
   }
 

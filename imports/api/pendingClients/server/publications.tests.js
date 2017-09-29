@@ -2,10 +2,15 @@
 
 import { PublicationCollector } from 'meteor/johanbrook:publication-collector';
 import { chai } from 'meteor/practicalmeteor:chai';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { PendingClients } from '../pendingClients';
 import './publications';
 
 describe('clients', function () {
+  beforeEach(() => {
+    resetDatabase();
+  });
+
   describe('publications', function () {
     it('lists 0 clients if user is not authenticated', function (done) {
       PendingClients.insert({

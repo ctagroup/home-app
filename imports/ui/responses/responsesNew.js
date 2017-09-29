@@ -56,7 +56,7 @@ Template.responsesNew.helpers({
               id: 'parent2',
               type: 'section',
               title: 'Parent 2',
-              skip: 'Skip if second parent currently not part of the household',
+              skip: 'Second parent currently not part of the household',
               items: [
                 {
                   id: 'parent2FirstName',
@@ -165,10 +165,13 @@ Template.responsesNew.helpers({
               // family score: 2 parent and 3+ children or 6yr old or pregnancy
               any: [
                 ['>=', 'variables.numChildren', 3],
-                ['<=', 'min(values.children.age)', 6],
+                ['<=', 'values.children.age:min', 6],
                 ['==', 'values.currentPregnancy', 'y'],
               ],
-              then: [['set', 'scoreFamilySize', 1]],
+              then: [
+                ['set', 'minChildrenAge', 'values.children.age:min'],
+                ['set', 'scoreFamilySize', 1],
+              ],
             },
           ],
         },

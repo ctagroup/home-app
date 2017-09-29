@@ -1,5 +1,5 @@
 import React from 'react';
-import { getValueByPath } from '/imports/api/surveys/computations';
+// import { getValueByPath } from '/imports/api/surveys/computations';
 
 export default class Text extends React.Component {
   parseText(text) {
