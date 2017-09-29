@@ -27,25 +27,25 @@ Template.responsesNew.helpers({
               title: 'Parent 1',
               items: [
                 {
-                  id: 'parent1FirstName',
+                  id: 'parent1.firstName',
                   type: 'question',
                   category: 'text',
                   title: 'First Name',
                 },
                 {
-                  id: 'parent1LastName',
+                  id: 'parent1.lastName',
                   type: 'question',
                   category: 'text',
                   title: 'Last Name',
                 },
                 {
-                  id: 'parent1Dob',
+                  id: 'parent1.dob',
                   type: 'question',
                   category: 'date',
                   title: 'Date of Birth',
                 },
                 {
-                  id: 'parent1Age',
+                  id: 'parent1.age',
                   type: 'question',
                   category: 'number',
                   title: 'Age',
@@ -59,25 +59,25 @@ Template.responsesNew.helpers({
               skip: 'Second parent currently not part of the household',
               items: [
                 {
-                  id: 'parent2FirstName',
+                  id: 'parent2.firstName',
                   type: 'question',
                   category: 'text',
                   title: 'First Name',
                 },
                 {
-                  id: 'parent2LastName',
+                  id: 'parent2.lastName',
                   type: 'question',
                   category: 'text',
                   title: 'Last Name',
                 },
                 {
-                  id: 'parent2Dob',
+                  id: 'parent2.dob',
                   type: 'question',
                   category: 'date',
                   title: 'Date of Birth',
                 },
                 {
-                  id: 'parent2Age',
+                  id: 'parent2.age',
                   type: 'question',
                   category: 'number',
                   title: 'Age',
@@ -91,6 +91,18 @@ Template.responsesNew.helpers({
           type: 'section',
           title: 'Section 2',
           items: [
+            {
+              id: 'childrenNear',
+              type: 'question',
+              category: 'number',
+              title: 'How many children under the age of 18 are currently with you?',
+            },
+            {
+              id: 'childrenFar',
+              type: 'question',
+              category: 'number',
+              title: 'How many children under the age of 18 are not currently with your family, but you have reason to believe they will be joining you when you get housed?',
+            },
             {
               id: 'children',
               title: 'Children',
@@ -114,10 +126,9 @@ Template.responsesNew.helpers({
           ],
           rules: [
             {
-
-            },
-            {
               always: [
+                ['set', 'numChildren', 'values.childrenNear'],
+                ['add', 'numChildren', 'values.childrenFar'],
                 ['rows', 'variables.numChildren'],
               ],
             },

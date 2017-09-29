@@ -6,16 +6,15 @@ import Text from './Text';
 export default class Section extends React.Component {
   constructor() {
     super();
-    this.handleChange = this.handleChange.bind(this);
+    this.handlePropsChange = this.handlePropsChange.bind(this);
   }
 
   getSkipValue() {
-    return !!this.props.formState.values[`${this.props.item.id}.skip`];
+    return !!this.props.formState.props[`${this.props.item.id}.skip`];
   }
 
-  handleChange(event) {
-    console.log(event.target.checked);
-    this.props.onChange(`${this.props.item.id}.skip`, event.target.checked);
+  handlePropsChange(event) {
+    this.props.onPropsChange(`${this.props.item.id}.skip`, event.target.checked);
   }
 
   renderTitle() {
@@ -49,7 +48,7 @@ export default class Section extends React.Component {
       <label>
         <input
           type="checkbox"
-          onChange={this.handleChange}
+          onChange={this.handlePropsChange}
           checked={checked}
         />
         {skipText}
@@ -58,25 +57,25 @@ export default class Section extends React.Component {
   }
 
   renderQuestion(question) {
-    const { formState, onChange } = this.props;
+    const { formState, onValueChange } = this.props;
     return (
       <Question
         key={`${question.type}:${question.id}`}
         item={question}
         formState={formState}
-        onChange={onChange}
+        onChange={onValueChange}
       />
     );
   }
 
   renderGrid(grid) {
-    const { formState, onChange } = this.props;
+    const { formState, onValueChange } = this.props;
     return (
       <Grid
         key={`${grid.type}:${grid.id}`}
         item={grid}
         formState={formState}
-        onChange={onChange}
+        onChange={onValueChange}
       />
     );
   }
@@ -86,7 +85,7 @@ export default class Section extends React.Component {
       return null;
     }
 
-    const { formState, onChange, item, level } = this.props;
+    const { formState, onPropsChange, onValueChange, item, level } = this.props;
     return (item.items || []).map((child) => {
       switch (child.type) {
         case 'section':
@@ -95,7 +94,8 @@ export default class Section extends React.Component {
               key={`${child.type}:${child.id}`}
               item={child}
               formState={formState}
-              onChange={onChange}
+              onValueChange={onValueChange}
+              onPropsChange={onPropsChange}
               level={level + 1}
             />);
         case 'question':

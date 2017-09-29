@@ -2,8 +2,6 @@ import React from 'react';
 import { computeFormState } from '/imports/api/surveys/computations';
 import Section from '/imports/ui/components/surveyForm/Section';
 
-// http://localhost:3000/responses/new?clientId=FzFxvqMDjE8w2nAMP&surveyId=Choose
-
 
 export default class Survey extends React.Component {
   constructor(props) {
