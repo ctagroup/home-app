@@ -12,12 +12,23 @@ describe('clients', function () {
         firstName: 'client1',
         lastName: 'client1',
       });
-      const collector = new PublicationCollector({ userId: 'some-id' });
-      collector.collect('clients', (collections) => {
-        chai.assert.typeOf(collections.clients, 'array');
-        chai.assert.equal(collections.clients.length, 0);
+      const collector = new PublicationCollector({ userId: undefined });
+      collector.collect('pendingClients.all', (collections) => {
+        chai.assert.typeOf(collections.clients, 'undefined');
         done();
       });
+    });
+  });
+  it('lists clients if user is authenticated', function (done) {
+    PendingClients.insert({
+      firstName: 'client1',
+      lastName: 'client1',
+    });
+    const collector = new PublicationCollector({ userId: 'some-id' });
+    collector.collect('pendingClients.all', (collections) => {
+      chai.assert.typeOf(collections.clients, 'array');
+      chai.assert.equal(collections.clients.length, 1);
+      done();
     });
   });
 });

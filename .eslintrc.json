@@ -12,6 +12,7 @@
     "mocha": true
   },
   "globals": {
+    "chai": true,
     "AccountsTemplates": true,
     "AutoForm": true,
     "Bert": true,
