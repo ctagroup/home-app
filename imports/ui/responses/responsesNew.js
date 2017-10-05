@@ -282,7 +282,16 @@ Template.responsesNew.helpers({
           id: 'history',
           type: 'section',
           title: 'A. History of Housing and Homelessness',
-
+          items: [
+            {
+              id: 'history.sleep',
+              type: 'question',
+              category: 'choice',
+              options: ['Shelters', 'Transitional Housing', 'Save Haven', 'Outdoors'],
+              other: true,
+              refusable: true,
+            },
+          ],
         },
         {
           id: 'risks',

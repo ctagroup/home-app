@@ -33,7 +33,6 @@ export default class Grid extends React.Component {
     const item = columns[c];
     const cellId = `${item.id}[${r}]`;
     const cellValue = values[item.id] && values[item.id][r];
-    console.log(cellId, values, cellValue);
     switch (item.category) {
       case 'date':
         return (

@@ -7,6 +7,11 @@ export default class Question extends React.Component {
   constructor() {
     super();
     this.handleChange = this.handleChange.bind(this);
+    this.handleOtherFocus = this.handleOtherFocus.bind(this);
+    this.handleOtherClick = this.handleOtherClick.bind(this);
+    this.state = {
+      otherSelected: false,
+    };
   }
 
   getRefuseValue() {
@@ -31,6 +36,9 @@ export default class Question extends React.Component {
       switch (this.props.item.category) {
         case 'choice':
           value = event.target.value;
+          if (this.props.item.options.includes(value)) {
+            this.setState({ otherSelected: false });
+          }
           break;
         case 'date':
           value = date ? date.format('YYYY-MM-DD') : '';
@@ -46,6 +54,14 @@ export default class Question extends React.Component {
       }
     }
     this.props.onChange(this.props.item.id, value);
+  }
+
+  handleOtherClick() {
+    this.otherInput.focus();
+  }
+
+  handleOtherFocus() {
+    setTimeout(() => this.setState({ otherSelected: true }), 1);
   }
 
   isRefused() {
@@ -77,7 +93,7 @@ export default class Question extends React.Component {
   }
 
   renderChoice(value) {
-    const { id, options } = this.props.item;
+    const { id, options, other } = this.props.item;
     const choices = options.map(v => (
       <div key={`choice-${id}-${v}`}>
         <label>
@@ -92,6 +108,34 @@ export default class Question extends React.Component {
         </label>
       </div>
     ));
+    if (other) {
+      const otherValue = options.includes(value) ? '' : value;
+      const checked = !this.isRefused() && this.state.otherSelected;
+      choices.push(
+        <div key={`choice-${id}-other`}>
+          <label>
+            <input
+              name={id}
+              type="radio"
+              disabled={this.isRefused()}
+              checked={checked}
+              onChange={this.handleOtherClick}
+            /> <span>Other: </span>
+            <input
+              type="text"
+              name={id}
+              placeholder="please specify"
+              disabled={this.isRefused()}
+              value={otherValue || ''}
+              onChange={this.handleChange}
+              onFocus={this.handleOtherFocus}
+              ref={(input) => { this.otherInput = input; }}
+            />
+            {`${this.state.otherSelected} ${checked}`}
+          </label>
+        </div>
+      );
+    }
     return (
       <div>
         {choices}
@@ -136,11 +180,10 @@ export default class Question extends React.Component {
   render() {
     const { id, title, text } = this.props.item;
     const value = this.props.formState.values[id];
-    // console.log(id, value);
     return (
-      <div>
-        <h6>{title}</h6>
-        <p>{text}</p>
+      <div className="question">
+        <div className="title">{title}</div>
+        <em>{text}</em>
         {this.renderQuestionCategory(this.isRefused() ? '' : value)}
         {this.renderRefuseCheckbox()}
       </div>
