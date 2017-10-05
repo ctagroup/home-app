@@ -1,5 +1,5 @@
 import React from 'react';
-// import { getValueByPath } from '/imports/api/surveys/computations';
+import { getValueByPath } from '/imports/api/surveys/computations';
 
 export default class Text extends React.Component {
   parseText(text) {
@@ -21,8 +21,8 @@ export default class Text extends React.Component {
       });
     }
     Object.keys(translations).forEach(t => {
-      const value = `TODO: ${translations[t]}`;
-      out = out.split(t).join(value);
+      const value = getValueByPath(this.props.formState, translations[t]);
+      out = out.split(t).join(`${value}`);
     });
     return out;
   }
@@ -37,8 +37,8 @@ export default class Text extends React.Component {
 
     return (
       <div>
-        <h3>{title}</h3>
-        <p>{this.parseText(text)}</p>
+        <h3 dangerouslySetInnerHTML={{ __html: this.parseText(title) }} />
+        <div dangerouslySetInnerHTML={{ __html: this.parseText(text) }} />
       </div>
     );
   }

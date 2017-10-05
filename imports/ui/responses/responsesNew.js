@@ -13,7 +13,16 @@ Template.responsesNew.helpers({
       title: 'VI-SPDAT Familiy 2.0',
       id: 1,
       variables: {
-        'children.rows': 10,
+        score1: 0,
+        score2: 0,
+        'score.presurvey': 0,
+        'score.history': 0,
+        'score.risks': 0,
+        'score.socialization': 0,
+        'score.wellness': 0,
+        'score.familyunit': 0,
+        'score.grandtotal': 0,
+        numChildren: 0,
       },
       items: [
         {
@@ -33,10 +42,22 @@ Template.responsesNew.helpers({
                   title: 'First Name',
                 },
                 {
+                  id: 'parent1.nickName',
+                  type: 'question',
+                  category: 'text',
+                  title: 'Nickname',
+                },
+                {
                   id: 'parent1.lastName',
                   type: 'question',
                   category: 'text',
                   title: 'Last Name',
+                },
+                {
+                  id: 'parent1.language',
+                  type: 'question',
+                  category: 'text',
+                  title: 'In what language do you feel best able to express yourself',
                 },
                 {
                   id: 'parent1.dob',
@@ -49,6 +70,19 @@ Template.responsesNew.helpers({
                   type: 'question',
                   category: 'number',
                   title: 'Age',
+                },
+                {
+                  id: 'parent1.ssn',
+                  type: 'question',
+                  category: 'text',
+                  title: 'SSN',
+                },
+                {
+                  id: 'parent1.consent',
+                  type: 'question',
+                  category: 'choice',
+                  title: 'Consent to participate',
+                  options: ['Yes', 'No'],
                 },
               ],
             },
@@ -65,10 +99,22 @@ Template.responsesNew.helpers({
                   title: 'First Name',
                 },
                 {
+                  id: 'parent2.nickName',
+                  type: 'question',
+                  category: 'text',
+                  title: 'Nickname',
+                },
+                {
                   id: 'parent2.lastName',
                   type: 'question',
                   category: 'text',
                   title: 'Last Name',
+                },
+                {
+                  id: 'parent1.language',
+                  type: 'question',
+                  category: 'text',
+                  title: 'In what language do you feel best able to express yourself',
                 },
                 {
                   id: 'parent2.dob',
@@ -81,6 +127,29 @@ Template.responsesNew.helpers({
                   type: 'question',
                   category: 'number',
                   title: 'Age',
+                },
+                {
+                  id: 'parent2.consent',
+                  type: 'question',
+                  category: 'choice',
+                  title: 'Consent to participate',
+                  options: ['Yes', 'No'],
+                },
+              ],
+            },
+            {
+              id: 'section1.score',
+              type: 'text',
+              title: 'SCORE: {{variables.score1}}',
+              text: 'IF EITHER HEAD OF HOUSEHOLD IS 60 YEARS OF AGE OR OLDER, THEN SCORE 1.',
+              rules: [
+                {
+                  // score - 1st
+                  any: [
+                    ['>=', 'values.parent1.age', 60],
+                    ['>=', 'values.parent2.age', 60],
+                  ],
+                  then: [['set', 'score1', 1]],
                 },
               ],
             },
@@ -96,12 +165,22 @@ Template.responsesNew.helpers({
               type: 'question',
               category: 'number',
               title: 'How many children under the age of 18 are currently with you?',
+              refusable: true,
             },
             {
               id: 'childrenFar',
               type: 'question',
               category: 'number',
               title: 'How many children under the age of 18 are not currently with your family, but you have reason to believe they will be joining you when you get housed?',
+              refusable: true,
+            },
+            {
+              id: 'pregnantMember',
+              type: 'question',
+              category: 'choice',
+              title: 'IF HOUSEHOLD INCLUDES A FEMALE: Is any member of the family currently pregnant?',
+              options: ['Yes', 'No'],
+              refusable: true,
             },
             {
               id: 'children',
@@ -116,75 +195,133 @@ Template.responsesNew.helpers({
                   category: 'text',
                 },
                 {
+                  id: 'children.lastName',
+                  type: 'question',
+                  title: 'Last Name',
+                  category: 'text',
+                },
+                {
                   id: 'children.age',
                   type: 'question',
                   title: 'Age',
-                  category: 'text',
+                  category: 'number',
+                },
+                {
+                  id: 'children.dob',
+                  type: 'question',
+                  title: 'Date of Birth',
+                  category: 'date',
+                },
+              ],
+              rules: [
+                {
+                  id: 'numChildren',
+                  always: [
+                    ['set', 'youngestChildAge', 'values.children.age:min'],
+                    ['add', 'numChildren', 'values.childrenNear'],
+                    ['add', 'numChildren', 'values.childrenFar'],
+                    ['rows', 'variables.numChildren'],
+                  ],
                 },
               ],
             },
-          ],
-          rules: [
             {
-              always: [
-                ['set', 'numChildren', 'values.childrenNear'],
-                ['add', 'numChildren', 'values.childrenFar'],
-                ['rows', 'variables.numChildren'],
+              id: 'section2.score',
+              type: 'text',
+              title: 'SCORE: {{variables.score2}}',
+              text: [
+                'IF THERE IS A SINGLE PARENT WITH 2+ CHILDREN, AND/OR A CHILD AGED 11 OR YOUNGER AND/OR A CURRENT PREGNANCY, THEN SCORE 1 FOR FAMILY SIZE.',
+                'IF THERE ARE TWO PARENTS WITH 3+ CHILDREN, AND/OR A CHILD AGED 6 OR YOUNGER AND/OR A CURRENT PREGNANCY, THEN SCORE 1 FOR FAMILY SIZE.',
+              ].join('<br />'),
+              rules: [
+                {
+                  id: 'singe2children',
+                  comment: 'single parent with 2 children',
+                  all: [
+                    ['==', 'props.parent2.skip', 1],
+                    ['>=', 'variables.numChildren', 2],
+                  ],
+                  then: [['set', 'score2', 1]],
+                },
+                {
+                  id: 'singleYoungChild',
+                  comment: 'single parent with young children',
+                  all: [
+                    ['==', 'props.parent2.skip', 1],
+                    ['<=', 'values.children.age:min', 11],
+                  ],
+                  then: [['set', 'score2', 1]],
+                },
+                {
+                  id: 'singePregnancy',
+                  comment: 'single parent with pregnancy',
+                  all: [
+                    ['==', 'props.parent2.skip', 1],
+                    ['==', 'values.pregnantMember', 'Yes'],
+                  ],
+                  then: [['set', 'score2', 1]],
+                },
+                {
+                  id: 'doublePregnancyOr3children',
+                  comment: '2 parent and 3+ children or 6yr old or pregnancy',
+                  any: [
+                    ['>=', 'variables.numChildren', 3],
+                    ['<=', 'values.children.age:min', 6],
+                    ['==', 'values.pregnantMember', 'Yes'],
+                  ],
+                  then: [
+                    ['set', 'minChildrenAge', 'values.children.age:min'],
+                    ['set', 'score2', 1],
+                  ],
+                },
               ],
             },
           ],
         },
         {
+          id: 'history',
+          type: 'section',
+          title: 'A. History of Housing and Homelessness',
+
+        },
+        {
+          id: 'risks',
+          type: 'section',
+          title: 'B. Risks',
+        },
+        {
+          id: 'socialization',
+          type: 'section',
+          title: 'C. Socialization & Daily Functioning',
+        },
+        {
+          id: 'wellness',
+          type: 'section',
+          title: 'D. Wellness',
+        },
+        {
+          id: 'familyunit',
+          type: 'section',
+          title: 'E. Family Unit',
+        },
+        {
           id: 'summary',
           type: 'text',
-          title: 'Summary',
-          text: 'TODO: summary',
-          rules: [
-            {
-              // score - 1st
-              any: [
-                ['<=', 'values.parent1age', 60],
-                ['<=', 'values.parent2age', 60],
-              ],
-              then: [['set', 'score1', 1]],
-            },
-            {
-              // family score: single parent with 2 children
-              all: [
-                ['==', 'parent2.skip', 1],
-                ['>=', 'variables.numChildren', 2],
-              ],
-              then: [['set', 'scoreFamilySize', 1]],
-            },
-            {
-              // family score: single parent with young children
-              all: [
-                ['==', 'parent2.skip', 1],
-                ['<=', 'min(values.children.age)', 11],
-              ],
-              then: [['set', 'scoreFamilySize', 1]],
-            },
-            {
-              // family score: single parent with pregnancy
-              all: [
-                ['==', 'parent2.skip', 1],
-                ['==', 'values.currentPregnancy', 'y'],
-              ],
-              then: [['set', 'scoreFamilySize', 1]],
-            },
-            {
-              // family score: 2 parent and 3+ children or 6yr old or pregnancy
-              any: [
-                ['>=', 'variables.numChildren', 3],
-                ['<=', 'values.children.age:min', 6],
-                ['==', 'values.currentPregnancy', 'y'],
-              ],
-              then: [
-                ['set', 'minChildrenAge', 'values.children.age:min'],
-                ['set', 'scoreFamilySize', 1],
-              ],
-            },
-          ],
+          title: 'Scoring Summary',
+          text: [
+            'PRE-SURVEY: {{variables.score.presurvey}}/2',
+            'A. HISTORY OF HOUSING & HOMELESSNESS: {{variables.score.history}}/2',
+            'B. RISKS: {{variables.score.risks}}/4',
+            'C. SOCIALIZATION & DAILY FUNCTIONS: {{variables.score.socialization}}/4',
+            'D. WELLNESS: {{variables.score.wellness}}/6',
+            'E. FAMILY UNIT: {{variables.score.familyunit}}/4',
+            '<strong>GRAND TOTAL: {{variables.score.grandtotal}}/22</strong>',
+          ].join('<br />'),
+        },
+        {
+          id: 'followup',
+          type: 'section',
+          title: 'Follow-Up Questions',
         },
       ],
     };

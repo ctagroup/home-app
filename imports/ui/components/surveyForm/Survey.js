@@ -12,16 +12,32 @@ export default class Survey extends React.Component {
   }
 
   handleValueChange(name, value) {
-    const values = Object.assign({}, this.state.values, {
-      [name]: value,
-    });
-    if (!value) {
-      delete values[name];
+    // check for array names i.e. 'foo[12]'
+    const match = name.match(/([^[]+)\[(\d+)\]/);
+    let newValues;
+    if (match) {
+      // handle array data
+      const arrName = match[1];
+      const arrIdx = match[2];
+      const v = this.state.values[arrName];
+      const arr = Array.isArray(v) ? v : [];
+      arr[arrIdx] = value;
+      newValues = Object.assign({}, this.state.values, {
+        [arrName]: arr,
+      });
+    } else {
+      // handle normal data
+      newValues = Object.assign({}, this.state.values, {
+        [name]: value,
+      });
+      if (!value) {
+        delete newValues[name];
+      }
     }
 
     const formState = computeFormState(
       this.props.definition,
-      values,
+      newValues,
       this.state.props,
       { client: this.props.client }
     );
@@ -46,7 +62,7 @@ export default class Survey extends React.Component {
   }
 
   renderDebugTable(name, data) {
-    const rows = (Object.keys(data) || []).map(v => {
+    const rows = (Object.keys(data) || []).sort().map(v => {
       let text = `${data[v]}`;
       if (text.length > 50) {
         text = `${text.substring(0, 47)}...`;
@@ -66,7 +82,7 @@ export default class Survey extends React.Component {
 
   renderDebugWindow() {
     const formState = this.state;
-    const tables = (Object.keys(formState) || []).map(t => (
+    const tables = (Object.keys(formState) || []).sort().map(t => (
       <table key={`table-${t}`}>
         <caption>{t}</caption>
         <tbody>

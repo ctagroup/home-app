@@ -51,7 +51,7 @@ export default class Section extends React.Component {
           onChange={this.handlePropsChange}
           checked={checked}
         />
-        {skipText}
+        <span> {skipText}</span>
       </label>
     );
   }
@@ -118,7 +118,7 @@ export default class Section extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="section">
         {this.renderTitle()}
         <p>{this.props.item.description}</p>
         {this.renderSkip()}

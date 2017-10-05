@@ -1,4 +1,7 @@
 function castType(v) {
+  if (Array.isArray(v)) {
+    return v;
+  }
   const result = parseFloat(v);
   if (!isNaN(result)) {
     return result;
@@ -9,7 +12,17 @@ function castType(v) {
 export function getValueByPath(obj, str) {
   // see also: https://lodash.com/docs/4.17.4#get
   try {
-    return str.split('.').reduce((o, i) => o[i], obj);
+    let parts = [];
+    const result = str.split('.').reduce((o, i) => {
+      parts.push(i);
+      const key = parts.join('.');
+      if (o[key] !== undefined) {
+        parts = [];
+        return o[key];
+      }
+      return o;
+    }, obj);
+    return parts.length === 0 ? result : str;
   } catch (e) {
     return undefined;
   }
@@ -17,11 +30,18 @@ export function getValueByPath(obj, str) {
 
 export function applyReducers(value, args = []) {
   let result = value;
+  let arr;
   while (args.length > 0) {
     const reducer = args.shift();
     switch (reducer) {
       case 'min':
-        result = Math.min(result);
+        arr = Array.isArray(value) ? value : [value];
+        arr = arr.filter(x => !isNaN(parseFloat(x)))
+          .map(x => parseFloat(x));
+        result = Math.min(...arr);
+        if (isNaN(result) || arr.length === 0) {
+          result = undefined;
+        }
         break;
       default:
         console.warn('Unknown reducer', reducer);
@@ -55,12 +75,11 @@ export function evaluateCondition(operator, operand1, operand2) {
 
 export function evaluateOperand(operand, formState = {}) {
   let args;
-  if (typeof(operand.split) === 'function') {
+  if (typeof(operand) === 'string') {
     args = operand.split(':');
   } else {
     args = [operand];
   }
-
   const value = getValueByPath(formState, args.shift());
   if (value !== undefined) {
     return applyReducers(castType(value), args);
@@ -68,7 +87,7 @@ export function evaluateOperand(operand, formState = {}) {
   return applyReducers(castType(operand), args);
 }
 
-export function evaluateRule(rule = {}, formState) {
+export function evaluateRule(rule, formState) {
   if (rule.always) {
     return rule.always;
   } else if (rule.any && rule.any.length > 0) {
@@ -81,8 +100,8 @@ export function evaluateRule(rule = {}, formState) {
       }
     }
   } else if (rule.all && rule.all.length > 0) {
+    let result = true;
     for (let i = 0; i < rule.all.length; i++) {
-      let result = true;
       const operator = rule.all[i][0];
       const operand1 = evaluateOperand(rule.all[i][1], formState);
       const operand2 = evaluateOperand(rule.all[i][2], formState);
@@ -90,9 +109,9 @@ export function evaluateRule(rule = {}, formState) {
         result = false;
         break;
       }
-      if (result) {
-        return rule.then;
-      }
+    }
+    if (result) {
+      return rule.then;
     }
   }
   return false;
@@ -103,12 +122,11 @@ function evaluateRules(rules = [], formState) {
   let allResults = [];
   for (let i = 0; i < rules.length; i++) {
     const results = evaluateRule(rules[i], formState);
-    // console.log('r', i, results);
     if (results) {
+      console.log('rule fired', rules[i], results);
       allResults = allResults.concat(results);
     }
   }
-  // console.log('r-all', allResults);
   return allResults;
 }
 
@@ -123,6 +141,7 @@ export function applyResults(results, formState, currentId) {
     const action = args.shift();
     let current;
     let value;
+    let rows;
     switch (action) {
       case 'show':
         Object.assign(formState.props, { [`${currentId}.hidden`]: false });
@@ -137,7 +156,14 @@ export function applyResults(results, formState, currentId) {
       case 'add':
         current = formState.variables[args[0]] || 0;
         value = evaluateOperand(args[1], formState);
+        if (typeof(value) !== 'number') {
+          break;
+        }
         Object.assign(formState.variables, { [args[0]]: current + value });
+        break;
+      case 'rows':
+        rows = parseInt(evaluateOperand(args[0], formState), 10);
+        Object.assign(formState.props, { [`${currentId}.rows`]: isNaN(rows) ? undefined : rows });
         break;
       default:
         console.warn(`unknown action in ${currentId}`, action, args);
@@ -159,6 +185,7 @@ function computeItemState(currentItem, formState) {
 
 
 export function computeFormState(definition, values, props, otherData) {
+  console.log('computing form state');
   const formState = Object.assign({
     variables: Object.assign({}, definition.variables),
     values,

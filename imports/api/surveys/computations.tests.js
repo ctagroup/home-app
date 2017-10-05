@@ -20,6 +20,45 @@ describe('survey computations', function () {
       chai.assert.equal(getValueByPath(formState, 'values.foo'), 1);
     });
 
+    it('getValueByPath with dots in name', function () {
+      const formState = {
+        values: {
+          'foo.bar': 1,
+        },
+      };
+      chai.assert.equal(getValueByPath(formState, 'values.foo.bar'), 1);
+      chai.assert.equal(getValueByPath(formState, 'values.foo.baz'), 'values.foo.baz');
+    });
+
+    it('getValueByPath with dots in name', function () {
+      const formState = {
+        values: {
+          'foo.bar': 1,
+        },
+      };
+      chai.assert.equal(getValueByPath(formState, 'values.foo.bar'), 1);
+      chai.assert.equal(getValueByPath(formState, 'values.foo.baz'), 'values.foo.baz');
+    });
+
+    it('getValueByPath - array', function () {
+      const formState = {
+        values: {
+          'foo.bar': [10, 20, 30],
+        },
+      };
+      chai.assert.deepEqual(getValueByPath(formState, 'values.foo.bar'), [10, 20, 30]);
+    });
+
+    it('getValueByPath - array elements', function () {
+      const formState = {
+        values: {
+          'foo.bar': [10, 20, 30],
+        },
+      };
+      chai.assert.equal(getValueByPath(formState, 'values.foo.bar.0'), 10);
+      chai.assert.equal(getValueByPath(formState, 'values.foo.bar.1'), 20);
+    });
+
     it('evaluate ALWAYS rule', function () {
       const rule = {
         always: [['foo'], ['bar']],
@@ -49,14 +88,46 @@ describe('survey computations', function () {
       chai.assert.equal(evaluateOperand('variables.bar', formState), 'baz');
       chai.assert.equal(evaluateOperand('values.baz', formState), 8);
     });
-    it('min function', function () {
+
+    it('variables - array', function () {
       const formState = {
         variables: {
-          foo: 10,
-          arr: [5, 2, 1],
+          arr: [5, 3, 10],
         },
       };
-      chai.assert.equal(evaluateOperand('variables.foo:min', formState), 10);
+      chai.assert.deepEqual(evaluateOperand('variables.arr', formState), [5, 3, 10]);
+    });
+
+    it('min function - 0 elements', function () {
+      const formState = {
+        variables: {
+        },
+      };
+      chai.assert.equal(evaluateOperand('variables.foo:min', formState), undefined);
+    });
+    it('min function - 1 element', function () {
+      const formState = {
+        variables: {
+          foo: 1,
+        },
+      };
+      chai.assert.equal(evaluateOperand('variables.foo:min', formState), 1);
+    });
+    it('min function - 2 elements', function () {
+      const formState = {
+        variables: {
+          foo: [3, 2, 4],
+        },
+      };
+      chai.assert.equal(evaluateOperand('variables.foo:min', formState), 2);
+    });
+    it('min function - undefined elements', function () {
+      const formState = {
+        variables: {
+          foo: [undefined, 5, 8, 7, undefined, 6],
+        },
+      };
+      chai.assert.equal(evaluateOperand('variables.foo:min', formState), 5);
     });
   });
 
@@ -76,6 +147,22 @@ describe('survey computations', function () {
       };
       const result = evaluateRule(rule, formState);
       chai.assert.deepEqual(result, [['set', 'bar', 2]]);
+    });
+
+    it('evaluate with success #2', function () {
+      const formState = {
+        values: {
+          'foo-bar': 70,
+        },
+      };
+      const rule = {
+        any: [
+          ['==', 'values.foo-bar', 70],
+        ],
+        then: [['set', 'baz', 2]],
+      };
+      const result = evaluateRule(rule, formState);
+      chai.assert.deepEqual(result, [['set', 'baz', 2]]);
     });
 
     it('evaluate with failure', function () {
@@ -122,7 +209,7 @@ describe('survey computations', function () {
       chai.assert.deepEqual(result, [['set', 'bar', 2]]);
     });
 
-    it('evaluate with failure', function () {
+    it('shoul be false: first is false', function () {
       const formState = {
         values: {
           foo: 2,
@@ -144,6 +231,26 @@ describe('survey computations', function () {
       const rule = {
         all: [],
         then: [['set', 'bar', 2]],
+      };
+      const result = evaluateRule(rule, formState);
+      chai.assert.deepEqual(result, false);
+    });
+
+    it('shoul be false: first is true, second is false', function () {
+      const rule = {
+        // family score: single parent with pregnancy
+        id: 'singePregnancy',
+        all: [
+          ['==', 'props.parent2.skip', 1],
+          ['==', 'values.currentPregnancy', 'y'],
+        ],
+        then: [['set', 'foo', 3]],
+      };
+      const formState = {
+        props: {
+          'parent2.skip': 1,
+        },
+        values: {},
       };
       const result = evaluateRule(rule, formState);
       chai.assert.deepEqual(result, false);

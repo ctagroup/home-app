@@ -1,4 +1,6 @@
 import React from 'react';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
 
 export default class Grid extends React.Component {
   constructor() {
@@ -6,8 +8,13 @@ export default class Grid extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(event) {
-    this.props.onChange(this.props.item.id, event.target.value);
+  handleChange(event, type, date, name) {
+    if (type === 'date') {
+      // this is a date picker event
+      this.props.onChange(name, date ? date.format('YYYY-MM-DD') : '');
+    } else {
+      this.props.onChange(event.target.name, event.target.value);
+    }
   }
 
   renderHeader() {
@@ -24,20 +31,34 @@ export default class Grid extends React.Component {
     const values = this.props.formState.values;
     const { columns } = this.props.item;
     const item = columns[c];
-    const cellId = `${item.id}.${r}`;
-    return (<input
-      type="text"
-      id={cellId}
-      name={cellId}
-      value={values[cellId]}
-      onChange={this.handleChange}
-    />);
+    const cellId = `${item.id}[${r}]`;
+    const cellValue = values[item.id] && values[item.id][r];
+    console.log(cellId, values, cellValue);
+    switch (item.category) {
+      case 'date':
+        return (
+          <DatePicker
+            selected={cellValue ? moment(cellValue) : ''}
+            onChange={(value, event) => this.handleChange(event, item.category, value, cellId)}
+            placeholderText="MM/DD/YYYY"
+          />
+        );
+      default:
+        return (
+          <input
+            type={item.category || 'text'}
+            id={cellId}
+            name={cellId}
+            value={cellValue || ''}
+            onChange={this.handleChange}
+          />
+        );
+    }
   }
 
   renderRows() {
-    const variables = this.props.formState.variables;
     const { columns, id } = this.props.item;
-    const numRows = variables[`${id}.rows`] || this.props.item.rows;
+    const numRows = this.props.formState.props[`${id}.rows`] || this.props.item.rows;
     const empty = new Array(numRows).fill(0);
     const rows = empty.map((_, i) => {
       const row = columns.map((c, j) => (
