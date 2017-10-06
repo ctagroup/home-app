@@ -6,6 +6,7 @@ import {
   evaluateCondition,
   evaluateOperand,
   evaluateRule,
+  evaluateRules,
   getValueByPath,
 } from './computations';
 
@@ -87,6 +88,17 @@ describe('survey computations', function () {
       chai.assert.equal(evaluateOperand('variables.foo', formState), 1);
       chai.assert.equal(evaluateOperand('variables.bar', formState), 'baz');
       chai.assert.equal(evaluateOperand('values.baz', formState), 8);
+    });
+
+    it('non existing variables, values, props', function () {
+      const formState = {
+        variables: {},
+        values: {},
+        props: {},
+      };
+      chai.assert.equal(evaluateOperand('variables.foo', formState), undefined);
+      chai.assert.equal(evaluateOperand('values.foo', formState), undefined);
+      chai.assert.equal(evaluateOperand('props.foo', formState), undefined);
     });
 
     it('variables - array', function () {
@@ -209,7 +221,7 @@ describe('survey computations', function () {
       chai.assert.deepEqual(result, [['set', 'bar', 2]]);
     });
 
-    it('shoul be false: first is false', function () {
+    it('should be false: first is false', function () {
       const formState = {
         values: {
           foo: 2,
@@ -336,6 +348,33 @@ describe('survey computations', function () {
       };
       const newState = applyResults([['add', 'foo', 1]], formState);
       chai.assert.equal(newState.variables.foo, 1);
+    });
+  });
+
+  describe('custom rules', function () {
+    it('rule chaining', function () {
+      const item = {
+        id: 'test',
+        rules: [
+          {
+            any: [['==', 'variables.foo', 1]],
+            then: [['set', 'bar', 1]],
+          },
+          {
+            any: [['==', 'variables.bar', 1]],
+            then: [['set', 'baz', 1]],
+          },
+        ],
+      };
+      const formState = {
+        variables: {
+          foo: 1,
+          bar: 0,
+          baz: 0,
+        },
+      };
+      const result = evaluateRules(item, formState);
+      chai.assert.equal(result.variables.baz, 1);
     });
   });
 

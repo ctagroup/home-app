@@ -1,4 +1,3 @@
-// const querystring = require('querystring');
 import { Template } from 'meteor/templating';
 import Survey from '/imports/ui/components/surveyForm/Survey';
 import './responsesNew.html';
@@ -15,6 +14,12 @@ Template.responsesNew.helpers({
       variables: {
         score1: 0,
         score2: 0,
+        scoreA1: 0,
+        scoreA2: 0,
+        scoreB1: 0,
+        scoreB2: 0,
+        scoreB3: 0,
+        scoreB4: 0,
         'score.presurvey': 0,
         'score.history': 0,
         'score.risks': 0,
@@ -139,8 +144,8 @@ Template.responsesNew.helpers({
             },
             {
               id: 'section1.score',
-              type: 'text',
-              title: 'SCORE: {{variables.score1}}',
+              type: 'score',
+              score: 'variables.score1',
               text: 'IF EITHER HEAD OF HOUSEHOLD IS 60 YEARS OF AGE OR OLDER, THEN SCORE 1.',
               rules: [
                 {
@@ -158,33 +163,33 @@ Template.responsesNew.helpers({
         {
           id: 'section2',
           type: 'section',
-          title: 'Section 2',
+          title: 'Children',
           items: [
             {
               id: 'childrenNear',
               type: 'question',
               category: 'number',
-              title: 'How many children under the age of 18 are currently with you?',
+              title: '1. How many children under the age of 18 are currently with you?',
               refusable: true,
             },
             {
               id: 'childrenFar',
               type: 'question',
               category: 'number',
-              title: 'How many children under the age of 18 are not currently with your family, but you have reason to believe they will be joining you when you get housed?',
+              title: '2. How many children under the age of 18 are not currently with your family, but you have reason to believe they will be joining you when you get housed?',
               refusable: true,
             },
             {
               id: 'pregnantMember',
               type: 'question',
               category: 'choice',
-              title: 'IF HOUSEHOLD INCLUDES A FEMALE: Is any member of the family currently pregnant?',
+              title: '3. IF HOUSEHOLD INCLUDES A FEMALE: Is any member of the family currently pregnant?',
               options: ['Yes', 'No'],
               refusable: true,
             },
             {
               id: 'children',
-              title: 'Children',
+              title: '4. Please provide a list of children’s names and ages:',
               type: 'grid',
               rows: 2,
               columns: [
@@ -284,12 +289,62 @@ Template.responsesNew.helpers({
           title: 'A. History of Housing and Homelessness',
           items: [
             {
-              id: 'history.sleep',
+              id: 'question5',
               type: 'question',
+              title: '5. Where do you and your family sleep most frequently?',
               category: 'choice',
               options: ['Shelters', 'Transitional Housing', 'Save Haven', 'Outdoors'],
               other: true,
               refusable: true,
+            },
+            {
+              id: 'scoreA1',
+              type: 'text',
+              title: 'SCORE: {{variables.scoreA1}}',
+              text: 'IF THE PERSON ANSWERS ANYTHING OTHER THAN "SHELTER", "TRANSITIONAL HOUSING", OR "SAFE HAVEN", THEN SCORE 1.',
+              rules: [
+                {
+                  all: [
+                    ['isset', 'values.question5'],
+                    ['!=', 'values.question5', 'Refused'],
+                    ['!=', 'values.question5', 'Shelters'],
+                    ['!=', 'values.question5', 'Transitional Housing'],
+                    ['!=', 'values.question5', 'Save Haven'],
+                  ],
+                  then: [['set', 'scoreA1', 1]],
+                },
+              ],
+            },
+            {
+              id: 'question6',
+              type: 'question',
+              category: 'number',
+              title: '6. How long has it been since you and your family lived in permanent stable housing?',
+              text: 'Enter number of years',
+              refusable: true,
+            },
+            {
+              id: 'question7',
+              type: 'question',
+              category: 'number',
+              title: '7. In the last three years, how many times have you and your family been homeless?',
+              text: 'Enter number of episodes',
+              refusable: true,
+            },
+            {
+              id: 'scoreA2',
+              type: 'text',
+              title: 'SCORE: {{variables.scoreA2}}',
+              text: 'IF THE FAMILY HAS EXPERIENCED 1 OR MORE CONSECUTIVE YEARS OF HOMELESSNESS, AND/OR 4+ EPISODES OF HOMELESSNESS, THEN SCORE 1.',
+              rules: [
+                {
+                  any: [
+                    ['>=', 'values.question6', 1],
+                    ['>=', 'values.question7', 4],
+                  ],
+                  then: [['set', 'scoreA2', 1]],
+                },
+              ],
             },
           ],
         },
@@ -297,21 +352,654 @@ Template.responsesNew.helpers({
           id: 'risks',
           type: 'section',
           title: 'B. Risks',
+          items: [
+            {
+              id: 'question8',
+              type: 'section',
+              title: '8. In the past six months, how many times have you or anyone in your family...',
+              items: [
+                {
+                  id: 'question8a',
+                  type: 'question',
+                  category: 'choice',
+                  title: 'a) Received health care at an emergency department/room?',
+                  options: ['Yes', 'No'],
+                  refusable: true,
+                },
+                {
+                  id: 'question8b',
+                  type: 'question',
+                  category: 'choice',
+                  title: 'b) Taken an ambulance to the hospital?',
+                  options: ['Yes', 'No'],
+                  refusable: true,
+                },
+                {
+                  id: 'question8c',
+                  type: 'question',
+                  category: 'choice',
+                  title: 'c) Been hospitalized as an inpatient?',
+                  options: ['Yes', 'No'],
+                  refusable: true,
+                },
+                {
+                  id: 'question8d',
+                  type: 'question',
+                  category: 'choice',
+                  title: 'd) Used a crisis service, including sexual assault crisis, mental health crisis, family/intimate violence, distress centers and suicide prevention hotlines?',
+                  options: ['Yes', 'No'],
+                  refusable: true,
+                },
+                {
+                  id: 'question8e',
+                  type: 'question',
+                  category: 'choice',
+                  title: 'e) Talked to police because they witnessed a crime, were the victim of a crime, or the alleged perpetrator of a crime or because the police told them that they must move along?',
+                  options: ['Yes', 'No'],
+                  refusable: true,
+                },
+                {
+                  id: 'question8f',
+                  type: 'question',
+                  category: 'choice',
+                  title: 'f) Stayed one or more nights in a holding cell, jail or prison, whether that was a short-term stay like the drunk tank, a longer stay for a more serious offence, or anything in between?',
+                  options: ['Yes', 'No'],
+                  refusable: true,
+                },
+              ],
+            },
+            {
+              id: 'scoreB1',
+              type: 'text',
+              title: 'Score: {{variables.scoreB1}}',
+              text: 'IF THE TOTAL NUMBER OF INTERACTIONS EQUALS 4 OR MORE, THEN SCORE 1 FOR EMERGENCY SERVICE USE.',
+              rules: [
+                {
+                  always: [['set', 'interactions', 0]],
+                },
+                {
+                  any: [['==', 'values.question8a', 'Yes']],
+                  then: [['add', 'interactions', 1]],
+                },
+                {
+                  any: [['==', 'values.question8b', 'Yes']],
+                  then: [['add', 'interactions', 1]],
+                },
+                {
+                  any: [['==', 'values.question8c', 'Yes']],
+                  then: [['add', 'interactions', 1]],
+                },
+                {
+                  any: [['==', 'values.question8d', 'Yes']],
+                  then: [['add', 'interactions', 1]],
+                },
+                {
+                  any: [['==', 'values.question8e', 'Yes']],
+                  then: [['add', 'interactions', 1]],
+                },
+                {
+                  any: [['==', 'values.question8f', 'Yes']],
+                  then: [['add', 'interactions', 1]],
+                },
+                {
+                  any: [['>=', 'variables.interactions', 4]],
+                  then: [['set', 'scoreB1', 1]],
+                },
+              ],
+            },
+            {
+              id: 'question9',
+              type: 'question',
+              category: 'choice',
+              title: '9. Have you or anyone in your family been attacked or beaten up since they’ve become homeless?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'question10',
+              type: 'question',
+              category: 'choice',
+              title: '10. Have you or anyone in your family threatened to or tried to harm themself or anyone else in the last year?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'scoreB2',
+              type: 'text',
+              title: 'Score: {{variables.scoreB2}}',
+              text: 'IF “YES” TO ANY OF THE ABOVE, THEN SCORE 1 FOR RISK OF HARM.',
+              rules: [
+                {
+                  any: [
+                    ['==', 'values.question9', 'Yes'],
+                    ['==', 'values.question10', 'Yes'],
+                  ],
+                  then: [['set', 'scoreB2', 1]],
+                },
+              ],
+            },
+            {
+              id: 'question11',
+              type: 'question',
+              category: 'choice',
+              title: '11. Do you or anyone in your family have any legal stuff going on right now that may result in them being locked up, having to pay fines, or that make it more difficult to rent a place to live?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'scoreB3',
+              type: 'text',
+              title: 'Score: {{variables.scoreB3}}',
+              text: 'IF “YES,” THEN SCORE 1 FOR LEGAL ISSUES.',
+              rules: [
+                {
+                  any: [
+                    ['==', 'values.question11', 'Yes'],
+                  ],
+                  then: [['set', 'scoreB3', 1]],
+                },
+              ],
+            },
+            {
+              id: 'question12',
+              type: 'question',
+              category: 'choice',
+              title: '12. Does anybody force or trick you or anyone in your family to do things that you do not want to do?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'question13',
+              type: 'question',
+              category: 'choice',
+              title: '13. Do you or anyone in your family ever do things that may be considered to be risky like exchange sex for money, run drugs for someone, have unprotected sex with someone they don’t know, share a needle, or anything like that?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'scoreB4',
+              type: 'text',
+              title: 'Score: {{variables.scoreB4}}',
+              text: 'IF “YES” TO ANY OF THE ABOVE, THEN SCORE 1 FOR RISK OF EXPLOITATION.',
+              rules: [
+                {
+                  any: [
+                    ['==', 'values.question12', 'Yes'],
+                    ['==', 'values.question13', 'Yes'],
+                  ],
+                  then: [['set', 'scoreB4', 1]],
+                },
+              ],
+            },
+          ],
         },
         {
           id: 'socialization',
           type: 'section',
           title: 'C. Socialization & Daily Functioning',
+          items: [
+            {
+              id: 'question14',
+              type: 'question',
+              category: 'choice',
+              title: '14. Is there any person, past landlord, business, bookie, dealer, or government group like the IRS that thinks you or anyone in your family owe them money?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'question15',
+              type: 'question',
+              category: 'choice',
+              title: '15. Do you or anyone in your family get any money from the government, a pension, an inheritance, working under the table, a regular job, or anything like that?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'score',
+              type: 'text',
+              title: 'Score: {{variables.scoreC1}}',
+              text: 'IF “YES” TO QUESTION 14 OR “NO” TO QUESTION 15, THEN SCORE 1 FOR MONEY MANAGEMENT.',
+              rules: [
+                {
+                  any: [
+                  ],
+                  then: [['set', 'scoreC1', 1]],
+                },
+              ],
+            },
+            {
+              id: 'question16',
+              type: 'question',
+              category: 'choice',
+              title: '16. Does everyone in your family have planned activities, other than just surviving, that make them feel happy and fulfilled?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'scoreC2',
+              type: 'text',
+              title: 'Score: {{variables.scoreC2}}',
+              text: 'IF “NO,” THEN SCORE 1 FOR MEANINGFUL DAILY ACTIVITY.',
+              rules: [
+                {
+                  any: [
+                  ],
+                  then: [['set', 'scoreC2', 1]],
+                },
+              ],
+            },
+            {
+              id: 'question17',
+              type: 'question',
+              category: 'choice',
+              title: '17. Is everyone in your family currently able to take care of basic needs like bathing, changing clothes, using a restroom, getting food and clean water and other things like that?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'scoreC3',
+              type: 'text',
+              title: 'Score: {{variables.scor1}}',
+              text: 'IF “NO,” THEN SCORE 1 FOR SELF-CARE.',
+              rules: [
+                {
+                  any: [
+                  ],
+                  then: [['set', 'scoreC3', 1]],
+                },
+              ],
+            },
+            {
+              id: 'question18',
+              type: 'question',
+              category: 'choice',
+              title: '18. Is your family’s current homelessness in any way caused by a relationship that broke down, an unhealthy or abusive relationship, or because other family or friends caused your family to become evicted?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'scoreC4',
+              type: 'text',
+              title: 'Score: {{variables.scoreC4}}',
+              text: 'IF “YES”, THEN SCORE 1 FOR SOCIAL RELATIONSHIPS.',
+              rules: [
+                {
+                  any: [
+                  ],
+                  then: [['set', 'scoreC4', 1]],
+                },
+              ],
+            },
+          ],
         },
         {
           id: 'wellness',
           type: 'section',
           title: 'D. Wellness',
+          items: [
+            {
+              id: 'question19',
+              type: 'question',
+              category: 'choice',
+              title: '19. Has your family ever had to leave an apartment, shelter program, or other place you were staying because of the physical health of you or anyone in your family?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'question20',
+              type: 'question',
+              category: 'choice',
+              title: '20. Do you or anyone in your family have any chronic health issues with your liver, kidneys, stomach, lungs or heart?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'question21',
+              type: 'question',
+              category: 'choice',
+              title: '21. If there was space available in a program that specifically assists people that live with HIV or AIDS, would that be of interest to you or anyone in your family?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'question22',
+              type: 'question',
+              category: 'choice',
+              title: '22. Does anyone in your family have any physical disabilities that would limit the type of housing you could access, or would make it hard to live independently because you’d need help?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'question23',
+              type: 'question',
+              category: 'choice',
+              title: '23. When someone in your family is sick or not feeling well, does your family avoid getting medical help?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'scoreD1',
+              type: 'text',
+              title: 'Score: {{variables.scoreD1}}',
+              text: 'IF “YES” TO ANY OF THE ABOVE, THEN SCORE 1 FOR PHYSICAL HEALTH.',
+              rules: [
+                {
+                  any: [
+                  ],
+                  then: [['set', 'scoreD1', 1]],
+                },
+              ],
+            },
+            {
+              id: 'question24',
+              type: 'question',
+              category: 'choice',
+              title: '24. Has drinking or drug use by you or anyone in your family led your family to being kicked out of an apartment or program where you were staying in the past?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'question25',
+              type: 'question',
+              category: 'choice',
+              title: '25. Will drinking or drug use make it difficult for your family to stay housed or afford your housing?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'scoreD2',
+              type: 'text',
+              title: 'Score: {{variables.scoreD2}}',
+              text: 'IF “YES” TO ANY OF THE ABOVE, THEN SCORE 1 FOR SUBSTANCE USE.',
+              rules: [
+                {
+                  any: [
+                  ],
+                  then: [['set', 'scoreD2', 1]],
+                },
+              ],
+            },
+            {
+              id: 'question26',
+              type: 'section',
+              title: '26. Has your family ever had trouble maintaining your housing, or been kicked out of an apartment, shelter program or other place you were staying, because of:',
+              items: [
+                {
+                  id: 'question26a',
+                  type: 'question',
+                  category: 'choice',
+                  title: 'a) A mental health issue or concern?',
+                  options: ['Yes', 'No'],
+                  refusable: true,
+                },
+                {
+                  id: 'question26b',
+                  type: 'question',
+                  category: 'choice',
+                  title: 'b) A past head injury?',
+                  options: ['Yes', 'No'],
+                  refusable: true,
+                },
+                {
+                  id: 'question26c',
+                  type: 'question',
+                  category: 'choice',
+                  title: 'c) A learning disability, developmental disability, or other impairment?',
+                  options: ['Yes', 'No'],
+                  refusable: true,
+                },
+              ],
+            },
+            {
+              id: 'question27',
+              type: 'question',
+              category: 'choice',
+              title: '27. Do you or anyone in your family have any mental health or brain issues that would make it hard for your family to live independently because help would be needed?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'scoreD3',
+              type: 'text',
+              title: 'Score: {{variables.scoreD3}}',
+              text: 'IF “YES” TO ANY OF THE ABOVE, THEN SCORE 1 FOR MENTAL HEALTH.',
+              rules: [
+                {
+                  any: [
+                  ],
+                  then: [['set', 'scoreD3', 1]],
+                },
+              ],
+            },
+            {
+              id: 'question28',
+              type: 'question',
+              category: 'choice',
+              title: '28. Does any single member of your household have a medical condition, mental health concerns, and experience with substance use?',
+              text: 'IF THE FAMILY SCORED 1 EACH FOR PHYSICAL HEALTH, SUBSTANCE USE, AND MENTAL HEALTH',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'scoreD4',
+              type: 'text',
+              title: 'Score: {{variables.scoreD4}}',
+              text: 'IF “YES”, SCORE 1 FOR TRI-MORBIDITY.',
+              rules: [
+                {
+                  any: [
+                  ],
+                  then: [['set', 'scoreD4', 1]],
+                },
+              ],
+            },
+            {
+              id: 'question29',
+              type: 'question',
+              category: 'choice',
+              title: '29. Are there any medications that a doctor said you or anyone in your family should be taking that, for whatever reason, they are not taking?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'question30',
+              type: 'question',
+              category: 'choice',
+              title: '30. Are there any medications like painkillers that you or anyone in your family don’t take the way the doctor prescribed or where they sell the medication?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'scoreD5',
+              type: 'text',
+              title: 'Score: {{variables.scoreD5}}',
+              text: 'IF “YES” TO ANY OF THE ABOVE, SCORE 1 FOR MEDICATIONS.',
+              rules: [
+                {
+                  any: [
+                  ],
+                  then: [['set', 'scoreD5', 1]],
+                },
+              ],
+            },
+            {
+              id: 'question31',
+              type: 'question',
+              category: 'choice',
+              title: '31. Has your family’s current period of homelessness been caused by an experience of emotional, physical, psychological, sexual, or other type of abuse, or by any other trauma you or anyone in your family have experienced?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'scoreD6',
+              type: 'text',
+              title: 'Score: {{variables.scoreD6}}',
+              text: 'IF “YES”, SCORE 1 FOR ABUSE AND TRAUMA.',
+              rules: [
+                {
+                  any: [
+                  ],
+                  then: [['set', 'scoreD6', 1]],
+                },
+              ],
+            },
+          ],
         },
         {
           id: 'familyunit',
           type: 'section',
           title: 'E. Family Unit',
+          items: [
+            {
+              id: 'question32',
+              type: 'question',
+              category: 'choice',
+              title: '32. Are there any children that have been removed from the family by a child protection service within the last 180 days?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'question33',
+              type: 'question',
+              category: 'choice',
+              title: '33. Do you have any family legal issues that are being resolved in court or need to be resolved in court that would impact your housing or who may live within your housing?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'scoreE1',
+              type: 'text',
+              title: 'Score: {{variables.scorE1}}',
+              text: 'IF “YES” TO ANY OF THE ABOVE, SCORE 1 FOR FAMILY LEGAL ISSUES.',
+              rules: [
+                {
+                  any: [
+                  ],
+                  then: [['set', 'scoreE1', 1]],
+                },
+              ],
+            },
+            {
+              id: 'question34',
+              type: 'question',
+              category: 'choice',
+              title: '34. In the last 180 days have any children lived with family or friends because of your homelessness or housing situation?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'question35',
+              type: 'question',
+              category: 'choice',
+              title: '35. Has any child in the family experienced abuse or trauma in the last 180 days?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'question36',
+              type: 'question',
+              category: 'choice',
+              title: '36. Do your children attend school more often than not each week?',
+              text: 'IF THERE ARE SCHOOL-AGED CHILDREN',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'scoreE2',
+              type: 'text',
+              title: 'Score: {{variables.scoreE2}}',
+              text: 'IF “YES” TO ANY OF QUESTIONS 34 OR 35, OR “NO” TO QUESTION 36, SCORE 1 FOR NEEDS OF CHILDREN.',
+              rules: [
+                {
+                  any: [
+                  ],
+                  then: [['set', 'scoreE2', 1]],
+                },
+              ],
+            },
+            {
+              id: 'question37',
+              type: 'question',
+              category: 'choice',
+              title: '37. Have the members of your family changed in the last 180 days, due to things like divorce, your kids coming back to live with you, someone leaving for military service or incarceration, a relative moving in, or anything like that?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'question38',
+              type: 'question',
+              category: 'choice',
+              title: '38. Do you anticipate any other adults or children coming to live with you within the first 180 days of being housed?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'scoreE3',
+              type: 'text',
+              title: 'Score: {{variables.scoreE3}}',
+              text: 'IF “YES” TO ANY OF THE ABOVE, SCORE 1 FOR FAMILY STABILITY.',
+              rules: [
+                {
+                  any: [
+                  ],
+                  then: [['set', 'scoreE3', 1]],
+                },
+              ],
+            },
+            {
+              id: 'question39',
+              type: 'question',
+              category: 'choice',
+              title: '39. Do you have two or more planned activities each week as a family such as outings to the park, going to the library, visiting other family, watching a family movie, or anything like that?',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'question40',
+              type: 'section',
+              title: '40. After school, or on weekends or days when there isn’t school, is the total time children spend each day where there is no interaction with you or another responsible adult...',
+              items: [
+                {
+                  id: 'question40a',
+                  type: 'question',
+                  category: 'choice',
+                  title: 'a) 3 or more hours per day for children aged 13 or older?',
+                  options: ['Yes', 'No'],
+                  refusable: true,
+                },
+                {
+                  id: 'question40b',
+                  type: 'question',
+                  category: 'choice',
+                  title: 'b) 2 or more hours per day for children aged 12 or younger?',
+                  options: ['Yes', 'No'],
+                  refusable: true,
+                },
+              ],
+            },
+            {
+              id: 'question41',
+              type: 'question',
+              category: 'choice',
+              title: '41. Do your older kids spend 2 or more hours on a typical day helping their younger sibling(s) with things like getting ready for school, helping with homework, making them dinner, bathing them, or anything like that?',
+              text: 'IF THERE ARE CHILDREN BOTH 12 AND UNDER & 13 AND OVER',
+              options: ['Yes', 'No'],
+              refusable: true,
+            },
+            {
+              id: 'scoreE4',
+              type: 'text',
+              title: 'Score: {{variables.scoreE4}}',
+              text: 'IF “NO” TO QUESTION 39, OR “YES” TO ANY OF QUESTIONS 40 OR 41, SCORE 1 FOR PARENTAL ENGAGEMENT.',
+              rules: [
+                {
+                  any: [
+                  ],
+                  then: [['set', 'scoreE4', 1]],
+                },
+              ],
+            },
+          ],
         },
         {
           id: 'summary',

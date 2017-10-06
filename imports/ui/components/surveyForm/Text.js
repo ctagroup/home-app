@@ -1,7 +1,8 @@
 import React from 'react';
-import { getValueByPath } from '/imports/api/surveys/computations';
+import { evaluateOperand } from '/imports/api/surveys/computations';
+import Item from './Item';
 
-export default class Text extends React.Component {
+export default class Text extends Item {
   parseText(text) {
     const regex = /{{([^}]+)}}/g;
     const translations = {};
@@ -21,7 +22,7 @@ export default class Text extends React.Component {
       });
     }
     Object.keys(translations).forEach(t => {
-      const value = getValueByPath(this.props.formState, translations[t]);
+      const value = evaluateOperand(translations[t], this.props.formState);
       out = out.split(t).join(`${value}`);
     });
     return out;
@@ -36,8 +37,8 @@ export default class Text extends React.Component {
     }
 
     return (
-      <div>
-        <h3 dangerouslySetInnerHTML={{ __html: this.parseText(title) }} />
+      <div className="text item">
+        {this.renderTitleHTML(this.parseText(title))}
         <div dangerouslySetInnerHTML={{ __html: this.parseText(text) }} />
       </div>
     );

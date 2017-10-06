@@ -30,7 +30,7 @@ export default class Survey extends React.Component {
       newValues = Object.assign({}, this.state.values, {
         [name]: value,
       });
-      if (!value) {
+      if (value === '') {
         delete newValues[name];
       }
     }

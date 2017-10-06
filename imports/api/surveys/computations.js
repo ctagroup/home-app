@@ -1,10 +1,16 @@
-function castType(v) {
+export function castType(v) {
   if (Array.isArray(v)) {
     return v;
   }
   const result = parseFloat(v);
   if (!isNaN(result)) {
     return result;
+  }
+
+  if (typeof(v) === 'string') {
+    if (v.startsWith('variables.') || v.startsWith('values.') || v.startsWith('props.')) {
+      return undefined;
+    }
   }
   return v;
 }
@@ -55,6 +61,8 @@ export function evaluateCondition(operator, operand1, operand2) {
   const value1 = castType(operand1);
   const value2 = castType(operand2);
   switch (operator) {
+    case 'isset':
+      return !!value1;
     case '==':
       return value1 == value2; // eslint-disable-line eqeqeq
     case '!=':
@@ -66,6 +74,7 @@ export function evaluateCondition(operator, operand1, operand2) {
     case '<=':
       return value1 <= value2;
     case '>=':
+      console.log('>=', value1, value2);
       return value1 >= value2;
     default:
       console.warn('Unknown operator', operator);
@@ -117,19 +126,6 @@ export function evaluateRule(rule, formState) {
   return false;
 }
 
-
-function evaluateRules(rules = [], formState) {
-  let allResults = [];
-  for (let i = 0; i < rules.length; i++) {
-    const results = evaluateRule(rules[i], formState);
-    if (results) {
-      console.log('rule fired', rules[i], results);
-      allResults = allResults.concat(results);
-    }
-  }
-  return allResults;
-}
-
 export function applyResults(results, formState, currentId) {
   results.forEach((result) => {
     let args;
@@ -173,16 +169,25 @@ export function applyResults(results, formState, currentId) {
   return formState;
 }
 
+export function evaluateRules(currentItem = {}, formState) {
+  return (currentItem.rules || []).reduce((state, rule) => {
+    const results = evaluateRule(rule, state);
+    if (results) {
+      console.log('rule fired', currentItem.id, rule, '', results);
+      return applyResults(results, state, currentItem.id);
+    }
+    return state;
+  }, formState);
+}
+
 function computeItemState(currentItem, formState) {
   const newState = Object.assign({}, formState);
   const items = currentItem.items || [];
   items.forEach((item) => {
     Object.assign(newState, computeItemState(item, newState));
   });
-  const results = evaluateRules(currentItem.rules, newState);
-  return applyResults(results, newState, currentItem.id);
+  return evaluateRules(currentItem, newState);
 }
-
 
 export function computeFormState(definition, values, props, otherData) {
   console.log('computing form state');

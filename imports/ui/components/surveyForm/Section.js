@@ -1,9 +1,11 @@
 import React from 'react';
+import Item from './Item';
 import Grid from './Grid';
 import Question from './Question';
+import Score from './Score';
 import Text from './Text';
 
-export default class Section extends React.Component {
+export default class Section extends Item {
   constructor() {
     super();
     this.handlePropsChange = this.handlePropsChange.bind(this);
@@ -15,26 +17,6 @@ export default class Section extends React.Component {
 
   handlePropsChange(event) {
     this.props.onPropsChange(`${this.props.item.id}.skip`, event.target.checked);
-  }
-
-  renderTitle() {
-    const title = this.props.item.title;
-    switch (this.props.level) {
-      case 1:
-        return <h1>{title}</h1>;
-      case 2:
-        return <h2>{title}</h2>;
-      case 3:
-        return <h3>{title}</h3>;
-      case 4:
-        return <h4>{title}</h4>;
-      case 5:
-        return <h5>{title}</h5>;
-      case 6:
-        return <h6>{title}</h6>;
-      default:
-        return <div>{title}</div>;
-    }
   }
 
   renderSkip() {
@@ -57,11 +39,12 @@ export default class Section extends React.Component {
   }
 
   renderQuestion(question) {
-    const { formState, onValueChange } = this.props;
+    const { formState, level, onValueChange } = this.props;
     return (
       <Question
         key={`${question.type}:${question.id}`}
         item={question}
+        level={level + 1}
         formState={formState}
         onChange={onValueChange}
       />
@@ -69,11 +52,12 @@ export default class Section extends React.Component {
   }
 
   renderGrid(grid) {
-    const { formState, onValueChange } = this.props;
+    const { formState, level, onValueChange } = this.props;
     return (
       <Grid
         key={`${grid.type}:${grid.id}`}
         item={grid}
+        level={level + 1}
         formState={formState}
         onChange={onValueChange}
       />
@@ -91,6 +75,7 @@ export default class Section extends React.Component {
         case 'section':
           return (
             <Section
+              className="section item"
               key={`${child.type}:${child.id}`}
               item={child}
               formState={formState}
@@ -102,10 +87,20 @@ export default class Section extends React.Component {
           return this.renderQuestion(child);
         case 'grid':
           return this.renderGrid(child);
+        case 'score':
+          return (
+            <Score
+              key={`${child.type}:${child.id}`}
+              level={level + 1}
+              item={child}
+              formState={formState}
+            />
+          );
         case 'text':
           return (
             <Text
               key={`${child.type}:${child.id}`}
+              level={level + 1}
               item={child}
               formState={formState}
             />

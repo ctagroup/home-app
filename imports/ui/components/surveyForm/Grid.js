@@ -1,8 +1,9 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import Item from './Item';
 
-export default class Grid extends React.Component {
+export default class Grid extends Item {
   constructor() {
     super();
     this.handleChange = this.handleChange.bind(this);
@@ -74,15 +75,15 @@ export default class Grid extends React.Component {
   }
 
   render() {
-    const { id, title, text } = this.props.item;
+    const { id, text } = this.props.item;
     const isHidden = this.props.formState.props[`${id}.hidden`];
     if (isHidden) {
       return null;
     }
 
     return (
-      <div>
-        <h6>{title}</h6>
+      <div className="grid item">
+        {this.renderTitle()}
         <p>{text}</p>
         <table>
           <thead>

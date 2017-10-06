@@ -2,8 +2,11 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
+import Item from './Item';
 
-export default class Question extends React.Component {
+const DEFAULT_OTHER_VALUE = 'Other';
+
+export default class Question extends Item {
   constructor() {
     super();
     this.handleChange = this.handleChange.bind(this);
@@ -28,7 +31,12 @@ export default class Question extends React.Component {
     try {
       // handle refused checkbox
       if (event.target.attributes.rel.value === 'refuse') {
-        value = event.target.checked ? this.getRefuseValue() : '';
+        if (event.target.checked) {
+          value = this.getRefuseValue();
+          this.setState({ otherSelected: false });
+        } else {
+          value = '';
+        }
       }
     } catch (e) {
       // handle value change
@@ -45,18 +53,25 @@ export default class Question extends React.Component {
           break;
         case 'number':
           value = event.target.value;
-          number = parseInt(value, 10);
-          value = isNaN(number) ? 0 : number;
+          if (value.length > 0) {
+            number = parseInt(value, 10);
+            value = isNaN(number) ? 0 : number;
+          }
           break;
         default:
           value = event.target.value;
           break;
       }
     }
+
+    if (!value && this.state.otherSelected) {
+      value = DEFAULT_OTHER_VALUE;
+    }
     this.props.onChange(this.props.item.id, value);
   }
 
-  handleOtherClick() {
+  handleOtherClick(event) {
+    this.props.onChange(event.target.name, event.target.value);
     this.otherInput.focus();
   }
 
@@ -109,7 +124,7 @@ export default class Question extends React.Component {
       </div>
     ));
     if (other) {
-      const otherValue = options.includes(value) ? '' : value;
+      const otherValue = options.concat([DEFAULT_OTHER_VALUE]).includes(value) ? '' : value;
       const checked = !this.isRefused() && this.state.otherSelected;
       choices.push(
         <div key={`choice-${id}-other`}>
@@ -119,6 +134,7 @@ export default class Question extends React.Component {
               type="radio"
               disabled={this.isRefused()}
               checked={checked}
+              value={DEFAULT_OTHER_VALUE}
               onChange={this.handleOtherClick}
             /> <span>Other: </span>
             <input
@@ -131,7 +147,6 @@ export default class Question extends React.Component {
               onFocus={this.handleOtherFocus}
               ref={(input) => { this.otherInput = input; }}
             />
-            {`${this.state.otherSelected} ${checked}`}
           </label>
         </div>
       );
@@ -150,7 +165,7 @@ export default class Question extends React.Component {
         type={type}
         id={id}
         name={id}
-        value={value || ''}
+        value={value === undefined ? '' : value}
         onChange={this.handleChange}
         disabled={this.isRefused()}
       />
@@ -178,12 +193,12 @@ export default class Question extends React.Component {
 
 
   render() {
-    const { id, title, text } = this.props.item;
+    const { id, text } = this.props.item;
     const value = this.props.formState.values[id];
     return (
-      <div className="question">
-        <div className="title">{title}</div>
-        <em>{text}</em>
+      <div className="question item">
+        {this.renderTitle()}
+        <div className="text">{text}</div>
         {this.renderQuestionCategory(this.isRefused() ? '' : value)}
         {this.renderRefuseCheckbox()}
       </div>
