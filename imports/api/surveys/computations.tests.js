@@ -349,6 +349,15 @@ describe('survey computations', function () {
       const newState = applyResults([['add', 'foo', 1]], formState);
       chai.assert.equal(newState.variables.foo, 1);
     });
+    it('will calculate sum', function () {
+      const formState = {
+        variables: {
+          foo: 10,
+        },
+      };
+      const newState = applyResults([['sum', 'bar', 1, 'variables.foo']], formState);
+      chai.assert.equal(newState.variables.bar, 11);
+    });
   });
 
   describe('custom rules', function () {

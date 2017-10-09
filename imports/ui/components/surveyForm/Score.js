@@ -7,8 +7,9 @@ export default class Score extends Text {
     const { score, text } = this.props.item;
 
     let value = evaluateOperand(score, this.props.formState);
-    console.log(score, value);
-
+    if (value === undefined) {
+      value = '?';
+    }
     return (
       <div className="score item">
         <div className="wrapper">

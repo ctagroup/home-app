@@ -1,3 +1,5 @@
+let firedRules = [];
+
 export function castType(v) {
   if (Array.isArray(v)) {
     return v;
@@ -45,6 +47,15 @@ export function applyReducers(value, args = []) {
         arr = arr.filter(x => !isNaN(parseFloat(x)))
           .map(x => parseFloat(x));
         result = Math.min(...arr);
+        if (isNaN(result) || arr.length === 0) {
+          result = undefined;
+        }
+        break;
+      case 'max':
+        arr = Array.isArray(value) ? value : [value];
+        arr = arr.filter(x => !isNaN(parseFloat(x)))
+          .map(x => parseFloat(x));
+        result = Math.max(...arr);
         if (isNaN(result) || arr.length === 0) {
           result = undefined;
         }
@@ -157,6 +168,16 @@ export function applyResults(results, formState, currentId) {
         }
         Object.assign(formState.variables, { [args[0]]: current + value });
         break;
+      case 'sum':
+        current = 0;
+        for (let i = 0; i < args.length; i++) {
+          value = evaluateOperand(args[i], formState);
+          if (typeof(value) === 'number') {
+            current += value;
+          }
+        }
+        Object.assign(formState.variables, { [args[0]]: current });
+        break;
       case 'rows':
         rows = parseInt(evaluateOperand(args[0], formState), 10);
         Object.assign(formState.props, { [`${currentId}.rows`]: isNaN(rows) ? undefined : rows });
@@ -173,7 +194,11 @@ export function evaluateRules(currentItem = {}, formState) {
   return (currentItem.rules || []).reduce((state, rule) => {
     const results = evaluateRule(rule, state);
     if (results) {
-      console.log('rule fired', currentItem.id, rule, '', results);
+      firedRules.push({
+        id: currentItem.id,
+        rule,
+        results,
+      });
       return applyResults(results, state, currentItem.id);
     }
     return state;
@@ -190,11 +215,14 @@ function computeItemState(currentItem, formState) {
 }
 
 export function computeFormState(definition, values, props, otherData) {
+  firedRules = [];
   console.log('computing form state');
   const formState = Object.assign({
     variables: Object.assign({}, definition.variables),
     values,
     props,
   }, otherData);
-  return computeItemState(definition, formState);
+  const newState = computeItemState(definition, formState);
+  console.log('computed', newState, firedRules);
+  return newState;
 }

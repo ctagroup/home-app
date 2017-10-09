@@ -14,29 +14,76 @@ label {
 
 .item {
   margin-top: 4px;
-  margin-left: 8px;
+  margin-left: 0px;
 }
 
 
 .section {
-  border: 1px dotted black;
-  padding: 16px;
+  padding-bottom: 16px;
   h1, h2, h3, h4, h5, h6 {
     margin-top: 8px;
+  }
+  h1.title {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+  }
+  h2.title {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .title {
+    font-size: 14px;
+  }
+}
+
+.question {
+  .title {
+    font-size: 14px;
+    margin-top: 12px;
+    margin-bottom: 4px;
+  }
+  input {
+    &[type="text"], &[type="number"] {
+      min-width: 200px;
+      width: 50%;
+    }
+  }
+}
+
+.grid {
+  table {
+    width: 100%;
+  }
+  thead td {
+    font-size: 14px;
+  }
+  input {
+    width: 100%;
   }
 }
 
 .score {
+  display: flex;
   background: #d41f26;
-  padding: 8px;
   color: white;
   font-weight: bold;
 
+  .text {
+    margin: 8px;
+    order: 0;
+    flex-grow: 1
+  }
+
   .wrapper {
-    float: right;
+    margin: 8px;
+    order: 1;
     text-align: center;
+    background: #d41f26;
+    word-break: keep-all;
+    min-width: 60px;
     .text {
-      background: #d41f26;
+      margin: 0;
     }
     .value {
       background: white;

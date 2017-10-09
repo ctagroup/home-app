@@ -20,6 +20,20 @@ Template.responsesNew.helpers({
         scoreB2: 0,
         scoreB3: 0,
         scoreB4: 0,
+        scoreC1: 0,
+        scoreC2: 0,
+        scoreC3: 0,
+        scoreC4: 0,
+        scoreD1: 0,
+        scoreD2: 0,
+        scoreD3: 0,
+        scoreD4: 0,
+        scoreD5: 0,
+        scoreD6: 0,
+        scoreE1: 0,
+        scoreE2: 0,
+        scoreE3: 0,
+        scoreE4: 0,
         'score.presurvey': 0,
         'score.history': 0,
         'score.risks': 0,
@@ -232,8 +246,8 @@ Template.responsesNew.helpers({
             },
             {
               id: 'section2.score',
-              type: 'text',
-              title: 'SCORE: {{variables.score2}}',
+              type: 'score',
+              score: 'variables.score2',
               text: [
                 'IF THERE IS A SINGLE PARENT WITH 2+ CHILDREN, AND/OR A CHILD AGED 11 OR YOUNGER AND/OR A CURRENT PREGNANCY, THEN SCORE 1 FOR FAMILY SIZE.',
                 'IF THERE ARE TWO PARENTS WITH 3+ CHILDREN, AND/OR A CHILD AGED 6 OR YOUNGER AND/OR A CURRENT PREGNANCY, THEN SCORE 1 FOR FAMILY SIZE.',
@@ -299,8 +313,8 @@ Template.responsesNew.helpers({
             },
             {
               id: 'scoreA1',
-              type: 'text',
-              title: 'SCORE: {{variables.scoreA1}}',
+              type: 'score',
+              score: 'variables.scoreA1',
               text: 'IF THE PERSON ANSWERS ANYTHING OTHER THAN "SHELTER", "TRANSITIONAL HOUSING", OR "SAFE HAVEN", THEN SCORE 1.',
               rules: [
                 {
@@ -333,8 +347,8 @@ Template.responsesNew.helpers({
             },
             {
               id: 'scoreA2',
-              type: 'text',
-              title: 'SCORE: {{variables.scoreA2}}',
+              type: 'score',
+              score: 'variables.scoreA2',
               text: 'IF THE FAMILY HAS EXPERIENCED 1 OR MORE CONSECUTIVE YEARS OF HOMELESSNESS, AND/OR 4+ EPISODES OF HOMELESSNESS, THEN SCORE 1.',
               rules: [
                 {
@@ -410,8 +424,8 @@ Template.responsesNew.helpers({
             },
             {
               id: 'scoreB1',
-              type: 'text',
-              title: 'Score: {{variables.scoreB1}}',
+              type: 'score',
+              score: 'variables.scoreB1',
               text: 'IF THE TOTAL NUMBER OF INTERACTIONS EQUALS 4 OR MORE, THEN SCORE 1 FOR EMERGENCY SERVICE USE.',
               rules: [
                 {
@@ -465,8 +479,8 @@ Template.responsesNew.helpers({
             },
             {
               id: 'scoreB2',
-              type: 'text',
-              title: 'Score: {{variables.scoreB2}}',
+              type: 'score',
+              score: 'variables.scoreB2',
               text: 'IF “YES” TO ANY OF THE ABOVE, THEN SCORE 1 FOR RISK OF HARM.',
               rules: [
                 {
@@ -488,8 +502,8 @@ Template.responsesNew.helpers({
             },
             {
               id: 'scoreB3',
-              type: 'text',
-              title: 'Score: {{variables.scoreB3}}',
+              type: 'score',
+              score: 'variables.scoreB3',
               text: 'IF “YES,” THEN SCORE 1 FOR LEGAL ISSUES.',
               rules: [
                 {
@@ -518,8 +532,8 @@ Template.responsesNew.helpers({
             },
             {
               id: 'scoreB4',
-              type: 'text',
-              title: 'Score: {{variables.scoreB4}}',
+              type: 'score',
+              score: 'variables.scoreB4',
               text: 'IF “YES” TO ANY OF THE ABOVE, THEN SCORE 1 FOR RISK OF EXPLOITATION.',
               rules: [
                 {
@@ -556,12 +570,14 @@ Template.responsesNew.helpers({
             },
             {
               id: 'score',
-              type: 'text',
-              title: 'Score: {{variables.scoreC1}}',
+              type: 'score',
+              score: 'variables.scoreC1',
               text: 'IF “YES” TO QUESTION 14 OR “NO” TO QUESTION 15, THEN SCORE 1 FOR MONEY MANAGEMENT.',
               rules: [
                 {
                   any: [
+                    ['==', 'values.question14', 'Yes'],
+                    ['==', 'values.question15', 'No'],
                   ],
                   then: [['set', 'scoreC1', 1]],
                 },
@@ -577,12 +593,13 @@ Template.responsesNew.helpers({
             },
             {
               id: 'scoreC2',
-              type: 'text',
-              title: 'Score: {{variables.scoreC2}}',
+              type: 'score',
+              score: 'variables.scoreC2',
               text: 'IF “NO,” THEN SCORE 1 FOR MEANINGFUL DAILY ACTIVITY.',
               rules: [
                 {
                   any: [
+                    ['==', 'values.question16', 'No'],
                   ],
                   then: [['set', 'scoreC2', 1]],
                 },
@@ -598,12 +615,13 @@ Template.responsesNew.helpers({
             },
             {
               id: 'scoreC3',
-              type: 'text',
-              title: 'Score: {{variables.scor1}}',
+              type: 'score',
+              score: 'variables.scoreC3',
               text: 'IF “NO,” THEN SCORE 1 FOR SELF-CARE.',
               rules: [
                 {
                   any: [
+                    ['==', 'values.question17', 'No'],
                   ],
                   then: [['set', 'scoreC3', 1]],
                 },
@@ -619,12 +637,13 @@ Template.responsesNew.helpers({
             },
             {
               id: 'scoreC4',
-              type: 'text',
-              title: 'Score: {{variables.scoreC4}}',
+              type: 'score',
+              score: 'variables.scoreC4',
               text: 'IF “YES”, THEN SCORE 1 FOR SOCIAL RELATIONSHIPS.',
               rules: [
                 {
                   any: [
+                    ['==', 'values.question18', 'Yes'],
                   ],
                   then: [['set', 'scoreC4', 1]],
                 },
@@ -679,12 +698,17 @@ Template.responsesNew.helpers({
             },
             {
               id: 'scoreD1',
-              type: 'text',
-              title: 'Score: {{variables.scoreD1}}',
+              type: 'score',
+              score: 'variables.scoreD1',
               text: 'IF “YES” TO ANY OF THE ABOVE, THEN SCORE 1 FOR PHYSICAL HEALTH.',
               rules: [
                 {
                   any: [
+                    ['==', 'values.question19', 'Yes'],
+                    ['==', 'values.question20', 'Yes'],
+                    ['==', 'values.question21', 'Yes'],
+                    ['==', 'values.question22', 'Yes'],
+                    ['==', 'values.question23', 'Yes'],
                   ],
                   then: [['set', 'scoreD1', 1]],
                 },
@@ -708,12 +732,14 @@ Template.responsesNew.helpers({
             },
             {
               id: 'scoreD2',
-              type: 'text',
-              title: 'Score: {{variables.scoreD2}}',
+              type: 'score',
+              score: 'variables.scoreD2',
               text: 'IF “YES” TO ANY OF THE ABOVE, THEN SCORE 1 FOR SUBSTANCE USE.',
               rules: [
                 {
                   any: [
+                    ['==', 'values.question24', 'Yes'],
+                    ['==', 'values.question25', 'Yes'],
                   ],
                   then: [['set', 'scoreD2', 1]],
                 },
@@ -760,12 +786,16 @@ Template.responsesNew.helpers({
             },
             {
               id: 'scoreD3',
-              type: 'text',
-              title: 'Score: {{variables.scoreD3}}',
+              type: 'score',
+              score: 'variables.scoreD3',
               text: 'IF “YES” TO ANY OF THE ABOVE, THEN SCORE 1 FOR MENTAL HEALTH.',
               rules: [
                 {
                   any: [
+                    ['==', 'values.question26a', 'Yes'],
+                    ['==', 'values.question26b', 'Yes'],
+                    ['==', 'values.question26c', 'Yes'],
+                    ['==', 'values.question27', 'Yes'],
                   ],
                   then: [['set', 'scoreD3', 1]],
                 },
@@ -782,12 +812,13 @@ Template.responsesNew.helpers({
             },
             {
               id: 'scoreD4',
-              type: 'text',
-              title: 'Score: {{variables.scoreD4}}',
+              type: 'score',
+              score: 'variables.scoreD4',
               text: 'IF “YES”, SCORE 1 FOR TRI-MORBIDITY.',
               rules: [
                 {
                   any: [
+                    ['==', 'values.question28', 'Yes'],
                   ],
                   then: [['set', 'scoreD4', 1]],
                 },
@@ -811,12 +842,14 @@ Template.responsesNew.helpers({
             },
             {
               id: 'scoreD5',
-              type: 'text',
-              title: 'Score: {{variables.scoreD5}}',
+              type: 'score',
+              score: 'variables.scoreD5',
               text: 'IF “YES” TO ANY OF THE ABOVE, SCORE 1 FOR MEDICATIONS.',
               rules: [
                 {
                   any: [
+                    ['==', 'values.question29', 'Yes'],
+                    ['==', 'values.question30', 'Yes'],
                   ],
                   then: [['set', 'scoreD5', 1]],
                 },
@@ -832,12 +865,13 @@ Template.responsesNew.helpers({
             },
             {
               id: 'scoreD6',
-              type: 'text',
-              title: 'Score: {{variables.scoreD6}}',
+              type: 'score',
+              score: 'variables.scoreD6',
               text: 'IF “YES”, SCORE 1 FOR ABUSE AND TRAUMA.',
               rules: [
                 {
                   any: [
+                    ['==', 'values.question31', 'Yes'],
                   ],
                   then: [['set', 'scoreD6', 1]],
                 },
@@ -868,12 +902,14 @@ Template.responsesNew.helpers({
             },
             {
               id: 'scoreE1',
-              type: 'text',
-              title: 'Score: {{variables.scorE1}}',
+              type: 'score',
+              score: 'variables.scoreE1',
               text: 'IF “YES” TO ANY OF THE ABOVE, SCORE 1 FOR FAMILY LEGAL ISSUES.',
               rules: [
                 {
                   any: [
+                    ['==', 'values.question32', 'Yes'],
+                    ['==', 'values.question33', 'Yes'],
                   ],
                   then: [['set', 'scoreE1', 1]],
                 },
@@ -906,12 +942,15 @@ Template.responsesNew.helpers({
             },
             {
               id: 'scoreE2',
-              type: 'text',
-              title: 'Score: {{variables.scoreE2}}',
+              type: 'score',
+              score: 'variables.scoreE2',
               text: 'IF “YES” TO ANY OF QUESTIONS 34 OR 35, OR “NO” TO QUESTION 36, SCORE 1 FOR NEEDS OF CHILDREN.',
               rules: [
                 {
                   any: [
+                    ['==', 'values.question34', 'Yes'],
+                    ['==', 'values.question35', 'Yes'],
+                    ['==', 'values.question36', 'No'],
                   ],
                   then: [['set', 'scoreE2', 1]],
                 },
@@ -935,12 +974,14 @@ Template.responsesNew.helpers({
             },
             {
               id: 'scoreE3',
-              type: 'text',
-              title: 'Score: {{variables.scoreE3}}',
+              type: 'score',
+              score: 'variables.scoreE3',
               text: 'IF “YES” TO ANY OF THE ABOVE, SCORE 1 FOR FAMILY STABILITY.',
               rules: [
                 {
                   any: [
+                    ['==', 'values.question37', 'Yes'],
+                    ['==', 'values.question38', 'Yes'],
                   ],
                   then: [['set', 'scoreE3', 1]],
                 },
@@ -988,12 +1029,16 @@ Template.responsesNew.helpers({
             },
             {
               id: 'scoreE4',
-              type: 'text',
-              title: 'Score: {{variables.scoreE4}}',
+              type: 'score',
+              score: 'variables.scoreE4',
               text: 'IF “NO” TO QUESTION 39, OR “YES” TO ANY OF QUESTIONS 40 OR 41, SCORE 1 FOR PARENTAL ENGAGEMENT.',
               rules: [
                 {
                   any: [
+                    ['==', 'values.question39', 'No'],
+                    ['==', 'values.question40a', 'Yes'],
+                    ['==', 'values.question40b', 'Yes'],
+                    ['==', 'values.question41', 'Yes'],
                   ],
                   then: [['set', 'scoreE4', 1]],
                 },
@@ -1014,6 +1059,19 @@ Template.responsesNew.helpers({
             'E. FAMILY UNIT: {{variables.score.familyunit}}/4',
             '<strong>GRAND TOTAL: {{variables.score.grandtotal}}/22</strong>',
           ].join('<br />'),
+          rules: [
+            {
+              always: [
+                ['sum', 'score.presurvey', 'variables.score1', 'variables.score2'],
+                ['sum', 'score.history', 'variables.scoreA1', 'variables.scoreA2'],
+                ['sum', 'score.risks', 'variables.scoreB1', 'variables.scoreB2', 'variables.scoreB3', 'variables.scoreB4'],
+                ['sum', 'score.socialization', 'variables.scoreC1', 'variables.scoreC2', 'variables.scoreC3', 'variables.scoreC4'],
+                ['sum', 'score.wellness', 'variables.scoreD1', 'variables.scoreD2', 'variables.scoreD3', 'variables.scoreD4', 'variables.scoreD5', 'variables.scoreD6'],
+                ['sum', 'score.familyunit', 'variables.scoreE1', 'variables.scoreE2', 'variables.scoreE3', 'variables.scoreE4'],
+                ['sum', 'score.grandtotal', 'variables.score.presurvey', 'variables.score.history', 'variables.score.risks', 'variables.score.socialization', 'variables.score.wellness', 'variables.score.familyunit'],
+              ],
+            },
+          ],
         },
         {
           id: 'followup',
