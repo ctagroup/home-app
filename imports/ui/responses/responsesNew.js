@@ -41,7 +41,6 @@ Template.responsesNew.helpers({
         'score.wellness': 0,
         'score.familyunit': 0,
         'score.grandtotal': 0,
-        numChildren: 0,
       },
       items: [
         {
@@ -192,6 +191,17 @@ Template.responsesNew.helpers({
               category: 'number',
               title: '2. How many children under the age of 18 are not currently with your family, but you have reason to believe they will be joining you when you get housed?',
               refusable: true,
+              rules: [
+                {
+                  any: [
+                    ['isset', 'values.childrenNear'],
+                    ['isset', 'values.childrenFar'],
+                  ],
+                  then: [
+                    ['sum', 'numChildren', 'values.childrenNear', 'values.childrenFar'],
+                  ],
+                },
+              ],
             },
             {
               id: 'pregnantMember',
@@ -205,7 +215,7 @@ Template.responsesNew.helpers({
               id: 'children',
               title: '4. Please provide a list of children’s names and ages:',
               type: 'grid',
-              rows: 2,
+              rows: 8,
               columns: [
                 {
                   id: 'children.firstName',
@@ -234,12 +244,9 @@ Template.responsesNew.helpers({
               ],
               rules: [
                 {
-                  id: 'numChildren',
                   always: [
                     ['set', 'youngestChildAge', 'values.children.age:min'],
-                    ['add', 'numChildren', 'values.childrenNear'],
-                    ['add', 'numChildren', 'values.childrenFar'],
-                    ['rows', 'variables.numChildren'],
+                    ['set', 'oldestChildAge', 'values.children.age:max'],
                   ],
                 },
               ],
@@ -799,6 +806,26 @@ Template.responsesNew.helpers({
                   ],
                   then: [['set', 'scoreD3', 1]],
                 },
+                {
+                  any: [
+                    ['!=', 'variables.scoreD1', 1],
+                    ['!=', 'variables.scoreD2', 1],
+                    ['!=', 'variables.scoreD3', 1],
+                  ],
+                  then: [
+                    ['pset', 'question28.skip', 1],
+                  ],
+                },
+                {
+                  all: [
+                    ['==', 'variables.scoreD1', 1],
+                    ['==', 'variables.scoreD2', 1],
+                    ['==', 'variables.scoreD3', 1],
+                  ],
+                  then: [
+                    ['pset', 'question28.skip', 0],
+                  ],
+                },
               ],
             },
             {
@@ -1019,6 +1046,22 @@ Template.responsesNew.helpers({
               ],
             },
             {
+              id: 'pre41',
+              type: 'hidden',
+              rules: [
+                {
+                  always: [['pset', 'question41.skip', 1]],
+                },
+                {
+                  all: [
+                    ['<=', 'variables.youngestChildAge', 12],
+                    ['>=', 'variables.oldestChildAge', 13],
+                  ],
+                  then: [['pset', 'question41.skip', 0]],
+                },
+              ],
+            },
+            {
               id: 'question41',
               type: 'question',
               category: 'choice',
@@ -1081,146 +1124,4 @@ Template.responsesNew.helpers({
       ],
     };
   },
-  /*
-  definition2() {
-    return {
-      title: 'Hardcoded survey',
-      id: 1,
-      variables: {
-        score: 0,
-      },
-      sections: [
-        {
-          id: 'section1',
-          title: 'Section 1',
-          items: [
-            {
-              id: 'question1',
-              type: 'question',
-              title: 'Survey Location',
-              category: 'text',
-              required: true,
-            },
-            {
-              id: 'question2',
-              type: 'question',
-              title: 'What is 2+2',
-              category: 'text',
-              rules: [
-                {
-                  always: ['hide'],
-                },
-                {
-                  value: 'values.question1',
-                  any: [['!=', '']],
-                  then: ['show'],
-                },
-                {
-                  value: 'values.question2',
-                  any: [
-                    ['==', 4],
-                  ],
-                  then: [
-                    ['add', 'score', 1],
-                  ],
-                },
-              ],
-            },
-            {
-              id: 'question3',
-              type: 'question',
-              title: 'Enter a number larger that 3 and less or equal than 12',
-              category: 'text',
-              rules: [
-                {
-                  always: ['hide'],
-                },
-                {
-                  value: 'values.question1',
-                  any: [['!=', '']],
-                  then: ['show'],
-                },
-                {
-                  value: 'values.question3',
-                  all: [
-                    ['>', 3],
-                    ['<=', 12],
-                  ],
-                  then: [
-                    ['add', 'score', 1],
-                  ],
-                },
-              ],
-            },
-          ],
-        },
-        {
-          id: 'section2',
-          title: 'Section 2',
-          items: [
-            {
-              id: 'question4',
-              type: 'question',
-              title: 'How long is your beard?',
-              text: 'In centimeters...',
-              category: 'text',
-              required: true,
-              rules: [
-                {
-                  always: ['hide'],
-                },
-                {
-                  value: 'client.gender',
-                  any: [['==', 1]],
-                  then: ['show'],
-                },
-              ],
-            },
-          ],
-        },
-        {
-          id: 'section3',
-          title: 'Summary',
-          items: [
-            {
-              id: 'text1',
-              type: 'text',
-              title: 'Final score',
-              text: 'Your final score is {{score}}. {{foo}}.',
-            },
-          ],
-        },
-      ],
-    };
-  },
-  */
 });
-
-
-/*
-Template.responsesNew.events(
-  {
-    'click .pause_survey': (evt, tmpl) => {
-      ResponseHelpers.saveResponse('Paused', tmpl);
-    },
-    'click .save_survey': (evt, tmpl) => {
-      ResponseHelpers.saveResponse('Submit', tmpl);
-    },
-    'click .cancel_survey': (evt, tmpl) => {
-      const query = {};
-
-      if (Router.current().params && Router.current().params.query
-          && Router.current().params.query.schema) {
-        query.isHMISClient = true;
-        query.schema = Router.current().params.query.schema;
-      }
-
-      Router.go(
-        'selectSurvey',
-        { _id: tmpl.data.client._id },
-        { query: querystring.stringify(query) }
-      );
-    },
-  }
-);
-*/

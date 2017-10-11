@@ -83,31 +83,31 @@ export default class Question extends Item {
     return this.props.formState.values[this.props.item.id] === this.getRefuseValue();
   }
 
-  renderQuestionCategory(value) {
+  renderQuestionCategory(value, disabled) {
     switch (this.props.item.category) {
       case 'date':
-        return this.renderDatePicker(value);
+        return this.renderDatePicker(value, disabled);
       case 'choice':
-        return this.renderChoice(value);
+        return this.renderChoice(value, disabled);
       case 'number':
-        return this.renderInput(value, 'number');
+        return this.renderInput(value, 'number', disabled);
       default:
-        return this.renderInput(value, 'text');
+        return this.renderInput(value, 'text', disabled);
     }
   }
 
-  renderDatePicker(value) {
+  renderDatePicker(value, disabled) {
     return (
       <DatePicker
         selected={value ? moment(value) : ''}
         onChange={(v, e) => this.handleChange(e, v)}
         placeholderText="MM/DD/YYYY"
-        disabled={this.isRefused()}
+        disabled={this.isRefused() || disabled}
       />
     );
   }
 
-  renderChoice(value) {
+  renderChoice(value, disabled) {
     const { id, options, other } = this.props.item;
     const choices = options.map(v => (
       <div key={`choice-${id}-${v}`}>
@@ -116,7 +116,7 @@ export default class Question extends Item {
             type="radio"
             name={id}
             value={v}
-            disabled={this.isRefused()}
+            disabled={this.isRefused() || disabled}
             checked={!this.isRefused() && v === value}
             onChange={this.handleChange}
           /> {v}
@@ -132,7 +132,7 @@ export default class Question extends Item {
             <input
               name={id}
               type="radio"
-              disabled={this.isRefused()}
+              disabled={this.isRefused() || disabled}
               checked={checked}
               value={DEFAULT_OTHER_VALUE}
               onChange={this.handleOtherClick}
@@ -141,7 +141,7 @@ export default class Question extends Item {
               type="text"
               name={id}
               placeholder="please specify"
-              disabled={this.isRefused()}
+              disabled={this.isRefused() || disabled}
               value={otherValue || ''}
               onChange={this.handleChange}
               onFocus={this.handleOtherFocus}
@@ -158,7 +158,7 @@ export default class Question extends Item {
     );
   }
 
-  renderInput(value, type) {
+  renderInput(value, type, disabled) {
     const { id } = this.props.item;
     return (
       <input
@@ -167,12 +167,12 @@ export default class Question extends Item {
         name={id}
         value={value === undefined ? '' : value}
         onChange={this.handleChange}
-        disabled={this.isRefused()}
+        disabled={this.isRefused() || disabled}
       />
     );
   }
 
-  renderRefuseCheckbox() {
+  renderRefuseCheckbox(disabled) {
     const refuseValue = this.getRefuseValue();
     if (!refuseValue) {
       return null;
@@ -185,6 +185,7 @@ export default class Question extends Item {
           rel="refuse"
           onChange={this.handleChange}
           checked={this.isRefused()}
+          disabled={disabled}
         />
         <span> {refuseValue}</span>
       </label></span>
@@ -195,12 +196,13 @@ export default class Question extends Item {
   render() {
     const { id, text } = this.props.item;
     const value = this.props.formState.values[id];
+    const disabled = this.props.formState.props[`${id}.skip`];
     return (
       <div className="question item">
         {this.renderTitle()}
         <div className="text">{text}</div>
-        {this.renderQuestionCategory(this.isRefused() ? '' : value)}
-        {this.renderRefuseCheckbox()}
+        {this.renderQuestionCategory(this.isRefused() ? '' : value, disabled)}
+        {this.renderRefuseCheckbox(disabled)}
       </div>
     );
   }

@@ -85,7 +85,6 @@ export function evaluateCondition(operator, operand1, operand2) {
     case '<=':
       return value1 <= value2;
     case '>=':
-      console.log('>=', value1, value2);
       return value1 >= value2;
     default:
       console.warn('Unknown operator', operator);
@@ -157,8 +156,13 @@ export function applyResults(results, formState, currentId) {
         Object.assign(formState.props, { [`${currentId}.hidden`]: true });
         break;
       case 'set':
+      case 'vset':
         value = evaluateOperand(args[1], formState);
         Object.assign(formState.variables, { [args[0]]: value });
+        break;
+      case 'pset':
+        value = evaluateOperand(args[1], formState);
+        Object.assign(formState.props, { [args[0]]: value });
         break;
       case 'add':
         current = formState.variables[args[0]] || 0;
@@ -205,8 +209,42 @@ export function evaluateRules(currentItem = {}, formState) {
   }, formState);
 }
 
-function computeItemState(currentItem, formState) {
-  const newState = Object.assign({}, formState);
+export function cleanItemValues(item, formState, force = false) {
+  let newState = Object.assign({}, formState);
+  let rows;
+  switch (item.type) {
+    case 'grid':
+      if (typeof(formState.props[`${item.id}.rows`]) === 'number') {
+        rows = formState.props[`${item.id}.rows`];
+      }
+      if (force) {
+        rows = 0;
+      }
+      console.log('clean grid, rows', rows);
+      (item.columns || []).forEach(column => {
+        const values = formState.values[column.id];
+        if (values && values.length > 0 && rows >= 0) {
+          values.splice(rows);
+        }
+      });
+      break;
+    default:
+      if (force || !!formState.props[`${item.id}.skip`]) {
+        delete newState.values[item.id];
+        newState = (item.items || []).reduce(
+          (state, it) => cleanItemValues(it, state, true),
+          newState
+        );
+      }
+      break;
+  }
+  return newState;
+}
+
+export function computeItemState(currentItem, formState) {
+  let newState;
+  newState = Object.assign({}, formState);
+  newState = cleanItemValues(currentItem, newState);
   const items = currentItem.items || [];
   items.forEach((item) => {
     Object.assign(newState, computeItemState(item, newState));
@@ -216,7 +254,6 @@ function computeItemState(currentItem, formState) {
 
 export function computeFormState(definition, values, props, otherData) {
   firedRules = [];
-  console.log('computing form state');
   const formState = Object.assign({
     variables: Object.assign({}, definition.variables),
     values,

@@ -28,7 +28,7 @@ export default class Grid extends Item {
     );
   }
 
-  renderCell(r, c) {
+  renderCell(r, c, disabled) {
     const values = this.props.formState.values;
     const { columns } = this.props.item;
     const item = columns[c];
@@ -41,6 +41,7 @@ export default class Grid extends Item {
             selected={cellValue ? moment(cellValue) : ''}
             onChange={(value, event) => this.handleChange(event, item.category, value, cellId)}
             placeholderText="MM/DD/YYYY"
+            disabled={disabled}
           />
         );
       default:
@@ -51,18 +52,19 @@ export default class Grid extends Item {
             name={cellId}
             value={cellValue || ''}
             onChange={this.handleChange}
+            disabled={disabled}
           />
         );
     }
   }
 
-  renderRows() {
+  renderRows(disabled) {
     const { columns, id } = this.props.item;
     const numRows = this.props.formState.props[`${id}.rows`] || this.props.item.rows;
     const empty = new Array(numRows).fill(0);
     const rows = empty.map((_, i) => {
       const row = columns.map((c, j) => (
-        <td key={`${id}-${i}-${j}`}>{this.renderCell(i, j)}</td>)
+        <td key={`${id}-${i}-${j}`}>{this.renderCell(i, j, disabled)}</td>)
       );
       return (
         <tr key={`${id}-${i}`}>
@@ -76,10 +78,7 @@ export default class Grid extends Item {
 
   render() {
     const { id, text } = this.props.item;
-    const isHidden = this.props.formState.props[`${id}.hidden`];
-    if (isHidden) {
-      return null;
-    }
+    const disabled = this.props.formState.props[`${id}.skip`];
 
     return (
       <div className="grid item">
@@ -90,7 +89,7 @@ export default class Grid extends Item {
             {this.renderHeader()}
           </thead>
           <tbody>
-            {this.renderRows()}
+            {this.renderRows(disabled)}
           </tbody>
         </table>
       </div>
