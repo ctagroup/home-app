@@ -44,6 +44,31 @@ Template.responsesNew.helpers({
       },
       items: [
         {
+          id: 'openingScript',
+          type: 'text',
+          title: 'Opening Script',
+          text: `
+              <p>Every assessor in your community regardless of organization completing the
+              VI-SPDAT should use the same introductory script.
+              In that script you should highlight the following information:</p>
+              <ul>
+                <li>the name of the assessor and their affiliation
+                  (organization that employs them, volunteer as part of
+                  a Point in Time Count, etc.)</li>
+                <li>the purpose of the VI-SPDAT being completed</li>
+                <li>that it usually takes less than 7 minutes to complete</li>
+                <li>that only “Yes,” “No,” or one-word answers are being sought</li>
+                <li>that any question can be skipped or refused</li>
+                <li>where the information is going to be stored</li>
+                <li>that if the participant does not understand a question that clarification
+                can be provided</li>
+                <li>the importance of relaying accurate information to the assessor and not feeling
+                 that there is a correct or preferred answer that they need to provide, nor
+                 information they need to conceal</li>
+              </ul>
+          `,
+        },
+        {
           id: 'section1',
           type: 'section',
           title: 'Basic Information',
@@ -189,7 +214,9 @@ Template.responsesNew.helpers({
               id: 'childrenFar',
               type: 'question',
               category: 'number',
-              title: '2. How many children under the age of 18 are not currently with your family, but you have reason to believe they will be joining you when you get housed?',
+              title: `2. How many children under the age of 18 are not currently with
+                your family, but you have reason to believe they will be joining
+                you when you get housed?`,
               refusable: true,
               rules: [
                 {
@@ -207,7 +234,8 @@ Template.responsesNew.helpers({
               id: 'pregnantMember',
               type: 'question',
               category: 'choice',
-              title: '3. IF HOUSEHOLD INCLUDES A FEMALE: Is any member of the family currently pregnant?',
+              title: `3. IF HOUSEHOLD INCLUDES A FEMALE: Is any member of the family
+                currently pregnant?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -255,10 +283,10 @@ Template.responsesNew.helpers({
               id: 'section2.score',
               type: 'score',
               score: 'variables.score2',
-              text: [
-                'IF THERE IS A SINGLE PARENT WITH 2+ CHILDREN, AND/OR A CHILD AGED 11 OR YOUNGER AND/OR A CURRENT PREGNANCY, THEN SCORE 1 FOR FAMILY SIZE.',
-                'IF THERE ARE TWO PARENTS WITH 3+ CHILDREN, AND/OR A CHILD AGED 6 OR YOUNGER AND/OR A CURRENT PREGNANCY, THEN SCORE 1 FOR FAMILY SIZE.',
-              ].join('<br />'),
+              text: `<p>IF THERE IS A SINGLE PARENT WITH 2+ CHILDREN, AND/OR A CHILD AGED 11
+                OR YOUNGER AND/OR A CURRENT PREGNANCY, THEN SCORE 1 FOR FAMILY SIZE.</p>
+                <p>IF THERE ARE TWO PARENTS WITH 3+ CHILDREN, AND/OR A CHILD AGED 6 OR YOUNGER
+                AND/OR A CURRENT PREGNANCY, THEN SCORE 1 FOR FAMILY SIZE.</p>`,
               rules: [
                 {
                   id: 'singe2children',
@@ -322,7 +350,8 @@ Template.responsesNew.helpers({
               id: 'scoreA1',
               type: 'score',
               score: 'variables.scoreA1',
-              text: 'IF THE PERSON ANSWERS ANYTHING OTHER THAN "SHELTER", "TRANSITIONAL HOUSING", OR "SAFE HAVEN", THEN SCORE 1.',
+              text: `IF THE PERSON ANSWERS ANYTHING OTHER THAN "SHELTER", "TRANSITIONAL HOUSING",
+                OR "SAFE HAVEN", THEN SCORE 1.`,
               rules: [
                 {
                   all: [
@@ -340,7 +369,8 @@ Template.responsesNew.helpers({
               id: 'question6',
               type: 'question',
               category: 'number',
-              title: '6. How long has it been since you and your family lived in permanent stable housing?',
+              title: `6. How long has it been since you and your family lived in permanent
+                stable housing?`,
               text: 'Enter number of years',
               refusable: true,
             },
@@ -348,7 +378,8 @@ Template.responsesNew.helpers({
               id: 'question7',
               type: 'question',
               category: 'number',
-              title: '7. In the last three years, how many times have you and your family been homeless?',
+              title: `7. In the last three years, how many times have you and your family
+                been homeless?`,
               text: 'Enter number of episodes',
               refusable: true,
             },
@@ -356,7 +387,8 @@ Template.responsesNew.helpers({
               id: 'scoreA2',
               type: 'score',
               score: 'variables.scoreA2',
-              text: 'IF THE FAMILY HAS EXPERIENCED 1 OR MORE CONSECUTIVE YEARS OF HOMELESSNESS, AND/OR 4+ EPISODES OF HOMELESSNESS, THEN SCORE 1.',
+              text: `IF THE FAMILY HAS EXPERIENCED 1 OR MORE CONSECUTIVE YEARS OF HOMELESSNESS,
+                AND/OR 4+ EPISODES OF HOMELESSNESS, THEN SCORE 1.`,
               rules: [
                 {
                   any: [
@@ -377,7 +409,8 @@ Template.responsesNew.helpers({
             {
               id: 'question8',
               type: 'section',
-              title: '8. In the past six months, how many times have you or anyone in your family...',
+              title: `8. In the past six months, how many times have you or anyone
+                in your family...`,
               items: [
                 {
                   id: 'question8a',
@@ -407,7 +440,9 @@ Template.responsesNew.helpers({
                   id: 'question8d',
                   type: 'question',
                   category: 'choice',
-                  title: 'd) Used a crisis service, including sexual assault crisis, mental health crisis, family/intimate violence, distress centers and suicide prevention hotlines?',
+                  title: `d) Used a crisis service, including sexual assault crisis, mental
+                    health crisis, family/intimate violence, distress centers and suicide
+                    prevention hotlines?`,
                   options: ['Yes', 'No'],
                   refusable: true,
                 },
@@ -415,7 +450,9 @@ Template.responsesNew.helpers({
                   id: 'question8e',
                   type: 'question',
                   category: 'choice',
-                  title: 'e) Talked to police because they witnessed a crime, were the victim of a crime, or the alleged perpetrator of a crime or because the police told them that they must move along?',
+                  title: `e) Talked to police because they witnessed a crime, were the victim
+                    of a crime, or the alleged perpetrator of a crime or because the police
+                    told them that they must move along?`,
                   options: ['Yes', 'No'],
                   refusable: true,
                 },
@@ -423,7 +460,9 @@ Template.responsesNew.helpers({
                   id: 'question8f',
                   type: 'question',
                   category: 'choice',
-                  title: 'f) Stayed one or more nights in a holding cell, jail or prison, whether that was a short-term stay like the drunk tank, a longer stay for a more serious offence, or anything in between?',
+                  title: `f) Stayed one or more nights in a holding cell, jail or prison,
+                    whether that was a short-term stay like the drunk tank, a longer stay for
+                    a more serious offence, or anything in between?`,
                   options: ['Yes', 'No'],
                   refusable: true,
                 },
@@ -433,7 +472,8 @@ Template.responsesNew.helpers({
               id: 'scoreB1',
               type: 'score',
               score: 'variables.scoreB1',
-              text: 'IF THE TOTAL NUMBER OF INTERACTIONS EQUALS 4 OR MORE, THEN SCORE 1 FOR EMERGENCY SERVICE USE.',
+              text: `IF THE TOTAL NUMBER OF INTERACTIONS EQUALS 4 OR MORE, THEN SCORE 1 FOR
+                EMERGENCY SERVICE USE.`,
               rules: [
                 {
                   always: [['set', 'interactions', 0]],
@@ -472,7 +512,8 @@ Template.responsesNew.helpers({
               id: 'question9',
               type: 'question',
               category: 'choice',
-              title: '9. Have you or anyone in your family been attacked or beaten up since they’ve become homeless?',
+              title: `9. Have you or anyone in your family been attacked or beaten up since
+                they’ve become homeless?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -480,7 +521,8 @@ Template.responsesNew.helpers({
               id: 'question10',
               type: 'question',
               category: 'choice',
-              title: '10. Have you or anyone in your family threatened to or tried to harm themself or anyone else in the last year?',
+              title: `10. Have you or anyone in your family threatened to or tried to harm
+                themself or anyone else in the last year?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -503,7 +545,9 @@ Template.responsesNew.helpers({
               id: 'question11',
               type: 'question',
               category: 'choice',
-              title: '11. Do you or anyone in your family have any legal stuff going on right now that may result in them being locked up, having to pay fines, or that make it more difficult to rent a place to live?',
+              title: `11. Do you or anyone in your family have any legal stuff going on right now
+                that may result in them being locked up, having to pay fines, or that make it more
+                difficult to rent a place to live?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -525,7 +569,8 @@ Template.responsesNew.helpers({
               id: 'question12',
               type: 'question',
               category: 'choice',
-              title: '12. Does anybody force or trick you or anyone in your family to do things that you do not want to do?',
+              title: `12. Does anybody force or trick you or anyone in your family to do things
+                that you do not want to do?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -533,7 +578,9 @@ Template.responsesNew.helpers({
               id: 'question13',
               type: 'question',
               category: 'choice',
-              title: '13. Do you or anyone in your family ever do things that may be considered to be risky like exchange sex for money, run drugs for someone, have unprotected sex with someone they don’t know, share a needle, or anything like that?',
+              title: `13. Do you or anyone in your family ever do things that may be considered to
+                be risky like exchange sex for money, run drugs for someone, have unprotected sex
+                with someone they don’t know, share a needle, or anything like that?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -563,7 +610,9 @@ Template.responsesNew.helpers({
               id: 'question14',
               type: 'question',
               category: 'choice',
-              title: '14. Is there any person, past landlord, business, bookie, dealer, or government group like the IRS that thinks you or anyone in your family owe them money?',
+              title: `14. Is there any person, past landlord, business, bookie, dealer, or
+                government group like the IRS that thinks you or anyone in your family owe
+                them money?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -571,7 +620,9 @@ Template.responsesNew.helpers({
               id: 'question15',
               type: 'question',
               category: 'choice',
-              title: '15. Do you or anyone in your family get any money from the government, a pension, an inheritance, working under the table, a regular job, or anything like that?',
+              title: `15. Do you or anyone in your family get any money from the government,
+                a pension, an inheritance, working under the table, a regular job, or
+                anything like that?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -579,7 +630,8 @@ Template.responsesNew.helpers({
               id: 'score',
               type: 'score',
               score: 'variables.scoreC1',
-              text: 'IF “YES” TO QUESTION 14 OR “NO” TO QUESTION 15, THEN SCORE 1 FOR MONEY MANAGEMENT.',
+              text: `IF “YES” TO QUESTION 14 OR “NO” TO QUESTION 15, THEN SCORE 1
+                FOR MONEY MANAGEMENT.`,
               rules: [
                 {
                   any: [
@@ -594,7 +646,8 @@ Template.responsesNew.helpers({
               id: 'question16',
               type: 'question',
               category: 'choice',
-              title: '16. Does everyone in your family have planned activities, other than just surviving, that make them feel happy and fulfilled?',
+              title: `16. Does everyone in your family have planned activities,
+                other than just surviving, that make them feel happy and fulfilled?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -616,7 +669,9 @@ Template.responsesNew.helpers({
               id: 'question17',
               type: 'question',
               category: 'choice',
-              title: '17. Is everyone in your family currently able to take care of basic needs like bathing, changing clothes, using a restroom, getting food and clean water and other things like that?',
+              title: `17. Is everyone in your family currently able to take care of basic
+                needs like bathing, changing clothes, using a restroom, getting food and
+                clean water and other things like that?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -638,7 +693,9 @@ Template.responsesNew.helpers({
               id: 'question18',
               type: 'question',
               category: 'choice',
-              title: '18. Is your family’s current homelessness in any way caused by a relationship that broke down, an unhealthy or abusive relationship, or because other family or friends caused your family to become evicted?',
+              title: `18. Is your family’s current homelessness in any way caused by a relationship
+                that broke down, an unhealthy or abusive relationship, or because other family or
+                friends caused your family to become evicted?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -667,7 +724,9 @@ Template.responsesNew.helpers({
               id: 'question19',
               type: 'question',
               category: 'choice',
-              title: '19. Has your family ever had to leave an apartment, shelter program, or other place you were staying because of the physical health of you or anyone in your family?',
+              title: `19. Has your family ever had to leave an apartment, shelter program,
+                or other place you were staying because of the physical health of you or
+                anyone in your family?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -675,7 +734,8 @@ Template.responsesNew.helpers({
               id: 'question20',
               type: 'question',
               category: 'choice',
-              title: '20. Do you or anyone in your family have any chronic health issues with your liver, kidneys, stomach, lungs or heart?',
+              title: `20. Do you or anyone in your family have any chronic health issues
+                with your liver, kidneys, stomach, lungs or heart?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -683,7 +743,9 @@ Template.responsesNew.helpers({
               id: 'question21',
               type: 'question',
               category: 'choice',
-              title: '21. If there was space available in a program that specifically assists people that live with HIV or AIDS, would that be of interest to you or anyone in your family?',
+              title: `21. If there was space available in a program that specifically assists
+                people that live with HIV or AIDS, would that be of interest to you or anyone
+                in your family?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -691,7 +753,9 @@ Template.responsesNew.helpers({
               id: 'question22',
               type: 'question',
               category: 'choice',
-              title: '22. Does anyone in your family have any physical disabilities that would limit the type of housing you could access, or would make it hard to live independently because you’d need help?',
+              title: `22. Does anyone in your family have any physical disabilities that would
+                limit the type of housing you could access, or would make it hard to live
+                independently because you’d need help?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -699,7 +763,8 @@ Template.responsesNew.helpers({
               id: 'question23',
               type: 'question',
               category: 'choice',
-              title: '23. When someone in your family is sick or not feeling well, does your family avoid getting medical help?',
+              title: `23. When someone in your family is sick or not feeling well, does your
+                family avoid getting medical help?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -725,7 +790,9 @@ Template.responsesNew.helpers({
               id: 'question24',
               type: 'question',
               category: 'choice',
-              title: '24. Has drinking or drug use by you or anyone in your family led your family to being kicked out of an apartment or program where you were staying in the past?',
+              title: `24. Has drinking or drug use by you or anyone in your family led your
+                family to being kicked out of an apartment or program where you were staying
+                in the past?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -733,7 +800,8 @@ Template.responsesNew.helpers({
               id: 'question25',
               type: 'question',
               category: 'choice',
-              title: '25. Will drinking or drug use make it difficult for your family to stay housed or afford your housing?',
+              title: `25. Will drinking or drug use make it difficult for your family to stay
+                housed or afford your housing?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -755,7 +823,8 @@ Template.responsesNew.helpers({
             {
               id: 'question26',
               type: 'section',
-              title: '26. Has your family ever had trouble maintaining your housing, or been kicked out of an apartment, shelter program or other place you were staying, because of:',
+              title: `26. Has your family ever had trouble maintaining your housing, or been kicked
+                out of an apartment, shelter program or other place you were staying, because of:`,
               items: [
                 {
                   id: 'question26a',
@@ -787,7 +856,9 @@ Template.responsesNew.helpers({
               id: 'question27',
               type: 'question',
               category: 'choice',
-              title: '27. Do you or anyone in your family have any mental health or brain issues that would make it hard for your family to live independently because help would be needed?',
+              title: `27. Do you or anyone in your family have any mental health or brain issues
+                that would make it hard for your family to live independently because help would
+                be needed?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -832,8 +903,10 @@ Template.responsesNew.helpers({
               id: 'question28',
               type: 'question',
               category: 'choice',
-              title: '28. Does any single member of your household have a medical condition, mental health concerns, and experience with substance use?',
-              text: 'IF THE FAMILY SCORED 1 EACH FOR PHYSICAL HEALTH, SUBSTANCE USE, AND MENTAL HEALTH',
+              title: `28. Does any single member of your household have a medical condition, mental
+                health concerns, and experience with substance use?`,
+              text: `IF THE FAMILY SCORED 1 EACH FOR PHYSICAL HEALTH, SUBSTANCE USE,
+                AND MENTAL HEALTH`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -855,7 +928,8 @@ Template.responsesNew.helpers({
               id: 'question29',
               type: 'question',
               category: 'choice',
-              title: '29. Are there any medications that a doctor said you or anyone in your family should be taking that, for whatever reason, they are not taking?',
+              title: `29. Are there any medications that a doctor said you or anyone in
+                your family should be taking that, for whatever reason, they are not taking?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -863,7 +937,9 @@ Template.responsesNew.helpers({
               id: 'question30',
               type: 'question',
               category: 'choice',
-              title: '30. Are there any medications like painkillers that you or anyone in your family don’t take the way the doctor prescribed or where they sell the medication?',
+              title: `30. Are there any medications like painkillers that you or anyone in
+                your family don’t take the way the doctor prescribed or where they sell
+                the medication?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -886,7 +962,9 @@ Template.responsesNew.helpers({
               id: 'question31',
               type: 'question',
               category: 'choice',
-              title: '31. Has your family’s current period of homelessness been caused by an experience of emotional, physical, psychological, sexual, or other type of abuse, or by any other trauma you or anyone in your family have experienced?',
+              title: `31. Has your family’s current period of homelessness been caused by
+                an experience of emotional, physical, psychological, sexual, or other type
+                of abuse, or by any other trauma you or anyone in your family have experienced?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -915,7 +993,8 @@ Template.responsesNew.helpers({
               id: 'question32',
               type: 'question',
               category: 'choice',
-              title: '32. Are there any children that have been removed from the family by a child protection service within the last 180 days?',
+              title: `32. Are there any children that have been removed from the family by a
+                child protection service within the last 180 days?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -923,7 +1002,9 @@ Template.responsesNew.helpers({
               id: 'question33',
               type: 'question',
               category: 'choice',
-              title: '33. Do you have any family legal issues that are being resolved in court or need to be resolved in court that would impact your housing or who may live within your housing?',
+              title: `33. Do you have any family legal issues that are being resolved in court
+                or need to be resolved in court that would impact your housing or who may
+                live within your housing?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -946,7 +1027,8 @@ Template.responsesNew.helpers({
               id: 'question34',
               type: 'question',
               category: 'choice',
-              title: '34. In the last 180 days have any children lived with family or friends because of your homelessness or housing situation?',
+              title: `34. In the last 180 days have any children lived with family or friends
+                because of your homelessness or housing situation?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -954,7 +1036,8 @@ Template.responsesNew.helpers({
               id: 'question35',
               type: 'question',
               category: 'choice',
-              title: '35. Has any child in the family experienced abuse or trauma in the last 180 days?',
+              title: `35. Has any child in the family experienced abuse or trauma in the last
+                180 days?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -971,7 +1054,8 @@ Template.responsesNew.helpers({
               id: 'scoreE2',
               type: 'score',
               score: 'variables.scoreE2',
-              text: 'IF “YES” TO ANY OF QUESTIONS 34 OR 35, OR “NO” TO QUESTION 36, SCORE 1 FOR NEEDS OF CHILDREN.',
+              text: `IF “YES” TO ANY OF QUESTIONS 34 OR 35, OR “NO” TO QUESTION 36,
+                SCORE 1 FOR NEEDS OF CHILDREN.`,
               rules: [
                 {
                   any: [
@@ -987,7 +1071,10 @@ Template.responsesNew.helpers({
               id: 'question37',
               type: 'question',
               category: 'choice',
-              title: '37. Have the members of your family changed in the last 180 days, due to things like divorce, your kids coming back to live with you, someone leaving for military service or incarceration, a relative moving in, or anything like that?',
+              title: `37. Have the members of your family changed in the last 180 days, due to
+                things like divorce, your kids coming back to live with you, someone leaving
+                for military service or incarceration, a relative moving in,
+                or anything like that?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -995,7 +1082,8 @@ Template.responsesNew.helpers({
               id: 'question38',
               type: 'question',
               category: 'choice',
-              title: '38. Do you anticipate any other adults or children coming to live with you within the first 180 days of being housed?',
+              title: `38. Do you anticipate any other adults or children coming to live with
+                you within the first 180 days of being housed?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -1018,14 +1106,18 @@ Template.responsesNew.helpers({
               id: 'question39',
               type: 'question',
               category: 'choice',
-              title: '39. Do you have two or more planned activities each week as a family such as outings to the park, going to the library, visiting other family, watching a family movie, or anything like that?',
+              title: `39. Do you have two or more planned activities each week as a
+                family such as outings to the park, going to the library, visiting
+                other family, watching a family movie, or anything like that?`,
               options: ['Yes', 'No'],
               refusable: true,
             },
             {
               id: 'question40',
               type: 'section',
-              title: '40. After school, or on weekends or days when there isn’t school, is the total time children spend each day where there is no interaction with you or another responsible adult...',
+              title: `40. After school, or on weekends or days when there isn’t school,
+                is the total time children spend each day where there is no interaction
+                with you or another responsible adult...`,
               items: [
                 {
                   id: 'question40a',
@@ -1065,7 +1157,9 @@ Template.responsesNew.helpers({
               id: 'question41',
               type: 'question',
               category: 'choice',
-              title: '41. Do your older kids spend 2 or more hours on a typical day helping their younger sibling(s) with things like getting ready for school, helping with homework, making them dinner, bathing them, or anything like that?',
+              title: `41. Do your older kids spend 2 or more hours on a typical day helping their
+                younger sibling(s) with things like getting ready for school, helping with
+                homework, making them dinner, bathing them, or anything like that?`,
               text: 'IF THERE ARE CHILDREN BOTH 12 AND UNDER & 13 AND OVER',
               options: ['Yes', 'No'],
               refusable: true,
@@ -1074,7 +1168,8 @@ Template.responsesNew.helpers({
               id: 'scoreE4',
               type: 'score',
               score: 'variables.scoreE4',
-              text: 'IF “NO” TO QUESTION 39, OR “YES” TO ANY OF QUESTIONS 40 OR 41, SCORE 1 FOR PARENTAL ENGAGEMENT.',
+              text: `IF “NO” TO QUESTION 39, OR “YES” TO ANY OF QUESTIONS 40 OR 41,
+                SCORE 1 FOR PARENTAL ENGAGEMENT.`,
               rules: [
                 {
                   any: [
@@ -1107,11 +1202,19 @@ Template.responsesNew.helpers({
               always: [
                 ['sum', 'score.presurvey', 'variables.score1', 'variables.score2'],
                 ['sum', 'score.history', 'variables.scoreA1', 'variables.scoreA2'],
-                ['sum', 'score.risks', 'variables.scoreB1', 'variables.scoreB2', 'variables.scoreB3', 'variables.scoreB4'],
-                ['sum', 'score.socialization', 'variables.scoreC1', 'variables.scoreC2', 'variables.scoreC3', 'variables.scoreC4'],
-                ['sum', 'score.wellness', 'variables.scoreD1', 'variables.scoreD2', 'variables.scoreD3', 'variables.scoreD4', 'variables.scoreD5', 'variables.scoreD6'],
-                ['sum', 'score.familyunit', 'variables.scoreE1', 'variables.scoreE2', 'variables.scoreE3', 'variables.scoreE4'],
-                ['sum', 'score.grandtotal', 'variables.score.presurvey', 'variables.score.history', 'variables.score.risks', 'variables.score.socialization', 'variables.score.wellness', 'variables.score.familyunit'],
+                ['sum', 'score.risks', 'variables.scoreB1',
+                  'variables.scoreB2', 'variables.scoreB3', 'variables.scoreB4'],
+                ['sum', 'score.socialization', 'variables.scoreC1',
+                  'variables.scoreC2', 'variables.scoreC3', 'variables.scoreC4'],
+                ['sum', 'score.wellness', 'variables.scoreD1', 'variables.scoreD2',
+                  'variables.scoreD3', 'variables.scoreD4', 'variables.scoreD5',
+                  'variables.scoreD6'],
+                ['sum', 'score.familyunit', 'variables.scoreE1', 'variables.scoreE2',
+                  'variables.scoreE3', 'variables.scoreE4'],
+                ['sum', 'score.grandtotal', 'variables.score.presurvey',
+                  'variables.score.history', 'variables.score.risks',
+                  'variables.score.socialization', 'variables.score.wellness',
+                  'variables.score.familyunit'],
               ],
             },
           ],
