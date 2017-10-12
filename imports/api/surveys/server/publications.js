@@ -1,16 +1,7 @@
+import { logger } from '/imports/utils/logger';
 import Surveys from '/imports/api/surveys/surveys';
-import SurveyQuestionsMaster from '/imports/api/surveys/surveyQuestionsMaster';
 
-Meteor.publish('surveys.all', () => [
-  Surveys.find(),
-  SurveyQuestionsMaster.find(),
-]);
-
-Meteor.publish(
-  'surveyQuestionsMaster', () => {
-    if (typeof surveyQuestionsMaster === 'undefined') {
-      return [];
-    }
-    return SurveyQuestionsMaster.find();
-  }
-);
+Meteor.publish('surveys.all', () => {
+  logger.info(`PUB[${this.userId}]: surveys.all`);
+  return Surveys.find({ version: 2 });
+});

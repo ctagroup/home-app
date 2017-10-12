@@ -1,6 +1,9 @@
 import AppSettings from '/imports/api/appSettings/appSettings';
 import { logger } from '/imports/utils/logger';
 
+import Surveys from '/imports/api/surveys/surveys';
+import viSpdatFamily2 from '/imports/config/surveys/viSpdatFamily2';
+
 Meteor.startup(() => {
   let version = AppSettings.get('version', 10);
 
@@ -48,6 +51,18 @@ Meteor.startup(() => {
     AppSettings.remove('preClientProfileQuestions.housingServiceQuestion.question');
     AppSettings.remove('preClientProfileQuestions.housingServiceQuestion.skip');
     AppSettings.set('version', version);
+  }
+
+  if (version === 12) {
+    const survey = {
+      title: viSpdatFamily2.title,
+      version: 2,
+      active: true,
+      locked: true,
+      createdAt: new Date(),
+      definition: JSON.stringify(viSpdatFamily2),
+    };
+    Surveys.upsert('viSpdatFamily2', survey);
   }
 
   logger.info(`Migrations complete. Version: ${AppSettings.get('version')}`);

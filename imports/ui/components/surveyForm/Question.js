@@ -125,6 +125,7 @@ export default class Question extends Item {
     ));
     if (other) {
       const otherValue = options.concat([DEFAULT_OTHER_VALUE]).includes(value) ? '' : value;
+      const otherPlaceholder = typeof(other) === 'boolean' ? 'please specify' : `${other}`;
       const checked = !this.isRefused() && this.state.otherSelected;
       choices.push(
         <div key={`choice-${id}-other`}>
@@ -140,7 +141,7 @@ export default class Question extends Item {
             <input
               type="text"
               name={id}
-              placeholder="please specify"
+              placeholder={otherPlaceholder}
               disabled={this.isRefused() || disabled}
               value={otherValue || ''}
               onChange={this.handleChange}

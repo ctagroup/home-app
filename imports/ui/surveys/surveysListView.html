@@ -1,0 +1,9 @@
+<template name="surveysListView">
+  {{#if hasData}}
+    {{> ReactiveDatatable tableData=tableData options=tableOptions }}
+  {{else}}
+    <div class="alert alert-info">
+      <p>There are no responses to show.</p>
+    </div>
+  {{/if}}
+</template>

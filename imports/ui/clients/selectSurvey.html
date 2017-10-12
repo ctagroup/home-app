@@ -5,12 +5,12 @@
         <div class="form-group">
           <label for="surveyList">Select Survey:</label>
           <select class="form-control surveyList" name="surveyList" id="surveyList">
-            <option value="Choose" selected>Choose a survey</option>
-            {{#each getCreatedSurvey}}
+            <option value="" selected>Choose a survey</option>
+            {{#each getSurveys}}
               <option value={{_id}}>{{title}}</option>
             {{/each}}
           </select>
-          <p class="description-block">Only published surveys will be listed here.</p>
+          <p class="description-block">Only active surveys will be listed here.</p>
           <input class="btn btn-default backToClient" value="Back" type="button" />
           <input class="btn btn-primary nextLogSurvey" value="Next" type="button" />
         </div>

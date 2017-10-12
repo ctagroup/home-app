@@ -3,6 +3,7 @@ import { Mongo } from 'meteor/mongo';
 
 const Surveys = new Mongo.Collection('surveys');
 
+/*
 Surveys.schema = new SimpleSchema({
   title: {
     type: String,
@@ -56,5 +57,6 @@ Surveys.schema = new SimpleSchema({
 });
 
 Surveys.attachSchema(Surveys.schema);
+*/
 
 export default Surveys;

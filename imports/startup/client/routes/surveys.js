@@ -1,13 +1,29 @@
-import { Clients } from '/imports/api/clients/clients';
 import { AppController } from './controllers';
+import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import Surveys from '/imports/api/surveys/surveys';
+import '/imports/ui/surveys/surveysListView';
 
 
 Router.route('adminDashboardsurveysView', {
   path: '/surveys',
-  template: 'AdminDashboardView',
+  template: Template.surveysListView,
   controller: AppController,
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+    },
+  },
+  waitOn() {
+    return Meteor.subscribe('surveys.all');
+  },
+  data() {
+    return {
+      title: 'Surveys',
+      subtitle: 'List',
+    };
+  },
 });
+
 
 Router.route('adminDashboardsurveysNew', {
   path: '/surveys/new',
@@ -22,118 +38,16 @@ Router.route('adminDashboardsurveysNew', {
     */
     return [];
   },
-  action() {
-    this.render();
-  },
-  onBeforeAction() {
-    /*
-    if (collection.userRoles) {
-      if (!Roles.userIsInRole(Meteor.user(), collection.userRoles)) {
-        Router.go('notEnoughPermission');
-      }
-    }
-    */
-    this.next();
-  },
-  onAfterAction() {
-    /*
-    Session.set('admin_title', HomeDashboard.collectionLabel(collectionName));
-    Session.set('admin_subtitle', 'Create new');
-    Session.set('admin_collection_page', 'new');
-    Session.set('admin_collection_name', collectionName);
-    if (collection.templates && collection.templates.new
-        && collection.templates.new.onAfterAction) {
-      collection.templates.new.onAfterAction();
-    }
-    */
-  },
-  data() {
-    return {
-      admin_collection: Clients,
-    };
-  },
 });
 
-Router.route('adminDashboardsurveysEdit', {
-  path: '/surveys/edit',
+Router.route('surveysEdit', {
+  path: '/surveys/:_id/edit',
   template: 'AdminDashboardEdit',
   controller: AppController,
-  action() {
-    this.render();
-  },
-  waitOn() {
-    return [];
-  },
-  onBeforeAction() {
-
-  },
-  onAfterAction() {
-
-  },
-  data() {
-    return {
-      admin_collection: Clients,
-    };
-  },
 });
 
-Router.route(
-  'selectSurveyQuestion', {
-    path: '/surveys/:_id/selectQuestions',
-    template: 'selectQuestions',
-    controller: 'AppController',
-    action() {
-      this.render();
-    },
-    onBeforeAction() {
-      const collection = null; // HomeConfig.collections.surveys;
-      if (collection.userRoles) {
-        if (!Roles.userIsInRole(Meteor.user(), collection.userRoles)) {
-          Router.go('notEnoughPermission');
-        }
-      }
-      this.next();
-    },
-    onAfterAction() {
-      Session.set('admin_title', 'Select Questions');
-      Session.set('admin_collection_name', 'selectQuestions');
-      Session.set('admin_collection_page', '');
-    },
-    data() {
-      /*
-      const surveyID = this.params._id;
-      const surveyCollection = HomeUtils.adminCollectionObject('surveys');
-      return surveyCollection.findOne({ _id: surveyID });
-      */
-    },
-  }
-);
-
-Router.route(
-  'previewSurvey', {
-    path: '/surveys/:_id/preview',
-    template: 'previewSurvey',
-    controller: 'AppController',
-    action() {
-      this.render();
-    },
-    onBeforeAction() {
-      const collection = null; // HomeConfig.collections.surveys;
-      if (collection.userRoles) {
-        if (!Roles.userIsInRole(Meteor.user(), collection.userRoles)) {
-          Router.go('notEnoughPermission');
-        }
-      }
-      this.next();
-    },
-    onAfterAction() {
-      Session.set('admin_title', 'Survey Preview');
-      Session.set('admin_collection_name', 'preview');
-      Session.set('admin_collection_page', '');
-    },
-    data() {
-      const surveyID = this.params._id;
-      return Surveys.findOne({ _id: surveyID });
-    },
-  }
-);
+Router.route('surveysPreview', {
+  path: '/surveys/:_id/preview',
+  template: 'AdminDashboardEdit',
+  controller: AppController,
+});

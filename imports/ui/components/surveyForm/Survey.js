@@ -111,6 +111,7 @@ export default class Survey extends React.Component {
           onPropsChange={this.handlePropsChange}
           level={1}
         />
+        <button className="btn btn-success" type="button">Submit</button>
         {this.props.debug && this.renderDebugWindow()}
       </div>
     );

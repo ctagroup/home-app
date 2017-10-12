@@ -6,8 +6,8 @@ import './selectSurvey.html';
 
 Template.selectSurvey.helpers(
   {
-    getCreatedSurvey() {
-      return Surveys.find({ created: true }).fetch();
+    getSurveys() {
+      return Surveys.find({ active: true }).fetch();
     },
     getSurveyedClient() {
       return PendingClients.find().fetch();
@@ -20,6 +20,10 @@ Template.selectSurvey.events(
     'click .nextLogSurvey': (evt, tmpl) => {
       const surveyID = tmpl.find('.surveyList').value;
       const clientID = Router.current().params._id;
+
+      if (!surveyID) {
+        return;
+      }
 
       const query = {
         clientId: clientID,

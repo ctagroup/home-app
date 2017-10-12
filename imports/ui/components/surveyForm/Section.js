@@ -72,6 +72,8 @@ export default class Section extends Item {
     const { formState, onPropsChange, onValueChange, item, level } = this.props;
     return (item.items || []).map((child) => {
       switch (child.type) {
+        case 'hidden':
+          return null;
         case 'section':
           return (
             <Section
