@@ -5,24 +5,32 @@ const Surveys = new Mongo.Collection('surveys');
 
 SimpleSchema.debug = true;
 Surveys.schema = new SimpleSchema({
-  _id: {
-    type: String,
-    optional: true,
-  },
   title: {
     type: String,
   },
   active: {
     type: Boolean,
   },
-  locked: {
+  editable: {
     type: Boolean,
   },
   definition: {
     type: String,
+    autoform: {
+      rows: 20,
+    },
+    custom() {
+      try {
+        JSON.parse(this.value);
+      } catch (e) {
+        return 'invalidJson';
+      }
+      return null;
+    },
   },
   version: {
     type: Number,
+    optional: true,
     autoValue() {
       return 2;
     },
@@ -30,25 +38,35 @@ Surveys.schema = new SimpleSchema({
   createdAt: {
     type: Date,
     label: 'Created At',
+    optional: true,
     autoValue() {
-      let returnstatus;
+      let val;
       if (this.isInsert) {
-        returnstatus = new Date();
+        val = new Date();
       } else if (this.isUpsert) {
-        returnstatus = { $setOnInsert: new Date() };
+        val = { $setOnInsert: new Date() };
       } else {
         this.unset();  // Prevent user from supplying their own value
       }
-      return returnstatus;
+      return val;
     },
   },
   updatedAt: {
     type: Date,
     label: 'Updated At',
+    optional: true,
     autoValue() {
-      return new Date();
+      let val;
+      if (this.isUpdate) {
+        val = new Date();
+      }
+      return val;
     },
   },
+});
+
+Surveys.schema.messages({
+  invalidJson: 'Invalid JSON',
 });
 
 Surveys.attachSchema(Surveys.schema);

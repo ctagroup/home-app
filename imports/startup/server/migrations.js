@@ -58,14 +58,11 @@ Meteor.startup(() => {
       title: viSpdatFamily2.title,
       version: 2,
       active: true,
-      locked: true,
-      // createdAt: new Date(),
+      editable: true,
       definition: JSON.stringify(viSpdatFamily2),
     };
-    console.log('aaa');
     check(survey, Surveys.schema);
-    console.log('bbb');
-    Surveys.upsert('viSpdatFamily2', survey);
+    Surveys.upsert('viSpdatFamily2', survey, { bypassCollection2: true });
   }
 
   logger.info(`Migrations complete. Version: ${AppSettings.get('version')}`);

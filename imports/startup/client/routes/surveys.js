@@ -2,7 +2,7 @@ import { AppController } from './controllers';
 import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import Surveys from '/imports/api/surveys/surveys';
 import '/imports/ui/surveys/surveysListView';
-import '/imports/ui/surveys/surveyEdit';
+import '/imports/ui/surveys/surveyForm';
 
 
 Router.route('adminDashboardsurveysView', {
@@ -26,24 +26,21 @@ Router.route('adminDashboardsurveysView', {
 });
 
 
-Router.route('adminDashboardsurveysNew', {
+Router.route('surveysNew', {
   path: '/surveys/new',
-  template: 'AdminDashboardNew',
+  template: Template.surveyForm,
   controller: AppController,
-  waitOn() {
-    /*
-      Meteor.subscribe('collectionDoc', collectionName, HomeUtils.parseID(this.params._id));
-      if (collection.templates && collection.templates.edit && collection.templates.edit.waitOn) {
-        collection.templates.edit.waitOn();
-      }
-    */
-    return [];
+  data() {
+    return {
+      title: 'Surveys',
+      subtitle: 'New',
+    };
   },
 });
 
 Router.route('surveysEdit', {
   path: '/surveys/:_id/edit',
-  template: Template.surveyEdit,
+  template: Template.surveyForm,
   controller: AppController,
   waitOn() {
     const id = Router.current().params._id;

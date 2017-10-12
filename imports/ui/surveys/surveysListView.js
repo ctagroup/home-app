@@ -1,6 +1,6 @@
 import moment from 'moment';
 import Surveys from '/imports/api/surveys/surveys';
-import { TableDom } from '/imports/ui/dataTable/helpers';
+import { TableDom, editButton, deleteSurveyButton } from '/imports/ui/dataTable/helpers';
 import './surveysListView.html';
 
 const tableOptions = {
@@ -33,8 +33,8 @@ const tableOptions = {
       },
     },
     {
-      data: 'locked',
-      title: 'Locked',
+      data: 'editable',
+      title: 'Editable',
       render(value, type) {
         if (type === 'sort') {
           return value;
@@ -42,17 +42,8 @@ const tableOptions = {
         return value ? 'Yes' : 'No';
       },
     },
-    {
-      data: '_id',
-      title: 'Edit',
-      render(value) {
-        return `
-          <a href="${Router.path('surveysEdit', { _id: value })}" class="btn btn-primary">
-            <i class="fa fa-edit"></i>
-          </a>
-        `;
-      },
-    },
+    editButton('surveysEdit'),
+    deleteSurveyButton(),
   ],
   dom: TableDom,
   processing: true,
