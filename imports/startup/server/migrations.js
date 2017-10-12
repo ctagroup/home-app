@@ -59,9 +59,12 @@ Meteor.startup(() => {
       version: 2,
       active: true,
       locked: true,
-      createdAt: new Date(),
+      // createdAt: new Date(),
       definition: JSON.stringify(viSpdatFamily2),
     };
+    console.log('aaa');
+    check(survey, Surveys.schema);
+    console.log('bbb');
     Surveys.upsert('viSpdatFamily2', survey);
   }
 

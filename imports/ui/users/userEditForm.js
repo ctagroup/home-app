@@ -1,7 +1,6 @@
 import HomeRoles from '/imports/config/roles';
 import './userEditForm.html';
 
-SimpleSchema.debug = true;
 Template.userEditForm.helpers({
   schema() {
     const hmisRoles = this.hmisRoles || [];

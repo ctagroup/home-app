@@ -3,30 +3,29 @@ import { Mongo } from 'meteor/mongo';
 
 const Surveys = new Mongo.Collection('surveys');
 
-/*
+SimpleSchema.debug = true;
 Surveys.schema = new SimpleSchema({
+  _id: {
+    type: String,
+    optional: true,
+  },
   title: {
     type: String,
   },
   active: {
     type: Boolean,
   },
-  copy: {
-    type: Boolean,
-  },
-  stype: {
-    type: String,
-  },
-  surveyCopyID: {
-    type: String,
-    optional: true,
-  },
   locked: {
     type: Boolean,
   },
-  apiSurveyServiceId: {
+  definition: {
     type: String,
-    optional: true,
+  },
+  version: {
+    type: Number,
+    autoValue() {
+      return 2;
+    },
   },
   createdAt: {
     type: Date,
@@ -42,7 +41,6 @@ Surveys.schema = new SimpleSchema({
       }
       return returnstatus;
     },
-
   },
   updatedAt: {
     type: Date,
@@ -51,12 +49,8 @@ Surveys.schema = new SimpleSchema({
       return new Date();
     },
   },
-  created: {
-    type: Boolean,
-  },
 });
 
 Surveys.attachSchema(Surveys.schema);
-*/
 
 export default Surveys;
