@@ -3,6 +3,8 @@ import { logger } from '/imports/utils/logger';
 
 import Surveys from '/imports/api/surveys/surveys';
 import viSpdatFamily2 from '/imports/config/surveys/viSpdatFamily2';
+import viSpdatSinge201 from '/imports/config/surveys/viSpdatSingle2.0.1';
+import viSpdatTay1 from '/imports/config/surveys/viSpdatTay1';
 
 Meteor.startup(() => {
   let version = AppSettings.get('version', 10);
@@ -54,15 +56,23 @@ Meteor.startup(() => {
   }
 
   if (version === 12) {
-    const survey = {
-      title: viSpdatFamily2.title,
-      version: 2,
-      active: true,
-      editable: true,
-      definition: JSON.stringify(viSpdatFamily2),
+    const surveys = {
+      viSpdatFamily2,
+      'viSpdatSinge2.0.1': viSpdatSinge201,
+      viSpdatTay1,
     };
-    check(survey, Surveys.schema);
-    Surveys.upsert('viSpdatFamily2', survey, { bypassCollection2: true });
+    Object.keys(surveys).forEach((id) => {
+      const definition = surveys[id];
+      const survey = {
+        title: definition.title,
+        version: 2,
+        active: true,
+        editable: true,
+        definition: JSON.stringify(definition),
+      };
+      check(survey, Surveys.schema);
+      Surveys.upsert(id, survey, { bypassCollection2: true });
+    });
   }
 
   logger.info(`Migrations complete. Version: ${AppSettings.get('version')}`);
