@@ -1,6 +1,6 @@
 const viSpdatFamily2 = {
   title: 'VI-SPDAT Familiy 2.0',
-  id: 'viSpdatFamily2',
+  id: 'viSpdatFamily2.0',
   variables: {
     score1: 0,
     score2: 0,
@@ -349,7 +349,7 @@ const viSpdatFamily2 = {
                 ['!=', 'values.question5', 'Refused'],
                 ['!=', 'values.question5', 'Shelters'],
                 ['!=', 'values.question5', 'Transitional Housing'],
-                ['!=', 'values.question5', 'Save Haven'],
+                ['!=', 'values.question5', 'Safe Haven'],
               ],
               then: [['set', 'scoreA1', 1]],
             },
