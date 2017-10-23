@@ -33,6 +33,10 @@ const GridColumnSchema = new SimpleSchema({
   },
 });
 
+SimpleSchema.messages({
+  questionCategoryisRequired: 'Provide question category',
+});
+
 Questions.schema = new SimpleSchema({
   title: {
     type: String,
@@ -71,6 +75,24 @@ Questions.schema = new SimpleSchema({
     type: [GridColumnSchema],
     label: 'Grid columns',
     optional: true,
+  },
+  public: {
+    type: Boolean,
+    label: 'Show this question in the Question Bank',
+  },
+  questionCategory: {
+    type: String,
+    optional: true,
+  },
+  questionSubcategory: {
+    type: String,
+    optional: true,
+    custom() {
+      if (!this.field('questionCategory').isSet) {
+        return 'questionCategoryisRequired';
+      }
+      return undefined;
+    },
   },
   version: {
     type: Number,

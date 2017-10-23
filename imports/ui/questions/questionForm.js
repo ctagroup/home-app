@@ -14,16 +14,21 @@ Template.questionForm.helpers({
   },
 
   currentCategory() {
-    const category = AutoForm.getFieldValue('category', 'questionForm');
+    const category = AutoForm.getFieldValue('category');
     return category;
   },
 
+  currentQuestionCategory() {
+    const questionCategory = AutoForm.getFieldValue('questionCategory');
+    return { questionCategory };
+  },
 });
 
 
 AutoForm.hooks({
   questionForm: {
     onSubmit: function onSubmit(insertDoc, updateDoc, currentDoc) {
+      console.log(currentDoc);
       if (currentDoc._id) {
         Meteor.call('questions.update', currentDoc._id, updateDoc, (err) => {
           if (err) {

@@ -25,6 +25,53 @@ Meteor.methods({
     return Questions.remove(id);
   },
 
+  'questions.categories'() {
+    // TODO: permissions check
+    this.unblock();
+
+    this.unblock();
+
+    const query = {
+      version: 2,
+    };
+    const questions = Questions.find(query, {
+      fields: {
+        questionCategory: true,
+      },
+    }).fetch();
+
+    const distinct = new Set();
+    questions.reduce((d, q) => d.add(q.questionCategory), distinct);
+    return Array.from(distinct.values())
+      .map(value => ({ value, label: value }));
+  },
+
+  'questions.subcategories'(options) {
+    // TODO: permissions check
+    if (!options.params) {
+      return [];
+    }
+
+    this.unblock();
+
+    const query = {
+      version: 2,
+      questionCategory: options.params.questionCategory,
+    };
+
+    const questions = Questions.find(query, {
+      fields: {
+        questionCategory: true,
+        questionSubcategory: true,
+      },
+    }).fetch();
+
+    const distinct = new Set();
+    questions.reduce((d, q) => d.add(q.questionSubcategory), distinct);
+    return Array.from(distinct.values())
+      .map(value => ({ value, label: value }));
+  },
+
   /*
   addQuestion(
     category, name, question, dataType, options,
