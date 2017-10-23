@@ -35,7 +35,7 @@ const allWidgets = [
     name: 'Questions',
     id: 'questions',
     icon: 'fa-question',
-    path: 'adminDashboardquestionsView',
+    path: 'questionsView',
     roles: DefaultAdminAccessRoles,
   },
   {

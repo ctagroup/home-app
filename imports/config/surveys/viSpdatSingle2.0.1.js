@@ -211,7 +211,8 @@ const viSpdatSingle = {
               id: 'question4d',
               type: 'question',
               title: `d) Used a crisis service, including sexual assault crisis, mental health
-                crisis, family/intimate violence, distress centers and suicide prevention hotlines?`,
+                crisis, family/intimate violence, distress centers and suicide prevention
+                hotlines?`,
               category: 'choice',
               options: ['Yes', 'No'],
               refusable: true,

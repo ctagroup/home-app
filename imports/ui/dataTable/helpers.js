@@ -94,6 +94,30 @@ export function deleteSurveyButton() {
 }
 
 
+export function deleteQuestionButton() {
+  return {
+    data: '_id',
+    title: 'Delete',
+    render() { return ''; },
+    createdCell(node, _id, rowData) {
+      const title = rowData.title || _id;
+      const templateData = {
+        _id,
+        message: `Are you sure you want to delete Question ${title} (${_id})?`,
+        method: 'questions.delete',
+        args: [_id],
+        onSuccess() {
+          // Meteor.setTimeout(() => location.reload(), 1500);
+        },
+      };
+      Blaze.renderWithData(Template.DataTableDeleteButton, templateData, node);
+    },
+    width: '45px',
+    orderable: false,
+  };
+}
+
+
 export function deleteUserButton() {
   return {
     data: '_id',

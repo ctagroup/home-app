@@ -1,8 +1,31 @@
 import Questions from '/imports/api/questions/questions';
-import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
+// import { HmisClient } from '/imports/api/hmisApi';
 
 Meteor.methods({
+  'questions.create'(doc) {
+    logger.info(`METHOD[${Meteor.userId()}]: questions.create`, doc);
+    check(doc, Questions.schema);
+    // TODO: permissions check
+    return Questions.insert(doc);
+  },
+
+  'questions.update'(id, doc) {
+    logger.info(`METHOD[${Meteor.userId()}]: questions.update`, doc);
+    check(id, String);
+    check(doc, Questions.schema);
+    // TODO: permissions check
+    return Questions.update(id, doc);
+  },
+
+  'questions.delete'(id) {
+    logger.info(`METHOD[${Meteor.userId()}]: questions.delete`, id);
+    check(id, String);
+    // TODO: permissions check
+    return Questions.remove(id);
+  },
+
+  /*
   addQuestion(
     category, name, question, dataType, options,
     qtype, audience, locked, allowSkip, isCopy, surveyServiceQuesId
@@ -127,4 +150,5 @@ Meteor.methods({
     Questions.update(_id, { $set: { surveyServiceQuesId } });
     logger.info(`Successfully updated SSQId: ${surveyServiceQuesId}`);
   },
+  */
 });

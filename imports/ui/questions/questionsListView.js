@@ -1,5 +1,5 @@
-import { TableDom } from '/imports/ui/dataTable/helpers';
 import { populateOptions, resetQuestionModal, setFields } from '/imports/ui/questions/helpers';
+import { TableDom, editButton, deleteQuestionButton } from '/imports/ui/dataTable/helpers';
 import moment from 'moment';
 import Questions from '/imports/api/questions/questions';
 import './questionsListView.html';
@@ -8,34 +8,13 @@ import './questionsListView.html';
 const tableOptions = {
   columns: [
     {
-      title: 'Question Name',
-      data: 'name',
+      title: 'Title',
+      data: 'title',
       render(value) {
-        const div = document.createElement('div');
-        div.innerHTML = value;
-        let text = div.textContent || div.innerText || value;
-
-        if (text.length > 40) {
-          text = text.substr(0, 40);
-          text += ' ... ';
+        if (value.length > 50) {
+          return `${value.substring(0, 47)}...`;
         }
-        return text;
-      },
-    },
-    {
-      title: 'Question Label',
-      data: 'question',
-      render(value) {
-        const div = document.createElement('div');
-        div.innerHTML = value;
-        let text = div.textContent || div.innerText || value;
-
-        if (text.length > 40) {
-          text = text.substr(0, 40);
-          text += ' ... ';
-        }
-
-        return text;
+        return value;
       },
     },
     {
@@ -46,26 +25,35 @@ const tableOptions = {
       title: 'Date created',
       data: 'createdAt',
       render(value) {
-        return moment(value).format('MM/DD/YYYY');
+        return moment(value).format('MM/DD/YYYY h:mm A');
       },
     },
     {
       title: 'Date updated',
       data: 'updatedAt',
       render(value) {
-        return moment(value).format('MM/DD/YYYY');
+        return moment(value).format('MM/DD/YYYY h:mm A');
       },
     },
+    editButton('questionsEdit'),
     {
-      title: 'Edit',
       data: '_id',
-      orderable: false,
-      render(value, type, doc) {
-        /* eslint-disable */
-        return `<a href="#newQuestionModal" role="button" data-toggle="modal" data-survey-id="${doc._id}" class="btn btn-primary edit"><i class="fa fa-edit"></i></a>`;
-        /* eslint-enable */
+      title: 'Clone',
+      render() {
+        return '';
       },
+      createdCell(node, cellData) {
+        const data = {
+          path: 'questionsNew',
+          query: `source=${cellData}`,
+          _id: cellData,
+        };
+        Blaze.renderWithData(Template.DataTableEditButton, data, node);
+      },
+      width: '45px',
+      orderable: false,
     },
+    deleteQuestionButton(),
   ],
   dom: TableDom,
 };

@@ -3,7 +3,7 @@ import Surveys from '/imports/api/surveys/surveys';
 
 Meteor.methods({
   'surveys.create'(doc) {
-    logger.info(`METHOD[${Meteor.userId()}]: surveys.insert`, doc);
+    logger.info(`METHOD[${Meteor.userId()}]: surveys.create`, doc);
     check(doc, Surveys.schema);
     // TODO: permissions check
     return Surveys.insert(doc);

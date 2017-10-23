@@ -35,7 +35,7 @@ AutoForm.hooks({
           } else {
             Bert.alert('Survey updated', 'success', 'growl-top-right');
           }
-          this.done();
+          this.done(err);
         });
       } else {
         Meteor.call('surveys.create', insertDoc, (err, res) => {
@@ -45,7 +45,7 @@ AutoForm.hooks({
             Bert.alert('Survey created', 'success', 'growl-top-right');
             Router.go('surveysEdit', { _id: res });
           }
-          this.done();
+          this.done(err);
         });
       }
       return false;
