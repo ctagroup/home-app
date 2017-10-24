@@ -101,6 +101,7 @@ export class SurveyApi extends ApiEndpoint {
   }
 
   sendResponses(clientId, surveyId, responses) {
+    // see: https://hmis-api.github.io/survey-service-api/#clients__clientid__surveys__surveyid__responses_post
     const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/responses`;
     const body = { responses };
     return this.doPost(url, body).response;

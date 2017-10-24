@@ -1,7 +1,7 @@
-// import { HmisClient } from '/imports/api/hmisApi';
+import { HmisClient } from '/imports/api/hmisApi';
 // import Surveys from '/imports/api/surveys/surveys';
 import { logger } from '/imports/utils/logger';
-import { escapeKeys } from '/imports/api/utils';
+import { escapeKeys, unescapeKeys } from '/imports/api/utils';
 import Responses, { ResponseStatus } from '/imports/api/responses/responses';
 
 Meteor.methods({
@@ -41,6 +41,29 @@ Meteor.methods({
     // TODO: check permissions
     check(id, String);
     return Responses.remove(id);
+  },
+
+  'responses.uploadToHmis'(id) {
+    check(id, String);
+    Responses.update(id, { $set: { status: ResponseStatus.UPLOADIND } });
+
+    const response = Responses.findOne(id);
+    const { clientId, surveyId, values } = response;
+
+    const escaped = unescapeKeys(values);
+    const valuesToSend = Object.keys(escaped).map(key => ({
+      questionId: key,
+      responseText: escaped[key],
+    }));
+
+    try {
+      const hc = HmisClient.create(Meteor.userId());
+      hc.api('survey').sendResponses(clientId, surveyId, valuesToSend);
+      Responses.update(id, { $set: { status: ResponseStatus.UPLOADED } });
+    } catch (err) {
+      Responses.update(id, { $set: { status: ResponseStatus.COMPLETED } });
+      throw err;
+    }
   },
 
   /*

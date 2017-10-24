@@ -1,10 +1,24 @@
+import Alert from '/imports/ui/alert';
 import { TableDom } from '/imports/ui/dataTable/helpers';
 import moment from 'moment';
-import Responses from '/imports/api/responses/responses';
+import Responses, { ResponseStatus } from '/imports/api/responses/responses';
 import Surveys from '/imports/api/surveys/surveys';
 import { fullName } from '/imports/api/utils';
 import './responsesListView.html';
 
+
+const uploadingHtml = '<i class="fa fa-spinner fa-pulse"></i>';
+function completedHtml(response) {
+  const date = moment(response.submittedAt).format('MM/DD/YYYY h:mm A');
+  return `
+    <span class="text-success">
+      <i class="fa fa-check"></i> Submitted on ${date}
+    </span>
+    <br />
+    <a id="${response._id}" href="#" class="btn UploadResponses">
+      (Re-Upload to HMIS)
+    </a>`;
+}
 
 
 const tableOptions = {
@@ -25,8 +39,7 @@ const tableOptions = {
     {
       data: 'clientId',
       title: 'Client',
-      render(value, type, doc) {
-        const response = doc;
+      render(value, type, response) {
         const clientDetails = response.clientDetails || { loading: true };
 
         if (clientDetails.loading) {
@@ -36,10 +49,10 @@ const tableOptions = {
           return clientDetails.error;
         }
 
-        const displayName = fullName(clientDetails) || response.clientID;
+        const displayName = fullName(clientDetails) || response.clientId;
 
-        let url = Router.path('viewClient', { _id: response.clientID });
-        if (response.isHMISClient && response.clientSchema) {
+        let url = Router.path('viewClient', { _id: response.clientId });
+        if (response.clientSchema) {
           url = Router.path('viewClient',
             { _id: response.clientId },
             { query: `schema=${response.clientSchema}` }
@@ -59,44 +72,38 @@ const tableOptions = {
       },
     },
     {
+      data: 'updatedAt',
+      title: 'Date Updated',
+      render(value, type) {
+        if (type === 'sort') {
+          return value;
+        }
+        return moment(value).format('MM/DD/YYYY h:mm A');
+      },
+    },
+    {
       data: 'status',
       title: 'Status',
       searchable: false,
-      render(value, type, doc) {
-        let val = '';
-        const responseDetails = doc;
-        const subId = responseDetails.submissionId;
+      render(value, type, response) {
         switch (value) {
-          case 'Paused':
-            val = '<span class="text-muted"><i class="fa fa-pause"></i> Paused</span>';
-            break;
-          case 'Completed':
-            if (subId) {
-              val = '<span class="text-success">' +
-                '<i class="fa fa-check"></i> ' +
-                'Submitted' +
-                '</span>' +
-                '<br>' +
-                `<a id="${doc._id}" href="#" class="btn UploadResponses">` +
-                '(Re-Upload to HMIS)</a>';
-            } else {
-              if (responseDetails.isHMISClient && responseDetails.clientSchema) {
-                val =
-                `<a href="#" id="${doc._id}" class="btn UploadResponses">Upload to HMIS</a>`;
-              } else {
-                val = '<span class="text-warning">Upload client first</span>';
-              }
+          case ResponseStatus.PAUSED:
+            return '<span class="text-muted"><i class="fa fa-pause"></i> Paused</span>';
+          case ResponseStatus.COMPLETED:
+            if (response.submissionId) {
+              return completedHtml(response);
             }
-            break;
-          case 'Uploading':
-            val = '<i class="fa fa-spinner fa-pulse"></i>';
-            break;
-          default:
-            val = value;
-            break;
-        }
+            if (response.clientSchema) {
+              return `<a href="#" id="${response._id}"
+                class="btn UploadResponses">Upload to HMIS</a>`;
+            }
+            return '<span class="text-warning">Upload client first</span>';
 
-        return val;
+          case ResponseStatus.UPLOADING:
+            return uploadingHtml;
+          default:
+            return value;
+        }
       },
     },
   ],
@@ -135,23 +142,15 @@ Template.responsesListView.events(
       const responseId = $(evt.currentTarget).attr('id');
       const parent = $(`#${responseId}`).parent();
       const originalHtml = parent.html();
-      parent.html('<i class="fa fa-spinner fa-pulse"></i>');
+      parent.html(uploadingHtml);
 
-      Meteor.call('uploadResponse', responseId, (err) => {
+      Meteor.call('responses.uploadToHmis', responseId, (err) => {
         if (err) {
           parent.html(originalHtml);
-          Bert.alert(err.reason || err.error, 'danger', 'growl-top-right');
+          Alert.error(err);
         } else {
-          Bert.alert('Response uploaded', 'success', 'growl-top-right');
-          const htmlOk = '<span class="text-success">' +
-                  '<i class="fa fa-check"></i> ' +
-                  'Submitted' +
-                  '</span>' +
-                  '<br>' +
-                  `<a id="${responseId}" href="#" class="btn UploadResponses">` +
-                  '(Re-Upload to HMIS)</a>';
-          // change button to completed.
-          parent.html(htmlOk);
+          Alert.success('Response uploaded');
+          parent.html(completedHtml(Responses.findOne(responseId)));
         }
       });
     },

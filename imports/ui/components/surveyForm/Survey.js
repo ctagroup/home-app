@@ -85,6 +85,7 @@ export default class Survey extends React.Component {
           Alert.error(err);
         } else {
           Alert.success('Response updated');
+          Router.go('adminDashboardresponsesView');
         }
       });
     } else {
@@ -93,6 +94,7 @@ export default class Survey extends React.Component {
           Alert.error(err);
         } else {
           Alert.success('Response created');
+          Router.go('adminDashboardresponsesView');
         }
       });
     }
