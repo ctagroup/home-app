@@ -14,3 +14,21 @@ export function fullName(user) {
   }
   return parts.join(' ').trim();
 }
+
+export function escapeKeys(obj) {
+  const newObj = {};
+  _.each(obj, (value, key) => {
+    const key2 = key.replace(/\./g, '::');
+    newObj[key2] = value;
+  });
+  return newObj;
+}
+
+export function unescapeKeys(obj) {
+  const newObj = {};
+  _.each(obj, (value, key) => {
+    const key2 = key.replace(/::/g, '.');
+    newObj[key2] = value;
+  });
+  return newObj;
+}

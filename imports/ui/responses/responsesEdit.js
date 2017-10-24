@@ -1,9 +1,20 @@
-import Responses from '/imports/api/responses/responses';
-import './responseForm.js';
+// import Responses from '/imports/api/responses/responses';
+import Survey from '/imports/ui/components/surveyForm/Survey';
+import { unescapeKeys } from '/imports/api/utils';
 import './responsesEdit.html';
 
-Template.responsesEdit.helpers(
-  {
+Template.responsesEdit.helpers({
+  component() {
+    return Survey;
+  },
+  definition() {
+    return JSON.parse(this.survey.definition);
+  },
+  initialValues() {
+    return unescapeKeys(this.response.values);
+  },
+  /*
+
     paused() {
       let flag = false;
 
@@ -22,11 +33,11 @@ Template.responsesEdit.helpers(
 
       return flag;
     },
-  }
-);
+  */
+});
 
-Template.responsesEdit.events(
-  {
+Template.responsesEdit.events({
+  /*
     'click .savePaused_survey': (evt, tmpl) => {
       ResponseHelpers.savePausedSurvey('Pause_Submit', tmpl);
     },
@@ -47,5 +58,5 @@ Template.responsesEdit.events(
     'click .cancel_survey': () => {
       Router.go('adminDashboardresponsesView');
     },
-  }
-);
+  */
+});

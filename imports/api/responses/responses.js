@@ -2,71 +2,76 @@ import { Mongo } from 'meteor/mongo';
 
 const Responses = new Mongo.Collection('responses');
 
+export const ResponseStatus = {
+  PAUSED: 'paused',
+  COMPLETED: 'completed',
+  UPLOADING: 'uploading',
+  UPLOADED: 'uploaded',
+};
+
 Responses.schema = new SimpleSchema({
-  clientID: {
+  clientId: {
     type: String,
-  },
-  isHMISClient: {
-    type: Boolean,
-    optional: true,
   },
   clientSchema: {
     type: String,
     optional: true,
   },
-  surveyID: {
+  surveyId: {
     type: String,
   },
-  userID: {
+  surveyorId: {
     type: String,
   },
-  responsestatus: {
+  status: {
     type: String,
   },
   submissionId: {
     type: String,
     optional: true,
   },
-  timestamp: {
-    type: Date,
-    label: 'Timestamp',
+  values: {
+    type: Object,
+    blackbox: true,
+  },
+  version: {
+    type: Number,
+    optional: true,
     autoValue() {
-      let returnstatus;
+      return 2;
+    },
+  },
+  createdAt: {
+    type: Date,
+    label: 'Created At',
+    optional: true,
+    autoValue() {
+      let val;
       if (this.isInsert) {
-        returnstatus = new Date();
+        val = new Date();
       } else if (this.isUpsert) {
-        returnstatus = { $setOnInsert: new Date() };
+        val = { $setOnInsert: new Date() };
       } else {
         this.unset();  // Prevent user from supplying their own value
       }
-      return returnstatus;
+      return val;
     },
   },
-  'section.$': {
-    type: [Object],
+  updatedAt: {
+    type: Date,
+    label: 'Updated At',
     optional: true,
+    autoValue() {
+      let val;
+      if (this.isUpdate) {
+        val = new Date();
+      }
+      return val;
+    },
   },
-  'section.$.sectionID': {
-    type: String,
-    optional: true,
-  },
-  'section.$.name': {
-    type: String,
-    optional: true,
-  },
-  'section.$.skip': {
-    type: Boolean,
-    optional: true,
-  },
-  'section.$.response': {
-    type: [Object],
-    optional: true,
-  },
-  'section.$.response.$.questionID': {
-    type: String,
-  },
-  'section.$.response.$.answer': {
-    type: String,
+  submittedAt: {
+    type: Date,
+    label: 'Submitted At',
     optional: true,
   },
 });

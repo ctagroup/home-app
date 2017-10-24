@@ -1,10 +1,49 @@
-import { HmisClient } from '/imports/api/hmisApi';
+// import { HmisClient } from '/imports/api/hmisApi';
+// import Surveys from '/imports/api/surveys/surveys';
 import { logger } from '/imports/utils/logger';
-import Surveys from '/imports/api/surveys/surveys';
-import Responses from '/imports/api/responses/responses';
-
+import { escapeKeys } from '/imports/api/utils';
+import Responses, { ResponseStatus } from '/imports/api/responses/responses';
 
 Meteor.methods({
+  'responses.create'(doc) {
+    logger.info(`METHOD[${Meteor.userId()}]: responses.create`, doc);
+    check(doc, Object);
+    const surveyorId = Meteor.users.findOne(Meteor.userId()).services.HMIS.id;
+    const response = Object.assign({}, doc, {
+      surveyorId,
+      status: ResponseStatus.COMPLETED,
+      submissionId: null,
+      values: escapeKeys(doc.values),
+    });
+
+    // TODO: check permissions
+    check(response, Responses.schema);
+    return Responses.insert(response);
+  },
+  'responses.update'(id, doc) {
+    logger.info(`METHOD[${Meteor.userId()}]: responses.update`, id, doc);
+    check(id, String);
+    check(doc, Object);
+
+    const oldResponse = Responses.findOne(id);
+
+    const response = Object.assign({}, doc, {
+      status: ResponseStatus.COMPLETED,
+      values: escapeKeys(doc.values),
+      surveyorId: oldResponse.surveyorId,
+    });
+    check(response, Responses.schema);
+    // TODO: check permissions
+    return Responses.update(id, { $set: response });
+  },
+  'responses.delete'(id) {
+    logger.info(`METHOD[${Meteor.userId()}]: responses.delete`, id);
+    // TODO: check permissions
+    check(id, String);
+    return Responses.remove(id);
+  },
+
+  /*
   sendResponse(clientId, surveyId, responses) {
     logger.info(`METHOD[${Meteor.userId()}]: sendResponse`, clientId, surveyId, responses);
     const hc = HmisClient.create(Meteor.userId());
@@ -80,4 +119,5 @@ Meteor.methods({
       Meteor.call('updateResponseStatus', responseId, 'Completed');
     }
   },
+  */
 });

@@ -56,11 +56,8 @@ Meteor.startup(() => {
   }
 
   if (version === 12) {
-    const surveys = {
-      viSpdatFamily2,
-      'viSpdatSinge2.0.1': viSpdatSinge201,
-      viSpdatTay1,
-    };
+    const surveys = {};
+    [viSpdatFamily2, viSpdatSinge201, viSpdatTay1].forEach(s => (surveys[s.id] = s));
     Object.keys(surveys).forEach((id) => {
       const definition = surveys[id];
       const survey = {

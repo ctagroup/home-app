@@ -4,8 +4,8 @@ import { logger } from '/imports/utils/logger';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import { HmisClient } from '/imports/api/hmisApi';
 
-Meteor.publish('responses.all', function publishResponses(clientId) {
-  logger.info(`PUB[${this.userId}]: responses.all`, clientId);
+Meteor.publish('responses.all', function publishResponses(ofClientId) {
+  logger.info(`PUB[${this.userId}]: responses.all`, ofClientId);
   const self = this;
   let stopFunction = false;
   self.unblock();
@@ -19,21 +19,22 @@ Meteor.publish('responses.all', function publishResponses(clientId) {
   if (self.userId) {
     const queue = [];
     const responses = (
-      clientId ? Responses.find({ clientID: clientId }) : Responses.find()
+      ofClientId ? Responses.find({ clientId: ofClientId, version: 2 })
+        : Responses.find({ version: 2 })
     ).fetch();
     // Publish the local data first, so the user can get a quick feedback.
     for (let i = 0, len = responses.length; i < len; i++) {
       const response = responses[i];
-      const { isHMISClient, clientID, clientSchema } = response;
-      if (isHMISClient && clientSchema) {
+      const { clientId, clientSchema } = response;
+      if (clientSchema) {
         response.clientDetails = { loading: true };
         queue.push({
           responseId: responses[i]._id,
-          clientID,
+          clientId,
           clientSchema,
         });
       } else {
-        response.clientDetails = PendingClients.findOne({ _id: clientID })
+        response.clientDetails = PendingClients.findOne({ _id: clientId })
         || { error: 'client not found (404)' };
       }
       self.added('responses', responses[i]._id, responses[i]);
@@ -47,10 +48,10 @@ Meteor.publish('responses.all', function publishResponses(clientId) {
       }
       // TODO: add cache
       Meteor.defer(() => {
-        const { responseId, clientID, schema } = data;
+        const { responseId, clientId, schema } = data;
         let clientDetails;
         try {
-          clientDetails = hc.api('client').getClient(clientID, schema);
+          clientDetails = hc.api('client').getClient(clientId, schema);
           clientDetails.schema = schema;
         } catch (e) {
           clientDetails = { error: e.reason };
@@ -69,16 +70,16 @@ Meteor.publish('responses.one', function publishSingleResponse(responseId) {
   const hc = HmisClient.create(this.userId);
 
   if (self.userId) {
-    const response = Responses.findOne({ _id: responseId });
+    const response = Responses.findOne({ _id: responseId, version: 2 });
     if (!response) {
       return [];
     }
 
-    const { isHMISClient, clientID, clientSchema } = response;
+    const { isHMISClient, clientId, clientSchema } = response;
 
     if (isHMISClient && clientSchema) {
       try {
-        response.clientDetails = hc.api('client').getClient(clientID, clientSchema);
+        response.clientDetails = hc.api('client').getClient(clientId, clientSchema);
       } catch (e) {
         response.clientDetails = { error: e.reason };
       }

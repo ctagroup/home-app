@@ -1,15 +1,18 @@
 <template name="responsesEdit">
-  {{> responseForm}}
-  {{#if paused}}
-    <div id="pauseSurvey" class="margin-top-35">
-      <button class="btn btn-default cancel_survey">Cancel</button>
-      <button class="btn btn-primary btn-success savePaused_survey">Submit</button>
-      <button class="btn btn-primary btn-warning pausePaused_survey">Pause</button>
-      <button class="btn btn-primary btn-danger removePaused_survey">Remove</button>
-    </div>
+  {{#if response}}
+    {{#if survey}}
+      <div>{{> React
+        component=component
+        definition=definition
+        initialValues=initialValues
+        client=client
+        responseId=response._id
+        debug=1
+      }}</div>
+    {{else}}
+      <p>Survey does not exists</p>
+    {{/if}}
   {{else}}
-    <div class="margin-top-35">
-      <button class="btn btn-default cancel_survey">Back</button>
-    </div>
+    <p>Responses does not exist</p>
   {{/if}}
 </template>

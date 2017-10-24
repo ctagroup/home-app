@@ -785,9 +785,9 @@ const viSpdatTay1 = {
           ],
         },
         {
-          id: 'question27',
+          id: 'question29',
           type: 'question',
-          title: `27. Has your current period of homelessness been caused by an experience of
+          title: `29. Has your current period of homelessness been caused by an experience of
             emotional, physical, psychological, sexual, or other type of abuse, or by any
             other trauma you have experienced`,
           text: 'YES or NO',
@@ -803,7 +803,7 @@ const viSpdatTay1 = {
           rules: [
             {
               any: [
-                ['==', 'values.question27', 'Yes'],
+                ['==', 'values.question29', 'Yes'],
               ],
               then: [['set', 'scoreD6', 1]],
             },

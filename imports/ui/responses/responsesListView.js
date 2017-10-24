@@ -10,7 +10,7 @@ import './responsesListView.html';
 const tableOptions = {
   columns: [
     {
-      data: 'surveyID',
+      data: 'surveyId',
       title: 'Survey',
       render(value, type, doc) {
         const survey = Surveys.findOne({ _id: value });
@@ -23,11 +23,11 @@ const tableOptions = {
       },
     },
     {
-      data: 'clientID',
+      data: 'clientId',
       title: 'Client',
       render(value, type, doc) {
         const response = doc;
-        const clientDetails = response.clientDetails;
+        const clientDetails = response.clientDetails || { loading: true };
 
         if (clientDetails.loading) {
           return 'Loading...';
@@ -41,7 +41,7 @@ const tableOptions = {
         let url = Router.path('viewClient', { _id: response.clientID });
         if (response.isHMISClient && response.clientSchema) {
           url = Router.path('viewClient',
-            { _id: response.clientID },
+            { _id: response.clientId },
             { query: `schema=${response.clientSchema}` }
           );
         }
@@ -49,8 +49,8 @@ const tableOptions = {
       },
     },
     {
-      data: 'timestamp',
-      title: 'Date Updated',
+      data: 'createdAt',
+      title: 'Date Created',
       render(value, type) {
         if (type === 'sort') {
           return value;
@@ -59,7 +59,7 @@ const tableOptions = {
       },
     },
     {
-      data: 'responsestatus',
+      data: 'status',
       title: 'Status',
       searchable: false,
       render(value, type, doc) {

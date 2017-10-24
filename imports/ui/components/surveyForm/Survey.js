@@ -1,14 +1,22 @@
 import React from 'react';
 import { computeFormState } from '/imports/api/surveys/computations';
 import Section from '/imports/ui/components/surveyForm/Section';
+import Alert from '/imports/ui/alert';
 
 
 export default class Survey extends React.Component {
   constructor(props) {
     super(props);
+    const initialValues = props.initialValues || {};
     this.handleValueChange = this.handleValueChange.bind(this);
     this.handlePropsChange = this.handlePropsChange.bind(this);
-    this.state = computeFormState(this.props.definition, {}, {}, { client: props.client });
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = computeFormState(
+      this.props.definition,
+      initialValues,
+      {},
+      { client: props.client }
+    );
   }
 
   handleValueChange(name, value) {
@@ -61,8 +69,37 @@ export default class Survey extends React.Component {
     this.setState(formState);
   }
 
+  handleSubmit() {
+    const { _id: clientId, schema: clientSchema } = this.props.client;
+
+    const doc = {
+      clientId,
+      clientSchema,
+      surveyId: this.props.definition.id,
+      values: this.state.values,
+    };
+
+    if (this.props.responseId) {
+      Meteor.call('responses.update', this.props.responseId, doc, (err) => {
+        if (err) {
+          Alert.error(err);
+        } else {
+          Alert.success('Response updated');
+        }
+      });
+    } else {
+      Meteor.call('responses.create', doc, (err) => {
+        if (err) {
+          Alert.error(err);
+        } else {
+          Alert.success('Response created');
+        }
+      });
+    }
+  }
+
   renderDebugTable(name, data) {
-    const rows = (Object.keys(data) || []).sort().map(v => {
+    const rows = (Object.keys(data || {})).sort().map(v => {
       let text = `${data[v]}`;
       if (text.length > 50) {
         text = `${text.substring(0, 47)}...`;
@@ -111,7 +148,13 @@ export default class Survey extends React.Component {
           onPropsChange={this.handlePropsChange}
           level={1}
         />
-        <button className="btn btn-success" type="button">Submit</button>
+        <button
+          className="btn btn-success"
+          type="button"
+          onClick={this.handleSubmit}
+        >
+          Submit
+        </button>
         {this.props.debug && this.renderDebugWindow()}
       </div>
     );
