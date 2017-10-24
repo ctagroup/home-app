@@ -11,6 +11,7 @@ export default class Survey extends React.Component {
     this.handleValueChange = this.handleValueChange.bind(this);
     this.handlePropsChange = this.handlePropsChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleToggleDebugWindow = this.handleToggleDebugWindow.bind(this);
     this.state = computeFormState(
       this.props.definition,
       initialValues,
@@ -100,6 +101,12 @@ export default class Survey extends React.Component {
     }
   }
 
+  handleToggleDebugWindow() {
+    this.setState({
+      showDebugWindow: !this.state.showDebugWindow,
+    });
+  }
+
   renderDebugTable(name, data) {
     const rows = (Object.keys(data || {})).sort().map(v => {
       let text = `${data[v]}`;
@@ -120,6 +127,21 @@ export default class Survey extends React.Component {
   }
 
   renderDebugWindow() {
+    const checkBox = (
+      <label>
+        <input
+          type="checkbox"
+          value={this.state.showDebugWindow}
+          onClick={this.handleToggleDebugWindow}
+        />
+        Show Debug Info
+      </label>
+    );
+    if (!this.state.showDebugWindow) {
+      return (<div className="survey-debug">
+        {checkBox}
+      </div>);
+    }
     const formState = this.state;
     const tables = (Object.keys(formState) || []).sort().map(t => (
       <table key={`table-${t}`}>
@@ -132,9 +154,24 @@ export default class Survey extends React.Component {
 
     return (
       <div className="survey-debug">
+        {checkBox}
         <h6>Debug info</h6>
         {tables}
       </div>
+    );
+  }
+
+  renderSubmitButtons() {
+    const disabled = !this.props.client;
+    return (
+      <button
+        className="btn btn-success"
+        type="button"
+        disabled={disabled}
+        onClick={this.handleSubmit}
+      >
+        Submit
+      </button>
     );
   }
 
@@ -150,13 +187,7 @@ export default class Survey extends React.Component {
           onPropsChange={this.handlePropsChange}
           level={1}
         />
-        <button
-          className="btn btn-success"
-          type="button"
-          onClick={this.handleSubmit}
-        >
-          Submit
-        </button>
+        {this.renderSubmitButtons()}
         {this.props.debug && this.renderDebugWindow()}
       </div>
     );

@@ -76,9 +76,9 @@ Questions.schema = new SimpleSchema({
     label: 'Grid columns',
     optional: true,
   },
-  public: {
+  active: {
     type: Boolean,
-    label: 'Show this question in the Question Bank',
+    label: 'Active (show this question in the Survey Builder)',
   },
   questionCategory: {
     type: String,

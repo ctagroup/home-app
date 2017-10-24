@@ -16,7 +16,7 @@
       {{/if}}
 
       <div class="form-group">
-        {{> afQuickField name="public"}}
+        {{> afQuickField name="active"}}
         {{> afQuickField name="questionCategory" type="universe-select" create=true optionsMethod="questions.categories"}}
         {{> afQuickField name="questionSubcategory" type="universe-select" create=true optionsMethod="questions.subcategories" optionsMethodParams=currentQuestionCategory}}
       </div>

@@ -3,6 +3,7 @@ import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import Surveys from '/imports/api/surveys/surveys';
 import '/imports/ui/surveys/surveysListView';
 import '/imports/ui/surveys/surveyForm';
+import '/imports/ui/responses/responsesNew';
 
 
 Router.route('adminDashboardsurveysView', {
@@ -42,6 +43,11 @@ Router.route('surveysEdit', {
   path: '/surveys/:_id/edit',
   template: Template.surveyForm,
   controller: AppController,
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+    },
+  },
   waitOn() {
     const id = Router.current().params._id;
     return Meteor.subscribe('surveys.one', id);
@@ -59,6 +65,24 @@ Router.route('surveysEdit', {
 
 Router.route('surveysPreview', {
   path: '/surveys/:_id/preview',
-  template: Template.surveyPreview,
+  template: Template.responsesNew,
   controller: AppController,
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+    },
+  },
+  waitOn() {
+    const id = Router.current().params._id;
+    return Meteor.subscribe('surveys.one', id);
+  },
+  data() {
+    const id = Router.current().params._id;
+    const survey = Surveys.findOne(id) || {};
+    return {
+      title: 'Surveys',
+      subtitle: survey ? `Preview ${survey.title}` : '',
+      survey,
+    };
+  },
 });

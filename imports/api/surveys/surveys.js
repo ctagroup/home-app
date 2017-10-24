@@ -10,9 +10,11 @@ Surveys.schema = new SimpleSchema({
   },
   active: {
     type: Boolean,
+    label: 'Active (visible to surveyors, can collect responses)',
   },
   editable: {
     type: Boolean,
+    label: 'Editable (can be edited by other administrators)',
   },
   definition: {
     type: String,
