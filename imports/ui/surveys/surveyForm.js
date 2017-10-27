@@ -1,30 +1,22 @@
 import Surveys from '/imports/api/surveys/surveys';
+import SurveyBuilder from '/imports/ui/components/surveyBuilder/SurveyBuilder.js';
 import './surveyForm.html';
 
 Template.surveyForm.helpers({
+  component() {
+    return SurveyBuilder;
+  },
+
   doc() {
-    if (!this.survey) {
-      return {};
-    }
-    try {
-      const obj = JSON.parse(this.survey.definition);
-      const definition = JSON.stringify(obj, null, 2);
-      return Object.assign(this.survey, { definition });
-    } catch (e) {
-      return this.survey;
-    }
+    return this.survey || {};
   },
 
   schema() {
     return Surveys.schema;
   },
-
-  fields() {
-    return ['title', 'active', 'editable', 'definition'];
-  },
 });
 
-
+/*
 AutoForm.hooks({
   surveyForm: {
     onSubmit: function onSubmit(insertDoc, updateDoc, currentDoc) {
@@ -52,3 +44,4 @@ AutoForm.hooks({
     },
   },
 });
+*/

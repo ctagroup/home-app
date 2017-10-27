@@ -1,5 +1,8 @@
 <template name="surveyForm">
-  <div class="survey-creator">
-    {{> quickForm schema=schema fields=fields doc=doc id="surveyForm"}}
+  <div class="survey-builder-wrapper">
+    {{> React
+      component=component
+      survey=doc
+    }}
   </div>
 </template>
