@@ -1,6 +1,7 @@
 import { AppController } from './controllers';
 import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import Surveys from '/imports/api/surveys/surveys';
+import Questions from '/imports/api/questions/questions';
 import '/imports/ui/surveys/surveysListView';
 import '/imports/ui/surveys/surveyForm';
 import '/imports/ui/responses/responsesNew';
@@ -31,10 +32,15 @@ Router.route('surveysNew', {
   path: '/surveys/new',
   template: Template.surveyForm,
   controller: AppController,
+  waitOn() {
+    return Meteor.subscribe('questions.all');
+  },
   data() {
     return {
       title: 'Surveys',
       subtitle: 'New',
+      survey: {},
+      questions: Questions.find().fetch(),
     };
   },
 });
@@ -50,7 +56,10 @@ Router.route('surveysEdit', {
   },
   waitOn() {
     const id = Router.current().params._id;
-    return Meteor.subscribe('surveys.one', id);
+    return [
+      Meteor.subscribe('surveys.one', id),
+      Meteor.subscribe('questions.all'),
+    ];
   },
   data() {
     const id = Router.current().params._id;
@@ -59,6 +68,7 @@ Router.route('surveysEdit', {
       title: 'Surveys',
       subtitle: survey ? `Edit ${survey.title}` : '',
       survey,
+      questions: Questions.find().fetch(),
     };
   },
 });

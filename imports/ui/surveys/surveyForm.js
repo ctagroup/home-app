@@ -7,8 +7,12 @@ Template.surveyForm.helpers({
     return SurveyBuilder;
   },
 
-  doc() {
+  survey() {
     return this.survey || {};
+  },
+
+  questions() {
+    return this.questions || [];
   },
 
   schema() {
