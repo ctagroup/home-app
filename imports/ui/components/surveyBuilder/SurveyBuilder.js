@@ -137,7 +137,14 @@ export default class SurveyBuilder extends React.Component {
     if (!item) {
       return null;
     }
-    return <ItemInspector item={item} onChange={this.handleItemChange} />;
+
+    const originalQuestion = _.find(this.props.questions, q => q._id === item.id);
+
+    return (<ItemInspector
+      item={Object.assign({}, item)}
+      originalQuestion={originalQuestion}
+      onChange={this.handleItemChange}
+    />);
   }
 
   renderQuestionBank() {

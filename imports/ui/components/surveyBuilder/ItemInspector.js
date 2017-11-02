@@ -1,4 +1,14 @@
+import _ from 'lodash';
 import React from 'react';
+import AutoForm from 'uniforms-bootstrap3/AutoForm';
+
+import {
+  GridDefinitionSchema,
+  QuestionDefinitionSchema,
+  TextDefinitionSchema,
+  ScoreDefinitionSchema,
+  SectionDefinitionSchema,
+} from '/imports/api/surveys/definitionSchemas';
 
 import Grid from '/imports/ui/components/surveyForm/Grid';
 import Question from '/imports/ui/components/surveyForm/Question';
@@ -10,6 +20,7 @@ export default class ItemInspector extends React.Component {
   constructor() {
     super();
     this.onInputChange = this.onInputChange.bind(this);
+    this.onValueChange = this.onValueChange.bind(this);
     this.state = {
       previewFormState: {
         variables: {},
@@ -26,6 +37,16 @@ export default class ItemInspector extends React.Component {
       [name]: value,
     });
     this.props.onChange(item);
+  }
+
+  onValueChange(name, value) {
+    const item = Object.assign({}, this.props.item);
+    _.set(item, name, value);
+    this.props.onChange(item);
+  }
+
+  isFromQuestionBank() {
+    return !!this.props.originalQuestion;
   }
 
   handlePreviewPropsChange() {
@@ -58,6 +79,25 @@ export default class ItemInspector extends React.Component {
         </select>
       </div>
     );
+  }
+
+  renderInfo() {
+    if (this.isFromQuestionBank()) {
+      return (
+        <p>
+          <i className="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;
+          This is a question from Question Bank
+        </p>
+      );
+    }
+    return null;
+  }
+
+  renderOriginalTitle() {
+    if (this.isFromQuestionBank()) {
+      return <p><strong>Original title: </strong>{this.props.originalQuestion.title}</p>;
+    }
+    return null;
   }
 
   renderItemPreview() {
@@ -122,12 +162,66 @@ export default class ItemInspector extends React.Component {
     }
   }
 
-  render() {
+  renderItemFields() {
+    const { text, type } = this.props.item;
+
+    const itemText = (
+      <div className="form-group">
+        <label htmlFor="text">Text:</label>
+        <textarea
+          className="form-control"
+          name="text"
+          placeholder="Text"
+          value={text}
+          onChange={this.onInputChange}
+          rows={5}
+        />
+      </div>
+    );
+
+    return (<div>
+      {[''].include(type) && itemText}
+    </div>);
+  }
+
+  renderItemForm() {
     const item = this.props.item;
-    console.log(item);
+    const schemas = {
+      grid: GridDefinitionSchema,
+      question: QuestionDefinitionSchema,
+      text: TextDefinitionSchema,
+      section: SectionDefinitionSchema,
+      score: ScoreDefinitionSchema,
+    };
+    return (
+      <AutoForm
+        schema={schemas[item.type]}
+        onChange={this.onValueChange}
+        model={item}
+      />
+    );
+  }
+
+  render() {
     return (
       <div className="item-inspector">
         <h3>Item Inspector</h3>
+        {this.renderItemForm()}
+        <hr />
+        <div className="preview section">
+          {this.renderItemPreview()}
+        </div>
+      </div>
+
+    );
+
+
+
+    /*
+    return (
+      <div className="item-inspector">
+        <h3>Item Inspector</h3>
+        {this.renderInfo()}
         {this.renderType()}
         <div className="form-group">
           <label htmlFor="id">Id:</label>
@@ -138,6 +232,7 @@ export default class ItemInspector extends React.Component {
             placeholder="ID"
             value={item.id}
             onChange={this.onInputChange}
+            readOnly={this.isFromQuestionBank()}
           />
         </div>
         <div className="form-group">
@@ -150,18 +245,9 @@ export default class ItemInspector extends React.Component {
             value={item.title}
             onChange={this.onInputChange}
           />
+          {this.renderOriginalTitle()}
         </div>
-        <div className="form-group">
-          <label htmlFor="text">Text:</label>
-          <textarea
-            className="form-control"
-            name="text"
-            placeholder="Text"
-            value={item.text}
-            onChange={this.onInputChange}
-            rows={5}
-          />
-        </div>
+        {this.renderItemFields()}
         <hr />
         <div className="form-group">
           <label htmlFor="text">Definition:</label>
@@ -180,5 +266,6 @@ export default class ItemInspector extends React.Component {
         </div>
       </div>
     );
+    */
   }
 }
