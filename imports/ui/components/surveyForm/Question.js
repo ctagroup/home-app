@@ -109,7 +109,7 @@ export default class Question extends Item {
 
   renderChoice(value, disabled) {
     const { id, options, other } = this.props.item;
-    const choices = options.map(v => (
+    const choices = (options || []).map(v => (
       <div key={`choice-${id}-${v}`}>
         <label>
           <input

@@ -1,14 +1,10 @@
 import _ from 'lodash';
 import React from 'react';
-import AutoForm from 'uniforms-bootstrap3/AutoForm';
-
-import {
-  GridDefinitionSchema,
-  QuestionDefinitionSchema,
-  TextDefinitionSchema,
-  ScoreDefinitionSchema,
-  SectionDefinitionSchema,
-} from '/imports/api/surveys/definitionSchemas';
+import GridItemForm from './GridItemForm';
+import QuestionItemForm from './QuestionItemForm';
+import ScoreItemForm from './ScoreItemForm';
+import SectionItemForm from './SectionItemForm';
+import TextItemForm from './TextItemForm';
 
 import Grid from '/imports/ui/components/surveyForm/Grid';
 import Question from '/imports/ui/components/surveyForm/Question';
@@ -186,6 +182,23 @@ export default class ItemInspector extends React.Component {
 
   renderItemForm() {
     const item = this.props.item;
+
+    switch (item.type) {
+      case 'grid':
+        return <GridItemForm onChange={this.onValueChange} model={item} />;
+      case 'question':
+        return <QuestionItemForm onChange={this.onValueChange} model={item} />;
+      case 'score':
+        return <ScoreItemForm onChange={this.onValueChange} model={item} />;
+      case 'section':
+        return <SectionItemForm onChange={this.onValueChange} model={item} />;
+      case 'text':
+        return <TextItemForm onChange={this.onValueChange} model={item} />;
+      default:
+        return null;
+    }
+/*
+
     const schemas = {
       grid: GridDefinitionSchema,
       question: QuestionDefinitionSchema,
@@ -200,6 +213,7 @@ export default class ItemInspector extends React.Component {
         model={item}
       />
     );
+    */
   }
 
   render() {
@@ -214,8 +228,6 @@ export default class ItemInspector extends React.Component {
       </div>
 
     );
-
-
 
     /*
     return (

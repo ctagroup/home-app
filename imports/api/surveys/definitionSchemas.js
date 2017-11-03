@@ -64,7 +64,7 @@ export const ItemDefinitionSchema = new SimpleSchema({
   },
   type: {
     type: String,
-    allowedValues: ['question', 'score', 'section', 'text'],
+    allowedValues: ['section', 'question', 'score', 'text', 'grid'],
   },
   rules: {
     type: [RuleDefinitionSchema],
@@ -92,7 +92,7 @@ export const QuestionDefinitionSchema = new SimpleSchema([ItemDefinitionSchema, 
   },
   category: {
     type: String,
-    allowedValues: ['choice', 'date', 'number', 'text'],
+    allowedValues: ['choice', 'text', 'number', 'date', 'grid'],
   },
   options: {
     type: [String],
