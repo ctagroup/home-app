@@ -10,10 +10,10 @@ Meteor.methods({
   },
 
   'surveys.update'(id, doc) {
-    logger.info(`METHOD[${Meteor.userId()}]: surveys.update`, doc);
+    logger.info(`METHOD[${Meteor.userId()}]: surveys.update`, id, doc);
     check(doc, Surveys.schema);
     // TODO: permissions check
-    return Surveys.update(id, doc);
+    return Surveys.update(id, doc, { bypassCollection2: true });
   },
 
   'surveys.delete'(id) {

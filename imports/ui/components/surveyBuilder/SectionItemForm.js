@@ -14,7 +14,11 @@ export default class SectionItemForm extends React.Component {
         <AutoField name="id" />
         <AutoField name="type" />
         <AutoField name="title" />
-        <AutoField name="skip" label="Skip label" help="Type any text here to add a skippable checkbox" />
+        <AutoField
+          name="skip"
+          label="Skip label"
+          help="Type any text here to add a skippable checkbox"
+        />
       </AutoForm>
     );
   }

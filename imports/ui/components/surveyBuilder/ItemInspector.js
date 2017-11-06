@@ -197,23 +197,6 @@ export default class ItemInspector extends React.Component {
       default:
         return null;
     }
-/*
-
-    const schemas = {
-      grid: GridDefinitionSchema,
-      question: QuestionDefinitionSchema,
-      text: TextDefinitionSchema,
-      section: SectionDefinitionSchema,
-      score: ScoreDefinitionSchema,
-    };
-    return (
-      <AutoForm
-        schema={schemas[item.type]}
-        onChange={this.onValueChange}
-        model={item}
-      />
-    );
-    */
   }
 
   render() {
@@ -225,59 +208,8 @@ export default class ItemInspector extends React.Component {
         <div className="preview section">
           {this.renderItemPreview()}
         </div>
-      </div>
-
-    );
-
-    /*
-    return (
-      <div className="item-inspector">
-        <h3>Item Inspector</h3>
-        {this.renderInfo()}
-        {this.renderType()}
-        <div className="form-group">
-          <label htmlFor="id">Id:</label>
-          <input
-            type="text"
-            className="form-control"
-            name="id"
-            placeholder="ID"
-            value={item.id}
-            onChange={this.onInputChange}
-            readOnly={this.isFromQuestionBank()}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="title">Title:</label>
-          <input
-            type="text"
-            className="form-control"
-            name="title"
-            placeholder="Title"
-            value={item.title}
-            onChange={this.onInputChange}
-          />
-          {this.renderOriginalTitle()}
-        </div>
-        {this.renderItemFields()}
-        <hr />
-        <div className="form-group">
-          <label htmlFor="text">Definition:</label>
-          <textarea
-            className="form-control"
-            readOnly
-            value={JSON.stringify(item, null, 2)}
-            rows={5}
-          />
-        </div>
-        <hr />
-        <h4>Item Preview</h4>
-        <hr />
-        <div className="preview section">
-          {this.renderItemPreview()}
-        </div>
+        <button className="btn btn-default" onClick={this.props.onClose}>Close Inspector</button>
       </div>
     );
-    */
   }
 }

@@ -32,3 +32,10 @@ export function unescapeKeys(obj) {
   });
   return newObj;
 }
+
+export function trimText(str = '', maxLen = 50) {
+  if (str.length > maxLen) {
+    return `${str.substring(0, maxLen - 3)}...`;
+  }
+  return str;
+}

@@ -36,10 +36,16 @@ Router.route('surveysNew', {
     return Meteor.subscribe('questions.all');
   },
   data() {
+    const definition = {
+      variables: {},
+      items: [],
+    };
     return {
       title: 'Surveys',
       subtitle: 'New',
-      survey: {},
+      survey: {
+        definition: JSON.stringify(definition),
+      },
       questions: Questions.find().fetch(),
     };
   },

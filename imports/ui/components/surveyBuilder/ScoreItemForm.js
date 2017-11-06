@@ -14,6 +14,7 @@ export default class ScoreItemForm extends React.Component {
         <AutoField name="id" />
         <AutoField name="type" />
         <AutoField name="score" />
+        <AutoField name="text" />
         <AutoField name="rules" />
       </AutoForm>
     );

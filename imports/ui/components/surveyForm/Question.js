@@ -108,9 +108,10 @@ export default class Question extends Item {
   }
 
   renderChoice(value, disabled) {
-    const { id, options, other } = this.props.item;
-    const choices = (options || []).map(v => (
-      <div key={`choice-${id}-${v}`}>
+    const { id, other } = this.props.item;
+    const options = this.props.item.options || [];
+    const choices = options.map((v, i) => (
+      <div key={`choice-${id}-${i}`}>
         <label>
           <input
             type="radio"
