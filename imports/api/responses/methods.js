@@ -1,8 +1,24 @@
 import { HmisClient } from '/imports/api/hmisApi';
-// import Surveys from '/imports/api/surveys/surveys';
+import Surveys from '/imports/api/surveys/surveys';
+import { computeFormState, findItem } from '/imports/api/surveys/computations';
 import { logger } from '/imports/utils/logger';
 import { escapeKeys, unescapeKeys } from '/imports/api/utils';
 import Responses, { ResponseStatus } from '/imports/api/responses/responses';
+
+function prepareResponseUploadBody(values, variables, definition) {
+  const questionIds = Object.keys(values);
+  const responses = questionIds.map(id => {
+    const question = findItem(id, definition);
+    return {
+      id,
+      hmisId: question.hmisId,
+      value: values[id],
+    };
+  });
+  const scores = Object.keys(variables).filter(v => v.indexOf('score') === 0);
+  console.log(responses);
+  console.log(scores);
+}
 
 Meteor.methods({
   'responses.create'(doc) {
@@ -49,6 +65,32 @@ Meteor.methods({
 
     const response = Responses.findOne(id);
     const { clientId, surveyId, values } = response;
+
+    const survey = Surveys.findOne(surveyId);
+    const definition = JSON.parse(survey.definition);
+    console.log(definition);
+
+    try {
+      const hc = HmisClient.create(Meteor.userId());
+      const client = hc.api('client').getClient(response.clientId, response.clientSchema);
+      const formState = computeFormState(definition, response.values, {}, { client });
+      console.log(formState.variables);
+      const body = prepareResponseUploadBody(values, formState.variables, definition);
+      console.log(body);
+      return;
+    } catch (err) {
+      throw new Meteor.Error(err);
+    }
+
+
+    // TODO: check if survey exists in hsLink
+
+
+    // TODO: check survey update time < response time
+
+    // check all questions exists?
+
+
 
     const escaped = unescapeKeys(values);
     const valuesToSend = Object.keys(escaped).map(key => ({

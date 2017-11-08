@@ -94,7 +94,7 @@ Meteor.methods({
   },
 
   uploadPendingClientToHmis(clientId, schema) {
-    logger.info(`METHOD[${Meteor.userId()}]: uploadPendingClientToHmis`, clientId);
+    logger.info(`METHOD[${Meteor.userId()}]: uploadPendingClientToHmis`, clientId, schema);
     check(clientId, String);
 
     const client = PendingClients.findOne(clientId);
@@ -104,17 +104,16 @@ Meteor.methods({
     }
 
     const hc = HmisClient.create(Meteor.userId());
-    const personalId = hc.api('client').createClient(client, schema);
+    const hmisClientId = hc.api('client').createClient(client, schema);
+    logger.info(`client ${clientId} is now known in HMIS as ${hmisClientId}`);
 
-    logger.info(`client ${clientId} is now known in HMIS as ${personalId}`);
-
-    if (personalId) {
+    if (hmisClientId) {
       PendingClients.remove(clientId);
-      Responses.update({ clientID: clientId },
-        { $set: { clientID: personalId, clientSchema: 'v2015', isHMISClient: true } },
+      Responses.update({ clientId },
+        { $set: { clientId: hmisClientId, clientSchema: schema } },
         { multi: true }
       );
     }
-    return personalId;
+    return hmisClientId;
   },
 });

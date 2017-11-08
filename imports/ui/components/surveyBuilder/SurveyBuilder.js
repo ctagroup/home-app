@@ -11,7 +11,7 @@ export default class SurveyBuilder extends React.Component {
     this.state = {
       definition,
       // currentItem: definition.items.length ? definition.items[0] : null,
-      currentItem: definition.items[1].items[0].items[0],
+      // currentItem: definition.items[1].items[0].items[0],
     };
     this.generateNodeProps = this.generateNodeProps.bind(this);
     this.handleItemChange = this.handleItemChange.bind(this);
