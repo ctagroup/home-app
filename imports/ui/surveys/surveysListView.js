@@ -42,6 +42,17 @@ const tableOptions = {
         return value ? 'Yes' : 'No';
       },
     },
+    {
+      data: 'hmis',
+      title: 'Status',
+      render(value) {
+        if (value && value.status) {
+          return value.status;
+        }
+        return 'not uploaded';
+      },
+    },
+
     editButton('surveysEdit'),
     deleteSurveyButton(),
   ],

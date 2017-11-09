@@ -37,6 +37,12 @@ Surveys.schema = new SimpleSchema({
       return 2;
     },
   },
+  hmis: {
+    type: Object,
+    label: 'HMIS data',
+    optional: true,
+    blackbox: true,
+  },
   createdAt: {
     type: Date,
     label: 'Created At',

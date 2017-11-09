@@ -69,7 +69,7 @@ Meteor.startup(() => {
         definition: JSON.stringify(definition),
       };
       check(survey, Surveys.schema);
-      Surveys.upsert(id, survey, { bypassCollection2: true });
+      Surveys.upsert(id, { $set: { survey } }, { bypassCollection2: true });
     });
   }
 
