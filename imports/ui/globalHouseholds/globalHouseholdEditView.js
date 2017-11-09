@@ -31,10 +31,6 @@ Template.globalHouseholdEditView.events(
         globalHouseholdId,
         headOfHouseholdId,
         inactive: $('input[name=inactive]:checked').val(),
-        // dateCreated: '',
-        // dateUpdated: '',
-        userCreate: globalHousehold.userCreate,
-        userUpdate: user.services.HMIS.accountId,
       };
       const newGlobalHouseholdMembers = [];
       $('.globalHouseholdMembers').find('tr').each(

@@ -220,7 +220,6 @@ export function cleanItemValues(item, formState, force = false) {
       if (force) {
         rows = 0;
       }
-      console.log('clean grid, rows', rows);
       (item.columns || []).forEach(column => {
         const values = formState.values[column.id];
         if (values && values.length > 0 && rows >= 0) {
@@ -239,6 +238,21 @@ export function cleanItemValues(item, formState, force = false) {
       break;
   }
   return newState;
+}
+
+export function findItem(itemId, definition) {
+  // TODO: add tests
+  if (definition.id === itemId) {
+    return definition;
+  }
+  const items = definition.items || [];
+  for (let i = 0; i < items.length; i++) {
+    const result = findItem(itemId, items[i]);
+    if (result) {
+      return result;
+    }
+  }
+  return null;
 }
 
 export function computeItemState(currentItem, formState) {
@@ -260,6 +274,6 @@ export function computeFormState(definition, values, props, otherData) {
     props,
   }, otherData);
   const newState = computeItemState(definition, formState);
-  console.log('computed', newState, firedRules);
+  // console.log('computed', newState, firedRules);
   return newState;
 }

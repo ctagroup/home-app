@@ -5,6 +5,7 @@ import Surveys from '/imports/api/surveys/surveys';
 import viSpdatFamily2 from '/imports/config/surveys/viSpdatFamily2';
 import viSpdatSinge201 from '/imports/config/surveys/viSpdatSingle2.0.1';
 import viSpdatTay1 from '/imports/config/surveys/viSpdatTay1';
+import testSurvey from '/imports/config/surveys/testSurvey';
 
 Meteor.startup(() => {
   let version = AppSettings.get('version', 10);
@@ -57,7 +58,7 @@ Meteor.startup(() => {
 
   if (version === 12) {
     const surveys = {};
-    [viSpdatFamily2, viSpdatSinge201, viSpdatTay1].forEach(s => (surveys[s.id] = s));
+    [viSpdatFamily2, viSpdatSinge201, viSpdatTay1, testSurvey].forEach(s => (surveys[s.id] = s));
     Object.keys(surveys).forEach((id) => {
       const definition = surveys[id];
       const survey = {
