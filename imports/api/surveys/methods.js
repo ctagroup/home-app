@@ -24,7 +24,7 @@ Meteor.methods({
     try {
       Meteor.call('surveys.upload', id);
     } catch (e) {
-      logger.error(`Failed to upload survey ${e}`);
+      logger.error(`Failed to upload survey ${e}`, e.stack);
       throw new Meteor.Error('hmis.api', `Survey updated, failed to upload! ${e}`);
     }
   },
@@ -40,20 +40,36 @@ Meteor.methods({
     const hc = HmisClient.create(Meteor.userId());
     const survey = Surveys.findOne(id);
     let hmis;
+    let surveyId;
     if (survey.hmis && survey.hmis.surveyId) {
+      surveyId = survey.hmis.surveyId;
       logger.info(`Uploading existing survey ${survey.title} (${id})`);
-      hc.api('survey2').updateSurvey(survey);
+      hc.api('survey2').updateSurvey(surveyId, survey);
       hmis = survey.hmis;
-      Surveys.update(id, { $set: { 'hmis.status': 'uploaded' } });
     } else {
       logger.info(`Uploading survey ${survey.title} (${id}) for the first time`);
-      const { surveyId } = hc.api('survey2').createSurvey(survey);
+      surveyId = hc.api('survey2').createSurvey(survey).surveyId;
       hmis = Object.assign({}, survey.hmis, {
         surveyId,
       });
-
-      hmis.status = 'uploaded';
-      Surveys.update(id, { $set: { hmis } });
     }
+
+    const sections = hc.api('survey').getSurveySections(surveyId);
+    if (sections.length === 0) {
+      const section = hc.api('survey').createSurveySection(surveyId, {
+        sectionText: survey.title,
+        sectionDetail: 'default section',
+        sectionWeight: 1,
+        order: 1,
+      });
+      hmis.defaultSectionId = section.surveySectionId;
+    } else {
+      hmis.defaultSectionId = sections[0].surveySectionId;
+    }
+    hmis.status = 'uploaded';
+    logger.debug('updating survey HMIS data', hmis);
+    Surveys.update(id, { $set: { hmis } });
+
+    //
   },
 });

@@ -62,7 +62,7 @@ export class SurveyApi extends ApiEndpoint {
     return this.doGet(url).surveySections.surveySections;
   }
 
-  createSurveySection(surveySection, surveyId) {
+  createSurveySection(surveyId, surveySection) {
     const url = `${BASE_URL}/surveys/${surveyId}/surveysections`;
     const body = { surveySection };
     return this.doPost(url, body).surveySection;
