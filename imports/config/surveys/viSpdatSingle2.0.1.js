@@ -61,18 +61,21 @@ const viSpdatSingle = {
         {
           id: 'client.language',
           type: 'question',
+          hmisId: '178a96d0-dc61-4a1c-9537-139156c4f99f',
           category: 'text',
           title: 'In what language do you feel best able to express yourself',
         },
         {
           id: 'client.dob',
           type: 'question',
+          hmisId: '2875c580-1046-4d1a-a21b-2ea7d90e0403',
           category: 'date',
           title: 'Date of Birth',
         },
         {
           id: 'client.age',
           type: 'question',
+          hmisId: '8a70a510-3035-4c45-8d7c-70e5e48117c2',
           category: 'number',
           title: 'Age',
         },
@@ -115,6 +118,7 @@ const viSpdatSingle = {
         {
           id: 'question1',
           type: 'question',
+          hmisId: 'bb5300c1-5b5b-464e-a20c-1d6c4ea7dff9',
           title: '1. Where do you sleep most frequently?',
           category: 'choice',
           options: ['Shelters', 'Transitional Housing', 'Safe Haven', 'Outdoors'],
@@ -143,6 +147,7 @@ const viSpdatSingle = {
         {
           id: 'question2',
           type: 'question',
+          hmisId: 'cb8f03ca-6481-4c54-b91d-517f887938b6',
           title: '2. How long has it been since you lived in permanent stable housing?',
           text: 'in years',
           category: 'number',
@@ -151,6 +156,7 @@ const viSpdatSingle = {
         {
           id: 'question3',
           type: 'question',
+          hmisId: 'eda30beb-2290-4414-97e9-e0c38487388d',
           title: '3. In the last three years, how many times have you been homeless?',
           category: 'number',
           refusable: true,
@@ -186,6 +192,7 @@ const viSpdatSingle = {
             {
               id: 'question4a',
               type: 'question',
+              hmisId: 'dd52746f-8dcb-4536-80df-07823e083646',
               title: 'a) Received health care at an emergency department/room?',
               category: 'choice',
               options: ['Yes', 'No'],
@@ -194,6 +201,7 @@ const viSpdatSingle = {
             {
               id: 'question4b',
               type: 'question',
+              hmisId: '67b96338-d1f1-4de9-8a40-43c0ffab8ed8',
               title: 'b) Taken an ambulance to the hospital?',
               category: 'choice',
               options: ['Yes', 'No'],
@@ -202,6 +210,7 @@ const viSpdatSingle = {
             {
               id: 'question4c',
               type: 'question',
+              hmisId: '4062595b-9d70-4d12-86d2-275cbb838419',
               title: 'c) Been hospitalized as an inpatient?',
               category: 'choice',
               options: ['Yes', 'No'],
@@ -210,6 +219,7 @@ const viSpdatSingle = {
             {
               id: 'question4d',
               type: 'question',
+              hmisId: 'e2968741-ba6f-4dc7-be50-98aabca335b4',
               title: `d) Used a crisis service, including sexual assault crisis, mental health
                 crisis, family/intimate violence, distress centers and suicide prevention
                 hotlines?`,
@@ -220,6 +230,7 @@ const viSpdatSingle = {
             {
               id: 'question4e',
               type: 'question',
+              hmisId: '355a2d95-9063-4ad0-ada1-b73a5503e278',
               title: `e) Talked to police because you witnessed a crime, were the victim of a crime,
                 or the alleged perpetrator of a crime or because the police told you that you
                 must move along?`,
@@ -230,6 +241,7 @@ const viSpdatSingle = {
             {
               id: 'question4f',
               type: 'question',
+              hmisId: '89dbcb50-c511-42a9-9838-21afaba7126d',
               title: `f) Stayed one or more nights in a holding cell, jail or prison, whether that
                 was a short-term stay like the drunk tank, a longer stay for a more serious
                 offence, or anything in between?`,
@@ -281,6 +293,7 @@ const viSpdatSingle = {
             {
               id: 'question5',
               type: 'question',
+              hmisId: '4467ba3e-644e-4d6e-a14e-ec126b2b5a3b',
               title: '5. Have you been attacked or beaten up since you’ve become homeless?',
               category: 'choice',
               options: ['Yes', 'No'],
@@ -289,6 +302,7 @@ const viSpdatSingle = {
             {
               id: 'question6',
               type: 'question',
+              hmisId: 'b5f84918-a748-4e87-9202-b658a5af3492',
               title: `6. Have you threatened to or tried to harm yourself or anyone else in
                 the last year?`,
               category: 'choice',
@@ -313,6 +327,7 @@ const viSpdatSingle = {
             {
               id: 'question7',
               type: 'question',
+              hmisId: '967d3a72-2642-4e22-84ba-4ab9848c4805',
               title: `7. Do you have any legal stuff going on right now that may result in
                 you being locked up, having to pay fines, or that make it more difficult
                 to rent a place to live?`,
@@ -337,6 +352,7 @@ const viSpdatSingle = {
             {
               id: 'question8',
               type: 'question',
+              hmisId: '2beb9a78-7a12-4453-b16a-318989387713',
               title: '8. Does anybody force or trick you to do things that you do not want to do?',
               category: 'choice',
               options: ['Yes', 'No'],
@@ -345,6 +361,7 @@ const viSpdatSingle = {
             {
               id: 'question9',
               type: 'question',
+              hmisId: 'f7eb072e-af20-451b-b7a8-945c59850f63',
               title: `9. Do you ever do things that may be considered to be risky like exchange sex
                 for money, run drugs for someone, have unprotected sex with someone you don’t know,
                 share a needle, or anything like that?`,
@@ -379,6 +396,7 @@ const viSpdatSingle = {
         {
           id: 'question10',
           type: 'question',
+          hmisId: '35e58f3f-4852-418f-a622-7ba210909ac2',
           title: `10. Is there any person, past landlord, business, bookie, dealer, or government
             group like the IRS that thinks you owe them money?`,
           category: 'choice',
@@ -388,6 +406,7 @@ const viSpdatSingle = {
         {
           id: 'question11',
           type: 'question',
+          hmisId: 'c221873f-cf22-4370-8a9e-cddb6a493af5',
           title: `11. Do you get any money from the government, a pension, an inheritance, working
             under the table, a regular job, or anything like that?`,
           category: 'choice',
@@ -413,6 +432,7 @@ const viSpdatSingle = {
         {
           id: 'question12',
           type: 'question',
+          hmisId: '04f67afd-a94a-494a-a71d-c900daadb732',
           title: `12. Do you have planned activities, other than just surviving, that make you feel
             happy and fulfilled?`,
           category: 'choice',
@@ -436,6 +456,7 @@ const viSpdatSingle = {
         {
           id: 'question13',
           type: 'question',
+          hmisId: 'a009b736-c133-4078-8738-b6f5700a5b2f',
           title: `13. Are you currently able to take care of basic needs like bathing, changing
             clothes, using a restroom, getting food and clean water and other things like that?`,
           category: 'choice',
@@ -459,6 +480,7 @@ const viSpdatSingle = {
         {
           id: 'question14',
           type: 'question',
+          hmisId: '7fa838bd-1a39-48f4-ab95-0cb4ac3377dd',
           title: `14. Is your current homelessness in any way caused by a relationship that broke
             down, an unhealthy or abusive relationship, or because family or friends caused you
             to become evicted?`,
@@ -490,6 +512,7 @@ const viSpdatSingle = {
         {
           id: 'question15',
           type: 'question',
+          hmisId: 'aa1282df-4581-452b-aa06-a4711ae96e6f',
           title: `15. Have you ever had to leave an apartment, shelter program, or other place
             you were staying because of your physical health?`,
           category: 'choice',
@@ -499,6 +522,7 @@ const viSpdatSingle = {
         {
           id: 'question16',
           type: 'question',
+          hmisId: 'de9997ef-2c53-44db-b120-62f546a6388b',
           title: `16. Do you have any chronic health issues with your liver, kidneys, stomach,
             lungs or heart?`,
           category: 'choice',
@@ -508,6 +532,7 @@ const viSpdatSingle = {
         {
           id: 'question17',
           type: 'question',
+          hmisId: 'bfc5bd4d-73aa-4e04-9419-79043f8e25ed',
           title: `17. If there was space available in a program that specifically assists people
             that live with HIV or AIDS, would that be of interest to you`,
           category: 'choice',
@@ -526,6 +551,7 @@ const viSpdatSingle = {
         {
           id: 'question19',
           type: 'question',
+          hmisId: '4bb37f95-c903-4095-a5e9-e616de2d5088',
           title: '19. When you are sick or not feeling well, do you avoid getting help?',
           category: 'choice',
           options: ['Yes', 'No'],
@@ -534,6 +560,7 @@ const viSpdatSingle = {
         {
           id: 'question20',
           type: 'question',
+          hmisId: '7baa6683-d9a1-4579-8aa4-1a69dc54b3d1',
           title: '20. Are you currently pregnant?',
           text: 'FOR FEMALE RESPONDENTS ONLY',
           category: 'choice',
@@ -562,6 +589,7 @@ const viSpdatSingle = {
         {
           id: 'question21',
           type: 'question',
+          hmisId: 'a9cb33ef-86b3-4038-9f5f-e78233acb0a3',
           title: `21. Has your drinking or drug use led you to being kicked out of an
             apartment or program where you were staying in the past?`,
           category: 'choice',
@@ -571,6 +599,7 @@ const viSpdatSingle = {
         {
           id: 'question22',
           type: 'question',
+          hmisId: '0a40fb07-6b62-41e2-8eda-b264b19335d6',
           title: `22. Will drinking or drug use make it difficult for you to stay housed or
             afford your housing?`,
           category: 'choice',
@@ -601,6 +630,7 @@ const viSpdatSingle = {
             {
               id: 'question23a',
               type: 'question',
+              hmisId: '59b9eb5d-4923-4fae-bc66-0eb14bcba186',
               title: 'a) A mental health issue or concern?',
               category: 'choice',
               options: ['Yes', 'No'],
@@ -609,6 +639,7 @@ const viSpdatSingle = {
             {
               id: 'question23b',
               type: 'question',
+              hmisId: 'a51bbe68-4fd5-4e3d-b353-1e329970b557',
               title: 'b) A past head injury?',
               category: 'choice',
               options: ['Yes', 'No'],
@@ -617,6 +648,7 @@ const viSpdatSingle = {
             {
               id: 'question23c',
               type: 'question',
+              hmisId: 'bbb6e063-d9c9-4bd5-b7f6-96801f723e82',
               title: 'c) A learning disability, developmental disability, or other impairment',
               category: 'choice',
               options: ['Yes', 'No'],
@@ -627,6 +659,7 @@ const viSpdatSingle = {
         {
           id: 'question24',
           type: 'question',
+          hmisId: 'ca9b9ca8-7b77-4eb8-9b4c-5b433d1a70de',
           title: `24. Do you have any mental health or brain issues that would make it hard for
             you to live independently because you’d need help?`,
           category: 'choice',
@@ -670,6 +703,7 @@ const viSpdatSingle = {
         {
           id: 'question25',
           type: 'question',
+          hmisId: 'e1e83973-80bd-45e2-acc3-0c0b17c18222',
           title: `25. Are there any medications that a doctor said you should be taking that, for
             whatever reason, you are not taking?`,
           category: 'choice',
@@ -679,6 +713,7 @@ const viSpdatSingle = {
         {
           id: 'question26',
           type: 'question',
+          hmisId: '21cf8511-ba6f-44f3-b929-4d2849a7aae2',
           title: `26. Are there any medications like painkillers that you don’t take the way the
             doctor prescribed or where you sell the medication?`,
           category: 'choice',
@@ -703,6 +738,7 @@ const viSpdatSingle = {
         {
           id: 'question27',
           type: 'question',
+          hmisId: 'd154ff3c-50f0-4dd7-885c-86a1c7bd311a',
           title: `27. Has your current period of homelessness been caused by an experience of
             emotional, physical, psychological, sexual, or other type of abuse, or by any
             other trauma you have experienced`,
@@ -809,6 +845,7 @@ const viSpdatSingle = {
         {
           id: 'followup.picture',
           type: 'question',
+          hmisId: 'c7c60f70-1919-40e6-8f16-ce96288d6a62',
           category: 'choice',
           title: `Ok, now I’d like to take your picture so that it is easier to find you and
             confirm your identity in the future. May I do so?`,
