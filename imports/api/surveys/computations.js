@@ -277,3 +277,13 @@ export function computeFormState(definition, values, props, otherData) {
   // console.log('computed', newState, firedRules);
   return newState;
 }
+
+export function getScoringVariables(formState, scorePrefix = 'score.') {
+  const variables = formState.variables;
+  return Object.keys(variables)
+    .filter(name => name.indexOf(scorePrefix) === 0)
+    .map(name => ({
+      name,
+      value: variables[name],
+    }));
+}

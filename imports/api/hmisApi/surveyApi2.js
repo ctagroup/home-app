@@ -9,6 +9,7 @@ export class SurveyApi2 extends ApiEndpoint {
   createSurvey(survey) {
     const hmisUserData = Meteor.user().services.HMIS;
     const url = `${BASE_URL}/surveys`;
+    // TODO: move doc transformation to the caller
     const body = {
       survey: {
         surveyTitle: survey.title,

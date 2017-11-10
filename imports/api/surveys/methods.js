@@ -1,5 +1,6 @@
 import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
+import { getScoringVariables } from '/imports/api/surveys/computations';
 import Surveys from '/imports/api/surveys/surveys';
 
 Meteor.methods({
@@ -39,8 +40,11 @@ Meteor.methods({
   'surveys.upload'(id) {
     const hc = HmisClient.create(Meteor.userId());
     const survey = Surveys.findOne(id);
+    const definition = JSON.parse(survey.definition);
     let hmis;
     let surveyId;
+
+    // upload survey
     if (survey.hmis && survey.hmis.surveyId) {
       surveyId = survey.hmis.surveyId;
       logger.info(`Uploading existing survey ${survey.title} (${id})`);
@@ -53,6 +57,10 @@ Meteor.methods({
         surveyId,
       });
     }
+
+    // create survey section for each scoring variable
+    console.log('sssvvv', getScoringVariables(definition));
+
 
     const sections = hc.api('survey').getSurveySections(surveyId);
     if (sections.length === 0) {
@@ -69,7 +77,5 @@ Meteor.methods({
     hmis.status = 'uploaded';
     logger.debug('updating survey HMIS data', hmis);
     Surveys.update(id, { $set: { hmis } });
-
-    //
   },
 });
