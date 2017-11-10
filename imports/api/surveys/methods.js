@@ -2,6 +2,7 @@ import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
 import { getScoringVariables } from '/imports/api/surveys/computations';
 import Surveys from '/imports/api/surveys/surveys';
+import { mapUploadedSurveySections } from '/imports/api/surveys/helpers';
 
 Meteor.methods({
   'surveys.create'(doc) {
@@ -59,21 +60,36 @@ Meteor.methods({
     }
 
     // create survey section for each scoring variable
-    console.log('sssvvv', getScoringVariables(definition));
+    const existingSections = mapUploadedSurveySections(
+      hc.api('survey').getSurveySections(surveyId)
+    );
+    const uploadedScoringVariables = new Set(
+      existingSections.filter(s => s.type === 'score').map(s => s.id)
+    );
+    const defaultSection = existingSections.filter(s => s.type === 'default')[0];
 
+    const allScoringVariables = getScoringVariables(definition).map(v => v.name);
+    const newScoringVariables = allScoringVariables.filter(v => !uploadedScoringVariables.has(v));
 
-    const sections = hc.api('survey').getSurveySections(surveyId);
-    if (sections.length === 0) {
-      const section = hc.api('survey').createSurveySection(surveyId, {
-        sectionText: survey.title,
-        sectionDetail: 'default section',
+    if (!defaultSection) {
+      // add a default section
+      logger.info('creating default section');
+      hc.api('survey').createSurveySection(surveyId, {
+        sectionText: 'default',
+        sectionDetail: 'default section for question responses',
+        sectionWeight: 0,
+        order: 1,
+      });
+    }
+    newScoringVariables.forEach((v) => {
+      logger.info('creating section for variable', v);
+      hc.api('survey').createSurveySection(surveyId, {
+        sectionText: 'score',
+        sectionDetail: v,
         sectionWeight: 1,
         order: 1,
       });
-      hmis.defaultSectionId = section.surveySectionId;
-    } else {
-      hmis.defaultSectionId = sections[0].surveySectionId;
-    }
+    });
     hmis.status = 'uploaded';
     logger.debug('updating survey HMIS data', hmis);
     Surveys.update(id, { $set: { hmis } });

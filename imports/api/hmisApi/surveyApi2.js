@@ -3,8 +3,6 @@ import { ApiEndpoint } from './apiEndpoint';
 
 const BASE_URL = 'https://www.hmislynk.com/survey-api/rest/v2';
 
-const DEFAULT_GROUP_ID = '95bdca23-5135-4552-9f11-819cab1aaa45';
-
 export class SurveyApi2 extends ApiEndpoint {
   createSurvey(survey) {
     const hmisUserData = Meteor.user().services.HMIS;

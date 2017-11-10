@@ -1,8 +1,9 @@
 import { HmisClient } from '/imports/api/hmisApi';
 import Surveys from '/imports/api/surveys/surveys';
+import { mapUploadedSurveySections } from '/imports/api/surveys/helpers';
 import { computeFormState, findItem } from '/imports/api/surveys/computations';
 import { logger } from '/imports/utils/logger';
-import { escapeKeys, unescapeKeys } from '/imports/api/utils';
+import { escapeKeys } from '/imports/api/utils';
 import Responses, { ResponseStatus } from '/imports/api/responses/responses';
 
 function getResponsesToUpload(values, definition, defaultSectionId) {
@@ -72,8 +73,6 @@ Meteor.methods({
 
     const response = Responses.findOne(id);
     const { clientId, surveyId, values } = response;
-
-    const hmisUser = Meteor.user().services.HMIS.id;
     const survey = Surveys.findOne(surveyId);
 
     if (!survey) {
@@ -86,120 +85,56 @@ Meteor.methods({
 
     const definition = JSON.parse(survey.definition);
 
-    try {
-      const hc = HmisClient.create(Meteor.userId());
-      const client = hc.api('client').getClient(response.clientId, response.clientSchema);
-      const formState = computeFormState(definition, response.values, {}, { client });
-      const responses = getResponsesToUpload(values, definition, survey.hmis.defaultSectionId);
-      const scores = getScoresToUpload(formState.variables);
-      console.log(responses, scores);
+    const hc = HmisClient.create(Meteor.userId());
 
-      const { submissionId } = hc.api('survey').sendResponses(
-        clientId, survey.hmis.surveyId, responses
-      );
-      logger.info('Responses submitted. Submission id ', submissionId);
+    const client = hc.api('client').getClient(response.clientId, response.clientSchema);
+    const formState = computeFormState(definition, response.values, {}, { client });
+    const scores = getScoresToUpload(formState.variables);
+
+    try {
+      const responses = getResponsesToUpload(values, definition, survey.hmis.defaultSectionId);
+
+      if (!response.submissionId) {
+        logger.info(`Submitted response ${id} for the first time`);
+        const { submissionId } = hc.api('survey').createResponse(
+          clientId, survey.hmis.surveyId, responses
+        );
+        Responses.update(id, { $set: {
+          submissionId,
+          submittedAt: new Date(),
+        } });
+      } else {
+        logger.info(`Resubmitting response ${id}`, responses);
+        hc.api('survey').updateResponse(
+          clientId, survey.hmis.surveyId, response.submissionId, responses
+        );
+        Responses.update(id, { $set: {
+          submittedAt: new Date(),
+        } });
+      }
     } catch (e) {
-      logger.error(`${e}`, e.stack);
+      logger.error(`Response upload ${e}`, e.stack);
       throw new Meteor.Error('responses', e);
     }
 
-    // TODO: check survey update time < response time
-
-    // check all questions exists?
-
-    /*
-    const escaped = unescapeKeys(values);
-    const valuesToSend = Object.keys(escaped).map(key => ({
-      questionId: key,
-      responseText: escaped[key],
-    }));
-
     try {
-      const hc = HmisClient.create(Meteor.userId());
-      hc.api('survey').sendResponses(clientId, surveyId, valuesToSend);
-      Responses.update(id, { $set: { status: ResponseStatus.UPLOADED } });
-    } catch (err) {
-      Responses.update(id, { $set: { status: ResponseStatus.COMPLETED } });
-      throw err;
-    }
-    */
-  },
-
-  /*
-  sendResponse(clientId, surveyId, responses) {
-    logger.info(`METHOD[${Meteor.userId()}]: sendResponse`, clientId, surveyId, responses);
-    const hc = HmisClient.create(Meteor.userId());
-    // will send all at one time.
-    return hc.api('survey').sendResponses(clientId, surveyId, responses);
-  },
-
-  updateSubmissionIdForResponses(_id, submissionId) {
-    logger.info(`METHOD[${Meteor.userId()}]: updateSubmissionIdForResponses`, _id, submissionId);
-    Responses.update(_id, { $set: { submissionId } });
-  },
-  updateResponseStatus(_id, responsestatus) {
-    logger.info(`METHOD[${Meteor.userId()}]: updateResponseStatus`, _id, responsestatus);
-    Responses.update(_id, { $set: { responsestatus } });
-  },
-
-  uploadResponse(responseId) {
-    logger.info(`METHOD[${Meteor.userId()}]: uploadResponse`, responseId);
-    this.unblock();
-    // Checking if SPDAT or HUD. If SPDAT, then only upload.
-    try {
-      const response = Responses.findOne({ _id: responseId });
-      const survey = Surveys.findOne({ _id: response.surveyID });
-      if (survey.stype !== 'hud') {
-        Meteor.call('updateResponseStatus', responseId, 'Uploading');
-
-        logger.debug('sending response to HMIS', responseId);
-        const sendResponseToHmisSync = Meteor.wrapAsync(
-          responseHmisHelpers.sendResponseToHmis);
-        const res = sendResponseToHmisSync(responseId, {}, true);
-
-        if (res) {
-          logger.debug('calculating response score', responseId);
-          // Calculate the scores now and send them too.
-          let score;
-          // Send response Id, survey Id and fromDb to true to score helpers.
-          switch (survey.stype) {
-            case 'spdat-t':
-              score = spdatScoreHelpers.calcSpdatTayScore(survey._id, responseId, true);
-              // upload the scores too.
-              break;
-            case 'spdat-f':
-              score = spdatScoreHelpers.calcSpdatFamilyScore(survey._id, responseId, true);
-              break;
-            case 'spdat-s':
-              score = spdatScoreHelpers.calcSpdatSingleScore(survey._id, responseId, true);
-              break;
-            default:
-              score = 0;
-              // Should be other than VI-SPDAT.
-              break;
-          }
-          // On getting the scores, update them.
-          logger.debug('sending score to HMIS', responseId, score);
-
-          Meteor.call('sendScoresToHMIS', survey.apiSurveyServiceId,
-                                  response.clientID, score);
-
-          // save the submission Id.
-          logger.debug('updating submission id', responseId);
-          Meteor.call('updateSubmissionIdForResponses', responseId, res.submissionId);
-        } else {
-          throw new Meteor.Error('Error sending Response to Hmis');
+      const sectionsResponse = hc.api('survey').getSurveySections(survey.hmis.surveyId);
+      const existingSections = mapUploadedSurveySections(sectionsResponse);
+      scores.forEach(score => {
+        logger.info('submitting score', score);
+        const scoreSection = existingSections.filter(s => s.id === score.name)[0];
+        if (!scoreSection) {
+          throw new Meteor.Error('responses',
+            `Score ${score.name} has no section in HMIS. Re-upload the survey`
+          );
         }
-      } else {
-        throw new Meteor.Error('Response upload for HUD not implemented');
-      }
+        hc.api('survey').createSectionScores(clientId, survey.hmis.surveyId, scoreSection.hmisId, {
+          sectionScore: score.value,
+        });
+      });
     } catch (e) {
-      logger.error(e);
-      throw e;
-    } finally {
-      // TODO: ???
-      Meteor.call('updateResponseStatus', responseId, 'Completed');
+      logger.error(`Score upload ${e}`, e.stack);
+      throw new Meteor.Error('responses', `Response submitted, failed to upload scores: ${e}`);
     }
   },
-  */
 });
