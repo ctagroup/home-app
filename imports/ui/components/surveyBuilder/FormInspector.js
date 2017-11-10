@@ -15,9 +15,6 @@ export default class FormInspector extends React.Component {
     });
 
     return new SimpleSchema({
-      title: {
-        type: String,
-      },
       variables: {
         type: [VariableSchema],
         optional: true,

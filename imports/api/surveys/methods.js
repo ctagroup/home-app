@@ -16,19 +16,27 @@ Meteor.methods({
       logger.error(`Failed to upload survey ${e}`);
       throw new Meteor.Error('hmis.api', `Survey created, failed to upload! ${e}`);
     }
+    return id;
   },
 
   'surveys.update'(id, doc) {
     logger.info(`METHOD[${Meteor.userId()}]: surveys.update`, id, doc);
-    Surveys.schema.clean(doc);
-    check(doc, Surveys.schema);
-    Surveys.update(id, doc, { bypassCollection2: true });
+    if (doc.$set) {
+      check(doc, Surveys.schema);
+      Surveys.update(id, doc);
+    } else {
+      Surveys.schema.clean(doc);
+      check(doc, Surveys.schema);
+      Surveys.update(id, doc, { bypassCollection2: true });
+    }
+
     try {
       Meteor.call('surveys.upload', id);
     } catch (e) {
       logger.error(`Failed to upload survey ${e}`, e.stack);
       throw new Meteor.Error('hmis.api', `Survey updated, failed to upload! ${e}`);
     }
+    return true;
   },
 
   'surveys.delete'(id) {

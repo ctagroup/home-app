@@ -194,35 +194,21 @@ export default class SurveyBuilder extends React.Component {
 
   handleSaveFormDefinition() {
     const surveyId = this.props.survey._id;
-    const definition = this.state.definition;
+    const definition = JSON.stringify(this.state.definition);
 
-    const surveyDoc = {
-      title: definition.title || 'Untitled Survey',
-      active: false,
-      editable: true,
-      definition: JSON.stringify(definition),
+    const updateDoc = {
+      $set: {
+        definition,
+      },
     };
-
-    if (surveyId) {
-      const updatedDoc = Object.assign(this.props.survey, surveyDoc);
-      Meteor.call('surveys.update', surveyId, updatedDoc, (err) => {
-        if (err) {
-          Alert.error(err);
-        } else {
-          Alert.success('Survey updated');
-          Router.go('adminDashboardsurveysView');
-        }
-      });
-    } else {
-      Meteor.call('surveys.create', surveyDoc, (err) => {
-        if (err) {
-          Alert.error(err);
-        } else {
-          Alert.success('Survey created');
-          Router.go('adminDashboardsurveysView');
-        }
-      });
-    }
+    Meteor.call('surveys.update', surveyId, updateDoc, (err) => {
+      if (err) {
+        Alert.error(err);
+      } else {
+        Alert.success('Survey updated');
+        Router.go('adminDashboardsurveysView');
+      }
+    });
   }
 
   renderItem(item) {

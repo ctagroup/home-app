@@ -4,8 +4,8 @@ import '/imports/ui/dataTable/dataTableDeleteButton';
 
 export const TableDom = '<"box"<"box-header"<"box-toolbar"<"clearfix"ri><"pull-left"<lf>><"pull-right"p>>><"box-body table-responsive"t>>'; // eslint-disable-line max-len
 
-export function editButton(path) {
-  return {
+export function editButton(path, options) {
+  return Object.assign({
     data: '_id',
     title: 'Edit',
     render() {
@@ -20,7 +20,7 @@ export function editButton(path) {
     },
     width: '45px',
     orderable: false,
-  };
+  }, options);
 }
 
 export function deleteHouseholdButton() {

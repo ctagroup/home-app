@@ -52,8 +52,8 @@ const tableOptions = {
         return 'not uploaded';
       },
     },
-
     editButton('surveysEdit'),
+    editButton('surveysEditDefinition', { title: 'Builder', width: '60px' }),
     deleteSurveyButton(),
   ],
   dom: TableDom,
