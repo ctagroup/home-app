@@ -76,7 +76,7 @@ export default class Survey extends React.Component {
     const doc = {
       clientId,
       clientSchema,
-      surveyId: this.props.definition.id,
+      surveyId: this.props.surveyId,
       values: this.state.values,
     };
 

@@ -10,4 +10,10 @@ Template.responsesNew.helpers({
   definition() {
     return JSON.parse(this.survey.definition);
   },
+  surveyId() {
+    return this.survey._id;
+  },
+  isDebugEnabled() {
+    return true;
+  },
 });

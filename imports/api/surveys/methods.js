@@ -68,13 +68,16 @@ Meteor.methods({
     }
 
     // create survey section for each scoring variable
-    const existingSections = mapUploadedSurveySections(
-      hc.api('survey').getSurveySections(surveyId)
-    );
+    const surveySectionsResponse = hc.api('survey').getSurveySections(surveyId);
+    const existingSections = mapUploadedSurveySections(surveySectionsResponse);
+    logger.debug('existing sections', existingSections);
+
     const uploadedScoringVariables = new Set(
       existingSections.filter(s => s.type === 'score').map(s => s.id)
     );
     const defaultSection = existingSections.filter(s => s.type === 'default')[0];
+
+    logger.debug('default section', defaultSection);
 
     const allScoringVariables = getScoringVariables(definition).map(v => v.name);
     const newScoringVariables = allScoringVariables.filter(v => !uploadedScoringVariables.has(v));

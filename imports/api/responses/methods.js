@@ -68,6 +68,7 @@ Meteor.methods({
   },
 
   'responses.uploadToHmis'(id) {
+    logger.info(`METHOD[${Meteor.userId()}]: responses.uploadToHmis`, id);
     check(id, String);
     Responses.update(id, { $set: { status: ResponseStatus.UPLOADIND } });
 
@@ -91,37 +92,40 @@ Meteor.methods({
     const formState = computeFormState(definition, response.values, {}, { client });
     const scores = getScoresToUpload(formState.variables);
 
-    try {
-      const responses = getResponsesToUpload(values, definition, survey.hmis.defaultSectionId);
+    const sectionsResponse = hc.api('survey').getSurveySections(survey.hmis.surveyId);
+    const existingSections = mapUploadedSurveySections(sectionsResponse);
+    logger.debug('existing sections', existingSections);
 
-      if (!response.submissionId) {
-        logger.info(`Submitted response ${id} for the first time`);
-        const { submissionId } = hc.api('survey').createResponse(
-          clientId, survey.hmis.surveyId, responses
-        );
-        Responses.update(id, { $set: {
-          submissionId,
-          submittedAt: new Date(),
-        } });
-      } else {
-        logger.info(`Resubmitting response ${id}`, responses);
-        hc.api('survey').updateResponse(
-          clientId, survey.hmis.surveyId, response.submissionId, responses
-        );
-        Responses.update(id, { $set: {
-          submittedAt: new Date(),
-        } });
+    const defaultSectionId = existingSections.find(s => s.type === 'default').hmisId;
+
+    try {
+      const responses = getResponsesToUpload(values, definition, defaultSectionId);
+
+      if (response.submissionId) {
+        logger.info(`Deleting old responses ${id}`);
+        hc.api('survey')
+          .getResponses(clientId, survey.hmis.surveyId)
+          .map(r => hc.api('survey').deleteResponse(
+            clientId, survey.hmis.surveyId, r.responseId)
+          );
       }
+
+      logger.info(`Submitting response ${id}`);
+      const { submissionId } = hc.api('survey').createResponse(
+        clientId, survey.hmis.surveyId, responses
+      );
+      Responses.update(id, { $set: {
+        submissionId,
+        submittedAt: new Date(),
+      } });
     } catch (e) {
       logger.error(`Response upload ${e}`, e.stack);
       throw new Meteor.Error('responses', e);
     }
 
     try {
-      const sectionsResponse = hc.api('survey').getSurveySections(survey.hmis.surveyId);
-      const existingSections = mapUploadedSurveySections(sectionsResponse);
       scores.forEach(score => {
-        logger.info('submitting score', score);
+        logger.info('Submitting score', score);
         const scoreSection = existingSections.filter(s => s.id === score.name)[0];
         if (!scoreSection) {
           throw new Meteor.Error('responses',
@@ -134,7 +138,7 @@ Meteor.methods({
       });
     } catch (e) {
       logger.error(`Score upload ${e}`, e.stack);
-      throw new Meteor.Error('responses', `Response submitted, failed to upload scores: ${e}`);
+      throw new Meteor.Error('responses', `Response submitted but failed to upload scores: ${e}`);
     }
   },
 });
