@@ -21,14 +21,15 @@ export default class SurveyBuilder extends React.Component {
       inspectedItem: null, // definition.items[1].items[0].items[0],
       questionModalIsOpen: false,
     };
+    this.addSectionToDefinition = this.addSectionToDefinition.bind(this);
+    this.addScoreToDefinition = this.addScoreToDefinition.bind(this);
     this.generateNodeProps = this.generateNodeProps.bind(this);
     this.handleItemChange = this.handleItemChange.bind(this);
     this.handleCloseInspector = this.handleCloseInspector.bind(this);
-    this.openQuestionModal = this.openQuestionModal.bind(this);
     this.handleCloseQuestionModal = this.handleCloseQuestionModal.bind(this);
-    this.addSectionToDefinition = this.addSectionToDefinition.bind(this);
-    this.addScoreToDefinition = this.addScoreToDefinition.bind(this);
+    this.handleTreeChange = this.handleTreeChange.bind(this);
     this.handleSaveFormDefinition = this.handleSaveFormDefinition.bind(this);
+    this.openQuestionModal = this.openQuestionModal.bind(this);
   }
 
   componentWillMount() {
@@ -105,6 +106,15 @@ export default class SurveyBuilder extends React.Component {
     return tree;
   }
 
+  treeToDefinition(treeData, prevDefinition) {
+    function mapNode(node) {
+      const items = (node.children || []).map(mapNode);
+      return Object.assign({}, node.definition, { items });
+    }
+    const items = treeData.map(mapNode);
+    return Object.assign(prevDefinition, { items });
+  }
+
   generateNodeProps({ node }) {
     return {
       buttons: [
@@ -168,6 +178,14 @@ export default class SurveyBuilder extends React.Component {
 
   handleCloseInspector() {
     this.setState({ inspectedItem: null });
+  }
+
+  handleTreeChange(treeData) {
+    const definition = this.treeToDefinition(treeData, this.state.definition);
+    this.setState({
+      definition,
+      treeData: this.definitionToTree(definition, treeData),
+    });
   }
 
   openQuestionModal() {
@@ -272,7 +290,7 @@ export default class SurveyBuilder extends React.Component {
           <div className="tree-view">
             <SortableTree
               treeData={this.state.treeData}
-              onChange={treeData => this.setState({ treeData })}
+              onChange={this.handleTreeChange}
               generateNodeProps={this.generateNodeProps}
               dndType={externalNodeType}
               shouldCopyOnOutsideDrop={shouldCopyOnOutsideDrop}
