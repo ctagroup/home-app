@@ -79,8 +79,12 @@ Meteor.methods({
 
     logger.debug('default section', defaultSection);
 
+    logger.debug('all scoring variables', getScoringVariables(definition));
+
     const allScoringVariables = getScoringVariables(definition).map(v => v.name);
     const newScoringVariables = allScoringVariables.filter(v => !uploadedScoringVariables.has(v));
+
+    logger.debug(`${newScoringVariables.length} new scoring variables`, newScoringVariables);
 
     if (!defaultSection) {
       // add a default section
