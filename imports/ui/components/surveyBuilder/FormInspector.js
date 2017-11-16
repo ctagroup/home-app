@@ -1,5 +1,7 @@
 import React from 'react';
 import AutoForm from 'uniforms-bootstrap3/AutoForm';
+import AutoField from 'uniforms-bootstrap3/AutoField';
+import VariableField from './VariableField';
 
 
 export default class FormInspector extends React.Component {
@@ -42,7 +44,9 @@ export default class FormInspector extends React.Component {
           schema={schema}
           model={model}
           onChange={this.props.onChange}
-        />
+        >
+          <AutoField name="variables" itemProps={{ component: VariableField }} />
+        </AutoForm>
       </div>
     );
   }
