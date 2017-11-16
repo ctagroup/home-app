@@ -1,6 +1,7 @@
 import React from 'react';
 import AutoForm from 'uniforms-bootstrap3/AutoForm';
 import AutoField from 'uniforms-bootstrap3/AutoField';
+import RuleField from '/imports/ui/components/surveyBuilder/formFields/RuleField';
 import { GridDefinitionSchema } from '/imports/api/surveys/definitionSchemas';
 
 export default class GridItemForm extends React.Component {
@@ -14,7 +15,7 @@ export default class GridItemForm extends React.Component {
         <AutoField name="id" />
         <AutoField name="type" />
         <AutoField name="title" />
-        <AutoField name="rules" />
+        <AutoField name="rules" itemProps={{ component: RuleField }} />
       </AutoForm>
     );
   }

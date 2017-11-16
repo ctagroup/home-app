@@ -2,6 +2,7 @@ import React from 'react';
 import AutoForm from 'uniforms-bootstrap3/AutoForm';
 import AutoField from 'uniforms-bootstrap3/AutoField';
 import { TextDefinitionSchema } from '/imports/api/surveys/definitionSchemas';
+import RuleField from '/imports/ui/components/surveyBuilder/formFields/RuleField';
 import RichTextEditor from './RichTextEditor';
 
 export default class TextItemForm extends React.Component {
@@ -23,7 +24,7 @@ export default class TextItemForm extends React.Component {
             [{ list: 'ordered' }, { list: 'bullet' }],
           ]}
         />
-        <AutoField name="rules" />
+        <AutoField name="rules" itemProps={{ component: RuleField }} />
       </AutoForm>
     );
   }

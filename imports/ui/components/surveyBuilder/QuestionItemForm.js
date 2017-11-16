@@ -1,6 +1,7 @@
 import React from 'react';
 import AutoForm from 'uniforms-bootstrap3/AutoForm';
 import AutoField from 'uniforms-bootstrap3/AutoField';
+import RuleField from '/imports/ui/components/surveyBuilder/formFields/RuleField';
 import { QuestionDefinitionSchema } from '/imports/api/surveys/definitionSchemas';
 
 export default class QuestionItemForm extends React.Component {
@@ -28,7 +29,7 @@ export default class QuestionItemForm extends React.Component {
         <AutoField name="category" />
         {choiceFields}
         <AutoField name="refusable" />
-        {/* <AutoField name="rules" /> */}
+        <AutoField name="rules" itemProps={{ component: RuleField }} />
       </AutoForm>
     );
   }

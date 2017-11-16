@@ -1,7 +1,7 @@
 import React from 'react';
 import AutoForm from 'uniforms-bootstrap3/AutoForm';
 import AutoField from 'uniforms-bootstrap3/AutoField';
-import VariableField from './VariableField';
+import VariableField from '/imports/ui/components/surveyBuilder/formFields/VariableField';
 
 
 export default class FormInspector extends React.Component {

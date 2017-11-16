@@ -18,7 +18,7 @@ export default class SurveyBuilder extends React.Component {
     const definition = JSON.parse(props.survey.definition);
     this.state = {
       definition,
-      inspectedItem: null, // definition.items[1].items[0].items[0],
+      inspectedItem:  definition.items[2],
       questionModalIsOpen: false,
     };
     this.addSectionToDefinition = this.addSectionToDefinition.bind(this);
