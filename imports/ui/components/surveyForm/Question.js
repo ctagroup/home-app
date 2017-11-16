@@ -194,6 +194,28 @@ export default class Question extends Item {
     );
   }
 
+  renderTitle() {
+    const icon = this.props.item.hmisId ?
+      null : <i className="fa fa-exclamation-circle" aria-hidden></i>;
+    const title = `${this.props.item.title}`;
+    switch (this.props.level) {
+      case 1:
+        return <h1 className="title">{title} {icon}</h1>;
+      case 2:
+        return <h2 className="title">{title} {icon}</h2>;
+      case 3:
+        return <h3 className="title">{title} {icon}</h3>;
+      case 4:
+        return <h4 className="title">{title} {icon}</h4>;
+      case 5:
+        return <h5 className="title">{title} {icon}</h5>;
+      case 6:
+        return <h6 className="title">{title} {icon}</h6>;
+      default:
+        return <div className="title">{title} {icon}</div>;
+    }
+  }
+
 
   render() {
     const { id, text } = this.props.item;

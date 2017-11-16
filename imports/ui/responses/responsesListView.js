@@ -8,10 +8,18 @@ import './responsesListView.html';
 
 
 const uploadingHtml = '<i class="fa fa-spinner fa-pulse"></i>';
-function completedHtml(response) {
+function completedHtml(response, status) {
+  let statusClass;
+  switch (status) {
+    case 'warning':
+      statusClass = 'text-warning';
+      break;
+    default:
+      statusClass = 'text-success';
+  }
   const date = moment(response.submittedAt).format('MM/DD/YYYY h:mm A');
   return `
-    <span class="text-success">
+    <span class="${statusClass}">
       <i class="fa fa-check"></i> Submitted on ${date}
     </span>
     <br />
@@ -144,13 +152,19 @@ Template.responsesListView.events(
       const originalHtml = parent.html();
       parent.html(uploadingHtml);
 
-      Meteor.call('responses.uploadToHmis', responseId, (err) => {
+      Meteor.call('responses.uploadToHmis', responseId, (err, invalidResponses) => {
         if (err) {
-          parent.html(originalHtml);
           Alert.error(err);
+          parent.html(originalHtml);
         } else {
-          Alert.success('Response uploaded');
-          parent.html(completedHtml(Responses.findOne(responseId)));
+          if (invalidResponses.length > 0) {
+            const list = invalidResponses.map(r => r.id).join(', ');
+            Alert.warning(`Success but ${invalidResponses.length} responses not uploaded: ${list}`);
+            parent.html(completedHtml(Responses.findOne(responseId), 'warning'));
+          } else {
+            Alert.success('Response uploaded');
+            parent.html(completedHtml(Responses.findOne(responseId)));
+          }
         }
       });
     },

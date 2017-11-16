@@ -57,9 +57,11 @@ Meteor.startup(() => {
   }
 
   if (version === 12) {
+    logger.info('upserting surveys');
     const surveys = {};
     [viSpdatFamily2, viSpdatSinge201, viSpdatTay1, testSurvey].forEach(s => (surveys[s.id] = s));
     Object.keys(surveys).forEach((id) => {
+      logger.debug(id);
       const definition = surveys[id];
       const survey = {
         title: definition.title,
@@ -69,7 +71,7 @@ Meteor.startup(() => {
         definition: JSON.stringify(definition),
       };
       check(survey, Surveys.schema);
-      Surveys.upsert(id, { $set: { survey } }, { bypassCollection2: true });
+      Surveys.upsert(id, { $set: { ...survey } }, { bypassCollection2: true });
     });
   }
 
