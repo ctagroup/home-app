@@ -1,42 +1,47 @@
 export const RuleConditionDefinitionSchema = new SimpleSchema({
 });
 
+export const RuleActionDefinitionSchema = new SimpleSchema({
+});
+
 export const RuleDefinitionSchema = new SimpleSchema({
   type: {
     type: String,
     allowedValues: ['always', 'any', 'all'],
   },
-  conditions: {
-    type: [String],
-    minCount: 3,
-    maxCount: 3,
+  always: {
+    type: Array,
     optional: true,
   },
-
-  always: {
+  'always.$': {
     type: [String],
-    minCount: 3,
-    maxCount: 3,
     optional: true,
   },
   any: {
+    type: Array,
+    optional: true,
+  },
+  'any.$': {
     type: [String],
-    minCount: 3,
-    maxCount: 3,
     optional: true,
   },
   all: {
+    type: Array,
+    optional: true,
+  },
+  'all.$': {
     type: [String],
-    minCount: 3,
-    maxCount: 3,
     optional: true,
   },
   then: {
-    type: [String],
-    minCount: 3,
-    maxCount: 3,
+    type: Array,
     optional: true,
   },
+  'then.$': {
+    type: [String],
+    optional: true,
+  },
+
 });
 
 export const GridColumnDefinitionSchema = new SimpleSchema({
