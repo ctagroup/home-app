@@ -7,7 +7,7 @@ import ConditionField from './RuleConditionField';
 
 class RuleField extends React.Component {
   render() {
-    console.log('rf', this.props);
+    console.log('RuleField value', this.props.value);
     const value = Object.keys(this.props.value)[0] || 'any';
 
     let typePrefix;
@@ -27,7 +27,7 @@ class RuleField extends React.Component {
         break;
     }
     return (
-      <NestField name={this.props.name} value={value} label="Rule">
+      <NestField className="rule-field" name={this.props.name} value={value} label="Rule">
         <div className="col-xs-11">
           {typePrefix}
           <AutoField className="inline" name="type" label={false} value={value} />
@@ -51,7 +51,6 @@ class RuleField extends React.Component {
             name="then"
             itemProps={{ component: ActionField }}
             addIcon={<span><i className="glyphicon glyphicon-plus" /> Add Action</span>}
-            removeIcon={<span><i className="glyphicon glyphicon-minus" /> Delete Action</span>}
           />}
 
           {value === 'always' && <AutoField
@@ -59,7 +58,6 @@ class RuleField extends React.Component {
             itemProps={{ component: ActionField }}
             label="Actions"
             addIcon={<span><i className="glyphicon glyphicon-plus" /> Add Action</span>}
-            removeIcon={<span><i className="glyphicon glyphicon-minus" /> Delete Action</span>}
           />}
         </div>
       </NestField>
