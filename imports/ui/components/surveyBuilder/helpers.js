@@ -18,19 +18,15 @@ export function handleItemTransform(mode, model) {
 }
 
 export function handleFormTransform(mode, model) {
-  const variables = model.variables.reduce((v, obj) =>
-    v.name ? Object.assign({}, obj, { [v.name]: v.value }) : obj,
-    {}
-  );
-  // TODO: finish it
+  const variables = model.variables.reduce((obj, v) => {
+    if (v.name) {
+      return Object.assign({}, obj, { [v.name]: v.value });
+    }
+    return obj;
+  }, {});
 
-  console.log(model.variables, 'zz', variables);
-
-  return model;
-  /*
   return {
     ...model,
     variables,
   };
-  */
 }

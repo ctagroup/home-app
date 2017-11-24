@@ -152,8 +152,24 @@ export default class SurveyBuilder extends React.Component {
   }
 
   handleFormChange(updatedFields) {
-    console.log('handleFormChange', updatedFields);
+    const definition = {
+      ...this.state.definition,
+      ...updatedFields,
+    };
 
+    if (_.isEqual(this.state.definition, definition)) {
+      return;
+    }
+
+    const treeData = this.generateTree(definition, this.state.treeData);
+    // for some reason set state must be debounced to prevent
+    // the following warning: Cannot call setState() inside getChildContext()
+    Meteor.defer(() => {
+      this.setState({
+        definition,
+        treeData,
+      });
+    }, 1);
   }
 
   handleItemChange(updatedItem) {
@@ -165,8 +181,6 @@ export default class SurveyBuilder extends React.Component {
       _.each(root.items || [], (child) => { updateItem(child, item); });
       return root;
     })(this.state.definition, updatedItem));
-
-    console.log('updated definition', definition);
 
     const treeData = this.generateTree(definition, this.state.treeData);
     this.setState({
@@ -230,8 +244,6 @@ export default class SurveyBuilder extends React.Component {
   handleSaveFormDefinition() {
     const surveyId = this.props.survey._id;
     const definition = JSON.stringify(this.state.definition);
-
-    console.log(this.state.definition);
 
     const updateDoc = {
       $set: {

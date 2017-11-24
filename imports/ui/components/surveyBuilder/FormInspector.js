@@ -6,6 +6,25 @@ import { handleFormTransform } from './helpers';
 
 
 export default class FormInspector extends React.Component {
+  constructor() {
+    super();
+    this.handleChange = this.handleChange.bind(this);
+    this.handleTransform = this.handleTransform.bind(this);
+    this.dataToSend = null;
+  }
+
+  handleChange() {
+    Meteor.setTimeout(() => {
+      this.props.onChange(this.dataToSend);
+    }, 1);
+  }
+
+  handleTransform(mode, model) {
+    const transformed = handleFormTransform(mode, model);
+    this.dataToSend = this.props.onChange(transformed);
+    return model;
+  }
+
   generateSchema() {
     const VariableSchema = new SimpleSchema({
       name: {
@@ -31,7 +50,7 @@ export default class FormInspector extends React.Component {
     const variableNames = Object.keys(this.props.definition.variables || {});
     const variables = variableNames.map(v => ({
       name: v,
-      value: 0,
+      value: this.props.definition.variables[v],
     }));
 
     const model = {
@@ -44,8 +63,8 @@ export default class FormInspector extends React.Component {
         <AutoForm
           schema={schema}
           model={model}
-          onChange={this.props.onChange}
-          modelTransform={handleFormTransform}
+          onChange={this.handleChange}
+          modelTransform={this.handleTransform}
         >
           <AutoField name="variables" itemProps={{ component: VariableField }} />
         </AutoForm>

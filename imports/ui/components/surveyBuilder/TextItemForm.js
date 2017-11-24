@@ -7,7 +7,6 @@ import RichTextEditor from './RichTextEditor';
 import { handleItemTransform } from './helpers';
 
 
-
 export default class TextItemForm extends React.Component {
   render() {
     return (
