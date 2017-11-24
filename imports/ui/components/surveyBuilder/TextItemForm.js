@@ -4,7 +4,7 @@ import { AutoField, ListField } from 'uniforms-bootstrap3';
 import { TextDefinitionSchema } from '/imports/api/surveys/definitionSchemas';
 import RuleField from '/imports/ui/components/surveyBuilder/formFields/RuleField';
 import RichTextEditor from './RichTextEditor';
-import { handleModelTransform } from './helpers';
+import { handleItemTransform } from './helpers';
 
 
 
@@ -15,7 +15,7 @@ export default class TextItemForm extends React.Component {
         schema={TextDefinitionSchema}
         onChange={this.props.onChange}
         model={this.props.model}
-        modelTransform={handleModelTransform}
+        modelTransform={handleItemTransform}
       >
         <AutoField name="id" />
         <AutoField name="type" />

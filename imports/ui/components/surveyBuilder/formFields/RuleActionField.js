@@ -14,6 +14,11 @@ function actionDefinition(action) {
         label: 'hide this item',
         numArgs: 0,
       };
+    case 'rows':
+      return {
+        label: 'set # of rows',
+        numArgs: 0,
+      };
     case 'set':
       return {
         label: 'set form variable',
@@ -54,7 +59,6 @@ function actionDefinition(action) {
 
 class ActionField extends React.Component {
   render() {
-    console.log('Action Field', this.props);
     let fields = [];
     const action = this.props.value[0];
     const definition = actionDefinition(action);
@@ -68,7 +72,7 @@ class ActionField extends React.Component {
         label="action"
         allowedValues={['show', 'hide', 'set', 'pset', 'add', 'sum', 'rows']}
         transform={v => actionDefinition(v).label}
-        required
+        placeholder="--- select ---"
       />
     );
 
@@ -80,7 +84,7 @@ class ActionField extends React.Component {
           {!!prefix && <span className="field-prefix">{prefix}</span>}
           <TextField
             name={`${this.props.name}.${idx}`}
-            value={this.props.value[idx]}
+            value={this.props.value[idx] || ''}
             label={definition.argPlaceholders[i]}
           />
         </div>

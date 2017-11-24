@@ -1,4 +1,4 @@
-export function handleModelTransform(mode, model) {
+export function handleItemTransform(mode, model) {
   const transformed = {
     ...model,
     rules: (model.rules || []).map(r => {
@@ -15,4 +15,22 @@ export function handleModelTransform(mode, model) {
     }),
   };
   return transformed;
+}
+
+export function handleFormTransform(mode, model) {
+  const variables = model.variables.reduce((v, obj) =>
+    v.name ? Object.assign({}, obj, { [v.name]: v.value }) : obj,
+    {}
+  );
+  // TODO: finish it
+
+  console.log(model.variables, 'zz', variables);
+
+  return model;
+  /*
+  return {
+    ...model,
+    variables,
+  };
+  */
 }

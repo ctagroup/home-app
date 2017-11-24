@@ -2,7 +2,7 @@ import React from 'react';
 import { AutoField, AutoForm, ListField } from 'uniforms-bootstrap3';
 import RuleField from '/imports/ui/components/surveyBuilder/formFields/RuleField';
 import { QuestionDefinitionSchema } from '/imports/api/surveys/definitionSchemas';
-import { handleModelTransform } from './helpers';
+import { handleItemTransform } from './helpers';
 
 
 export default class QuestionItemForm extends React.Component {
@@ -24,7 +24,7 @@ export default class QuestionItemForm extends React.Component {
         schema={QuestionDefinitionSchema}
         onChange={this.props.onChange}
         model={this.props.model}
-        modelTransform={handleModelTransform}
+        modelTransform={handleItemTransform}
       >
         <AutoField name="id" />
         <AutoField name="type" />

@@ -37,14 +37,12 @@ class RuleField extends React.Component {
             name="all"
             itemProps={{ component: ConditionField }}
             addIcon={<span><i className="glyphicon glyphicon-plus" /> Add Condition</span>}
-            removeIcon={<span><i className="glyphicon glyphicon-minus" /> Delete Condition</span>}
           />}
 
           {value === 'any' && <AutoField
             name="any"
             itemProps={{ component: ConditionField }}
             addIcon={<span><i className="glyphicon glyphicon-plus" /> Add Condition</span>}
-            removeIcon={<span><i className="glyphicon glyphicon-minus" /> Delete Condition</span>}
           />}
 
           {(value === 'all' || value === 'any') && <AutoField

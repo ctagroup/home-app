@@ -2,14 +2,20 @@ import _ from 'lodash';
 import React from 'react';
 import SortableTree from 'react-sortable-tree';
 import { trimText } from '/imports/api/utils';
+import { findItem } from '/imports/api/surveys/computations';
 import Alert from '/imports/ui/alert';
 import FormInspector from '/imports/ui/components/surveyBuilder/FormInspector.js';
 import ItemInspector from '/imports/ui/components/surveyBuilder/ItemInspector.js';
 import QuestionModal from './QuestionModal';
 
-let count = 1;
-function generateItemId(type) {
-  return `${type}-${count++}`;
+function generateItemId(type, definition) {
+  let counter = 1;
+  for (;;) {
+    const id = `${type}-${counter++}`;
+    if (!findItem(id, definition)) {
+      return id;
+    }
+  }
 }
 
 export default class SurveyBuilder extends React.Component {
@@ -18,13 +24,14 @@ export default class SurveyBuilder extends React.Component {
     const definition = JSON.parse(props.survey.definition);
     this.state = {
       definition,
-      inspectedItem:  definition.items[2],
+      inspectedItem: null, // definition.items[2],
       questionModalIsOpen: false,
     };
     this.addSectionToDefinition = this.addSectionToDefinition.bind(this);
     this.addScoreToDefinition = this.addScoreToDefinition.bind(this);
     this.generateNodeProps = this.generateNodeProps.bind(this);
     this.handleItemChange = this.handleItemChange.bind(this);
+    this.handleFormChange = this.handleFormChange.bind(this);
     this.handleCloseInspector = this.handleCloseInspector.bind(this);
     this.handleCloseQuestionModal = this.handleCloseQuestionModal.bind(this);
     this.handleTreeChange = this.handleTreeChange.bind(this);
@@ -72,6 +79,10 @@ export default class SurveyBuilder extends React.Component {
   }
 
   addQuestionToDefinition(question) {
+    if (!question) {
+      return null;
+    }
+    console.log('adding question', question);
     const item = {
       ...question,
       id: question.id || question._id,
@@ -140,8 +151,12 @@ export default class SurveyBuilder extends React.Component {
     return newItem;
   }
 
+  handleFormChange(updatedFields) {
+    console.log('handleFormChange', updatedFields);
+
+  }
+
   handleItemChange(updatedItem) {
-    console.log(updatedItem);
     const definition = ((function updateItem(root, item) {
       if (root.id === item.id) {
         // TODO: handle ID update
@@ -150,6 +165,8 @@ export default class SurveyBuilder extends React.Component {
       _.each(root.items || [], (child) => { updateItem(child, item); });
       return root;
     })(this.state.definition, updatedItem));
+
+    console.log('updated definition', definition);
 
     const treeData = this.generateTree(definition, this.state.treeData);
     this.setState({
@@ -196,7 +213,7 @@ export default class SurveyBuilder extends React.Component {
     let addedQuestion;
     if (question === null) {
       const newQuestion = {
-        id: generateItemId('question'),
+        id: generateItemId('question', this.state.definition),
         title: 'New Question',
         category: 'text',
       };
@@ -214,6 +231,8 @@ export default class SurveyBuilder extends React.Component {
     const surveyId = this.props.survey._id;
     const definition = JSON.stringify(this.state.definition);
 
+    console.log(this.state.definition);
+
     const updateDoc = {
       $set: {
         definition,
@@ -224,7 +243,7 @@ export default class SurveyBuilder extends React.Component {
         Alert.error(err);
       } else {
         Alert.success('Survey updated');
-        Router.go('adminDashboardsurveysView');
+        // Router.go('adminDashboardsurveysView');
       }
     });
   }
@@ -252,7 +271,7 @@ export default class SurveyBuilder extends React.Component {
   renderFormInspector() {
     return (<FormInspector
       definition={this.state.definition}
-      onChange={this.handleItemChange}
+      onChange={this.handleFormChange}
     />);
   }
 
