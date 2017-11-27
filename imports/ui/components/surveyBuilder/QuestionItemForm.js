@@ -27,6 +27,7 @@ export default class QuestionItemForm extends React.Component {
         modelTransform={handleItemTransform}
       >
         <AutoField name="id" />
+        <AutoField name="hmisId" />
         <AutoField name="type" />
         <AutoField name="title" />
         <AutoField name="category" />

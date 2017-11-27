@@ -87,6 +87,10 @@ export const GridDefinitionSchema = new SimpleSchema([ItemDefinitionSchema, {
 }]);
 
 export const QuestionDefinitionSchema = new SimpleSchema([ItemDefinitionSchema, {
+  hmisId: {
+    type: String,
+    optional: true,
+  },
   title: {
     type: String,
     optional: true,
