@@ -2,76 +2,134 @@ import { Mongo } from 'meteor/mongo';
 
 const Questions = new Mongo.Collection('questions');
 
-Questions.schema = new SimpleSchema({
-  name: {
+const categoryOptions = [
+  { value: 'choice', label: 'Choice' },
+  { value: 'date', label: 'Date' },
+  { value: 'grid', label: 'Grid' },
+  { value: 'number', label: 'Number' },
+  { value: 'text', label: 'Text' },
+];
+
+const GridColumnSchema = new SimpleSchema({
+  id: {
     type: String,
   },
-  question: {
+  title: {
     type: String,
+  },
+  type: {
+    type: String,
+    allowedValues: ['question'],
     autoform: {
-      rows: 5,
+      type: 'hidden',
     },
   },
   category: {
     type: String,
+    allowedValues: categoryOptions.map(o => o.value),
+    autoform: {
+      options: categoryOptions,
+    },
   },
-  'options.$': {
-    type: Object,
+});
+
+SimpleSchema.messages({
+  questionCategoryisRequired: 'Provide question category',
+});
+
+Questions.schema = new SimpleSchema({
+  title: {
+    type: String,
+    autoform: {
+      rows: 2,
+    },
+  },
+  text: {
+    type: String,
+    label: 'Additional description',
+    autoform: {
+      rows: 5,
+    },
     optional: true,
   },
-  'options.$.value': {
+  category: {
     type: String,
-    optional: true,
+    allowedValues: categoryOptions.map(o => o.value),
+    autoform: {
+      options: categoryOptions,
+    },
   },
-  'options.$.description': {
-    type: String,
-    optional: true,
-  },
-  dataType: {
-    type: String,
-  },
-  qtype: {
-    type: String,
-  },
-  audience: {
-    type: String,
-  },
-  surveyServiceQuesId: {
-    type: String,
-    optional: true,
-  },
-  locked: {
+  refusable: {
     type: Boolean,
   },
-  isCopy: {
-    type: Boolean,
+  options: {
+    type: [String],
+    optional: true,
   },
-  allowSkip: {
+  other: {
+    type: String,
+    label: 'Other (leave empty if other value is not allowed)',
+    optional: true,
+  },
+  columns: {
+    type: [GridColumnSchema],
+    label: 'Grid columns',
+    optional: true,
+  },
+  active: {
     type: Boolean,
+    label: 'Active (show this question in the Survey Builder)',
+  },
+  questionCategory: {
+    type: String,
+    optional: true,
+  },
+  questionSubcategory: {
+    type: String,
+    optional: true,
+    custom() {
+      if (!this.field('questionCategory').isSet) {
+        return 'questionCategoryisRequired';
+      }
+      return undefined;
+    },
+  },
+  version: {
+    type: Number,
+    optional: true,
+    autoValue() {
+      return 2;
+    },
   },
   createdAt: {
     type: Date,
     label: 'Created At',
+    optional: true,
     autoValue() {
-      let returnstatus;
+      let val;
       if (this.isInsert) {
-        returnstatus = new Date();
+        val = new Date();
       } else if (this.isUpsert) {
-        returnstatus = { $setOnInsert: new Date() };
+        val = { $setOnInsert: new Date() };
       } else {
         this.unset();  // Prevent user from supplying their own value
       }
-      return returnstatus;
+      return val;
     },
   },
   updatedAt: {
     type: Date,
     label: 'Updated At',
-    autoValue() {
-      return new Date();
-    },
     optional: true,
+    autoValue() {
+      let val;
+      if (this.isUpdate) {
+        val = new Date();
+      }
+      return val;
+    },
   },
+
 });
 
 Questions.attachSchema(Questions.schema);

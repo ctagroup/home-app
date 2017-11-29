@@ -11,8 +11,15 @@ Meteor.methods({
     );
   },
 
-  updateGlobalHousehold(householdId, oldMembers, newMembers, householdObject) {
+  updateGlobalHousehold(householdId, oldMembers, newMembers, doc) {
     logger.info(`METHOD[${Meteor.userId()}]: updateGlobalHousehold`, householdId);
+
+    const currentUser = Meteor.users.findOne(Meteor.userId());
+    const householdObject = Object.assign({}, doc, {
+      // userCreate: globalHousehold.userCreate,
+      userUpdate: currentUser.services.HMIS.accountId,
+    });
+
     const hc = HmisClient.create(Meteor.userId());
     hc.api('global-household').updateGlobalHousehold(householdId, householdObject);
 

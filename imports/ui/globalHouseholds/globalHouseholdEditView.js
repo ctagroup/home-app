@@ -1,5 +1,4 @@
 import GlobalHouseholds from '/imports/api/globalHouseholds/globalHouseholds';
-import Users from '/imports/api/users/users';
 import './globalHouseholdEditView.html';
 
 
@@ -24,17 +23,12 @@ Template.globalHouseholdEditView.events(
         Bert.alert('You must pick up a Head of Household.', 'danger', 'growl-top-right');
         return;
       }
-      const user = Users.findOne({ _id: Meteor.userId() });
       const globalHouseholdId = Router.current().params._id;
       const globalHousehold = GlobalHouseholds.findOne({ _id: globalHouseholdId });
       const globalHouseholdObject = {
         globalHouseholdId,
         headOfHouseholdId,
         inactive: $('input[name=inactive]:checked').val(),
-        // dateCreated: '',
-        // dateUpdated: '',
-        userCreate: globalHousehold.userCreate,
-        userUpdate: user.services.HMIS.accountId,
       };
       const newGlobalHouseholdMembers = [];
       $('.globalHouseholdMembers').find('tr').each(

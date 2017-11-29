@@ -62,7 +62,7 @@ export class SurveyApi extends ApiEndpoint {
     return this.doGet(url).surveySections.surveySections;
   }
 
-  createSurveySection(surveySection, surveyId) {
+  createSurveySection(surveyId, surveySection) {
     const url = `${BASE_URL}/surveys/${surveyId}/surveysections`;
     const body = { surveySection };
     return this.doPost(url, body).surveySection;
@@ -100,21 +100,37 @@ export class SurveyApi extends ApiEndpoint {
     return true;
   }
 
-  sendResponses(clientId, surveyId, responses) {
+  getResponses(clientId, surveyId) {
     const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/responses`;
-    const body = { responses };
+    return this.doGet(url).responses.responses;
+  }
+
+  createResponse(clientId, surveyId, responses) {
+    // see: https://hmis-api.github.io/survey-service-api/#clients__clientid__surveys__surveyid__responses_post
+    const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/responses`;
+    const body = { responses: { responses } };
     return this.doPost(url, body).response;
   }
 
-  deleteResponses(surveyId, clientId) {
-    const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/responses`;
+  updateResponse(clientId, surveyId, submissionId, responses) {
+    const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/responses/${submissionId}`;
+    const body = { responses: { responses } };
+    return this.doPut(url, body).response;
+  }
+
+  deleteResponse(clientId, surveyId, responseId) {
+    const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/responses/${responseId}`;
     return this.doDel(url);
   }
 
-  createSectionScores(surveyId, clientId, sectionId, sectionScore) {
+  createSectionScores(clientId, surveyId, sectionId, sectionScore) {
     const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/sections/${sectionId}/scores`;
     const body = { sectionScore };
     return this.doPost(url, body);
+  }
+  getSectionScores(clientId, surveyId, sectionId) {
+    const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/sections/${sectionId}/scores`;
+    return this.doGet(url);
   }
 
 }

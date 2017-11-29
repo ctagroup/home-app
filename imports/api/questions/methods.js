@@ -1,8 +1,78 @@
 import Questions from '/imports/api/questions/questions';
-import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
+// import { HmisClient } from '/imports/api/hmisApi';
 
 Meteor.methods({
+  'questions.create'(doc) {
+    logger.info(`METHOD[${Meteor.userId()}]: questions.create`, doc);
+    check(doc, Questions.schema);
+    // TODO: permissions check
+    return Questions.insert(doc);
+  },
+
+  'questions.update'(id, doc) {
+    logger.info(`METHOD[${Meteor.userId()}]: questions.update`, doc);
+    check(id, String);
+    check(doc, Questions.schema);
+    // TODO: permissions check
+    return Questions.update(id, doc);
+  },
+
+  'questions.delete'(id) {
+    logger.info(`METHOD[${Meteor.userId()}]: questions.delete`, id);
+    check(id, String);
+    // TODO: permissions check
+    return Questions.remove(id);
+  },
+
+  'questions.categories'() {
+    // TODO: permissions check
+    this.unblock();
+
+    this.unblock();
+
+    const query = {
+      version: 2,
+    };
+    const questions = Questions.find(query, {
+      fields: {
+        questionCategory: true,
+      },
+    }).fetch();
+
+    const distinct = new Set();
+    questions.reduce((d, q) => d.add(q.questionCategory), distinct);
+    return Array.from(distinct.values())
+      .map(value => ({ value, label: value }));
+  },
+
+  'questions.subcategories'(options) {
+    // TODO: permissions check
+    if (!options.params) {
+      return [];
+    }
+
+    this.unblock();
+
+    const query = {
+      version: 2,
+      questionCategory: options.params.questionCategory,
+    };
+
+    const questions = Questions.find(query, {
+      fields: {
+        questionCategory: true,
+        questionSubcategory: true,
+      },
+    }).fetch();
+
+    const distinct = new Set();
+    questions.reduce((d, q) => d.add(q.questionSubcategory), distinct);
+    return Array.from(distinct.values())
+      .map(value => ({ value, label: value }));
+  },
+
+  /*
   addQuestion(
     category, name, question, dataType, options,
     qtype, audience, locked, allowSkip, isCopy, surveyServiceQuesId
@@ -127,4 +197,5 @@ Meteor.methods({
     Questions.update(_id, { $set: { surveyServiceQuesId } });
     logger.info(`Successfully updated SSQId: ${surveyServiceQuesId}`);
   },
+  */
 });

@@ -3,56 +3,78 @@ import { Mongo } from 'meteor/mongo';
 
 const Surveys = new Mongo.Collection('surveys');
 
+SimpleSchema.debug = true;
 Surveys.schema = new SimpleSchema({
   title: {
     type: String,
   },
   active: {
     type: Boolean,
+    label: 'Active (visible to surveyors, can collect responses)',
   },
-  copy: {
+  editable: {
     type: Boolean,
+    label: 'Editable (can be edited by other administrators)',
   },
-  stype: {
+  definition: {
     type: String,
+    autoform: {
+      rows: 20,
+    },
+    custom() {
+      try {
+        JSON.parse(this.value);
+      } catch (e) {
+        return 'invalidJson';
+      }
+      return null;
+    },
   },
-  surveyCopyID: {
-    type: String,
+  version: {
+    type: Number,
     optional: true,
+    autoValue() {
+      return 2;
+    },
   },
-  locked: {
-    type: Boolean,
-  },
-  apiSurveyServiceId: {
-    type: String,
+  hmis: {
+    type: Object,
+    label: 'HMIS data',
     optional: true,
+    blackbox: true,
   },
   createdAt: {
     type: Date,
     label: 'Created At',
+    optional: true,
     autoValue() {
-      let returnstatus;
+      let val;
       if (this.isInsert) {
-        returnstatus = new Date();
+        val = new Date();
       } else if (this.isUpsert) {
-        returnstatus = { $setOnInsert: new Date() };
+        val = { $setOnInsert: new Date() };
       } else {
         this.unset();  // Prevent user from supplying their own value
       }
-      return returnstatus;
+      return val;
     },
-
   },
   updatedAt: {
     type: Date,
     label: 'Updated At',
+    optional: true,
     autoValue() {
-      return new Date();
+      let val;
+      if (this.isUpdate) {
+        val = new Date();
+      }
+      return val;
     },
   },
-  created: {
-    type: Boolean,
-  },
+});
+
+Surveys.schema.messages({
+  invalidJson: 'Invalid JSON',
 });
 
 Surveys.attachSchema(Surveys.schema);

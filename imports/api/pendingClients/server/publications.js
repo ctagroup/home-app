@@ -5,7 +5,7 @@ import { PendingClients } from '../pendingClients';
 Meteor.publish('pendingClients.all', function publishAllPendingClients() {
   logger.info(`PUB[${this.userId}]: pendingClients.all`);
   if (!this.userId) {
-    return [];
+    return this.ready();
   }
   // TODO: check permissions to get the data
   return PendingClients.find();

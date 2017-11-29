@@ -1,0 +1,36 @@
+<template name="questionForm">
+  <div class="question-form">
+    {{# autoForm schema=schema fields=fields doc=doc id="questionForm"}}
+      {{> afQuickField name="title"}}
+      {{> afQuickField name="text"}}
+      {{> afQuickField name="category"}}
+      {{> afQuickField name="refusable"}}
+
+      {{#if afFieldValueIs name="category" value="choice"}}
+        {{> afQuickField name="options"}}
+        {{> afQuickField name="other"}}
+      {{/if}}
+
+      {{#if afFieldValueIs name="category" value="grid"}}
+        {{> afQuickField name="columns" label="Grid Columns"}}
+      {{/if}}
+
+      <div class="form-group">
+        {{> afQuickField name="active"}}
+        {{> afQuickField name="questionCategory" type="universe-select" create=true optionsMethod="questions.categories"}}
+        {{> afQuickField name="questionSubcategory" type="universe-select" create=true optionsMethod="questions.subcategories" optionsMethodParams=currentQuestionCategory}}
+      </div>
+
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">
+          {{#if id}}
+            Update
+          {{else}}
+            Create
+          {{/if}}
+        </button>
+        <a href="{{pathFor 'questionsView'}}" class="btn btn-default">Back</a>
+      </div>
+    {{/autoForm}}
+  </div>
+</template>

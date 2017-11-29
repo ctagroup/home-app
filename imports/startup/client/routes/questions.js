@@ -1,8 +1,10 @@
 import { AppController } from './controllers';
 import { DefaultAdminAccessRoles } from '/imports/config/permissions';
+import Questions from '/imports/api/questions/questions';
+import '/imports/ui/questions/questionForm';
 
 
-Router.route('adminDashboardquestionsView', {
+Router.route('questionsView', {
   path: '/questions',
   template: 'questionsListView',
   controller: AppController,
@@ -22,32 +24,55 @@ Router.route('adminDashboardquestionsView', {
   },
 });
 
-/*
-Router.route('adminDashboardquestionsNew', {
+Router.route('questionsNew', {
   path: '/questions/new',
-  template: 'AdminDashboardNew',
+  template: Template.questionForm,
   controller: AppController,
   authorize: {
     allow() {
       return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
     },
   },
+  waitOn() {
+    const sourceId = Router.current().params.query.source;
+    if (sourceId) {
+      return Meteor.subscribe('questions.one', sourceId);
+    }
+    return [];
+  },
   data() {
-    return {};
+    const sourceId = Router.current().params.query.source;
+    const question = Object.assign(Questions.findOne(sourceId) || {}, { _id: undefined });
+
+    return {
+      title: 'Questions',
+      subtitle: sourceId ? 'Clone' : 'New',
+      question,
+    };
   },
 });
 
-Router.route('adminDashboardquestionsEdit', {
-  path: '/questions/edit',
-  template: 'AdminDashboardEdit',
+
+Router.route('questionsEdit', {
+  path: '/questions/:_id/edit',
+  template: Template.questionForm,
   controller: AppController,
   authorize: {
     allow() {
       return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
     },
   },
+  waitOn() {
+    return Meteor.subscribe('questions.all');
+  },
   data() {
-    return {};
+    const id = Router.current().params._id;
+    const question = Questions.findOne(id) || {};
+    return {
+      title: 'Questions',
+      subtitle: 'Edit',
+      id,
+      question,
+    };
   },
 });
-*/

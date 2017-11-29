@@ -1,139 +1,133 @@
-import { Clients } from '/imports/api/clients/clients';
 import { AppController } from './controllers';
+import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import Surveys from '/imports/api/surveys/surveys';
+import Questions from '/imports/api/questions/questions';
+import '/imports/ui/surveys/surveysListView';
+import '/imports/ui/surveys/surveyForm';
+import '/imports/ui/surveys/surveyFormBuilder';
+import '/imports/ui/responses/responsesNew';
 
 
 Router.route('adminDashboardsurveysView', {
   path: '/surveys',
-  template: 'AdminDashboardView',
+  template: Template.surveysListView,
   controller: AppController,
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+    },
+  },
+  waitOn() {
+    return Meteor.subscribe('surveys.all');
+  },
+  data() {
+    return {
+      title: 'Surveys',
+      subtitle: 'List',
+    };
+  },
 });
 
-Router.route('adminDashboardsurveysNew', {
+
+Router.route('surveysNew', {
   path: '/surveys/new',
-  template: 'AdminDashboardNew',
+  template: Template.surveyForm,
   controller: AppController,
   waitOn() {
-    /*
-      Meteor.subscribe('collectionDoc', collectionName, HomeUtils.parseID(this.params._id));
-      if (collection.templates && collection.templates.edit && collection.templates.edit.waitOn) {
-        collection.templates.edit.waitOn();
-      }
-    */
-    return [];
-  },
-  action() {
-    this.render();
-  },
-  onBeforeAction() {
-    /*
-    if (collection.userRoles) {
-      if (!Roles.userIsInRole(Meteor.user(), collection.userRoles)) {
-        Router.go('notEnoughPermission');
-      }
-    }
-    */
-    this.next();
-  },
-  onAfterAction() {
-    /*
-    Session.set('admin_title', HomeDashboard.collectionLabel(collectionName));
-    Session.set('admin_subtitle', 'Create new');
-    Session.set('admin_collection_page', 'new');
-    Session.set('admin_collection_name', collectionName);
-    if (collection.templates && collection.templates.new
-        && collection.templates.new.onAfterAction) {
-      collection.templates.new.onAfterAction();
-    }
-    */
+    return Meteor.subscribe('questions.all');
   },
   data() {
+    const definition = {
+      variables: {},
+      items: [],
+    };
     return {
-      admin_collection: Clients,
+      title: 'Surveys',
+      subtitle: 'New',
+      survey: {
+        definition: JSON.stringify(definition),
+      },
+      questions: Questions.find().fetch(),
     };
   },
 });
 
-Router.route('adminDashboardsurveysEdit', {
-  path: '/surveys/edit',
-  template: 'AdminDashboardEdit',
+Router.route('surveysEdit', {
+  path: '/surveys/:_id/edit',
+  template: Template.surveyForm,
   controller: AppController,
-  action() {
-    this.render();
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+    },
   },
   waitOn() {
-    return [];
-  },
-  onBeforeAction() {
-
-  },
-  onAfterAction() {
-
+    const id = Router.current().params._id;
+    return [
+      Meteor.subscribe('surveys.one', id),
+      Meteor.subscribe('questions.all'),
+    ];
   },
   data() {
+    const id = Router.current().params._id;
+    const survey = Surveys.findOne(id) || {};
     return {
-      admin_collection: Clients,
+      title: 'Surveys',
+      subtitle: survey ? `Edit ${survey.title}` : '',
+      survey,
+      questions: Questions.find().fetch(),
     };
   },
 });
 
-Router.route(
-  'selectSurveyQuestion', {
-    path: '/surveys/:_id/selectQuestions',
-    template: 'selectQuestions',
-    controller: 'AppController',
-    action() {
-      this.render();
+Router.route('surveysEditDefinition', {
+  path: '/surveys/:_id/builder',
+  template: Template.surveyFormBuilder,
+  controller: AppController,
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
     },
-    onBeforeAction() {
-      const collection = null; // HomeConfig.collections.surveys;
-      if (collection.userRoles) {
-        if (!Roles.userIsInRole(Meteor.user(), collection.userRoles)) {
-          Router.go('notEnoughPermission');
-        }
-      }
-      this.next();
-    },
-    onAfterAction() {
-      Session.set('admin_title', 'Select Questions');
-      Session.set('admin_collection_name', 'selectQuestions');
-      Session.set('admin_collection_page', '');
-    },
-    data() {
-      /*
-      const surveyID = this.params._id;
-      const surveyCollection = HomeUtils.adminCollectionObject('surveys');
-      return surveyCollection.findOne({ _id: surveyID });
-      */
-    },
-  }
-);
+  },
+  waitOn() {
+    const id = Router.current().params._id;
+    return [
+      Meteor.subscribe('surveys.one', id),
+      Meteor.subscribe('questions.all'),
+    ];
+  },
+  data() {
+    const id = Router.current().params._id;
+    const survey = Surveys.findOne(id) || {};
+    return {
+      title: 'Surveys',
+      subtitle: survey ? `Edit ${survey.title}` : '',
+      survey,
+      questions: Questions.find().fetch(),
+    };
+  },
+});
 
-Router.route(
-  'previewSurvey', {
-    path: '/surveys/:_id/preview',
-    template: 'previewSurvey',
-    controller: 'AppController',
-    action() {
-      this.render();
+Router.route('surveysPreview', {
+  path: '/surveys/:_id/preview',
+  template: Template.responsesNew,
+  controller: AppController,
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
     },
-    onBeforeAction() {
-      const collection = null; // HomeConfig.collections.surveys;
-      if (collection.userRoles) {
-        if (!Roles.userIsInRole(Meteor.user(), collection.userRoles)) {
-          Router.go('notEnoughPermission');
-        }
-      }
-      this.next();
-    },
-    onAfterAction() {
-      Session.set('admin_title', 'Survey Preview');
-      Session.set('admin_collection_name', 'preview');
-      Session.set('admin_collection_page', '');
-    },
-    data() {
-      const surveyID = this.params._id;
-      return Surveys.findOne({ _id: surveyID });
-    },
-  }
-);
+  },
+  waitOn() {
+    const id = Router.current().params._id;
+    return Meteor.subscribe('surveys.one', id);
+  },
+  data() {
+    const id = Router.current().params._id;
+    const survey = Surveys.findOne(id) || {};
+    return {
+      title: 'Surveys',
+      subtitle: survey ? `Preview ${survey.title}` : '',
+      survey,
+    };
+  },
+});

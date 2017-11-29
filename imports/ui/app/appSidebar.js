@@ -29,7 +29,7 @@ const allCollectionsMenuItems = [
   {
     name: 'Questions',
     icon: 'fa-question',
-    path: 'adminDashboardquestionsView',
+    path: 'questionsView',
     roles: DefaultAdminAccessRoles,
   },
   {

@@ -82,10 +82,6 @@ Router.route('adminDashboardresponsesNew', {
     return {
       title: 'Responses',
       subtitle: 'New',
-      response: {
-        clientDetails: client,
-        responsestatus: 'new',
-      },
       survey,
       client,
     };
@@ -102,19 +98,29 @@ Router.route('adminDashboardresponsesEdit', {
     },
   },
   waitOn() {
+    // TODO: subscribe client details
     return [
       Meteor.subscribe('responses.one', this.params._id),
-      Meteor.subscribe('surveys.all'),
+      Meteor.subscribe('surveys.all'), // TODO: we need survey id from response to sub just one
       Meteor.subscribe('questions.all'),
     ];
   },
   data() {
     const response = Responses.findOne(this.params._id);
+    if (!response) {
+      return {};
+    }
+    const survey = Surveys.findOne(response.surveyId);
     return {
       title: 'Responses',
       subtitle: 'Edit',
       response,
-      survey: response && Surveys.findOne(response.surveyID),
+      survey,
+      client: {
+        // TODO: get client data via subscription
+        _id: response.clientId,
+        schema: response.clientSchema,
+      },
     };
   },
 });

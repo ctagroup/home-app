@@ -1,6 +1,11 @@
 {
   "extends": "airbnb",
   "installedESLint": true,
+  "parserOptions": {
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  },
   "plugins": [
     "react"
   ],
@@ -12,6 +17,7 @@
     "mocha": true
   },
   "globals": {
+    "chai": true,
     "AccountsTemplates": true,
     "AutoForm": true,
     "Bert": true,
@@ -46,6 +52,8 @@
         ]
       }
     ],
-    "import/no-unresolved": ["error", { "ignore": ["^meteor/", "^/"] }]
+    "import/no-unresolved": ["error", { "ignore": ["^meteor/", "^/"] }],
+    "react/prefer-stateless-function": "off",
+    "react/prop-types": "off"
   }
 }

@@ -1,0 +1,53 @@
+.survey-builder-wrapper {
+  .survey-builder {
+    display: flex;
+    min-height: 800px;
+    height: 100%;
+
+    .tree-view {
+      margin-top: 10px;
+      margin-right: 5px;
+      border: 1px solid gray;
+      flex: 1;
+      background: white;
+    }
+    .item-inspector {
+      margin-top: 10px;
+      padding: 10px;
+      margin-left: 5px;
+      flex: 1;
+      border: 1px solid gray;
+      background: white;
+
+      .control-label {
+        font-weight: bold;
+      }
+    }
+  }
+
+  .inline.field {
+    display: inline-block;
+  }
+
+  .rule-field {
+    .debug {
+      font-family: monospace;
+      font-size: 75%;
+      margin-bottom: 10px;
+    }
+    .action-field-group, .condition-field-group {
+      .inline {
+        display: inline-block;
+        max-width: 200px;
+        .field-prefix {
+          display: inline-block;
+          margin: 4px;
+        }
+        .field {
+          display: inline-block;
+        }
+      }
+    }
+  }
+}
+

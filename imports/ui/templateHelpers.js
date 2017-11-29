@@ -35,6 +35,13 @@ UI.registerHelper('currentUserFullName', () => {
   return '';
 });
 
+Template.registerHelper('equals', (v1, v2) => {
+  if (typeof v1 === 'object' && typeof v2 === 'object') {
+    return _.isEqual(v1, v2);
+  }
+  return v1 === v2;
+});
+
 // TODO: remove these helpers
 UI.registerHelper(
   'getGlobalHouseholdEditPath',
