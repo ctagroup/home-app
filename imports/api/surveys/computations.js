@@ -1,5 +1,4 @@
 import moment from 'moment';
-import { type } from 'os';
 
 let firedRules = [];
 
