@@ -8,6 +8,7 @@ import {
   evaluateRule,
   evaluateRules,
   getValueByPath,
+  castType,
 } from './computations';
 
 describe('survey computations', function () {
@@ -500,6 +501,19 @@ describe('survey computations', function () {
 
     const newState = computeFormState(definition, values, props);
     chai.assert.deepEqual(newState.variables.foo, 3);
+  });
+
+  describe('castType', function () {
+    it('will cast number string to number', function () {
+      chai.assert.equal(castType('1234'), 1234);
+    });
+    it('will pass date string in YYYY-MM-DD format', function () {
+      chai.assert.equal(castType('2010-01-30'), '2010-01-30');
+      chai.assert.equal(castType('01/30/2010'), '01/30/2010');
+    });
+    it('will pass date string in MM/DD/YYYY format', function () {
+      chai.assert.equal(castType('01/30/2010'), '01/30/2010');
+    });
   });
 });
 

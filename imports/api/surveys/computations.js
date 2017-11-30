@@ -1,9 +1,17 @@
+import moment from 'moment';
+import { type } from 'os';
+
 let firedRules = [];
 
 export function castType(v) {
   if (Array.isArray(v)) {
     return v;
   }
+
+  if (moment(v, 'YYYY-MM-DD').isValid() || moment(v, 'MM/DD/YYYY').isValid()) {
+    return v;
+  }
+
   const result = parseFloat(v);
   if (!isNaN(result)) {
     return result;
@@ -39,6 +47,7 @@ export function getValueByPath(obj, str) {
 export function applyReducers(value, args = []) {
   let result = value;
   let arr;
+  let m;
   while (args.length > 0) {
     const reducer = args.shift();
     switch (reducer) {
@@ -60,6 +69,22 @@ export function applyReducers(value, args = []) {
           result = undefined;
         }
         break;
+      case 'date':
+        if (typeof value !== 'number') {
+          return value;
+        }
+        return moment(value).format('MM/DD/YYYY');
+      case 'age':
+        if (!value) return '';
+        if (typeof value === 'number') {
+          m = moment(value);
+        } else {
+          m = moment(value, ['MM/DD/YYYY', 'YYYY-MM-DD'], true);
+        }
+        if (!m.isValid()) {
+          return 'n/a';
+        }
+        return moment().diff(m, 'years');
       default:
         console.warn('Unknown reducer', reducer);
         break;

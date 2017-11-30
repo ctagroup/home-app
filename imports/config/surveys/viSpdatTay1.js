@@ -42,9 +42,9 @@ const viSpdatTay1 = {
       items: [
         {
           id: 'client.firstName',
-          type: 'question',
-          category: 'text',
+          type: 'text',
           title: 'First Name',
+          text: '<div class="readonly">{{client.firstName}}</div>',
         },
         {
           id: 'client.nickName',
@@ -54,9 +54,9 @@ const viSpdatTay1 = {
         },
         {
           id: 'client.lastName',
-          type: 'question',
-          category: 'text',
+          type: 'text',
           title: 'Last Name',
+          text: '<div class="readonly">{{client.lastName}}</div>',
         },
         {
           id: 'client.language',
@@ -67,22 +67,21 @@ const viSpdatTay1 = {
         },
         {
           id: 'client.dob',
-          hmisId: '2875c580-1046-4d1a-a21b-2ea7d90e0403',
-          type: 'question',
-          category: 'date',
+          type: 'text',
           title: 'Date of Birth',
+          text: '<div class="readonly">{{client.dob:date}}</div>',
         },
         {
           id: 'client.age',
-          type: 'question',
-          category: 'number',
+          type: 'text',
           title: 'Age',
+          text: '<div class="readonly">{{client.dob:age}}</div>',
         },
         {
           id: 'client.ssn',
-          type: 'question',
-          category: 'text',
+          type: 'text',
           title: 'SSN',
+          text: '<div class="readonly">{{client.ssn}}</div>',
         },
         {
           id: 'client.consent',

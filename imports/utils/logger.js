@@ -56,7 +56,7 @@ export function sanitize(obj, secrets = ['password', 'passwordConfirm', 'confirm
   if (Array.isArray(obj)) {
     return obj.map(x => sanitize(x, secrets));
   }
-  if (typeof obj === 'object') {
+  if (typeof obj === 'object' && obj !== null) {
     return Object.keys(obj).reduce((o, key) => {
       const value = o[key];
       if (typeof value === 'string' && secrets.includes(key)) {

@@ -70,9 +70,9 @@ const viSpdatFamily2 = {
           items: [
             {
               id: 'parent1.firstName',
-              type: 'question',
-              category: 'text',
+              type: 'text',
               title: 'First Name',
+              text: '<div class="readonly">{{client.firstName}}</div>',
             },
             {
               id: 'parent1.nickName',
@@ -82,9 +82,9 @@ const viSpdatFamily2 = {
             },
             {
               id: 'parent1.lastName',
-              type: 'question',
-              category: 'text',
+              type: 'text',
               title: 'Last Name',
+              text: '<div class="readonly">{{client.lastName}}</div>',
             },
             {
               id: 'parent1.language',
@@ -94,21 +94,26 @@ const viSpdatFamily2 = {
             },
             {
               id: 'parent1.dob',
-              type: 'question',
-              category: 'date',
+              type: 'text',
               title: 'Date of Birth',
+              text: '<div class="readonly">{{client.dob:date}}</div>',
             },
             {
               id: 'parent1.age',
-              type: 'question',
-              category: 'number',
+              type: 'text',
               title: 'Age',
+              text: '<div class="readonly">{{variables.parent1.age}}</div>',
+              rules: [
+                {
+                  always: [['set', 'parent1.age', 'client.dob:age']],
+                },
+              ],
             },
             {
               id: 'parent1.ssn',
-              type: 'question',
-              category: 'text',
+              type: 'text',
               title: 'SSN',
+              text: '<div class="readonly">{{client.ssn}}</div>',
             },
             {
               id: 'parent1.consent',
@@ -162,10 +167,14 @@ const viSpdatFamily2 = {
             },
             {
               id: 'parent2.age',
-              hmisId: '8a70a510-3035-4c45-8d7c-70e5e48117c2',
-              type: 'question',
-              category: 'number',
+              type: 'text',
               title: 'Age',
+              text: '<div class="readonly">{{variables.parent2.age}}</div>',
+              rules: [
+                {
+                  always: [['set', 'parent2.age', 'values.parent2.dob:age']],
+                },
+              ],
             },
             {
               id: 'parent2.consent',
@@ -185,8 +194,8 @@ const viSpdatFamily2 = {
             {
               // score - 1st
               any: [
-                ['>=', 'values.parent1.age', 60],
-                ['>=', 'values.parent2.age', 60],
+                ['>=', 'variables.parent1.age', 60],
+                ['>=', 'variables.parent2.age', 60],
               ],
               then: [['set', 'score1', 1]],
             },

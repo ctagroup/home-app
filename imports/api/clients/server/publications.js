@@ -21,7 +21,7 @@ Meteor.publish('clients.one', function pubClient(clientId, schema = 'v2015', loa
 
   try {
     const hc = HmisClient.create(this.userId);
-    client = hc.api('user-service').getClient(clientId, schema);
+    client = hc.api('client').getClient(clientId, schema);
     client.schema = schema;
     client.isHMISClient = true;
 
