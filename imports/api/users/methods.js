@@ -49,8 +49,10 @@ Meteor.methods({
   },
 
   'users.update'(userId, doc) {
+    logger.info(`METHOD[${Meteor.userId()}]: users.update`, userId, doc);
+
     // TODO: doc should be validated by SimpleSchema
-    const roles = doc.roles[Roles.GLOBAL_GROUP];
+    const roles = (doc.roles && doc.roles[Roles.GLOBAL_GROUP]) || [];
     logger.info(`Setting roles of user ${userId} to`, roles);
     Roles.setUserRoles(userId, roles, Roles.GLOBAL_GROUP);
 

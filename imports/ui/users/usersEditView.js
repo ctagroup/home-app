@@ -57,16 +57,13 @@ Template.usersEditView.onCreated(function onCreated() {
   Meteor.call('users.hmisRoles', (err, res) => res && this.hmisRoles.set(res));
 });
 
-Template.usersEditView.helpers({
-
-});
+Template.usersEditView.helpers({});
 
 Template.usersEditView.onRendered(() => {
-  GoogleMaps.load(
-    {
-      key: Meteor.settings.public.googleMaps.apiKey,
-    }
-  );
+  const { googleMaps } = Meteor.settings.public;
+  if (googleMaps) {
+    GoogleMaps.load({ key: googleMaps.apiKey });
+  }
 
   // We can use the `ready` callback to interact with the map API once the map is ready.
   GoogleMaps.ready('locationHistory', (map) => {

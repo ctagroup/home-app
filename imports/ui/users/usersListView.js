@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { deleteUserButton, editButton, TableDom } from '/imports/ui/dataTable/helpers';
+import { fullName } from '/imports/api/utils';
 import './usersListView.html';
 
 const tableOptions = {
@@ -8,13 +9,7 @@ const tableOptions = {
       title: 'Name',
       data: 'services.HMIS.name',
       render(value, _, rowData) {
-        if (value) {
-          const trimmed = value.trim();
-          if (trimmed.length) {
-            return trimmed;
-          }
-        }
-        return rowData._id;
+        return fullName(rowData.services.HMIS);
       },
     },
     {
@@ -44,6 +39,11 @@ const tableOptions = {
       render(value) {
         return moment(value).format('MM/DD/YYYY');
       },
+      searchable: false,
+    },
+    {
+      title: 'Status',
+      data: 'services.HMIS.status',
       searchable: false,
     },
     editButton('adminDashboardusersEdit'),
