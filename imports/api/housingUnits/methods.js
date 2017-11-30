@@ -7,7 +7,7 @@ Meteor.methods({
     // TODO: permissions
     const hc = HmisClient.create(Meteor.userId());
     return hc.api('housing').createHousingUnit(_.extend(housingObject, {
-      userId: Meteor.users.findOne(this.userId).services.HMIS.id,
+      userId: Meteor.users.findOne(this.userId).services.HMIS.accountId,
     }));
   },
 
@@ -16,7 +16,7 @@ Meteor.methods({
     // TODO: permissions
     const hc = HmisClient.create(Meteor.userId());
     return hc.api('housing').updateHousingUnit(id, _.extend(housingObject, {
-      userId: Meteor.users.findOne(this.userId).services.HMIS.id,
+      userId: Meteor.users.findOne(this.userId).services.HMIS.accountId,
     }));
   },
 

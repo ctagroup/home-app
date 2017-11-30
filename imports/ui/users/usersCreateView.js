@@ -1,4 +1,5 @@
 import './hmisProfile.js';
+import './userCreateForm.js';
 import './usersCreateView.html';
 
 Template.usersCreateView.events(

@@ -4,7 +4,7 @@ import { logger } from '/imports/utils/logger';
 
 const fields = {
   'services.HMIS.emailAddress': 1,
-  'services.HMIS.id': 1,
+  'services.HMIS.accountId': 1,
   'services.HMIS.firstName': 1,
   'services.HMIS.middleName': 1,
   'services.HMIS.lastName': 1,
@@ -27,7 +27,7 @@ Meteor.publish('users.one', function publishSingleHmisUser(userId) { // eslint-d
 
   const user = Users.findOne(userId);
   try {
-    const hmisId = user.services.HMIS.id;
+    const hmisId = user.services.HMIS.accountId;
     const account = hc.api('user-service').getUser(hmisId);
     Users.update(userId, { $set: {
       'services.HMIS.emailAddress': account.emailAddress,

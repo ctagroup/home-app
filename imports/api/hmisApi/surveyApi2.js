@@ -11,7 +11,7 @@ export class SurveyApi2 extends ApiEndpoint {
     const body = {
       survey: {
         surveyTitle: survey.title,
-        surveyOwner: hmisUserData.id,
+        surveyOwner: hmisUserData.accountId,
         tagValue: 'SINGLE_ADULT', // TODO: ???
         surveyDefinition: survey.definition,
       },
@@ -25,7 +25,7 @@ export class SurveyApi2 extends ApiEndpoint {
     const body = {
       survey: {
         surveyTitle: survey.title,
-        surveyOwner: hmisUserData.id,
+        surveyOwner: hmisUserData.accountId,
         tagValue: 'SINGLE_ADULT', // TODO: ???
         surveyDefinition: survey.definition,
       },

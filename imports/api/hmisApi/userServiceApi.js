@@ -9,7 +9,7 @@ class UserServiceApi extends ApiEndpoint {
   createUser(account) {
     const url = `${BASE_URL}/accounts`;
     const body = { account };
-    return this.doPost(url, body);
+    return this.doPost(url, body).account;
   }
 
   updateUser(userId, data) {

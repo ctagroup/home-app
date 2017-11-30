@@ -24,7 +24,7 @@ Meteor.methods({
   'responses.create'(doc) {
     logger.info(`METHOD[${Meteor.userId()}]: responses.create`, doc);
     check(doc, Object);
-    const surveyorId = Meteor.users.findOne(Meteor.userId()).services.HMIS.id;
+    const surveyorId = Meteor.users.findOne(Meteor.userId()).services.HMIS.accountId;
     const response = Object.assign({}, doc, {
       surveyorId,
       status: ResponseStatus.COMPLETED,

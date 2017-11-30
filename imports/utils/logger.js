@@ -52,4 +52,43 @@ if (Meteor.isServer) {
   });
 }
 
-export const logger = log;
+export function sanitize(obj, secrets = ['password', 'passwordConfirm', 'confirmPassword']) {
+  if (Array.isArray(obj)) {
+    return obj.map(x => sanitize(x, secrets));
+  }
+  if (typeof obj === 'object') {
+    return Object.keys(obj).reduce((o, key) => {
+      const value = o[key];
+      if (typeof value === 'string' && secrets.includes(key)) {
+        return {
+          ...o,
+          [key]: '*****',
+        };
+      }
+      return {
+        ...o,
+        [key]: sanitize(o[key]),
+      };
+    }, obj);
+  }
+  return obj;
+}
+
+export const logger = {
+  debug(...params) {
+    log.debug(...params.map(x => sanitize(x)));
+  },
+
+  info(...params) {
+    log.info(...params.map(x => sanitize(x)));
+  },
+
+  warn(...params) {
+    log.warn(...params.map(x => sanitize(x)));
+  },
+
+  error(...params) {
+    log.error(...params.map(x => sanitize(x)));
+  },
+
+};

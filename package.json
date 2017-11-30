@@ -28,6 +28,7 @@
     "winston-sentry": "git+https://github.com/ualtinok/winston-sentry.git"
   },
   "scripts": {
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "meteor test --driver-package practicalmeteor:mocha --port 4000"
   }
 }

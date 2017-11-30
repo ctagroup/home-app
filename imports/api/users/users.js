@@ -3,16 +3,10 @@ SimpleSchema.messages({
   wrongPasswordFormat: 'The password must contain 8 to 16 characters long, It must contain at least one lowercase character, one uppercase character, one number, and one of the following special characters !@#$*', // eslint-disable-line max-len
 });
 
-export const ChangePasswordSchema = new SimpleSchema({
-  currentPassword: {
+function passwordField(minLength) {
+  return {
     type: String,
-    autoform: {
-      afFieldInput: { type: 'password' },
-    },
-  },
-  newPassword: {
-    type: String,
-    min: 8,
+    min: minLength,
     custom() {
       const regExp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$*])(?=.{8,16})');
       if (!regExp.test(this.value)) {
@@ -23,12 +17,14 @@ export const ChangePasswordSchema = new SimpleSchema({
     autoform: {
       afFieldInput: { type: 'password' },
     },
-  },
-  confirmNewPassword: {
+  };
+}
+
+function confirmPasswordField(passwordFieldName) {
+  return {
     type: String,
-    min: 8,
     custom() {
-      if (this.value !== this.field('newPassword')) {
+      if (this.value !== this.field(passwordFieldName).value) {
         return 'passwordMismatch';
       }
       return undefined;
@@ -36,7 +32,51 @@ export const ChangePasswordSchema = new SimpleSchema({
     autoform: {
       afFieldInput: { type: 'password' },
     },
+  };
+}
+
+export const UserCreateFormSchema = new SimpleSchema({
+  email: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Email,
   },
+  password: passwordField(8),
+  passwordConfirm: confirmPasswordField('password'),
+  firstName: {
+    type: String,
+    optional: true,
+  },
+  middleName: {
+    type: String,
+    optional: true,
+  },
+  lastName: {
+    type: String,
+    optional: true,
+  },
+  gender: {
+    type: Number,
+    allowedValues: [0, 1],
+    autoform: {
+      options: [
+        { value: 0, label: 'Male' },
+        { value: 1, label: 'Female' },
+      ],
+    },
+    optional: true,
+  },
+});
+
+
+export const ChangePasswordSchema = new SimpleSchema({
+  currentPassword: {
+    type: String,
+    autoform: {
+      afFieldInput: { type: 'password' },
+    },
+  },
+  newPassword: passwordField(8),
+  confirmNewPassword: confirmPasswordField('newPassword'),
 });
 
 const GeoCoordinatesSchema = new SimpleSchema(

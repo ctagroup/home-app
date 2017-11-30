@@ -98,7 +98,6 @@ export class ApiEndpoint {
     if (logDetails) {
       logger.error(`HMIS API:${op}#${this.correlationId} res(${url})`, {
         requestHeaders,
-        json_data: requestHeaders.data ? JSON.stringify(requestHeaders.data) : '',
         httpError,
       });
     } else {

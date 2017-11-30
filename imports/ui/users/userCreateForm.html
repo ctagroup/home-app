@@ -1,0 +1,19 @@
+<template name="userCreateForm">
+  <!-- {{> quickForm schema=schema id="userCreateForm"}} -->
+  {{#autoForm schema=schema id="userCreateForm"}}
+    <fieldset>
+      {{> afQuickField name="email"}}
+      {{> afQuickField name="password"}}
+      {{> afQuickField name="passwordConfirm"}}
+    </fieldset>
+    <fieldset>
+        <legend>Account Details</legend>
+        {{> afQuickField name="firstName"}}
+        {{> afQuickField name="middleName"}}
+        {{> afQuickField name="lastName"}}
+        {{> afQuickField name="gender"}}
+      </fieldset>
+      <button type="submit" class="btn btn-primary">Create user</button>
+    <a  href="{{pathFor 'adminDashboardusersView'}}" class="btn btn-large btn-default cancelUser">Cancel</a>
+  {{/autoForm}}
+</template>

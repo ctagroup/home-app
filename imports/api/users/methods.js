@@ -1,10 +1,51 @@
 import { logger } from '/imports/utils/logger';
-import Users, { ChangePasswordSchema } from '/imports/api/users/users';
+import Users, { ChangePasswordSchema, UserCreateFormSchema } from '/imports/api/users/users';
 import { HmisClient } from '/imports/api/hmisApi';
 
 Meteor.methods({
-  'users.create'() {
-    // TODO: doc should be validated by SimpleSchema
+  'users.create'(insertDoc) {
+    logger.info(`METHOD[${Meteor.userId()}]: users.create`, insertDoc);
+    check(insertDoc, UserCreateFormSchema);
+    // TODO: check permissions
+
+    try {
+      const hc = HmisClient.create(this.userId);
+      const account = hc.api('user-service').createUser({
+        username: insertDoc.email,
+        emailAddress: insertDoc.email,
+        password: insertDoc.password,
+        confirmPassword: insertDoc.passwordConfirm,
+        firstName: insertDoc.firstName || '',
+        middleName: insertDoc.middleName || '',
+        lastName: insertDoc.lastName || '',
+        gender: insertDoc.gender,
+      });
+
+      const userId = Users.insert(
+        {
+          createdAt: new Date(),
+          services: {
+            HMIS: {
+              accountId: account.accountId,
+              id: account.accountId,
+              emailAddress: account.emailAddress,
+              firstName: account.firstName,
+              middleName: account.middleName,
+              lastName: account.lastName,
+            },
+          },
+          emails: [
+            {
+              address: account.emailAddress,
+              verified: false,
+            },
+          ],
+        }
+      );
+      return userId;
+    } catch (e) {
+      throw new Meteor.Error(e.details.code, e.reason);
+    }
   },
 
   'users.update'(userId, doc) {
