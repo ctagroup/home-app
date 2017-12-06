@@ -1,13 +1,13 @@
 import moment from 'moment';
 
-let firedRules = [];
+let firedRules = []; // eslint-disable-line
 
 export function castType(v) {
   if (Array.isArray(v)) {
     return v;
   }
 
-  if (moment(v, 'YYYY-MM-DD').isValid() || moment(v, 'MM/DD/YYYY').isValid()) {
+  if (moment(v, 'YYYY-MM-DD', true).isValid() || moment(v, 'MM/DD/YYYY', true).isValid()) {
     return v;
   }
 

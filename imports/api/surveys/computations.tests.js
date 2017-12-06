@@ -514,6 +514,13 @@ describe('survey computations', function () {
     it('will pass date string in MM/DD/YYYY format', function () {
       chai.assert.equal(castType('01/30/2010'), '01/30/2010');
     });
+    it('will cast values.x to undefined', function () {
+      chai.assert.equal(castType('values.x'), undefined);
+    });
+    it('will cast values.question1 to undefined', function () {
+      castType('values.question1');
+      chai.assert.equal(castType('values.question1'), undefined);
+    });
   });
 });
 
