@@ -209,8 +209,7 @@ const viSpdatSingle = {
               type: 'question',
               hmisId: 'dd52746f-8dcb-4536-80df-07823e083646',
               title: 'a) Received health care at an emergency department/room?',
-              category: 'choice',
-              options: ['Yes', 'No'],
+              category: 'number',
               refusable: true,
             },
             {
@@ -218,8 +217,7 @@ const viSpdatSingle = {
               type: 'question',
               hmisId: '67b96338-d1f1-4de9-8a40-43c0ffab8ed8',
               title: 'b) Taken an ambulance to the hospital?',
-              category: 'choice',
-              options: ['Yes', 'No'],
+              category: 'number',
               refusable: true,
             },
             {
@@ -227,8 +225,7 @@ const viSpdatSingle = {
               type: 'question',
               hmisId: '4062595b-9d70-4d12-86d2-275cbb838419',
               title: 'c) Been hospitalized as an inpatient?',
-              category: 'choice',
-              options: ['Yes', 'No'],
+              category: 'number',
               refusable: true,
             },
             {
@@ -238,8 +235,7 @@ const viSpdatSingle = {
               title: `d) Used a crisis service, including sexual assault crisis, mental health
                 crisis, family/intimate violence, distress centers and suicide prevention
                 hotlines?`,
-              category: 'choice',
-              options: ['Yes', 'No'],
+              category: 'number',
               refusable: true,
             },
             {
@@ -249,8 +245,7 @@ const viSpdatSingle = {
               title: `e) Talked to police because you witnessed a crime, were the victim of a crime,
                 or the alleged perpetrator of a crime or because the police told you that you
                 must move along?`,
-              category: 'choice',
-              options: ['Yes', 'No'],
+              category: 'number',
               refusable: true,
             },
             {
@@ -260,7 +255,7 @@ const viSpdatSingle = {
               title: `f) Stayed one or more nights in a holding cell, jail or prison, whether that
                 was a short-term stay like the drunk tank, a longer stay for a more serious
                 offence, or anything in between?`,
-              category: 'choice',
+              category: 'number',
               options: ['Yes', 'No'],
               refusable: true,
             },
@@ -272,38 +267,22 @@ const viSpdatSingle = {
                 EMERGENCY SERVICE USE.`,
               rules: [
                 {
-                  always: [['set', 'interactions', 0]],
-                },
-                {
-                  any: [['==', 'values.question4a', 'Yes']],
-                  then: [['add', 'interactions', 1]],
-                },
-                {
-                  any: [['==', 'values.question4b', 'Yes']],
-                  then: [['add', 'interactions', 1]],
-                },
-                {
-                  any: [['==', 'values.question4c', 'Yes']],
-                  then: [['add', 'interactions', 1]],
-                },
-                {
-                  any: [['==', 'values.question4d', 'Yes']],
-                  then: [['add', 'interactions', 1]],
-                },
-                {
-                  any: [['==', 'values.question4e', 'Yes']],
-                  then: [['add', 'interactions', 1]],
-                },
-                {
-                  any: [['==', 'values.question4f', 'Yes']],
-                  then: [['add', 'interactions', 1]],
+                  always: [[
+                    'sum',
+                    'interactions',
+                    'values.question4a',
+                    'values.question4b',
+                    'values.question4c',
+                    'values.question4d',
+                    'values.question4e',
+                    'values.question4f',
+                  ]],
                 },
                 {
                   any: [['>=', 'variables.interactions', 4]],
                   then: [['set', 'scoreB1', 1]],
                 },
               ],
-
             },
             {
               id: 'question5',

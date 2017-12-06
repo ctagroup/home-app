@@ -291,7 +291,7 @@ export function computeItemState(currentItem, formState) {
 }
 
 export function computeFormState(definition, values, props, otherData) {
-  firedRules = [];
+  // firedRules = [];
   const formState = Object.assign({
     variables: Object.assign({}, definition.variables),
     values,

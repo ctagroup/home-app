@@ -428,60 +428,54 @@ const viSpdatFamily2 = {
               id: 'question8a',
               hmisId: 'dd52746f-8dcb-4536-80df-07823e083646',
               type: 'question',
-              category: 'choice',
+              category: 'number',
               title: 'a) Received health care at an emergency department/room?',
-              options: ['Yes', 'No'],
               refusable: true,
             },
             {
               id: 'question8b',
               hmisId: '67b96338-d1f1-4de9-8a40-43c0ffab8ed8',
               type: 'question',
-              category: 'choice',
+              category: 'number',
               title: 'b) Taken an ambulance to the hospital?',
-              options: ['Yes', 'No'],
               refusable: true,
             },
             {
               id: 'question8c',
               hmisId: '4062595b-9d70-4d12-86d2-275cbb838419',
               type: 'question',
-              category: 'choice',
+              category: 'number',
               title: 'c) Been hospitalized as an inpatient?',
-              options: ['Yes', 'No'],
               refusable: true,
             },
             {
               id: 'question8d',
               hmisId: 'e2968741-ba6f-4dc7-be50-98aabca335b4',
               type: 'question',
-              category: 'choice',
+              category: 'number',
               title: `d) Used a crisis service, including sexual assault crisis, mental
                 health crisis, family/intimate violence, distress centers and suicide
                 prevention hotlines?`,
-              options: ['Yes', 'No'],
               refusable: true,
             },
             {
               id: 'question8e',
               hmisId: '355a2d95-9063-4ad0-ada1-b73a5503e278',
               type: 'question',
-              category: 'choice',
+              category: 'number',
               title: `e) Talked to police because they witnessed a crime, were the victim
                 of a crime, or the alleged perpetrator of a crime or because the police
                 told them that they must move along?`,
-              options: ['Yes', 'No'],
               refusable: true,
             },
             {
               id: 'question8f',
               hmisId: '89dbcb50-c511-42a9-9838-21afaba7126d',
               type: 'question',
-              category: 'choice',
+              category: 'number',
               title: `f) Stayed one or more nights in a holding cell, jail or prison,
                 whether that was a short-term stay like the drunk tank, a longer stay for
                 a more serious offence, or anything in between?`,
-              options: ['Yes', 'No'],
               refusable: true,
             },
           ],
@@ -494,31 +488,16 @@ const viSpdatFamily2 = {
             EMERGENCY SERVICE USE.`,
           rules: [
             {
-              always: [['set', 'interactions', 0]],
-            },
-            {
-              any: [['==', 'values.question8a', 'Yes']],
-              then: [['add', 'interactions', 1]],
-            },
-            {
-              any: [['==', 'values.question8b', 'Yes']],
-              then: [['add', 'interactions', 1]],
-            },
-            {
-              any: [['==', 'values.question8c', 'Yes']],
-              then: [['add', 'interactions', 1]],
-            },
-            {
-              any: [['==', 'values.question8d', 'Yes']],
-              then: [['add', 'interactions', 1]],
-            },
-            {
-              any: [['==', 'values.question8e', 'Yes']],
-              then: [['add', 'interactions', 1]],
-            },
-            {
-              any: [['==', 'values.question8f', 'Yes']],
-              then: [['add', 'interactions', 1]],
+              always: [[
+                'sum',
+                'interactions',
+                'values.question8a',
+                'values.question8b',
+                'values.question8c',
+                'values.question8d',
+                'values.question8e',
+                'values.question8f',
+              ]],
             },
             {
               any: [['>=', 'variables.interactions', 4]],
