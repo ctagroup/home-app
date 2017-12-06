@@ -642,6 +642,12 @@ const viSpdatTay1 = {
           category: 'choice',
           options: ['Yes', 'No'],
           refusable: true,
+          rules: [
+            {
+              any: [['!=', 'client.gender', 0]],
+              then: [['pset', 'question21.skip', 1]],
+            },
+          ],
         },
         {
           id: 'scoreD1',
