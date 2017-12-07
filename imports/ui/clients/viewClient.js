@@ -196,15 +196,14 @@ Template.viewClient.events(
     },
     'click .add-to-hmis': (event, tmpl) => {
       const client = tmpl.data.client;
-      const schema = 'v2015';
-      Meteor.call('uploadPendingClientToHmis', client._id, schema, (error, result) => {
+      Meteor.call('uploadPendingClientToHmis', client._id, (error, result) => {
         if (error) {
           Bert.alert(error.reason || error.error, 'danger', 'growl-top-right');
         } else {
           RecentClients.remove(client._id);
           Bert.alert('Client uploaded to HMIS', 'success', 'growl-top-right');
-          const query = querystring.stringify({ schema });
-          Router.go('viewClient', { _id: result }, { query });
+          const query = querystring.stringify({ schema: result.schema });
+          Router.go('viewClient', { _id: result.hmisClientId }, { query });
         }
       });
     },

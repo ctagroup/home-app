@@ -70,35 +70,87 @@ export default class Survey extends React.Component {
     this.setState(formState);
   }
 
-  handleSubmit() {
+  handleSubmit(uploadSurvey, uploadClient) {
     const { _id: clientId, schema: clientSchema } = this.props.client;
-
     const doc = {
       clientId,
       clientSchema,
       surveyId: this.props.surveyId,
       values: this.state.values,
     };
+    const responseId = this.props.responseId;
 
-    if (this.props.responseId) {
-      Meteor.call('responses.update', this.props.responseId, doc, (err) => {
+    const promise = new Promise((resolve, reject) => {
+      if (responseId) {
+        Meteor.call('responses.update', responseId, doc, (err) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(responseId);
+          }
+        });
+      } else {
+        Meteor.call('responses.create', doc, (err, newResponseId) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(newResponseId);
+          }
+        });
+      }
+    }).catch(err => {
+      Alert.error(err);
+    });
+
+    promise.then(id => {
+      if (uploadClient && 0) {
+        return new Promise((resolve, reject) => {
+          Meteor.call('uploadPendingClientToHmis', clientId, (err) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(id);
+            }
+          });
+        });
+      }
+      return id;
+    }).catch(err => {
+      Alert.error(err, 'Failed to upload client. Survey not uploaded.');
+      // Router.go('adminDashboardresponsesView');
+    });
+
+    promise.then(id => new Promise((resolve, reject) => {
+      console.log('c', id);
+      Meteor.call('responses.uploadToHmis', id, (err, invalidResponses) => {
         if (err) {
-          Alert.error(err);
+          console.log('cx');
+          reject(err);
         } else {
-          Alert.success('Response updated');
-          Router.go('adminDashboardresponsesView');
+          console.log('c1');
+          resolve(invalidResponses);
         }
       });
-    } else {
-      Meteor.call('responses.create', doc, (err) => {
-        if (err) {
-          Alert.error(err);
-        } else {
-          Alert.success('Response created');
-          Router.go('adminDashboardresponsesView');
-        }
-      });
-    }
+    })).catch(err => {
+      console.log('cr');
+      Alert.error(`Failed to upload survey. ${err}`);
+      Router.go('adminDashboardresponsesView');
+    });
+
+    promise.then((invalidResponses) => {
+      console.log('d', invalidResponses);
+      if (invalidResponses.length > 0) {
+        console.log(invalidResponses);
+        const list = invalidResponses.map(r => r.id).join(', ');
+        Alert.warning(`Success but ${invalidResponses.length} responses not uploaded: ${list}`);
+      } else {
+        Alert.success('Response uploaded');
+      }
+      Router.go('adminDashboardresponsesView');
+    }).catch(err => {
+      console.log('dr');
+      Alert.error(err);
+    });
   }
 
   handleToggleDebugWindow() {
@@ -163,16 +215,29 @@ export default class Survey extends React.Component {
 
   renderSubmitButtons() {
     const disabled = !this.props.client;
+    const uploadClient = !this.props.client.clientId;
+
     return (
-      <button
-        className="btn btn-success"
-        type="button"
-        disabled={disabled}
-        onClick={this.handleSubmit}
-      >
-        Submit
-      </button>
-    );
+      <div>
+        <button
+          className="btn btn-success"
+          type="button"
+          disabled={disabled}
+          onClick={() => this.handleSubmit(true, uploadClient)}
+        >
+          {uploadClient ? 'Upload client and survey' : 'Upload survey'}
+        </button>
+        &nbsp;
+        <button
+          className="btn btn-default"
+          type="button"
+          disabled={disabled}
+          onClick={() => this.handleSubmit(false, false)}
+        >
+          Pause Survey
+        </button>
+      </div>
+  );
   }
 
   render() {

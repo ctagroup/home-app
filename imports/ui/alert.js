@@ -1,3 +1,5 @@
+import { trimText } from '/imports/api/utils';
+
 Bert.defaults = {
   hideDelay: 5000,
 };
@@ -14,11 +16,11 @@ const Alert = {
       style: 'growl-top-right',
     });
   },
-  error(err) {
-    const message = err.reason || err.error || err.message || err;
+  error(err, extra) {
+    const message = trimText(err.reason || err.error || err.message || err, 100);
     console.error(message);
     Bert.alert({
-      message,
+      message: extra ? `${extra} ${message}` : message,
       type: 'danger',
       style: 'growl-top-right',
     });
