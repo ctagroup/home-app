@@ -1,6 +1,7 @@
 import React from 'react';
 import { computeFormState } from '/imports/api/surveys/computations';
 import Section from '/imports/ui/components/surveyForm/Section';
+import { ResponseStatus } from '/imports/api/responses/responses';
 import Alert from '/imports/ui/alert';
 
 
@@ -75,81 +76,88 @@ export default class Survey extends React.Component {
     const doc = {
       clientId,
       clientSchema,
+      status: ResponseStatus.PAUSED,
       surveyId: this.props.surveyId,
       values: this.state.values,
     };
     const responseId = this.props.responseId;
+    const history = [];
 
-    const promise = new Promise((resolve, reject) => {
+    this.setState({ submitting: true });
+    new Promise((resolve, reject) => {
       if (responseId) {
         Meteor.call('responses.update', responseId, doc, (err) => {
           if (err) {
+            history.push('Failed to update response');
             reject(err);
           } else {
+            history.push('Response updated');
             resolve(responseId);
           }
         });
       } else {
         Meteor.call('responses.create', doc, (err, newResponseId) => {
           if (err) {
+            history.push('Failed to create response');
             reject(err);
           } else {
+            history.push(`Response created: ${newResponseId}`);
             resolve(newResponseId);
           }
         });
       }
-    }).catch(err => {
-      Alert.error(err);
-    });
-
-    promise.then(id => {
-      if (uploadClient && 0) {
+    })
+    .then(id => {
+      if (uploadClient) {
         return new Promise((resolve, reject) => {
-          Meteor.call('uploadPendingClientToHmis', clientId, (err) => {
+          Meteor.call('uploadPendingClientToHmis', clientId, (err, hmisClient) => {
             if (err) {
+              history.push(`Failed to upload client: ${err}`);
               reject(err);
             } else {
+              history.push(`Client uploaded as ${JSON.stringify(hmisClient)}`);
               resolve(id);
             }
           });
         });
       }
+      history.push(`Client not uploaded (id: ${clientId})`);
       return id;
-    }).catch(err => {
-      Alert.error(err, 'Failed to upload client. Survey not uploaded.');
-      // Router.go('adminDashboardresponsesView');
-    });
-
-    promise.then(id => new Promise((resolve, reject) => {
-      console.log('c', id);
-      Meteor.call('responses.uploadToHmis', id, (err, invalidResponses) => {
-        if (err) {
-          console.log('cx');
-          reject(err);
-        } else {
-          console.log('c1');
-          resolve(invalidResponses);
-        }
-      });
-    })).catch(err => {
-      console.log('cr');
-      Alert.error(`Failed to upload survey. ${err}`);
-      Router.go('adminDashboardresponsesView');
-    });
-
-    promise.then((invalidResponses) => {
-      console.log('d', invalidResponses);
-      if (invalidResponses.length > 0) {
-        console.log(invalidResponses);
+    })
+    .then(id => {
+      if (uploadSurvey) {
+        return new Promise((resolve, reject) => {
+          Meteor.call('responses.uploadToHmis', id, (err, invalidResponses) => {
+            if (err) {
+              history.push(`Failed to upload response: ${err}`);
+              reject(err);
+            } else {
+              history.push('Response uploaded');
+              resolve(invalidResponses);
+            }
+          });
+        });
+      }
+      history.push('Response not uploaded');
+      return null;
+    })
+    .then((invalidResponses) => {
+      if (invalidResponses === null) {
+        Alert.success('Response paused');
+      } else if (invalidResponses.length > 0) {
         const list = invalidResponses.map(r => r.id).join(', ');
-        Alert.warning(`Success but ${invalidResponses.length} responses not uploaded: ${list}`);
+        Alert.warning(`Success but ${invalidResponses.length} questions not uploaded: ${list}`);
       } else {
-        Alert.success('Response uploaded');
+        Alert.success('Success. Response uploaded');
       }
       Router.go('adminDashboardresponsesView');
-    }).catch(err => {
-      console.log('dr');
-      Alert.error(err);
+      this.setState({ submitting: false });
+    })
+    .catch(err => {
+      this.setState({ submitting: false });
+      history.unshift('Failed to upload the response. Details:');
+      Alert.error(err, history.join('<br>'));
+      alert(history.join('\n')); // eslint-disable-line no-alert
     });
   }
 
@@ -214,8 +222,8 @@ export default class Survey extends React.Component {
   }
 
   renderSubmitButtons() {
-    const disabled = !this.props.client;
-    const uploadClient = !this.props.client.clientId;
+    const disabled = !this.props.client || this.state.submitting;
+    const uploadClient = !this.props.client.schema;
 
     return (
       <div>
