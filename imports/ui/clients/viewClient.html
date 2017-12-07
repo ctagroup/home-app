@@ -1,4 +1,5 @@
 <template name="viewClient">
+  {{log client}}
 {{#with client}}
   <div id="viewClient_content">
     <div class="row client-profile-container">
@@ -269,6 +270,7 @@
     </div>
 
     {{#with eligibleClient}}
+      {{#unless error}}
         <div class="row margin-top-35">
             <div class="col-xs-12">
                 <div class="form-group">
@@ -286,6 +288,7 @@
                     {{/if}}
             </div>
         </div>
+        {{/unless}}
     {{/with}}
 
 {{/with}}

@@ -98,12 +98,16 @@ Template.viewClient.helpers(
     },
 
     showEnrollments() {
-      return !Router.current().data().isPendingClient;
+      return Router.current().data().client.clientId && Router.current().params.query.schema;
     },
 
     showReferralStatus() {
-      return Roles.userIsInRole(Meteor.user(), ['System Admin', 'Developer', 'Case Manager'])
-        && Router.current().data().client.clientId && Router.current().params.query.schema;
+      const hasPermission = Roles.userIsInRole(
+        Meteor.user(), ['System Admin', 'Developer', 'Case Manager']
+      );
+      const isHmisClient = Router.current().data().client.clientId
+        && Router.current().params.query.schema;
+      return hasPermission && isHmisClient;
     },
 
     showGlobalHousehold() {
