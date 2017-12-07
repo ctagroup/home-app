@@ -1,5 +1,6 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
+import InputMask from 'react-input-mask';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import Item from './Item';
@@ -162,11 +163,13 @@ export default class Question extends Item {
 
   renderInput(value, type, disabled) {
     const { id } = this.props.item;
+    const mask = this.props.item.mask;
     return (
-      <input
+      <InputMask
         type={type}
         id={id}
         name={id}
+        mask={mask}
         value={value === undefined ? '' : value}
         onChange={this.handleChange}
         disabled={this.isRefused() || disabled}

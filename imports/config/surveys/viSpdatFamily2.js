@@ -1290,6 +1290,7 @@ const viSpdatFamily2 = {
               type: 'question',
               title: 'Phone',
               category: 'text',
+              mask: '(999) 999-9999',
             },
             {
               id: 'followup.email',

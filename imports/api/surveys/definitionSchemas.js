@@ -99,6 +99,10 @@ export const QuestionDefinitionSchema = new SimpleSchema([ItemDefinitionSchema, 
     type: String,
     optional: true,
   },
+  mask: {
+    type: String,
+    optional: true,
+  },
   category: {
     type: String,
     allowedValues: ['choice', 'text', 'number', 'date', 'grid'],

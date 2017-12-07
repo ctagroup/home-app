@@ -8,7 +8,8 @@ import { handleItemTransform } from './helpers';
 export default class QuestionItemForm extends React.Component {
   render() {
     console.log('QuestionItemForm', this.props.model);
-    const choiceFields = this.props.model.category === 'choice' ?
+    const category = this.props.model.category;
+    const choiceFields = category === 'choice' ?
       (<div className="panel panel-default">
         <div className="panel-heading">Choice</div>
         <div className="panel-body">
@@ -19,6 +20,9 @@ export default class QuestionItemForm extends React.Component {
           />
         </div>
       </div>) : null;
+
+    const showMask = category === 'text' || category === 'number';
+
     return (
       <AutoForm
         schema={QuestionDefinitionSchema}
@@ -32,6 +36,12 @@ export default class QuestionItemForm extends React.Component {
         <AutoField name="title" />
         <AutoField name="category" />
         {choiceFields}
+        {showMask &&
+          <AutoField
+            name="mask"
+            help="9 - digit, a - char, * - digit or char, \9 - 9"
+          />
+        }
         <AutoField name="refusable" />
         <ListField
           name="rules"
