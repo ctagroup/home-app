@@ -98,22 +98,24 @@ Template.viewClient.helpers(
     },
 
     showEnrollments() {
-      return Router.current().data().client.clientId && Router.current().params.query.schema;
+      // const schema = Router.current().params.query.schema;
+      return (this.client && this.client.clientId);
     },
 
     showReferralStatus() {
       const hasPermission = Roles.userIsInRole(
         Meteor.user(), ['System Admin', 'Developer', 'Case Manager']
       );
-      const isHmisClient = Router.current().data().client.clientId
-        && Router.current().params.query.schema;
-      return hasPermission && isHmisClient;
+      // const isHmisClient = Router.current().data().client.clientId
+      //   && Router.current().params.query.schema;
+      return hasPermission && this.client && this.client.clientId;
     },
 
     showGlobalHousehold() {
-      return Roles.userIsInRole(
+      const hasPermission = Roles.userIsInRole(
         Meteor.user(), ['System Admin', 'Developer', 'Case Manager', 'Surveyor']
-      ) && Router.current().data().client.clientId && Router.current().params.query.schema;
+      );
+      return hasPermission && this.client && this.client.clientId;
     },
 
     getText(text, code) {
@@ -202,8 +204,7 @@ Template.viewClient.events(
         } else {
           RecentClients.remove(client._id);
           Bert.alert('Client uploaded to HMIS', 'success', 'growl-top-right');
-          const query = querystring.stringify({ schema: result.schema });
-          Router.go('viewClient', { _id: result.hmisClientId }, { query });
+          Router.go('viewClient', { _id: result.clientId }, { query: { schema: result.schema } });
         }
       });
     },

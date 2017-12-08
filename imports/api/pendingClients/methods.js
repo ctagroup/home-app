@@ -93,7 +93,7 @@ Meteor.methods({
     PendingClients.remove({ _id: clientId });
   },
 
-  uploadPendingClientToHmis(clientId, schema = 'v2015') {
+  uploadPendingClientToHmis(clientId, schema = 'v2017') {
     logger.info(`METHOD[${Meteor.userId()}]: uploadPendingClientToHmis`, clientId, schema);
     check(clientId, String);
 
