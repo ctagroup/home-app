@@ -40,6 +40,7 @@ import '/imports/api/projects/server/publications';
 
 import '/imports/api/openingScript/methods';
 import '/imports/api/logger/methods';
+import '/imports/api/aws/server/aws';
 
 import '/imports/startup/server/migrations';
 import '/imports/startup/server/accounts';
