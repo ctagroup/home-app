@@ -78,7 +78,7 @@ So we have added another logging utility called [Winston](https://github.com/win
 
 Ideally, you should not be putting console logs in your production code but just in case you need to put it, use Winston methods for that.
 
-We've created a wrapper object called `logger` to use Winston. And this object is availbel globally on client & server, both the environments.
+We've created a wrapper object called `logger` to use Winston. And this object is availble globally on client & server, both the environments.
 
 ```
 logger.log('info', "YOYO - This is Log");

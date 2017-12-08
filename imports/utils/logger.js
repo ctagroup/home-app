@@ -51,7 +51,8 @@ if (Meteor.isServer) {
   });
 }
 
-export function sanitize(obj, secrets = ['password', 'passwordConfirm', 'confirmPassword']) {
+export function sanitize(obj, secrets = ['password', 'passwordConfirm',
+  'confirmPassword', 'secret', 'appSecret']) {
   if (Array.isArray(obj)) {
     return obj.map(x => sanitize(x, secrets));
   }
@@ -74,6 +75,10 @@ export function sanitize(obj, secrets = ['password', 'passwordConfirm', 'confirm
 }
 
 export const logger = {
+  log(...params) {
+    log.log(...params.map(x => sanitize(x)));
+  },
+
   debug(...params) {
     log.debug(...params.map(x => sanitize(x)));
   },
