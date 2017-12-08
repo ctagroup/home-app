@@ -1,19 +1,19 @@
-import { logger } from '/imports/utils/logger';
+import { logger, sanitize } from '/imports/utils/logger';
 
 Meteor.methods({
-  logToServerConsoleLog(msg) {
-    logger.log('info', `(CLIENT) ${JSON.stringify(msg)}`);
+  logToServerConsoleLog(...params) {
+    logger.log('info', '(CLIENT)', params.map(x => sanitize(x)));
   },
-  logToServerConsoleDebug(msg) {
-    logger.debug(`(CLIENT) ${JSON.stringify(msg)}`);
+  logToServerConsoleDebug(...params) {
+    logger.debug('(CLIENT)', params.map(x => sanitize(x)));
   },
-  logToServerConsoleInfo(msg) {
-    logger.info(`(CLIENT) ${JSON.stringify(msg)}`);
+  logToServerConsoleInfo(...params) {
+    logger.info('(CLIENT)', params.map(x => sanitize(x)));
   },
-  logToServerConsoleWarn(msg) {
-    logger.warn(`(CLIENT) ${JSON.stringify(msg)}`);
+  logToServerConsoleWarn(...params) {
+    logger.warn('(CLIENT)', ...params.map(x => sanitize(x)));
   },
-  logToServerConsoleError(msg) {
-    logger.error(`(CLIENT) ${JSON.stringify(msg)}`);
+  logToServerConsoleError(...params) {
+    logger.error('(CLIENT)', params.map(x => sanitize(x)));
   },
 });

@@ -3,6 +3,9 @@ import { computeFormState } from '/imports/api/surveys/computations';
 import Section from '/imports/ui/components/surveyForm/Section';
 import { ResponseStatus } from '/imports/api/responses/responses';
 import Alert from '/imports/ui/alert';
+import { fullName } from '/imports/api/utils';
+import { logger } from '/imports/utils/logger';
+import { RecentClients } from '/imports/api/recent-clients';
 
 
 export default class Survey extends React.Component {
@@ -80,12 +83,12 @@ export default class Survey extends React.Component {
       surveyId: this.props.surveyId,
       values: this.state.values,
     };
-    const responseId = this.props.responseId;
     const history = [];
 
     this.setState({ submitting: true });
     new Promise((resolve, reject) => {
-      if (responseId) {
+      if (this.props.response) {
+        const responseId = this.props.response._id;
         Meteor.call('responses.update', responseId, doc, (err) => {
           if (err) {
             history.push('Failed to update response');
@@ -107,7 +110,7 @@ export default class Survey extends React.Component {
         });
       }
     })
-    .then(id => {
+    .then(responseId => {
       if (uploadClient) {
         return new Promise((resolve, reject) => {
           Meteor.call('uploadPendingClientToHmis', clientId, (err, hmisClient) => {
@@ -115,19 +118,20 @@ export default class Survey extends React.Component {
               history.push(`Failed to upload client: ${err}`);
               reject(err);
             } else {
+              RecentClients.updateId(clientId, hmisClient);
               history.push(`Client uploaded as ${JSON.stringify(hmisClient)}`);
-              resolve(id);
+              resolve(responseId);
             }
           });
         });
       }
       history.push(`Client not uploaded (id: ${clientId})`);
-      return id;
+      return responseId;
     })
-    .then(id => {
+    .then(responseId => {
       if (uploadSurvey) {
         return new Promise((resolve, reject) => {
-          Meteor.call('responses.uploadToHmis', id, (err, invalidResponses) => {
+          Meteor.call('responses.uploadToHmis', responseId, (err, invalidResponses) => {
             if (err) {
               history.push(`Failed to upload response: ${err}`);
               reject(err);
@@ -154,10 +158,13 @@ export default class Survey extends React.Component {
       this.setState({ submitting: false });
     })
     .catch(err => {
+      const correlationId = 'abcd';
       this.setState({ submitting: false });
       history.unshift('Failed to upload the response. Details:');
+      history.push(correlationId);
       Alert.error(err, history.join('<br>'));
       alert(history.join('\n')); // eslint-disable-line no-alert
+      logger.error(history);
     });
   }
 
@@ -222,8 +229,12 @@ export default class Survey extends React.Component {
   }
 
   renderSubmitButtons() {
-    const disabled = !this.props.client || this.state.submitting;
-    const uploadClient = !this.props.client.schema;
+    const status = this.props.response && this.props.response.status;
+    const client = this.props.client;
+    const disabled = !client
+      || this.state.submitting
+      || status === ResponseStatus.COMPLETED;
+    const uploadClient = client && !client.schema;
 
     return (
       <div>
@@ -251,8 +262,13 @@ export default class Survey extends React.Component {
   render() {
     const root = this.props.definition;
     const formState = this.state;
+    const client = this.props.client || {};
+    const status = this.props.response ? this.props.response.status : 'new';
+    const clientName = fullName(client) || client._id || 'n/a';
     return (
       <div>
+        <p><strong>Client:</strong> {clientName}</p>
+        <p><strong>Response status:</strong> {status}</p>
         <Section
           item={root}
           formState={formState}

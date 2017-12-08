@@ -114,6 +114,9 @@ Meteor.methods({
         { multi: true }
       );
     }
-    return { hmisClientId, schema };
+    return {
+      clientId: hmisClientId,
+      schema,
+    };
   },
 });

@@ -4,7 +4,6 @@ import moment from 'moment';
 
 let log;
 
-
 if (Meteor.isClient) {
   log = {
     log(msg) {
@@ -90,5 +89,4 @@ export const logger = {
   error(...params) {
     log.error(...params.map(x => sanitize(x)));
   },
-
 };
