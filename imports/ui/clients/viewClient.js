@@ -1,4 +1,3 @@
-const querystring = require('querystring');
 import { Clients } from '/imports/api/clients/clients';
 import Users from '/imports/api/users/users';
 import { RecentClients } from '/imports/api/recent-clients';
