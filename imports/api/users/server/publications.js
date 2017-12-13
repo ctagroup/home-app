@@ -1,6 +1,22 @@
+import { eachLimit } from 'async';
 import Users from '/imports/api/users/users';
 import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
+
+function updateHmisProfile(userId, account) {
+  const projects = account.projectGroup ? account.projectGroup.projects : [];
+  Users.update(userId, { $set: {
+    'services.HMIS.emailAddress': account.emailAddress,
+    'services.HMIS.firstName': account.firstName,
+    'services.HMIS.middleName': account.middlName,
+    'services.HMIS.lastName': account.lastName,
+    'services.HMIS.gender': account.gender,
+    'services.HMIS.status': account.status,
+    'services.HMIS.roles': account.roles,
+    'services.HMIS.projects': projects,
+  } });
+}
+
 
 const fields = {
   'services.HMIS.emailAddress': 1,
@@ -15,7 +31,22 @@ const fields = {
   projectsLinked: 1, // TODO: is it required??
 };
 
-Meteor.publish('users.all', () => Users.find({}, { fields }));
+Meteor.publish('users.all', function publishAllUsers() {
+  logger.debug(`Publishing users.all to ${this.userId}`);
+  const cursor = Users.find({}, { fields });
+  const api = HmisClient.create(this.userId).api('user-service');
+  Meteor.defer(() => {
+    eachLimit(
+      cursor.fetch(), Meteor.settings.connectionLimit,
+      (user, next) => {
+        const account = api.getUser(user.services.HMIS.accountId);
+        updateHmisProfile(user._id, account);
+        next();
+      }
+    );
+  });
+  return cursor;
+});
 
 Meteor.publish('users.one', function publishSingleHmisUser(userId) { // eslint-disable-line prefer-arrow-callback, max-len
   logger.debug(`Publishing users.one(${userId}) to ${this.userId}`);
@@ -24,22 +55,13 @@ Meteor.publish('users.one', function publishSingleHmisUser(userId) { // eslint-d
     return [];
   }
 
-  const hc = HmisClient.create(this.userId);
+  const api = HmisClient.create(this.userId).api('user-service');
 
   const user = Users.findOne(userId);
   try {
     const hmisId = user.services.HMIS.accountId;
-    const account = hc.api('user-service').getUser(hmisId);
-    Users.update(userId, { $set: {
-      'services.HMIS.emailAddress': account.emailAddress,
-      'services.HMIS.firstName': account.firstName,
-      'services.HMIS.middleName': account.middlName,
-      'services.HMIS.lastName': account.lastName,
-      'services.HMIS.gender': account.gender,
-      'services.HMIS.status': account.status,
-      'services.HMIS.roles': account.roles,
-      'services.HMIS.projects': account.projectGroup.projects,
-    } });
+    const account = api.getUser(hmisId);
+    updateHmisProfile(userId, account);
   } catch (e) {
     logger.warn(`users.one: failed to update HMIS profile for user ${userId}`, e);
   }

@@ -18,6 +18,7 @@ AutoForm.addHooks('userCreateForm', {
   },
   onSuccess() {
     Alert.success('User created');
+    Router.go('adminDashboardusersView');
   },
   onError(formType, err) {
     Alert.error(err);
