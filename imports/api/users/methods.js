@@ -23,6 +23,7 @@ Meteor.methods({
 
       const userId = Users.insert(
         {
+          _id: account.accountId,
           createdAt: new Date(),
           services: {
             HMIS: {

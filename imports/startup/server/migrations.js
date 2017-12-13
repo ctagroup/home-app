@@ -75,5 +75,30 @@ Meteor.startup(() => {
     });
   }
 
+  /*
+  AppSettings.set('version', 12);
+  if (version === 12) {
+    // TODO: this is more complicated since old user._id may be referenced in other documents
+    // Change user ids to HMIS ids
+    version++;
+    Users.find().fetch().forEach(user => {
+      if (user.services && user.services.HMIS && user.services.HMIS.accountId) {
+        const newUser = {
+          ...user,
+          _id: user.services.HMIS.accountId,
+        };
+        try {
+          Users.remove(user._id);
+          Users.insert(newUser);
+        } catch (e) {
+          logger.error(e);
+          Users.insert(user);
+        }
+      }
+    });
+    AppSettings.set('version', version);
+  }
+  */
+
   logger.info(`Migrations complete. Version: ${AppSettings.get('version')}`);
 });
