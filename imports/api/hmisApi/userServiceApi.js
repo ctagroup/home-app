@@ -17,6 +17,11 @@ class UserServiceApi extends ApiEndpoint {
     return this.doPut(url, { account: data });
   }
 
+  deleteUser(userId) {
+    const url = `${BASE_URL}/accounts/${userId}`;
+    return this.doDel(url);
+  }
+
   updateUserRoles(userId, roles) {
     const body = {
       roles: {

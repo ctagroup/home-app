@@ -85,6 +85,14 @@ Meteor.methods({
 
     // TODO: change HMIS password
   },
+  'users.delete'(userId) {
+    logger.info(`METHOD[${Meteor.userId()}]: users.delete`, userId);
+    check(userId, String);
+    // TODO: permissions
+    const hmisId = Users.findOne(userId).services.HMIS.accountId;
+    HmisClient.create(this.userId).api('user-service').deleteUser(hmisId);
+    Users.remove(userId);
+  },
   'users.changeOwnPassword'(passwordChange) {
     check(passwordChange, ChangePasswordSchema);
     const { currentPassword, newPassword, confirmNewPassword } = passwordChange;
