@@ -90,8 +90,11 @@ Meteor.methods({
     logger.info(`METHOD[${Meteor.userId()}]: users.delete`, userId);
     check(userId, String);
     // TODO: permissions
-    const hmisId = Users.findOne(userId).services.HMIS.accountId;
-    HmisClient.create(this.userId).api('user-service').deleteUser(hmisId);
+    const user = Users.findOne(userId);
+    const hmisId = user.services && user.services.HMIS && user.services.HMIS.accountId;
+    if (hmisId) {
+      HmisClient.create(this.userId).api('user-service').deleteUser(hmisId);
+    }
     Users.remove(userId);
   },
   'users.changeOwnPassword'(passwordChange) {

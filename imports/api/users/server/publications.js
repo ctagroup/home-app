@@ -39,8 +39,14 @@ Meteor.publish('users.all', function publishAllUsers() {
     eachLimit(
       cursor.fetch(), Meteor.settings.connectionLimit,
       (user, next) => {
-        const account = api.getUser(user.services.HMIS.accountId);
-        updateHmisProfile(user._id, account);
+        if (user.services && user.services.HMIS && user.services.HMIS.accountId) {
+          const account = api.getUser(user.services.HMIS.accountId);
+          updateHmisProfile(user._id, account);
+        } else {
+          updateHmisProfile(user._id, {
+            'services.HMIS.status': 'LOCAL USER',
+          });
+        }
         next();
       }
     );
