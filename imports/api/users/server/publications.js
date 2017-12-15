@@ -5,6 +5,7 @@ import { logger } from '/imports/utils/logger';
 
 function updateHmisProfile(userId, account) {
   const projects = account.projectGroup ? account.projectGroup.projects : [];
+  const projectGroup = account.projectGroup || {};
   Users.update(userId, { $set: {
     'services.HMIS.emailAddress': account.emailAddress,
     'services.HMIS.firstName': account.firstName,
@@ -14,6 +15,7 @@ function updateHmisProfile(userId, account) {
     'services.HMIS.status': account.status,
     'services.HMIS.roles': account.roles,
     'services.HMIS.projects': projects,
+    'services.HMIS.projectGroup': { ...projectGroup, projects: undefined },
   } });
 }
 
@@ -27,6 +29,7 @@ const fields = {
   'services.HMIS.gender': 1,
   'services.HMIS.roles': 1,
   'services.HMIS.status': 1,
+  'services.HMIS.projectGroup': 1,
   createdAt: 1,
   projectsLinked: 1, // TODO: is it required??
 };
@@ -40,7 +43,7 @@ Meteor.publish('users.all', function publishAllUsers() {
       cursor.fetch(), Meteor.settings.connectionLimit,
       (user, next) => {
         if (user.services && user.services.HMIS && user.services.HMIS.accountId) {
-          const account = api.getUser(user.services.HMIS.accountId);
+          const account = api.debug().getUser(user.services.HMIS.accountId);
           updateHmisProfile(user._id, account);
         } else {
           updateHmisProfile(user._id, {
