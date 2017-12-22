@@ -311,3 +311,17 @@ export function getScoringVariables(formState, scorePrefix = 'score.') {
       value: variables[name],
     }));
 }
+
+
+export function iterateItems(definition, callback) {
+  // TODO: add tests
+  callback(definition);
+
+  const items = definition.items || [];
+  for (let i = 0; i < items.length; i++) {
+    const result = iterateItems(items[i], callback);
+    if (result === false) {
+      return;
+    }
+  }
+}

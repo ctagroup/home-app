@@ -1,6 +1,6 @@
 import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
-import { getScoringVariables } from '/imports/api/surveys/computations';
+import { getScoringVariables, iterateItems } from '/imports/api/surveys/computations';
 import Surveys from '/imports/api/surveys/surveys';
 import { mapUploadedSurveySections } from '/imports/api/surveys/helpers';
 
@@ -21,6 +21,7 @@ Meteor.methods({
 
   'surveys.update'(id, doc) {
     logger.info(`METHOD[${Meteor.userId()}]: surveys.update`, id, doc);
+
     if (doc.$set) {
       check(doc, Surveys.schema);
       Surveys.update(id, doc);
@@ -28,6 +29,13 @@ Meteor.methods({
       Surveys.schema.clean(doc);
       check(doc, Surveys.schema);
       Surveys.update(id, doc, { bypassCollection2: true });
+    }
+
+    try {
+      Meteor.call('surveys.uploadQuestions', id);
+    } catch (e) {
+      logger.error(`Failed to upload survey questions ${e}`, e.stack);
+      throw new Meteor.Error('hmis.api', `Survey updated, failed to upload questions! ${e}`);
     }
 
     try {
@@ -44,6 +52,39 @@ Meteor.methods({
     check(id, String);
     // TODO: permissions check
     return Surveys.remove(id);
+  },
+
+  'surveys.uploadQuestions'(id) {
+    const hc = HmisClient.create(Meteor.userId());
+    const survey = Surveys.findOne(id);
+    const definition = JSON.parse(survey.definition);
+
+    // TODO: make sure question group exists
+    const groups = hc.api('survey').debug().getQuestionGroups();
+    let groupId;
+    if (groups.length === 0) {
+      // TODO: create question group
+      groupId = 'TODO';
+      throw new Error('Question group does not exist');
+    } else {
+      groupId = groups[0].questionIGroupId;
+    }
+
+    console.log('TODO: upload to group', groups[0]);
+
+    iterateItems(definition, (item) => {
+      if (item.type === 'question' && !item.hmisId) {
+
+      }
+      if (item.type === 'grid' && !item.hmisId) {
+
+      }
+    });
+
+    console.log('end');
+
+
+    throw new Error('Not implemented');
   },
 
   'surveys.upload'(id) {
