@@ -57,6 +57,7 @@ Meteor.startup(() => {
   }
 
   if (version === 12) {
+    version++;
     logger.info('upserting surveys');
     const surveys = {};
     [viSpdatFamily2, viSpdatSinge201, viSpdatTay1, testSurvey].forEach(s => (surveys[s.id] = s));
@@ -72,6 +73,7 @@ Meteor.startup(() => {
       };
       check(survey, Surveys.schema);
       Surveys.upsert(id, { $set: { ...survey } }, { bypassCollection2: true });
+      AppSettings.set('version', version);
     });
   }
 

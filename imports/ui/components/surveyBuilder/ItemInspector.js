@@ -185,9 +185,17 @@ export default class ItemInspector extends React.Component {
 
     switch (item.type) {
       case 'grid':
-        return <GridItemForm onChange={this.onValueChange} model={item} />;
+        return (<GridItemForm
+          onChange={this.onValueChange}
+          model={item}
+          questions={this.props.questions}
+        />);
       case 'question':
-        return <QuestionItemForm onChange={this.onValueChange} model={item} />;
+        return (<QuestionItemForm
+          onChange={this.onValueChange}
+          model={item}
+          questions={this.props.questions}
+        />);
       case 'score':
         return <ScoreItemForm onChange={this.onValueChange} model={item} />;
       case 'section':

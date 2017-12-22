@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import SortableTree from 'react-sortable-tree';
 import { trimText } from '/imports/api/utils';
-import { findItem } from '/imports/api/surveys/computations';
+import { findItem, iterateItems } from '/imports/api/surveys/computations';
 import Alert from '/imports/ui/alert';
 import FormInspector from '/imports/ui/components/surveyBuilder/FormInspector.js';
 import ItemInspector from '/imports/ui/components/surveyBuilder/ItemInspector.js';
@@ -95,6 +95,15 @@ export default class SurveyBuilder extends React.Component {
     delete item.version;
 
     return this.handleItemAdd(item, this.state.definition);
+  }
+
+  getUnusedQuestions() {
+    const nodeProps = this.getTreeProps(this.state.treeData);
+    const unusedQuestions = this.props.questions.filter(
+      // don't show questions already added to the survey
+      q => !(nodeProps[q._id] && nodeProps[q._id].isFromBank)
+    );
+    return unusedQuestions;
   }
 
   generateTree(definition, prevTree = []) {
@@ -275,6 +284,7 @@ export default class SurveyBuilder extends React.Component {
     return (<ItemInspector
       item={Object.assign({}, item)}
       originalQuestion={originalQuestion}
+      questions={this.getUnusedQuestions()}
       onChange={this.handleItemChange}
       onClose={this.handleCloseInspector}
     />);
@@ -288,16 +298,27 @@ export default class SurveyBuilder extends React.Component {
   }
 
   renderQuestionModal() {
-    const nodeProps = this.getTreeProps(this.state.treeData);
-    const validQuestions = this.props.questions.filter(
-      q => !(nodeProps[q._id] && nodeProps[q._id].isFromBank)
-    );
-
     return (<QuestionModal
       isOpen={this.state.questionModalIsOpen}
       handleClose={this.handleCloseQuestionModal}
-      questions={validQuestions}
+      questions={this.getUnusedQuestions()}
     />);
+  }
+
+  renderSurveyInfo() {
+    let count = 0;
+    let total = 0;
+    iterateItems(this.state.definition, (item) => {
+      if (item.type === 'question' || item.type === 'grid') {
+        if (!item.hmisId) {
+          count++;
+        }
+        total++;
+      }
+    });
+    return (
+      <p>There are {count}/{total} questions not associated with HMIS</p>
+    );
   }
 
   render() {
@@ -336,6 +357,7 @@ export default class SurveyBuilder extends React.Component {
         >
           {isNewSurvey ? 'Create' : 'Update'}
         </button>
+        {this.renderSurveyInfo()}
       </div>
     );
   }

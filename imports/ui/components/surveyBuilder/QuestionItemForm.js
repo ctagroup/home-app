@@ -1,6 +1,7 @@
 import React from 'react';
 import { AutoField, AutoForm, ListField } from 'uniforms-bootstrap3';
 import RuleField from '/imports/ui/components/surveyBuilder/formFields/RuleField';
+import QuestionPicker from '/imports/ui/components/surveyBuilder/formFields/QuestionPickerField';
 import { QuestionDefinitionSchema } from '/imports/api/surveys/definitionSchemas';
 import { handleItemTransform } from './helpers';
 
@@ -31,7 +32,7 @@ export default class QuestionItemForm extends React.Component {
         modelTransform={handleItemTransform}
       >
         <AutoField name="id" />
-        <AutoField name="hmisId" />
+        <QuestionPicker name="hmisId" />
         <AutoField name="type" />
         <AutoField name="title" />
         <AutoField name="category" />
