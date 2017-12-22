@@ -42,7 +42,6 @@ export class SurveyApi extends ApiEndpoint {
 
   createQuestionGroup() {
     throw new Error('Not implemented');
-
   }
 
   getQuestionGroups() {

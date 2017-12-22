@@ -33,6 +33,12 @@ export class SurveyApi2 extends ApiEndpoint {
     return this.doPut(url, body);
   }
 
+  createQuestion(questionGroupId, question) {
+    const url = `${BASE_URL}/questiongroups/${questionGroupId}/questions`;
+    const body = { question };
+    return this.doPost(url, body).question;
+  }
+
 }
 
 

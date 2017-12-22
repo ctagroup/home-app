@@ -11,6 +11,7 @@ Meteor.methods({
     // TODO: permissions check
     const id = Surveys.insert(doc);
     try {
+      Meteor.call('surveys.uploadQuestions', id);
       Meteor.call('surveys.upload', id);
     } catch (e) {
       logger.error(`Failed to upload survey ${e}`);
@@ -33,12 +34,6 @@ Meteor.methods({
 
     try {
       Meteor.call('surveys.uploadQuestions', id);
-    } catch (e) {
-      logger.error(`Failed to upload survey questions ${e}`, e.stack);
-      throw new Meteor.Error('hmis.api', `Survey updated, failed to upload questions! ${e}`);
-    }
-
-    try {
       Meteor.call('surveys.upload', id);
     } catch (e) {
       logger.error(`Failed to upload survey ${e}`, e.stack);
@@ -60,7 +55,7 @@ Meteor.methods({
     const definition = JSON.parse(survey.definition);
 
     // TODO: make sure question group exists
-    const groups = hc.api('survey').debug().getQuestionGroups();
+    const groups = hc.api('survey').getQuestionGroups();
     let groupId;
     if (groups.length === 0) {
       // TODO: create question group
@@ -68,23 +63,68 @@ Meteor.methods({
       throw new Error('Question group does not exist');
     } else {
       groupId = groups[0].questionIGroupId;
+      logger.debug('uploading questions to group', groupId);
     }
 
-    console.log('TODO: upload to group', groups[0]);
+    const results = {
+      created: [],
+      skipped: [],
+    };
 
     iterateItems(definition, (item) => {
-      if (item.type === 'question' && !item.hmisId) {
-
+      const itemDefinition = { ...item };
+      delete itemDefinition.hmisId;
+      delete itemDefinition.rules;
+      if (item.type === 'question') {
+        if (!item.hmisId) {
+          const question = hc.api('survey2').createQuestion(groupId, {
+            displayText: item.title,
+            questionDescription: item.text,
+            questionType: item.category,
+            definition: JSON.stringify(itemDefinition),
+            visibility: true,
+            category: survey.title,
+            subcategory: '',
+          });
+          item.hmisId = question.questionId; // eslint-disable-line
+          results.created.push({
+            id: item.id,
+            hmisId: item.hmisId,
+          });
+        } else {
+          results.skipped.push({
+            id: item.id,
+            hmisId: item.hmisId,
+          });
+        }
       }
-      if (item.type === 'grid' && !item.hmisId) {
-
+      if (item.type === 'grid') {
+        if (!item.hmisId) {
+          const question = hc.api('survey2').createQuestion(groupId, {
+            displayText: item.title,
+            questionDescription: item.text,
+            questionType: 'grid',
+            definition: JSON.stringify(itemDefinition),
+            visibility: true,
+            category: survey.title,
+            subcategory: '',
+          });
+          item.hmisId = question.questionId; // eslint-disable-line
+          results.created.push({
+            id: item.id,
+            hmisId: item.hmisId,
+          });
+        } else {
+          results.skipped.push({
+            id: item.id,
+            hmisId: item.hmisId,
+          });
+        }
       }
     });
-
-    console.log('end');
-
-
-    throw new Error('Not implemented');
+    logger.debug('question upload results', results);
+    Surveys.update(id, { $set: { definition: JSON.stringify(definition) } });
+    return results;
   },
 
   'surveys.upload'(id) {
