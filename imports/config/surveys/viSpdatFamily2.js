@@ -255,25 +255,25 @@ const viSpdatFamily2 = {
           rows: 8,
           columns: [
             {
-              id: 'children.firstName',
+              id: 'firstName',
               type: 'question',
               title: 'First Name',
               category: 'text',
             },
             {
-              id: 'children.lastName',
+              id: 'lastName',
               type: 'question',
               title: 'Last Name',
               category: 'text',
             },
             {
-              id: 'children.age',
+              id: 'age',
               type: 'question',
               title: 'Age',
               category: 'number',
             },
             {
-              id: 'children.dob',
+              id: 'dob',
               type: 'question',
               title: 'Date of Birth',
               category: 'date',

@@ -8,7 +8,7 @@ import Responses, { ResponseStatus } from '/imports/api/responses/responses';
 
 function getResponsesToUpload(values, definition, defaultSectionId) {
   const questionIds = Object.keys(values);
-  logger.debug(values);
+  logger.debug('getResponsesToUpload', values);
   return questionIds.map(id => {
     const question = findItem(id, definition);
     return {

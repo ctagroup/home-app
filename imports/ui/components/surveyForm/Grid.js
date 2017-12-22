@@ -9,13 +9,42 @@ export default class Grid extends Item {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(event, type, date, name) {
-    if (type === 'date') {
-      // this is a date picker event
-      this.props.onChange(name, date ? date.format('YYYY-MM-DD') : '');
-    } else {
-      this.props.onChange(event.target.name, event.target.value);
+  getGridValue() {
+    const { id } = this.props.item;
+    const str = this.props.formState.values[id];
+    try {
+      return JSON.parse(str);
+    } catch (e) {
+      return [];
     }
+  }
+
+  serializeGridValue(gridValue) {
+    const lastIdx = gridValue.reduce((prev, curr, i) => {
+      if (curr && Object.keys(curr).length > 0) {
+        return i;
+      }
+      return prev;
+    }, -1);
+    if (lastIdx !== -1) {
+      return JSON.stringify(gridValue.slice(0, lastIdx + 1));
+    }
+    return JSON.stringify(gridValue);
+  }
+
+  handleChange(rowIdx, columnId, value, cellCategory) {
+    const gridValue = this.getGridValue();
+    const row = gridValue[rowIdx] || {};
+    if (cellCategory === 'date') {
+      row[columnId] = value ? value.format('YYYY-MM-DD') : '';
+    } else {
+      row[columnId] = value;
+    }
+    if (!row[columnId]) {
+      delete row[columnId];
+    }
+    gridValue[rowIdx] = row;
+    this.props.onChange(this.props.item.id, this.serializeGridValue(gridValue));
   }
 
   renderHeader() {
@@ -29,17 +58,17 @@ export default class Grid extends Item {
   }
 
   renderCell(r, c, disabled) {
-    const values = this.props.formState.values;
+    const gridValue = this.getGridValue();
     const { columns } = this.props.item;
     const item = columns[c];
     const cellId = `${item.id}[${r}]`;
-    const cellValue = values[item.id] && values[item.id][r];
+    const cellValue = gridValue[r] && gridValue[r][item.id];
     switch (item.category) {
       case 'date':
         return (
           <DatePicker
             selected={cellValue ? moment(cellValue) : ''}
-            onChange={(value, event) => this.handleChange(event, item.category, value, cellId)}
+            onChange={(value) => this.handleChange(r, item.id, value, item.category)}
             placeholderText="MM/DD/YYYY"
             disabled={disabled}
           />
@@ -51,7 +80,7 @@ export default class Grid extends Item {
             id={cellId}
             name={cellId}
             value={cellValue || ''}
-            onChange={this.handleChange}
+            onChange={(event) => this.handleChange(r, item.id, event.target.value, item.category)}
             disabled={disabled}
           />
         );
@@ -79,7 +108,6 @@ export default class Grid extends Item {
   render() {
     const { id, text } = this.props.item;
     const disabled = this.props.formState.props[`${id}.skip`];
-
     return (
       <div className="grid item">
         {this.renderTitle()}
