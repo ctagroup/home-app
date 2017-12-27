@@ -28,7 +28,7 @@ Meteor.publish('questions.all', function publishAllQuestions() {
 });
 
 Meteor.publish('questions.one', function publishOneQuestion(id) {
-  check(id, String);
   logger.info(`PUB[${this.userId}]: questions.one`, id);
+  check(id, String);
   return Questions.find({ _id: id, version: 2 });
 });

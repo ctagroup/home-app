@@ -4,6 +4,11 @@ import { ApiEndpoint } from './apiEndpoint';
 const BASE_URL = 'https://www.hmislynk.com/survey-api/rest/v2';
 
 export class SurveyApi2 extends ApiEndpoint {
+  getSurveys(start = 0, limit = 9999) {
+    const url = `${BASE_URL}/surveys?startIndex=${start}&limit=${limit}`;
+    return this.doGet(url).survies;
+  }
+
   createSurvey(survey) {
     const hmisUserData = Meteor.user().services.HMIS;
     const url = `${BASE_URL}/surveys`;
