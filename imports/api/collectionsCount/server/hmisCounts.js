@@ -24,6 +24,16 @@ class HmisCounts {
     const hc = HmisClient.create(this.userId);
     return hc.api('global-household').getHouseholds().length;
   }
+
+  getQuestionsCount() {
+    const hc = HmisClient.create(this.userId);
+    const groups = hc.api('survey').getQuestionGroups();
+
+    return groups.reduce((prev, group) => {
+      const { pagination } = hc.api('survey2').getQuestions(group.questionIGroupId, 0, 0);
+      return prev + pagination.total;
+    }, 0);
+  }
 }
 
 export default HmisCounts;
