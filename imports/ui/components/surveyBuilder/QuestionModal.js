@@ -1,11 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
+import { stringContains } from '/imports/api/utils';
 
-function stringContains(str, query) {
-  const strLower = str.toLowerCase();
-  const queryLower = query.toLowerCase();
-  return strLower.indexOf(queryLower) !== -1;
-}
 
 const customStyles = {
   content: {
@@ -15,6 +11,7 @@ const customStyles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
+    zIndex: 2000,
   },
 };
 
@@ -36,7 +33,7 @@ export default class QuestionModal extends React.Component {
       q => stringContains(q.title, this.state.searchString)
     );
     const items = filteredQuestions.map(q => (
-      <li key={q._id}>
+      <li key={q.hmisId}>
         <button onClick={(event) => this.props.handleClose(event, q)}>Add</button>
         <span>{q.title}</span>
       </li>
@@ -57,7 +54,7 @@ export default class QuestionModal extends React.Component {
             placeholder="Search for a question"
           />
         </p>
-        {items}
+        <ul className="questions-list">{items}</ul>
         or
         <button
           className="btn btn-primary"

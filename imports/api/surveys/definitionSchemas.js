@@ -78,6 +78,18 @@ export const ItemDefinitionSchema = new SimpleSchema({
 });
 
 export const GridDefinitionSchema = new SimpleSchema([ItemDefinitionSchema, {
+  title: {
+    type: String,
+    optional: true,
+  },
+  text: {
+    type: String,
+    optional: true,
+  },
+  hmisId: {
+    type: String,
+    optional: true,
+  },
   rows: {
     type: Number,
   },
@@ -113,6 +125,7 @@ export const QuestionDefinitionSchema = new SimpleSchema([ItemDefinitionSchema, 
   },
   refusable: {
     type: Boolean,
+    optional: true,
   },
   other: {
     type: Boolean,

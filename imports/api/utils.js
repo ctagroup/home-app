@@ -56,3 +56,10 @@ export function trimText(str = '', maxLen = 50) {
   }
   return str;
 }
+
+export function stringContains(str, query = '') {
+  const strLower = str.toLowerCase();
+  const queryLower = query.toLowerCase();
+  return strLower.indexOf(queryLower) !== -1;
+}
+

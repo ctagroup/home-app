@@ -189,12 +189,14 @@ export default class ItemInspector extends React.Component {
           onChange={this.onValueChange}
           model={item}
           questions={this.props.questions}
+          isInFormBuilder
         />);
       case 'question':
         return (<QuestionItemForm
           onChange={this.onValueChange}
           model={item}
           questions={this.props.questions}
+          isInFormBuilder
         />);
       case 'score':
         return <ScoreItemForm onChange={this.onValueChange} model={item} />;

@@ -8,21 +8,25 @@ import { handleItemTransform } from './helpers';
 
 export default class QuestionItemForm extends React.Component {
   render() {
+    const isDisabled = !!this.props.model.hmisId;
+
     const category = this.props.model.category;
     const choiceFields = category === 'choice' ?
       (<div className="panel panel-default">
         <div className="panel-heading">Choice</div>
         <div className="panel-body">
-          <AutoField name="options" />
+          <AutoField name="options" disabled={isDisabled} />
           <AutoField
             name="other"
             label="Add 'Other' option"
+            disabled={isDisabled}
           />
         </div>
       </div>) : null;
 
     const showMask = category === 'text' || category === 'number';
-    const { isInFormBuilder } = this.props;
+    const { isInFormBuilder, questions } = this.props;
+
 
     return (
       <AutoForm
@@ -32,18 +36,20 @@ export default class QuestionItemForm extends React.Component {
         modelTransform={handleItemTransform}
       >
         {isInFormBuilder && <AutoField name="id" />}
-        {isInFormBuilder && <QuestionPicker name="hmisId" />}
-        <AutoField name="type" />
+        {isInFormBuilder && <QuestionPicker name="hmisId" questions={questions} />}
+        <AutoField name="type" disabled={isDisabled} />
         <AutoField name="title" />
-        <AutoField name="category" />
+        <AutoField name="text" />
+        <AutoField name="category" disabled={isDisabled} />
         {choiceFields}
         {showMask &&
           <AutoField
             name="mask"
             help="9 - digit, a - char, * - digit or char, \9 - 9"
+            disabled={isDisabled}
           />
         }
-        <AutoField name="refusable" />
+        <AutoField name="refusable" disabled={isDisabled} />
         {isInFormBuilder && <ListField
           name="rules"
           itemProps={{ component: RuleField }}
