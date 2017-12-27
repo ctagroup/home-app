@@ -60,6 +60,15 @@ export default class SurveyBuilder extends React.Component {
     return nodeProps;
   }
 
+  getUnusedQuestions() {
+    const nodeProps = this.getTreeProps(this.state.treeData);
+    const unusedQuestions = this.props.questions.filter(
+      // don't show questions already added to the survey
+      q => !(nodeProps[q._id] && nodeProps[q._id].isFromBank)
+    );
+    return unusedQuestions;
+  }
+
   addSectionToDefinition() {
     const item = {
       id: generateItemId('section', this.state.definition),
@@ -95,15 +104,6 @@ export default class SurveyBuilder extends React.Component {
     delete item.version;
 
     return this.handleItemAdd(item, this.state.definition);
-  }
-
-  getUnusedQuestions() {
-    const nodeProps = this.getTreeProps(this.state.treeData);
-    const unusedQuestions = this.props.questions.filter(
-      // don't show questions already added to the survey
-      q => !(nodeProps[q._id] && nodeProps[q._id].isFromBank)
-    );
-    return unusedQuestions;
   }
 
   generateTree(definition, prevTree = []) {

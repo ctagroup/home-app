@@ -33,6 +33,11 @@ export class SurveyApi2 extends ApiEndpoint {
     return this.doPut(url, body);
   }
 
+  getQuestions(groupId, start = 0, limit = 9999) {
+    const url = `${BASE_URL}/questiongroups/${groupId}/questions?startIndex=${start}&maxItems=${limit}`; // eslint-disable-line
+    return this.doGet(url).questions;
+  }
+
   createQuestion(questionGroupId, question) {
     const url = `${BASE_URL}/questiongroups/${questionGroupId}/questions`;
     const body = { question };

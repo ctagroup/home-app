@@ -8,7 +8,6 @@ import { handleItemTransform } from './helpers';
 
 export default class QuestionItemForm extends React.Component {
   render() {
-    console.log('QuestionItemForm', this.props.model);
     const category = this.props.model.category;
     const choiceFields = category === 'choice' ?
       (<div className="panel panel-default">
@@ -23,6 +22,7 @@ export default class QuestionItemForm extends React.Component {
       </div>) : null;
 
     const showMask = category === 'text' || category === 'number';
+    const { isInFormBuilder } = this.props;
 
     return (
       <AutoForm
@@ -31,8 +31,8 @@ export default class QuestionItemForm extends React.Component {
         model={this.props.model}
         modelTransform={handleItemTransform}
       >
-        <AutoField name="id" />
-        <QuestionPicker name="hmisId" />
+        {isInFormBuilder && <AutoField name="id" />}
+        {isInFormBuilder && <QuestionPicker name="hmisId" />}
         <AutoField name="type" />
         <AutoField name="title" />
         <AutoField name="category" />
@@ -44,13 +44,17 @@ export default class QuestionItemForm extends React.Component {
           />
         }
         <AutoField name="refusable" />
-        <ListField
+        {isInFormBuilder && <ListField
           name="rules"
           itemProps={{ component: RuleField }}
           addIcon={<span><i className="glyphicon glyphicon-plus" /> Add Rule</span>}
           removeIcon={<span><i className="glyphicon glyphicon-minus" /> Delete Rule</span>}
-        />
+        />}
       </AutoForm>
     );
   }
 }
+
+QuestionItemForm.defaultProps = {
+  isFormBuilder: true,
+};

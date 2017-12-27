@@ -5,24 +5,22 @@ import { logger } from '/imports/utils/logger';
 Meteor.methods({
   'questions.create'(doc) {
     logger.info(`METHOD[${Meteor.userId()}]: questions.create`, doc);
-    check(doc, Questions.schema);
     // TODO: permissions check
-    return Questions.insert(doc);
+    throw new Meteor.Error('Not yet implemented');
   },
 
   'questions.update'(id, doc) {
     logger.info(`METHOD[${Meteor.userId()}]: questions.update`, doc);
     check(id, String);
-    check(doc, Questions.schema);
     // TODO: permissions check
-    return Questions.update(id, doc);
+    throw new Meteor.Error('Not yet implemented');
   },
 
   'questions.delete'(id) {
     logger.info(`METHOD[${Meteor.userId()}]: questions.delete`, id);
     check(id, String);
     // TODO: permissions check
-    return Questions.remove(id);
+    throw new Meteor.Error('Not yet implemented');
   },
 
   'questions.categories'() {

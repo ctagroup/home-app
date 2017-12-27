@@ -1,5 +1,14 @@
 <template name="questionForm">
   <div class="question-form">
+    {{> React
+      component=component
+      question=question
+    }}
+  </div>
+</template>
+
+<template name="questionForm2222">
+  <div class="question-form">
     {{# autoForm schema=schema fields=fields doc=doc id="questionForm"}}
       {{> afQuickField name="title"}}
       {{> afQuickField name="text"}}
