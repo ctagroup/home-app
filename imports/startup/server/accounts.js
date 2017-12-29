@@ -1,3 +1,13 @@
+Accounts.onLogin(({ user }) => {
+  user.emails.forEach(email => {
+    const { address } = email;
+    const admins = Meteor.settings.admins || [];
+    if (admins.includes(address)) {
+      Roles.addUsersToRoles(user._id, 'Developer', Roles.GLOBAL_GROUP);
+    }
+  });
+});
+
 // Set up login services
 Meteor.startup(() => {
   // Add HMIS configuration entry
