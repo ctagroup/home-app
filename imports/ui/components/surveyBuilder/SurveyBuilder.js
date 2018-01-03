@@ -6,6 +6,7 @@ import { findItem, iterateItems } from '/imports/api/surveys/computations';
 import Alert from '/imports/ui/alert';
 import FormInspector from '/imports/ui/components/surveyBuilder/FormInspector.js';
 import ItemInspector from '/imports/ui/components/surveyBuilder/ItemInspector.js';
+import { MISSING_HMIS_ID_ICON } from '/imports/ui/components/surveyForm/Question';
 import QuestionModal from './QuestionModal';
 
 function generateItemId(type, definition) {
@@ -131,8 +132,11 @@ export default class SurveyBuilder extends React.Component {
   }
 
   generateNodeProps({ node }) {
+    const { type, hmisId } = node.definition;
+    const hasWarning = type === 'question' && !hmisId;
     return {
       buttons: [
+        hasWarning && MISSING_HMIS_ID_ICON,
         <button
           onClick={() => {
             this.setState({ inspectedItem: node.definition });
@@ -318,7 +322,6 @@ export default class SurveyBuilder extends React.Component {
 
   render() {
     const externalNodeType = 'yourNodeType';
-    const { shouldCopyOnOutsideDrop } = this.state;
     const isNewSurvey = !this.props.survey._id;
     return (
       <div>
@@ -340,7 +343,16 @@ export default class SurveyBuilder extends React.Component {
               onChange={this.handleTreeChange}
               generateNodeProps={this.generateNodeProps}
               dndType={externalNodeType}
-              shouldCopyOnOutsideDrop={shouldCopyOnOutsideDrop}
+              canDrop={({ nextParent, nextPath }) => {
+                if (nextPath.length === 1) {
+                  return true;
+                }
+                if (nextParent && nextParent.definition
+                  && nextParent.definition.type === 'section') {
+                  return true;
+                }
+                return false;
+              }}
             />
           </div>
           {this.state.inspectedItem ? this.renderItemInspector() : this.renderFormInspector()}

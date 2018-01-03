@@ -7,6 +7,8 @@ import Item from './Item';
 
 const DEFAULT_OTHER_VALUE = 'Other';
 
+export const MISSING_HMIS_ID_ICON = <i className="fa fa-exclamation-circle" aria-hidden></i>;
+
 export default class Question extends Item {
   constructor() {
     super();
@@ -199,7 +201,7 @@ export default class Question extends Item {
 
   renderTitle() {
     const icon = this.props.item.hmisId ?
-      null : <i className="fa fa-exclamation-circle" aria-hidden></i>;
+      null : MISSING_HMIS_ID_ICON;
     const title = `${this.props.item.title}`;
     switch (this.props.level) {
       case 1:
