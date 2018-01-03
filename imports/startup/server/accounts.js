@@ -1,11 +1,25 @@
+import { logger } from '/imports/utils/logger';
+import { userEmails } from '/imports/api/users/helpers';
+
 Accounts.onLogin(({ user }) => {
-  user.emails.forEach(email => {
-    const { address } = email;
-    const admins = Meteor.settings.admins || [];
-    if (admins.includes(address)) {
-      Roles.addUsersToRoles(user._id, 'Developer', Roles.GLOBAL_GROUP);
-    }
-  });
+  const adminEmails = Meteor.settings.admins || [];
+  const result = userEmails(user).filter(email => adminEmails.includes(email));
+  if (result.length > 0 && !Roles.userIsInRole(user._id, 'Developer')) {
+    logger.info(`User ${user._id} promoted to Developer ROLE`);
+    Roles.addUsersToRoles(user._id, 'Developer', Roles.GLOBAL_GROUP);
+  }
+});
+
+Accounts.onCreateUser((options, user) => {
+  if (options.profile && options.profile.account) {
+    const { accountId } = options.profile.account;
+    const updatedUser = {
+      ...user,
+      _id: accountId,
+    };
+    return updatedUser;
+  }
+  return user;
 });
 
 // Set up login services

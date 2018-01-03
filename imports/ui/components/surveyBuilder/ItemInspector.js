@@ -46,11 +46,11 @@ export default class ItemInspector extends React.Component {
   }
 
   handlePreviewPropsChange() {
-    console.log('handlePreviewPropsChange');
+    // console.log('handlePreviewPropsChange');
   }
 
   handlePreviewValueChange() {
-    console.log('handlePreviewValueChange');
+    // console.log('handlePreviewValueChange');
   }
 
   renderType() {

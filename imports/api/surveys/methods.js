@@ -62,7 +62,7 @@ Meteor.methods({
       groupId = 'TODO';
       throw new Error('Question group does not exist');
     } else {
-      groupId = groups[0].questionIGroupId;
+      groupId = groups[0].questionGroupId;
       logger.debug('uploading questions to group', groupId);
     }
 

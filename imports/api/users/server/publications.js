@@ -77,3 +77,14 @@ Meteor.publish('users.one', function publishSingleHmisUser(userId) { // eslint-d
 
   return Users.find(userId, { fields: _.extend(fields, { roles: 1 }) });
 });
+
+
+Meteor.publish(null, function publishCurrentUserData() { // eslint-disable-line
+  if (this.userId) {
+    const data = {
+      ...fields,
+      roles: 1,
+    };
+    return Users.find(this.userId, { fields: data });
+  }
+});

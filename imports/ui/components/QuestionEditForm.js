@@ -29,7 +29,6 @@ class QuestionEditForm extends React.Component {
         return;
       }
     }
-    console.log('onValueChange', name, value);
     this.setState({
       definition: {
         ...this.state.definition,
@@ -39,7 +38,6 @@ class QuestionEditForm extends React.Component {
   }
 
   handleUpdateQuestion() {
-    console.log(this.props);
     const id = this.props.question.questionId;
     this.setState({ submitting: true });
     Meteor.call('questions.update', id, {}, (err) => {

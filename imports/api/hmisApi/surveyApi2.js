@@ -40,7 +40,20 @@ export class SurveyApi2 extends ApiEndpoint {
 
   getQuestions(groupId, start = 0, limit = 9999) {
     const url = `${BASE_URL}/questiongroups/${groupId}/questions?startIndex=${start}&maxItems=${limit}`; // eslint-disable-line
-    return this.doGet(url).questions;
+    const { pagination, questions } = this.doGet(url).questions;
+    const remaining = limit - pagination.returned;
+    if (remaining > 0 && pagination.returned > 0) {
+      return [
+        ...questions,
+        ...this.getQuestions(groupId, pagination.from + pagination.returned, remaining),
+      ];
+    }
+    return questions;
+  }
+
+  getQuestionsCount(groupId) {
+    const url = `${BASE_URL}/questiongroups/${groupId}/questions?startIndex=0&maxItems=1`; // eslint-disable-line
+    return this.doGet(url).questions.pagination.total;
   }
 
   createQuestion(questionGroupId, question) {

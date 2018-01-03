@@ -85,7 +85,7 @@ export function applyReducers(value, args = []) {
         }
         return moment().diff(m, 'years');
       default:
-        console.warn('Unknown reducer', reducer);
+        console.warn('Unknown reducer', reducer); // eslint-disable-line no-console
         break;
     }
   }
@@ -111,7 +111,7 @@ export function evaluateCondition(operator, operand1, operand2) {
     case '>=':
       return value1 >= value2;
     default:
-      console.warn('Unknown operator', operator);
+      console.warn('Unknown operator', operator); // eslint-disable-line no-console
       return undefined;
   }
 }
@@ -211,7 +211,7 @@ export function applyResults(results, formState, currentId) {
         Object.assign(formState.props, { [`${currentId}.rows`]: isNaN(rows) ? undefined : rows });
         break;
       default:
-        console.warn(`unknown action in ${currentId}`, action, args);
+        console.warn(`unknown action in ${currentId}`, action, args); // eslint-disable-line no-console, max-len
         break;
     }
   });

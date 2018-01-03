@@ -1,6 +1,9 @@
 /**
  * Created by udit on 14/12/15.
  */
+
+
+ /*
 if (typeof Accounts.onCreateUser !== 'undefined') {
   Accounts.onCreateUser(
     (options, user) => {
@@ -74,3 +77,4 @@ if (typeof Accounts.onCreateUser !== 'undefined') {
     }
   );
 }
+*/

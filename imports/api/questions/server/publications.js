@@ -18,7 +18,7 @@ Meteor.publish('questions.all', function publishAllQuestions() {
     if (stopFunction) {
       return;
     }
-    const { questions } = hc.api('survey2').getQuestions(group.questionIGroupId);
+    const questions = hc.api('survey2').getQuestions(group.questionGroupId);
     questions.forEach(q => {
       // self.added('housingUnits', housingUnits[i].housingInventoryId, housingUnits[i]);
       this.added('questions', q.questionId, { ...q, questionGroup: group });

@@ -1,6 +1,5 @@
 import HmisCounts from './hmisCounts';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
-import Questions from '/imports/api/questions/questions';
 import Surveys from '/imports/api/surveys/surveys';
 import Responses from '/imports/api/responses/responses';
 

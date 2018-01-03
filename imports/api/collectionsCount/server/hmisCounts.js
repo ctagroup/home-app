@@ -28,10 +28,9 @@ class HmisCounts {
   getQuestionsCount() {
     const hc = HmisClient.create(this.userId);
     const groups = hc.api('survey').getQuestionGroups();
-
     return groups.reduce((prev, group) => {
-      const { pagination } = hc.api('survey2').getQuestions(group.questionIGroupId, 0, 0);
-      return prev + pagination.total;
+      const count = hc.api('survey2').getQuestionsCount(group.questionGroupId, 0, 0);
+      return prev + count;
     }, 0);
   }
 }

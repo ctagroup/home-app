@@ -98,7 +98,6 @@ export default class SurveyBuilder extends React.Component {
     // delete item.updatedAt;
     // delete item.createdAt;
     // delete item.version;
-    console.log('adding question', question, item);
     return this.handleItemAdd(item, this.state.definition);
   }
 

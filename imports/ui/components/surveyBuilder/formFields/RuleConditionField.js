@@ -64,10 +64,7 @@ function conditionDefinition(condition) {
 
 
 class ConditionField extends React.Component {
-
-
   render() {
-    console.log('Condition field', this.props);
     let fields = [];
     const condition = this.props.value[0];
     const definition = conditionDefinition(condition);

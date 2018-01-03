@@ -9,7 +9,7 @@ const Alert = {
     Bert.alert(message, 'success', 'growl-top-right');
   },
   warning(message) {
-    console.warn(message);
+    console.warn(message); // eslint-disable-line no-console
     Bert.alert({
       message,
       type: 'warning',
@@ -18,7 +18,7 @@ const Alert = {
   },
   error(err, extra) {
     const message = trimText(err.reason || err.error || err.message || err, 100);
-    console.error(message);
+    console.error(message); // eslint-disable-line no-console
     Bert.alert({
       message: extra ? `${extra} ${message}` : message,
       type: 'danger',
