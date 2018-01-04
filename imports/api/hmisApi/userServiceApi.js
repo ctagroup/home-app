@@ -6,6 +6,11 @@ const BASE_URL = 'https://www.hmislynk.com/hmis-user-service/rest';
 
 
 class UserServiceApi extends ApiEndpoint {
+  getUser(userId) {
+    const url = `${BASE_URL}/accounts/${userId}`;
+    return this.doGet(url).account;
+  }
+
   createUser(account) {
     const url = `${BASE_URL}/accounts`;
     const body = { account };
@@ -15,6 +20,11 @@ class UserServiceApi extends ApiEndpoint {
   updateUser(userId, data) {
     const url = `${BASE_URL}/accounts/${userId}`;
     return this.doPut(url, { account: data });
+  }
+
+  deleteUser(userId) {
+    const url = `${BASE_URL}/accounts/${userId}`;
+    return this.doDel(url);
   }
 
   updateUserRoles(userId, roles) {
@@ -56,11 +66,6 @@ class UserServiceApi extends ApiEndpoint {
   deleteUserRole(userId, roleId) {
     const url = `${BASE_URL}/accounts/${userId}/roles/${roleId}`;
     return this.doDel(url);
-  }
-
-  getUser(accountId) {
-    const url = `${BASE_URL}/accounts/${accountId}`;
-    return this.doGet(url).account;
   }
 }
 

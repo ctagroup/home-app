@@ -40,6 +40,15 @@ export class SurveyApi extends ApiEndpoint {
     return this.doDel(url);
   }
 
+  createQuestionGroup() {
+    throw new Error('Not implemented');
+  }
+
+  getQuestionGroups() {
+    const url = `${BASE_URL}/questiongroups`;
+    return this.doGet(url).questionGroups.questionGroups;
+  }
+
   createPickListGroup(pickListGroup) {
     const url = `${BASE_URL}/picklistgroups`;
     const body = { pickListGroup };

@@ -1,10 +1,13 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
+import InputMask from 'react-input-mask';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import Item from './Item';
 
 const DEFAULT_OTHER_VALUE = 'Other';
+
+export const MISSING_HMIS_ID_ICON = <i className="fa fa-exclamation-circle" aria-hidden></i>;
 
 export default class Question extends Item {
   constructor() {
@@ -162,11 +165,13 @@ export default class Question extends Item {
 
   renderInput(value, type, disabled) {
     const { id } = this.props.item;
+    const mask = this.props.item.mask;
     return (
-      <input
+      <InputMask
         type={type}
         id={id}
         name={id}
+        mask={mask}
         value={value === undefined ? '' : value}
         onChange={this.handleChange}
         disabled={this.isRefused() || disabled}
@@ -196,7 +201,7 @@ export default class Question extends Item {
 
   renderTitle() {
     const icon = this.props.item.hmisId ?
-      null : <i className="fa fa-exclamation-circle" aria-hidden></i>;
+      null : MISSING_HMIS_ID_ICON;
     const title = `${this.props.item.title}`;
     switch (this.props.level) {
       case 1:

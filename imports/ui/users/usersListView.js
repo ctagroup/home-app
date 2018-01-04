@@ -46,6 +46,10 @@ const tableOptions = {
       data: 'services.HMIS.status',
       searchable: false,
     },
+    {
+      title: 'Project Group',
+      data: 'services.HMIS.projectGroup.projectGroupName',
+    },
     editButton('adminDashboardusersEdit'),
     deleteUserButton(),
   ],

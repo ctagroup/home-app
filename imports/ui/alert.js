@@ -1,3 +1,5 @@
+import { trimText } from '/imports/api/utils';
+
 Bert.defaults = {
   hideDelay: 5000,
 };
@@ -7,18 +9,18 @@ const Alert = {
     Bert.alert(message, 'success', 'growl-top-right');
   },
   warning(message) {
-    console.warn(message);
+    console.warn(message); // eslint-disable-line no-console
     Bert.alert({
       message,
       type: 'warning',
       style: 'growl-top-right',
     });
   },
-  error(err) {
-    const message = err.reason || err.error || err.message || err;
-    console.error(message);
+  error(err, extra) {
+    const message = trimText(err.reason || err.error || err.message || err, 100);
+    console.error(message); // eslint-disable-line no-console
     Bert.alert({
-      message,
+      message: extra ? `${extra} ${message}` : message,
       type: 'danger',
       style: 'growl-top-right',
     });

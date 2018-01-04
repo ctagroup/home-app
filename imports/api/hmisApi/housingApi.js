@@ -11,7 +11,7 @@ class HousingApi extends ApiEndpoint {
     if (response.page.number < response.page.totalPages - 1) {
       housingUnits = _.union(
         housingUnits,
-        this.getEligibleClients(response.page.number + 1, response.page.size)
+        this.getHousingUnits(response.page.number + 1, response.page.size)
       );
     }
     return housingUnits;

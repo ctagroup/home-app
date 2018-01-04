@@ -93,7 +93,7 @@ Meteor.methods({
     PendingClients.remove({ _id: clientId });
   },
 
-  uploadPendingClientToHmis(clientId, schema) {
+  uploadPendingClientToHmis(clientId, schema = 'v2017') {
     logger.info(`METHOD[${Meteor.userId()}]: uploadPendingClientToHmis`, clientId, schema);
     check(clientId, String);
 
@@ -107,6 +107,13 @@ Meteor.methods({
     const hmisClientId = hc.api('client').createClient(client, schema);
     logger.info(`client ${clientId} is now known in HMIS as ${hmisClientId}`);
 
+    try {
+      Meteor.call('s3bucket.put', hmisClientId, 'photo', client.photo);
+      Meteor.call('s3bucket.put', hmisClientId, 'photo', client.signature);
+    } catch (err) {
+      logger.error('Failed to upload photo/signature to s3', err);
+    }
+
     if (hmisClientId) {
       PendingClients.remove(clientId);
       Responses.update({ clientId },
@@ -114,6 +121,9 @@ Meteor.methods({
         { multi: true }
       );
     }
-    return hmisClientId;
+    return {
+      clientId: hmisClientId,
+      schema,
+    };
   },
 });

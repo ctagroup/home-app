@@ -39,6 +39,8 @@ import '/imports/api/projects/methods';
 import '/imports/api/projects/server/publications';
 
 import '/imports/api/openingScript/methods';
+import '/imports/api/logger/methods';
+import '/imports/api/aws/server/aws';
 
 import '/imports/startup/server/migrations';
 import '/imports/startup/server/accounts';
@@ -55,4 +57,10 @@ Meteor.startup(() => {
     connectionLimit: 10,
   }, Meteor.settings);
   logger.info('Starting with settings', Meteor.settings);
+
+  if (Meteor.settings.s3config) {
+    // const { key, secret, bucket, region } = Meteor.settings.s3config;
+  } else {
+    logger.warn('S3 config is missing');
+  }
 });

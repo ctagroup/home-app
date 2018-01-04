@@ -12,7 +12,18 @@ Template.surveyFormBuilder.helpers({
   },
 
   questions() {
-    return this.questions || [];
+    return (this.questions || [])
+      .map(q => {
+        try {
+          return {
+            ...JSON.parse(q.definition),
+            hmisId: q.questionId,
+          };
+        } catch (e) {
+          return null;
+        }
+      })
+      .filter(q => q !== null);
   },
 
   schema() {

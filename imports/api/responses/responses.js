@@ -4,9 +4,9 @@ const Responses = new Mongo.Collection('responses');
 
 export const ResponseStatus = {
   PAUSED: 'paused',
-  COMPLETED: 'completed',
   UPLOADING: 'uploading',
-  UPLOADED: 'uploaded',
+  COMPLETED: 'completed',
+  UPLOAD_ERROR: 'upload error',
 };
 
 Responses.schema = new SimpleSchema({

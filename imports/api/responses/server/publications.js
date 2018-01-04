@@ -19,8 +19,8 @@ Meteor.publish('responses.all', function publishResponses(ofClientId) {
   if (self.userId) {
     const queue = [];
     const responses = (
-      ofClientId ? Responses.find({ clientId: ofClientId, version: 2 })
-        : Responses.find({ version: 2 })
+      ofClientId ? Responses.find({ clientId: ofClientId })
+        : Responses.find()
     ).fetch();
     // Publish the local data first, so the user can get a quick feedback.
     for (let i = 0, len = responses.length; i < len; i++) {
@@ -41,22 +41,24 @@ Meteor.publish('responses.all', function publishResponses(ofClientId) {
     }
     self.ready();
 
+    const apiEndpoint = hc.api('client').disableError(404);
+    const clientsCache = {};
     eachLimit(queue, Meteor.settings.connectionLimit, (data, callback) => {
       if (stopFunction) {
         callback();
         return;
       }
-      // TODO: add cache
       Meteor.defer(() => {
         const { responseId, clientId, schema } = data;
-        let clientDetails;
-        try {
-          clientDetails = hc.api('client').getClient(clientId, schema);
-          clientDetails.schema = schema;
-        } catch (e) {
-          clientDetails = { error: e.reason };
+        if (!clientsCache[clientId]) {
+          try {
+            clientsCache[clientId] = apiEndpoint.getClient(clientId, schema);
+            clientsCache[clientId].schema = schema;
+          } catch (e) {
+            clientsCache[clientId] = { error: e.reason };
+          }
         }
-        self.changed('responses', responseId, { clientDetails });
+        self.changed('responses', responseId, { clientDetails: clientsCache[clientId] });
         callback();
       });
     });
@@ -70,9 +72,9 @@ Meteor.publish('responses.one', function publishSingleResponse(responseId) {
   const hc = HmisClient.create(this.userId);
 
   if (self.userId) {
-    const response = Responses.findOne({ _id: responseId, version: 2 });
+    const response = Responses.findOne({ _id: responseId });
     if (!response) {
-      return [];
+      return self.ready();
     }
 
     const { isHMISClient, clientId, clientSchema } = response;

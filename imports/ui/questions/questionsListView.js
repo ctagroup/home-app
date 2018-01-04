@@ -1,20 +1,17 @@
+import { trimText } from '/imports/api/utils';
+import Questions from '/imports/api/questions/questions';
 import { populateOptions, resetQuestionModal, setFields } from '/imports/ui/questions/helpers';
 import { TableDom, editButton, deleteQuestionButton } from '/imports/ui/dataTable/helpers';
-import moment from 'moment';
-import Questions from '/imports/api/questions/questions';
 import './questionsListView.html';
 
 
 const tableOptions = {
   columns: [
     {
-      title: 'Title',
-      data: 'title',
+      title: 'Text',
+      data: 'displayText',
       render(value) {
-        if (value.length > 50) {
-          return `${value.substring(0, 47)}...`;
-        }
-        return value;
+        return trimText(value, 200);
       },
     },
     {
@@ -22,18 +19,12 @@ const tableOptions = {
       data: 'category',
     },
     {
-      title: 'Date created',
-      data: 'createdAt',
-      render(value) {
-        return moment(value).format('MM/DD/YYYY h:mm A');
-      },
+      title: 'Type',
+      data: 'questionType',
     },
     {
-      title: 'Date updated',
-      data: 'updatedAt',
-      render(value) {
-        return moment(value).format('MM/DD/YYYY h:mm A');
-      },
+      title: 'Question Group',
+      data: 'questionGroup.questionGroupName',
     },
     editButton('questionsEdit'),
     {

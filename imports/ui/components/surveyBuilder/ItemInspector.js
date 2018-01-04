@@ -46,11 +46,11 @@ export default class ItemInspector extends React.Component {
   }
 
   handlePreviewPropsChange() {
-    console.log('handlePreviewPropsChange');
+    // console.log('handlePreviewPropsChange');
   }
 
   handlePreviewValueChange() {
-    console.log('handlePreviewValueChange');
+    // console.log('handlePreviewValueChange');
   }
 
   renderType() {
@@ -185,9 +185,19 @@ export default class ItemInspector extends React.Component {
 
     switch (item.type) {
       case 'grid':
-        return <GridItemForm onChange={this.onValueChange} model={item} />;
+        return (<GridItemForm
+          onChange={this.onValueChange}
+          model={item}
+          questions={this.props.questions}
+          isInFormBuilder
+        />);
       case 'question':
-        return <QuestionItemForm onChange={this.onValueChange} model={item} />;
+        return (<QuestionItemForm
+          onChange={this.onValueChange}
+          model={item}
+          questions={this.props.questions}
+          isInFormBuilder
+        />);
       case 'score':
         return <ScoreItemForm onChange={this.onValueChange} model={item} />;
       case 'section':

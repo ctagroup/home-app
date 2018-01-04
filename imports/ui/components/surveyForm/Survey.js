@@ -1,7 +1,11 @@
 import React from 'react';
 import { computeFormState } from '/imports/api/surveys/computations';
 import Section from '/imports/ui/components/surveyForm/Section';
+import { ResponseStatus } from '/imports/api/responses/responses';
 import Alert from '/imports/ui/alert';
+import { fullName } from '/imports/api/utils';
+import { logger } from '/imports/utils/logger';
+import { RecentClients } from '/imports/api/recent-clients';
 
 
 export default class Survey extends React.Component {
@@ -70,35 +74,98 @@ export default class Survey extends React.Component {
     this.setState(formState);
   }
 
-  handleSubmit() {
+  handleSubmit(uploadSurvey, uploadClient) {
     const { _id: clientId, schema: clientSchema } = this.props.client;
-
     const doc = {
       clientId,
       clientSchema,
+      status: ResponseStatus.PAUSED,
       surveyId: this.props.surveyId,
       values: this.state.values,
     };
+    const history = [];
 
-    if (this.props.responseId) {
-      Meteor.call('responses.update', this.props.responseId, doc, (err) => {
-        if (err) {
-          Alert.error(err);
-        } else {
-          Alert.success('Response updated');
-          Router.go('adminDashboardresponsesView');
-        }
-      });
-    } else {
-      Meteor.call('responses.create', doc, (err) => {
-        if (err) {
-          Alert.error(err);
-        } else {
-          Alert.success('Response created');
-          Router.go('adminDashboardresponsesView');
-        }
-      });
-    }
+    this.setState({ submitting: true });
+    new Promise((resolve, reject) => {
+      if (this.props.response) {
+        const responseId = this.props.response._id;
+        Meteor.call('responses.update', responseId, doc, (err) => {
+          if (err) {
+            history.push('Failed to update response');
+            reject(err);
+          } else {
+            history.push('Response updated');
+            resolve(responseId);
+          }
+        });
+      } else {
+        Meteor.call('responses.create', doc, (err, newResponseId) => {
+          if (err) {
+            history.push('Failed to create response');
+            reject(err);
+          } else {
+            history.push(`Response created: ${newResponseId}`);
+            resolve(newResponseId);
+          }
+        });
+      }
+    })
+    .then(responseId => {
+      if (uploadClient) {
+        return new Promise((resolve, reject) => {
+          Meteor.call('uploadPendingClientToHmis', clientId, (err, hmisClient) => {
+            if (err) {
+              history.push(`Failed to upload client: ${err}`);
+              reject(err);
+            } else {
+              RecentClients.updateId(clientId, hmisClient);
+              history.push(`Client uploaded as ${JSON.stringify(hmisClient)}`);
+              resolve(responseId);
+            }
+          });
+        });
+      }
+      history.push(`Client not uploaded (id: ${clientId})`);
+      return responseId;
+    })
+    .then(responseId => {
+      if (uploadSurvey) {
+        return new Promise((resolve, reject) => {
+          Meteor.call('responses.uploadToHmis', responseId, (err, invalidResponses) => {
+            if (err) {
+              history.push(`Failed to upload response: ${err}`);
+              reject(err);
+            } else {
+              history.push('Response uploaded');
+              resolve(invalidResponses);
+            }
+          });
+        });
+      }
+      history.push('Response not uploaded');
+      return null;
+    })
+    .then((invalidResponses) => {
+      if (invalidResponses === null) {
+        Alert.success('Response paused');
+      } else if (invalidResponses.length > 0) {
+        const list = invalidResponses.map(r => r.id).join(', ');
+        Alert.warning(`Success but ${invalidResponses.length} questions not uploaded: ${list}`);
+      } else {
+        Alert.success('Success. Response uploaded');
+      }
+      Router.go('adminDashboardresponsesView');
+      this.setState({ submitting: false });
+    })
+    .catch(err => {
+      const correlationId = 'abcd';
+      this.setState({ submitting: false });
+      history.unshift('Failed to upload the response. Details:');
+      history.push(correlationId);
+      Alert.error(err, history.join('<br>'));
+      alert(history.join('\n')); // eslint-disable-line no-alert
+      logger.error(history);
+    });
   }
 
   handleToggleDebugWindow() {
@@ -162,24 +229,46 @@ export default class Survey extends React.Component {
   }
 
   renderSubmitButtons() {
-    const disabled = !this.props.client;
+    const status = this.props.response && this.props.response.status;
+    const client = this.props.client;
+    const disabled = !client
+      || this.state.submitting
+      || status === ResponseStatus.COMPLETED;
+    const uploadClient = client && !client.schema;
+
     return (
-      <button
-        className="btn btn-success"
-        type="button"
-        disabled={disabled}
-        onClick={this.handleSubmit}
-      >
-        Submit
-      </button>
-    );
+      <div>
+        <button
+          className="btn btn-success"
+          type="button"
+          disabled={disabled}
+          onClick={() => this.handleSubmit(true, uploadClient)}
+        >
+          {uploadClient ? 'Upload client and survey' : 'Upload survey'}
+        </button>
+        &nbsp;
+        <button
+          className="btn btn-default"
+          type="button"
+          disabled={disabled}
+          onClick={() => this.handleSubmit(false, false)}
+        >
+          Pause Survey
+        </button>
+      </div>
+  );
   }
 
   render() {
     const root = this.props.definition;
     const formState = this.state;
+    const client = this.props.client || {};
+    const status = this.props.response ? this.props.response.status : 'new';
+    const clientName = fullName(client) || client._id || 'n/a';
     return (
       <div>
+        <p><strong>Client:</strong> {clientName}</p>
+        <p><strong>Response status:</strong> {status}</p>
         <Section
           item={root}
           formState={formState}

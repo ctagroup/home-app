@@ -1,4 +1,3 @@
-const querystring = require('querystring');
 import { Clients } from '/imports/api/clients/clients';
 import Users from '/imports/api/users/users';
 import { RecentClients } from '/imports/api/recent-clients';
@@ -98,18 +97,24 @@ Template.viewClient.helpers(
     },
 
     showEnrollments() {
-      return !Router.current().data().isPendingClient;
+      // const schema = Router.current().params.query.schema;
+      return (this.client && this.client.clientId);
     },
 
     showReferralStatus() {
-      return Roles.userIsInRole(Meteor.user(), ['System Admin', 'Developer', 'Case Manager'])
-        && Router.current().data().client.clientId && Router.current().params.query.schema;
+      const hasPermission = Roles.userIsInRole(
+        Meteor.user(), ['System Admin', 'Developer', 'Case Manager']
+      );
+      // const isHmisClient = Router.current().data().client.clientId
+      //   && Router.current().params.query.schema;
+      return hasPermission && this.client && this.client.clientId;
     },
 
     showGlobalHousehold() {
-      return Roles.userIsInRole(
+      const hasPermission = Roles.userIsInRole(
         Meteor.user(), ['System Admin', 'Developer', 'Case Manager', 'Surveyor']
-      ) && Router.current().data().client.clientId && Router.current().params.query.schema;
+      );
+      return hasPermission && this.client && this.client.clientId;
     },
 
     getText(text, code) {
@@ -192,15 +197,13 @@ Template.viewClient.events(
     },
     'click .add-to-hmis': (event, tmpl) => {
       const client = tmpl.data.client;
-      const schema = 'v2015';
-      Meteor.call('uploadPendingClientToHmis', client._id, schema, (error, result) => {
+      Meteor.call('uploadPendingClientToHmis', client._id, (error, result) => {
         if (error) {
           Bert.alert(error.reason || error.error, 'danger', 'growl-top-right');
         } else {
           RecentClients.remove(client._id);
           Bert.alert('Client uploaded to HMIS', 'success', 'growl-top-right');
-          const query = querystring.stringify({ schema });
-          Router.go('viewClient', { _id: result }, { query });
+          Router.go('viewClient', { _id: result.clientId }, { query: { schema: result.schema } });
         }
       });
     },

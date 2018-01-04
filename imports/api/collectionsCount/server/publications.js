@@ -1,6 +1,5 @@
 import HmisCounts from './hmisCounts';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
-import Questions from '/imports/api/questions/questions';
 import Surveys from '/imports/api/surveys/surveys';
 import Responses from '/imports/api/responses/responses';
 
@@ -31,7 +30,6 @@ Meteor.publish('collectionsCount', function publishCollectionCount() {
   const self = this;
 
   handles.push(publishCounts(PendingClients, 'clients', this));
-  handles.push(publishCounts(Questions, 'questions', this));
   handles.push(publishCounts(Surveys, 'surveys', this));
   handles.push(publishCounts(Responses, 'responses', this));
   handles.push(publishCounts(Meteor.users, 'users', this));
@@ -42,6 +40,7 @@ Meteor.publish('collectionsCount', function publishCollectionCount() {
     housingMatch: counter.getHousingMatchCount,
     housingUnits: counter.getHousingUnitsCount,
     globalHouseholds: counter.getGlobalHouseholdsCount,
+    questions: counter.getQuestionsCount,
   }, (fn, name) => {
     self.added('collectionsCount', name, { count: 0, loading: true });
     Meteor.defer(() => {

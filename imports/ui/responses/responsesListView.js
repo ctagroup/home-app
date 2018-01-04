@@ -114,6 +114,10 @@ const tableOptions = {
         }
       },
     },
+    {
+      data: 'version',
+      title: 'Version',
+    },
   ],
   order: [
     [2, 'desc'],

@@ -4,7 +4,6 @@ import moment from 'moment';
 
 let log;
 
-
 if (Meteor.isClient) {
   log = {
     log(msg) {
@@ -52,7 +51,8 @@ if (Meteor.isServer) {
   });
 }
 
-export function sanitize(obj, secrets = ['password', 'passwordConfirm', 'confirmPassword']) {
+export function sanitize(obj, secrets = ['password', 'passwordConfirm',
+  'confirmPassword', 'secret', 'appSecret']) {
   if (Array.isArray(obj)) {
     return obj.map(x => sanitize(x, secrets));
   }
@@ -75,6 +75,10 @@ export function sanitize(obj, secrets = ['password', 'passwordConfirm', 'confirm
 }
 
 export const logger = {
+  log(...params) {
+    log.log(...params.map(x => sanitize(x)));
+  },
+
   debug(...params) {
     log.debug(...params.map(x => sanitize(x)));
   },
@@ -90,5 +94,4 @@ export const logger = {
   error(...params) {
     log.error(...params.map(x => sanitize(x)));
   },
-
 };

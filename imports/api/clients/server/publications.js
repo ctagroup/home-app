@@ -139,5 +139,11 @@ Meteor.publish('clients.one', function pubClient(clientId, schema = 'v2015', loa
     logger.error('publish singleHMISClient', err);
   }
 
-  return self.ready();
+  self.ready();
+
+  Meteor.call('s3bucket.get', client.clientId, 'photo', (err, res) =>
+    self.changed('localClients', client.clientId, { photo: res })
+  );
+
+  return null;
 });

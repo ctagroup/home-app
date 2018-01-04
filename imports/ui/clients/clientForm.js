@@ -194,10 +194,10 @@ Template.clientForm.events(
     },
     'click #js-take-photo': (event) => {
       event.preventDefault();
-      logger.log('clicked picture button');
+      logger.info('clicked picture button');
       MeteorCamera.getPicture({}, (error, data) => {
         if (error) {
-          logger.log(error);
+          logger.warn(error);
         } else {
           $('#client-photo-img').attr('src', data);
           $('#client-photo-value').val(data);
@@ -207,7 +207,7 @@ Template.clientForm.events(
     },
     'click #js-remove-photo': (event) => {
       event.preventDefault();
-      logger.log('clicked remove picture button');
+      logger.info('clicked remove picture button');
       $('#client-photo-img').attr('src', '');
       $('#client-photo-value').val('');
       $('#js-remove-photo').addClass('hide');

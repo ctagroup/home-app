@@ -1,11 +1,13 @@
 import moment from 'moment';
 
+import { userName, userEmails } from '/imports/api/users/helpers';
+
 Template.registerHelper('formatDate',
   date => (date ? moment.utc(date).format('MM/DD/YYYY') : '')
 );
 
 UI.registerHelper('log', (value, name = '') => {
-  console.log(`Template ${name}`, value);
+  console.log(`Template ${name}`, value); // eslint-disable-line no-console
 });
 
 UI.registerHelper('isiOS', () => is.ios());
@@ -16,23 +18,16 @@ UI.registerHelper('isUndefined', (v) => v === undefined);
 
 UI.registerHelper('currentUserGravatar', () => {
   const user = Meteor.user();
-  const email = (user && user.emails && user.emails[0].address.toLowerCase()) || '';
-  return `<img class="avatar small" src="${Gravatar.imageUrl(email, { secure: true })}" />`;
+  if (!user) {
+    return '';
+  }
+  const url = Gravatar.imageUrl(userEmails(user)[0], { secure: true });
+  return `<img class="avatar small" src="${url}" />`;
 });
 
 UI.registerHelper('currentUserFullName', () => {
-  const user = Meteor.user();
-  if (user && user.services && user.services.HMIS) {
-    const { name, firstName, lastName } = user.services.HMIS;
-    if (name) {
-      return name.trim();
-    }
-    return `${firstName || ''} ${lastName || ''}`.trim();
-  }
-  if (user && user.emails && user.emails[0].address) {
-    return user.emails[0].address.toLowerCase();
-  }
-  return '';
+  const user = Meteor.user() || {};
+  return userName(user);
 });
 
 Template.registerHelper('equals', (v1, v2) => {

@@ -2,10 +2,11 @@ import _ from 'lodash';
 import React from 'react';
 import SortableTree from 'react-sortable-tree';
 import { trimText } from '/imports/api/utils';
-import { findItem } from '/imports/api/surveys/computations';
+import { findItem, iterateItems } from '/imports/api/surveys/computations';
 import Alert from '/imports/ui/alert';
 import FormInspector from '/imports/ui/components/surveyBuilder/FormInspector.js';
 import ItemInspector from '/imports/ui/components/surveyBuilder/ItemInspector.js';
+import { MISSING_HMIS_ID_ICON } from '/imports/ui/components/surveyForm/Question';
 import QuestionModal from './QuestionModal';
 
 function generateItemId(type, definition) {
@@ -60,6 +61,15 @@ export default class SurveyBuilder extends React.Component {
     return nodeProps;
   }
 
+  getUnusedQuestions() {
+    const nodeProps = this.getTreeProps(this.state.treeData);
+    const unusedQuestions = this.props.questions.filter(
+      // don't show questions already added to the survey
+      q => !(nodeProps[q._id] && nodeProps[q._id].isFromBank)
+    );
+    return unusedQuestions;
+  }
+
   addSectionToDefinition() {
     const item = {
       id: generateItemId('section', this.state.definition),
@@ -82,18 +92,13 @@ export default class SurveyBuilder extends React.Component {
     if (!question) {
       return null;
     }
-    console.log('adding question', question);
     const item = {
       ...question,
-      id: question.id || question._id,
-      type: 'question',
-      hmisId: question._id, // TODO: replace with .hmisId in the future
     };
-    delete item._id;
-    delete item.updatedAt;
-    delete item.createdAt;
-    delete item.version;
-
+    // delete item._id;
+    // delete item.updatedAt;
+    // delete item.createdAt;
+    // delete item.version;
     return this.handleItemAdd(item, this.state.definition);
   }
 
@@ -127,8 +132,11 @@ export default class SurveyBuilder extends React.Component {
   }
 
   generateNodeProps({ node }) {
+    const { type, hmisId } = node.definition;
+    const hasWarning = type === 'question' && !hmisId;
     return {
       buttons: [
+        hasWarning && MISSING_HMIS_ID_ICON,
         <button
           onClick={() => {
             this.setState({ inspectedItem: node.definition });
@@ -275,6 +283,7 @@ export default class SurveyBuilder extends React.Component {
     return (<ItemInspector
       item={Object.assign({}, item)}
       originalQuestion={originalQuestion}
+      questions={this.getUnusedQuestions()}
       onChange={this.handleItemChange}
       onClose={this.handleCloseInspector}
     />);
@@ -288,21 +297,31 @@ export default class SurveyBuilder extends React.Component {
   }
 
   renderQuestionModal() {
-    const nodeProps = this.getTreeProps(this.state.treeData);
-    const validQuestions = this.props.questions.filter(
-      q => !(nodeProps[q._id] && nodeProps[q._id].isFromBank)
-    );
-
     return (<QuestionModal
       isOpen={this.state.questionModalIsOpen}
       handleClose={this.handleCloseQuestionModal}
-      questions={validQuestions}
+      questions={this.getUnusedQuestions()}
     />);
+  }
+
+  renderSurveyInfo() {
+    let count = 0;
+    let total = 0;
+    iterateItems(this.state.definition, (item) => {
+      if (item.type === 'question' || item.type === 'grid') {
+        if (!item.hmisId) {
+          count++;
+        }
+        total++;
+      }
+    });
+    return (
+      <p>There are {count}/{total} questions not associated with HMIS</p>
+    );
   }
 
   render() {
     const externalNodeType = 'yourNodeType';
-    const { shouldCopyOnOutsideDrop } = this.state;
     const isNewSurvey = !this.props.survey._id;
     return (
       <div>
@@ -324,7 +343,16 @@ export default class SurveyBuilder extends React.Component {
               onChange={this.handleTreeChange}
               generateNodeProps={this.generateNodeProps}
               dndType={externalNodeType}
-              shouldCopyOnOutsideDrop={shouldCopyOnOutsideDrop}
+              canDrop={({ nextParent, nextPath }) => {
+                if (nextPath.length === 1) {
+                  return true;
+                }
+                if (nextParent && nextParent.definition
+                  && nextParent.definition.type === 'section') {
+                  return true;
+                }
+                return false;
+              }}
             />
           </div>
           {this.state.inspectedItem ? this.renderItemInspector() : this.renderFormInspector()}
@@ -336,6 +364,7 @@ export default class SurveyBuilder extends React.Component {
         >
           {isNewSurvey ? 'Create' : 'Update'}
         </button>
+        {this.renderSurveyInfo()}
       </div>
     );
   }

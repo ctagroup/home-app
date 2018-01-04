@@ -1,6 +1,6 @@
 import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
-import { getScoringVariables } from '/imports/api/surveys/computations';
+import { getScoringVariables, iterateItems } from '/imports/api/surveys/computations';
 import Surveys from '/imports/api/surveys/surveys';
 import { mapUploadedSurveySections } from '/imports/api/surveys/helpers';
 
@@ -11,6 +11,7 @@ Meteor.methods({
     // TODO: permissions check
     const id = Surveys.insert(doc);
     try {
+      Meteor.call('surveys.uploadQuestions', id);
       Meteor.call('surveys.upload', id);
     } catch (e) {
       logger.error(`Failed to upload survey ${e}`);
@@ -21,6 +22,7 @@ Meteor.methods({
 
   'surveys.update'(id, doc) {
     logger.info(`METHOD[${Meteor.userId()}]: surveys.update`, id, doc);
+
     if (doc.$set) {
       check(doc, Surveys.schema);
       Surveys.update(id, doc);
@@ -31,6 +33,7 @@ Meteor.methods({
     }
 
     try {
+      Meteor.call('surveys.uploadQuestions', id);
       Meteor.call('surveys.upload', id);
     } catch (e) {
       logger.error(`Failed to upload survey ${e}`, e.stack);
@@ -44,6 +47,84 @@ Meteor.methods({
     check(id, String);
     // TODO: permissions check
     return Surveys.remove(id);
+  },
+
+  'surveys.uploadQuestions'(id) {
+    const hc = HmisClient.create(Meteor.userId());
+    const survey = Surveys.findOne(id);
+    const definition = JSON.parse(survey.definition);
+
+    // TODO: make sure question group exists
+    const groups = hc.api('survey').getQuestionGroups();
+    let groupId;
+    if (groups.length === 0) {
+      // TODO: create question group
+      groupId = 'TODO';
+      throw new Error('Question group does not exist');
+    } else {
+      groupId = groups[0].questionGroupId;
+      logger.debug('uploading questions to group', groupId);
+    }
+
+    const results = {
+      created: [],
+      skipped: [],
+    };
+
+    iterateItems(definition, (item) => {
+      const itemDefinition = { ...item };
+      delete itemDefinition.hmisId;
+      delete itemDefinition.rules;
+      if (item.type === 'question') {
+        if (!item.hmisId) {
+          const question = hc.api('survey2').createQuestion(groupId, {
+            displayText: item.title,
+            questionDescription: item.text,
+            questionType: item.category,
+            definition: JSON.stringify(itemDefinition),
+            visibility: true,
+            category: survey.title,
+            subcategory: '',
+          });
+          item.hmisId = question.questionId; // eslint-disable-line
+          results.created.push({
+            id: item.id,
+            hmisId: item.hmisId,
+          });
+        } else {
+          results.skipped.push({
+            id: item.id,
+            hmisId: item.hmisId,
+          });
+        }
+      }
+      if (item.type === 'grid') {
+        if (!item.hmisId) {
+          const question = hc.api('survey2').createQuestion(groupId, {
+            displayText: item.title,
+            questionDescription: item.text,
+            questionType: 'grid',
+            definition: JSON.stringify(itemDefinition),
+            visibility: true,
+            category: survey.title,
+            subcategory: '',
+          });
+          item.hmisId = question.questionId; // eslint-disable-line
+          results.created.push({
+            id: item.id,
+            hmisId: item.hmisId,
+          });
+        } else {
+          results.skipped.push({
+            id: item.id,
+            hmisId: item.hmisId,
+          });
+        }
+      }
+    });
+    logger.debug('question upload results', results);
+    Surveys.update(id, { $set: { definition: JSON.stringify(definition) } });
+    return results;
   },
 
   'surveys.upload'(id) {

@@ -8,7 +8,7 @@ import Responses, { ResponseStatus } from '/imports/api/responses/responses';
 
 function getResponsesToUpload(values, definition, defaultSectionId) {
   const questionIds = Object.keys(values);
-  logger.debug(values);
+  logger.debug('getResponsesToUpload', values);
   return questionIds.map(id => {
     const question = findItem(id, definition);
     return {
@@ -27,7 +27,7 @@ Meteor.methods({
     const surveyorId = Meteor.users.findOne(Meteor.userId()).services.HMIS.accountId;
     const response = Object.assign({}, doc, {
       surveyorId,
-      status: ResponseStatus.COMPLETED,
+      status: ResponseStatus.PAUSED,
       submissionId: null,
       values: escapeKeys(doc.values),
     });
@@ -45,7 +45,7 @@ Meteor.methods({
     const oldResponse = Responses.findOne(id);
 
     const response = Object.assign({}, doc, {
-      status: ResponseStatus.COMPLETED,
+      status: ResponseStatus.PAUSED,
       values: escapeKeys(doc.values),
       surveyorId: oldResponse.surveyorId,
     });
@@ -75,10 +75,12 @@ Meteor.methods({
     const survey = Surveys.findOne(surveyId);
 
     if (!survey) {
+      Responses.update(id, { $set: { status: ResponseStatus.UPLOAD_ERROR } });
       throw new Meteor.Error('404', 'Survey does not exist');
     }
 
     if (!survey.hmis) {
+      Responses.update(id, { $set: { status: ResponseStatus.UPLOAD_ERROR } });
       throw new Meteor.Error('error', 'Survey not uploaded');
     }
 
@@ -116,10 +118,12 @@ Meteor.methods({
       );
       Responses.update(id, { $set: {
         submissionId,
+        status: ResponseStatus.COMPLETED,
         submittedAt: new Date(),
       } });
     } catch (e) {
       logger.error(`Response upload ${e}`, e.stack);
+      Responses.update(id, { $set: { status: ResponseStatus.UPLOAD_ERROR } });
       throw new Meteor.Error('responses', `${e}`);
     }
 
@@ -138,6 +142,7 @@ Meteor.methods({
       });
     } catch (e) {
       logger.error(`Score upload ${e}`, e.stack);
+      Responses.update(id, { $set: { status: ResponseStatus.UPLOAD_ERROR } });
       throw new Meteor.Error('responses', `Response submitted but failed to upload scores: ${e}`);
     }
 

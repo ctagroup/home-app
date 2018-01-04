@@ -10,10 +10,16 @@ export class ApiEndpoint {
     this.accessToken = accessToken;
     this.logGetDetails = DETAILED_GET_LOGS;
     this.correlationId = counter++;
+    this.disabledErrors = {};
   }
 
   debug(value = true) {
     this.logGetDetails = value;
+    return this;
+  }
+
+  disableError(code, value = true) {
+    this.disabledErrors[code] = value;
     return this;
   }
 
@@ -102,12 +108,14 @@ export class ApiEndpoint {
       });
     } else {
       const code = httpError.response.statusCode;
-      switch (code) {
-        case 404:
-          logger.warn(`HMIS API:${op}#${this.correlationId} res(${url})`, code);
-          break;
-        default:
-          logger.error(`HMIS API:${op}#${this.correlationId} res(${url})`, code);
+      if (this.disabledErrors[code] !== true) {
+        switch (code) {
+          case 404:
+            logger.warn(`HMIS API:${op}#${this.correlationId} res(${url})`, code);
+            break;
+          default:
+            logger.error(`HMIS API:${op}#${this.correlationId} res(${url})`, code);
+        }
       }
     }
 

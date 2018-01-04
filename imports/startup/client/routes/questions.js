@@ -42,7 +42,10 @@ Router.route('questionsNew', {
   },
   data() {
     const sourceId = Router.current().params.query.source;
-    const question = Object.assign(Questions.findOne(sourceId) || {}, { _id: undefined });
+    const question = Object.assign(Questions.findOne(sourceId) || {}, {
+      _id: undefined,
+      definition: JSON.stringify({ type: 'question' }),
+    });
 
     return {
       title: 'Questions',

@@ -7,7 +7,6 @@ import ConditionField from './RuleConditionField';
 
 class RuleField extends React.Component {
   render() {
-    console.log('RuleField value', this.props.value);
     const value = Object.keys(this.props.value)[0] || 'any';
 
     let typePrefix;
