@@ -1,5 +1,3 @@
-import HomeConfig from '/imports/config/homeConfig';
-import { fullName } from '/imports/api/utils';
 import { logger } from '/imports/utils/logger';
 import Questions from '/imports/api/questions/questions';
 import Responses from '/imports/api/responses/responses';
@@ -34,7 +32,14 @@ Template.responseForm.helpers(
       if (Router.current().route.getName() === 'previewSurvey') {
         return 'Dummy Client';
       }
-      return fullName(this.response.clientDetails);
+
+      const client = this.client;
+
+      const fn = (client && client.firstName) ? client.firstName.trim() : '';
+      const mn = (client && client.middleName) ? client.middleName.trim() : '';
+      const ln = (client && client.lastName) ? client.lastName.trim() : '';
+      const name = `${fn} ${mn} ${ln}`;
+      return name;
     },
     surveyCompleted() {
       return ResponseHelpers.isSurveyCompleted(Router.current().params._id);
@@ -479,7 +484,7 @@ Template.responseForm.onRendered(
     });
     $('.js-summernote').summernote({
       minHeight: 100,
-      fontNames: HomeConfig.fontFamilies,
+      // fontNames: HomeConfig.fontFamilies,
     });
   }
 );

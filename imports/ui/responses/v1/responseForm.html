@@ -1,10 +1,12 @@
 <template name="responseForm">
   <div class="quesL">
+    <h3 class="page-header">{{clientName}}</h3>
+
     <h2>
       {{#if isActiveRoute 'previewSurvey'}}
         {{title}}
       {{else}}
-        {{survey.title}} / {{clientName}} ({{response.responsestatus}})
+        {{survey.title}}
       {{/if}}
     </h2>
 

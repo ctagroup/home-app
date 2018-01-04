@@ -8,6 +8,7 @@ import { AppController } from './controllers';
 import '/imports/ui/responses/responsesListView';
 import '/imports/ui/responses/responsesNew';
 import '/imports/ui/responses/responsesEdit';
+import '/imports/ui/responses/responsesArchive';
 
 
 Router.route('adminDashboardresponsesView', {
@@ -27,6 +28,7 @@ Router.route('adminDashboardresponsesView', {
     const subscriptions = [
       Meteor.subscribe('responses.all', clientId),
       Meteor.subscribe('surveys.all'),
+      Meteor.subscribe('surveys.v1'),
     ];
 
     if (clientId) {
@@ -110,10 +112,53 @@ Router.route('adminDashboardresponsesEdit', {
     if (!response) {
       return {};
     }
+
+    if (response.version < 2) {
+      Router.go('responsesArchive', { _id: this.params._id });
+      return {};
+    }
+
     const survey = Surveys.findOne(response.surveyId);
     return {
       title: 'Responses',
       subtitle: 'Edit',
+      response,
+      survey,
+      client: {
+        // TODO: get client data via subscription
+        _id: response.clientId,
+        schema: response.clientSchema,
+      },
+    };
+  },
+});
+
+Router.route('responsesArchive', {
+  path: '/responses/:_id/archive',
+  template: Template.responsesArchive,
+  controller: AppController,
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+    },
+  },
+  waitOn() {
+    // TODO: subscribe client details
+    return [
+      Meteor.subscribe('responses.one', this.params._id),
+      Meteor.subscribe('surveys.v1'),
+      Meteor.subscribe('questions.v1'),
+    ];
+  },
+  data() {
+    const response = Responses.findOne(this.params._id);
+    if (!response) {
+      return {};
+    }
+    const survey = Surveys.findOne(response.surveyId);
+    return {
+      title: 'Responses',
+      subtitle: 'Archive',
       response,
       survey,
       client: {

@@ -19,8 +19,8 @@ Meteor.publish('responses.all', function publishResponses(ofClientId) {
   if (self.userId) {
     const queue = [];
     const responses = (
-      ofClientId ? Responses.find({ clientId: ofClientId, version: 2 })
-        : Responses.find({ version: 2 })
+      ofClientId ? Responses.find({ clientId: ofClientId })
+        : Responses.find()
     ).fetch();
     // Publish the local data first, so the user can get a quick feedback.
     for (let i = 0, len = responses.length; i < len; i++) {
@@ -70,9 +70,9 @@ Meteor.publish('responses.one', function publishSingleResponse(responseId) {
   const hc = HmisClient.create(this.userId);
 
   if (self.userId) {
-    const response = Responses.findOne({ _id: responseId, version: 2 });
+    const response = Responses.findOne({ _id: responseId });
     if (!response) {
-      return [];
+      return self.ready();
     }
 
     const { isHMISClient, clientId, clientSchema } = response;

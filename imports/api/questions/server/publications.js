@@ -28,7 +28,13 @@ Meteor.publish('questions.all', function publishAllQuestions() {
 });
 
 Meteor.publish('questions.one', function publishOneQuestion(id) {
+  // TODO: use HMIS API instead for v2 questions
   logger.info(`PUB[${this.userId}]: questions.one`, id);
   check(id, String);
   return Questions.find({ _id: id, version: 2 });
+});
+
+Meteor.publish('questions.v1', function publishV1Questions() {
+  logger.info(`PUB[${this.userId}]: questions.v1`);
+  return Questions.find({ version: 1 });
 });

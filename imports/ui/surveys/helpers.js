@@ -1,5 +1,5 @@
 export function maxRank(surveyingId, type) {
-  console.log('Not implemented', surveyingId, type);
+  console.log('Not implemented', surveyingId, type); // eslint-disable-line no-console
   /*
   let newOrder;
   const surveyQuestionsMasterCollection = HomeUtils.adminCollectionObject('surveyQuestionsMaster');
