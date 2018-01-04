@@ -41,22 +41,24 @@ Meteor.publish('responses.all', function publishResponses(ofClientId) {
     }
     self.ready();
 
+    const apiEndpoint = hc.api('client').disableError(404);
+    const clientsCache = {};
     eachLimit(queue, Meteor.settings.connectionLimit, (data, callback) => {
       if (stopFunction) {
         callback();
         return;
       }
-      // TODO: add cache
       Meteor.defer(() => {
         const { responseId, clientId, schema } = data;
-        let clientDetails;
-        try {
-          clientDetails = hc.api('client').getClient(clientId, schema);
-          clientDetails.schema = schema;
-        } catch (e) {
-          clientDetails = { error: e.reason };
+        if (!clientsCache[clientId]) {
+          try {
+            clientsCache[clientId] = apiEndpoint.getClient(clientId, schema);
+            clientsCache[clientId].schema = schema;
+          } catch (e) {
+            clientsCache[clientId] = { error: e.reason };
+          }
         }
-        self.changed('responses', responseId, { clientDetails });
+        self.changed('responses', responseId, { clientDetails: clientsCache[clientId] });
         callback();
       });
     });
