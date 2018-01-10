@@ -54,7 +54,10 @@ const tableOptions = {
           return 'Loading...';
         }
         if (clientDetails.error) {
-          return clientDetails.error;
+          return `
+            ${clientDetails.error}<br />
+            ID: ${response.clientId}<br />
+            Schema: ${response.clientSchema}`;
         }
 
         const displayName = fullName(clientDetails) || response.clientId;
