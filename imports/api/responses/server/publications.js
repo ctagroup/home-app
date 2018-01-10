@@ -41,7 +41,6 @@ Meteor.publish('responses.all', function publishResponses(ofClientId) {
     }
     self.ready();
 
-    const apiEndpoint = hc.api('client').disableError(404);
     const clientsCache = {};
     eachLimit(queue, Meteor.settings.connectionLimit, (data, callback) => {
       if (stopFunction) {
@@ -49,6 +48,7 @@ Meteor.publish('responses.all', function publishResponses(ofClientId) {
         return;
       }
       Meteor.defer(() => {
+        const apiEndpoint = hc.api('client'); // .disableError(404);
         const { responseId, clientId, schema } = data;
         if (!clientsCache[clientId]) {
           try {
