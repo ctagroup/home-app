@@ -33,10 +33,13 @@ class QuestionPickerField extends React.Component {
   }
 
   handleCloseModal() {
-    this.setState({ isModalOpened: false });
+    this.setState({
+      isModalOpened: false,
+      searchString: '',
+    });
   }
 
-  handleSeachChange() {
+  handleSeachChange(event) {
     this.setState({ searchString: event.target.value });
   }
 
@@ -50,13 +53,14 @@ class QuestionPickerField extends React.Component {
       q => stringContains(q.title, this.state.searchString)
     );
     const items = filteredQuestions.map(q => (
-      <li key={q.hmisId}>
+      <li key={q.hmisId} className="question">
         <button
+          className="btn btn-default pick-question"
           onClick={() => this.handlePickQuestion(q)}
         >
           Pick
         </button>
-        <span>{q.title}</span>
+        <span className="question-text">{q.title}</span>
       </li>
     ));
 
@@ -67,8 +71,9 @@ class QuestionPickerField extends React.Component {
         style={customStyles}
         ariaHideApp={false}
       >
-        <p>Pick a question from Question Bank.
+        <p>Pick a question:
           <input
+            className="question-search"
             type="text"
             value={this.state.searchString}
             onChange={this.handleSeachChange}

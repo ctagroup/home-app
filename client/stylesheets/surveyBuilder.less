@@ -52,10 +52,35 @@
 }
 
 .questions-list {
-  max-height: 50vh;
+  height: 50vh;
+  width: 80vh;
   list-style: none;
   padding: 0;
   overflow: scroll;
+
+  .question {
+    clear: both;
+    margin: 10px 0;
+    .pick-question {
+      margin: 4px;
+      float: left;
+      position: relative;
+      top: -5px;
+    }
+    .question-text {
+      font-size: 14px;
+      margin-left: 10px;
+    }
+  }
 }
+
+.question-search {
+  width: 50vh;
+  position: relative;
+  margin-left: 10px;
+  font-size: 14px;
+  padding: 4px;
+}
+
 
 
