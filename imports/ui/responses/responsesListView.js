@@ -109,6 +109,10 @@ const tableOptions = {
 
           case ResponseStatus.UPLOADING:
             return uploadingHtml;
+          case ResponseStatus.UPLOAD_ERROR:
+            return `
+              <i class="fa fa-exclamation-circle"></i> Upload Error</span><br />
+              <a href="#" id="${response._id}" class="btn UploadResponses">Re-Upload to HMIS</a>`;
           default:
             return value;
         }

@@ -53,7 +53,8 @@ export class SurveyApi2 extends ApiEndpoint {
 
   getQuestionsCount(groupId) {
     const url = `${BASE_URL}/questiongroups/${groupId}/questions?startIndex=0&maxItems=1`; // eslint-disable-line
-    return this.doGet(url).questions.pagination.total;
+    const { pagination } = this.doGet(url).questions;
+    return pagination.total;
   }
 
   createQuestion(questionGroupId, question) {

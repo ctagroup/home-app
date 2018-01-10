@@ -247,7 +247,7 @@ Template.responseForm.helpers(
       return toggleVal;
     },
     isChecked(type) {
-      if (Router.current().route.getName() === 'adminDashboardresponsesEdit') {
+      if (Router.current().route.getName() === 'responsesArchive') {
         const responseSection = Responses.findOne({ _id: Router.current().params._id });
 
         if (!responseSection || !responseSection.section) {
@@ -283,7 +283,7 @@ Template.responseForm.helpers(
       return '';
     },
     isSelected(value) {
-      if (Router.current().route.getName() === 'adminDashboardresponsesEdit') {
+      if (Router.current().route.getName() === 'responsesArchive') {
         const responseSection = Responses.findOne({ _id: Router.current().params._id });
 
         if (!responseSection || !responseSection.section) {
@@ -318,7 +318,7 @@ Template.responseForm.helpers(
       return '';
     },
     isSelectedMultiple(value) {
-      if (Router.current().route.getName() === 'adminDashboardresponsesEdit') {
+      if (Router.current().route.getName() === 'responsesArchive') {
         const responseSection = Responses.findOne({ _id: Router.current().params._id });
 
         if (!responseSection || !responseSection.section) {
