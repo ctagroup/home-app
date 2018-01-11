@@ -31,6 +31,13 @@ const tableOptions = {
         return value ? '<i class="fa fa-check js-tooltip" data-toggle="tooltip" data-placement="right" title=""></i>' : ''; // eslint-disable-line max-len
       },
     },
+    {
+      title: 'In service?',
+      data: 'inService',
+      render(value) {
+        return value ? '<i class="fa fa-check js-tooltip" data-toggle="tooltip" data-placement="right" title=""></i>' : ''; // eslint-disable-line max-len
+      },
+    },
     editButton('adminDashboardhousingUnitsEdit'),
     deleteHousingUnitButton(),
   ],
