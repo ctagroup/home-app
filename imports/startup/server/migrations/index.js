@@ -1,14 +1,16 @@
 import AppSettings from '/imports/api/appSettings/appSettings';
 import { logger } from '/imports/utils/logger';
 
-import Questions from '/imports/api/questions/questions';
-import Responses from '/imports/api/responses/responses';
 import Surveys from '/imports/api/surveys/surveys';
-import Users from '/imports/api/users/users';
 import viSpdatFamily2 from '/imports/config/surveys/viSpdatFamily2';
 import viSpdatSinge201 from '/imports/config/surveys/viSpdatSingle2.0.1';
 import viSpdatTay1 from '/imports/config/surveys/viSpdatTay1';
 import testSurvey from '/imports/config/surveys/testSurvey';
+
+import {
+  migrateV1Responses,
+  fixMissingClientSchemasInV1Responses,
+} from './migrations';
 
 Meteor.startup(() => {
   let version = AppSettings.get('version', 10);
@@ -82,75 +84,8 @@ Meteor.startup(() => {
 
   if (version === 13) {
     version++;
-    let count = 0;
-    Responses.find().fetch()
-      .filter(response => !response.version)
-      .forEach(oldResponse => {
-        const surveyor = Users.findOne(oldResponse.userID);
-        let surveyorId;
-        try {
-          surveyorId = surveyor.services.HMIS.accountId;
-        } catch (e) {
-          logger.warn(`No HMIS accountId for user ${oldResponse.userID}, exists? ${!!surveyor}`);
-          surveyorId = null;
-        }
-        // console.log(oldResponse.userID, surveyor);
-        // throw new Error();
-        const newResponse = {
-          ...oldResponse,
-          clientId: oldResponse.clientID,
-          surveyId: oldResponse.surveyID,
-          status: oldResponse.responsestatus,
-          surveyorId,
-          createdAt: oldResponse.timestamp,
-          version: 1,
-        };
-        delete newResponse.clientID;
-        delete newResponse.surveyID;
-        delete newResponse.userID;
-        delete newResponse.responsestatus;
-        Responses.update(newResponse._id, newResponse, { bypassCollection2: true });
-        count++;
-      });
-    logger.info(`Updated ${count} v1 responses`);
-
-    count = 0;
-    Questions.find().fetch()
-    .filter(question => !question.version)
-    .forEach(question => {
-      Questions.update(question._id, { $set: { version: 1 } }, { bypassCollection2: true });
-      count++;
-    });
-    logger.info(`Updated ${count} v1 questions`);
-
-    count = 0;
-    Surveys.find().fetch()
-    .filter(survey => !survey.version)
-    .forEach(survey => {
-      Surveys.update(survey._id, { $set: { version: 1 } }, { bypassCollection2: true });
-      count++;
-    });
-    logger.info(`Updated ${count} v1 surveys`);
-
-    count = 0;
-    Users.find().fetch()
-      .filter(user => user._id.length === 17)
-      .forEach(user => {
-        try {
-          const newUser = {
-            ...user,
-            _id: user.services.HMIS.accountId,
-            previousId: user._id,
-          };
-          count++;
-          Users.remove(user._id);
-          Users.insert(newUser);
-        } catch (e) {
-          logger.warn(`Failed to update user ${user._id}: ${e}`);
-        }
-      });
-    logger.info(`Updated ${count} v1 users`);
-    // TODO: bump migration version when old site is closed
+    migrateV1Responses();
+    fixMissingClientSchemasInV1Responses();
   }
 
   logger.info(`Migrations complete. Version: ${AppSettings.get('version')}`);
