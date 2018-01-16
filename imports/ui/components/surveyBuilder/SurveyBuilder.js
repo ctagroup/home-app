@@ -27,6 +27,8 @@ export default class SurveyBuilder extends React.Component {
       definition,
       inspectedItem: null, // definition.items[2],
       questionModalIsOpen: false,
+      uploadToHmis: false,
+      isUploading: false,
     };
     this.addSectionToDefinition = this.addSectionToDefinition.bind(this);
     this.addScoreToDefinition = this.addScoreToDefinition.bind(this);
@@ -258,11 +260,18 @@ export default class SurveyBuilder extends React.Component {
         definition,
       },
     };
-    Meteor.call('surveys.update', surveyId, updateDoc, (err) => {
+    const { uploadToHmis } = this.state;
+    this.setState({ isUploading: true });
+    Meteor.call('surveys.update', surveyId, updateDoc, uploadToHmis, (err) => {
+      this.setState({ isUploading: false });
       if (err) {
         Alert.error(err);
       } else {
-        Alert.success('Survey updated');
+        if (uploadToHmis) {
+          Alert.success('Survey uploaded');
+        } else {
+          Alert.success('Survey updated');
+        }
         // Router.go('adminDashboardsurveysView');
       }
     });
@@ -315,8 +324,11 @@ export default class SurveyBuilder extends React.Component {
         total++;
       }
     });
+    if (count === 0) {
+      return (<p>There are no new questions to upload.</p>);
+    }
     return (
-      <p>There are {count}/{total} questions not associated with HMIS</p>
+      <p>{count} out of {total} questions are new (without HMIS id).</p>
     );
   }
 
@@ -358,13 +370,24 @@ export default class SurveyBuilder extends React.Component {
           {this.state.inspectedItem ? this.renderItemInspector() : this.renderFormInspector()}
         </div>
         {this.renderQuestionModal()}
+        {this.renderSurveyInfo()}
+        <div>
+          <label>
+            <input
+              type="checkbox"
+              checked={this.state.uploadToHmis}
+              onChange={() => { this.setState({ uploadToHmis: !this.state.uploadToHmis }); }}
+            />
+            Upload Survey and new questions to HMIS
+          </label>
+        </div>
         <button
           className="btn btn-primary"
           onClick={this.handleSaveFormDefinition}
+          disabled={this.state.isUploading}
         >
           {isNewSurvey ? 'Create' : 'Update'}
         </button>
-        {this.renderSurveyInfo()}
       </div>
     );
   }
