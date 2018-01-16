@@ -80,19 +80,21 @@ export function migrateV1Responses() {
 
 export function fixMissingClientSchemasInV1Responses() {
   const user = Users.findOne({ 'services.HMIS.emailAddress': Meteor.settings.admins[0] });
-  logger.info('Fixing missing client schemas in responses...');
+  logger.info(`Fixing missing client schemas in ${Responses.find().count()} responses...`);
   logger.debug('using account', Meteor.settings.admins[0], !!user);
   const hc = HmisClient.create(user);
   let count = 0;
+  const missingClients = new Set();
   Responses.find().fetch()
-    .filter(response => response.isHMISClient && !response.clientSchema)
+    .filter(response => response.clientId.length > 17 && !response.clientSchema)
     .forEach(response => {
       const { clientId } = response;
+      missingClients.add(clientId);
       ['v2014', 'v2015', 'v2016', 'v2017'].some(schema => {
         try {
-          logger.debug(`Looking for client ${clientId} in schema ${schema}`);
           hc.api('client').getClient(clientId, schema);
           logger.info(`Found ${clientId} in schema ${schema}`);
+          missingClients.delete(clientId);
           Responses.update(response._id, { $set: { clientSchema: schema } });
           count++;
           return true;
@@ -103,6 +105,8 @@ export function fixMissingClientSchemasInV1Responses() {
       logger.warn(`Client ${response.clientId} not found in any schema`);
       return false;
     });
-  logger.info(`Fixed client schemas in ${count} responses`);
+  logger.info(`Fixed client schemas in ${count} responses. Missing clients:`,
+    Array.from(missingClients)
+  );
 }
 

@@ -25,30 +25,36 @@ if (Meteor.isClient) {
 }
 
 if (Meteor.isServer) {
-  const settings = _.extend({
-    level: 'error',
-    dsn: '',
-  }, Meteor.settings.sentry);
+  // const settings = _.extend({
+  //   level: 'error',
+  //   dsn: null,
+  // }, Meteor.settings.sentry);
 
-  log = new winston.Logger({
-    transports: [
-      new winston.transports.Console({
-        level: 'debug',
-        prettyPrint: true,
-        stderrLevels: ['error'],
-        handleExceptions: true,
-        json: false,
-        colorize: true,
-        timestamp: false,
-      }),
-      new Sentry({
-        level: settings.level,
-        dsn: settings.dsn,
-        patchGlobal: true,
-        release: moment(new Date()).format('YYYY-MM-DD'),
-      }),
-    ],
-  });
+  const transports = [
+    new winston.transports.Console({
+      level: 'debug',
+      prettyPrint: true,
+      stderrLevels: ['error'],
+      handleExceptions: true,
+      json: false,
+      colorize: true,
+      timestamp: false,
+    }),
+  ];
+
+  const { sentry } = Meteor.settings;
+
+  if (sentry && sentry.dsn) {
+    const sentryTransport = new Sentry({
+      level: sentry.level || 'error',
+      dsn: sentry.dsn,
+      patchGlobal: true,
+      release: moment(new Date()).format('YYYY-MM-DD'),
+    });
+    transports.push(sentryTransport);
+  }
+
+  log = new winston.Logger({ transports });
 }
 
 export function sanitize(obj, secrets = ['password', 'passwordConfirm',
