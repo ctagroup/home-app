@@ -182,15 +182,15 @@ export default class SurveyBuilder extends React.Component {
     }, 1);
   }
 
-  handleItemChange(updatedItem) {
-    const definition = ((function updateItem(root, item) {
-      if (root.id === item.id) {
-        // TODO: handle ID update
+  handleItemChange(updatedItem, name, previous) {
+    const itemId = name === 'id' ? previous.id : updatedItem.id;
+    const definition = ((function updateItem(root, id, item) {
+      if (root.id === id) {
         Object.assign(root, item);
       }
-      _.each(root.items || [], (child) => { updateItem(child, item); });
+      _.each(root.items || [], (child) => { updateItem(child, id, item); });
       return root;
-    })(this.state.definition, updatedItem));
+    })(this.state.definition, itemId, updatedItem));
 
     const treeData = this.generateTree(definition, this.state.treeData);
     this.setState({
@@ -239,6 +239,7 @@ export default class SurveyBuilder extends React.Component {
       const newQuestion = {
         id: generateItemId('question', this.state.definition),
         title: 'New Question',
+        type: 'question',
         category: 'text',
       };
       addedQuestion = this.addQuestionToDefinition(newQuestion);

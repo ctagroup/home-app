@@ -36,9 +36,10 @@ export default class ItemInspector extends React.Component {
   }
 
   onValueChange(name, value) {
+    const previous = Object.assign({}, this.props.item);
     const item = Object.assign({}, this.props.item);
     _.set(item, name, value);
-    this.props.onChange(item);
+    this.props.onChange(item, name, previous);
   }
 
   isFromQuestionBank() {
