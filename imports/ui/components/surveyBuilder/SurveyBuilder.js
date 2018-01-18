@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import SortableTree from 'react-sortable-tree';
 import { trimText } from '/imports/api/utils';
-import { findItem, iterateItems } from '/imports/api/surveys/computations';
+import { findItem, findItemParent, iterateItems } from '/imports/api/surveys/computations';
 import Alert from '/imports/ui/alert';
 import FormInspector from '/imports/ui/components/surveyBuilder/FormInspector.js';
 import ItemInspector from '/imports/ui/components/surveyBuilder/ItemInspector.js';
@@ -32,8 +32,10 @@ export default class SurveyBuilder extends React.Component {
     };
     this.addSectionToDefinition = this.addSectionToDefinition.bind(this);
     this.addScoreToDefinition = this.addScoreToDefinition.bind(this);
+    this.addTextToDefinition = this.addTextToDefinition.bind(this);
     this.generateNodeProps = this.generateNodeProps.bind(this);
     this.handleItemChange = this.handleItemChange.bind(this);
+    this.handleItemClone = this.handleItemClone.bind(this);
     this.handleFormChange = this.handleFormChange.bind(this);
     this.handleCloseInspector = this.handleCloseInspector.bind(this);
     this.handleCloseQuestionModal = this.handleCloseQuestionModal.bind(this);
@@ -77,6 +79,15 @@ export default class SurveyBuilder extends React.Component {
       id: generateItemId('section', this.state.definition),
       title: 'New Section',
       type: 'section',
+    };
+    return this.handleItemAdd(item, this.state.definition);
+  }
+
+  addTextToDefinition() {
+    const item = {
+      id: generateItemId('text', this.state.definition),
+      title: 'New Text',
+      type: 'text',
     };
     return this.handleItemAdd(item, this.state.definition);
   }
@@ -139,16 +150,51 @@ export default class SurveyBuilder extends React.Component {
     return {
       buttons: [
         hasWarning && MISSING_HMIS_ID_ICON,
+        <div className="btn-group">
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => {
+              this.setState({ inspectedItem: node.definition });
+            }}
+          >
+            Inspect
+          </button>
+          <button
+            type="button"
+            className="btn btn-primary dropdown-toggle"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <span className="caret"></span>
+            <span className="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul className="dropdown-menu">
+            <li>
+              <a href="#" onClick={() => { this.handleItemClone(node.definition.id); }}>Clone</a>
+            </li>
+            <li role="separator" className="divider"></li>
+            <li>
+              <a href="#" onClick={() => { this.handleItemDelete(node.definition.id); }}>Delete</a>
+            </li>
+          </ul>
+        </div>,
+      ],
+    };
+    /*
+
+
         <button
+          className="btn btn-default"
           onClick={() => {
             this.setState({ inspectedItem: node.definition });
           }}
-        >Edit</button>,
+        >Inspect</button>,
         <button
           onClick={() => { this.handleItemDelete(node.definition.id); }}
         >Delete</button>,
-      ],
-    };
+        */
   }
 
   handleItemAdd(newItem, parent) {
@@ -161,29 +207,29 @@ export default class SurveyBuilder extends React.Component {
     return newItem;
   }
 
-  handleFormChange(updatedFields) {
-    const definition = {
-      ...this.state.definition,
-      ...updatedFields,
+  handleItemClone(itemId) {
+    const item = findItem(itemId, this.state.definition);
+    const cloned = {
+      ...item,
+      id: generateItemId(item.type, this.state.definition),
     };
-
-    if (_.isEqual(this.state.definition, definition)) {
-      return;
-    }
-
-    const treeData = this.generateTree(definition, this.state.treeData);
-    // for some reason set state must be debounced to prevent
-    // the following warning: Cannot call setState() inside getChildContext()
-    Meteor.defer(() => {
-      this.setState({
-        definition,
-        treeData,
-      });
-    }, 1);
+    delete cloned.items;
+    delete cloned.rules;
+    delete cloned.hmisId;
+    const parent = findItemParent(itemId, this.state.definition) || this.state.definition;
+    return this.handleItemAdd(cloned, parent);
   }
 
   handleItemChange(updatedItem, name, previous) {
+    if (previous.id !== updatedItem.id) {
+      // handle id change
+      if (findItem(updatedItem.id, this.state.definition) || !updatedItem.id) {
+        return;
+      }
+    }
+
     const itemId = name === 'id' ? previous.id : updatedItem.id;
+
     const definition = ((function updateItem(root, id, item) {
       if (root.id === id) {
         Object.assign(root, item);
@@ -216,6 +262,29 @@ export default class SurveyBuilder extends React.Component {
       treeData,
     });
   }
+
+
+  handleFormChange(updatedFields) {
+    const definition = {
+      ...this.state.definition,
+      ...updatedFields,
+    };
+
+    if (_.isEqual(this.state.definition, definition)) {
+      return;
+    }
+
+    const treeData = this.generateTree(definition, this.state.treeData);
+    // for some reason set state must be debounced to prevent
+    // the following warning: Cannot call setState() inside getChildContext()
+    Meteor.defer(() => {
+      this.setState({
+        definition,
+        treeData,
+      });
+    }, 1);
+  }
+
 
   handleCloseInspector() {
     this.setState({ inspectedItem: null });
@@ -339,11 +408,14 @@ export default class SurveyBuilder extends React.Component {
     return (
       <div>
         {<div>
+          <button className="btn btn-default" onClick={this.addSectionToDefinition}>
+            Add Section
+          </button>
           <button className="btn btn-default" onClick={this.openQuestionModal}>
             Add Question
           </button>
-          <button className="btn btn-default" onClick={this.addSectionToDefinition}>
-            Add Section
+          <button className="btn btn-default" onClick={this.addTextToDefinition}>
+            Add Text
           </button>
           <button className="btn btn-default" onClick={this.addScoreToDefinition}>
             Add Score

@@ -264,20 +264,6 @@ export function cleanItemValues(item, formState, force = false) {
   return newState;
 }
 
-export function findItem(itemId, definition) {
-  // TODO: add tests
-  if (definition.id === itemId) {
-    return definition;
-  }
-  const items = definition.items || [];
-  for (let i = 0; i < items.length; i++) {
-    const result = findItem(itemId, items[i]);
-    if (result) {
-      return result;
-    }
-  }
-  return null;
-}
 
 export function computeItemState(currentItem, formState) {
   let newState;
@@ -312,16 +298,49 @@ export function getScoringVariables(formState, scorePrefix = 'score.') {
     }));
 }
 
-
+//
+// return any value to stop iteration
 export function iterateItems(definition, callback) {
   // TODO: add tests
-  callback(definition);
+  const result1 = callback(definition);
+  if (result1 !== undefined) {
+    return result1;
+  }
 
   const items = definition.items || [];
   for (let i = 0; i < items.length; i++) {
-    const result = iterateItems(items[i], callback);
-    if (result === false) {
-      return;
+    const result2 = iterateItems(items[i], callback);
+    if (result2 !== undefined) {
+      return result2;
     }
   }
+  return undefined;
 }
+
+export function findItem(itemId, definition) {
+  // TODO: add tests
+  if (definition.id === itemId) {
+    return definition;
+  }
+  const items = definition.items || [];
+  for (let i = 0; i < items.length; i++) {
+    const result = findItem(itemId, items[i]);
+    if (result) {
+      return result;
+    }
+  }
+  return null;
+}
+
+export function findItemParent(itemId, definition) {
+  let parent;
+  iterateItems(definition, (item) => {
+    const { items } = item;
+    const childIds = (items || []).map(child => child.id);
+    if (childIds.includes(itemId)) {
+      parent = item;
+    }
+  });
+  return parent;
+}
+
