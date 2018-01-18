@@ -122,7 +122,7 @@ export default class SurveyBuilder extends React.Component {
   itemToTree(item, nodeProps) {
     return Object.assign({
       title: this.renderItem(item),
-      subtitle: `${item.type} (${item.id})`,
+      subtitle: `${item.category || ''} ${item.type} (${item.id})`,
       children: item.items ? item.items.map(child => this.itemToTree(child, nodeProps)) : undefined,
       className: item.type,
       definition: item,
@@ -147,13 +147,20 @@ export default class SurveyBuilder extends React.Component {
   generateNodeProps({ node }) {
     const { type, hmisId } = node.definition;
     const hasWarning = type === 'question' && !hmisId;
+
+    const isSelected = this.state.inspectedItem
+      && (this.state.inspectedItem.id === node.definition.id);
+    console.log(node, this.state.inspectedItem);
+    const buttonClass = isSelected ? 'btn-primary' : 'btn-default';
+
     return {
       buttons: [
         hasWarning && MISSING_HMIS_ID_ICON,
         <div className="btn-group">
           <button
             type="button"
-            className="btn btn-primary"
+            className={`btn ${buttonClass} dropdown-toggle`}
+            disabled={isSelected}
             onClick={() => {
               this.setState({ inspectedItem: node.definition });
             }}
@@ -162,7 +169,7 @@ export default class SurveyBuilder extends React.Component {
           </button>
           <button
             type="button"
-            className="btn btn-primary dropdown-toggle"
+            className={`btn ${buttonClass} dropdown-toggle`}
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
@@ -182,19 +189,6 @@ export default class SurveyBuilder extends React.Component {
         </div>,
       ],
     };
-    /*
-
-
-        <button
-          className="btn btn-default"
-          onClick={() => {
-            this.setState({ inspectedItem: node.definition });
-          }}
-        >Inspect</button>,
-        <button
-          onClick={() => { this.handleItemDelete(node.definition.id); }}
-        >Delete</button>,
-        */
   }
 
   handleItemAdd(newItem, parent) {
