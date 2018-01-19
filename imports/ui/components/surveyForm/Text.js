@@ -22,7 +22,7 @@ export default class Text extends Item {
       });
     }
     Object.keys(translations).forEach(t => {
-      const value = evaluateOperand(translations[t], this.props.formState);
+      const value = evaluateOperand(translations[t], this.props.formState, 'n/a');
       out = out.split(t).join(`${value}`);
     });
     return out;

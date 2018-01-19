@@ -113,6 +113,17 @@ Router.route('adminDashboardresponsesEdit', {
       return {};
     }
 
+    const { clientId, clientSchema } = response;
+    const clientStub = {
+      // TODO: get client data via subscription
+      _id: clientId,
+      schema: clientSchema,
+    };
+
+    if (clientSchema) {
+      Meteor.subscribe('clients.one', clientId, clientSchema);
+    }
+
     if (response.version < 2) {
       Router.go('responsesArchive', { _id: this.params._id });
       return {};
@@ -124,11 +135,7 @@ Router.route('adminDashboardresponsesEdit', {
       subtitle: 'Edit',
       response,
       survey,
-      client: {
-        // TODO: get client data via subscription
-        _id: response.clientId,
-        schema: response.clientSchema,
-      },
+      client: Clients.findOne(clientId) || clientStub,
     };
   },
 });

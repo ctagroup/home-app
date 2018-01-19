@@ -24,7 +24,7 @@ export function castType(v) {
   return v;
 }
 
-export function getValueByPath(obj, str) {
+export function getValueByPath(obj, str, defaultValue) {
   // see also: https://lodash.com/docs/4.17.4#get
   try {
     let parts = [];
@@ -37,7 +37,10 @@ export function getValueByPath(obj, str) {
       }
       return o;
     }, obj);
-    return parts.length === 0 ? result : str;
+    if (parts.length === 0) {
+      return result;
+    }
+    return defaultValue || str;
   } catch (e) {
     return undefined;
   }
@@ -116,14 +119,14 @@ export function evaluateCondition(operator, operand1, operand2) {
   }
 }
 
-export function evaluateOperand(operand, formState = {}) {
+export function evaluateOperand(operand, formState = {}, defaultValue = undefined) {
   let args;
   if (typeof(operand) === 'string') {
     args = operand.split(':');
   } else {
     args = [operand];
   }
-  const value = getValueByPath(formState, args.shift());
+  const value = getValueByPath(formState, args.shift(), defaultValue);
   if (value !== undefined) {
     return applyReducers(castType(value), args);
   }

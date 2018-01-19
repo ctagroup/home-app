@@ -76,6 +76,7 @@ describe('survey computations', function () {
       chai.assert.equal(evaluateOperand('123'), 123);
       chai.assert.equal(evaluateOperand('0005'), 5);
     });
+
     it('variables', function () {
       const formState = {
         variables: {
@@ -91,7 +92,12 @@ describe('survey computations', function () {
       chai.assert.equal(evaluateOperand('values.baz', formState), 8);
     });
 
-    it('non existing variables, values, props', function () {
+    it('returns default value if provided', function () {
+      chai.assert.equal(evaluateOperand('client.name', {}), 'client.name');
+      chai.assert.equal(evaluateOperand('client.name', {}, 'foobar'), 'foobar');
+    });
+
+    it('non existing variables, values, props === undefined', function () {
       const formState = {
         variables: {},
         values: {},
