@@ -19,6 +19,10 @@ function generateItemId(type, definition) {
   }
 }
 
+function isAssociatedToNonExistingQuestion(item, questions) {
+  return item.hmisId && questions.findIndex(q => q.hmisId === item.hmisId) === -1;
+}
+
 export default class SurveyBuilder extends React.Component {
   constructor(props) {
     super(props);
@@ -148,9 +152,15 @@ export default class SurveyBuilder extends React.Component {
     const { type, hmisId } = node.definition;
     const hasWarning = type === 'question' && !hmisId;
 
+    let buttonClass;
     const isSelected = this.state.inspectedItem
       && (this.state.inspectedItem.id === node.definition.id);
-    const buttonClass = isSelected ? 'btn-primary' : 'btn-default';
+    buttonClass = isSelected ? 'btn-primary' : 'btn-default';
+
+    const isInvalid = isAssociatedToNonExistingQuestion(node.definition, this.props.questions);
+    if (isInvalid) {
+      buttonClass = 'btn-danger';
+    }
 
     return {
       buttons: [
@@ -377,22 +387,40 @@ export default class SurveyBuilder extends React.Component {
   }
 
   renderSurveyInfo() {
-    let count = 0;
+    const questions = this.props.questions || [];
+    let newQuestions = 0;
     let total = 0;
+    const missing = [];
     iterateItems(this.state.definition, (item) => {
       if (item.type === 'question' || item.type === 'grid') {
         if (!item.hmisId) {
-          count++;
+          newQuestions++;
+        }
+        if (isAssociatedToNonExistingQuestion(item, questions)) {
+          missing.push(item.id);
         }
         total++;
       }
     });
-    if (count === 0) {
-      return (<p>There are no new questions to upload.</p>);
+
+    const items = [];
+
+    if (newQuestions === 0) {
+      items.push(<p key="item1">There are no new questions to upload.</p>);
+    } else {
+      items.push(<p key="item1">
+        {newQuestions} out of {total} questions are new (without HMIS id).
+      </p>);
     }
-    return (
-      <p>{count} out of {total} questions are new (without HMIS id).</p>
-    );
+
+    if (missing.length > 0) {
+      items.push(<p key="item2">
+        <span className="label label-warning">Warning</span>
+        {missing.length} questions have missing HMIS Questions: {missing.join(', ')}.
+      </p>);
+    }
+
+    return (<div>{items}</div>);
   }
 
   render() {
