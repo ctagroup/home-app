@@ -94,20 +94,22 @@ export function deleteSurveyButton() {
 }
 
 
-export function deleteQuestionButton() {
+export function deleteQuestionButton(onSuccessCallback) {
   return {
     data: '_id',
     title: 'Delete',
     render() { return ''; },
     createdCell(node, _id, rowData) {
-      const title = rowData.title || _id;
+      const title = rowData.displayText || _id;
       const templateData = {
         _id,
         message: `Are you sure you want to delete Question ${title} (${_id})?`,
         method: 'questions.delete',
-        args: [_id],
+        args: [rowData.questionGroupId, _id],
         onSuccess() {
-          // Meteor.setTimeout(() => location.reload(), 1500);
+          if (onSuccessCallback) {
+            onSuccessCallback(rowData);
+          }
         },
       };
       Blaze.renderWithData(Template.DataTableDeleteButton, templateData, node);

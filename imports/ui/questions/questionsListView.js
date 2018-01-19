@@ -27,6 +27,7 @@ const tableOptions = {
       data: 'questionGroup.questionGroupName',
     },
     editButton('questionsEdit'),
+    /*
     {
       data: '_id',
       title: 'Clone',
@@ -44,7 +45,11 @@ const tableOptions = {
       width: '45px',
       orderable: false,
     },
-    deleteQuestionButton(),
+    */
+    deleteQuestionButton((question) => {
+      console.log(question);
+      Questions._collection.remove(question._id); // eslint-disable-line
+    }),
   ],
   dom: TableDom,
 };

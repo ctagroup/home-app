@@ -1,5 +1,6 @@
 import React from 'react';
 import Alert from '/imports/ui/alert';
+import Questions from '/imports/api/questions/questions';
 import GridItemForm from '/imports/ui/components/surveyBuilder/GridItemForm';
 import QuestionItemForm from '/imports/ui/components/surveyBuilder/QuestionItemForm';
 
@@ -59,6 +60,7 @@ class QuestionEditForm extends React.Component {
         Alert.error(err);
       } else {
         Alert.success('Question deleted');
+        Questions._collection.remove(questionId); // eslint-disable-line
         Router.go('questionsView');
       }
     });

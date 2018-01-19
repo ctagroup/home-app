@@ -141,9 +141,11 @@ Meteor.publish('clients.one', function pubClient(clientId, schema = 'v2015', loa
 
   self.ready();
 
-  Meteor.call('s3bucket.get', client.clientId, 'photo', (err, res) =>
-    self.changed('localClients', client.clientId, { photo: res })
-  );
+  try {
+    Meteor.call('s3bucket.get', client.clientId, 'photo', (err, res) =>
+      self.changed('localClients', client.clientId, { photo: res })
+    );
+  } catch (e) {} // eslint-disable-line
 
   return null;
 });
