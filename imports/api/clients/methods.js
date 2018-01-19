@@ -112,12 +112,7 @@ Meteor.methods({
             const clientz = client;
             clientz._id = clientz.clientId;
             clientz.isHMISClient = true;
-
-            clientz.schema = 'v2015';
-            if (clientz.link.indexOf('v2014') !== -1) {
-              clientz.schema = 'v2014';
-            }
-
+            clientz.schema = client.link.split('/')[3];
             return clientz;
           }
         )

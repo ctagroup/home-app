@@ -1,7 +1,8 @@
 import moment from 'moment';
-import { logger } from '/imports/utils/logger';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import { TableDom } from '/imports/ui/dataTable/helpers';
+import Alert from '/imports/ui/alert';
+import { fullName } from '/imports/api/utils';
 import './searchClient.html';
 
 // TODO: move to dedicated template
@@ -58,22 +59,14 @@ const tableOptions = {
 const debouncedSearch = _.debounce((query, options, callback) => {
   Meteor.call('searchClient', query, options, (err, res) => {
     if (err) {
-      logger.log(err);
-      return;
+      Alert.error(err);
+    } else {
+      const clients = res.map(r => ({
+        ...r,
+        fullName: fullName(r),
+      }));
+      callback(clients);
     }
-    callback(
-      res.map(
-        (v) => {
-          const vz = v;
-          const fn = (vz && vz.firstName) ? vz.firstName.trim() : '';
-          const mn = (vz && vz.middleName) ? vz.middleName.trim() : '';
-          const ln = (vz && vz.lastName) ? vz.lastName.trim() : '';
-          vz.value = `${fn} ${mn} ${ln}`;
-          vz.value = vz.value.trim();
-          return vz;
-        }
-      )
-    );
   });
 }, 1000);
 
