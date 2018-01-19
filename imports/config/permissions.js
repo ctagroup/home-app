@@ -1,6 +1,7 @@
 export const ClientsAccessRoles = [
   'Developer',
   'System Admin',
+  'Program Manager',
   'Case Manager',
   'Surveyor',
   'External Surveyor',
@@ -14,6 +15,7 @@ export const DefaultAdminAccessRoles = [
 export const GlobalHouseholdsAccessRoles = [
   'Developer',
   'System Admin',
+  'Program Manager',
   'Case Manager',
   'Surveyor',
 ];
@@ -27,6 +29,7 @@ export const HousingUnitsAccessRoles = [
 export const PendingClientsAccessRoles = [
   'Developer',
   'System Admin',
+  'Program Manager',
   'Case Manager',
   'Surveyor',
   'External Surveyor',
@@ -35,6 +38,7 @@ export const PendingClientsAccessRoles = [
 export const ResponsesAccessRoles = [
   'Developer',
   'System Admin',
+  'Program Manager',
   'Case Manager',
   'Surveyor',
 ];

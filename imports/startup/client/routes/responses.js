@@ -2,7 +2,7 @@ import { Clients } from '/imports/api/clients/clients';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import Responses from '/imports/api/responses/responses';
 import Surveys from '/imports/api/surveys/surveys';
-import { DefaultAdminAccessRoles } from '/imports/config/permissions';
+import { ResponsesAccessRoles } from '/imports/config/permissions';
 import { fullName } from '/imports/api/utils';
 import { AppController } from './controllers';
 import '/imports/ui/responses/responsesListView';
@@ -15,12 +15,10 @@ Router.route('adminDashboardresponsesView', {
   path: '/responses',
   template: Template.responsesListView,
   controller: AppController,
-  onBeforeAction() {
-    // TODO: move to authorize fcn.
-    if (!Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles)) {
-      Router.go('notEnoughPermission');
-    }
-    this.next();
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), ResponsesAccessRoles);
+    },
   },
   waitOn() {
     const { clientId, schema } = this.params.query;
@@ -58,7 +56,7 @@ Router.route('adminDashboardresponsesNew', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+      return Roles.userIsInRole(Meteor.userId(), ResponsesAccessRoles);
     },
   },
   waitOn() {
@@ -96,7 +94,7 @@ Router.route('adminDashboardresponsesEdit', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+      return Roles.userIsInRole(Meteor.userId(), ResponsesAccessRoles);
     },
   },
   waitOn() {
@@ -146,7 +144,7 @@ Router.route('responsesArchive', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+      return Roles.userIsInRole(Meteor.userId(), ResponsesAccessRoles);
     },
   },
   waitOn() {

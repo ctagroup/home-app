@@ -116,11 +116,23 @@ logger.info(`PUB[${this.userId}]: name`, params);
 logger.info(`METHOD[${Meteor.userId()}]: name`, params);
 ```
 
-Each method call should use Bert to report succes/error in the following way:
+Each method call should use Bert to report succes/error as below. `err` can be a string or an exception.
 
 ```
-Bert.alert('message', 'success', 'growl-top-right');
-Bert.alert(err.reason || err.error || err.message, 'danger', 'growl-top-right');
+import Alert from '/imports/ui/alert';
+
+Alert.error(err);
+Alert.success('Question updated');
+```
+
+Use `authorize` key in a router to check user permissions:
+
+```
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), ResponsesAccessRoles);
+    },
+  },
 ```
 
 ## Meteor Components in use

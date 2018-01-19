@@ -26,7 +26,6 @@ Meteor.publish('responses.all', function publishResponses(ofClientId) {
     for (let i = 0, len = responses.length; i < len; i++) {
       const response = responses[i];
       const { clientId, clientSchema } = response;
-      console.log(response._id, clientId, clientSchema);
       if (clientSchema) {
         response.clientDetails = { loading: true };
         queue.push({
