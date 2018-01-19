@@ -20,7 +20,6 @@ Template.createClient.onRendered(() => {
 
 Template.createClient.events({
   'click .save': (evt, tmpl) => {
-
     const client = {
       firstName: tmpl.find('.firstName').value,
       middleName: tmpl.find('.middleName').value,

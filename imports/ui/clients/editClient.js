@@ -1,4 +1,6 @@
 import { Clients } from '/imports/api/clients/clients';
+import { RecentClients } from '/imports/api/recent-clients';
+import Alert from '/imports/ui/alert';
 import './editClient.html';
 
 
@@ -24,29 +26,30 @@ Template.editClient.events(
       };
 
       const client = tmpl.data.client;
-      const methodName = client.clientId ? 'updateClient' : 'updatePendingClient';
+      const methodName = client.clientId ? 'clients.update' : 'pendingClients.update';
       const query = client.clientId ? { isHMISClient: true, schema: client.schema } : {};
 
       Meteor.call(methodName, client._id, data, client.schema, (error, result) => {
         if (error) {
-          Bert.alert(error.reason || error.error, 'danger', 'growl-top-right');
+          Alert.error(error);
         } else {
-          Bert.alert('Client updated', 'success', 'growl-top-right');
-          Clients._collection.update(client._id, { $set: result });  // eslint-disable-line
+          Alert.success('Client updated');
+          Clients._collection.update(client._id, { $set: result }); // eslint-disable-line
           Router.go('viewClient', { _id: client._id }, { query });
         }
       });
     },
 
     'click .delete': (evt, tmpl) => {
-      const client = tmpl.data;
-      const methodName = client.clientId ? 'removeClient' : 'removePendingClient';
+      const { client } = tmpl.data;
+      const methodName = client.schema ? 'clients.delete' : 'pendingClients.delete';
 
-      Meteor.call(methodName, client._id, (error) => {
+      Meteor.call(methodName, client._id, client.schema, (error) => {
         if (error) {
-          Bert.alert(error.reason || error.error, 'danger', 'growl-top-right');
+          Alert.error(error);
         } else {
-          Bert.alert('Client deleted', 'success', 'growl-top-right');
+          Alert.success('Client deleted');
+          RecentClients.remove(client._id);
           Router.go('adminDashboardclientsView');
         }
       });

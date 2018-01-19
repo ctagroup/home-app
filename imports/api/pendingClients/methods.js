@@ -56,7 +56,7 @@ Meteor.methods({
   },
   */
 
-  updatePendingClient(clientId, client) {
+  'pendingClients.update'(clientId, client) {
     logger.info(`METHOD[${Meteor.userId()}]: updatePendingClient`, clientId, client);
 
     // TODO: check permissions
@@ -93,7 +93,7 @@ Meteor.methods({
     );
   },
 
-  removePendingClient(clientId) {
+  'pendingClients.delete'(clientId) {
     logger.info(`METHOD[${Meteor.userId()}]: removePendingClient`, clientId);
     // TODO: check permissions
     if (!PendingClients.findOne(clientId)) {

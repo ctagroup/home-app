@@ -125,6 +125,14 @@ Alert.error(err);
 Alert.success('Question updated');
 ```
 
+
+If you make a call to edit/remove HMIS item you need to update local (client side) collection to reflect the
+changes. Ie.
+
+```
+Clients._collection.update(client._id, { $set: result }); // eslint-disable-line
+```
+
 Use `authorize` key in a router to check user permissions:
 
 ```

@@ -18,16 +18,21 @@ Meteor.methods({
     return result;
   },
 
-  updateClient(clientId, client, schema = 'v2015') {
-    throw new Meteor.Error('FIXME');
+  'clients.update'(clientId, client, schema) {
+    logger.info(`METHOD[${Meteor.userId()}]: clients.update`, clientId, schema, client);
+    check(clientId, String);
+    check(schema, String);
+    const hc = HmisClient.create(Meteor.userId());
     hc.api('client').updateClient(clientId, client, schema);
     return client;
   },
 
-  removeClient(clientId) { // eslint-disable-line
-    // should we remove client from hmis to pending collection?
-    throw new Meteor.Error('500', 'Removing client is not yet implemented');
-    // Clients.remove({ _id: clientId });
+  'clients.delete'(clientId, schema) { // eslint-disable-line
+    logger.info(`METHOD[${Meteor.userId()}]: clients.delete`, clientId);
+    check(clientId, String);
+    check(schema, String);
+    const hc = HmisClient.create(Meteor.userId());
+    hc.api('client').deleteClient(clientId, schema);
   },
 
   updateClientMatchStatus(clientId, statusCode, comments, recipients) {

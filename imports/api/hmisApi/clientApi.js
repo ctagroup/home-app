@@ -9,7 +9,16 @@ export class ClientApi extends ApiEndpoint {
 
   getClient(clientId, schema = 'v2015') {
     const url = `${BASE_URL}/${schema}/clients/${clientId}`;
-    return this.doGet(url).client;
+    const client = this.doGet(url).client;
+
+    // TODO: remove .trim() when api returns the data without space-padding
+    return {
+      ...client,
+      firstName: client.firstName.trim(),
+      middleName: client.middleName.trim(),
+      lastName: client.lastName.trim(),
+      nameSuffix: client.nameSuffix ? client.nameSuffix.trim() : '',
+    };
   }
 
   getClients() {
@@ -51,6 +60,7 @@ export class ClientApi extends ApiEndpoint {
   }
 
   updateClient(clientId, client, schema) {
+    const dob = moment(client.dob);
     const body = {
       client: {
         firstName: client.firstName,
@@ -60,8 +70,8 @@ export class ClientApi extends ApiEndpoint {
         nameDataQuality: 1,
         ssn: client.ssn,
         ssnDataQuality: 1,
-        dob: moment(client.dob).format('x'),
-        dobDataQuality: 1,
+        dob: dob.isValid() ? dob.format('x') : 0,
+        dobDataQuality: dob.isValid() ? 1 : 0,
         race: client.race,
         ethnicity: client.ethnicity,
         gender: client.gender,
@@ -78,6 +88,11 @@ export class ClientApi extends ApiEndpoint {
     const url = `${BASE_URL}/${schema}/clients/${clientId}`;
     const result = this.doPut(url, body);
     return result;
+  }
+
+  deleteClient(clientId, schema) {
+    const url = `${BASE_URL}/${schema}/clients/${clientId}`;
+    return this.doDel(url);
   }
 
   getClientFromUrl(apiUrl) {
