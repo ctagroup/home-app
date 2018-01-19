@@ -1,4 +1,5 @@
 export function handleItemTransform(mode, model) {
+  console.log('mm', model);
   const transformed = {
     ...model,
     rules: (model.rules || []).map(r => {
@@ -14,6 +15,11 @@ export function handleItemTransform(mode, model) {
       };
     }),
   };
+
+  if (model.category === 'choice' && model.options === undefined) {
+    transformed.options = [];
+  }
+
   return transformed;
 }
 
