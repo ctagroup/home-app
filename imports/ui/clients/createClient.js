@@ -1,4 +1,5 @@
 import OpeningScript from '/imports/api/openingScript/openingScript';
+import Alert from '/imports/ui/alert';
 import './clientForm.js';
 import './preliminarySurvey.js';
 import './createClient.html';
@@ -17,42 +18,54 @@ Template.createClient.onRendered(() => {
   });
 });
 
-Template.createClient.events(
-  {
-    'click .save': (evt, tmpl) => {
-      const firstName = tmpl.find('.firstName').value;
-      const middleName = tmpl.find('.middleName').value;
-      const lastName = tmpl.find('.lastName').value;
-      const suffix = tmpl.find('.suffix').value;
-      const emailAddress = tmpl.find('.emailAddress').value;
-      const phoneNumber = tmpl.find('.phoneNumber').value;
-      const photo = tmpl.find('.photo').value;
-      const ssn = tmpl.find('.ssn').value;
-      const dob = tmpl.find('.dob').value;
-      const race = tmpl.find('.race_category').value;
-      const ethnicity = tmpl.find('.ethnicity_category').value;
-      const gender = tmpl.find('.gender_category').value;
-      const veteranStatus = tmpl.find('.veteranStatus_category').value;
-      const disablingConditions = tmpl.find('.disablingConditions_category').value;
-      const signature = tmpl.find('.signature') ? tmpl.find('.signature').value : '';
+Template.createClient.events({
+  'click .save': (evt, tmpl) => {
 
-      Meteor.call('addPendingClient', firstName, middleName, lastName, suffix,
-        emailAddress, phoneNumber, photo, ssn, dob, race, ethnicity,
-        gender, veteranStatus, disablingConditions,
-        signature,
-        (error, result) => {
-          if (error) {
-            Bert.alert(error.reason || error.error, 'danger', 'growl-top-right');
-          } else {
-            const clientId = result;
-            Bert.alert('New client added', 'success', 'growl-top-right');
-            Router.go('viewClient', { _id: clientId });
-          }
+    const client = {
+      firstName: tmpl.find('.firstName').value,
+      middleName: tmpl.find('.middleName').value,
+      lastName: tmpl.find('.lastName').value,
+      suffix: tmpl.find('.suffix').value,
+      emailAddress: tmpl.find('.emailAddress').value,
+      phoneNumber: tmpl.find('.phoneNumber').value,
+      photo: tmpl.find('.photo').value,
+      ssn: tmpl.find('.ssn').value,
+      dob: tmpl.find('.dob').value,
+      race: tmpl.find('.race_category').value,
+      ethnicity: tmpl.find('.ethnicity_category').value,
+      gender: tmpl.find('.gender_category').value,
+      veteranStatus: tmpl.find('.veteranStatus_category').value,
+      signature: tmpl.find('.signature') ? tmpl.find('.signature').value : '',
+      disablingConditions: tmpl.find('.disablingConditions_category').value,
+    };
+
+    Meteor.callPromise('clients.create', client)
+    .then(
+      result => ({
+        id: result.clientId,
+        schema: result.schema,
+        message: 'Client created in HMIS',
+      }),
+      err => {
+        if (err.details && err.details.code === 400) {
+          throw new Error(err.reason);
         }
-      );
-    },
-    'click .cancel-client-creation': () => {
-      history.back();
-    },
-  }
-);
+        return Meteor.callPromise('pendingClients.create', client)
+          .then((result) => ({
+            id: result,
+            message: 'Client created locally',
+          }));
+      }
+    )
+    .then(result => {
+      const { id, schema, message } = result;
+      Alert.success(message);
+      const query = schema ? { query: { schema } } : {};
+      Router.go('viewClient', { _id: id }, query);
+    })
+    .catch(err => Alert.error(err));
+  },
+  'click .cancel-client-creation': () => {
+    history.back();
+  },
+});

@@ -5,6 +5,14 @@ import Responses from '/imports/api/responses/responses';
 
 
 Meteor.methods({
+  'pendingClients.create'(client) {
+    // TODO: check permissions
+    // TODO: check schema
+    logger.info(`METHOD[${Meteor.userId()}]: pendingClients.create`, client);
+    return PendingClients.insert(client);
+  },
+
+  /*
   addPendingClient(
     firstName,
     middleName,
@@ -46,6 +54,7 @@ Meteor.methods({
     );
     return client;
   },
+  */
 
   updatePendingClient(clientId, client) {
     logger.info(`METHOD[${Meteor.userId()}]: updatePendingClient`, clientId, client);
@@ -109,7 +118,7 @@ Meteor.methods({
 
     try {
       Meteor.call('s3bucket.put', hmisClientId, 'photo', client.photo);
-      Meteor.call('s3bucket.put', hmisClientId, 'photo', client.signature);
+      Meteor.call('s3bucket.put', hmisClientId, 'signature', client.signature);
     } catch (err) {
       logger.error('Failed to upload photo/signature to s3', err);
     }

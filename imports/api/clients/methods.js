@@ -3,8 +3,23 @@ import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import { HmisClient } from '/imports/api/hmisApi';
 
 Meteor.methods({
-  updateClient(clientId, client, schema = 'v2015') {
+  'clients.create'(client, schema = 'v2017') {
+    logger.info(`METHOD[${Meteor.userId()}]: clients.create`, client);
     const hc = HmisClient.create(Meteor.userId());
+    const result = hc.api('client').createClient(client, schema);
+
+    try {
+      Meteor.call('s3bucket.put', result.clientId, 'photo', client.photo);
+      Meteor.call('s3bucket.put', result.clientId, 'signature', client.signature);
+    } catch (err) {
+      logger.error('Failed to upload photo/signature to s3', err);
+    }
+
+    return result;
+  },
+
+  updateClient(clientId, client, schema = 'v2015') {
+    throw new Meteor.Error('FIXME');
     hc.api('client').updateClient(clientId, client, schema);
     return client;
   },

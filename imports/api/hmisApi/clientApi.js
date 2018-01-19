@@ -17,7 +17,8 @@ export class ClientApi extends ApiEndpoint {
     return this.doGet(url).Clients.clients;
   }
 
-  createClient(client, schema = 'v2015') {
+  createClient(client, schema) {
+    const dob = moment(client.dob);
     const body = {
       client: {
         firstName: client.firstName,
@@ -27,8 +28,8 @@ export class ClientApi extends ApiEndpoint {
         nameDataQuality: 1,
         ssn: client.ssn,
         ssnDataQuality: 1,
-        dob: moment(client.dob).format('x'),
-        dobDataQuality: 1,
+        dob: dob.isValid() ? dob.format('x') : 0,
+        dobDataQuality: dob.isValid() ? 1 : 0,
         race: client.race,
         ethnicity: client.ethnicity,
         gender: client.gender,
@@ -36,17 +37,20 @@ export class ClientApi extends ApiEndpoint {
         otherGender: 'null',
         veteranStatus: client.veteranStatus,
         disablingConditions: client.disablingConditions,
-        sourceSystemId: client._id,
+        sourceSystemId: client._id || '',
         phoneNumber: client.phoneNumber,
         emailAddress: client.emailAddress,
       },
     };
 
     const url = `${BASE_URL}/${schema}/clients`;
-    return this.doPost(url, body).client.clientId;
+    return {
+      clientId: this.doPost(url, body).client.clientId,
+      schema,
+    };
   }
 
-  updateClient(clientId, client, schema = 'v2015') {
+  updateClient(clientId, client, schema) {
     const body = {
       client: {
         firstName: client.firstName,
