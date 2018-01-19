@@ -35,10 +35,13 @@ export class HmisClient {
 
     const currentTimestamp = new Date().getTime();
 
+    console.log('token expire left', this.authData.expiresAt - currentTimestamp);
+
     return this.authData.expiresAt > currentTimestamp;
   }
 
   renewAccessToken() {
+    console.log('renewing access token');
     this.loadAuthData();
 
     let responseContent = '';
@@ -73,6 +76,8 @@ export class HmisClient {
 
     const parsedResponse = JSON.parse(responseContent);
     const { accessToken, expiresIn, refreshToken } = parsedResponse.oAuthAuthorization;
+
+    console.log('renewed', parsedResponse);
 
     this.authData.accessToken = accessToken;
     this.authData.refreshToken = refreshToken;
