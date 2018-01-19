@@ -51,14 +51,15 @@ class QuestionEditForm extends React.Component {
   }
 
   handleDeleteQuestion() {
-    const id = this.props.question.questionId;
+    const { questionGroupId, questionId } = this.props.question;
     this.setState({ submitting: true });
-    Meteor.call('questions.delete', id, (err) => {
+    Meteor.call('questions.delete', questionGroupId, questionId, (err) => {
       this.setState({ submitting: false });
       if (err) {
         Alert.error(err);
       } else {
         Alert.success('Question deleted');
+        Router.go('questionsView');
       }
     });
   }

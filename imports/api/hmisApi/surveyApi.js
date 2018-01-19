@@ -35,7 +35,7 @@ export class SurveyApi extends ApiEndpoint {
     return this.doPut(url, body);
   }
 
-  deleteQuestion(questionId, groupId = DEFAULT_GROUP_ID) {
+  deleteQuestion(groupId, questionId) {
     const url = `${BASE_URL}/questiongroups/${groupId}/questions/${questionId}`;
     return this.doDel(url);
   }

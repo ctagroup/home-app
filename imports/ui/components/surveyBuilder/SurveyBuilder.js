@@ -150,7 +150,6 @@ export default class SurveyBuilder extends React.Component {
 
     const isSelected = this.state.inspectedItem
       && (this.state.inspectedItem.id === node.definition.id);
-    console.log(node, this.state.inspectedItem);
     const buttonClass = isSelected ? 'btn-primary' : 'btn-default';
 
     return {

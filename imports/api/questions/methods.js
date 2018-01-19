@@ -1,6 +1,6 @@
 import Questions from '/imports/api/questions/questions';
 import { logger } from '/imports/utils/logger';
-// import { HmisClient } from '/imports/api/hmisApi';
+import { HmisClient } from '/imports/api/hmisApi';
 
 Meteor.methods({
   'questions.create'(doc) {
@@ -16,11 +16,13 @@ Meteor.methods({
     throw new Meteor.Error('Not yet implemented');
   },
 
-  'questions.delete'(id) {
-    logger.info(`METHOD[${Meteor.userId()}]: questions.delete`, id);
-    check(id, String);
-    // TODO: permissions check
-    throw new Meteor.Error('Not yet implemented');
+  'questions.delete'(groupId, questionId) {
+    logger.info(`METHOD[${Meteor.userId()}]: questions.delete`, groupId, questionId);
+    check(groupId, String);
+    check(questionId, String);
+
+    const hc = HmisClient.create(Meteor.userId());
+    return hc.api('survey').deleteQuestion(groupId, questionId);
   },
 
   'questions.categories'() {
