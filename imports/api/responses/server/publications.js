@@ -26,6 +26,7 @@ Meteor.publish('responses.all', function publishResponses(ofClientId) {
     for (let i = 0, len = responses.length; i < len; i++) {
       const response = responses[i];
       const { clientId, clientSchema } = response;
+      console.log(response._id, clientId, clientSchema);
       if (clientSchema) {
         response.clientDetails = { loading: true };
         queue.push({
@@ -49,11 +50,11 @@ Meteor.publish('responses.all', function publishResponses(ofClientId) {
       }
       Meteor.defer(() => {
         const apiEndpoint = hc.api('client'); // .disableError(404);
-        const { responseId, clientId, schema } = data;
+        const { responseId, clientId, clientSchema } = data;
         if (!clientsCache[clientId]) {
           try {
-            clientsCache[clientId] = apiEndpoint.getClient(clientId, schema);
-            clientsCache[clientId].schema = schema;
+            clientsCache[clientId] = apiEndpoint.getClient(clientId, clientSchema);
+            clientsCache[clientId].schema = clientSchema;
           } catch (e) {
             clientsCache[clientId] = { error: e.reason };
           }
