@@ -83,7 +83,12 @@ Meteor.methods({
     logger.debug(`sending ${emails.length} emails`);
     emails.forEach(email => {
       try {
-        hc.api('notifications').sendEmail(email);
+        const additionalInfo = {
+          messageType: `Survey ${survey.title}`,
+          recipientType: 'clientID',
+          recipientId: clientId,
+        };
+        hc.api('global').sendEmailNotification(email, additionalInfo);
       } catch (e) {
         logger.error(e);
       }
