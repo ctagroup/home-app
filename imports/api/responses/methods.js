@@ -5,6 +5,7 @@ import { computeFormState, findItem, getScoringVariables } from '/imports/api/su
 import { logger } from '/imports/utils/logger';
 import { escapeKeys, unescapeKeys } from '/imports/api/utils';
 import Responses, { ResponseStatus } from '/imports/api/responses/responses';
+import { prepareEmails } from '../surveys/computations';
 
 function getResponsesToUpload(values, definition, defaultSectionId) {
   const questionIds = Object.keys(values);
@@ -59,6 +60,34 @@ Meteor.methods({
     // TODO: check permissions
     check(id, String);
     return Responses.remove(id);
+  },
+
+  'responses.sendEmails'(id) {
+    logger.info(`METHOD[${Meteor.userId()}]: responses.emails`, id);
+    // TODO: check permissions
+    check(id, String);
+
+    const response = Responses.findOne(id);
+    const { clientId, clientSchema, surveyId } = response;
+    const values = unescapeKeys(response.values);
+    const survey = Surveys.findOne(surveyId);
+
+    const definition = JSON.parse(survey.definition);
+
+    const hc = HmisClient.create(Meteor.userId());
+
+    const client = hc.api('client').getClient(clientId, clientSchema);
+    const formState = computeFormState(definition, values, {}, { client });
+    const emails = prepareEmails(definition, formState);
+
+    logger.debug(`sending ${emails.length} emails`);
+    emails.forEach(email => {
+      try {
+        hc.api('notifications').sendEmail(email);
+      } catch (e) {
+        logger.error(e);
+      }
+    });
   },
 
   'responses.uploadToHmis'(id) {

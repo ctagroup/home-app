@@ -74,6 +74,16 @@ export default class Survey extends React.Component {
     this.setState(formState);
   }
 
+  /*
+  handleSubmit(uploadSurvey, uploadClient) {
+    const values = this.state.values;
+    const definition = this.props.definition;
+    const formState = computeFormState(definition, values, {}, { client: this.props.client });
+
+    const emails = prepareEmails(definition, formState);
+  }
+  */
+
   handleSubmit(uploadSurvey, uploadClient) {
     const { _id: clientId, schema: clientSchema } = this.props.client;
     const doc = {
@@ -128,6 +138,13 @@ export default class Survey extends React.Component {
       history.push(`Client not uploaded (id: ${clientId})`);
       return responseId;
     })
+    .then(responseId =>
+      new Promise((resolve) => {
+        Meteor.call('responses.sendEmails', responseId, () => {
+          resolve(responseId);
+        });
+      })
+    )
     .then(responseId => {
       if (uploadSurvey) {
         return new Promise((resolve, reject) => {

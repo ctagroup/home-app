@@ -65,13 +65,13 @@ Router.route('adminDashboardresponsesNew', {
       return [
         Meteor.subscribe('clients.one', clientId, schema),
         Meteor.subscribe('surveys.all'),
-        Meteor.subscribe('questions.all'),
+        // Meteor.subscribe('questions.all'),
       ];
     }
     return [
       Meteor.subscribe('pendingClients.one', clientId),
       Meteor.subscribe('surveys.all'),
-      Meteor.subscribe('questions.all'),
+      // Meteor.subscribe('questions.all'),
     ];
   },
   data() {

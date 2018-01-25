@@ -9,6 +9,7 @@ import {
   evaluateRules,
   getValueByPath,
   castType,
+  prepareEmails,
 } from './computations';
 
 describe('survey computations', function () {
@@ -302,17 +303,17 @@ describe('survey computations', function () {
   describe('applyResults', function () {
     it('will show current item', function () {
       const formState = {
-        props: {},
+        variables: {},
       };
       const newState = applyResults([['show']], formState, 'item1');
-      chai.assert.equal(newState.props['item1.hidden'], false);
+      chai.assert.equal(newState.variables['item1.hidden'], false);
     });
     it('will hide current item', function () {
       const formState = {
-        props: {},
+        variables: {},
       };
       const newState = applyResults([['hide']], formState, 'item1');
-      chai.assert.equal(newState.props['item1.hidden'], true);
+      chai.assert.equal(newState.variables['item1.hidden'], true);
     });
     it('will set variable to const', function () {
       const formState = {
@@ -411,6 +412,7 @@ describe('survey computations', function () {
         },
         values: { name: 'John' },
         props: {},
+        emails: [],
       });
     });
 
@@ -449,6 +451,7 @@ describe('survey computations', function () {
           name: 'John',
         },
         props: {},
+        emails: [],
       });
     });
   });
@@ -526,6 +529,74 @@ describe('survey computations', function () {
     it('will cast values.question1 to undefined', function () {
       castType('values.question1');
       chai.assert.equal(castType('values.question1'), undefined);
+    });
+  });
+
+  describe('emails', function () {
+    it('will prepare email simple email', function () {
+      const definition = {
+        emails: [
+          {
+            id: 'email1',
+            title: 'Hello',
+            body: 'Greetings',
+          },
+        ],
+      };
+      const formState = {
+        emails: [
+          {
+            template: 'email1',
+            sender: 'from@example.com',
+            recipient: 'to@example.com',
+          },
+        ],
+      };
+      const emails = prepareEmails(definition, formState);
+      chai.assert.equal(emails.length, 1);
+      chai.assert.deepEqual(emails[0], {
+        template: 'email1',
+        sender: 'from@example.com',
+        recipient: 'to@example.com',
+        title: 'Hello',
+        body: 'Greetings',
+      });
+    });
+
+    it('will prepare email email with values and variables', function () {
+      const definition = {
+        emails: [
+          {
+            id: 'email1',
+            title: 'Hello {{client.name}}',
+            body: 'Your score is {{variables.score}}',
+          },
+        ],
+      };
+      const formState = {
+        emails: [
+          {
+            template: 'email1',
+            sender: 'from@example.com',
+            recipient: 'to@example.com',
+          },
+        ],
+        client: {
+          name: 'John',
+        },
+        variables: {
+          score: 10,
+        },
+      };
+      const emails = prepareEmails(definition, formState);
+      chai.assert.equal(emails.length, 1);
+      chai.assert.deepEqual(emails[0], {
+        template: 'email1',
+        sender: 'from@example.com',
+        recipient: 'to@example.com',
+        title: 'Hello John',
+        body: 'Your score is 10',
+      });
     });
   });
 });

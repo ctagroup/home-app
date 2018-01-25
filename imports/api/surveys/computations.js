@@ -238,6 +238,13 @@ export function applyResults(results, formState, currentId) {
         rows = parseInt(evaluateOperand(args[0], formState), 10);
         Object.assign(formState.props, { [`${currentId}.rows`]: isNaN(rows) ? undefined : rows });
         break;
+      case 'email':
+        formState.emails.push({
+          template: args[0],
+          recipient: evaluateOperand(args[1], formState),
+          sender: evaluateOperand(args[2], formState),
+        });
+        break;
       default:
         console.warn(`unknown action in ${currentId}`, action, args); // eslint-disable-line no-console, max-len
         break;
@@ -305,14 +312,19 @@ export function computeItemState(currentItem, formState) {
 }
 
 export function computeFormState(definition, values, props, otherData) {
-  const formState = Object.assign({
+  const initialFormState = Object.assign({
     variables: Object.assign({}, definition.variables),
     values,
     props,
+    emails: [],
   }, otherData);
-  const newState = computeItemState(definition, formState);
+  const newState = computeItemState(definition, initialFormState);
   // console.log('computed', newState, firedRules, formState);
   return newState;
+}
+
+export function evaluatePostSubmitRules(definition, formState) {
+  return evaluateRules({ rules: definition.onSubmit }, formState);
 }
 
 export function getScoringVariables(formState, scorePrefix = 'score.') {
@@ -371,3 +383,47 @@ export function findItemParent(itemId, definition) {
   return parent;
 }
 
+export function parseText(text, formState) {
+  const regex = /{{([^}]+)}}/g;
+  const translations = {};
+  let out = text;
+  while (true) {
+    const m = regex.exec(text);
+    if (m === null) {
+      break;
+    }
+    if (m.index === regex.lastIndex) {
+      regex.lastIndex++;
+    }
+    m.forEach((match, groupIndex, data) => {
+      if (groupIndex === 0) {
+        translations[match] = data[1];
+      }
+    });
+  }
+  Object.keys(translations).forEach(t => {
+    const value = evaluateOperand(translations[t], formState, 'n/a');
+    out = out.split(t).join(`${value}`);
+  });
+  return out;
+}
+
+export function prepareEmails(definition, formState) {
+  const emailsToSend = formState.emails || [];
+
+  return emailsToSend
+    .map(email => {
+      const template = definition.emails.find(e => e.id === email.template);
+
+      if (!template) {
+        return null;
+      }
+
+      return {
+        ...email,
+        title: parseText(template.title, formState),
+        body: parseText(template.body, formState),
+      };
+    })
+    .filter(email => email !== null);
+}
