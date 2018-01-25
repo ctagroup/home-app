@@ -60,8 +60,8 @@ Meteor.methods({
 
     let localClients = [];
     if (!optionz.excludeLocalClients) {
-      localClients = PendingClients.aggregate(
-        [
+      try {
+        localClients = PendingClients.aggregate([
           {
             $project: {
               firstName: '$firstName',
@@ -70,11 +70,11 @@ Meteor.methods({
               personalId: '$personalId',
               fullName: {
                 $concat: [
-                  '$firstName',
+                  { $ifNull: ['$firstName', ''] },
                   ' ',
-                  '$middleName',
+                  { $ifNull: ['$middleName', ''] },
                   ' ',
-                  '$lastName',
+                  { $ifNull: ['$lastName', ''] },
                 ],
               },
             },
@@ -84,6 +84,7 @@ Meteor.methods({
               fullName: new RegExp(query.split(' ').join('(.*)'), 'i'),
             },
           },
+
           {
             $sort: {
               firstName: 1,
@@ -92,8 +93,10 @@ Meteor.methods({
           {
             $limit: optionz.limit,
           },
-        ]
-      );
+        ], { explain: false });
+      } catch (err) {
+        logger.warn(err);
+      }
 
       // Removing entries where we have data coming from HMIS.
       for (let i = localClients.length - 1; i >= 0; i -= 1) {
