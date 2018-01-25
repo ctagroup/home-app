@@ -75,7 +75,7 @@ class ConditionField extends React.Component {
         key={`${this.props.name}.0`}
         name={`${this.props.name}.0`}
         value={condition}
-        label="action"
+        label="condition"
         allowedValues={['isset', '==', '!=', '<', '<=', '>', '>=']}
         transform={v => conditionDefinition(v).label}
         placeholder="--- select ---"

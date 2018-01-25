@@ -30,9 +30,9 @@ export default class Text extends Item {
 
   render() {
     const { id, title, text } = this.props.item;
-    const isDisabled = this.props.formState.variables[`${id}.disabled`];
+    const isHidden = this.props.formState.variables[`${id}.hidden`];
 
-    if (isDisabled) {
+    if (isHidden) {
       return null;
     }
 

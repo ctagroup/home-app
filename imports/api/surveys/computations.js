@@ -177,10 +177,10 @@ export function applyResults(results, formState, currentId) {
     let rows;
     switch (action) {
       case 'show':
-        Object.assign(formState.props, { [`${currentId}.hidden`]: false });
+        Object.assign(formState.variables, { [`${currentId}.hidden`]: false });
         break;
       case 'hide':
-        Object.assign(formState.props, { [`${currentId}.hidden`]: true });
+        Object.assign(formState.variables, { [`${currentId}.hidden`]: true });
         break;
       case 'set':
       case 'vset':
@@ -280,14 +280,13 @@ export function computeItemState(currentItem, formState) {
 }
 
 export function computeFormState(definition, values, props, otherData) {
-  // firedRules = [];
   const formState = Object.assign({
     variables: Object.assign({}, definition.variables),
     values,
     props,
   }, otherData);
   const newState = computeItemState(definition, formState);
-  // console.log('computed', newState, firedRules);
+  // console.log('computed', newState, firedRules, formState);
   return newState;
 }
 

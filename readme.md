@@ -143,6 +143,71 @@ Use `authorize` key in a router to check user permissions:
   },
 ```
 
+## Survey definition
+
+
+### Survey logic
+
+Form `values` are current question responses. If there is question with id = `question1` and a change occurs for this question
+(i.e. text is entered), `values.question1` will hold a response given to this question.
+
+Form `variables` are recalculated on each value change. When a change occurs (i.e. user types a response), variables
+are first initialized with initial values provided in `form.variables`, then rules are fired which may change the variables.
+Rules are fired from top to bottom.
+
+Form `props` are similar to values because the are persistent - when a change occurs, props are not reset to default values like variables do. In contrast to values, props are not submitted when the form is submitted. So far `props` are used to implement skipping sections.
+
+### Special variables
+
+Some variables have special meaning. Set `variables.ID.hidden` equal to `1` to hide element with a given ID.
+
+### Conditions
+
+Checking for a question response value
+
+```
+[OPERATOR, values.ID|variables.ID|props.ID|CONST, values.ID|variables.ID|props.ID|CONST]
+['==', 'values.pregnantMember', 'Yes']
+['>=', 'variables.numChildren', 3],
+['==', 'props.parent2.skip', 1],
+```
+
+### Actions
+
+Setting a variable:
+```
+['set', 'score2', 1]
+```
+Now there will be a variable `variables.score2` with value of `1`.
+
+Setting element property:
+```
+['pset', 'question1.skip', 1]
+```
+This sets question1 as skipped (value is erased, question cannot be edited)
+
+### Operand reducers
+
+`[variable.ID|client.ID|value.ID]:REDUCER1:REDUCER2`
+
+Reduces will apply transformations to the value of an operand. Reducers can be chained using `:` notation.
+
+As an example `client.dob:age` will return age based on the date of birth of a client
+```
+
+Reducers can be applied to arrays (set of values for a certain column in a grid):
+```
+['set', 'youngestChildAge', 'values.children.age:min'],
+```
+will set a `variables.youngestChildAge` equal to smallest value in `age` column of a `children` grid
+
+Avaliable reducers:
+
+- `date`: transforms timestamp (number) to a date,
+- `age`: calculates age given the value (date) and the current date
+- `min/max`: returns min/max from an array
+
+
 ## Meteor Components in use
 
 - Iron Router : https://github.com/iron-meteor/iron-router
