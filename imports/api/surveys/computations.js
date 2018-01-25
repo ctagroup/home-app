@@ -46,36 +46,53 @@ export function getValueByPath(obj, str, defaultValue) {
   }
 }
 
-export function applyReducers(value, args = []) {
-  let result = value;
-  let arr;
-  let m;
-  while (args.length > 0) {
-    const reducer = args.shift();
-    switch (reducer) {
+export function parseReducer(expr) {
+  if (expr[expr.length - 1] === ')') {
+    const parts = expr.split('(');
+    return {
+      name: parts[0],
+      args: parts[1].slice(0, -1).split(',').map(x => castType(x.trim())),
+    };
+  }
+  return {
+    name: expr,
+    args: [],
+  };
+}
+
+export function applyReducers(initialValue, reducers = []) {
+  return reducers.reduce((value, reducer) => {
+    const { name, args } = parseReducer(reducer);
+    let arr;
+    let m;
+    let result;
+    switch (name) {
       case 'min':
         arr = Array.isArray(value) ? value : [value];
         arr = arr.filter(x => !isNaN(parseFloat(x)))
           .map(x => parseFloat(x));
         result = Math.min(...arr);
         if (isNaN(result) || arr.length === 0) {
-          result = undefined;
+          return undefined;
         }
-        break;
+        return result;
       case 'max':
         arr = Array.isArray(value) ? value : [value];
         arr = arr.filter(x => !isNaN(parseFloat(x)))
           .map(x => parseFloat(x));
         result = Math.max(...arr);
         if (isNaN(result) || arr.length === 0) {
-          result = undefined;
+          return undefined;
         }
-        break;
+        return result;
       case 'date':
-        if (typeof value !== 'number') {
-          return value;
+        if (value instanceof moment) {
+          return value.format('MM/DD/YYYY');
         }
-        return moment(value).format('MM/DD/YYYY');
+        if (typeof value === 'number') {
+          return moment(value).format('MM/DD/YYYY');
+        }
+        return value;
       case 'age':
         if (!value) return '';
         if (typeof value === 'number') {
@@ -87,12 +104,20 @@ export function applyReducers(value, args = []) {
           return 'n/a';
         }
         return moment().diff(m, 'years');
+      case 'last':
+        return `${value}`.slice(-args[0]);
+      case 'now':
+        return moment();
+      case 'addDays':
+        if (value instanceof moment) {
+          return value.add(args[0], 'days');
+        }
+        return value;
       default:
         console.warn('Unknown reducer', reducer); // eslint-disable-line no-console
-        break;
+        return value;
     }
-  }
-  return result;
+  }, initialValue);
 }
 
 export function evaluateCondition(operator, operand1, operand2) {
