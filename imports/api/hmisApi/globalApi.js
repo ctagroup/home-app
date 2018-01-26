@@ -15,11 +15,9 @@ export class GlobalApi extends ApiEndpoint {
         method: 'EMAIL',
         data: {
           recipients: {
-            toRecipients: [
-              email.recipient,
-            ],
-            bccRecipients: [],
-            ccRecipients: [],
+            toRecipients: (email.recipient || '').split(','),
+            bccRecipients: (email.bccRecipient || '').split(','),
+            ccRecipients: (email.ccRecipient || '').split(','),
           },
           subject: email.title,
           body: email.body,
