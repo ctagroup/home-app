@@ -1,9 +1,9 @@
 <template name="filesList">
   {{#if hasClient}}
     <p><a href="{{addFilePath}}" class="btn btn-primary"><i class="fa fa-plus"></i> Add File</a></p>
+    <p>Client Submitted all required documents in allotted time? (email will be sent to: <em>{{client.emailAddress}}</em>)</p>
     <p>
-      <button class="btn btn-success approve">Approve application</button> <button class="btn btn-danger reject">Reject application</button>
-      email will be sent to: <em>{{client.emailAddress}}</em>
+      <button class="btn btn-success approve">Yes, Approve application</button> <button class="btn btn-danger reject">No, Reject application</button>
     </p>
   {{/if}}
   {{#if hasData}}
