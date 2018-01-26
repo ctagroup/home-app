@@ -24,6 +24,10 @@ const tableOptions = {
       data: 'description',
     },
     {
+      title: 'Status',
+      data: 'status',
+    },
+    {
       title: 'Uploaded At',
       data: 'createdAt',
       render(value) {

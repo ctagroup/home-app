@@ -34,6 +34,10 @@ Files.schema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  status: {
+    type: String,
+    optional: true,
+  },
   createdAt: {
     type: Date,
     label: 'Created At',
