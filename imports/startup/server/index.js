@@ -50,6 +50,8 @@ import '/imports/startup/server/accounts';
 import '/imports/startup/server/admins';
 import '/imports/startup/server/mergeAccountsPatch';
 
+import '/imports/api/mc211/methods';
+
 
 Meteor.startup(() => {
   /* eslint-disable */

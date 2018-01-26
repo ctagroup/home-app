@@ -1,6 +1,7 @@
 import moment from 'moment';
 import Files from '/imports/api/files/files';
 import { deleteFileButton, TableDom } from '/imports/ui/dataTable/helpers';
+import Alert from '/imports/ui/alert';
 import './filesList.html';
 
 const tableOptions = {
@@ -71,5 +72,28 @@ Template.filesList.helpers({
   },
   tableData() {
     return () => Files.find().fetch();
+  },
+});
+
+Template.filesList.events({
+  'click .approve'(e) {
+    e.preventDefault();
+    Meteor.call('mc211.approveClientFiles', this.client, (err) => {
+      if (err) {
+        Alert.error(err);
+      } else {
+        Alert.success('Approval email sent');
+      }
+    });
+  },
+  'click .reject'(e) {
+    e.preventDefault();
+    Meteor.call('mc211.rejectClientFiles', this.client, (err) => {
+      if (err) {
+        Alert.error(err);
+      } else {
+        Alert.success('Rejection email sent');
+      }
+    });
   },
 });

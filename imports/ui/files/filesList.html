@@ -1,6 +1,7 @@
 <template name="filesList">
   {{#if hasClient}}
     <p><a href="{{addFilePath}}" class="btn btn-primary"><i class="fa fa-plus"></i> Add File</a></p>
+    <p><button class="btn btn-success approve">Approve application</button> <button class="btn btn-danger reject">Reject application</button></p>
   {{/if}}
   {{#if hasData}}
     {{log tableOptions}}
