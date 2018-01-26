@@ -15,6 +15,7 @@ const allCollectionsMenuItems = [
     path: 'adminDashboardclientsView',
     roles: PendingClientsAccessRoles,
   },
+  /*
   {
     name: 'Active List',
     icon: 'fa-user-plus',
@@ -27,6 +28,7 @@ const allCollectionsMenuItems = [
     path: 'adminDashboardhousingMatchView',
     roles: DefaultAdminAccessRoles,
   },
+  */
   {
     name: 'Questions',
     icon: 'fa-question',
@@ -45,6 +47,7 @@ const allCollectionsMenuItems = [
     path: 'adminDashboardresponsesView',
     roles: ResponsesAccessRoles,
   },
+  /*
   {
     name: 'Housing Units',
     icon: 'fa-home',
@@ -57,6 +60,7 @@ const allCollectionsMenuItems = [
     path: 'adminDashboardglobalHouseholdsView',
     roles: GlobalHouseholdsAccessRoles,
   },
+  */
   {
     name: 'Files',
     icon: 'fa-files-o',
