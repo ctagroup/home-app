@@ -16,8 +16,8 @@ export class GlobalApi extends ApiEndpoint {
         data: {
           recipients: {
             toRecipients: (email.recipient || '').split(','),
-            bccRecipients: (email.bccRecipient || '').split(','),
             ccRecipients: (email.ccRecipient || '').split(','),
+            bccRecipients: (email.bccRecipient || '').split(','),
           },
           subject: email.title,
           body: email.body,
@@ -27,7 +27,6 @@ export class GlobalApi extends ApiEndpoint {
       },
     };
     const result = this.doPost(url, body);
-    console.log(result);
     return result;
   }
 }
