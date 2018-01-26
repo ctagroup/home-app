@@ -242,7 +242,8 @@ export function applyResults(results, formState, currentId) {
         formState.emails.push({
           template: args[0],
           recipient: evaluateOperand(args[1], formState),
-          sender: evaluateOperand(args[2], formState),
+          ccRecipient: evaluateOperand(args[2], formState),
+          bccRecipient: evaluateOperand(args[3], formState),
         });
         break;
       default:
