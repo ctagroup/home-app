@@ -1,0 +1,13 @@
+<template name="filesList">
+  {{#if hasClient}}
+    <p><a href="{{addFilePath}}" class="btn btn-primary"><i class="fa fa-plus"></i> Add File</a></p>
+  {{/if}}
+  {{#if hasData}}
+    {{log tableOptions}}
+    {{> ReactiveDatatable tableData=tableData options=tableOptions }}
+  {{else}}
+  <div class="alert alert-info">
+    <p>There are no files to show.</p>
+  </div>
+{{/if}}
+</template>

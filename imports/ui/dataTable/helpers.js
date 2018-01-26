@@ -119,7 +119,6 @@ export function deleteQuestionButton(onSuccessCallback) {
   };
 }
 
-
 export function deleteUserButton() {
   return {
     data: '_id',
@@ -135,6 +134,25 @@ export function deleteUserButton() {
         onSuccess() {
           // Meteor.setTimeout(() => location.reload(), 1500);
         },
+      };
+      Blaze.renderWithData(Template.DataTableDeleteButton, templateData, node);
+    },
+    width: '45px',
+    orderable: false,
+  };
+}
+
+export function deleteFileButton() {
+  return {
+    data: '_id',
+    title: 'Delete',
+    render() { return ''; },
+    createdCell(node, _id) {
+      const templateData = {
+        _id,
+        message: 'Are you sure you want to delete this file?',
+        method: 'files.delete',
+        args: [_id],
       };
       Blaze.renderWithData(Template.DataTableDeleteButton, templateData, node);
     },

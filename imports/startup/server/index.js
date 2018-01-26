@@ -14,6 +14,9 @@ import '/imports/api/pendingClients/server/publications';
 import '/imports/api/eligibleClients/methods';
 import '/imports/api/eligibleClients/server/publications';
 
+import '/imports/api/files/methods';
+import '/imports/api/files/server/publications';
+
 import '/imports/api/questions/methods';
 import '/imports/api/questions/server/publications';
 

@@ -4,6 +4,7 @@ import {
   HousingUnitsAccessRoles,
   PendingClientsAccessRoles,
   ResponsesAccessRoles,
+  FilesAccessRoles,
 } from '/imports/config/permissions';
 import './appSidebar.html';
 
@@ -55,6 +56,12 @@ const allCollectionsMenuItems = [
     icon: 'fa-users',
     path: 'adminDashboardglobalHouseholdsView',
     roles: GlobalHouseholdsAccessRoles,
+  },
+  {
+    name: 'Files',
+    icon: 'fa-files-o',
+    path: 'filesList',
+    roles: FilesAccessRoles,
   },
   {
     name: 'Users',
