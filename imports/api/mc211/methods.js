@@ -20,13 +20,13 @@ Meteor.methods({
           <p>Sincerely,<br>United Way Monterey County</p>
         `,
         recipient: client.emailAddress,
-        ccRecipient: `
-          Edward.Simon@amwater.com,
-          Patrick.Pilz@amwater.com,
-          Catherine.Stedman@amwater.com,
-          Anthony.Lopez@amwater.com,
-          waterhelp@unitedwaymcca.org
-        `,
+        ccRecipient: [
+          'Edward.Simon@amwater.com',
+          'Patrick.Pilz@amwater.com',
+          'Catherine.Stedman@amwater.com',
+          'Anthony.Lopez@amwater.com',
+          'waterhelp@unitedwaymcca.org',
+        ].join(','),
       };
       const additionalInfo = {
         messageType: 'mc211 approval',
@@ -58,13 +58,13 @@ Meteor.methods({
           <p>Sincerely,<br>United Way Monterey County</p>
         `,
         recipient: client.emailAddress,
-        ccRecipient: `
-          Edward.Simon@amwater.com,
-          Patrick.Pilz@amwater.com,
-          Catherine.Stedman@amwater.com,
-          Anthony.Lopez@amwater.com,
-          waterhelp@unitedwaymcca.org
-        `,
+        ccRecipient: [
+          'Edward.Simon@amwater.com',
+          'Patrick.Pilz@amwater.com',
+          'Catherine.Stedman@amwater.com',
+          'Anthony.Lopez@amwater.com',
+          'waterhelp@unitedwaymcca.org',
+        ].join(','),
       };
       const additionalInfo = {
         messageType: 'mc211 rejection',
