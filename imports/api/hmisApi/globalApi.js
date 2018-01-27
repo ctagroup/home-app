@@ -10,15 +10,24 @@ export class GlobalApi extends ApiEndpoint {
   }
   sendEmailNotification(email, additionalInfo = {}) {
     const url = `${BASE_URL}/notifications`;
+
+    const { recipient, ccRecipient, bccRecipient } = email;
+    const recipients = {};
+    if (recipient) {
+      recipients.toRecipients = recipient.split(',');
+    }
+    if (ccRecipient) {
+      recipients.ccRecipients = ccRecipient.split(',');
+    }
+    if (bccRecipient) {
+      recipients.bccRecipients = bccRecipient.split(',');
+    }
+
     const body = {
       notification: {
         method: 'EMAIL',
         data: {
-          recipients: {
-            toRecipients: (email.recipient || '').split(','),
-            ccRecipients: (email.ccRecipient || '').split(','),
-            bccRecipients: (email.bccRecipient || '').split(','),
-          },
+          recipients,
           subject: email.title,
           body: email.body,
           priority: 1,
