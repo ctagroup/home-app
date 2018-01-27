@@ -10,6 +10,7 @@ export const ClientsAccessRoles = [
 export const FilesAccessRoles = [
   'Developer',
   'System Admin',
+  'Case Manager',
 ];
 
 export const DefaultAdminAccessRoles = [
