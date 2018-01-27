@@ -17,6 +17,7 @@ const allWidgets = [
     path: 'adminDashboardclientsView',
     roles: PendingClientsAccessRoles,
   },
+  /*
   {
     name: 'Active List',
     id: 'eligibleClients',
@@ -31,6 +32,7 @@ const allWidgets = [
     path: 'adminDashboardhousingMatchView',
     roles: DefaultAdminAccessRoles,
   },
+  */
   {
     name: 'Questions',
     id: 'questions',
@@ -52,6 +54,7 @@ const allWidgets = [
     path: 'adminDashboardresponsesView',
     roles: ResponsesAccessRoles,
   },
+  /*
   {
     name: 'Housing Units',
     id: 'housingUnits',
@@ -66,6 +69,7 @@ const allWidgets = [
     path: 'adminDashboardglobalHouseholdsView',
     roles: GlobalHouseholdsAccessRoles,
   },
+  */
   {
     name: 'Users',
     id: 'users',
