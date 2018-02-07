@@ -82,6 +82,11 @@ export function fixMissingClientSchemasInV1Responses() {
   const user = Users.findOne({ 'services.HMIS.emailAddress': Meteor.settings.admins[0] });
   logger.info(`Fixing missing client schemas in ${Responses.find().count()} responses...`);
   logger.debug('using account', Meteor.settings.admins[0], !!user);
+  if (!user) {
+    logger.error("Couldn't find the account, skipping");
+    return
+  }
+
   const hc = HmisClient.create(user._id);
   let count = 0;
   const missingClients = new Set();
