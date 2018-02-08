@@ -14,9 +14,9 @@ export class ClientApi extends ApiEndpoint {
     // TODO: remove .trim() when api returns the data without space-padding
     return {
       ...client,
-      firstName: client.firstName.trim(),
-      middleName: client.middleName.trim(),
-      lastName: client.lastName.trim(),
+      firstName: client.firstName ? client.firstName.trim() : '',
+      middleName: client.middleName ? client.middleName.trim() : '',
+      lastName: client.lastName ? client.lastName.trim() : '',
       nameSuffix: client.nameSuffix ? client.nameSuffix.trim() : '',
     };
   }
