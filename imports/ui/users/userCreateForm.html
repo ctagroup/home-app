@@ -12,6 +12,9 @@
         {{> afQuickField name="middleName"}}
         {{> afQuickField name="lastName"}}
         {{> afQuickField name="gender"}}
+        {{#with name="roles"}}
+          {{> afQuickField name=name options=afOptionsFromSchema}}
+        {{/with}}
       </fieldset>
       <button type="submit" class="btn btn-primary">Create user</button>
     <a  href="{{pathFor 'adminDashboardusersView'}}" class="btn btn-large btn-default cancelUser">Cancel</a>
