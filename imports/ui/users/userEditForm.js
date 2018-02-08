@@ -20,17 +20,6 @@ Template.userEditForm.helpers({
             type: String,
             optional: true,
           },
-          gender: {
-            type: Number,
-            allowedValues: [0, 1],
-            autoform: {
-              options: [
-                { value: 0, label: 'Male' },
-                { value: 1, label: 'Female' },
-              ],
-            },
-            optional: true,
-          },
           emailAddress: {
             type: String,
             optional: true,
