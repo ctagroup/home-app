@@ -1,3 +1,5 @@
+import HomeRoles from '/imports/config/roles';
+
 SimpleSchema.messages({
   passwordMismatch: 'Passwords do not match',
   wrongPasswordFormat: 'The password must contain 8 to 16 characters long, It must contain at least one lowercase character, one uppercase character, one number, and one of the following special characters !@#$*', // eslint-disable-line max-len
@@ -62,6 +64,18 @@ export const UserCreateFormSchema = new SimpleSchema({
         { value: 0, label: 'Male' },
         { value: 1, label: 'Female' },
       ],
+    },
+    optional: true,
+  },
+  roles: {
+    label: 'HOME roles',
+    type: [String],
+    allowedValues: HomeRoles,
+    autoform: {
+      afFieldInput: {
+        type: 'select-checkbox',
+      },
+      options: HomeRoles.map(r => ({ value: r, label: r })),
     },
     optional: true,
   },
