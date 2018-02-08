@@ -1,5 +1,5 @@
 import Alert from '/imports/ui/alert';
-import { TableDom } from '/imports/ui/dataTable/helpers';
+import { deleteResponseButton, TableDom } from '/imports/ui/dataTable/helpers';
 import moment from 'moment';
 import Responses, { ResponseStatus } from '/imports/api/responses/responses';
 import Surveys from '/imports/api/surveys/surveys';
@@ -125,6 +125,9 @@ const tableOptions = {
       data: 'version',
       title: 'Version',
     },
+    deleteResponseButton((response) => {
+      Responses._collection.remove(response._id); // eslint-disable-line
+    }),
   ],
   order: [
     [2, 'desc'],
