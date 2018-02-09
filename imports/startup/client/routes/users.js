@@ -49,6 +49,10 @@ Router.route('adminDashboardusersEdit', {
   controller: AppController,
   authorize: {
     allow() {
+      const userId = Router.current().params._id;
+      if (userId === Meteor.userId()) {
+        return true;
+      }
       return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
     },
   },
