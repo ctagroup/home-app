@@ -49,6 +49,10 @@ Router.route('adminDashboardusersEdit', {
   controller: AppController,
   authorize: {
     allow() {
+      const userId = Router.current().params._id;
+      if (userId === Meteor.userId()) {
+        return true;
+      }
       return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
     },
   },
@@ -61,7 +65,7 @@ Router.route('adminDashboardusersEdit', {
     const data = user && user.services && user.services.HMIS || {};
     return {
       title: 'Users',
-      subtitle: `Edit ${fullName(data)} (${data.status})`,
+      subtitle: user ? `Edit ${fullName(data)} (${data.status})` : 'Not found',
       user,
       canUpdateProfile: Roles.userIsInRole(userId, ['Developer', 'System Admin']),
     };
