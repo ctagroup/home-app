@@ -65,7 +65,7 @@ Router.route('adminDashboardusersEdit', {
     const data = user && user.services && user.services.HMIS || {};
     return {
       title: 'Users',
-      subtitle: `Edit ${fullName(data)} (${data.status})`,
+      subtitle: user ? `Edit ${fullName(data)} (${data.status})` : 'Not found',
       user,
       canUpdateProfile: Roles.userIsInRole(userId, ['Developer', 'System Admin']),
     };
