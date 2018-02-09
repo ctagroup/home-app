@@ -1,21 +1,14 @@
 import { Mongo } from 'meteor/mongo';
 
+if (Meteor.isServer) {
+  import ServerUploads from '/imports/api/files/server/files';
+}else{
+  import ClientUploads from '/imports/api/files/client/files';
+}
 
 const Files = new Mongo.Collection('files');
 
-Files.Uploads = new FS.Collection('uploads', {
-  stores: [new FS.Store.GridFS('uploads')],
-});
-
-Files.Uploads.allow({
-  download: () => {
-    console.log('downloading');
-    return true;
-  },
-  fetch: null,
-  insert: () => true,
-  update: () => true,
-});
+Files.Uploads = Meteor.isServer ? ServerUploads : ClientUploads;
 
 Files.schema = new SimpleSchema({
   fileId: {
