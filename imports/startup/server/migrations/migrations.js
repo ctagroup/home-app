@@ -84,7 +84,7 @@ export function fixMissingClientSchemasInV1Responses() {
   logger.debug('using account', Meteor.settings.admins[0], !!user);
   if (!user) {
     logger.error("Couldn't find the account, skipping");
-    return
+    return;
   }
 
   const hc = HmisClient.create(user._id);
