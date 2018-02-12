@@ -43,6 +43,7 @@ Meteor.methods({
           ],
         }
       );
+      Roles.setUserRoles(userId, insertDoc.roles || [], Roles.GLOBAL_GROUP);
       return userId;
     } catch (e) {
       throw new Meteor.Error(e.details.code, e.reason);
