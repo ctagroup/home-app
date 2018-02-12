@@ -16,6 +16,5 @@ Meteor.methods({
     Files.Uploads.remove(currentFile.fileId);
     Files.remove(id);
     return;
-    //throw new Meteor.Error('Not Yet implemented');
   },
 });
