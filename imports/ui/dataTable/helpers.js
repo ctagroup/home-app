@@ -1,5 +1,6 @@
 import '/imports/ui/dataTable/dataTableEditButton';
 import '/imports/ui/dataTable/dataTableDeleteButton';
+import { fullName } from '/imports/api/utils';
 
 
 export const TableDom = '<"box"<"box-header"<"box-toolbar"<"clearfix"ri><"pull-left"<lf>><"pull-right"p>>><"box-body table-responsive"t>>'; // eslint-disable-line max-len
@@ -153,6 +154,31 @@ export function deleteFileButton() {
         message: 'Are you sure you want to delete this file?',
         method: 'files.delete',
         args: [_id],
+      };
+      Blaze.renderWithData(Template.DataTableDeleteButton, templateData, node);
+    },
+    width: '45px',
+    orderable: false,
+  };
+}
+
+export function deleteResponseButton(onSuccessCallback) {
+  return {
+    data: '_id',
+    title: 'Delete',
+    render() { return ''; },
+    createdCell(node, _id, rowData) {
+      const name = fullName(rowData.clientDetails) || rowData.clientId;
+      const templateData = {
+        _id,
+        message: `Are you sure you want to delete the response of ${name}?`,
+        method: 'responses.delete',
+        args: [_id],
+        onSuccess() {
+          if (onSuccessCallback) {
+            onSuccessCallback(rowData);
+          }
+        },
       };
       Blaze.renderWithData(Template.DataTableDeleteButton, templateData, node);
     },
