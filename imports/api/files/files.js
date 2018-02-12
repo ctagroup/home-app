@@ -4,14 +4,14 @@ import { logger } from '/imports/utils/logger';
 const Files = new Mongo.Collection('files');
 
 // CollectionFS S3 reference: https://github.com/CollectionFS/Meteor-CollectionFS/tree/devel/packages/s3
-const files_settings = Meteor.isServer ? {
+const filesSettings = Meteor.isServer ? {
   chunkSize: 512 * 1024,
   accessKeyId: Meteor.settings.s3config.key,
   secretAccessKey: Meteor.settings.s3config.secret,
   bucket: Meteor.settings.s3config.bucket,
 } : {};
 
-const filesStore = new FS.Store.S3('files', files_settings);
+const filesStore = new FS.Store.S3('files', filesSettings);
 
 Files.Uploads = new FS.Collection('uploads', {
   // stores: [new FS.Store.GridFS('uploads', {chunkSize: 512*1024})],
