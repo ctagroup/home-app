@@ -12,6 +12,9 @@ Meteor.methods({
     logger.info(`METHOD[${Meteor.userId()}]: files.delete`, id);
     check(id, String);
     // TODO: permissions
-    throw new Meteor.Error('Not Yet implemented');
+    const currentFile = Files.findOne(id);
+    Files.Uploads.remove(currentFile.fileId);
+    Files.remove(id);
+    return;
   },
 });
