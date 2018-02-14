@@ -18,9 +18,11 @@ Meteor.methods({
           reviewed and approved. You will see payment made on your behalf on your next billing
           statement in the amount that is due, up to the limit of the benefit program.</p>
           <p>Sincerely,<br>United Way Monterey County</p>
+          <p>The Cal Am Water Hardship Benefit Program is funded by a grant from Cal Am
+          to United Way Monterey County</p>
         `,
         recipient: client.emailAddress,
-        ccRecipient: [
+        bccRecipient: [
           'Edward.Simon@amwater.com',
           'Patrick.Pilz@amwater.com',
           'Catherine.Stedman@amwater.com',
@@ -56,6 +58,8 @@ Meteor.methods({
           arrangement or options. Customer Service contact number is
           <strong>(888) 237-1333</strong>.</p>
           <p>Sincerely,<br>United Way Monterey County</p>
+          <p>The Cal Am Water Hardship Benefit Program is funded by a grant from Cal Am
+          to United Way Monterey County</p>
         `,
         recipient: client.emailAddress,
         ccRecipient: [
