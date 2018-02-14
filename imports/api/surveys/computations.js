@@ -2,6 +2,13 @@ import moment from 'moment';
 
 let firedRules = []; // eslint-disable-line
 
+function filterFloat(value) {
+  if (/^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/.test(value)) {
+    return Number(value);
+  }
+  return NaN;
+}
+
 export function castType(v) {
   if (Array.isArray(v)) {
     return v;
@@ -11,7 +18,7 @@ export function castType(v) {
     return v;
   }
 
-  const result = parseFloat(v);
+  const result = filterFloat(v);
   if (!isNaN(result)) {
     return result;
   }
@@ -104,6 +111,8 @@ export function applyReducers(initialValue, reducers = []) {
           return 'n/a';
         }
         return moment().diff(m, 'years');
+      case 'digits':
+        return `${value}`.replace(/[^0-9]/g, '');
       case 'last':
         return `${value}`.slice(-args[0]);
       case 'now':
