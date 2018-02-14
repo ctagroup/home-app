@@ -57,8 +57,10 @@ export default class Question extends Item {
         case 'number':
           value = event.target.value;
           if (value.length > 0) {
-            number = parseInt(value, 10);
-            value = isNaN(number) ? 0 : number;
+            number = parseFloat(value);
+            if (isNaN(number)) {
+              value = 0;
+            }
           }
           break;
         default:
@@ -93,7 +95,7 @@ export default class Question extends Item {
       case 'choice':
         return this.renderChoice(value, disabled);
       case 'number':
-        return this.renderInput(value, 'number', disabled);
+        return this.renderNumberInput(value, disabled);
       default:
         return this.renderInput(value, 'text', disabled);
     }
@@ -169,6 +171,21 @@ export default class Question extends Item {
     return (
       <InputMask
         type={type}
+        id={id}
+        name={id}
+        mask={mask}
+        value={value === undefined ? '' : value}
+        onChange={this.handleChange}
+        disabled={this.isRefused() || disabled}
+      />
+    );
+  }
+
+  renderNumberInput(value, disabled) {
+    const { id } = this.props.item;
+    const mask = this.props.item.mask;
+    return (
+      <InputMask
         id={id}
         name={id}
         mask={mask}
