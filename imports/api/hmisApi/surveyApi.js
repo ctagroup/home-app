@@ -114,13 +114,6 @@ export class SurveyApi extends ApiEndpoint {
     return this.doGet(url).responses.responses;
   }
 
-  createResponse(clientId, surveyId, responses) {
-    // see: https://hmis-api.github.io/survey-service-api/#clients__clientid__surveys__surveyid__responses_post
-    const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/responses`;
-    const body = { responses: { responses } };
-    return this.doPost(url, body).response;
-  }
-
   updateResponse(clientId, surveyId, submissionId, responses) {
     const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/responses/${submissionId}`;
     const body = { responses: { responses } };
@@ -129,6 +122,18 @@ export class SurveyApi extends ApiEndpoint {
 
   deleteResponse(clientId, surveyId, responseId) {
     const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/responses/${responseId}`;
+    return this.doDel(url);
+  }
+
+  createSubmission(clientId, surveyId, responses) {
+    // see: https://hmis-api.github.io/survey-service-api/#clients__clientid__surveys__surveyid__responses_post
+    const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/responses`;
+    const body = { responses: { responses } };
+    return this.doPost(url, body).response;
+  }
+
+  deleteSubmission(clientId, surveyId, submissionId) {
+    const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/submissions/${submissionId}`;
     return this.doDel(url);
   }
 
