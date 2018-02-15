@@ -12,4 +12,5 @@ import './users';
 import './roleManager';
 import './openingScript';
 import './projectSetup';
+import './agencySetup';
 import './plugins';
