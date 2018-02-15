@@ -38,5 +38,5 @@ Template.userProjectGrid.events({
         Alert.success(checked ? 'Access granted' : 'Access revoked');
       }
     });
-  }
+  },
 });
