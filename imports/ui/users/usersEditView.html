@@ -1,7 +1,14 @@
 <template name="usersEditView">
-  {{> userEditForm user=this.user projectsLinked=projectsLinked hmisRoles=hmisRoles}}
-  {{#if isLogggedInUser}}
-    <hr />
-    {{> changePasswordForm}}
+  {{#if user}}
+    {{> userEditForm user=this.user projectsLinked=projectsLinked hmisRoles=hmisRoles}}
+    {{#if isLogggedInUser}}
+      <hr />
+      {{> changePasswordForm}}
+    {{/if}}
+  {{else}}
+  <div class="alert alert-info">
+      {{log this}}
+      <p>User not found.</p>
+    </div>
   {{/if}}
 </template>
