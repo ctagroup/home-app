@@ -246,32 +246,44 @@ export default class Survey extends React.Component {
   }
 
   renderSubmitButtons() {
-    const status = this.props.response && this.props.response.status;
+    const { submissionId } = this.props.response;
     const client = this.props.client;
     const disabled = !client
-      || this.state.submitting
-      || status === ResponseStatus.COMPLETED;
+      || this.state.submitting;
+      // || status === ResponseStatus.COMPLETED;
     const uploadClient = client && !client.schema;
+
+    let uploadButtonText = 'Upload client and survey';
+    if (!uploadClient) {
+      uploadButtonText = submissionId ? 'Re-Upload survey' : 'Upload survey';
+    }
 
     return (
       <div>
-        <button
-          className="btn btn-success"
-          type="button"
-          disabled={disabled}
-          onClick={() => this.handleSubmit(true, uploadClient)}
-        >
-          {uploadClient ? 'Upload client and survey' : 'Upload survey'}
-        </button>
-        &nbsp;
-        <button
-          className="btn btn-default"
-          type="button"
-          disabled={disabled}
-          onClick={() => this.handleSubmit(false, false)}
-        >
-          Pause Survey
-        </button>
+        {submissionId &&
+          <div className="alert alert-warning" role="alert">
+            Response already uploaded to HMIS (submissionId: {submissionId})
+          </div>
+        }
+        <div>
+          <button
+            className="btn btn-success"
+            type="button"
+            disabled={disabled}
+            onClick={() => this.handleSubmit(true, uploadClient)}
+          >
+            {uploadButtonText}
+          </button>
+          &nbsp;
+          <button
+            className="btn btn-default"
+            type="button"
+            disabled={disabled}
+            onClick={() => this.handleSubmit(false, false)}
+          >
+            Pause Survey
+          </button>
+        </div>
       </div>
   );
   }
