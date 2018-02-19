@@ -82,6 +82,11 @@ const adminMenuItems = [
     icon: 'fa-cog',
     path: 'projectSetup',
   },
+  {
+    name: 'Role Manager',
+    icon: 'fa-cog',
+    path: 'roleManager',
+  },
 ];
 
 

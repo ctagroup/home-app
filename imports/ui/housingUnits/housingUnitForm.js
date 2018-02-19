@@ -29,6 +29,13 @@ Template.housingUnitForm.helpers(
     },
   }
 );
+Template.housingUnitForm.events(
+  {
+    'change select'(event) {
+      console.log('Changed', event);
+    },
+  }
+);
 
 Template.housingUnitForm.onRendered(() => {
   $('.project_id').select2({

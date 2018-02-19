@@ -47,11 +47,7 @@ Meteor.methods({
     const optionz = options || {};
 
     // guard against client-side DOS: hard limit to 50
-    if (optionz.limit) {
-      optionz.limit = Math.min(50, Math.abs(optionz.limit));
-    } else {
-      optionz.limit = 50;
-    }
+    optionz.limit = Math.min(50, Math.abs(optionz.limit || 50));
 
     const hc = HmisClient.create(Meteor.userId());
     let hmisClients = hc.api('client').searchClient(query, optionz.limit);
@@ -141,6 +137,7 @@ Meteor.methods({
         )
       );
     }
+    logger.info('mergedClients', mergedClients);
     return mergedClients;
   },
 });
