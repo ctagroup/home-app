@@ -1,6 +1,7 @@
 import { logger } from '/imports/utils/logger';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import { HmisClient } from '/imports/api/hmisApi';
+import { mergeByDedupId } from '/imports/api/clients/helpers';
 
 Meteor.methods({
   'clients.create'(client, schema = 'v2017') {
@@ -47,11 +48,7 @@ Meteor.methods({
     const optionz = options || {};
 
     // guard against client-side DOS: hard limit to 50
-    if (optionz.limit) {
-      optionz.limit = Math.min(50, Math.abs(optionz.limit));
-    } else {
-      optionz.limit = 50;
-    }
+    optionz.limit = Math.min(50, Math.abs(optionz.limit || 50));
 
     const hc = HmisClient.create(Meteor.userId());
     let hmisClients = hc.api('client').searchClient(query, optionz.limit);
@@ -123,6 +120,7 @@ Meteor.methods({
         }
       );
     } else {
+      hmisClients = mergeByDedupId(hmisClients);
       mergedClients = localClients.map(
         (client) => {
           const clientz = client;
