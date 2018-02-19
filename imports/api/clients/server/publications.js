@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
+import { mergeClient } from '/imports/api/clients/helpers';
 
 
 Meteor.publish('clients.one', function pubClient(clientId, schema = 'v2015', loadDetails = true) {
@@ -24,8 +25,10 @@ Meteor.publish('clients.one', function pubClient(clientId, schema = 'v2015', loa
     client = hc.api('client').getClient(clientId, schema);
     client.schema = schema;
     client.isHMISClient = true;
+    // TODO [VK]: publish by dedupClientId directly
+    const clientVersions = hc.api('client').searchClient(client.dedupClientId, 50);
 
-    self.added('localClients', client.clientId, client);
+    self.added('localClients', client.clientId, mergeClient(clientVersions));
     self.ready();
 
     if (loadDetails) {
