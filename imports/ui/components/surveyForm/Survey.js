@@ -246,7 +246,7 @@ export default class Survey extends React.Component {
   }
 
   renderSubmitButtons() {
-    const { submissionId } = this.props.response;
+    const submissionId = this.props.response && this.props.response.submissionId;
     const client = this.props.client;
     const disabled = !client
       || this.state.submitting;
