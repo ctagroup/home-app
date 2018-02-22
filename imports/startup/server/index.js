@@ -38,7 +38,8 @@ import '/imports/api/users/server/publications';
 import '/imports/api/projects/methods';
 import '/imports/api/projects/server/publications';
 
-import '/imports/api/agency/methods';
+import '/imports/api/agencies/methods';
+import '/imports/api/agencies/server/publications';
 
 import '/imports/api/openingScript/methods';
 import '/imports/api/logger/methods';

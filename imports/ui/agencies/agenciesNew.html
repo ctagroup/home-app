@@ -1,0 +1,6 @@
+<template name="agenciesNew">
+  {{#autoForm collection=collection id="agenciesNew" type="method" meteormethod="agencies.create"}}
+    {{> agencyFields}}
+    <button type="submit" class="btn btn-primary">Create Agency</button>
+  {{/autoForm}}
+</template>

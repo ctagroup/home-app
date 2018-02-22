@@ -15,3 +15,11 @@ export function userName(user) {
   }
   return userEmails(user)[0] || user._id;
 }
+
+export function userProjectGroupId(user) {
+  try {
+    return user.services.HMIS.projectGroup.projectGroupId;
+  } catch (e) {
+    return undefined;
+  }
+}

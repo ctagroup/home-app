@@ -1,0 +1,10 @@
+<template name="agenciesEdit">
+  {{#if doc}}
+    {{#autoForm collection=collection doc=doc id="agenciesEdit" type="method-update" meteormethod="agencies.update"}}
+      {{> agencyFields}}
+      <button type="submit" class="btn btn-primary">Update Agency</button>
+    {{/autoForm}}
+  {{else}}
+    <p class="notice bg-danger text-danger">Agency does not exist</p>
+  {{/if}}
+</template>

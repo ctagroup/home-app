@@ -7,6 +7,7 @@ import './userProjectGrid.html';
 
 Template.userProjectGrid.helpers({
   projects() {
+    console.log(Projects.find().fetch());
     return Projects.find().fetch();
   },
   users() {
