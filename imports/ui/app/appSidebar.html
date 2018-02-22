@@ -26,5 +26,15 @@
         </li>
       {{/each}}
     </ul>
+
+    <ul class="sidebar-menu nav">
+        {{#each utilsMenuItems}}
+          <li class="{{isActivePath path=path}}">
+            <a href="{{pathFor route=path}}">
+              <i class="fa {{icon}}"></i><span>{{name}}</span>
+            </a>
+          </li>
+        {{/each}}
+      </ul>
   </aside>
 </template>

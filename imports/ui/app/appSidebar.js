@@ -76,4 +76,13 @@ Template.AppSidebar.helpers({
   adminMenuItems() {
     return Roles.userIsInRole(Meteor.user(), DefaultAdminAccessRoles) ? adminMenuItems : [];
   },
+  utilsMenuItems() {
+    return [
+      {
+        name: 'Reporting',
+        icon: 'fa-envelope',
+        path: 'reporting',
+      },
+    ];
+  },
 });

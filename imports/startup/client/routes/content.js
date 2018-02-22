@@ -1,7 +1,8 @@
-import { ContentController } from './controllers';
+import { AppController, ContentController } from './controllers';
 import '/imports/ui/content/home';
 import '/imports/ui/content/privacy';
 import '/imports/ui/content/termsOfUse';
+import '/imports/ui/content/reporting';
 
 Router.route(
   '/', {
@@ -24,5 +25,18 @@ Router.route(
     name: 'termsOfUse',
     template: Template.TermsOfUse,
     controller: ContentController,
+  }
+);
+
+Router.route(
+  '/reporting', {
+    name: 'reporting',
+    template: Template.Reporting,
+    controller: AppController,
+    data() {
+      return {
+        title: 'Reporting',
+      };
+    },
   }
 );
