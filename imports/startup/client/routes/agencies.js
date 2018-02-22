@@ -1,5 +1,6 @@
 import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import Agencies from '/imports/api/agencies/agencies';
+import Users from '/imports/api/users/users';
 import { AppController } from './controllers';
 import '/imports/ui/agencies/agenciesListView';
 import '/imports/ui/agencies/agenciesNew';
@@ -39,12 +40,20 @@ Router.route(
         return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
       },
     },
-    waitOn() { },
+    waitOn() {
+      return [
+        Meteor.subscribe('projects.all'),
+        Meteor.subscribe('users.all'),
+      ];
+    },
     data() {
       return {
         title: 'Agencies',
         subtitle: 'New',
         collection: Agencies,
+        doc: {
+          agencyName: undefined,
+        },
       };
     },
   }
@@ -64,10 +73,13 @@ Router.route(
       const id = Router.current().params._id;
       return [
         Meteor.subscribe('agencies.one', id),
+        Meteor.subscribe('projects.all'),
+        Meteor.subscribe('users.all'),
       ];
     },
     data() {
       const id = Router.current().params._id;
+
       return {
         title: 'Agencies',
         subtitle: 'Edit',
