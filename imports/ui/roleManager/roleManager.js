@@ -1,68 +1,16 @@
 
 import { ReactiveDict } from 'meteor/reactive-dict';
 
+import './components/rolePermissionManager.js';
+import './components/userRoleManager.js';
+
 import './roleManager.html';
 import Projects from '/imports/api/projects/projects';
 
-import HomeRoles from '/imports/config/roles.js';
-import {
-  ClientsAccessRoles,
-  DefaultAdminAccessRoles,
-  GlobalHouseholdsAccessRoles,
-  HousingUnitsAccessRoles,
-  PendingClientsAccessRoles,
-  ResponsesAccessRoles,
-} from '/imports/config/permissions.js';
-
-// TODO [VK]: move to utils
-const unique = (arr) => {
-  if (!Array.isArray(arr)) return arr;
-  const u = {};
-  u.cleanable = {};
-  const a = [];
-  for (let i = 0, l = arr.length; i < l; ++i) {
-    if (!u.cleanable.hasOwnProperty(arr[i])) {
-      a.push(arr[i]);
-      u.cleanable[arr[i]] = 1;
-    }
-  }
-  u.cleanable = null;
-  return a;
-};
-
-const allRoles = [
-  ClientsAccessRoles,
-  DefaultAdminAccessRoles,
-  GlobalHouseholdsAccessRoles,
-  HousingUnitsAccessRoles,
-  PendingClientsAccessRoles,
-  ResponsesAccessRoles,
-].reduce((a, b) => a.concat(b));
-
-console.log('homeroles', HomeRoles, 'allRoles', unique(allRoles));
-
-// import QuestionEditForm from '/imports/ui/components/QuestionEditForm';
-
-// Template.projectRoles.helpers({
-//   getProjectInfo(data) {
-//     console.log('getProjectInfo', data);
-//     return '';
-//   },
-// });
-
-// {
-//   projectGroup: {
-//     bucketName:"ho0002-6546a3c1-5cc3-4d9c-afd6-691a2704d8b9",
-//     projectGroupCode:"HO0002",
-//     projectGroupDesc:"Home Application",
-//     projectGroupId:"880d5a3f-d194-4239-a982-8283cc56bab3",
-//     projectGroupName:"HomeApp"
-//   }
-// }
-
 Template.roleManager.onCreated(function roleManagerOnCreated() {
   this.state = new ReactiveDict();
-  this.state.set('selectedTab', 'roles');
+  this.state.set('selectedTab', 'user-roles');
+  this.subscribe('users.all');
 });
 
 Template.roleManager.helpers({
@@ -94,6 +42,7 @@ Template.roleManager.helpers({
   isPermissionInRole() {
     return Math.floor(Math.random() * 2) === 0 ? 'checked' : '';
   },
+
   getProjects() {
     console.log('Projects.find().fetch()', Projects.find().fetch());
     return Projects.find().fetch();
@@ -116,10 +65,6 @@ Template.roleManager.helpers({
 
 Template.roleManager.events(
   {
-    'change select'(event) {
-      console.log('Changed', event.currentTarget.value, event);
-      Session.set('selectedProject', Projects.findOne(event.currentTarget.value));
-    },
     'click .option-btn'(event, instance) {
       // console.log('Clicked', event, event.currentTarget.value, instance);
       instance.state.set('selectedTab', event.currentTarget.value);

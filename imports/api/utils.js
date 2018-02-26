@@ -63,3 +63,18 @@ export function stringContains(str, query = '') {
   return strLower.indexOf(queryLower) !== -1;
 }
 
+
+export const unique = (arr) => {
+  if (!Array.isArray(arr)) return arr;
+  const u = {};
+  u.cleanable = {};
+  const a = [];
+  for (let i = 0, l = arr.length; i < l; ++i) {
+    if (!u.cleanable.hasOwnProperty(arr[i])) {
+      a.push(arr[i]);
+      u.cleanable[arr[i]] = 1;
+    }
+  }
+  u.cleanable = null;
+  return a;
+};

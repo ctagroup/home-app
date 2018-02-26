@@ -12,7 +12,7 @@ Router.route('roleManager', {
   data() {
     const project = Projects.findOne({ isAppProject: true });
     return {
-      title: 'Project Setup',
+      title: 'Role Manager',
       project,
     };
   },
