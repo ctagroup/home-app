@@ -35,11 +35,9 @@ Template.roleManagerUserItem.helpers({
     const emails = userEmails(user);
     return (emails && emails[0]) || '';
   },
-  isPermissionInRole() {
-    return Math.floor(Math.random() * 2) === 0 ? 'checked' : '';
-  },
 });
-Template.roleManagerUserItem.onCreated(function roleManagerOnCreated() {
+
+Template.roleManagerUserItem.onCreated(function userRoleManagerOnCreated() {
   this.state = new ReactiveDict();
   this.state.set('selectedRole', '');
 });

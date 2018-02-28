@@ -11,6 +11,7 @@ Template.roleManager.onCreated(function roleManagerOnCreated() {
   this.state = new ReactiveDict();
   this.state.set('selectedTab', 'user-roles');
   this.subscribe('users.all');
+  this.subscribe('rolePermissions.all');
 });
 
 Template.roleManager.helpers({
