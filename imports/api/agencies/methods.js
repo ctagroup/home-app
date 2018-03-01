@@ -17,6 +17,7 @@ Meteor.methods({
   },
 
   'agencies.create'(doc) {
+    logger.info(`METHOD[${Meteor.userId()}]: agencies.create`, doc);
     const user = Users.findOne(this.userId);
     const agency = {
       ...doc,
@@ -26,9 +27,10 @@ Meteor.methods({
     return Agencies.insert(agency);
   },
 
-  'agencies.update'(modifier, id) {
-    check(modifier, Agencies.schema);
-    return Agencies.update(id, modifier);
+  'agencies.update'(doc, id) {
+    logger.info(`METHOD[${Meteor.userId()}]: agencies.update`, doc, id);
+    check(doc, Agencies.schema);
+    return Agencies.update(id, doc);
   },
 
 });

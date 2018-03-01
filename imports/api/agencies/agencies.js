@@ -13,6 +13,15 @@ const AgencyMemberSchema = new SimpleSchema({
   },
 });
 
+const ProjectMembershipSchema = new SimpleSchema({
+  projectId: {
+    type: String,
+  },
+  userId: {
+    type: String,
+  },
+});
+
 Agencies.schema = new SimpleSchema({
   agencyName: {
     type: String,
@@ -23,6 +32,13 @@ Agencies.schema = new SimpleSchema({
   },
   members: {
     type: [AgencyMemberSchema],
+    optional: true,
+  },
+  projects: {
+    type: [String],
+  },
+  projectsMembers: {
+    type: [ProjectMembershipSchema],
     optional: true,
   },
   createdAt: {

@@ -1,6 +1,5 @@
 import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import Agencies from '/imports/api/agencies/agencies';
-import Users from '/imports/api/users/users';
 import { AppController } from './controllers';
 import '/imports/ui/agencies/agenciesListView';
 import '/imports/ui/agencies/agenciesNew';
@@ -50,10 +49,7 @@ Router.route(
       return {
         title: 'Agencies',
         subtitle: 'New',
-        collection: Agencies,
-        doc: {
-          agencyName: undefined,
-        },
+        doc: {},
       };
     },
   }
@@ -83,7 +79,6 @@ Router.route(
       return {
         title: 'Agencies',
         subtitle: 'Edit',
-        collection: Agencies,
         doc: Agencies.findOne(id),
       };
     },

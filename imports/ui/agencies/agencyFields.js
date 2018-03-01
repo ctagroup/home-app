@@ -1,50 +1,157 @@
 import Users from '/imports/api/users/users';
+import Projects from '/imports/api/projects/projects';
 import { fullName } from '/imports/api/utils';
 import './agencyFields.html';
 
-Template.agencyFields.helpers({
-  allUsers() {
-    return Users.find().fetch().map(user => ({
-      ...user,
-      fullName: user.services && user.services.HMIS && fullName(user.services.HMIS) || user._id,
-    }));
-  },
-  usersOptions() {
-    return Users.find().fetch().map(user => ({
-      value: user._id,
-      label: fullName(user),
-    }));
-  },
-  memberRoleOptions() {
-    return [
-      {
-        value: '',
-        label: 'Not a member',
-      },
-      {
-        value: 'role1',
-        label: 'Role 1',
-      },
-      {
-        value: 'role2',
-        label: 'Role 2',
-      },
-    ];
-  },
-});
+function userName(userId) {
+  const user = Users.findOne(userId);
+  const HMIS = user.services && user.services.HMIS || {};
+  return HMIS && fullName(HMIS) || user._id;
+}
 
-export function doc2form(doc) {
-  const members = Users.find().fetch().map(user => ({
-    role: undefined,
-    userId: user._id,
+function memberRoleOptions() {
+  return [
+    {
+      value: '',
+      label: 'Not a member',
+    },
+    {
+      value: 'role1',
+      label: 'Role 1',
+    },
+    {
+      value: 'role2',
+      label: 'Role 2',
+    },
+  ];
+}
+
+function projectMembersOptions(members = []) {
+  return members.map(m => ({
+    value: m.userId,
+    label: userName(m.userId),
   }));
-  return {
-    ...doc,
-    members,
+}
+
+export function formSchema(doc = {}) {
+  const definition = {
+    agencyName: {
+      type: String,
+    },
+    members: {
+      type: Object,
+      optional: true,
+      label: 'Agency Members',
+    },
+    projects: {
+      type: [String],
+      optional: true,
+      autoform: {
+        type: 'select-checkbox',
+        options: () => Projects.find().fetch().map(p => ({
+          label: p.projectName,
+          value: p._id,
+        })),
+      },
+    },
   };
+
+  const users = Users.find({}, { limit: 2 }).fetch()
+    .map(user => ({
+      ...user,
+      fullName: userName(user._id),
+    }))
+    .sort((a, b) => {
+      if (a.fullName === b.fullName) return 0;
+      return (a.fullName < b.fullName) ? -1 : 1;
+    });
+
+  users.forEach(user => {
+    definition[`members._${user._id}`] = {
+      type: String,
+      optional: true,
+      autoform: {
+        options: memberRoleOptions(),
+        label: user.fullName,
+      },
+    };
+  });
+
+  const selector = { _id: { $in: doc.projects } };
+  const options = { sort: { projectName: 1 } };
+  const projects = Projects.find(selector, options).fetch();
+  projects.forEach(project => {
+    const projectKey = `projectMembers._${project._id}`;
+    definition[projectKey] = {
+      type: [String],
+      label: project.projectName,
+      optional: true,
+      autoform: {
+        type: 'select-checkbox',
+        options: projectMembersOptions(doc.members),
+      },
+
+    };
+  });
+  return new SimpleSchema(definition);
 }
 
 export function form2doc(doc) {
-  console.log('form2doc', doc);
-  return doc;
+  const members = Object.keys(doc.members || {}).map(key => {
+    const userId = key.substring(1);
+    return {
+      userId,
+      role: doc.members[key],
+    };
+  });
+  // merge { project1: ['user1', 'user2'], project2: ['user3'] }
+  // to [{projectId: project1, userId: user1}, ..., {projectId: project2, userId: user3}]
+  const projectsMembers = Object.keys(doc.projectMembers || {}).reduce((all, key) => {
+    const projectId = key.substring(1);
+    const projectMembers = doc.projectMembers[key] || [];
+    const memberships = projectMembers.map(m => ({
+      projectId,
+      userId: m,
+    }));
+    return [...all, ...memberships];
+  }, []);
+
+  return {
+    agencyName: doc.agencyName,
+    members,
+    projects: doc.projects || [],
+    projectsMembers,
+  };
+}
+
+export function doc2form(doc) {
+  const members = (doc.members || []).reduce((all, curr) => {
+    const key = `_${curr.userId}`;
+    return {
+      ...all,
+      [key]: curr.role,
+    };
+  }, {});
+
+  const projectMembers = (doc.projectsMembers || []).reduce((all, curr) => {
+    const key = `_${curr.projectId}`;
+    if (!all[key]) {
+      return {
+        ...all,
+        [key]: [curr.userId],
+      };
+    }
+    const updatedList = [...all[key], curr.userId];
+    return {
+      ...all,
+      [key]: updatedList,
+    };
+  }, {});
+
+  const form = {
+    ...doc,
+    members,
+    projectMembers,
+  };
+  return form;
 }

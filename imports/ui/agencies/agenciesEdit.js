@@ -1,21 +1,28 @@
 import Alert from '/imports/ui/alert';
-import { doc2form, form2doc } from './agencyFields';
+import { formSchema, doc2form, form2doc } from './agencyFields';
 import './agenciesEdit.html';
 
-AutoForm.hooks({
-  agenciesEdit: {
-    docToForm(doc) {
-      return doc2form(doc);
-    },
-    formToDoc(doc) {
-      return form2doc(doc);
-    },
-    onError(type, err) {
-      Alert.error(err);
-    },
-    onSuccess() {
-      Alert.success('Agency updated');
-      //Router.go('agenciesList');
-    },
+Template.agenciesEdit.helpers({
+  schema() {
+    return formSchema(this.doc);
+  },
+  doc() {
+    return doc2form(this.doc);
+  },
+});
+
+AutoForm.addHooks('agenciesEdit', {
+  onSubmit: function submit(insertDoc) {
+    this.event.preventDefault();
+    Meteor.call('agencies.update', { $set: form2doc(insertDoc) }, this.docId, (err, res) => {
+      this.done(err, res);
+    });
+    return false;
+  },
+  onSuccess() {
+    Alert.success('Agency updated');
+  },
+  onError(formType, err) {
+    Alert.error(err);
   },
 });

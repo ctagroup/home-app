@@ -7,8 +7,10 @@
 
   <div class="tab-content">
     <div id="general" class="tab-pane fade in active">
+      {{> afQuickField name='projectMembers'}}
       {{> afQuickField name='agencyName'}}
-      {{> afQuickField name='members'}}
+      {{> afObjectField name='members'}}
+      {{> afQuickField name='projects'}}
     </div>
 
     <div id="projectsList" class="tab-pane fade">

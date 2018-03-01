@@ -1,6 +1,6 @@
 <template name="agenciesEdit">
   {{#if doc}}
-    {{#autoForm collection=collection doc=doc id="agenciesEdit" type="method-update" meteormethod="agencies.update"}}
+    {{#autoForm schema=schema doc=doc id="agenciesEdit"}}
       {{> agencyFields}}
       <button type="submit" class="btn btn-primary">Update Agency</button>
     {{/autoForm}}
