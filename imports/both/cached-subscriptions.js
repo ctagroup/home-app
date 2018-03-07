@@ -12,4 +12,3 @@ export const EligibleClientsCache = new SubsManager();
 export const HousingMatchCache = new SubsManager();
 export const HousingUnitsCache = new SubsManager();
 export const GlobalHouseholdsCache = new SubsManager();
-export const ProjectsCache = new SubsManager();
