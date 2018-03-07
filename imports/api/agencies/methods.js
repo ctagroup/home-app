@@ -5,17 +5,6 @@ import { userProjectGroupId } from '/imports/api/users/helpers';
 // import { HmisClient } from '/imports/api/hmisApi';
 
 Meteor.methods({
-  'agencies.setUserProjectAccess'(userId, projectId, isGranted) {
-    logger.info(`METHOD[${Meteor.userId()}]: agency.setUserProjectAccess`,
-      userId, projectId, isGranted);
-
-    if (isGranted) {
-      Users.update(userId, { $addToSet: { projectsLinked: projectId } });
-    } else {
-      Users.update(userId, { $pull: { projectsLinked: projectId } });
-    }
-  },
-
   'agencies.create'(doc) {
     logger.info(`METHOD[${Meteor.userId()}]: agencies.create`, doc);
     const user = Users.findOne(this.userId);

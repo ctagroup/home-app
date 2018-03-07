@@ -75,4 +75,13 @@ Agencies.schema = new SimpleSchema({
 });
 
 Agencies.attachSchema(Agencies.schema);
+
+Agencies.helpers({
+  projectsOfUser(userId) {
+    return (this.projectsMembers || [])
+      .filter(m => m.userId === userId)
+      .map(m => m.projectId);
+  },
+});
+
 export default Agencies;

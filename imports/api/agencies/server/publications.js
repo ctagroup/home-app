@@ -27,3 +27,22 @@ Meteor.publish('agencies.one', function publishOneAgency(id) {
 
   return Agencies.find(id);
 });
+
+Meteor.publish('agencies.active', function publishAgenciesOfCurrentUser() {
+  logger.info(`PUB[${this.userId}]: agencies.active`);
+  const query = {
+    projectsMembers: {
+      $elemMatch: {
+        userId: this.userId,
+      },
+    },
+  };
+  /*
+  const projectIds = Agencies.find(query).fetch()
+    .reduce((all, agency) => {
+      const projects = agency.projectsOfUser(this.userId);
+      return [...all, ...projects];
+    }, []);
+  */
+  return Agencies.find(query);
+});
