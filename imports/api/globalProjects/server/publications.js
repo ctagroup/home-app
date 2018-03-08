@@ -1,8 +1,8 @@
 import { logger } from '/imports/utils/logger';
+import { HmisClient } from '/imports/api/hmisApi';
 // import Users from '/imports/api/users/users';
 // import { userProjectGroupId } from '/imports/api/users/helpers';
 // import Agencies from '../agencies';
-
 
 Meteor.publish('globalProjects.all', function publishAllGlobalProjects() {
   logger.info(`PUB[${this.userId}]: globalProjects.all`);
@@ -10,7 +10,15 @@ Meteor.publish('globalProjects.all', function publishAllGlobalProjects() {
     return [];
   }
 
-  return null;
+  const hc = HmisClient.create(this.userId);
+  const projects = hc.api('global').getGlobalProjects();
+
+  this.ready();
+  projects.forEach(project => {
+    this.added('globalProjects', project.id, project);
+  });
+
+  return this.ready();
   // TODO: check permissions
 
   // const user = Users.findOne(this.userId);
@@ -34,6 +42,7 @@ Meteor.publish('globalProjects.one', function publishOneGlobalProject(id) {
 
 Meteor.publish('globalProjects.active', function publishGlobalProjectsOfCurrentUser() {
   logger.info(`PUB[${this.userId}]: globalProjects.active`);
+  return this.ready();
   /*
   const query = {
     projectsMembers: {
