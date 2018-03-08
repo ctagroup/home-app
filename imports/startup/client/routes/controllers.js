@@ -20,7 +20,7 @@ export const AppController = RouteController.extend({
       Router.go('signIn');
     }
     return [
-      Meteor.subscribe('agencies.active'),
+      Meteor.subscribe('globalProjects.active'),
       Meteor.subscribe('projects.all'), // TODO: only user active projects should be published
       CollectionsCountCache.subscribe('collectionsCount'),
       CollectionsCountCache.subscribe('appSettings'),

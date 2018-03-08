@@ -1,12 +1,12 @@
 import './projectSelect.html';
-import Agencies from '/imports/api/agencies/agencies';
+import GlobalProjects from '/imports/api/globalProjects/globalProjects';
 import Projects from '/imports/api/projects/projects';
 import Alert from '/imports/ui/alert';
 
 const NO_PROJECT_SELECTED = '--- No project selected ---';
 
 function projectOptions() {
-  const allProjects = Agencies.find().fetch()
+  const allProjects = GlobalProjects.find().fetch()
   .reduce((all, agency) => {
     const projectsIds = agency.projectsOfUser(Meteor.userId());
     const agencyProjects = projectsIds.map(projectId => ({

@@ -2,7 +2,6 @@ import { check, Match } from 'meteor/check';
 
 import { logger } from '/imports/utils/logger';
 import Users, { ChangePasswordSchema, UserCreateFormSchema } from '/imports/api/users/users';
-import Agencies from '/imports/api/agencies/agencies';
 import { HmisClient } from '/imports/api/hmisApi';
 
 Meteor.methods({
@@ -129,6 +128,8 @@ Meteor.methods({
       throw new Meteor.Error('403', 'Forbidden');
     }
 
+    throw new Meteor.Error('Not implemented');
+    /*
     const query = {
       projectsMembers: {
         $elemMatch: {
@@ -140,10 +141,11 @@ Meteor.methods({
     if (projectId && Agencies.find(query).count() === 0) {
       throw new Meteor.Error(403, 'Not authorized');
     }
+    */
 
-    Users.update(this.userId, { $set: {
-      activeProjectId: projectId,
-    } });
+    // Users.update(this.userId, { $set: {
+    //   activeProjectId: projectId,
+    // } });
   },
 
   addUserLocation(userID, timestamp, position) {

@@ -54,6 +54,7 @@
     ],
     "import/no-unresolved": ["error", { "ignore": ["^meteor/", "^/"] }],
     "react/prefer-stateless-function": "off",
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "new-cap": "off"
   }
 }
