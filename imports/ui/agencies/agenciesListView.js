@@ -6,21 +6,19 @@ import './agenciesListView.html';
 const tableOptions = {
   columns: [
     {
-      data: 'agencyName',
+      data: 'projectName',
       title: 'Name',
       render(value, op, doc) {
         return `<a href="${Router.path('agenciesEdit', { _id: doc._id })}">${value}</a>`;
       },
     },
     {
-      data: 'createdAt',
-      title: 'Created At',
-      render(value, type) {
-        if (type === 'sort') {
-          return value;
-        }
-        return moment(value).format('MM/DD/YYYY h:mm A');
-      },
+      data: 'projectCommonName',
+      title: 'Common Name',
+    },
+    {
+      data: 'description',
+      title: 'Description',
     },
   ],
   dom: TableDom,

@@ -8,7 +8,7 @@ const NO_PROJECT_SELECTED = '--- No project selected ---';
 function projectOptions() {
   const allProjects = GlobalProjects.find().fetch()
   .reduce((all, agency) => {
-    const projectsIds = agency.projectsOfUser(Meteor.userId());
+    const projectsIds = agency.projectsWithUser(Meteor.userId());
     const agencyProjects = projectsIds.map(projectId => ({
       agency,
       project: Projects.findOne(projectId) || { _id: projectId },

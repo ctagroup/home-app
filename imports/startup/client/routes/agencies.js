@@ -68,13 +68,14 @@ Router.route(
     waitOn() {
       const id = Router.current().params._id;
       return [
-        Meteor.subscribe('agencies.one', id),
+        Meteor.subscribe('globalProjects.one', id),
         Meteor.subscribe('projects.all'),
         Meteor.subscribe('users.all'),
       ];
     },
     data() {
       const id = Router.current().params._id;
+      console.log(GlobalProjects.findOne(id));
 
       return {
         title: 'Agencies',

@@ -9,25 +9,30 @@ Meteor.methods({
   'globalProjects.create'(doc) {
     logger.info(`METHOD[${Meteor.userId()}]: globalProjects.create`, doc);
 
-    console.log(doc);
+    console.log('input', doc);
 
     const data = {
       ...doc,
       projects: {
         projects: doc.projects.map(projectId => ({
           projectId,
-          source: 'v2015',
+          source: 2015,
         })),
       },
     };
-    console.log(data);
+    console.log('api data', data);
 
     const hc = HmisClient.create(this.userId);
-    return hc.api('global').createGlobalProject(data);
+    // return hc.api('global').createGlobalProject(data);
   },
 
   'globalProjects.update'(doc, id) {
     logger.info(`METHOD[${Meteor.userId()}]: agencies.update`, doc, id);
+
+    console.log('input', doc);
+
+    const hc = HmisClient.create(this.userId);
+
     throw new Meteor.Error('not implemented');
     /*
     check(doc, Agencies.schema);
