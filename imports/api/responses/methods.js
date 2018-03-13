@@ -59,6 +59,11 @@ Meteor.methods({
     logger.info(`METHOD[${Meteor.userId()}]: responses.delete`, id);
     // TODO: check permissions
     check(id, String);
+    const response = Responses.findOne(id);
+    if (response.submissionId) {
+      const hc = HmisClient.create(this.userId);
+      hc.api('survey').deleteResponse(response.clientId, response.surveyId, response.submissionId);
+    }
     return Responses.remove(id);
   },
 

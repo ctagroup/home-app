@@ -125,6 +125,11 @@ export class SurveyApi extends ApiEndpoint {
     return this.doDel(url);
   }
 
+  deleteResponseV3(dedupClientId, surveyId, responseId) {
+    const url = `${BASE_URL}/v3/clients/${dedupClientId}/surveys/${surveyId}/responses/${responseId}`; // eslint-disable-line max-len
+    return this.doDel(url);
+  }
+
   createSubmission(clientId, surveyId, responses) {
     // see: https://hmis-api.github.io/survey-service-api/#clients__clientid__surveys__surveyid__responses_post
     const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/responses`;
