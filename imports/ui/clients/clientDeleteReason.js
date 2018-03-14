@@ -1,3 +1,4 @@
+import { ReactiveVar } from 'meteor/reactive-var';
 import { Clients } from '/imports/api/clients/clients';
 
 import './clientDeleteReason.html';
@@ -16,23 +17,31 @@ const reasons = [
   required,
 }));
 
-const reasonsHash = reasons.reduce((acc, reason) => (
-  {
-    ...acc,
-    [reason.id]: reason,
-  }
-), {});
+const reasonsHash = reasons.reduce((acc, reason) => ({ ...acc, [reason.id]: reason }), {});
+
+Template.clientDeleteReason.onCreated(function clientDeleteReasonOnCreated() {
+  this.removalDetails = new ReactiveVar(reasons[0].required);
+});
 
 Template.clientDeleteReason.helpers({
+  showRemovalDetails() {
+    if (Template.instance()) return Template.instance().removalDetails.get();
+    return false;
+  },
   reasonsList() {
     return reasons;
   },
 });
 
 Template.clientDeleteReason.events({
+  'change #removalReason'(event, tmpl) {
+    const reasonId = event.target.value;
+    tmpl.removalDetails.set(reasonsHash[reasonId].required);
+  },
   'click .removeFromHousingList'(evt, tmpl) {
     const clientId = tmpl.data.client._id;
     const remarks = $('#removalRemarks').val();
+    const date = $('#removalDate').val();
     const reasonId = $('#removalReason').val();
 
     if (remarks.trim().length === 0 && reasonsHash[reasonId].required) {
@@ -40,9 +49,15 @@ Template.clientDeleteReason.events({
       $('#removalRemarks').focus();
       return;
     }
+    if (date.trim().length === 0) {
+      Bert.alert('Removal Date required', 'danger', 'growl-top-right');
+      $('#removalDate').focus();
+      return;
+    }
     const reason = reasonsHash[reasonId];
     let removeReasons = reason.text;
     if (reason.required) removeReasons = `${removeReasons} | ${remarks}`;
+    removeReasons = `${removeReasons} | ${date}`;
     Meteor.call('ignoreMatchProcess', clientId, true, removeReasons, (err, res) => {
       if (err) {
         Bert.alert(err.reason || err.error, 'danger', 'growl-top-right');
@@ -60,10 +75,13 @@ Template.clientDeleteReason.events({
 });
 
 Template.clientDeleteReason.onRendered(() => {
+  $('.js-datepicker').datetimepicker({
+    format: 'MM-DD-YYYY',
+  });
   $('.removalReason').select2({
     placeholder: 'Select reason',
     allowClear: true,
-    // theme: 'classic',
+    theme: 'classic',
     // tags: true,
     // createTag: (params) => {
     //   const term = $.trim(params.term);
