@@ -122,11 +122,11 @@ Template.viewClient.helpers(
         return foundQuestion ? foundQuestion.description : definition;
       }
       switch (text) {
-        case 'race': return getRace(code, definition);
-        case 'ethnicity': return getEthnicity(code, definition);
-        case 'gender': return getGender(code, definition);
+        case 'race': return getRace(intCode, definition);
+        case 'ethnicity': return getEthnicity(intCode, definition);
+        case 'gender': return getGender(intCode, definition);
         case 'veteranStatus':
-        case 'disablingcondition': return getYesNo(code, definition);
+        case 'disablingcondition': return getYesNo(intCode, definition);
         default: return definition;
       }
     },
