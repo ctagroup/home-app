@@ -1,0 +1,16 @@
+<template name="clientDeleteReason">
+  <h3>Matching Eligibility Status</h3>
+  <div class="form-group">
+    <label for="removalReason">Choose a reason to delete: </label>
+    <select class="removalReason form-control" name="removalReason" id="removalReason">
+      {{#each reasonsList}}
+        <option value={{id}}>{{text}}</option>
+      {{/each}}
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="removalRemarks"> Additional notes </label>
+    <input id="removalRemarks" class="form-control" type="text" name="removalRemarks" placeholder="Removal notes">
+  </div>
+  <input class="btn btn-danger removeFromHousingList" value="Remove client from active list" type="button">
+</template>
