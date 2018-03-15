@@ -1,6 +1,7 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
 import InputMask from 'react-input-mask';
+import CurrencyInput from '/imports/ui/components/CurrencyInput';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import Item from './Item';
@@ -105,6 +106,8 @@ export default class Question extends Item {
         return this.renderChoice(value, disabled);
       case 'number':
         return this.renderNumberInput(value, disabled);
+      case 'currency':
+        return this.renderCurrencyInput(value, disabled);
       default:
         return this.renderInput(value, 'text', disabled);
     }
@@ -190,6 +193,16 @@ export default class Question extends Item {
     );
   }
 
+  renderCurrencyInput(value, disabled) {
+    const { id } = this.props.item;
+
+    return (<CurrencyInput
+      id={id}
+      value={value === undefined ? '' : value}
+      onChange={(x, number) => this.props.onChange(this.props.item.id, number)}
+      disabled={disabled}
+    />);
+  }
   renderNumberInput(value, disabled) {
     const { id } = this.props.item;
     const mask = this.props.item.mask;
