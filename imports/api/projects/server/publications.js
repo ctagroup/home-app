@@ -3,8 +3,8 @@ import { HmisClient } from '/imports/api/hmisApi';
 import AppSettings from '/imports/api/appSettings/appSettings';
 
 
-Meteor.publish('projects.list', function publishAllProjects() {
-  logger.info(`PUB[${this.userId}]: projects.list`);
+Meteor.publish('projects.all', function publishAllProjects() {
+  logger.info(`PUB[${this.userId}]: projects.all`);
   if (!this.userId) {
     return;
   }
