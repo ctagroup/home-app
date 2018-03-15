@@ -14,7 +14,7 @@ Router.route(
       },
     },
     waitOn() {
-      return Meteor.subscribe('projects.list');
+      return Meteor.subscribe('projects.all');
     },
     data() {
       const project = Projects.findOne({ isAppProject: true });

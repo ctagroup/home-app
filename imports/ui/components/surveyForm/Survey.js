@@ -16,15 +16,18 @@ export default class Survey extends React.Component {
     this.handlePropsChange = this.handlePropsChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleToggleDebugWindow = this.handleToggleDebugWindow.bind(this);
-    this.state = computeFormState(
-      this.props.definition,
-      initialValues,
-      {},
-      { client: props.client }
-    );
+    this.state = {
+      ...computeFormState(
+        this.props.definition,
+        initialValues,
+        {},
+        { client: props.client }
+      ),
+      errors: {},
+    };
   }
 
-  handleValueChange(name, value) {
+  handleValueChange(name, value, isValid = true) {
     // check for array names i.e. 'foo[12]'
     const match = name.match(/([^[]+)\[(\d+)\]/);
     let newValues;
@@ -54,7 +57,16 @@ export default class Survey extends React.Component {
       this.state.props,
       { client: this.props.client }
     );
-    this.setState(formState);
+    const errors = this.state.errors;
+    if (isValid) {
+      delete errors[name];
+    } else {
+      errors[name] = true;
+    }
+    this.setState({
+      ...formState,
+      errors,
+    });
   }
 
   handlePropsChange(name, value) {
@@ -248,8 +260,10 @@ export default class Survey extends React.Component {
   renderSubmitButtons() {
     const submissionId = this.props.response && this.props.response.submissionId;
     const client = this.props.client;
+    const hasErrors = Object.keys(this.state.errors).length > 0;
     const disabled = !client
-      || this.state.submitting;
+      || this.state.submitting
+      || hasErrors;
       // || status === ResponseStatus.COMPLETED;
     const uploadClient = client && !client.schema;
 
@@ -284,6 +298,7 @@ export default class Survey extends React.Component {
             Pause Survey
           </button>
         </div>
+        {hasErrors && <div className="error-message">Survey has errors</div>}
       </div>
   );
   }
@@ -295,7 +310,7 @@ export default class Survey extends React.Component {
     const status = this.props.response ? this.props.response.status : 'new';
     const clientName = fullName(client) || client._id || 'n/a';
     return (
-      <div>
+      <div className="survey">
         <p><strong>Client:</strong> {clientName}</p>
         <p><strong>Response status:</strong> {status}</p>
         <Section
@@ -304,9 +319,10 @@ export default class Survey extends React.Component {
           onValueChange={this.handleValueChange}
           onPropsChange={this.handlePropsChange}
           level={1}
+          debugMode={this.props.debugMode}
         />
         {this.renderSubmitButtons()}
-        {this.props.debug && this.renderDebugWindow()}
+        {this.props.debugMode && this.renderDebugWindow()}
       </div>
     );
   }

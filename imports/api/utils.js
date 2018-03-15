@@ -63,3 +63,6 @@ export function stringContains(str, query = '') {
   return strLower.indexOf(queryLower) !== -1;
 }
 
+export function isNumeric(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}

@@ -231,23 +231,19 @@
     {{#with eligibleClient}}
       {{#unless error}}
         <div class="row margin-top-35">
-            <div class="col-xs-12">
-                <div class="form-group">
-                    <h3>Matching Eligibility Status</h3>
-                    {{#unless ignoreMatchProcess}}
-                    <input id="removalRemarks" class="form-control" type="text" name="removalRemarks" placeholder="Removal notes">
-                    {{else}}
-                        <p><strong>Removal notes: </strong>{{remarks}}</p>
-                    {{/unless}}
-                </div>
-                    {{#if ignoreMatchProcess }}
-                    <input class="btn btn-warning addToHousingList" value="Add client to active list" type="button">
-                    {{else}}
-                    <input class="btn btn-danger removeFromHousingList" value="Remove client from active list" type="button">
-                    {{/if}}
-            </div>
+          <div class="col-xs-12">
+            {{#if ignoreMatchProcess}}
+              <div class="form-group">
+                <h3>Matching Eligibility Status</h3>
+                <p><strong>Removal notes: </strong>{{remarks}}</p>
+              </div>
+              <input class="btn btn-warning addToHousingList" value="Add client to active list" type="button">
+            {{else}}
+              {{> clientDeleteReason client=../../client}}
+            {{/if}}
+          </div>
         </div>
-        {{/unless}}
+      {{/unless}}
     {{/with}}
 
 {{/with}}

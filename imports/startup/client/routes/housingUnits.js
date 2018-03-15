@@ -1,6 +1,6 @@
 import HousingUnits from '/imports/api/housingUnits/housingUnits';
 import { HousingUnitsAccessRoles } from '/imports/config/permissions';
-import { HousingUnitsCache, ProjectsCache } from '/imports/both/cached-subscriptions';
+import { HousingUnitsCache } from '/imports/both/cached-subscriptions';
 import '/imports/ui/housingUnits/housingUnitsCreateView';
 import '/imports/ui/housingUnits/housingUnitsEditView';
 import { AppController } from './controllers';
@@ -35,7 +35,7 @@ Router.route('adminDashboardhousingUnitsNew', {
     },
   },
   waitOn() {
-    return ProjectsCache.subscribe('projects');
+    return Meteor.subscribe('projects.all');
   },
   data() {
     return {
@@ -58,7 +58,7 @@ Router.route('adminDashboardhousingUnitsEdit', {
     const _id = this.params._id;
     return [
       Meteor.subscribe('housingUnits.one', _id),
-      ProjectsCache.subscribe('projects'),
+      Meteor.subscribe('projects.all'),
     ];
   },
   data() {
