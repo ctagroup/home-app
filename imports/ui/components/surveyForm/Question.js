@@ -4,6 +4,7 @@ import InputMask from 'react-input-mask';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import Item from './Item';
+import { isNumeric } from '/imports/api/utils';
 
 const DEFAULT_OTHER_VALUE = 'Other';
 
@@ -17,6 +18,7 @@ export default class Question extends Item {
     this.handleOtherClick = this.handleOtherClick.bind(this);
     this.state = {
       otherSelected: false,
+      error: null,
     };
   }
 
@@ -43,7 +45,6 @@ export default class Question extends Item {
       }
     } catch (e) {
       // handle value change
-      let number;
       switch (this.props.item.category) {
         case 'choice':
           value = event.target.value;
@@ -54,15 +55,6 @@ export default class Question extends Item {
         case 'date':
           value = date ? date.format('YYYY-MM-DD') : '';
           break;
-        case 'number':
-          value = event.target.value;
-          if (value.length > 0) {
-            number = parseFloat(value);
-            if (isNaN(number)) {
-              value = 0;
-            }
-          }
-          break;
         default:
           value = event.target.value;
           break;
@@ -72,7 +64,10 @@ export default class Question extends Item {
     if (!value && this.state.otherSelected) {
       value = DEFAULT_OTHER_VALUE;
     }
-    this.props.onChange(this.props.item.id, value);
+
+    const isValid = this.validateValue(value);
+
+    this.props.onChange(this.props.item.id, value, isValid);
   }
 
   handleOtherClick(event) {
@@ -82,6 +77,20 @@ export default class Question extends Item {
 
   handleOtherFocus() {
     setTimeout(() => this.setState({ otherSelected: true }), 1);
+  }
+
+  validateValue(value) {
+    const isRefused = this.getRefuseValue() === value;
+    if (this.props.item.category === 'number' && !isRefused) {
+      if (value.length > 0) {
+        if (!isNumeric(value)) {
+          this.setState({ error: `${value} is not a number` });
+          return false;
+        }
+      }
+    }
+    this.setState({ error: null });
+    return true;
   }
 
   isRefused() {
@@ -243,12 +252,14 @@ export default class Question extends Item {
     const { id, text } = this.props.item;
     const value = this.props.formState.values[id];
     const disabled = this.props.formState.props[`${id}.skip`];
+    const hasError = !!this.state.error;
     return (
-      <div className="question item">
+      <div className={`question item ${hasError ? 'error' : ''}`}>
         {this.renderTitle()}
         <div className="text">{text}</div>
         {this.renderQuestionCategory(this.isRefused() ? '' : value, disabled)}
         {this.renderRefuseCheckbox(disabled)}
+        {hasError && <div className="error-message">{this.state.error}</div>}
       </div>
     );
   }

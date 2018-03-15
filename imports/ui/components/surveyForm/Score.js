@@ -5,9 +5,10 @@ import Text from './Text';
 export default class Score extends Text {
   render() {
     const { score, text } = this.props.item;
-
     let value = evaluateOperand(score, this.props.formState) || 0;
-    return (
+    console.log(this.props.debugMode);
+
+    return this.props.debugMode ? (
       <div className="score item">
         <div className="wrapper">
           <div className="text">SCORE:</div>
@@ -15,6 +16,6 @@ export default class Score extends Text {
         </div>
         <div className="text" dangerouslySetInnerHTML={{ __html: text }} />
       </div>
-    );
+    ) : null;
   }
 }
