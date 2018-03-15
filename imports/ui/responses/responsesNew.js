@@ -1,5 +1,6 @@
 import { Template } from 'meteor/templating';
 import Survey from '/imports/ui/components/surveyForm/Survey';
+import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import './responsesNew.html';
 
 
@@ -13,7 +14,7 @@ Template.responsesNew.helpers({
   surveyId() {
     return this.survey._id;
   },
-  isDebugEnabled() {
-    return true;
+  isAdmin() {
+    return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
   },
 });

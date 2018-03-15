@@ -319,9 +319,10 @@ export default class Survey extends React.Component {
           onValueChange={this.handleValueChange}
           onPropsChange={this.handlePropsChange}
           level={1}
+          debugMode={this.props.debugMode}
         />
         {this.renderSubmitButtons()}
-        {this.props.debug && this.renderDebugWindow()}
+        {this.props.debugMode && this.renderDebugWindow()}
       </div>
     );
   }
