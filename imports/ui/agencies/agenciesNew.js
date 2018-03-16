@@ -19,8 +19,9 @@ AutoForm.addHooks('agenciesNew', {
     });
     return false;
   },
-  onSuccess() {
+  onSuccess(formType, res) {
     Alert.success('Agency created');
+    Router.go('agenciesEdit', { _id: res });
   },
   onError(formType, err) {
     Alert.error(err);

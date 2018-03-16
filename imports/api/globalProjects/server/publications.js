@@ -3,41 +3,25 @@ import { HmisClient } from '/imports/api/hmisApi';
 // import Users from '/imports/api/users/users';
 // import { userProjectGroupId } from '/imports/api/users/helpers';
 import GlobalProjects from '../globalProjects';
+import { syncGlobalProjectsCollection } from '../helpers';
 
 Meteor.publish('globalProjects.all', function publishAllGlobalProjects() {
   logger.info(`PUB[${this.userId}]: globalProjects.all`);
   if (!this.userId) {
-    return;
+    return null;
   }
 
   const hc = HmisClient.create(this.userId);
-  const projects = hc.api('global').getGlobalProjects();
-
-  this.ready();
-  projects.forEach(project => {
-    this.added('globalProjects', project.id, {
-      ...project,
-      ...(GlobalProjects.findOne(project.id) || {}),
-    });
-  });
+  syncGlobalProjectsCollection(hc);
+  return GlobalProjects.find();
 });
 
 Meteor.publish('globalProjects.one', function publishOneGlobalProject(id) {
   logger.info(`PUB[${this.userId}]: globalProjects.one`, id);
   if (!this.userId) {
-    return;
+    return null;
   }
-
-  const hc = HmisClient.create(this.userId);
-  const project = hc.api('global').getGlobalProject(id);
-  const members = hc.api('global').getGlobalProjectUsers(id);
-  console.log(members);
-
-  this.added('globalProjects', project.id, {
-    ...project,
-    members,
-  });
-  this.ready();
+  return GlobalProjects.find(id);
 });
 
 Meteor.publish('globalProjects.active', function publishGlobalProjectsOfCurrentUser() {
@@ -51,10 +35,5 @@ Meteor.publish('globalProjects.active', function publishGlobalProjectsOfCurrentU
       },
     },
   };
-  const projectIds = GlobalProjects.find(query).fetch()
-    .reduce((all, agency) => {
-      const projects = agency.projectsOfUser(this.userId);
-      return [...all, ...projects];
-    }, []);
-  return Agencies.find(query);
+  return GlobalProjects.find(query);
 });

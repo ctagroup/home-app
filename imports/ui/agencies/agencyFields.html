@@ -1,24 +1,29 @@
 <template name="agencyFields">
   <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#general">General Settings</a></li>
-    <li><a data-toggle="tab" href="#projectsList">Projects</a></li>
+    <li><a data-toggle="tab" href="#projects">Projects</a></li>
+    <li><a data-toggle="tab" href="#members">Members</a></li>
     <li><a data-toggle="tab" href="#userProjectGrid">Project Access</a></li>
   </ul>
 
   <div class="tab-content">
     <div id="general" class="tab-pane fade in active">
-      {{> afQuickField name='projectName'}}
-      {{> afQuickField name='projectCommonName'}}
+      {{> afQuickField name='agencyName'}}
+      {{> afQuickField name='commonName'}}
       {{> afQuickField name='description'}}
-      {{> afQuickField name='projects'}}
-      {{> afObjectField name='members'}}
-      <!-- {{> afQuickField name='projectMembers'}} -->
     </div>
 
-    <div id="projectsList" class="tab-pane fade">
+    <div id="projects" class="tab-pane fade">
+        {{> afQuickField name='projects'}}
+    </div>
+
+    <div id="members" class="tab-pane fade">
+        <div class="members">{{> afObjectField name='members'}}</div>
     </div>
 
     <div id="userProjectGrid" class="tab-pane fade">
+      {{> afQuickField name='projectMembers'}}
     </div>
+
   </div>
 </template>

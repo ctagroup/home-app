@@ -13,7 +13,11 @@ function memberRoleOptions() {
   return [
     {
       value: '',
-      label: 'Not a member',
+      label: 'n/a',
+    },
+    {
+      value: '?',
+      label: 'Unknown Role',
     },
     {
       value: 'role1',
@@ -26,23 +30,20 @@ function memberRoleOptions() {
   ];
 }
 
-/* TODO: wait until api supports project members
 function projectMembersOptions(members = []) {
   return members.map(m => ({
     value: m.userId,
     label: userName(m.userId),
   }));
 }
-*/
 
-export function formSchema() {
-  console.log(Projects.find().fetch());
+export function formSchema(doc) {
   const definition = {
-    projectName: {
+    agencyName: {
       type: String,
       label: 'Agency Name',
     },
-    projectCommonName: {
+    commonName: {
       type: String,
       optional: true,
       label: 'Common Name',
@@ -70,7 +71,7 @@ export function formSchema() {
     },
   };
 
-  const users = Users.find({}, { limit: 2 }).fetch()
+  const users = Users.find(/*{}, { limit: 2 }*/).fetch()
     .map(user => ({
       ...user,
       fullName: userName(user._id),
@@ -91,7 +92,6 @@ export function formSchema() {
     };
   });
 
-  /* TODO: wait until api supports project members
   const selector = { _id: { $in: doc.projects } };
   const options = { sort: { projectName: 1 } };
   const projects = Projects.find(selector, options).fetch();
@@ -108,8 +108,6 @@ export function formSchema() {
 
     };
   });
-  */
-
   return new SimpleSchema(definition);
 }
 
@@ -123,7 +121,6 @@ export function form2doc(doc) {
   });
   // merge { project1: ['user1', 'user2'], project2: ['user3'] }
   // to [{projectId: project1, userId: user1}, ..., {projectId: project2, userId: user3}]
-  /* TODO: wait until api supports project members
   const projectsMembers = Object.keys(doc.projectMembers || {}).reduce((all, key) => {
     const projectId = key.substring(1);
     const projectMembers = doc.projectMembers[key] || [];
@@ -133,15 +130,14 @@ export function form2doc(doc) {
     }));
     return [...all, ...memberships];
   }, []);
-  */
 
   return {
-    projectName: doc.projectName,
-    projectCommonName: doc.projectCommonName,
+    agencyName: doc.agencyName,
+    commonName: doc.commonName,
     description: doc.description,
     members,
     projects: doc.projects || [],
-    // projectsMembers, TODO: wait until api supports project members
+    projectsMembers,
   };
 }
 
