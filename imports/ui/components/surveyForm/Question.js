@@ -15,6 +15,7 @@ export default class Question extends Item {
   constructor() {
     super();
     this.handleChange = this.handleChange.bind(this);
+    this.handleRefuseChange = this.handleRefuseChange.bind(this);
     this.handleOtherFocus = this.handleOtherFocus.bind(this);
     this.handleOtherClick = this.handleOtherClick.bind(this);
     this.state = {
@@ -69,6 +70,11 @@ export default class Question extends Item {
     const isValid = this.validateValue(value);
 
     this.props.onChange(this.props.item.id, value, isValid);
+  }
+
+  handleRefuseChange(event) {
+    console.log('refuse');
+    this.handleChange(event);
   }
 
   handleOtherClick(event) {
@@ -198,11 +204,12 @@ export default class Question extends Item {
 
     return (<CurrencyInput
       id={id}
-      value={value === undefined ? '' : value}
+      value={value === undefined ? '0' : value}
       onChange={(x, number) => this.props.onChange(this.props.item.id, number)}
-      disabled={disabled}
+      disabled={this.isRefused() || disabled}
     />);
   }
+
   renderNumberInput(value, disabled) {
     const { id } = this.props.item;
     const mask = this.props.item.mask;
@@ -224,17 +231,19 @@ export default class Question extends Item {
       return null;
     }
     return (
-      <span> <label>
-        <input
-          type="checkbox"
-          value={refuseValue}
-          rel="refuse"
-          onChange={this.handleChange}
-          checked={this.isRefused()}
-          disabled={disabled}
-        />
-        <span> {refuseValue}</span>
-      </label></span>
+      <span>
+        <label>
+          <input
+            type="checkbox"
+            value={refuseValue}
+            rel="refuse"
+            onChange={this.handleRefuseChange}
+            checked={this.isRefused()}
+            disabled={disabled}
+          />
+          <span> {refuseValue}</span>
+        </label>
+      </span>
     );
   }
 

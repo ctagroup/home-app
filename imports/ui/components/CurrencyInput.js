@@ -1,38 +1,6 @@
 import React, { Component } from 'react';
 import curr from 'currency.js';
-// import PropTypes from 'prop-types';
-// import { hardCopyObject, formatCurrency } from './utils';
 
-/*
-  static propTypes = {
-    name: PropTypes.string,
-    value: PropTypes.number,
-    defaultValue: PropTypes.number,
-    className: PropTypes.string,
-    style: PropTypes.object,
-    currency: PropTypes.string,
-    currencyConfiguration: PropTypes.shape({
-      symbol: PropTypes.string,
-      precision: PropTypes.number,
-      decimal: PropTypes.string,
-      separator: PropTypes.string,
-    }),
-    showSymbol: PropTypes.bool,
-    spaceSymbol: PropTypes.bool,
-    onChange: PropTypes.func,
-  }
-
-  static defaultProps = {
-    name: '',
-    className: '',
-    style: {},
-    currency: 'BRL',
-    currencyConfiguration: hardCopyObject(brlConfiguration),
-    showSymbol: false,
-    spaceSymbol: false,
-    onChange: Function.prototype,
-  }
-*/
 
 const formatCurrency = (value = 0, code = 'USD', displayOptions = {}) => {
   const config = {
@@ -83,6 +51,16 @@ class CurrencyInput extends Component {
     if (givenDefaultValue !== prevGivenDefaultValue) {
       this.setInitialValues();
     }
+
+    const valueFromProps = parseFloat(this.props.value) || 0;
+    const valueFromState = parseFloat(this.state.value);
+
+    if (valueFromProps !== valueFromState) {
+      this.setState({ // eslint-disable-line
+        value: valueFromProps,
+        maskedValue: this.maskValue(valueFromProps),
+      });
+    }
   }
 
   setInitialValues() {
@@ -114,8 +92,6 @@ class CurrencyInput extends Component {
       return false;
     }
 
-    console.log(value, maskedValue);
-
     return onChange(event, value, maskedValue);
   }
 
@@ -137,7 +113,7 @@ class CurrencyInput extends Component {
   }
 
   render() {
-    const { name: inputName, className, style } = this.props;
+    const { name: inputName, className, style, disabled } = this.props;
     const { maskedValue } = this.state;
 
     return (
@@ -146,8 +122,9 @@ class CurrencyInput extends Component {
         className={className}
         style={style}
         name={inputName}
-        value={maskedValue}
+        value={disabled ? '' : maskedValue}
         onChange={this.handleChange}
+        disabled={disabled}
       />
     );
   }
