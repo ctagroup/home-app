@@ -1,6 +1,7 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
 import InputMask from 'react-input-mask';
+import CurrencyInput from '/imports/ui/components/CurrencyInput';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import Item from './Item';
@@ -14,6 +15,7 @@ export default class Question extends Item {
   constructor() {
     super();
     this.handleChange = this.handleChange.bind(this);
+    this.handleRefuseChange = this.handleRefuseChange.bind(this);
     this.handleOtherFocus = this.handleOtherFocus.bind(this);
     this.handleOtherClick = this.handleOtherClick.bind(this);
     this.state = {
@@ -70,6 +72,11 @@ export default class Question extends Item {
     this.props.onChange(this.props.item.id, value, isValid);
   }
 
+  handleRefuseChange(event) {
+    console.log('refuse');
+    this.handleChange(event);
+  }
+
   handleOtherClick(event) {
     this.props.onChange(event.target.name, event.target.value);
     this.otherInput.focus();
@@ -105,6 +112,8 @@ export default class Question extends Item {
         return this.renderChoice(value, disabled);
       case 'number':
         return this.renderNumberInput(value, disabled);
+      case 'currency':
+        return this.renderCurrencyInput(value, disabled);
       default:
         return this.renderInput(value, 'text', disabled);
     }
@@ -190,6 +199,17 @@ export default class Question extends Item {
     );
   }
 
+  renderCurrencyInput(value, disabled) {
+    const { id } = this.props.item;
+
+    return (<CurrencyInput
+      id={id}
+      value={value === undefined ? '0' : value}
+      onChange={(x, number) => this.props.onChange(this.props.item.id, number)}
+      disabled={this.isRefused() || disabled}
+    />);
+  }
+
   renderNumberInput(value, disabled) {
     const { id } = this.props.item;
     const mask = this.props.item.mask;
@@ -211,17 +231,19 @@ export default class Question extends Item {
       return null;
     }
     return (
-      <span> <label>
-        <input
-          type="checkbox"
-          value={refuseValue}
-          rel="refuse"
-          onChange={this.handleChange}
-          checked={this.isRefused()}
-          disabled={disabled}
-        />
-        <span> {refuseValue}</span>
-      </label></span>
+      <span>
+        <label>
+          <input
+            type="checkbox"
+            value={refuseValue}
+            rel="refuse"
+            onChange={this.handleRefuseChange}
+            checked={this.isRefused()}
+            disabled={disabled}
+          />
+          <span> {refuseValue}</span>
+        </label>
+      </span>
     );
   }
 

@@ -84,6 +84,7 @@ export default class Section extends Item {
               onValueChange={onValueChange}
               onPropsChange={onPropsChange}
               level={level + 1}
+              debugMode={this.props.debugMode}
             />);
         case 'question':
           return this.renderQuestion(child);
@@ -96,6 +97,7 @@ export default class Section extends Item {
               level={level + 1}
               item={child}
               formState={formState}
+              debugMode={this.props.debugMode}
             />
           );
         case 'text':
