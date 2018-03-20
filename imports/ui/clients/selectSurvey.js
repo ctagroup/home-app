@@ -7,7 +7,7 @@ import './selectSurvey.html';
 Template.selectSurvey.helpers(
   {
     getSurveys() {
-      return Surveys.find({ active: true }).fetch();
+      return Surveys.find({ 'hmis.surveyId': { $exists: true } }).fetch();
     },
     getSurveyedClient() {
       return PendingClients.find().fetch();
