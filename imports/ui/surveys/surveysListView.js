@@ -13,34 +13,8 @@ const tableOptions = {
       },
     },
     {
-      data: 'createdAt',
-      title: 'Created At',
-      render(value, type) {
-        if (type === 'sort') {
-          return value;
-        }
-        return moment(value).format('MM/DD/YYYY h:mm A');
-      },
-    },
-    {
-      data: 'active',
-      title: 'Active',
-      render(value, type) {
-        if (type === 'sort') {
-          return value;
-        }
-        return value ? 'Yes' : 'No';
-      },
-    },
-    {
-      data: 'editable',
-      title: 'Editable',
-      render(value, type) {
-        if (type === 'sort') {
-          return value;
-        }
-        return value ? 'Yes' : 'No';
-      },
+      data: 'numberOfResponses',
+      title: 'Responses',
     },
     {
       data: 'hmis',
@@ -52,9 +26,32 @@ const tableOptions = {
         return 'not uploaded';
       },
     },
+    {
+      data: 'locked',
+      title: 'Locked',
+      render(value, type) {
+        if (type === 'sort') {
+          return value;
+        }
+        return value ? 'Yes' : 'No';
+      },
+    },
+    {
+      data: 'createdAt',
+      title: 'Created At',
+      render(value, type) {
+        if (type === 'sort') {
+          return value;
+        }
+        return value ? moment(value).format('MM/DD/YYYY h:mm A') : '-';
+      },
+    },
     editButton('surveysEdit'),
     editButton('surveysEditDefinition', { title: 'Builder', width: '60px' }),
-    deleteSurveyButton(),
+    deleteSurveyButton((survey) => {
+      Surveys._collection.remove(survey._id); // eslint-disable-line
+    }),
+
   ],
   dom: TableDom,
   processing: true,
