@@ -72,8 +72,7 @@ Meteor.startup(() => {
       const survey = {
         title: definition.title,
         version: 2,
-        active: true,
-        editable: true,
+        locked: false,
         definition: JSON.stringify(definition),
       };
       check(survey, Surveys.schema);
