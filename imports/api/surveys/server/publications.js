@@ -15,11 +15,12 @@ Meteor.publish('surveys.all', function publishAllSurveys() {
     this.added('surveys', s.surveyId, {
       version: 2,
       title: s.surveyTitle,
+      definition: s.surveyDefinition,
       hmis: {
         surveyId: s.surveyId,
         status: 'uploaded',
       },
-      numberOfResponses: Responses.find({ surveyId: s._id }).count(),
+      numberOfResponses: Responses.find({ surveyId: s.surveyId }).count(),
       createdAt: '',
     });
   });
