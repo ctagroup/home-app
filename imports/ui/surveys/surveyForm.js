@@ -35,7 +35,7 @@ AutoForm.hooks({
             Alert.error(err);
           } else {
             Alert.success('Survey updated');
-            // Router.go('adminDashboardsurveysView');
+            Router.go('adminDashboardsurveysView');
           }
           this.done();
         });

@@ -24,23 +24,32 @@ Meteor.methods({
   },
 
   'surveys.update'(id, doc) {
-    logger.info(`METHOD[${Meteor.userId()}]: surveys.update`, id, doc);
+    logger.info(`METHOD[${this.userId}]: surveys.update`, id);
 
     // TODO: permissions
     check(id, String);
+
+    const hc = HmisClient.create(this.userId);
+    let alreadyUploaded;
+    try {
+      hc.api('survey2').getSurvey(id);
+      alreadyUploaded = true;
+    } catch (err) {
+      alreadyUploaded = false;
+    }
 
     // create temp survey in mongo
     const tempId = Surveys.insert({
       ...doc,
       hmis: {
-        surveyId: id,
+        surveyId: alreadyUploaded ? id : undefined,
       },
-      _id: id,
     });
 
     try {
       Meteor.call('surveys.uploadQuestions', tempId);
       Meteor.call('surveys.upload', tempId);
+      Surveys.remove(id);
     } catch (e) {
       logger.error(`Failed to upload survey ${e}`);
       throw new Meteor.Error('hmis.api', `Survey created, failed to upload! ${e}`);
@@ -148,10 +157,10 @@ Meteor.methods({
     let hmis;
     let surveyId;
 
-    // upload survey
+    // upload survey to hmis
     if (survey.hmis && survey.hmis.surveyId) {
       surveyId = survey.hmis.surveyId;
-      logger.info(`Uploading existing survey ${survey.title} (${id})`);
+      logger.info(`Uploading existing survey ${survey.title} (${surveyId})`);
       hc.api('survey2').updateSurvey(surveyId, survey);
       hmis = survey.hmis;
     } else {
@@ -203,5 +212,6 @@ Meteor.methods({
     hmis.status = 'uploaded';
     logger.debug('updating survey HMIS data', hmis);
     Surveys.update(id, { $set: { hmis } });
+    return surveyId;
   },
 });
