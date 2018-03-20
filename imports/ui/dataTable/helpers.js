@@ -71,7 +71,7 @@ export function deleteHousingUnitButton() {
 }
 
 
-export function deleteSurveyButton() {
+export function deleteSurveyButton(onSuccessCallback) {
   return {
     data: '_id',
     title: 'Delete',
@@ -84,7 +84,9 @@ export function deleteSurveyButton() {
         method: 'surveys.delete',
         args: [_id],
         onSuccess() {
-          // Meteor.setTimeout(() => location.reload(), 1500);
+          if (onSuccessCallback) {
+            onSuccessCallback(rowData);
+          }
         },
       };
       Blaze.renderWithData(Template.DataTableDeleteButton, templateData, node);

@@ -10,9 +10,12 @@ Meteor.methods({
     check(doc, Surveys.schema);
     // TODO: permissions check
     const id = Surveys.insert(doc);
+
     try {
       Meteor.call('surveys.uploadQuestions', id);
       Meteor.call('surveys.upload', id);
+      // remove local survey uplon successful upload
+      Surveys.remove(id);
     } catch (e) {
       logger.error(`Failed to upload survey ${e}`);
       throw new Meteor.Error('hmis.api', `Survey created, failed to upload! ${e}`);
@@ -20,26 +23,30 @@ Meteor.methods({
     return id;
   },
 
-  'surveys.update'(id, doc, uploadToHmis = false) {
+  'surveys.update'(id, doc) {
     logger.info(`METHOD[${Meteor.userId()}]: surveys.update`, id, doc);
 
-    if (doc.$set) {
-      check(doc, Surveys.schema);
-      Surveys.update(id, doc);
-    } else {
-      Surveys.schema.clean(doc);
-      check(doc, Surveys.schema);
-      Surveys.update(id, doc, { bypassCollection2: true });
-    }
+    // TODO: permissions
+    check(id, String);
 
-    if (uploadToHmis) {
-      try {
-        Meteor.call('surveys.uploadQuestions', id);
-        Meteor.call('surveys.upload', id);
-      } catch (e) {
-        logger.error(`Failed to upload survey ${e}`, e.stack);
-        throw new Meteor.Error('hmis.api', `Survey updated, failed to upload! ${e}`);
-      }
+    // create temp survey in mongo
+    const tempId = Surveys.insert({
+      ...doc,
+      hmis: {
+        surveyId: id,
+      },
+      _id: id,
+    });
+
+    try {
+      Meteor.call('surveys.uploadQuestions', tempId);
+      Meteor.call('surveys.upload', tempId);
+    } catch (e) {
+      logger.error(`Failed to upload survey ${e}`);
+      throw new Meteor.Error('hmis.api', `Survey created, failed to upload! ${e}`);
+    } finally {
+      // remove temp survey
+      Surveys.remove(tempId);
     }
     return true;
   },
@@ -48,7 +55,12 @@ Meteor.methods({
     logger.info(`METHOD[${Meteor.userId()}]: surveys.delete`, id);
     check(id, String);
     // TODO: permissions check
-    return Surveys.remove(id);
+    const numRemoved = Surveys.remove(id);
+    if (numRemoved === 0) {
+      const hc = HmisClient.create(this.userId);
+      return hc.api('survey2').deleteSurvey(id);
+    }
+    return numRemoved;
   },
 
   'surveys.uploadQuestions'(id) {

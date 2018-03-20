@@ -1,3 +1,4 @@
+import Alert from '/imports/ui/alert';
 import Surveys from '/imports/api/surveys/surveys';
 import './surveyForm.html';
 
@@ -20,7 +21,7 @@ Template.surveyForm.helpers({
   },
 
   fields() {
-    return ['title', 'active', 'editable', 'definition'];
+    return ['title', 'locked', 'definition'];
   },
 });
 
@@ -29,21 +30,21 @@ AutoForm.hooks({
   surveyForm: {
     onSubmit: function onSubmit(insertDoc, updateDoc, currentDoc) {
       if (currentDoc._id) {
-        Meteor.call('surveys.update', currentDoc._id, updateDoc, (err) => {
+        Meteor.call('surveys.update', currentDoc._id, insertDoc, (err) => {
           if (err) {
-            Bert.alert(err.reason || err.error || err.message, 'danger', 'growl-top-right');
+            Alert.error(err);
           } else {
-            Bert.alert('Survey updated', 'success', 'growl-top-right');
-            Router.go('adminDashboardsurveysView');
+            Alert.success('Survey updated');
+            // Router.go('adminDashboardsurveysView');
           }
           this.done();
         });
       } else {
         Meteor.call('surveys.create', insertDoc, (err) => {
           if (err) {
-            Bert.alert(err.reason || err.error || err.message, 'danger', 'growl-top-right');
+            Alert.error(err);
           } else {
-            Bert.alert('Survey created', 'success', 'growl-top-right');
+            Alert.success('Survey created');
             Router.go('adminDashboardsurveysView');
           }
           this.done();
