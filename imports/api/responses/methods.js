@@ -106,23 +106,20 @@ Meteor.methods({
     const response = Responses.findOne(id);
     const { clientId, surveyId } = response;
     const values = unescapeKeys(response.values);
-    const survey = Surveys.findOne(surveyId);
-
-    // check if survey exists in MongoDb
-    if (!survey) {
-      Responses.update(id, { $set: { status: ResponseStatus.UPLOAD_ERROR } });
-      throw new Meteor.Error('404', 'Survey does not exist');
-    }
-
-    // check if survey is uploaded to HMIS
-    if (!survey.hmis) {
-      Responses.update(id, { $set: { status: ResponseStatus.UPLOAD_ERROR } });
-      throw new Meteor.Error('error', 'Survey not uploaded');
-    }
-
-    const definition = JSON.parse(survey.definition);
 
     const hc = HmisClient.create(Meteor.userId());
+
+    // check if survey exists in hslynk
+    let survey;
+    try {
+      survey = hc.api('survey2').getSurvey(surveyId);
+    } catch (err) {
+      Responses.update(id, { $set: { status: ResponseStatus.UPLOAD_ERROR } });
+      logger.error(err);
+      throw new Meteor.Error('error', `Survey ${surveyId} not uploaded.`);
+    }
+
+    const definition = JSON.parse(survey.surveyDefinition);
 
     // collect scores to send from scoring variables
     const client = hc.api('client').getClient(response.clientId, response.clientSchema);
@@ -134,7 +131,7 @@ Meteor.methods({
     // there are 2 types of sections:
     // one default section for storing all question values,
     // any number of score sections (for storing each value with name score.*)
-    const existingSectionsData = hc.api('survey').getSurveySections(survey.hmis.surveyId);
+    const existingSectionsData = hc.api('survey').getSurveySections(surveyId);
     const existingSections = mapUploadedSurveySections(existingSectionsData);
     logger.debug('existing sections', existingSections);
 
@@ -151,13 +148,13 @@ Meteor.methods({
         logger.info(`Deleting old submission ${id}`);
 
         // delete old submission
-        hc.api('survey').deleteSubmission(clientId, survey.hmis.surveyId, response.submissionId);
+        hc.api('survey').deleteSubmission(clientId, surveyId, response.submissionId);
         Responses.update(id, { $unset: { submissionId: true } });
       }
       logger.info(`Submitting responses ${id}`);
       // create new submission - send all question values in one call
       const { submissionId } = hc.api('survey').createSubmission(
-        clientId, survey.hmis.surveyId, questionVaules
+        clientId, surveyId, questionVaules
       );
       Responses.update(id, { $set: {
         submissionId,
@@ -179,7 +176,7 @@ Meteor.methods({
             `Score ${score.name} has no section in HMIS. Re-upload the survey`
           );
         }
-        hc.api('survey').createSectionScores(clientId, survey.hmis.surveyId, scoreSection.hmisId, {
+        hc.api('survey').createSectionScores(clientId, surveyId, scoreSection.hmisId, {
           sectionScore: score.value,
         });
       });
