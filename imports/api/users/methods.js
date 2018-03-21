@@ -71,7 +71,8 @@ Meteor.methods({
       projectsLinked: doc.projectsLinked || [],
     } });
 
-    const hmisId = Users.findOne(userId).services.HMIS.accountId;
+    const currentHMISData = Users.findOne(userId).services.HMIS;
+    const hmisId = currentHMISData.accountId;
     const api = HmisClient.create(this.userId).api('user-service');
 
     api.updateUser(hmisId, {
@@ -82,8 +83,14 @@ Meteor.methods({
       emailAddress: doc.services.HMIS.emailAddress,
     });
 
-    // TODO: update HMIS user roles?
-    // api.updateUserRoles(hmisId, doc.services.HMIS.roles);
+    const newRoles = doc.services.HMIS.roles;
+    const oldRoles = currentHMISData.roles;
+    const oldRoleIds = oldRoles.map(item => item.id);
+    const newRoleIds = newRoles.map(item => item.id);
+    api.updateUserRoles(hmisId, newRoles);
+
+    const removedRoleIds = oldRoleIds.filter(e => !newRoleIds.includes(e));
+    removedRoleIds.map(roleId => api.deleteUserRole(hmisId, roleId));
 
     // TODO: change HMIS password
   },
