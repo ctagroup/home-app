@@ -120,11 +120,6 @@ export class SurveyApi extends ApiEndpoint {
     return this.doPut(url, body).response;
   }
 
-  deleteResponse(clientId, surveyId, responseId) {
-    const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/responses/${responseId}`;
-    return this.doDel(url);
-  }
-
   createSubmission(clientId, surveyId, responses) {
     // see: https://hmis-api.github.io/survey-service-api/#clients__clientid__surveys__surveyid__responses_post
     const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/responses`;
