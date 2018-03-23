@@ -16,10 +16,11 @@ function projectOptions() {
     return [...all, ...agencyProjects];
   }, []);
 
+  const user = Meteor.user();
   const options = allProjects.map(({ agency, project }) => ({
     value: project._id,
     label: `${agency.agencyName}/${project.projectName || project._id}`,
-    selected: Meteor.user().activeProjectId === project._id,
+    selected: user ? user.activeProjectId === project._id : false,
   }));
 
   return [{

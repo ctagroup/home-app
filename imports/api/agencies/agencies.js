@@ -4,15 +4,6 @@ import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 const Agencies = new Mongo.Collection('agencies');
 
-const AgencyMemberSchema = new SimpleSchema({
-  role: {
-    type: String,
-  },
-  userId: {
-    type: String,
-  },
-});
-
 const ProjectMembershipSchema = new SimpleSchema({
   projectId: {
     type: String,
@@ -26,13 +17,16 @@ Agencies.schema = new SimpleSchema({
   agencyName: {
     type: String,
   },
+  description: {
+    type: String,
+    optional: true,
+  },
   projectGroupId: {
     type: String,
     defaultValue: '',
   },
   members: {
-    type: [AgencyMemberSchema],
-    optional: true,
+    type: [String],
   },
   projects: {
     type: [String],

@@ -13,6 +13,10 @@ const tableOptions = {
       },
     },
     {
+      data: 'description',
+      title: 'Description',
+    },
+    {
       data: 'createdAt',
       title: 'Created At',
       render(value, type) {
