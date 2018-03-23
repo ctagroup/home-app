@@ -14,7 +14,7 @@ Template.agenciesEdit.helpers({
 AutoForm.addHooks('agenciesEdit', {
   onSubmit: function submit(insertDoc) {
     this.event.preventDefault();
-    Meteor.call('globalProjects.update', form2doc(insertDoc), this.docId, (err, res) => {
+    Meteor.call('agencies.update', { $set: form2doc(insertDoc) }, this.docId, (err, res) => {
       this.done(err, res);
     });
     return false;

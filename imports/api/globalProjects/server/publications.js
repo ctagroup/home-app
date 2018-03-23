@@ -2,12 +2,12 @@ import { logger } from '/imports/utils/logger';
 import { HmisClient } from '/imports/api/hmisApi';
 // import Users from '/imports/api/users/users';
 // import { userProjectGroupId } from '/imports/api/users/helpers';
-import GlobalProjects from '../globalProjects';
+// import Agencies from '../agencies';
 
 Meteor.publish('globalProjects.all', function publishAllGlobalProjects() {
   logger.info(`PUB[${this.userId}]: globalProjects.all`);
   if (!this.userId) {
-    return;
+    return [];
   }
 
   const hc = HmisClient.create(this.userId);
@@ -15,35 +15,35 @@ Meteor.publish('globalProjects.all', function publishAllGlobalProjects() {
 
   this.ready();
   projects.forEach(project => {
-    this.added('globalProjects', project.id, {
-      ...project,
-      ...(GlobalProjects.findOne(project.id) || {}),
-    });
+    this.added('globalProjects', project.id, project);
   });
+
+  return this.ready();
+  // TODO: check permissions
+
+  // const user = Users.findOne(this.userId);
+  // const projectGroupId = userProjectGroupId(user);
+
+  // return Agencies.find({ projectGroupId });
 });
 
 Meteor.publish('globalProjects.one', function publishOneGlobalProject(id) {
   logger.info(`PUB[${this.userId}]: globalProjects.one`, id);
   if (!this.userId) {
-    return;
+    return [];
   }
 
-  const hc = HmisClient.create(this.userId);
-  const project = hc.api('global').getGlobalProject(id);
-  const members = hc.api('global').getGlobalProjectUsers(id);
-  console.log(members);
+  return null;
 
-  this.added('globalProjects', project.id, {
-    ...project,
-    members,
-  });
-  this.ready();
+  // TODO: check permissions
+
+  // return Agencies.find(id);
 });
 
 Meteor.publish('globalProjects.active', function publishGlobalProjectsOfCurrentUser() {
   logger.info(`PUB[${this.userId}]: globalProjects.active`);
-
-  this.ready();
+  return this.ready();
+  /*
   const query = {
     projectsMembers: {
       $elemMatch: {
@@ -51,10 +51,12 @@ Meteor.publish('globalProjects.active', function publishGlobalProjectsOfCurrentU
       },
     },
   };
-  const projectIds = GlobalProjects.find(query).fetch()
+  /*
+  const projectIds = Agencies.find(query).fetch()
     .reduce((all, agency) => {
       const projects = agency.projectsOfUser(this.userId);
       return [...all, ...projects];
     }, []);
-  return Agencies.find(query);
+  */
+  //return Agencies.find(query);
 });

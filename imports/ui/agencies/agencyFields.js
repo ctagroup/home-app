@@ -26,16 +26,14 @@ function memberRoleOptions() {
   ];
 }
 
-/* TODO: wait until api supports project members
 function projectMembersOptions(members = []) {
   return members.map(m => ({
     value: m.userId,
     label: userName(m.userId),
   }));
 }
-*/
 
-export function formSchema() {
+export function formSchema(doc = {}) {
   console.log(Projects.find().fetch());
   const definition = {
     projectName: {
@@ -52,11 +50,13 @@ export function formSchema() {
       optional: true,
       label: 'Description',
     },
+    /*
     members: {
       type: Object,
       optional: true,
       label: 'Agency Members',
     },
+    */
     projects: {
       type: [String],
       optional: true,
@@ -70,6 +70,7 @@ export function formSchema() {
     },
   };
 
+  /*
   const users = Users.find({}, { limit: 2 }).fetch()
     .map(user => ({
       ...user,
@@ -91,7 +92,6 @@ export function formSchema() {
     };
   });
 
-  /* TODO: wait until api supports project members
   const selector = { _id: { $in: doc.projects } };
   const options = { sort: { projectName: 1 } };
   const projects = Projects.find(selector, options).fetch();
@@ -109,7 +109,6 @@ export function formSchema() {
     };
   });
   */
-
   return new SimpleSchema(definition);
 }
 
@@ -123,7 +122,6 @@ export function form2doc(doc) {
   });
   // merge { project1: ['user1', 'user2'], project2: ['user3'] }
   // to [{projectId: project1, userId: user1}, ..., {projectId: project2, userId: user3}]
-  /* TODO: wait until api supports project members
   const projectsMembers = Object.keys(doc.projectMembers || {}).reduce((all, key) => {
     const projectId = key.substring(1);
     const projectMembers = doc.projectMembers[key] || [];
@@ -133,15 +131,14 @@ export function form2doc(doc) {
     }));
     return [...all, ...memberships];
   }, []);
-  */
 
   return {
     projectName: doc.projectName,
     projectCommonName: doc.projectCommonName,
     description: doc.description,
-    members,
+    // members,
     projects: doc.projects || [],
-    // projectsMembers, TODO: wait until api supports project members
+    // projectsMembers,
   };
 }
 
