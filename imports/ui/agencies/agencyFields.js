@@ -13,11 +13,7 @@ function memberRoleOptions() {
   return [
     {
       value: '',
-      label: 'n/a',
-    },
-    {
-      value: '?',
-      label: 'Unknown Role',
+      label: 'Not a member',
     },
     {
       value: 'role1',
@@ -30,20 +26,23 @@ function memberRoleOptions() {
   ];
 }
 
+/* TODO: wait until api supports project members
 function projectMembersOptions(members = []) {
   return members.map(m => ({
     value: m.userId,
     label: userName(m.userId),
   }));
 }
+*/
 
-export function formSchema(doc) {
+export function formSchema() {
+  console.log(Projects.find().fetch());
   const definition = {
-    agencyName: {
+    projectName: {
       type: String,
       label: 'Agency Name',
     },
-    commonName: {
+    projectCommonName: {
       type: String,
       optional: true,
       label: 'Common Name',
@@ -71,7 +70,7 @@ export function formSchema(doc) {
     },
   };
 
-  const users = Users.find(/*{}, { limit: 2 }*/).fetch()
+  const users = Users.find({}, { limit: 2 }).fetch()
     .map(user => ({
       ...user,
       fullName: userName(user._id),
@@ -92,6 +91,7 @@ export function formSchema(doc) {
     };
   });
 
+  /* TODO: wait until api supports project members
   const selector = { _id: { $in: doc.projects } };
   const options = { sort: { projectName: 1 } };
   const projects = Projects.find(selector, options).fetch();
@@ -108,6 +108,8 @@ export function formSchema(doc) {
 
     };
   });
+  */
+
   return new SimpleSchema(definition);
 }
 
@@ -121,6 +123,7 @@ export function form2doc(doc) {
   });
   // merge { project1: ['user1', 'user2'], project2: ['user3'] }
   // to [{projectId: project1, userId: user1}, ..., {projectId: project2, userId: user3}]
+  /* TODO: wait until api supports project members
   const projectsMembers = Object.keys(doc.projectMembers || {}).reduce((all, key) => {
     const projectId = key.substring(1);
     const projectMembers = doc.projectMembers[key] || [];
@@ -130,14 +133,15 @@ export function form2doc(doc) {
     }));
     return [...all, ...memberships];
   }, []);
+  */
 
   return {
-    agencyName: doc.agencyName,
-    commonName: doc.commonName,
+    projectName: doc.projectName,
+    projectCommonName: doc.projectCommonName,
     description: doc.description,
     members,
     projects: doc.projects || [],
-    projectsMembers,
+    // projectsMembers, TODO: wait until api supports project members
   };
 }
 

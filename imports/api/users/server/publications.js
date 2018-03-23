@@ -40,6 +40,7 @@ Meteor.publish('users.all', function publishAllUsers() {
   const cursor = Users.find({}, { fields });
   const api = HmisClient.create(this.userId).api('user-service');
   Meteor.defer(() => {
+    return;
     eachLimit(
       cursor.fetch(), Meteor.settings.connectionLimit,
       (user, next) => {

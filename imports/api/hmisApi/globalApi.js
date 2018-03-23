@@ -1,9 +1,6 @@
 import { HmisApiRegistry } from './apiRegistry';
 import { ApiEndpoint } from './apiEndpoint';
 
-// Documentation:
-// https://hmis-api.github.io/global-api/#
-
 const BASE_URL = 'https://www.hmislynk.com/hmis-globalapi/rest';
 
 export class GlobalApi extends ApiEndpoint {
@@ -29,35 +26,17 @@ export class GlobalApi extends ApiEndpoint {
     };
   }
 
-  createGlobalProject(data) {
-    const url = `${BASE_URL}/global-projects`;
-    const result = this.doPost(url, {
-      globalProject: data,
-    });
-    return result.globalProject;
-  }
-
-  updateGlobalProject(id, data) {
-    const url = `${BASE_URL}/global-projects/${id}`;
-    const result = this.doPut(url, {
-      globalProject: data,
-    });
-    return result;
-  }
-
-  deleteGlobalProject(id) {
-    const url = `${BASE_URL}/global-projects/${id}`;
-    return this.doDel(url);
-  }
-
   getGlobalProjectUsers(id) {
     const url = `${BASE_URL}/global-projects/${id}/users`;
     return this.doGet(url).users.users;
   }
 
-  updateGlobalProjectUsers(id, data) {
-    const url = `${BASE_URL}/global-projects/${id}/users`;
-    return this.doPut(url, { users: { users: data } });
+  createGlobalProject(data) {
+    const url = `${BASE_URL}/global-projects`;
+    const result = this.doPost(url, {
+      globalProject: data,
+    });
+    return result;
   }
 
   getNotifications() {

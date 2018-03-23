@@ -187,22 +187,3 @@ export function deleteResponseButton(onSuccessCallback) {
     orderable: false,
   };
 }
-
-export function deleteAgencyButton() {
-  return {
-    data: '_id',
-    title: 'Delete',
-    render() { return ''; },
-    createdCell(node, _id, rowData) {
-      const templateData = {
-        _id,
-        message: `Are you sure you want to delete agency ${rowData.agencyName}?`,
-        method: 'globalProjects.delete',
-        args: [_id],
-      };
-      Blaze.renderWithData(Template.DataTableDeleteButton, templateData, node);
-    },
-    width: '45px',
-    orderable: false,
-  };
-}

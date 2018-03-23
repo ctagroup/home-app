@@ -26,13 +26,9 @@ GlobalProjects.schema = new SimpleSchema({
   agencyName: {
     type: String,
   },
-  commonName: {
+  globalProjectId: {
     type: String,
-    optional: true,
-  },
-  description: {
-    type: String,
-    optional: true,
+    defaultValue: '',
   },
   members: {
     type: [MemberSchema],
