@@ -4,25 +4,6 @@ import { ApiEndpoint } from './apiEndpoint';
 const BASE_URL = 'https://www.hmislynk.com/hmis-globalapi/rest';
 
 export class GlobalApi extends ApiEndpoint {
-  getGlobalProjects(start = 0, limit = 9999) {
-    const url = `${BASE_URL}/global-projects?startIndex=${start}&maxItems=${limit}`;
-    const { pagination, globalProjects } = this.doGet(url).globalProjects;
-    const remaining = limit - pagination.returned;
-    if (remaining > 0 && pagination.returned > 0) {
-      return [
-        ...globalProjects,
-        ...this.getGlobalProjects(pagination.from + pagination.returned, remaining),
-      ];
-    }
-    return globalProjects;
-  }
-  createGlobalProject(data) {
-    const url = `${BASE_URL}/global-projects`;
-    const result = this.doPost(url, data);
-    console.log(result);
-    return result;
-  }
-
   getNotifications() {
     const url = `${BASE_URL}/notifications`;
     return this.doGet(url);

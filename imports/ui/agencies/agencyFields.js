@@ -34,29 +34,15 @@ function projectMembersOptions(members = []) {
 }
 
 export function formSchema(doc = {}) {
-  console.log(Projects.find().fetch());
   const definition = {
-    projectName: {
+    agencyName: {
       type: String,
-      label: 'Agency Name',
     },
-    projectCommonName: {
-      type: String,
-      optional: true,
-      label: 'Common Name',
-    },
-    description: {
-      type: String,
-      optional: true,
-      label: 'Description',
-    },
-    /*
     members: {
       type: Object,
       optional: true,
       label: 'Agency Members',
     },
-    */
     projects: {
       type: [String],
       optional: true,
@@ -70,7 +56,6 @@ export function formSchema(doc = {}) {
     },
   };
 
-  /*
   const users = Users.find({}, { limit: 2 }).fetch()
     .map(user => ({
       ...user,
@@ -108,7 +93,6 @@ export function formSchema(doc = {}) {
 
     };
   });
-  */
   return new SimpleSchema(definition);
 }
 
@@ -133,12 +117,10 @@ export function form2doc(doc) {
   }, []);
 
   return {
-    projectName: doc.projectName,
-    projectCommonName: doc.projectCommonName,
-    description: doc.description,
-    // members,
+    agencyName: doc.agencyName,
+    members,
     projects: doc.projects || [],
-    // projectsMembers,
+    projectsMembers,
   };
 }
 
