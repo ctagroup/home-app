@@ -1,5 +1,5 @@
 import { DefaultAdminAccessRoles } from '/imports/config/permissions';
-import GlobalProjects from '/imports/api/globalProjects/globalProjects';
+import Agencies from '/imports/api/agencies/agencies';
 import { AppController } from './controllers';
 import '/imports/ui/agencies/agenciesListView';
 import '/imports/ui/agencies/agenciesNew';
@@ -17,7 +17,7 @@ Router.route(
     },
     waitOn() {
       return [
-        Meteor.subscribe('globalProjects.all'),
+        Meteor.subscribe('agencies.all'),
       ];
     },
     data() {
@@ -79,7 +79,7 @@ Router.route(
       return {
         title: 'Agencies',
         subtitle: 'Edit',
-        doc: GlobalProjects.findOne(id),
+        doc: Agencies.findOne(id),
       };
     },
   }

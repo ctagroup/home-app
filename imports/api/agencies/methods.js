@@ -1,13 +1,12 @@
 import { logger } from '/imports/utils/logger';
-// import Agencies from '/imports/api/agencies/agencies';
-// import Users from '/imports/api/users/users';
-// import { userProjectGroupId } from '/imports/api/users/helpers';
+import Agencies from '/imports/api/agencies/agencies';
+import Users from '/imports/api/users/users';
+import { userProjectGroupId } from '/imports/api/users/helpers';
 // import { HmisClient } from '/imports/api/hmisApi';
 
 Meteor.methods({
-  'globalProjects.create'(doc) {
-    logger.info(`METHOD[${Meteor.userId()}]: globalProjects.create`, doc);
-    /*
+  'agencies.create'(doc) {
+    logger.info(`METHOD[${Meteor.userId()}]: agencies.create`, doc);
     const user = Users.findOne(this.userId);
     const agency = {
       ...doc,
@@ -15,17 +14,12 @@ Meteor.methods({
     };
     check(agency, Agencies.schema);
     return Agencies.insert(agency);
-    */
-    throw new Meteor.Error('not implemented');
   },
 
-  'globalProjects.update'(doc, id) {
+  'agencies.update'(doc, id) {
     logger.info(`METHOD[${Meteor.userId()}]: agencies.update`, doc, id);
-    throw new Meteor.Error('not implemented');
-    /*
     check(doc, Agencies.schema);
     return Agencies.update(id, doc);
-    */
   },
 
 });

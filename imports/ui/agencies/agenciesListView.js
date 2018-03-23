@@ -1,5 +1,5 @@
 import moment from 'moment';
-import GlobalProjects from '/imports/api/globalProjects/globalProjects';
+import Agencies from '/imports/api/agencies/agencies';
 import { TableDom } from '/imports/ui/dataTable/helpers';
 import './agenciesListView.html';
 
@@ -31,12 +31,12 @@ const tableOptions = {
 
 Template.agenciesListView.helpers({
   hasData() {
-    return GlobalProjects.find().count() > 0;
+    return Agencies.find().count() > 0;
   },
   tableOptions() {
     return tableOptions;
   },
   tableData() {
-    return () => GlobalProjects.find().fetch();
+    return () => Agencies.find().fetch();
   },
 });

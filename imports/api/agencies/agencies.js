@@ -1,10 +1,9 @@
 import { Mongo } from 'meteor/mongo';
-// import { SimpleSchema } from 'meteor/aldeed:simple-schema';
+import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 
-const GlobalProjects = Meteor.isClient ? new Mongo.Collection('globalProjects') : undefined;
+const Agencies = new Mongo.Collection('agencies');
 
-/*
 const AgencyMemberSchema = new SimpleSchema({
   role: {
     type: String,
@@ -84,6 +83,5 @@ Agencies.helpers({
       .map(m => m.projectId);
   },
 });
-*/
 
-export default GlobalProjects;
+export default Agencies;
