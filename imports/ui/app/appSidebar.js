@@ -78,9 +78,14 @@ const adminMenuItems = [
     path: 'openingScript',
   },
   {
-    name: 'Project Setup',
+    name: 'Agencies',
     icon: 'fa-cog',
-    path: 'projectSetup',
+    path: 'agenciesList',
+  },
+  {
+    name: 'Projects',
+    icon: 'fa-cog',
+    path: 'projectsList',
   },
 ];
 

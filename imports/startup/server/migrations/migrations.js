@@ -106,7 +106,7 @@ export function fixMissingClientSchemasInV1Responses() {
           hc.api('client').disableError(404).getClient(clientId, schema);
           logger.info(`Found ${clientId} in schema ${schema}`);
           missingClients.delete(clientId);
-          Responses.update(response._id, { $set: { clientSchema: schema } });
+          Responses.update(response._id, { $set: { clientSchema: schema, version: 1 } });
           count++;
           return true;
         } catch (e) {

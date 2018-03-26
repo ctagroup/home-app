@@ -44,7 +44,7 @@ Template.clientDeleteReason.events({
     const date = $('#removalDate').val();
     const reasonId = $('#removalReason').val();
 
-    if (remarks.trim().length === 0 && reasonsHash[reasonId].required) {
+    if (reasonsHash[reasonId].required && remarks.trim().length === 0) {
       Bert.alert('Remarks are required', 'danger', 'growl-top-right');
       $('#removalRemarks').focus();
       return;

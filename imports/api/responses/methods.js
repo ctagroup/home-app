@@ -56,10 +56,19 @@ Meteor.methods({
   },
 
   'responses.delete'(id) {
-    logger.info(`METHOD[${Meteor.userId()}]: responses.delete`, id);
+    logger.info(`METHOD[${this.userId}]: responses.delete`, id);
     // TODO: check permissions
     check(id, String);
-    return Responses.remove(id);
+
+    try {
+      const { clientId, surveyId, submissionId } = Responses.findOne(id);
+      const hc = HmisClient.create(this.userId);
+      hc.api('survey').deleteSubmission(clientId, surveyId, submissionId);
+    } catch (err) {
+      logger.warn('Failed to delete response', err);
+    } finally {
+      Responses.remove(id);
+    }
   },
 
   'responses.sendEmails'(id) {
