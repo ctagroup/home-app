@@ -72,5 +72,5 @@ Template.projectSelect.events({
         }
       }
     });
-  }
+  },
 });

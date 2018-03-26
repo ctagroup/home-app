@@ -64,9 +64,7 @@ export function formSchema(doc = {}) {
   };
 
   if (Array.isArray(doc.projects) && Array.isArray(doc.members)) {
-
     const members = users.filter(u => doc.members.includes(u._id));
-
     const selector = { _id: { $in: doc.projects } };
     const options = { sort: { projectName: 1 } };
     const projects = Projects.find(selector, options).fetch();
