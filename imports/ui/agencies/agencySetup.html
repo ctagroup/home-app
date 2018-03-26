@@ -1,0 +1,55 @@
+<template name="agencySetup">
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#general">General Settings</a></li>
+    <li><a data-toggle="tab" href="#projectsList">Projects</a></li>
+    <li><a data-toggle="tab" href="#userProjectGrid">Project Access</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="general" class="tab-pane fade in active">
+      {{>generalSettings}}
+    </div>
+
+    <div id="projectsList" class="tab-pane fade">
+      {{>projectsList projects=projects}}
+    </div>
+
+    <div id="userProjectGrid" class="tab-pane fade">
+      {{>userProjectGrid}}
+    </div>
+  </div>
+</template>
+
+
+<template name="generalSettings">
+    <h3>General Settings</h3>
+    <div>
+        <label>Agency name</label>
+        <input type="text" value="Agency#1">
+      </div>
+      <hr />
+      <div>
+        <label>Project Group</label>
+        <select>
+          <option>Group #1</option>
+          <option>Group #2</option>
+          <option>Group #3</option>
+        </select>
+        <div>Select Project Group associated with this agency</div>
+      </div>
+      <button class="btn btn-primary">Save</button>
+</template>
+
+<template name="projectsList">
+    <h3>Projects</h3>
+    <button class="btn btn-default">Add new Project</button>
+    {{#each projects}}
+      <div>
+        <button class="btn btn-default">Edit</button>
+        {{projectName}}
+      </div>
+    {{/each}}
+</template>
+
+
+
