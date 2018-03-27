@@ -81,9 +81,7 @@ Meteor.methods({
     const groups = hc.api('survey').getQuestionGroups();
     let groupId;
     if (groups.length === 0) {
-      // TODO: create question group
-      groupId = 'TODO';
-      throw new Error('Question group does not exist');
+      groupId = hc.api('survey').createQuestionGroup('default');
     } else {
       groupId = groups[0].questionGroupId;
       logger.debug('uploading questions to group', groupId);
@@ -98,35 +96,13 @@ Meteor.methods({
       const itemDefinition = { ...item };
       delete itemDefinition.hmisId;
       delete itemDefinition.rules;
-      if (item.type === 'question') {
+      if (item.type === 'question' || item.type === 'grid') {
         if (!item.hmisId) {
+          const questionType = item.type === 'question' ? item.category : 'grid';
           const question = hc.api('survey2').createQuestion(groupId, {
             displayText: item.title,
             questionDescription: item.text,
-            questionType: item.category,
-            definition: JSON.stringify(itemDefinition),
-            visibility: true,
-            category: survey.title,
-            subcategory: '',
-          });
-          item.hmisId = question.questionId; // eslint-disable-line
-          results.created.push({
-            id: item.id,
-            hmisId: item.hmisId,
-          });
-        } else {
-          results.skipped.push({
-            id: item.id,
-            hmisId: item.hmisId,
-          });
-        }
-      }
-      if (item.type === 'grid') {
-        if (!item.hmisId) {
-          const question = hc.api('survey2').createQuestion(groupId, {
-            displayText: item.title,
-            questionDescription: item.text,
-            questionType: 'grid',
+            questionType,
             definition: JSON.stringify(itemDefinition),
             visibility: true,
             category: survey.title,
