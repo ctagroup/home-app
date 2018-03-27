@@ -1,0 +1,13 @@
+<template name="projectSelect">
+  <div class="dropdown projectSelect">
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuPS" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        {{currentProject}}
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuPS">
+        {{#each options}}
+          <li><a class="projectItem" href="#">{{label}}</a></li>
+        {{/each}}
+      </ul>
+  </div>
+</template>

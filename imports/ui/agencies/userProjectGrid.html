@@ -1,0 +1,19 @@
+<template name="userProjectGrid">
+  <h3>PROJECT ACCESS</h3>
+  <table>
+    <tr>
+      <th>User</th>
+      {{#each projects}}
+        <th>{{projectName}}</th>
+      {{/each}}
+    </tr>
+    {{#each users}}
+      <tr>
+          <td>{{name}}</td>
+          {{#each projects}}
+            <td><input class="access" type="checkbox" rel="{{../_id}}" title="{{projectName}}" checked={{hasAccess ../_id this._id}}></td>
+          {{/each}}
+      </tr>
+    {{/each}}
+  </table>
+</template>

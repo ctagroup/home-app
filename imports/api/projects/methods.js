@@ -4,6 +4,14 @@ import AppSettings from '/imports/api/appSettings/appSettings';
 
 
 Meteor.methods({
+  'projects.create'(data) {
+    logger.info(`METHOD[${this.userId}]: projects.create`, data);
+    throw new Meteor.Error('Not yet implemented');
+  },
+  'projects.update'(data, projectId) {
+    logger.info(`METHOD[${this.userId}]: projects.update`, data, projectId);
+    throw new Meteor.Error('Not yet implemented');
+  },
   createProjectSetup(projectName, projectCommonName) {
     logger.info(`METHOD[${Meteor.userId()}]: createProjectSetup`, projectName);
     const hc = HmisClient.create(Meteor.userId());
