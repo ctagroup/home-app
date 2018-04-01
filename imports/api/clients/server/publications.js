@@ -39,6 +39,10 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
     self.added('localClients', inputClientId, mergedClient);
     self.ready();
 
+    let mergedReferralStatusHistory = [];
+    let mergedHousingMatch = {};
+    let mergedMatchingScore = 0;
+
     if (loadDetails) {
       eachLimit(mergedClient.clientVersions, Meteor.settings.connectionLimit,
         ({ schema, clientId }, callback) => {
@@ -90,6 +94,10 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
               //   { { clientId/schema } : referralStatusHistory });
               const key = `referralStatusHistory::${schema}::${clientId}`;
               self.changed('localClients', inputClientId, { [key]: referralStatusHistory });
+              mergedReferralStatusHistory =
+                mergedReferralStatusHistory.concat(referralStatusHistory);
+              self.changed('localClients', inputClientId, { referralStatusHistory:
+                mergedReferralStatusHistory });
             } catch (e) {
               logger.warn(e);
             }
@@ -105,6 +113,8 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
               const housingMatch = getHousingMatch(hc, clientId);
               const key = `housingMatch::${schema}::${clientId}`;
               self.changed('localClients', inputClientId, { [key]: housingMatch });
+              mergedHousingMatch = Object.assign(mergedHousingMatch, housingMatch);
+              self.changed('localClients', inputClientId, { housingMatch: mergedHousingMatch });
             } catch (e) {
               logger.warn(e);
             }
@@ -120,6 +130,8 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
               const matchingScore = hc.api('house-matching').getClientScore(clientId);
               const key = `matchingScore::${schema}::${clientId}`;
               self.changed('localClients', inputClientId, { [key]: matchingScore });
+              mergedMatchingScore = Math.max(mergedMatchingScore, matchingScore);
+              self.changed('localClients', inputClientId, { matchingScore: mergedMatchingScore });
             } catch (e) {
               logger.warn(e);
             }

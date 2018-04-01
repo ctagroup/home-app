@@ -107,17 +107,12 @@ Template.viewClient.helpers(
     getStatusTooltip(step) {
       const client = Router.current().data().client;
       let history = ReferralStatusList[step].desc;
-      if (client.referralStatusHistory) {
-        for (let i = 0; i < client.referralStatusHistory.length; i += 1) {
-          if (client.referralStatusHistory[i].status === step) {
-            let txt = client.referralStatusHistory[i].statusDescription;
-            if (client.referralStatusHistory[i].comments) {
-              txt = client.referralStatusHistory[i].comments;
-            }
-            history = `${history}<br />${client.referralStatusHistory[i].dateUpdated} - ${txt}`;
-          }
+      (client.referralStatusHistory || []).forEach((item) => {
+        if (item.status === step) {
+          const txt = item.statusDescription || item.comments;
+          history = `${history}<br />${item.dateUpdated} - ${txt}`;
         }
-      }
+      });
       return history;
     },
 
