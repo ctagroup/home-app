@@ -8,8 +8,39 @@ import HomeConfig from '/imports/config/homeConfig';
 
 import './viewClient.html';
 
+const mergeKeyVersions = (client, key) => {
+  const keyVersions = client.clientVersions
+    .map(({ clientId, schema }) => client[`${key}::${schema}::${clientId}`])
+    .filter((value) => !!value);
+  const mongoKey = client[key] || {};
+  return Object.assign({}, ...keyVersions, mongoKey);
+};
+
+const flattenKeyVersions = (client, key) => {
+  const keyVersions = client.clientVersions
+    .map(({ clientId, schema }) => client[`${key}::${schema}::${clientId}`])
+    .filter((value) => !!value);
+  const mongoKey = client[key] || [];
+  return [keyVersions, mongoKey].reduce((acc, val) => acc.concat(val), []);
+};
+
 Template.viewClient.helpers(
   {
+    eligibleClient() {
+      const currentClientId = Router.current().params._id;
+      const client = Clients.findOne(currentClientId);
+      return mergeKeyVersions(client, 'eligibleClient');
+    },
+    enrollments() {
+      const currentClientId = Router.current().params._id;
+      const client = Clients.findOne(currentClientId);
+      return flattenKeyVersions(client, 'enrollments');
+    },
+    globalHouseholds() {
+      const currentClientId = Router.current().params._id;
+      const client = Clients.findOne(currentClientId);
+      return flattenKeyVersions(client, 'globalHouseholds');
+    },
     clientResponsesPath() {
       const clientId = Router.current().params._id;
       const schema = Router.current().params.query.schema;
