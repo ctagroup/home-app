@@ -63,6 +63,7 @@ export function stringContains(str, query = '') {
   return strLower.indexOf(queryLower) !== -1;
 }
 
+
 // Remove undef., null and empty string.
 // Via: https://stackoverflow.com/questions/286141/remove-blank-attributes-from-an-object-in-javascript
 // extended with empty string comparasion
@@ -74,3 +75,7 @@ Object.keys(obj)
     Object.assign(newObj, { [k]: removeEmpty(obj[k]) }) :  // Recurse.
     Object.assign(newObj, { [k]: obj[k] })),  // Copy value.
   {});
+
+export function isNumeric(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}

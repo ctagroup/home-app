@@ -3,6 +3,7 @@
     "async": "http://registry.npmjs.org/async/-/async-1.0.0.tgz",
     "aws-sdk": "^2.166.0",
     "babel-runtime": "^6.18.0",
+    "currency.js": "^1.1.0",
     "datatables.net-bs": "^1.10.12",
     "jquery": "^1.11.10",
     "meteor-node-stubs": "^0.2.3",
@@ -30,6 +31,7 @@
     "winston-sentry": "git+https://github.com/ualtinok/winston-sentry.git"
   },
   "scripts": {
+    "start": "meteor --settings settings.local.json",
     "lint": "eslint .",
     "test": "meteor test --driver-package practicalmeteor:mocha --port 4000"
   }

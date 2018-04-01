@@ -6,6 +6,9 @@ import { logger } from '/imports/utils/logger';
 import ReferralStatusList from './referralStatusList';
 import HomeConfig from '/imports/config/homeConfig';
 
+import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
+
+import './clientDeleteReason.js';
 import './viewClient.html';
 
 const mergeKeyVersions = (client, key) => {
@@ -23,6 +26,7 @@ const flattenKeyVersions = (client, key) => {
   const mongoKey = client[key] || [];
   return [keyVersions, mongoKey].reduce((acc, val) => acc.concat(val), []);
 };
+const getLastStatus = (statusHistory) => statusHistory && statusHistory[statusHistory.length - 1];
 
 Template.viewClient.helpers(
   {
@@ -49,12 +53,9 @@ Template.viewClient.helpers(
     },
     isReferralStatusActive(step) {
       const client = Router.current().data().client;
-
-      if (client.referralStatusHistory && client.referralStatusHistory.length > 0) {
-        const lastStatus = client.referralStatusHistory[client.referralStatusHistory.length - 1];
-        if (step <= lastStatus.status) {
-          return 'active';
-        }
+      const lastStatus = getLastStatus(client.referralStatusHistory);
+      if (lastStatus) {
+        if (step <= lastStatus.status) return 'active';
       } else if (client.matchingScore && step <= 0) {
         return 'active';
       }
@@ -62,12 +63,9 @@ Template.viewClient.helpers(
     },
     isReferralStatusActiveButton(step) {
       const client = Router.current().data().client;
-
-      if (client.referralStatusHistory && client.referralStatusHistory.length > 0) {
-        const lastStatus = client.referralStatusHistory[client.referralStatusHistory.length - 1];
-        if (step <= lastStatus.status) {
-          return `btn-${ReferralStatusList[step].cssClass}`;
-        }
+      const lastStatus = getLastStatus(client.referralStatusHistory);
+      if (lastStatus) {
+        if (step <= lastStatus.status) return `btn-${ReferralStatusList[step].cssClass}`;
       } else if (client.matchingScore && step <= 0) {
         return `btn-${ReferralStatusList[step].cssClass}`;
       }
@@ -75,36 +73,32 @@ Template.viewClient.helpers(
     },
     getProgressbarActiveStatus() {
       const client = Router.current().data().client;
-      if (client.referralStatusHistory && client.referralStatusHistory.length > 0) {
-        const lastStatus = client.referralStatusHistory[client.referralStatusHistory.length - 1];
-        const cssClass = ReferralStatusList[lastStatus.status].cssClass;
-        return `progress-bar-${cssClass}`;
+      const lastStatus = getLastStatus(client.referralStatusHistory);
+      let cssClass = 'default';
+      if (lastStatus) {
+        cssClass = ReferralStatusList[lastStatus.status].cssClass;
       } else if (client.matchingScore) {
-        const cssClass = ReferralStatusList[0].cssClass;
-        return `progress-bar-${cssClass}`;
+        cssClass = ReferralStatusList[0].cssClass;
       }
-      return 'progress-bar-default';
+      return `progress-bar-${cssClass}`;
     },
     getProgressbarWidth() {
       const client = Router.current().data().client;
-      if (client.referralStatusHistory && client.referralStatusHistory.length > 0) {
-        const lastStatus = client.referralStatusHistory[client.referralStatusHistory.length - 1];
-        const total = ReferralStatusList.length;
-        return `width: ${((lastStatus.status + 1) / total) * 100}%`;
+      const total = ReferralStatusList.length;
+      const lastStatus = getLastStatus(client.referralStatusHistory);
+      let status = -1;
+      if (lastStatus) {
+        status = lastStatus.status;
       } else if (client.matchingScore) {
-        const total = ReferralStatusList.length;
-        return `width: ${(1 / total) * 100}%`;
+        status = 0;
       }
-      return 'width: 0%;';
+      return `width: ${((status + 1) / total) * 100}%;`;
     },
     getCurrentReferralStatus() {
       const client = Router.current().data().client;
-      if (client.referralStatusHistory && client.referralStatusHistory.length > 0) {
-        const lastStatus = client.referralStatusHistory[client.referralStatusHistory.length - 1];
-        return lastStatus.status + 1;
-      } else if (client.matchingScore) {
-        return 1;
-      }
+      const lastStatus = getLastStatus(client.referralStatusHistory);
+      if (lastStatus) return lastStatus.status + 1;
+      if (client.matchingScore) return 1;
       return 0;
     },
     getReferralStatusList() {
@@ -149,66 +143,22 @@ Template.viewClient.helpers(
     },
 
     getText(text, code) {
-      let definition = code === undefined ? '?' : code;
+      const definition = code === undefined ? '?' : code;
       const question = Questions.findOne({ name: text });
+      const intCode = parseInt(code, 10);
       if (question && question.options) {
-        for (let j = 0; j < question.options.length; j += 1) {
-          if (parseInt(question.options[j].value, 10) === parseInt(code, 10)) {
-            definition = question.options[j].description;
-            break;
-          }
-        }
-        return definition;
+        const foundQuestion = question.options.find(
+          (option) => parseInt(option.value, 10) === intCode);
+        return foundQuestion ? foundQuestion.description : definition;
       }
-      if (text === 'race') {
-        switch (code) {
-          case 1:
-          case '1': return 'American Indian or Alaska Native';
-          case 2:
-          case '2': return 'Asian';
-          case 3:
-          case '3': return 'Black or African American';
-          case 4:
-          case '4': return 'Native Hawaiian or Other Pacific Islander';
-          case 5:
-          case '5': return 'White';
-          default: return definition;
-        }
+      switch (text) {
+        case 'race': return getRace(intCode, definition);
+        case 'ethnicity': return getEthnicity(intCode, definition);
+        case 'gender': return getGender(intCode, definition);
+        case 'veteranStatus':
+        case 'disablingcondition': return getYesNo(intCode, definition);
+        default: return definition;
       }
-      if (text === 'ethnicity') {
-        switch (code) {
-          case 0:
-          case '0': return 'Non-Hispanic/Non-Latino';
-          case 1:
-          case '1': return 'Hispanic/Latino';
-          default: return definition;
-        }
-      }
-      if (text === 'gender') {
-        switch (code) {
-          case 0:
-          case '0': return 'Female';
-          case 1:
-          case '1': return 'Male';
-          case 2:
-          case '2': return 'Transgender male to female';
-          case 3:
-          case '3': return 'Transgender female to male';
-          case 4:
-          case '4': return 'Other';
-          default: return definition;
-        }
-      }
-      if (text === 'veteranStatus' || text === 'disablingcondition') {
-        switch (code) {
-          case 0:
-          case '0': return 'No';
-          case 1:
-          case '1': return 'Yes';
-          default: return definition;
-        }
-      }
-      return definition;
     },
   }
 );
@@ -291,21 +241,13 @@ Template.viewClient.events(
         recipients.toRecipients = recipients.toRecipients.concat(emails.split(','));
       }
 
-      let reservation = false;
-      if (client.housingMatch) {
-        reservation = client.housingMatch;
-      }
-
-      if (reservation) {
-        let project = false;
-        if (reservation.housingUnit) {
-          project = reservation.housingUnit.project;
-        }
-
-        if (project) {
-          const linkedUsers = Users.find({ projectsLinked: project.projectId }).fetch();
-          recipients.ccRecipients = linkedUsers.map(u => u.emails[0].address);
-        }
+      if (
+        client.housingMatch &&
+        client.housingMatch.housingUnit &&
+        client.housingMatch.housingUnit.project) {
+        const projectId = client.housingMatch.housingUnit.project.projectId;
+        const linkedUsers = Users.find({ projectsLinked: projectId }).fetch();
+        recipients.ccRecipients = linkedUsers.map(u => u.emails[0].address);
       }
 
       Meteor.call(
@@ -320,9 +262,10 @@ Template.viewClient.events(
             Bert.alert('Error updating client match status.', 'danger', 'growl-top-right');
           } else {
             logger.log(res);
-            $('.progress-bar').css({ width: `${percent}%` });
-            $('.progress-bar').text(`${index + 1} / ${total}`);
-            $('.progress-bar').removeClass()
+            const progressSelector = $('.progress-bar');
+            progressSelector.css({ width: `${percent}%` });
+            progressSelector.text(`${index + 1} / ${total}`);
+            progressSelector.removeClass()
               .addClass(`progress-bar progress-bar-${cssClass} progress-bar-striped active`);
 
             // $('#referral-timeline .navigation a').removeClass()
@@ -344,30 +287,6 @@ Template.viewClient.events(
           Bert.alert(err.reason || err.error, 'danger', 'growl-top-right');
         } else {
           Bert.alert('Client added to the matching process', 'success', 'growl-top-right');
-          // We simulate update in client-side collection
-          // Sadly, this cannot be done in meteor call (isSimulation)
-          Clients._collection.update(clientId, { $set: { // eslint-disable-line
-            'eligibleClient.ignoreMatchProcess': res.ignoreMatchProcess,
-            'eligibleClient.remarks': res.remarks,
-          } });
-        }
-      });
-    },
-
-    'click .removeFromHousingList'(evt, tmpl) {
-      const clientId = tmpl.data.client._id;
-      const remarks = $('#removalRemarks').val();
-
-      if (remarks.trim().length === 0) {
-        Bert.alert('Remarks are required', 'danger', 'growl-top-right');
-        $('#removalRemarks').focus();
-        return;
-      }
-      Meteor.call('ignoreMatchProcess', clientId, true, remarks, (err, res) => {
-        if (err) {
-          Bert.alert(err.reason || err.error, 'danger', 'growl-top-right');
-        } else {
-          Bert.alert('Client removed for the matching process', 'success', 'growl-top-right');
           // We simulate update in client-side collection
           // Sadly, this cannot be done in meteor call (isSimulation)
           Clients._collection.update(clientId, { $set: { // eslint-disable-line

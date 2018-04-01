@@ -88,7 +88,7 @@ Meteor.publish('responses.one', function publishSingleResponse(responseId) {
       self.added('responses', response._id, response);
       self.ready();
     } else {
-      const localClient = PendingClients.findOne({ _id: response.clientID });
+      const localClient = PendingClients.findOne({ _id: response.clientId });
       response.clientDetails = localClient;
     }
     self.added('responses', response._id, response);

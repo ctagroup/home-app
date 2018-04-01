@@ -7,9 +7,9 @@ import { escapeKeys, unescapeKeys } from '/imports/api/utils';
 import Responses, { ResponseStatus } from '/imports/api/responses/responses';
 import { prepareEmails } from '../surveys/computations';
 
-function getResponsesToUpload(values, definition, defaultSectionId) {
+function prepareValuesToUpload(values, definition, defaultSectionId) {
   const questionIds = Object.keys(values);
-  logger.debug('getResponsesToUpload', values);
+  logger.debug('prepareValuesToUpload', values);
   return questionIds.map(id => {
     const question = findItem(id, definition);
     return {
@@ -56,10 +56,19 @@ Meteor.methods({
   },
 
   'responses.delete'(id) {
-    logger.info(`METHOD[${Meteor.userId()}]: responses.delete`, id);
+    logger.info(`METHOD[${this.userId}]: responses.delete`, id);
     // TODO: check permissions
     check(id, String);
-    return Responses.remove(id);
+
+    try {
+      const { clientId, surveyId, submissionId } = Responses.findOne(id);
+      const hc = HmisClient.create(this.userId);
+      hc.api('survey').deleteSubmission(clientId, surveyId, submissionId);
+    } catch (err) {
+      logger.warn('Failed to delete response', err);
+    } finally {
+      Responses.remove(id);
+    }
   },
 
   'responses.sendEmails'(id) {
@@ -106,49 +115,55 @@ Meteor.methods({
     const response = Responses.findOne(id);
     const { clientId, surveyId } = response;
     const values = unescapeKeys(response.values);
-    const survey = Surveys.findOne(surveyId);
-
-    if (!survey) {
-      Responses.update(id, { $set: { status: ResponseStatus.UPLOAD_ERROR } });
-      throw new Meteor.Error('404', 'Survey does not exist');
-    }
-
-    if (!survey.hmis) {
-      Responses.update(id, { $set: { status: ResponseStatus.UPLOAD_ERROR } });
-      throw new Meteor.Error('error', 'Survey not uploaded');
-    }
-
-    const definition = JSON.parse(survey.definition);
 
     const hc = HmisClient.create(Meteor.userId());
 
+    // check if survey exists in hslynk
+    let survey;
+    try {
+      survey = hc.api('survey2').getSurvey(surveyId);
+    } catch (err) {
+      Responses.update(id, { $set: { status: ResponseStatus.UPLOAD_ERROR } });
+      logger.error(err);
+      throw new Meteor.Error('error', `Survey ${surveyId} not uploaded.`);
+    }
+
+    const definition = JSON.parse(survey.surveyDefinition);
+
+    // collect scores to send from scoring variables
     const client = hc.api('client').getClient(response.clientId, response.clientSchema);
     const formState = computeFormState(definition, values, {}, { client });
-    const scores = getScoringVariables(formState);
+    const scores = getScoringVariables(formState); // each score is { name, value } object
     logger.debug('scores to upload', scores);
 
-    const sectionsResponse = hc.api('survey').getSurveySections(survey.hmis.surveyId);
-    const existingSections = mapUploadedSurveySections(sectionsResponse);
+    // get existing (in HMIS) sections for this survey
+    // there are 2 types of sections:
+    // one default section for storing all question values,
+    // any number of score sections (for storing each value with name score.*)
+    const existingSectionsData = hc.api('survey').getSurveySections(surveyId);
+    const existingSections = mapUploadedSurveySections(existingSectionsData);
     logger.debug('existing sections', existingSections);
 
+    // discover sectionId of default section (which will be used to upload question values)
     const defaultSectionId = existingSections.find(s => s.type === 'default').hmisId;
-    const responses = getResponsesToUpload(values, definition, defaultSectionId);
+    // tie together question values, questions and default section,
+    const allQuestionValues = prepareValuesToUpload(values, definition, defaultSectionId);
+    // we are only interested in values for questions which have hmisIds
+    const questionVaules = allQuestionValues.filter(v => v.questionId);
 
     try {
-      const validResponses = responses.filter(r => r.questionId);
-
       if (response.submissionId) {
-        logger.info(`Deleting old responses ${id}`);
-        hc.api('survey')
-          .getResponses(clientId, survey.hmis.surveyId)
-          .map(r => hc.api('survey').deleteResponse(
-            clientId, survey.hmis.surveyId, r.responseId)
-          );
-      }
+        // if this response has already been submitted
+        logger.info(`Deleting old submission ${id}`);
 
-      logger.info(`Submitting response ${id}`);
-      const { submissionId } = hc.api('survey').createResponse(
-        clientId, survey.hmis.surveyId, validResponses
+        // delete old submission
+        hc.api('survey').deleteSubmission(clientId, surveyId, response.submissionId);
+        Responses.update(id, { $unset: { submissionId: true } });
+      }
+      logger.info(`Submitting responses ${id}`);
+      // create new submission - send all question values in one call
+      const { submissionId } = hc.api('survey').createSubmission(
+        clientId, surveyId, questionVaules
       );
       Responses.update(id, { $set: {
         submissionId,
@@ -170,7 +185,7 @@ Meteor.methods({
             `Score ${score.name} has no section in HMIS. Re-upload the survey`
           );
         }
-        hc.api('survey').createSectionScores(clientId, survey.hmis.surveyId, scoreSection.hmisId, {
+        hc.api('survey').createSectionScores(clientId, surveyId, scoreSection.hmisId, {
           sectionScore: score.value,
         });
       });
@@ -180,7 +195,7 @@ Meteor.methods({
       throw new Meteor.Error('responses', `Response submitted but failed to upload scores: ${e}`);
     }
 
-    const invalidResponses = responses.filter(r => !r.questionId);
-    return invalidResponses;
+    const invalidQuestionValues = allQuestionValues.filter(v => !v.questionId);
+    return invalidQuestionValues;
   },
 });

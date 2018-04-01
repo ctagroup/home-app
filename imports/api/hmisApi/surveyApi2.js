@@ -6,7 +6,20 @@ const BASE_URL = 'https://www.hmislynk.com/survey-api/rest/v2';
 export class SurveyApi2 extends ApiEndpoint {
   getSurveys(start = 0, limit = 9999) {
     const url = `${BASE_URL}/surveys?startIndex=${start}&limit=${limit}`;
-    return this.doGet(url).survies;
+    const { pagination, surveys } = this.doGet(url).surveys;
+    const remaining = limit - pagination.returned;
+    if (remaining > 0 && pagination.returned > 0) {
+      return [
+        ...surveys,
+        ...this.getSurveys(pagination.from + pagination.returned, remaining),
+      ];
+    }
+    return surveys;
+  }
+
+  getSurvey(surveyId) {
+    const url = `${BASE_URL}/surveys/${surveyId}`;
+    return this.doGet(url).survey;
   }
 
   createSurvey(survey) {
@@ -22,6 +35,11 @@ export class SurveyApi2 extends ApiEndpoint {
       },
     };
     return this.doPost(url, body).survey;
+  }
+
+  deleteSurvey(surveyId) {
+    const url = `${BASE_URL}/surveys/${surveyId}`;
+    return this.doDel(url);
   }
 
   updateSurvey(surveyId, survey) {
