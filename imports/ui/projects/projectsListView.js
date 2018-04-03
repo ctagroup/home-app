@@ -9,7 +9,7 @@ const tableOptions = {
       data: 'projectName',
       title: 'Project Name',
       render(value, op, doc) {
-        return `<a href="${Router.path('projectsEdit', { _id: doc._id })}">${value}</a>`;
+        return `<a href="${Router.path('projectsEdit', doc)}">${value}</a>`;
       },
     },
     {
@@ -19,6 +19,10 @@ const tableOptions = {
     {
       data: 'projectGroup',
       title: 'Project Group',
+    },
+    {
+      data: 'schema',
+      title: 'Schema',
     },
     {
       data: 'dateCreated',

@@ -31,11 +31,12 @@ function projectOptions() {
 
 Template.projectSelect.helpers({
   currentProject() {
+    const user = Meteor.user();
     const selected = projectOptions().filter(p => p.selected);
     if (selected.length > 0) {
       return selected[0].label;
     }
-    return Meteor.user().activeProjectId || NO_PROJECT_SELECTED;
+    return user ? user.activeProjectId : NO_PROJECT_SELECTED;
   },
   options() {
     return projectOptions();
@@ -72,5 +73,5 @@ Template.projectSelect.events({
         }
       }
     });
-  }
+  },
 });

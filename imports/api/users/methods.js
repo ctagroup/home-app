@@ -124,7 +124,7 @@ Meteor.methods({
   },
   'users.projects.setActive'(projectId) {
     logger.info(`METHOD[${Meteor.userId()}]: users.projects.setActive`, projectId);
-    Match.test(projectId, Match.OneOf(String, null));
+    Match.test(projectId, Match.OneOf(String, null)); // eslint-disable-line
     if (!this.userId) {
       throw new Meteor.Error('403', 'Forbidden');
     }
