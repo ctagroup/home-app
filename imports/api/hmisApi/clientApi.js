@@ -146,6 +146,16 @@ export class ClientApi extends ApiEndpoint {
     return this.doGet(url).project;
   }
 
+  createProject(project, schema = 'v2015') {
+    const url = `${BASE_URL}/${schema}/projects`;
+    return this.doPost(url, { project });
+  }
+
+  updateProject(projectId, project, schema = 'v2015') {
+    const url = `${BASE_URL}/${schema}/projects/${projectId}`;
+    return this.doPut(url, { project });
+  }
+
   postQuestionAnswer(category, data) {
     const url = `${BASE_URL}/${category}`;
     return this.doPost(url, data);

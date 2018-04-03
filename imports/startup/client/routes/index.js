@@ -12,5 +12,6 @@ import './globalHouseholds';
 import './users';
 import './roleManager';
 import './openingScript';
-import './projectSetup';
+import './projects';
+import './agencies';
 import './plugins';

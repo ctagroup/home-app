@@ -19,3 +19,13 @@ Meteor.publish('projects.all', function publishAllProjects() {
   });
   this.ready();
 });
+
+Meteor.publish('projects.one', function publishOneProject(id) {
+  logger.info(`PUB[${this.userId}]: projects.one`);
+  if (!this.userId) {
+    return;
+  }
+  const project = HmisClient.create(this.userId).api('client').getProject(id);
+  this.added('localProjects', project.projectId, project);
+  this.ready();
+});

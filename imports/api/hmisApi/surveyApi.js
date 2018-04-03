@@ -40,8 +40,10 @@ export class SurveyApi extends ApiEndpoint {
     return this.doDel(url);
   }
 
-  createQuestionGroup() {
-    throw new Error('Not implemented');
+  createQuestionGroup(name) {
+    const url = `${BASE_URL}/questiongroups`;
+    const body = { questionGroup: { questionGroupName: name } };
+    return this.doPost(url, body).questionGroup.questionGroupId; // questionIGroupId?
   }
 
   getQuestionGroups() {
@@ -118,11 +120,6 @@ export class SurveyApi extends ApiEndpoint {
     const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/responses/${submissionId}`;
     const body = { responses: { responses } };
     return this.doPut(url, body).response;
-  }
-
-  deleteResponse(clientId, surveyId, responseId) {
-    const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/responses/${responseId}`;
-    return this.doDel(url);
   }
 
   createSubmission(clientId, surveyId, responses) {

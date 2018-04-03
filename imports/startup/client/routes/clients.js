@@ -57,14 +57,14 @@ Router.route(
     },
     onBeforeAction() {
       // Redirect External Surveyor
-      const clientID = Router.current().params._id;
+      const clientId = Router.current().params._id;
       if (Roles.userIsInRole(Meteor.userId(), 'External Surveyor')) {
         const pausedResponse = Responses.findOne({
-          clientID,
-          responsestatus: 'Paused',
+          clientId,
+          status: 'paused',
         });
-        const hasNoResponses = Responses.find({ clientID }).count() === 0;
-        const hmisClient = Clients.findOne(clientID);
+        const hasNoResponses = Responses.find({ clientId }).count() === 0;
+        const hmisClient = Clients.findOne(clientId);
         const query = hmisClient ? { schema: hmisClient.schema } : {};
 
         if (pausedResponse) {
@@ -72,7 +72,7 @@ Router.route(
           Router.go('adminDashboardresponsesEdit', { _id: pausedResponse._id });
         } else if (hasNoResponses) {
           Bert.alert('Create new response', 'success', 'growl-top-right');
-          Router.go('selectSurvey', { _id: clientID }, { query });
+          Router.go('selectSurvey', { _id: clientId }, { query });
         } else {
           if (hmisClient) {
             Bert.alert('This client has already been surveyed', 'danger', 'growl-top-right');

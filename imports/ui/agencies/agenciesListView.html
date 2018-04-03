@@ -1,0 +1,10 @@
+<template name="agenciesListView">
+  <p><a href="{{pathFor 'agenciesNew'}}" class="btn btn-primary"><i class="fa fa-plus"></i> New Agency</a></p>
+  {{#if hasData}}
+    {{> ReactiveDatatable tableData=tableData options=tableOptions }}
+  {{else}}
+    <div class="alert alert-info">
+      <p>There are no agencies to show.</p>
+    </div>
+  {{/if}}
+</template>
