@@ -67,6 +67,7 @@ export function formSchema() {
     },
     projectGroup: {
       type: String,
+      optional: true,
     },
   };
   return new SimpleSchema(definition);

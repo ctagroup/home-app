@@ -157,6 +157,11 @@ export class ClientApi extends ApiEndpoint {
     return this.doPut(url, { project });
   }
 
+  deleteProject(projectId, schema = DEFAULT_PROJECT_SCHEMA) {
+    const url = `${BASE_URL}/${schema}/projects/${projectId}`;
+    return this.doDel(url);
+  }
+
   postQuestionAnswer(category, data) {
     const url = `${BASE_URL}/${category}`;
     return this.doPost(url, data);

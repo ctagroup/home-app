@@ -1,6 +1,6 @@
 import moment from 'moment';
 import Projects from '/imports/api/projects/projects';
-import { TableDom } from '/imports/ui/dataTable/helpers';
+import { TableDom, deleteProjectButton } from '/imports/ui/dataTable/helpers';
 import './projectsListView.html';
 
 const tableOptions = {
@@ -34,6 +34,9 @@ const tableOptions = {
         return moment(value).format('MM/DD/YYYY h:mm A');
       },
     },
+    deleteProjectButton((project) => {
+      Projects._collection.remove(project._id); // eslint-disable-line
+    }),
   ],
   dom: TableDom,
   processing: true,

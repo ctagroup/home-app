@@ -14,6 +14,11 @@ Meteor.methods({
     const hc = HmisClient.create(Meteor.userId());
     return hc.api('client').updateProject(projectId, data, schema);
   },
+  'projects.delete'(projectId, schema) {
+    logger.info(`METHOD[${this.userId}]: projects.delete`, projectId, schema);
+    const hc = HmisClient.create(Meteor.userId());
+    return hc.api('client').deleteProject(projectId, schema);
+  },
   createProjectSetup(projectName, projectCommonName) {
     logger.info(`METHOD[${Meteor.userId()}]: createProjectSetup`, projectName);
     const hc = HmisClient.create(Meteor.userId());
