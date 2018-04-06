@@ -1,6 +1,7 @@
 import { logger } from '/imports/utils/logger';
 import Questions from '/imports/api/questions/questions';
 import Responses from '/imports/api/responses/responses';
+import { fullName } from '/imports/api/utils';
 import { getSurveySections, getSurveyQuestionsPerSection } from '/imports/api/surveys/helpers';
 import './responseForm.html';
 
@@ -32,14 +33,14 @@ Template.responseForm.helpers(
       if (Router.current().route.getName() === 'previewSurvey') {
         return 'Dummy Client';
       }
-
-      const client = this.client;
-
-      const fn = (client && client.firstName) ? client.firstName.trim() : '';
-      const mn = (client && client.middleName) ? client.middleName.trim() : '';
-      const ln = (client && client.lastName) ? client.lastName.trim() : '';
-      const name = `${fn} ${mn} ${ln}`;
-      return name;
+      if (this.response) {
+        if (this.response.clientDetails) {
+          const client = this.response.clientDetails;
+          return client.error ? client.error : fullName(client);
+        }
+        return this.response.clientId;
+      }
+      return 'n/a';
     },
     surveyCompleted() {
       return ResponseHelpers.isSurveyCompleted(Router.current().params._id);
