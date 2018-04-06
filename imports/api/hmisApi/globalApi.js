@@ -10,12 +10,12 @@ export class GlobalApi extends ApiEndpoint {
   getGlobalProjects(start = 0, limit = 9999) {
     const url = `${BASE_URL}/global-projects?startIndex=${start}&maxItems=${limit}`;
     const { pagination, globalProjects } = this.doGet(url).globalProjects;
-    const mapped = globalProjects.map((project) => {
-      return {
+    const mapped = globalProjects.map((project) => (
+      {
         ...project,
         projects: project.projects.projects,
-      };
-    });
+      }
+    ));
     const remaining = limit - pagination.returned;
     if (remaining > 0 && pagination.returned > 0) {
       return [
