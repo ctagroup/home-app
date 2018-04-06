@@ -79,9 +79,20 @@ export function migrateV1Responses() {
 
 
 export function fixMissingClientSchemasInV1Responses() {
-  const user = Users.findOne({ 'services.HMIS.emailAddress': Meteor.settings.admins[0] });
   logger.info(`Fixing missing client schemas in ${Responses.find().count()} responses...`);
-  logger.debug('using account', Meteor.settings.admins[0], !!user);
+
+  if (!Array.isArray(Meteor.settings.admins)) {
+    logger.warn('Admin email not found');
+    return;
+  }
+  const adminEmail = Meteor.settings.admins[0];
+  const user = Users.findOne({ 'services.HMIS.emailAddress': adminEmail });
+  if (!user) {
+    logger.warn('Admin account not found');
+    return;
+  }
+
+  logger.debug('using account', adminEmail);
   const hc = HmisClient.create(user._id);
   let count = 0;
   const missingClients = new Set();
