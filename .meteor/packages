@@ -4,28 +4,28 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
-meteor-base@1.0.4             # Packages every Meteor app needs to have
-mobile-experience@1.0.4       # Packages for a great mobile UX
-mongo@1.1.14                   # The database Meteor supports right now
+meteor-base@1.3.0             # Packages every Meteor app needs to have
+mobile-experience@1.0.5       # Packages for a great mobile UX
+mongo@1.4.2                   # The database Meteor supports right now
 blaze-html-templates@1.0.4    # Compile .html files into Meteor Blaze views
 session@1.1.7                 # Client-side reactive dictionary for your app
-reactive-var
+reactive-var@1.0.11
 jquery@1.11.10                  # Helpful client-side library
-tracker@1.1.1                 # Meteor's client-side reactive programming library
+tracker@1.1.3                 # Meteor's client-side reactive programming library
 
-es5-shim@4.6.15                # ECMAScript 5 compatibility for older browsers.
-ecmascript@0.6.1              # Enable ECMAScript2015+ syntax in app code
+es5-shim@4.7.0                # ECMAScript 5 compatibility for older browsers.
+ecmascript@0.10.6              # Enable ECMAScript2015+ syntax in app code
 
-modules@0.7.7
+modules@0.11.3
 
 iron:router
-less@2.7.8
+less@2.7.11
 zimme:active-route
 useraccounts:bootstrap
 useraccounts:iron-routing
-email@1.1.18
+email@1.2.3
 underscore@1.0.10
-accounts-google@1.0.11
+accounts-google@1.3.1
 service-configuration@1.0.11
 dburles:collection-helpers
 aldeed:collection2
@@ -34,15 +34,15 @@ aldeed:tabular
 alanning:roles
 fortawesome:fontawesome
 jparker:gravatar
-check@1.2.4
-oauth2@1.1.11
+check@1.3.0
+oauth2@1.2.0
 desaiuditd:accounts-hmis
 desaiuditd:hmis
-standard-minifier-css@1.3.2
-standard-minifier-js@1.2.1
+standard-minifier-css@1.4.0
+standard-minifier-js@2.3.1
 sergeyt:typeahead
-http@1.2.10
-oauth@1.1.12
+http@1.4.0
+oauth@1.2.1
 meteorhacks:aggregate
 okgrow:router-autoscroll
 mdg:camera
@@ -53,7 +53,7 @@ dburles:google-maps
 tsega:bootstrap3-datetimepicker
 mpowaga:autoform-summernote
 cunneen:signature-pad
-random@1.0.10
+random@1.1.0
 ephemer:reactive-datatables
 hb5:meteor-is.js
 meteorhacks:unblock
@@ -64,10 +64,10 @@ templating@1.2.14_1
 mizzao:jquery-ui
 natestrauser:select2
 zuuk:stale-session
-shell-server@0.2.1
+shell-server@0.3.1
 # accounts-password is added because of houston:admin. Because there was a build error for npm-bcrypt.
 # So don't remove accounts-password, if you want to keep houston:admin
-accounts-password
+accounts-password@1.5.0
 themeteorchef:bert
 practicalmeteor:mocha
 xolvio:cleaner
@@ -77,3 +77,5 @@ zimme:iron-router-auth
 react-template-helper
 vazco:universe-autoform-select
 deanius:promise
+google-config-ui
+dynamic-import

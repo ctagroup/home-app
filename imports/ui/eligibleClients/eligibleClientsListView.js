@@ -22,10 +22,12 @@ const tableOptions = {
       data: 'surveyScore',
       render(value, type, doc) {
         const client = doc.client;
+        const query = {
+          clientId: doc.clientId,
+        };
         if (client.schema) {
-          const url = Router.path(
-            'adminDashboardresponsesView',
-            { query: `clientId=${client.id}` }
+          const url = Router.path('adminDashboardresponsesView', {},
+            { query }
           );
           return `<a href="${url}">${value}</a>`;
         }
