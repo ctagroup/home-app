@@ -35,8 +35,8 @@ Template.projectSelect.helpers({
     if (selected.length > 0) {
       return selected[0].label;
     }
-    const user = Meteor.user();
-    return user ? (user.activeProjectId || NO_PROJECT_SELECTED) : NO_PROJECT_SELECTED;
+    const user = Meteor.user() || {};
+    return user.activeProjectId || NO_PROJECT_SELECTED;
   },
   options() {
     return projectOptions();
