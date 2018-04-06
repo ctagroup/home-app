@@ -19,16 +19,15 @@
     "react-sortable-tree": "^1.8.1",
     "uniforms": "^1.23.2",
     "uniforms-bootstrap3": "^1.23.2",
-    "winston": "^2.4.1"
+    "winston": "^2.4.1",
+    "winston-sentry": "git+https://github.com/ualtinok/winston-sentry.git"
   },
   "devDependencies": {
     "eslint": "^2.13.1",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-plugin-import": "^1.8.1",
     "eslint-plugin-jsx-a11y": "^1.5.1",
-    "eslint-plugin-react": "^5.2.2",
-    "raven": "^1.2.1",
-    "winston-sentry": "git+https://github.com/ualtinok/winston-sentry.git"
+    "eslint-plugin-react": "^5.2.2"
   },
   "scripts": {
     "start": "meteor --settings settings.local.json",
