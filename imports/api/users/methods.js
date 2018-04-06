@@ -160,7 +160,7 @@ Meteor.methods({
 
     let apiResponse = false;
     try {
-      const hc = HmisClient.create(this.userId)
+      const hc = HmisClient.create(this.userId);
       apiResponse = hc.api('user-service').getUser(this.userId);
     } catch (err) {
       apiResponse = err;
@@ -175,27 +175,6 @@ Meteor.methods({
     };
     logger.info(result);
     return result;
-  },
-
-  'users.expireToken'() {
-    logger.info(`METHOD[${this.userId}]: users.expireToken`);
-    const user = Meteor.users.findOne(this.userId);
-    const { expiresAt } = user.services.HMIS;
-    Meteor.users.update(this.userId, {
-      $set: {
-        'services.HMIS.expiresAt': expiresAt - 30 * 60 * 1000,
-      },
-    });
-
-  },
-
-  'users.logout'() {
-    logger.info(`METHOD[${this.userId}]: users.logout`);
-    Meteor.users.update(this.userId, {
-      $set: {
-        'services.resume.loginTokens': []
-      },
-    });
   },
 
   addUserLocation(userID, timestamp, position) {
