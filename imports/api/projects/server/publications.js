@@ -6,7 +6,10 @@ Meteor.publish('projects.all', function publishAllProjects() {
   if (!this.userId) {
     return;
   }
-  const api = HmisClient.create(this.userId).api('client');
+
+  const hc = HmisClient.create(this.userId);
+  // console.log('gp', hc.api('global').getGlobalProjects());
+  const api = hc.api('client');
   const schemas = ['v2017', 'v2016', 'v2015', 'v2014'];
   schemas.forEach(schema => {
     try {
