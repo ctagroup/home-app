@@ -114,4 +114,3 @@ export class HmisClient {
     return new HmisClient(userId, serviceConfig, HmisApiRegistry, Meteor.users);
   }
 }
-

@@ -1,6 +1,7 @@
 <template name="responseForm">
   <div class="quesL">
-    <h3 class="page-header">{{clientName}}</h3>
+    <p><strong>Client: </strong>{{clientName}}</p>
+    <p><strong>Response status: </strong>{{this.response.status}}</p>
 
     <h2>
       {{#if isActiveRoute 'previewSurvey'}}

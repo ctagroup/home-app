@@ -57,7 +57,7 @@ Router.route(
 
 Router.route(
   'projectsEdit', {
-    path: '/projects/:_id/edit',
+    path: '/projects/:schema/:_id/edit',
     template: Template.projectsEdit,
     controller: AppController,
     authorize: {
@@ -67,8 +67,9 @@ Router.route(
     },
     waitOn() {
       const id = Router.current().params._id;
+      const schema = Router.current().params.schema;
       return [
-        Meteor.subscribe('projects.one', id),
+        Meteor.subscribe('projects.one', id, schema),
       ];
     },
     data() {
