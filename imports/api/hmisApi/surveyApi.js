@@ -134,6 +134,33 @@ export class SurveyApi extends ApiEndpoint {
     return this.doDel(url);
   }
 
+  getClientsSurveySubmissions() {
+    const url = `${BASE_URL}/clientsurveysubmissions`;
+    // TODO: load all pages?
+    return this.doGet(url).clientSurveySubmissions.clientSurveySubmissions;
+  }
+
+  getClientSurveySubmissions(clientId, start = 0, limit = 9999) {
+    const url = `${BASE_URL}/clientsurveysubmissions/${clientId}?startIndex=${start}&limit=${limit}`; // eslint-disable-line max-len
+
+    const { pagination, clientSurveySubmissions } = this.doGet(url).surveys;
+    const remaining = limit - pagination.returned;
+    if (remaining > 0 && pagination.returned > 0) {
+      return [
+        ...clientSurveySubmissions,
+        ...this.getClientSurveySubmissions(clientId, pagination.from + pagination.returned, remaining), // eslint-disable-line max-len
+      ];
+    }
+    return clientSurveySubmissions;
+  }
+
+  putClientSurveySubmissions(clientSubmissionId, globalEnrollmentId) {
+    // Add globalEnrollmentId to Submission:
+    const url = `${BASE_URL}/clientsurveysubmissions/${clientSubmissionId}`; // eslint-disable-line max-len
+    const body = { clientsurveysubmission: { globalEnrollmentId } };
+    return this.doPut(url, body);
+  }
+
   createSectionScores(clientId, surveyId, sectionId, sectionScore) {
     const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/sections/${sectionId}/scores`;
     const body = { sectionScore };
