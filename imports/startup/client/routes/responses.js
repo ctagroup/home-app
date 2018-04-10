@@ -2,7 +2,10 @@ import { Clients } from '/imports/api/clients/clients';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import Responses from '/imports/api/responses/responses';
 import Surveys from '/imports/api/surveys/surveys';
-import { ResponsesAccessRoles } from '/imports/config/permissions';
+import {
+  ResponsesAccessRoles,
+  PendingClientsAccessRoles,
+} from '/imports/config/permissions';
 import { fullName } from '/imports/api/utils';
 import { AppController } from './controllers';
 import '/imports/ui/responses/responsesListView';
@@ -94,7 +97,7 @@ Router.route('adminDashboardresponsesEdit', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), ResponsesAccessRoles);
+      return Roles.userIsInRole(Meteor.userId(), PendingClientsAccessRoles);
     },
   },
   waitOn() {
@@ -105,11 +108,23 @@ Router.route('adminDashboardresponsesEdit', {
       Meteor.subscribe('questions.all'),
     ];
   },
+  onBeforeAction() {
+    // Redirect External Surveyor
+    if (Roles.userIsInRole(Meteor.userId(), 'External Surveyor')) {
+      const pausedResponse = Responses.findOne({
+        _id: Router.current().params._id,
+        status: 'paused',
+      });
+      if (!pausedResponse) {
+        Bert.alert('This client has already been surveyed', 'danger', 'growl-top-right');
+        Router.go('adminDashboardclientsView', {});
+      }
+    }
+    this.next();
+  },
   data() {
     const response = Responses.findOne(this.params._id);
-    if (!response) {
-      return {};
-    }
+    if (!response) return {};
 
     const { clientId, clientSchema } = response;
     const clientStub = {
