@@ -59,7 +59,7 @@ Router.route('adminDashboardresponsesNew', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), ResponsesAccessRoles);
+      return Roles.userIsInRole(Meteor.userId(), PendingClientsAccessRoles);
     },
   },
   waitOn() {
