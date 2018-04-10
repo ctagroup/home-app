@@ -5,6 +5,10 @@ const BASE_URL = 'https://www.hmislynk.com/survey-api/rest';
 const DEFAULT_GROUP_ID = '95bdca23-5135-4552-9f11-819cab1aaa45';
 
 export class SurveyApi extends ApiEndpoint {
+  listQuestions(startIndex = 0) {
+    const url = `${BASE_URL}/questions?startIndex=${startIndex}`;
+    return this.doGet(url).questions;
+  }
 
   createSurvey(survey) {
     const url = `${BASE_URL}/surveys`;

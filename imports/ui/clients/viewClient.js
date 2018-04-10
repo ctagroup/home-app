@@ -9,6 +9,7 @@ import HomeConfig from '/imports/config/homeConfig';
 import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 
 import './clientDeleteReason.js';
+import './manageClientEnrollments.html';
 import './viewClient.html';
 
 const mergeKeyVersions = (client, key) => {

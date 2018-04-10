@@ -43,6 +43,19 @@ Meteor.methods({
     );
   },
 
+  saveToSchema(client, inputSchema) {
+    // Creates a client version if it doesn't exist for this version
+    const { clientVersions } = client;
+    // Check if exists:
+    const clientVersion = clientVersions.find(({ schema }) => schema === inputSchema);
+    if (clientVersion) return clientVersion;
+
+    const hc = HmisClient.create(Meteor.userId());
+    return hc.api('client').createClient({
+      ...client, suffix: client.nameSuffix || '',
+    }, inputSchema); // { clientId, schema }
+  },
+
   searchClient(query, options) {
     logger.info(`METHOD[${Meteor.userId()}]: searchClient(${query})`);
     const optionz = options || {};

@@ -29,11 +29,14 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
 
   try {
     const hc = HmisClient.create(this.userId);
-    client = hc.api('client').getClient(inputClientId, inputSchema);
-    client.schema = inputSchema;
-    client.isHMISClient = true;
+    if (inputSchema) {
+      client = hc.api('client').getClient(inputClientId, inputSchema);
+      client.schema = inputSchema;
+      client.isHMISClient = true;
+    }
     // TODO [VK]: publish by dedupClientId directly
-    const clientVersions = hc.api('client').searchClient(client.dedupClientId, 50);
+    const dedupClientId = inputSchema ? client.dedupClientId : inputClientId;
+    const clientVersions = hc.api('client').searchClient(dedupClientId, 50);
 
     const mergedClient = mergeClient(clientVersions);
     self.added('localClients', inputClientId, mergedClient);

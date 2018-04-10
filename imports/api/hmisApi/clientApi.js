@@ -6,10 +6,6 @@ import { ApiEndpoint } from './apiEndpoint';
 const BASE_URL = 'https://www.hmislynk.com/hmis-clientapi/rest';
 
 export class ClientApi extends ApiEndpoint {
-  getClientEnrollment(clientId, schema = 'v2015', enrollmentId) {
-    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}`; // eslint-disable-line max-len
-    return this.doGet(url).enrollments.enrollments;
-  }
 
   getClient(clientId, schema = 'v2015') {
     const url = `${BASE_URL}/${schema}/clients/${clientId}`;
@@ -112,6 +108,11 @@ export class ClientApi extends ApiEndpoint {
     };
     const url = `${BASE_URL}/search/client?${querystring.stringify(params)}`;
     return this.doGet(url).searchResults.items;
+  }
+
+  getClientEnrollment(clientId, schema = 'v2015', enrollmentId) {
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}`; // eslint-disable-line max-len
+    return this.doGet(url).enrollments.enrollments;
   }
 
   getClientEnrollments(clientId, schema = 'v2015', start = 0, limit = 9999) {
