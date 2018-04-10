@@ -97,7 +97,7 @@ Router.route('adminDashboardresponsesEdit', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), ResponsesAccessRoles);
+      return Roles.userIsInRole(Meteor.userId(), PendingClientsAccessRoles);
     },
   },
   waitOn() {
@@ -117,7 +117,7 @@ Router.route('adminDashboardresponsesEdit', {
       });
       if (!pausedResponse) {
         Bert.alert('This client has already been surveyed', 'danger', 'growl-top-right');
-        Router.go('adminDashboardclientsView', {});
+        Router.go('dashboard');
       }
     }
     this.next();
