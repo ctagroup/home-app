@@ -97,7 +97,7 @@ Router.route('adminDashboardresponsesEdit', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), PendingClientsAccessRoles);
+      return Roles.userIsInRole(Meteor.userId(), ResponsesAccessRoles);
     },
   },
   waitOn() {
