@@ -9,11 +9,11 @@ import HomeConfig from '/imports/config/homeConfig';
 import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 
 import './clientDeleteReason.js';
-import './viewClient.html';
+import './viewClientSimple.html';
 
 const getLastStatus = (statusHistory) => statusHistory && statusHistory[statusHistory.length - 1];
 
-Template.viewClient.helpers(
+Template.viewClientSimple.helpers(
   {
     clientResponsesPath() {
       const clientId = Router.current().params._id;

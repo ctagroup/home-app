@@ -1,29 +1,34 @@
 import {
   DefaultAdminAccessRoles,
-  GlobalHouseholdsAccessRoles,
-  HousingUnitsAccessRoles,
   PendingClientsAccessRoles,
   ResponsesAccessRoles,
+  FilesAccessRoles,
 } from '/imports/config/permissions';
 import './appSidebar.html';
 
 const allCollectionsMenuItems = [
   {
-    name: 'Pending Clients',
+    name: 'Clients',
     icon: 'fa-user',
     path: 'adminDashboardclientsView',
     roles: PendingClientsAccessRoles,
   },
   {
-    name: 'Active List',
-    icon: 'fa-user-plus',
-    path: 'adminDashboardeligibleClientsView',
-    roles: DefaultAdminAccessRoles,
+    name: 'Responses',
+    icon: 'fa-comment-o',
+    path: 'adminDashboardresponsesView',
+    roles: ResponsesAccessRoles,
   },
   {
-    name: 'Housing Match',
-    icon: 'fa-bed',
-    path: 'adminDashboardhousingMatchView',
+    name: 'Files',
+    icon: 'fa-files-o',
+    path: 'filesList',
+    roles: FilesAccessRoles,
+  },
+  {
+    name: 'Users',
+    icon: 'fa-user-md',
+    path: 'adminDashboardusersView',
     roles: DefaultAdminAccessRoles,
   },
   {
@@ -36,30 +41,6 @@ const allCollectionsMenuItems = [
     name: 'Surveys',
     icon: 'fa-file-text',
     path: 'adminDashboardsurveysView',
-    roles: DefaultAdminAccessRoles,
-  },
-  {
-    name: 'Responses',
-    icon: 'fa-comment-o',
-    path: 'adminDashboardresponsesView',
-    roles: ResponsesAccessRoles,
-  },
-  {
-    name: 'Housing Units',
-    icon: 'fa-home',
-    path: 'adminDashboardhousingUnitsView',
-    roles: HousingUnitsAccessRoles,
-  },
-  {
-    name: 'Households',
-    icon: 'fa-users',
-    path: 'adminDashboardglobalHouseholdsView',
-    roles: GlobalHouseholdsAccessRoles,
-  },
-  {
-    name: 'Users',
-    icon: 'fa-user-md',
-    path: 'adminDashboardusersView',
     roles: DefaultAdminAccessRoles,
   },
 ];
@@ -86,6 +67,11 @@ const adminMenuItems = [
     name: 'Projects',
     icon: 'fa-cog',
     path: 'projectsList',
+  },
+  {
+    name: 'Reporting',
+    icon: 'fa-envelope',
+    path: 'reporting',
   },
 ];
 

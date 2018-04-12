@@ -1,8 +1,6 @@
 import CollectionsCount from '/imports/api/collectionsCount/collectionsCount';
 import {
   DefaultAdminAccessRoles,
-  GlobalHouseholdsAccessRoles,
-  HousingUnitsAccessRoles,
   PendingClientsAccessRoles,
   ResponsesAccessRoles,
 } from '/imports/config/permissions';
@@ -16,20 +14,6 @@ const allWidgets = [
     icon: 'fa-user',
     path: 'adminDashboardclientsView',
     roles: PendingClientsAccessRoles,
-  },
-  {
-    name: 'Active List',
-    id: 'eligibleClients',
-    icon: 'fa-user-plus',
-    path: 'adminDashboardeligibleClientsView',
-    roles: DefaultAdminAccessRoles,
-  },
-  {
-    name: 'Housing Match',
-    id: 'housingMatch',
-    icon: 'fa-bed',
-    path: 'adminDashboardhousingMatchView',
-    roles: DefaultAdminAccessRoles,
   },
   {
     name: 'Questions',
@@ -51,20 +35,6 @@ const allWidgets = [
     icon: 'fa-comment-o',
     path: 'adminDashboardresponsesView',
     roles: ResponsesAccessRoles,
-  },
-  {
-    name: 'Housing Units',
-    id: 'housingUnits',
-    icon: 'fa-home',
-    path: 'adminDashboardhousingUnitsView',
-    roles: HousingUnitsAccessRoles,
-  },
-  {
-    name: 'Households',
-    id: 'globalHouseholds',
-    icon: 'fa-users',
-    path: 'adminDashboardglobalHouseholdsView',
-    roles: GlobalHouseholdsAccessRoles,
   },
   {
     name: 'Users',

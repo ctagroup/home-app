@@ -39,116 +39,120 @@
 		<div class="col-lg-8">
 			<input class="form-control phoneNumber" value={{phoneNumber}} type="text">
 		</div>
-	</div>
+  </div>
 
-  <div class="form-group">
-    <label class="col-lg-3 control-label">Photo:</label>
-    <div class="col-lg-8">
-      <input class="photo" type="hidden" id="client-photo-value" value="{{photo}}" />
-      <img class="client-photo" id="client-photo-img" src="{{photo}}" />
-      {{#if isCordova}}
-        {{> cameraNative}}
-      {{else}}
-        {{#if isiOS or isAndroid}}
-          {{> cameraFileInput}}
-        {{else}}
+  <div style="display:none">
+
+    <div class="form-group">
+      <label class="col-lg-3 control-label">Photo:</label>
+      <div class="col-lg-8">
+        <input class="photo" type="hidden" id="client-photo-value" value="{{photo}}" />
+        <img class="client-photo" id="client-photo-img" src="{{photo}}" />
+        {{#if isCordova}}
           {{> cameraNative}}
-          {{> cameraFileInput}}
+        {{else}}
+          {{#if isiOS or isAndroid}}
+            {{> cameraFileInput}}
+          {{else}}
+            {{> cameraNative}}
+            {{> cameraFileInput}}
+          {{/if}}
         {{/if}}
-      {{/if}}
-      <a href="#" id="js-remove-photo" class="btn btn-danger margin-top-35 {{#unless photo}}hide{{/unless}}">Remove Picture</a>
+        <a href="#" id="js-remove-photo" class="btn btn-danger margin-top-35 {{#unless photo}}hide{{/unless}}">Remove Picture</a>
 
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-lg-3 control-label">SSN:</label>
+      <div class="col-lg-8">
+        <input class="form-control ssn" value="000-00-0000" disabled type="text">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-lg-3 control-label">Date of Birth:</label>
+      <div class="col-lg-8">
+        <input type="date" class="form-control dob" placeholder="mm/dd/yyyy" value={{getDOB}} >
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-lg-3 control-label ">Race:</label>
+      <div class="col-lg-8">
+        <select class="form-control race_category" name="race_category" >
+          <option value=""></option>
+          {{#each getDefaultRace}}
+            <option selected="{{selected ../race}}" value={{this.value}}>{{this.description}}</option>
+          {{/each}}
+          {{#each getExtraRace}}
+            <option selected="{{selected ../race}}" value={{this.value}}>{{this.description}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-lg-3 control-label">Ethnicity:</label>
+      <div class="col-lg-8">
+        <select class="form-control ethnicity_category" name="ethnicity_category" >
+          <option value=""></option>
+          {{#each getDefaultEthnicity}}
+          <option selected="{{selected ../ethnicity}}" value={{this.value}}>{{this.description}}</option>
+          {{/each}}
+          {{#each getExtraEthnicity}}
+          <option selected="{{selected ../ethnicity}}" value={{this.value}}>{{this.description}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-lg-3 control-label">Gender:</label>
+      <div class="col-lg-8">
+        <select class="form-control gender_category" name="gender_category" >
+          <option value=""></option>
+          {{#each getDefaultGender}}
+          <option selected="{{selected ../gender}}" value={{this.value}}>{{this.description}}</option>
+          {{/each}}
+          {{#each getExtraGender}}
+          <option selected="{{selected ../gender}}" value={{this.value}}>{{this.description}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-lg-3 control-label">Veteran Status:</label>
+      <div class="col-lg-8">
+        <select class="form-control veteranStatus_category" name="veteranStatus_category" >
+          <option value=""></option>
+          {{#each getDefaultVeteranStatus}}
+          <option selected="{{selected ../veteranStatus}}" value={{this.value}}>{{this.description}}</option>
+          {{/each}}
+          {{#each getExtraVeteranStatus}}
+          <option selected="{{selected ../veteranStatus}}" value={{this.value}}>{{this.description}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-lg-3 control-label">Disabling Condition:</label>
+      <div class="col-lg-8">
+        <select class="form-control disablingConditions_category" name="disablingConditions_category" >
+          <option value=""></option>
+          {{#each getDefaultDisablingCondition}}
+          <option selected="{{selected ../disablingConditions}}" value={{this.value}}>{{this.description}}</option>
+          {{/each}}
+          {{#each getExtraDisablingCondition}}
+          <option selected="{{selected ../disablingConditions}}" value={{this.value}}>{{this.description}}</option>
+          {{/each}}
+        </select>
+      </div>
     </div>
   </div>
 
-	<div class="form-group">
-		<label class="col-lg-3 control-label">SSN:</label>
-		<div class="col-lg-8">
-			<input class="form-control ssn" value={{ssn}} type="text">
-		</div>
-	</div>
-
-	<div class="form-group">
-		<label class="col-lg-3 control-label">Date of Birth:</label>
-		<div class="col-lg-8">
-			<input type="date" class="form-control dob" placeholder="mm/dd/yyyy" value={{getDOB}} >
-		</div>
-	</div>
-
-	<div class="form-group">
-		<label class="col-lg-3 control-label ">Race:</label>
-		<div class="col-lg-8">
-			<select class="form-control race_category" name="race_category" >
-				<option value=""></option>
-				{{#each getDefaultRace}}
-					<option selected="{{selected ../race}}" value={{this.value}}>{{this.description}}</option>
-				{{/each}}
-				{{#each getExtraRace}}
-					<option selected="{{selected ../race}}" value={{this.value}}>{{this.description}}</option>
-				{{/each}}
-			</select>
-		</div>
-	</div>
-
-	<div class="form-group">
-		<label class="col-lg-3 control-label">Ethnicity:</label>
-		<div class="col-lg-8">
-			<select class="form-control ethnicity_category" name="ethnicity_category" >
-				<option value=""></option>
-				{{#each getDefaultEthnicity}}
-				<option selected="{{selected ../ethnicity}}" value={{this.value}}>{{this.description}}</option>
-				{{/each}}
-				{{#each getExtraEthnicity}}
-				<option selected="{{selected ../ethnicity}}" value={{this.value}}>{{this.description}}</option>
-				{{/each}}
-			</select>
-		</div>
-	</div>
-
-	<div class="form-group">
-		<label class="col-lg-3 control-label">Gender:</label>
-		<div class="col-lg-8">
-			<select class="form-control gender_category" name="gender_category" >
-				<option value=""></option>
-				{{#each getDefaultGender}}
-				<option selected="{{selected ../gender}}" value={{this.value}}>{{this.description}}</option>
-				{{/each}}
-				{{#each getExtraGender}}
-				<option selected="{{selected ../gender}}" value={{this.value}}>{{this.description}}</option>
-				{{/each}}
-			</select>
-		</div>
-	</div>
-
-	<div class="form-group">
-		<label class="col-lg-3 control-label">Veteran Status:</label>
-		<div class="col-lg-8">
-			<select class="form-control veteranStatus_category" name="veteranStatus_category" >
-				<option value=""></option>
-				{{#each getDefaultVeteranStatus}}
-				<option selected="{{selected ../veteranStatus}}" value={{this.value}}>{{this.description}}</option>
-				{{/each}}
-				{{#each getExtraVeteranStatus}}
-				<option selected="{{selected ../veteranStatus}}" value={{this.value}}>{{this.description}}</option>
-				{{/each}}
-			</select>
-		</div>
-	</div>
-
-	<div class="form-group">
-		<label class="col-lg-3 control-label">Disabling Condition:</label>
-		<div class="col-lg-8">
-			<select class="form-control disablingConditions_category" name="disablingConditions_category" >
-				<option value=""></option>
-				{{#each getDefaultDisablingCondition}}
-				<option selected="{{selected ../disablingConditions}}" value={{this.value}}>{{this.description}}</option>
-				{{/each}}
-				{{#each getExtraDisablingCondition}}
-				<option selected="{{selected ../disablingConditions}}" value={{this.value}}>{{this.description}}</option>
-				{{/each}}
-			</select>
-		</div>
-	</div>
 
   {{#unless skipReleaseOfInformation}}
     <div class="form-group">
