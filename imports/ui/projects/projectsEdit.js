@@ -15,7 +15,9 @@ Template.projectsEdit.helpers({
 AutoForm.addHooks('projectsEdit', {
   onSubmit: function submit(insertDoc) {
     this.event.preventDefault();
-    Meteor.call('projects.update', insertDoc, this.docId, (err, res) => {
+    const { projectId, schema } = this.currentDoc;
+    Meteor.call('projects.update', insertDoc, projectId, schema, (err, res) => {
+      Router.go('projectsList');
       this.done(err, res);
     });
     return false;

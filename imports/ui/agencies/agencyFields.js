@@ -78,7 +78,6 @@ export function formSchema(doc = {}) {
           type: 'select-checkbox',
           options: projectMembersOptions(members),
         },
-
       };
     });
   }
