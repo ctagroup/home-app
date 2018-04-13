@@ -4,10 +4,11 @@ import { HmisApiRegistry } from './apiRegistry';
 import { ApiEndpoint } from './apiEndpoint';
 
 const BASE_URL = 'https://www.hmislynk.com/hmis-clientapi/rest';
+const DEFAULT_PROJECT_SCHEMA = 'v2017';
 
 export class ClientApi extends ApiEndpoint {
 
-  getClient(clientId, schema = 'v2015') {
+  getClient(clientId, schema = DEFAULT_PROJECT_SCHEMA) {
     const url = `${BASE_URL}/${schema}/clients/${clientId}`;
     const client = this.doGet(url).client;
 
@@ -110,22 +111,22 @@ export class ClientApi extends ApiEndpoint {
     return this.doGet(url).searchResults.items;
   }
 
-  getClientEnrollment(clientId, schema = 'v2015', enrollmentId) {
+  getClientEnrollment(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId) {
     const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}`; // eslint-disable-line max-len
     return this.doGet(url).enrollments.enrollments;
   }
 
-  getClientEnrollments(clientId, schema = 'v2015', start = 0, limit = 9999) {
+  getClientEnrollments(clientId, schema = DEFAULT_PROJECT_SCHEMA, start = 0, limit = 9999) {
     const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments?startIndex=${start}&maxItems=${limit}`; // eslint-disable-line max-len
     return this.doGet(url).enrollments.enrollments;
   }
 
-  getClientsEnrollmentExits(clientId, enrollmentId, schema = 'v2015') {
+  getClientsEnrollmentExits(clientId, enrollmentId, schema = DEFAULT_PROJECT_SCHEMA) {
     const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/exits`; // eslint-disable-line max-len
     return this.doGet(url).exits.exits;
   }
 
-  createProjectSetup(projectName, projectCommonName, schema = 'v2015') {
+  createProjectSetup(projectName, projectCommonName, schema = DEFAULT_PROJECT_SCHEMA) {
     const url = `${BASE_URL}/${schema}/projects`;
     const body = {
       project: {
@@ -141,24 +142,29 @@ export class ClientApi extends ApiEndpoint {
     return this.doPost(url, body).project.projectId;
   }
 
-  getProjects(schema = 'v2015', start = 0, limit = 9999) {
+  getProjects(schema = DEFAULT_PROJECT_SCHEMA, start = 0, limit = 9999) {
     const url = `${BASE_URL}/${schema}/projects?startIndex=${start}&maxItems=${limit}`;
     return this.doGet(url).projects.projects;
   }
 
-  getProject(projectId, schema = 'v2015') {
+  getProject(projectId, schema = DEFAULT_PROJECT_SCHEMA) {
     const url = `${BASE_URL}/${schema}/projects/${projectId}`;
     return this.doGet(url).project;
   }
 
-  createProject(project, schema = 'v2015') {
+  createProject(project, schema = DEFAULT_PROJECT_SCHEMA) {
     const url = `${BASE_URL}/${schema}/projects`;
     return this.doPost(url, { project });
   }
 
-  updateProject(projectId, project, schema = 'v2015') {
+  updateProject(projectId, project, schema = DEFAULT_PROJECT_SCHEMA) {
     const url = `${BASE_URL}/${schema}/projects/${projectId}`;
     return this.doPut(url, { project });
+  }
+
+  deleteProject(projectId, schema = DEFAULT_PROJECT_SCHEMA) {
+    const url = `${BASE_URL}/${schema}/projects/${projectId}`;
+    return this.doDel(url);
   }
 
   postQuestionAnswer(category, data) {

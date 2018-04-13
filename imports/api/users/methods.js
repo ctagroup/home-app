@@ -153,6 +153,30 @@ Meteor.methods({
     } });
   },
 
+  'users.checkToken'() {
+    logger.info(`METHOD[${this.userId}]: users.checkToken`);
+    const user = Meteor.users.findOne(this.userId);
+    const { accessToken, refreshToken, expiresAt } = user.services.HMIS;
+
+    let apiResponse = false;
+    try {
+      const hc = HmisClient.create(this.userId);
+      apiResponse = hc.api('user-service').getUser(this.userId);
+    } catch (err) {
+      apiResponse = err;
+    }
+
+    const result = {
+      accessToken: accessToken.substr(0, 8),
+      refreshToken: refreshToken.substr(0, 8),
+      expiresAt: new Date(expiresAt),
+      expiresIn: ((expiresAt - new Date()) / 1000).toFixed(2),
+      apiResponse,
+    };
+    logger.info(result);
+    return result;
+  },
+
   addUserLocation(userID, timestamp, position) {
     // TODO: unused code
     logger.info(userID);

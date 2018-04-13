@@ -1,3 +1,6 @@
+// API documentation:
+// https://hmis-api.github.io/global-api/
+
 import { HmisApiRegistry } from './apiRegistry';
 import { ApiEndpoint } from './apiEndpoint';
 
@@ -22,6 +25,24 @@ export class GlobalApi extends ApiEndpoint {
   getClientEnrollment(dedupClientId, globalEnrollmentId) {
     const url = `${BASE_URL}/clients/${dedupClientId}/global-enrollments/${globalEnrollmentId}`;
     return this.doGet(url).globalEnrollment;
+  }
+  getGlobalProjects(start = 0, limit = 9999) {
+    const url = `${BASE_URL}/global-projects?startIndex=${start}&maxItems=${limit}`;
+    const { pagination, globalProjects } = this.doGet(url).globalProjects;
+    const mapped = globalProjects.map((project) => (
+      {
+        ...project,
+        projects: project.projects.projects,
+      }
+    ));
+    const remaining = limit - pagination.returned;
+    if (remaining > 0 && pagination.returned > 0) {
+      return [
+        ...mapped,
+        ...this.getGlobalProjects(pagination.from + pagination.returned, remaining),
+      ];
+    }
+    return mapped;
   }
 
   getNotifications() {

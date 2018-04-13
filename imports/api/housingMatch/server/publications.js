@@ -13,7 +13,7 @@ Meteor.publish(
     });
 
     if (!this.userId) {
-      return;
+      return [];
     }
 
     try {
@@ -78,5 +78,6 @@ Meteor.publish(
     } catch (err) {
       logger.error('eligibleClients.list', err);
     }
+    return this.ready();
   }
 );

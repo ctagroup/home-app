@@ -1,6 +1,6 @@
 import moment from 'moment';
 import Projects from '/imports/api/projects/projects';
-import { TableDom } from '/imports/ui/dataTable/helpers';
+import { TableDom, deleteProjectButton } from '/imports/ui/dataTable/helpers';
 import './projectsListView.html';
 
 const tableOptions = {
@@ -9,7 +9,7 @@ const tableOptions = {
       data: 'projectName',
       title: 'Project Name',
       render(value, op, doc) {
-        return `<a href="${Router.path('projectsEdit', { _id: doc._id })}">${value}</a>`;
+        return `<a href="${Router.path('projectsEdit', doc)}">${value}</a>`;
       },
     },
     {
@@ -21,6 +21,10 @@ const tableOptions = {
       title: 'Project Group',
     },
     {
+      data: 'schema',
+      title: 'Schema',
+    },
+    {
       data: 'dateCreated',
       title: 'Created At',
       render(value, type) {
@@ -30,6 +34,9 @@ const tableOptions = {
         return moment(value).format('MM/DD/YYYY h:mm A');
       },
     },
+    deleteProjectButton((project) => {
+      Projects._collection.remove(project._id); // eslint-disable-line
+    }),
   ],
   dom: TableDom,
   processing: true,

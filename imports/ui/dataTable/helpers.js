@@ -189,3 +189,27 @@ export function deleteResponseButton(onSuccessCallback) {
     orderable: false,
   };
 }
+
+export function deleteProjectButton(onSuccessCallback) {
+  return {
+    data: '_id',
+    title: 'Delete',
+    render() { return ''; },
+    createdCell(node, _id, rowData) {
+      const templateData = {
+        _id,
+        message: `Are you sure you want to delete the project ${rowData.projectName}?`,
+        method: 'projects.delete',
+        args: [_id, rowData.schema],
+        onSuccess() {
+          if (onSuccessCallback) {
+            onSuccessCallback(rowData);
+          }
+        },
+      };
+      Blaze.renderWithData(Template.DataTableDeleteButton, templateData, node);
+    },
+    width: '45px',
+    orderable: false,
+  };
+}
