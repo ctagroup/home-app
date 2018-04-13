@@ -3,8 +3,8 @@ export default class FeatureDecisions {
     this.features = features;
   }
 
-  showSimpleUserProfile() {
-    return !!this.features.showSimpleUserProfile;
+  isMc211App() {
+    return this.features.appProfile === 'mc211';
   }
 
   static createFromMeteorSettings() {

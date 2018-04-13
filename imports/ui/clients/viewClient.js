@@ -21,12 +21,6 @@ Template.viewClient.helpers(
       const query = { clientId, schema };
       return Router.path('adminDashboardresponsesView', {}, { query });
     },
-    clientFilesPath() {
-      const clientId = Router.current().params._id;
-      const schema = Router.current().params.query.schema;
-      const query = { clientId, schema };
-      return Router.path('filesList', {}, { query });
-    },
     isReferralStatusActive(step) {
       const client = Router.current().data().client;
       const lastStatus = getLastStatus(client.referralStatusHistory);

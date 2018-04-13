@@ -9,11 +9,11 @@ import HomeConfig from '/imports/config/homeConfig';
 import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 
 import './clientDeleteReason.js';
-import './viewClientSimple.html';
+import './viewClientMc211.html';
 
 const getLastStatus = (statusHistory) => statusHistory && statusHistory[statusHistory.length - 1];
 
-Template.viewClientSimple.helpers(
+Template.viewClientMc211.helpers(
   {
     clientResponsesPath() {
       const clientId = Router.current().params._id;
@@ -139,7 +139,7 @@ Template.viewClientSimple.helpers(
   }
 );
 
-Template.viewClient.events(
+Template.viewClientMc211.events(
   {
     'click .edit': (evt, tmpl) => {
       const query = {};
@@ -275,7 +275,7 @@ Template.viewClient.events(
   }
 );
 
-Template.viewClient.onRendered(() => {
+Template.viewClientMc211.onRendered(() => {
   $('body').addClass('sidebar-collapse');
 
   if (Roles.userIsInRole(Meteor.user(), ['Developer', 'System Admin'])) {
@@ -288,6 +288,6 @@ Template.viewClient.onRendered(() => {
   }
 });
 
-Template.viewClient.onDestroyed(() => {
+Template.viewClientMc211.onDestroyed(() => {
   $('body').removeClass('sidebar-collapse');
 });
