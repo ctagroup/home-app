@@ -77,5 +77,9 @@ zimme:iron-router-auth
 react-template-helper
 vazco:universe-autoform-select
 deanius:promise
+cfs:standard-packages
+cfs:s3
+cfs:autoform
+cfs:gridfs
 google-config-ui
 dynamic-import

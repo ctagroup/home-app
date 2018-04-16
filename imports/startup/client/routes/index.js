@@ -2,6 +2,7 @@ import './app';
 import './content';
 import './clients';
 import './eligibleClients';
+import './files';
 import './housingMatch';
 import './questions';
 import './surveys';
