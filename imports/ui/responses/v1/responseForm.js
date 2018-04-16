@@ -7,14 +7,6 @@ import './responseForm.html';
 
 Template.responseForm.helpers(
   {
-    isMTV(contentQuesId) {
-      const question = Questions.findOne({ _id: contentQuesId });
-      let dataType = '';
-      if (question && question.dataType) {
-        dataType = question.dataType;
-      }
-      return dataType === 'mtv';
-    },
     surveyQuesContents() {
       const surveyID = (Router.current().route.getName() === 'previewSurvey')
         ? Router.current().params._id
@@ -48,17 +40,11 @@ Template.responseForm.helpers(
     sectionSkipped(sectionID) {
       return ResponseHelpers.isSkipped(sectionID);
     },
-    displaySection(contentType) {
-      return contentType === 'section';
-    },
-    displayLabel(contentType) {
-      return contentType === 'labels';
-    },
+    displaySection(contentType) { return contentType === 'section'; },
+    displayLabel(contentType) { return contentType === 'labels'; },
+    displayQues(contentType) { return contentType === 'question'; },
     displaySkipButton(contentType, allowSkip) {
       return contentType === 'section' && allowSkip === 'true';
-    },
-    displayQues(contentType) {
-      return contentType === 'question';
     },
     displayQuesContents(contentQuesId) {
       const question = Questions.findOne({ _id: contentQuesId });
@@ -67,96 +53,45 @@ Template.responseForm.helpers(
     checkAudience(content) {
       return ResponseHelpers.checkAudience(content);
     },
+    isMTV(contentQuesId) {
+      const question = Questions.findOne({ _id: contentQuesId });
+      return question && question.dataType && question.dataType === 'mtv';
+    },
     wysiwygLabel(contentQuesId) {
       const question = Questions.findOne({ _id: contentQuesId });
-
-      let dataType = '';
-
-      if (question && question.dataType) {
-        dataType = question.dataType;
-      }
-
-      return dataType === 'label';
+      return question && question.dataType && question.dataType === 'label';
+    },
+    wysiwygEditor(contentQuesId) {
+      const question = Questions.findOne({ _id: contentQuesId });
+      return question && question.dataType && question.dataType === 'wysiwyg';
+    },
+    isDate(contentQuesId) {
+      const question = Questions.findOne({ _id: contentQuesId });
+      return question && question.dataType && question.dataType === 'date';
     },
     textboxString(contentQuesId) {
       const questionsList = Questions.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
-
-      let flag = false;
-
-      for (let i = 0; i < questionsList.length; i += 1) {
-        const type = questionsList[i].dataType;
-        if (type === 'Textbox(String)') {
-          flag = true;
-          break;
-        }
-      }
-      return flag;
-    },
-    wysiwygEditor(contentQuesId) {
-      const question = Questions.findOne({ _id: contentQuesId });
-      let dataType = '';
-      if (question && question.dataType) {
-        dataType = question.dataType;
-      }
-      return dataType === 'wysiwyg';
-    },
-    isDate(contentQuesId) {
-      const question = Questions.findOne({ _id: contentQuesId });
-      let dataType = '';
-      if (question && question.dataType) {
-        dataType = question.dataType;
-      }
-      return dataType === 'date';
+      return !!questionsList.find(q => q.dataType === 'Textbox(String)') || false;
     },
     textboxNumber(contentQuesId) {
       const questionsList = Questions.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
-
-      let flag = false;
-
-      for (let i = 0; i < questionsList.length; i += 1) {
-        const type = questionsList[i].dataType;
-        if (type === 'Textbox(Integer)') {
-          flag = true;
-          break;
-        }
-      }
-      return flag;
+      return !!questionsList.find(q => q.dataType === 'Textbox(Integer)') || false;
     },
     booleanTF(contentQuesId) {
       const questionsList = Questions.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
-
-      let flag = false;
-
-      for (let i = 0; i < questionsList.length; i += 1) {
-        const type = questionsList[i].dataType;
-        if (type === 'Boolean') {
-          flag = true;
-          break;
-        }
-      }
-      return flag;
+      return !!questionsList.find(q => q.dataType === 'Boolean') || false;
     },
     singleSelect(contentQuesId) {
       const questionsList = Questions.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
-
-      let flag = false;
-
-      for (let i = 0; i < questionsList.length; i += 1) {
-        const type = questionsList[i].dataType;
-        if (type === 'Single Select') {
-          flag = true;
-          break;
-        }
-      }
-      return flag;
+      return !!questionsList.find(q => q.dataType === 'Single Select') || false;
     },
     singleOptions(contentQuesId) {
       const questionsList = Questions.find(
@@ -169,35 +104,18 @@ Template.responseForm.helpers(
       const questionsList = Questions.find(
         { _id: contentQuesId }, { dataType: 1, _id: 0 }
       ).fetch();
-
-      let flag = false;
-
-      for (let i = 0; i < questionsList.length; i += 1) {
-        const type = questionsList[i].dataType;
-        if (type === 'Multiple Select') {
-          flag = true;
-          break;
-        }
-      }
-      return flag;
+      return !!questionsList.find(q => q.dataType === 'Multiple Select') || false;
     },
     singlePhoto(contentQuesId) {
       const question = Questions.findOne({ _id: contentQuesId });
 
-      let dataType = '';
-
       if (question && question.dataType) {
-        dataType = question.dataType;
+        return question.dataType === 'Single PhCollectionoto';
       }
-
-      return dataType === 'Single Photo';
+      return false;
     },
     checkSkipped(sectionID) {
-      let skipVal = '';
-      if (ResponseHelpers.isSkipped(sectionID)) {
-        skipVal = 'checked';
-      }
-      return skipVal;
+      return ResponseHelpers.isSkipped(sectionID) ? 'checked' : '';
     },
     surveyTextResponse(id) {
       return ResponseHelpers.getText(id);
@@ -397,11 +315,12 @@ Template.responseForm.events(
       );
     },
     'change .hideWhenSkipped': (evt) => {
-      const toggleSkip = $(`#${evt.target.id}`).is(':checked');
+      const selector = $(`#${evt.target.id}`);
+      const toggleSkip = selector.is(':checked');
       if (toggleSkip) {
-        $(`.${evt.target.id}`).hide();
+        selector.hide();
       } else {
-        $(`.${evt.target.id}`).show();
+        selector.show();
       }
     },
     'change .singleSelect': (evt, tmpl) => {
