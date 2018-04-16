@@ -8,6 +8,6 @@ export default class FeatureDecisions {
   }
 
   static createFromMeteorSettings() {
-    return new FeatureDecisions(Meteor.settings.public.features);
+    return new FeatureDecisions(Meteor.settings.public.features || []);
   }
 }
