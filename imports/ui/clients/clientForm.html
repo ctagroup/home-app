@@ -41,7 +41,7 @@
 		</div>
   </div>
 
-  <div style="display:none">
+  <div style="{{hideForMc211}}">
 
     <div class="form-group">
       <label class="col-lg-3 control-label">Photo:</label>
@@ -66,7 +66,11 @@
     <div class="form-group">
       <label class="col-lg-3 control-label">SSN:</label>
       <div class="col-lg-8">
-        <input class="form-control ssn" value="000-00-0000" disabled type="text">
+        {{#if isHome}}
+          <input class="form-control ssn" value={{ssn}} type="text">
+        {{else}}
+          <input class="form-control ssn" value="000-00-0000" disabled type="text">
+        {{/if}}
       </div>
     </div>
 
