@@ -90,7 +90,7 @@ Template.clientForm.helpers(
       return date;
     },
     selected(item) {
-      return this.value === item;
+      return this.value == item; // eslint-disable-line eqeqeq
     },
     getDefaultRace() {
       return [
