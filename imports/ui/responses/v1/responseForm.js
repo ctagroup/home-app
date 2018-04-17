@@ -201,7 +201,7 @@ Template.responseForm.helpers(
 
       return '';
     },
-    isSelected(value) {
+    isSelected(contentQuesId, value) {
       if (Router.current().route.getName() === 'responsesArchive') {
         const responseSection = Responses.findOne({ _id: Router.current().params._id });
 
@@ -215,20 +215,17 @@ Template.responseForm.helpers(
           const response = sections[j].response;
           for (let k = 0; k < response.length; k += 1) {
             const quesIDs = response[k].questionID;
-            const responseVal = response[k].answer;
-            const questionsList = Questions.find(
-              {
-                _id: quesIDs,
-              }, {
-                dataType: 1,
-                _id: 0,
-              }
-            ).fetch();
+            if (contentQuesId === quesIDs) {
+              const responseVal = response[k].answer;
+              const questionsList = Questions.find(
+                { _id: quesIDs }, { dataType: 1, _id: 0 }
+              ).fetch();
 
-            for (let i = 0; i < questionsList.length; i += 1) {
-              const dataType = questionsList[i].dataType;
-              if (dataType === 'Single Select') {
-                return (responseVal === value) ? 'checked' : '';
+              for (let i = 0; i < questionsList.length; i += 1) {
+                const dataType = questionsList[i].dataType;
+                if (dataType === 'Single Select') {
+                  return (responseVal === value) ? 'checked' : '';
+                }
               }
             }
           }
