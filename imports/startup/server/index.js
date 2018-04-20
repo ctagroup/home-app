@@ -1,5 +1,6 @@
 import { logger } from '/imports/utils/logger';
 
+import AppSettings from '/imports/api/appSettings/appSettings';
 import '/imports/api/appSettings/methods';
 import '/imports/api/appSettings/server/publications';
 
@@ -58,13 +59,16 @@ Meteor.startup(() => {
     'smtp://postmaster%40sandbox99bfa58d2ea34f7893748e31be4823e8.mailgun.org:e9efb86cb5eeb210c6bdc66775bcf3ca@smtp.mailgun.org:587';
   /* eslint-enable */
 
-  Meteor.settings = _.extend(
-    {
-      connectionLimit: 10,
-    },
-    Meteor.settings
-  );
-  logger.info('Starting with settings', Meteor.settings);
+  Meteor.settings = _.extend({
+    connectionLimit: 10,
+  }, Meteor.settings);
+
+  const { GIT_BRANCH, GIT_TAG, GIT_COMMIT } = process.env;
+  const buildStr = (GIT_BRANCH || GIT_TAG || GIT_COMMIT) ?
+    `${GIT_TAG || 'tag'} (${(GIT_COMMIT || 'c').substr(0, 4)}/${GIT_BRANCH || 'b'})` : '';
+  logger.info(`Starting ${buildStr} with settings`, Meteor.settings);
+
+  AppSettings.set('buildInfo', buildStr);
 
   if (Meteor.settings.s3config) {
     // const { key, secret, bucket, region } = Meteor.settings.s3config;
