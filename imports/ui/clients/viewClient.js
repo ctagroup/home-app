@@ -11,10 +11,40 @@ import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 import './clientDeleteReason.js';
 import './viewClient.html';
 
+const mergeKeyVersions = (client, key) => {
+  const keyVersions = client.clientVersions
+    .map(({ clientId, schema }) => client[`${key}::${schema}::${clientId}`])
+    .filter((value) => !!value);
+  const mongoKey = client[key] || {};
+  return Object.assign({}, ...keyVersions, mongoKey);
+};
+
+const flattenKeyVersions = (client, key) => {
+  const keyVersions = client.clientVersions
+    .map(({ clientId, schema }) => client[`${key}::${schema}::${clientId}`])
+    .filter((value) => !!value);
+  const mongoKey = client[key] || [];
+  return [keyVersions, mongoKey].reduce((acc, val) => acc.concat(val), []);
+};
 const getLastStatus = (statusHistory) => statusHistory && statusHistory[statusHistory.length - 1];
 
 Template.viewClient.helpers(
   {
+    eligibleClient() {
+      const currentClientId = Router.current().params._id;
+      const client = Clients.findOne(currentClientId);
+      return mergeKeyVersions(client, 'eligibleClient');
+    },
+    enrollments() {
+      const currentClientId = Router.current().params._id;
+      const client = Clients.findOne(currentClientId);
+      return flattenKeyVersions(client, 'enrollments');
+    },
+    globalHouseholds() {
+      const currentClientId = Router.current().params._id;
+      const client = Clients.findOne(currentClientId);
+      return flattenKeyVersions(client, 'globalHouseholds');
+    },
     clientResponsesPath() {
       const clientId = Router.current().params._id;
       const schema = Router.current().params.query.schema;
@@ -77,17 +107,12 @@ Template.viewClient.helpers(
     getStatusTooltip(step) {
       const client = Router.current().data().client;
       let history = ReferralStatusList[step].desc;
-      if (client.referralStatusHistory) {
-        for (let i = 0; i < client.referralStatusHistory.length; i += 1) {
-          if (client.referralStatusHistory[i].status === step) {
-            let txt = client.referralStatusHistory[i].statusDescription;
-            if (client.referralStatusHistory[i].comments) {
-              txt = client.referralStatusHistory[i].comments;
-            }
-            history = `${history}<br />${client.referralStatusHistory[i].dateUpdated} - ${txt}`;
-          }
+      (client.referralStatusHistory || []).forEach((item) => {
+        if (item.status === step) {
+          const txt = item.statusDescription || item.comments;
+          history = `${history}<br />${item.dateUpdated} - ${txt}`;
         }
-      }
+      });
       return history;
     },
 
