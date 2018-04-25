@@ -111,6 +111,35 @@ export class ClientApi extends ApiEndpoint {
     return this.doGet(url).searchResults.items;
   }
 
+  // createClientEnrollment(clientId, schema = DEFAULT_PROJECT_SCHEMA) {
+  //   const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments`;
+  //   // TODO [VK]: replace with real data:
+  //   const body = {
+  //     continuouslyhomelessoneyear: 1,
+  //     disablingcondition: 0,
+  //     entrydate: 1459517941736,
+  //     householdid: 'eca19be3-303b-47b0-a9ef-8832ab0fa13d',
+  //     housingstatus: 3,
+  //     monthshomelesspastthreeyears: 7,
+  //     monthshomelessthistime: 1,
+  //     otherresidenceprior: '1',
+  //     personalid: 'ba0ce84a-412e-4f3b-ae93-b903eb349754',
+  //     projectentryid: 'a70b3fe4-1e0f-4288-835f-d88dacd2b84c',
+  //     projectid: 'c7c41281-411b-4c93-a382-2cb20bc24a34',
+  //     relationshiptohoh: 2,
+  //     residenceprior: 2,
+  //     residencepriorlengthofstay: 4,
+  //     statusdocumented: 1,
+  //     timeshomelesspastthreeyears: 1,
+  //     yearshomeless: 2,
+  //     entryfromstreetessh: 2,
+  //     datetostreetessh: 1,
+  //   };
+  //   console.log('url, body', url, body);
+  //   // return this.doPost(url, body).enrollment;
+  //   return;
+  // }
+
   getClientEnrollment(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId) {
     const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}`; // eslint-disable-line max-len
     return this.doGet(url).enrollments.enrollments;

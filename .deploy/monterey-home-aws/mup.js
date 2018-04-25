@@ -1,4 +1,5 @@
 module.exports = {
+  plugins: ['mup-git'],
   servers: {
     one: {
       host: '54.245.1.33',

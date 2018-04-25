@@ -160,7 +160,7 @@ export class SurveyApi extends ApiEndpoint {
 
   putClientSurveySubmissions(clientSubmissionId, globalEnrollmentId) {
     // Add globalEnrollmentId to Submission:
-    const url = `${BASE_URL}/clientsurveysubmissions/${clientSubmissionId}`; // eslint-disable-line max-len
+    const url = `${BASE_URL}/clientsurveysubmissions/${clientSubmissionId}`;
     const body = { clientsurveysubmission: { globalEnrollmentId } };
     return this.doPut(url, body);
   }

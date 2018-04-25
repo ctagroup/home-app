@@ -2,7 +2,7 @@
 .meteor/meteorite
 .idea
 .vscode
+.deploy
 node_modules
 *.log
 settings.local.json
-.deploy

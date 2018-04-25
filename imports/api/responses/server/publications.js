@@ -37,7 +37,7 @@ Meteor.publish('responses.all', function publishResponses(ofClientId) {
         response.clientDetails = PendingClients.findOne({ _id: clientId })
         || { error: 'client not found (404)' };
       }
-      self.added('responses', responses[i]._id, responses[i]);
+      self.added('responses', response._id, response);
     }
     self.ready();
 
