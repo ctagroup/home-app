@@ -1,13 +1,16 @@
 import {
   DefaultAdminAccessRoles,
+  FilesAccessRoles,
   GlobalHouseholdsAccessRoles,
   HousingUnitsAccessRoles,
   PendingClientsAccessRoles,
   ResponsesAccessRoles,
 } from '/imports/config/permissions';
+import FeatureDecisions from '/imports/both/featureDecisions';
 import './appSidebar.html';
 
-const allCollectionsMenuItems = [
+
+const homeMenuItems = [
   {
     name: 'Pending Clients',
     icon: 'fa-user',
@@ -64,14 +67,50 @@ const allCollectionsMenuItems = [
   },
 ];
 
-const adminMenuItems = [
-  /*
+const mc211MenuItems = [
   {
-    name: 'Role Manager',
-    icon: 'fa-user-secret',
-    path: 'roleManager',
+    name: 'Clients',
+    icon: 'fa-user',
+    path: 'adminDashboardclientsView',
+    roles: PendingClientsAccessRoles,
   },
-  */
+  {
+    name: 'Responses',
+    icon: 'fa-comment-o',
+    path: 'adminDashboardresponsesView',
+    roles: ResponsesAccessRoles,
+  },
+  {
+    name: 'Files',
+    icon: 'fa-files-o',
+    path: 'filesList',
+    roles: FilesAccessRoles,
+  },
+  {
+    name: 'Users',
+    icon: 'fa-user-md',
+    path: 'adminDashboardusersView',
+    roles: DefaultAdminAccessRoles,
+  },
+  {
+    name: 'Questions',
+    icon: 'fa-question',
+    path: 'questionsView',
+    roles: DefaultAdminAccessRoles,
+  },
+  {
+    name: 'Surveys',
+    icon: 'fa-file-text',
+    path: 'adminDashboardsurveysView',
+    roles: DefaultAdminAccessRoles,
+  },
+];
+
+const featureDecisions = FeatureDecisions.createFromMeteorSettings();
+const collectionsMenuItems = featureDecisions.isMc211App() ?
+  mc211MenuItems : homeMenuItems;
+
+const adminMenuItems = [
   {
     name: 'Opening Script',
     icon: 'fa-comment',
@@ -87,12 +126,17 @@ const adminMenuItems = [
     icon: 'fa-cog',
     path: 'projectsList',
   },
-];
+  featureDecisions.isMc211App() ? {
+    name: 'Reporting',
+    icon: 'fa-envelope',
+    path: 'reporting',
+  } : null,
+].filter(item => !!item);
 
 
 Template.AppSidebar.helpers({
   collectionsMenuItems() {
-    const allowedMenuItems = _.filter(allCollectionsMenuItems,
+    const allowedMenuItems = _.filter(collectionsMenuItems,
       item => Roles.userIsInRole(Meteor.user(), item.roles)
     );
     return allowedMenuItems;

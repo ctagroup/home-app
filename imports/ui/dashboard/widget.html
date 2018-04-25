@@ -1,0 +1,22 @@
+<template name="widget">
+    <div class="{{#if class}}{{class}}{{else}} col-lg-3 col-xs-6{{/if}}">
+      <a class="admin-widget" href="{{pathFor route=this.path}}">
+        <div class="small-box bg-{{color}}">
+          <div class="inner">
+            {{#if loading}}
+              <h3><i class="fa fa-spinner fa-pulse fa-fw" aria-hidden="true"></i></h3>
+            {{else}}
+              <h3>{{count}}</h3>
+            {{/if}}
+            <p>{{name}}</p>
+          </div>
+          <div class="icon">
+            <i class="fa {{this.icon}}"></i>
+          </div>
+          <a class="small-box-footer">
+            See all <i class="fa fa-arrow-circle-right"></i>
+          </a>
+        </div>
+      </a>
+    </div>
+  </template>

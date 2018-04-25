@@ -1,0 +1,12 @@
+<template name="filesNew">
+  {{#autoForm schema=schema doc=doc id="filesForm" type="method" meteormethod="files.create"}}
+    <fieldset>
+      {{> afQuickField name="fileId" type="cfs-file" collection="uploads"}}
+      {{> afQuickField name="description"}}
+      {{> afQuickField name='clientId' type='hidden'}}
+      {{> afQuickField name='clientSchema' type='hidden'}}
+    </fieldset>
+    <button type="submit" class="btn btn-primary">Upload File</button>
+    <a  href="{{pathFor 'filesList'}}" class="btn btn-large btn-default cancelUser">Cancel</a>
+  {{/autoForm}}
+</template>

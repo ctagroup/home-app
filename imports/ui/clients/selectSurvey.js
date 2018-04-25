@@ -7,7 +7,9 @@ import './selectSurvey.html';
 Template.selectSurvey.helpers(
   {
     getSurveys() {
-      return Surveys.find({ 'hmis.surveyId': { $exists: true } }).fetch();
+      const surveys = Surveys.find({ 'hmis.surveyId': { $exists: true } }).fetch();
+      return surveys;
+      // return Surveys.find({ 'hmis.surveyId': { $exists: true } }).fetch();
     },
     getSurveyedClient() {
       return PendingClients.find().fetch();
@@ -21,9 +23,7 @@ Template.selectSurvey.events(
       const surveyID = tmpl.find('.surveyList').value;
       const clientID = Router.current().params._id;
 
-      if (!surveyID) {
-        return;
-      }
+      if (!surveyID) return;
 
       const query = {
         clientId: clientID,

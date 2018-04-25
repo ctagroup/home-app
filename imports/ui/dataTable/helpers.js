@@ -122,7 +122,6 @@ export function deleteQuestionButton(onSuccessCallback) {
   };
 }
 
-
 export function deleteUserButton() {
   return {
     data: '_id',

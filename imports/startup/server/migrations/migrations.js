@@ -93,15 +93,6 @@ export function fixMissingClientSchemasInV1Responses() {
   }
   logger.info(`Fixing missing client schemas in ${Responses.find().count()} responses...`);
 
-  if (!Array.isArray(Meteor.settings.admins)) {
-    logger.warn('Admin email not found');
-    return;
-  }
-  if (!user) {
-    logger.warn('Admin account not found');
-    return;
-  }
-
   logger.debug('using account', adminEmail);
   const hc = HmisClient.create(user._id);
   let count = 0;

@@ -1,5 +1,5 @@
-<template name="viewClient">
-  {{log 'home'}}
+<template name="viewClientMc211">
+  {{log 'mc211'}}
   {{#with client}}
     <div id="viewClient_content">
       <div class="row client-profile-container">
@@ -42,54 +42,7 @@
           </form>
         </div>
       </div>
-
-      <div class="col-xs-12 col-sm-7 col-md-7">
-        <div class="info-container">
-            <div class="row">
-              <div class="col-xs-12 col-sm-6 col-md-6">
-                <div class="">
-                  <p class="clabel">Suffix</p>
-                  <p class="cvalue">{{suffix}}</p>
-                </div>
-                <div class="">
-                  <p class="clabel">SSN</p>
-                  <p class="cvalue">{{ssn}}</p>
-                </div>
-                <div class="">
-                  <p class="clabel">Date of Birth</p>
-                  <p class="cvalue dob">{{formatDate dob}}</p>
-                </div>
-                <div class="">
-                  <p class="clabel">Race</p>
-                  <p class="cvalue">{{getText 'race' race}}</p>
-                </div>
-                <div class="">
-                  <p class="clabel">ID</p>
-                  <p class="cvalue">{{_id}}</p>
-                </div>
-              </div>
-              <div class="col-xs-12 col-sm-6 col-md-6">
-                <div class="">
-                  <p class="clabel">Ethnicity</p>
-                  <p class="cvalue">{{getText 'ethnicity' ethnicity}}</p>
-                </div>
-                <div class="">
-                  <p class="clabel">Gender</p>
-                  <p class="cvalue">{{getText 'gender' gender}}</p>
-                </div>
-                <div class="">
-                  <p class="clabel">Veteran Status</p>
-                  <p class="cvalue">{{getText 'veteranStatus' veteranStatus}}</p>
-                </div>
-                <div class="">
-                  <p class="clabel">Disabling Condition</p>
-                  <p class="cvalue">{{getText 'disablingcondition' disablingConditions}}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    </div>
 
       {{#if showEnrollments}}
         {{#if isUndefined enrollments}}<p>Loading enrollments...</p>{{/if}}
@@ -242,7 +195,7 @@
                       </div>
                     </div>
 
-                                  {{> referralStatusUpdateComments}}
+                                  {{> referralStatusUpdateCommentsMc211}}
 
                               </div>
 
@@ -266,6 +219,9 @@
                           {{#if ../showEditButton }}<input class="btn btn-warning edit" value="Edit" type="button" />{{/if}}
                           {{#if ../showResponsesButton }}
                             <a href="{{clientResponsesPath}}" class="btn btn-success">Responses</a>
+                          {{/if}}
+                          {{#if clientFilesPath }}
+                            <a href="{{clientFilesPath}}" class="btn btn-success">Files</a>
                           {{/if}}
                       </div>
                   </div>
@@ -294,7 +250,8 @@
   {{/with}}
   </template>
 
-  <template name="referralStatusUpdateComments">
+  <template name="referralStatusUpdateCommentsMc211">
+    {{!-- TODO: refactor to separate file --}}
     <div class="modal fade modal-fullscreen" id="referralStatusUpdateCommentsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
