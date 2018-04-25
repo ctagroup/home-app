@@ -1,4 +1,5 @@
 export const getClientGlobalEnrollments = (hc, dedupClientId, stopFunction) => {
+  console.log('stopFunction', stopFunction);
   const globalEnrollments = hc.api('global').getClientEnrollments(dedupClientId);
   return globalEnrollments;
   // console.log('globalEnrollments', globalEnrollments, stopFunction);
