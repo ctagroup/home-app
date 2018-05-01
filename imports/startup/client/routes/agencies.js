@@ -1,4 +1,4 @@
-import { DefaultAdminAccessRoles } from '/imports/config/permissions';
+import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
 import Agencies from '/imports/api/agencies/agencies';
 import { AppController } from './controllers';
 import '/imports/ui/agencies/agenciesListView';
@@ -12,11 +12,12 @@ Router.route(
     controller: AppController,
     authorize: {
       allow() {
-        return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+        return ableToAccess(Meteor.userId(), 'accessAgencies');
       },
     },
     waitOn() {
       return [
+        Meteor.subscribe('rolePermissions.all'),
         Meteor.subscribe('agencies.all'),
       ];
     },
@@ -36,11 +37,12 @@ Router.route(
     controller: AppController,
     authorize: {
       allow() {
-        return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+        return ableToAccess(Meteor.userId(), 'accessAgencies');
       },
     },
     waitOn() {
       return [
+        Meteor.subscribe('rolePermissions.all'),
         Meteor.subscribe('projects.all'),
         Meteor.subscribe('users.all'),
       ];
@@ -62,12 +64,13 @@ Router.route(
     controller: AppController,
     authorize: {
       allow() {
-        return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+        return ableToAccess(Meteor.userId(), 'accessAgencies');
       },
     },
     waitOn() {
       const id = Router.current().params._id;
       return [
+        Meteor.subscribe('rolePermissions.all'),
         Meteor.subscribe('agencies.one', id),
         Meteor.subscribe('projects.all'),
         Meteor.subscribe('users.all'),

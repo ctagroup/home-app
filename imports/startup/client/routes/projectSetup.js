@@ -1,5 +1,5 @@
 import Projects from '/imports/api/projects/projects';
-import { DefaultAdminAccessRoles } from '/imports/config/permissions';
+import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
 import { AppController } from './controllers';
 import '/imports/ui/projectSetup/projectSetup';
 
@@ -10,11 +10,14 @@ Router.route(
     controller: AppController,
     authorize: {
       allow() {
-        return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+        return ableToAccess(Meteor.userId(), 'accessProjectSetup');
       },
     },
     waitOn() {
-      return Meteor.subscribe('projects.all');
+      return [
+        Meteor.subscribe('rolePermissions.all'),
+        Meteor.subscribe('projects.all'),
+      ];
     },
     data() {
       const project = Projects.findOne({ isAppProject: true });

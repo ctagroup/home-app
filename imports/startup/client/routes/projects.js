@@ -1,4 +1,4 @@
-import { DefaultAdminAccessRoles } from '/imports/config/permissions';
+import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
 import Projects from '/imports/api/projects/projects';
 import { AppController } from './controllers';
 import '/imports/ui/projects/projectsListView';
@@ -13,11 +13,12 @@ Router.route(
     controller: AppController,
     authorize: {
       allow() {
-        return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+        return ableToAccess(Meteor.userId(), 'accessProjects');
       },
     },
     waitOn() {
       return [
+        Meteor.subscribe('rolePermissions.all'),
         Meteor.subscribe('projects.all'),
       ];
     },
@@ -37,11 +38,12 @@ Router.route(
     controller: AppController,
     authorize: {
       allow() {
-        return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+        return ableToAccess(Meteor.userId(), 'accessProjects');
       },
     },
     waitOn() {
       return [
+        Meteor.subscribe('rolePermissions.all'),
         Meteor.subscribe('projects.all'),
       ];
     },
@@ -62,13 +64,14 @@ Router.route(
     controller: AppController,
     authorize: {
       allow() {
-        return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+        return ableToAccess(Meteor.userId(), 'accessProjects');
       },
     },
     waitOn() {
       const id = Router.current().params._id;
       const schema = Router.current().params.schema;
       return [
+        Meteor.subscribe('rolePermissions.all'),
         Meteor.subscribe('projects.one', id, schema),
       ];
     },

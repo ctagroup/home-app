@@ -1,5 +1,5 @@
 import HousingUnits from '/imports/api/housingUnits/housingUnits';
-import { HousingUnitsAccessRoles } from '/imports/config/permissions';
+import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
 import { HousingUnitsCache } from '/imports/both/cached-subscriptions';
 import '/imports/ui/housingUnits/housingUnitsCreateView';
 import '/imports/ui/housingUnits/housingUnitsEditView';
@@ -11,11 +11,14 @@ Router.route('adminDashboardhousingUnitsView', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), HousingUnitsAccessRoles);
+      return ableToAccess(Meteor.userId(), 'accessHousingUnits');
     },
   },
   waitOn() {
-    return HousingUnitsCache.subscribe('housingUnits.list');
+    return [
+      Meteor.subscribe('rolePermissions.all'),
+      HousingUnitsCache.subscribe('housingUnits.list')
+    ];
   },
   data() {
     return {
@@ -31,11 +34,11 @@ Router.route('adminDashboardhousingUnitsNew', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), HousingUnitsAccessRoles);
+      return ableToAccess(Meteor.userId(), 'accessHousingUnits');
     },
   },
   waitOn() {
-    return Meteor.subscribe('projects.all');
+    return [Meteor.subscribe('rolePermissions.all'), Meteor.subscribe('projects.all')];
   },
   data() {
     return {
@@ -51,12 +54,13 @@ Router.route('adminDashboardhousingUnitsEdit', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), HousingUnitsAccessRoles);
+      return ableToAccess(Meteor.userId(), 'accessHousingUnits');
     },
   },
   waitOn() {
     const _id = this.params._id;
     return [
+      Meteor.subscribe('rolePermissions.all'),
       Meteor.subscribe('housingUnits.one', _id),
       Meteor.subscribe('projects.all'),
     ];

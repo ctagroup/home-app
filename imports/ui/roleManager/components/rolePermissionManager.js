@@ -2,11 +2,7 @@ import './rolePermissionManager.html';
 import HomeRoles from '/imports/config/roles.js';
 import RolePermissions from '/imports/api/rolePermissions/rolePermissions';
 // import HomePermissions from '/imports/config/permissions.js';
-
-const PermissionsList = [
-  'viewAdminRoutes',
-  'editClientData',
-];
+import PermissionsList from '/imports/config/permissions.js';
 
 Template.rolePermissionManager.helpers({
   getRoles() {

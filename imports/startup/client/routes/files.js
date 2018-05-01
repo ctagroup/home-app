@@ -1,6 +1,6 @@
 import { Clients } from '/imports/api/clients/clients';
 import FeatureDecisions from '/imports/both/featureDecisions';
-import { FilesAccessRoles } from '/imports/config/permissions';
+import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
 import { fullName } from '/imports/api/utils';
 import { AppController } from './controllers';
 import '/imports/ui/files/filesList';
@@ -14,7 +14,7 @@ if (featureDecisions.isMc211App()) {
     controller: AppController,
     authorize: {
       allow() {
-        return Roles.userIsInRole(Meteor.userId(), FilesAccessRoles);
+        return ableToAccess(Meteor.userId(), 'accessFiles');
       },
     },
     waitOn() {
@@ -23,9 +23,10 @@ if (featureDecisions.isMc211App()) {
         return [
           Meteor.subscribe('clients.one', clientId, schema),
           Meteor.subscribe('files.all', clientId),
+          Meteor.subscribe('rolePermissions.all'),
         ];
       }
-      return Meteor.subscribe('files.all', clientId);
+      return [Meteor.subscribe('rolePermissions.all'), Meteor.subscribe('files.all', clientId)];
     },
     data() {
       const { clientId } = this.params.query;
@@ -45,12 +46,15 @@ if (featureDecisions.isMc211App()) {
     controller: AppController,
     authorize: {
       allow() {
-        return Roles.userIsInRole(Meteor.userId(), FilesAccessRoles);
+        return ableToAccess(Meteor.userId(), 'accessFiles');
       },
     },
     waitOn() {
       const { clientId, schema } = this.params.query;
-      return Meteor.subscribe('clients.one', clientId, schema);
+      return [
+        Meteor.subscribe('rolePermissions.all'),
+        Meteor.subscribe('clients.one', clientId, schema)
+      ];
     },
     data() {
       const { clientId } = this.params.query;

@@ -1,4 +1,4 @@
-import { DefaultAdminAccessRoles } from '/imports/config/permissions';
+import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
 import { AppController } from './controllers';
 import '/imports/ui/openingScript/openingScript';
 
@@ -7,9 +7,12 @@ Router.route(
     path: '/openingScript',
     template: Template.openingScript,
     controller: AppController,
+    waitOn() {
+      return Meteor.subscribe('rolePermissions.all');
+    },
     authorize: {
       allow() {
-        return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+        return ableToAccess(Meteor.userId(), 'accessOpeningScript');
       },
     },
     data() {

@@ -1,5 +1,5 @@
 import { AppController } from './controllers';
-import { DefaultAdminAccessRoles } from '/imports/config/permissions';
+import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
 
 
 Router.route('adminDashboardhousingMatchView', {
@@ -8,11 +8,12 @@ Router.route('adminDashboardhousingMatchView', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+      return ableToAccess(Meteor.userId(), 'accessHouseMatch');
     },
   },
   waitOn() {
     return [
+      Meteor.subscribe('rolePermissions.all'),
       Meteor.subscribe('housingUnits.list', false),
       // Meteor.subscribe('projects.all'),
       Meteor.subscribe('housingMatch.list'),

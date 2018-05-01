@@ -1,5 +1,5 @@
 import { AppController } from './controllers';
-import { DefaultAdminAccessRoles } from '/imports/config/permissions';
+import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
 
 
 Router.route('adminDashboardeligibleClientsView', {
@@ -8,11 +8,11 @@ Router.route('adminDashboardeligibleClientsView', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+      return ableToAccess(Meteor.userId(), 'viewEligibleClients');
     },
   },
   waitOn() {
-    return Meteor.subscribe('eligibleClients.list');
+    return [Meteor.subscribe('rolePermissions.all'), Meteor.subscribe('eligibleClients.list')];
   },
   data() {
     return {

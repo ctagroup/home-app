@@ -5,6 +5,8 @@ import Users, { ChangePasswordSchema, UserCreateFormSchema } from '/imports/api/
 import Agencies from '/imports/api/agencies/agencies';
 import { HmisClient } from '/imports/api/hmisApi';
 import { DefaultAdminAccessRoles } from '/imports/config/permissions';
+import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
+
 
 Meteor.methods({
   'users.create'(insertDoc) {
@@ -134,7 +136,7 @@ Meteor.methods({
     logger.info(`METHOD[${Meteor.userId()}]: users.addRole`, userId, role);
     check(userId, String);
     check(role, String);
-    if (Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
+    if (ableToAccess(this.userId, 'manageRoles')) {
       return Roles.addUsersToRoles(userId, role, Roles.GLOBAL_GROUP);
     }
     return null;
@@ -143,7 +145,7 @@ Meteor.methods({
     logger.info(`METHOD[${Meteor.userId()}]: users.removeRole`, userId, role);
     check(userId, String);
     check(role, String);
-    if (Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)
+    if (ableToAccess(this.userId, 'manageRoles')
       && !(this.userId === userId && DefaultAdminAccessRoles.indexOf(role) > -1)) {
       return Roles.removeUsersFromRoles(userId, role, Roles.GLOBAL_GROUP);
     }

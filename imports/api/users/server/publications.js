@@ -2,7 +2,8 @@ import { eachLimit } from 'async';
 import Users from '/imports/api/users/users';
 import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
-import { DefaultAdminAccessRoles } from '/imports/config/permissions';
+import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
+
 
 function updateHmisProfile(userId, account) {
   const projects = account.projectGroup ? account.projectGroup.projects : [];
@@ -45,7 +46,7 @@ Meteor.publish('users.all', function publishAllUsers() {
   };
   let findOptions = { fields };
   if (this.userId) {
-    if (Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) findOptions = extendedData;
+    if (ableToAccess(this.userId, 'viewUserRoles')) findOptions = extendedData;
   }
 
   const cursor = Users.find({}, findOptions);

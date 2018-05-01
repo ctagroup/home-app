@@ -1,6 +1,6 @@
 import { GlobalHouseholdsCache } from '/imports/both/cached-subscriptions';
-import { GlobalHouseholdsAccessRoles } from '/imports/config/permissions';
 import { AppController } from './controllers';
+import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
 
 
 Router.route('adminDashboardglobalHouseholdsView', {
@@ -9,11 +9,14 @@ Router.route('adminDashboardglobalHouseholdsView', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), GlobalHouseholdsAccessRoles);
+      return ableToAccess(Meteor.userId(), 'accessHouseholds');
     },
   },
   waitOn() {
-    return GlobalHouseholdsCache.subscribe('globalHouseholds.list');
+    return [
+      Meteor.subscribe('rolePermissions.all'),
+      GlobalHouseholdsCache.subscribe('globalHouseholds.list'),
+    ];
   },
   data() {
     return {
@@ -27,9 +30,12 @@ Router.route('adminDashboardglobalHouseholdsNew', {
   path: '/globalHouseholds/new',
   template: 'globalHouseholdCreateView',
   controller: AppController,
+  waitOn() {
+    return Meteor.subscribe('rolePermissions.all');
+  },
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), GlobalHouseholdsAccessRoles);
+      return ableToAccess(Meteor.userId(), 'accessHouseholds');
     },
   },
   data() {
@@ -46,12 +52,12 @@ Router.route('adminDashboardglobalHouseholdsEdit', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), GlobalHouseholdsAccessRoles);
+      return ableToAccess(Meteor.userId(), 'accessHouseholds');
     },
   },
   waitOn() {
     const _id = Router.current().params._id;
-    return Meteor.subscribe('globalHouseholds.one', _id);
+    return [Meteor.subscribe('rolePermissions.all'), Meteor.subscribe('globalHouseholds.one', _id)];
   },
   data() {
     return {

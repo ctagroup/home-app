@@ -2,10 +2,7 @@ import { Clients } from '/imports/api/clients/clients';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import Responses from '/imports/api/responses/responses';
 import Surveys from '/imports/api/surveys/surveys';
-import {
-  ResponsesAccessRoles,
-  PendingClientsAccessRoles,
-} from '/imports/config/permissions';
+import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
 import { fullName } from '/imports/api/utils';
 import { AppController } from './controllers';
 import '/imports/ui/responses/responsesListView';
@@ -20,7 +17,7 @@ Router.route('adminDashboardresponsesView', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), ResponsesAccessRoles);
+      return ableToAccess(Meteor.userId(), 'accessResponses');
     },
   },
   waitOn() {
@@ -30,6 +27,7 @@ Router.route('adminDashboardresponsesView', {
       Meteor.subscribe('responses.all', clientId, schema),
       Meteor.subscribe('surveys.all'),
       Meteor.subscribe('surveys.v1'),
+      Meteor.subscribe('rolePermissions.all'),
     ];
 
     if (clientId) {
@@ -59,7 +57,7 @@ Router.route('adminDashboardresponsesNew', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), PendingClientsAccessRoles);
+      return ableToAccess(Meteor.userId(), 'accessPendingClients');
     },
   },
   waitOn() {
@@ -68,12 +66,14 @@ Router.route('adminDashboardresponsesNew', {
       return [
         Meteor.subscribe('clients.one', clientId, schema),
         Meteor.subscribe('surveys.all'),
+        Meteor.subscribe('rolePermissions.all'),
         // Meteor.subscribe('questions.all'),
       ];
     }
     return [
       Meteor.subscribe('pendingClients.one', clientId),
       Meteor.subscribe('surveys.all'),
+      Meteor.subscribe('rolePermissions.all'),
       // Meteor.subscribe('questions.all'),
     ];
   },
@@ -97,7 +97,7 @@ Router.route('adminDashboardresponsesEdit', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), PendingClientsAccessRoles);
+      return ableToAccess(Meteor.userId(), 'accessPendingClients');
     },
   },
   waitOn() {
@@ -106,6 +106,7 @@ Router.route('adminDashboardresponsesEdit', {
       Meteor.subscribe('responses.one', this.params._id),
       Meteor.subscribe('surveys.all'), // TODO: we need survey id from response to sub just one
       Meteor.subscribe('questions.all'),
+      Meteor.subscribe('rolePermissions.all'),
     ];
   },
   onBeforeAction() {
@@ -159,7 +160,7 @@ Router.route('responsesArchive', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), ResponsesAccessRoles);
+      return ableToAccess(Meteor.userId(), 'accessResponses');
     },
   },
   waitOn() {
@@ -168,6 +169,7 @@ Router.route('responsesArchive', {
       Meteor.subscribe('responses.one', this.params._id),
       Meteor.subscribe('surveys.v1'),
       Meteor.subscribe('questions.v1'),
+      Meteor.subscribe('rolePermissions.all'),
     ];
   },
   data() {

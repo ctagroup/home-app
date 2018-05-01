@@ -1,6 +1,6 @@
 import { logger } from '/imports/utils/logger';
 import RolePermissions from '/imports/api/rolePermissions/rolePermissions';
-import { DefaultAdminAccessRoles } from '/imports/config/permissions';
+import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
 
 Meteor.methods({
   'roles.addPermission'(roleName, permissionName) {
@@ -8,7 +8,7 @@ Meteor.methods({
       roleName, permissionName);
     check(roleName, String);
     check(permissionName, String);
-    if (Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
+    if (ableToAccess(this.userId, 'managePermissions')) {
       return RolePermissions.insert({ roleName, permissionName });
     }
     return null;
@@ -18,7 +18,7 @@ Meteor.methods({
       roleName, permissionName);
     check(roleName, String);
     check(permissionName, String);
-    if (Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
+    if (ableToAccess(this.userId, 'managePermissions')) {
       const rolePermission = RolePermissions.findOne({ roleName, permissionName });
       return RolePermissions.remove(rolePermission._id);
     }
