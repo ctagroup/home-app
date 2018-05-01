@@ -147,8 +147,8 @@ Router.route('adminDashboardclientsEdit', {
       ];
     }
     return [
-      Meteor.subscribe('rolePermissions.all'), 
-      Meteor.subscribe('pendingClients.one', id)
+      Meteor.subscribe('rolePermissions.all'),
+      Meteor.subscribe('pendingClients.one', id),
     ];
   },
   data() {

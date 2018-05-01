@@ -6,6 +6,7 @@ import {
 } from '/imports/config/permissions';
 import './dashboardMc211.html';
 
+import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
 
 const allWidgets = [
   {
@@ -14,6 +15,7 @@ const allWidgets = [
     icon: 'fa-user',
     path: 'adminDashboardclientsView',
     roles: PendingClientsAccessRoles,
+    permissions: 'accessPendingClients',
   },
   {
     name: 'Questions',
@@ -21,6 +23,7 @@ const allWidgets = [
     icon: 'fa-question',
     path: 'questionsView',
     roles: DefaultAdminAccessRoles,
+    permissions: 'accessQuestions',
   },
   {
     name: 'Surveys',
@@ -28,6 +31,7 @@ const allWidgets = [
     icon: 'fa-file-text',
     path: 'adminDashboardsurveysView',
     roles: DefaultAdminAccessRoles,
+    permissions: 'accessSurveys',
   },
   {
     name: 'Responses',
@@ -35,6 +39,7 @@ const allWidgets = [
     icon: 'fa-comment-o',
     path: 'adminDashboardresponsesView',
     roles: ResponsesAccessRoles,
+    permissions: 'accessResponses',
   },
   {
     name: 'Users',
@@ -42,13 +47,15 @@ const allWidgets = [
     icon: 'fa-user-md',
     path: 'adminDashboardusersView',
     roles: DefaultAdminAccessRoles,
+    permissions: 'accessUsers',
   },
 ];
 
 Template.dashboardMc211.helpers({
   widgets() {
     const allowedWidgets = _.filter(allWidgets,
-      widget => Roles.userIsInRole(Meteor.user(), widget.roles)
+      item => ableToAccess(Meteor.user(), item.permissions)
+      // widget => Roles.userIsInRole(Meteor.user(), widget.roles)
     );
     return allowedWidgets.map((widget) => {
       const doc = CollectionsCount.findOne(widget.id) || { count: 0 };

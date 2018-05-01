@@ -53,7 +53,7 @@ if (featureDecisions.isMc211App()) {
       const { clientId, schema } = this.params.query;
       return [
         Meteor.subscribe('rolePermissions.all'),
-        Meteor.subscribe('clients.one', clientId, schema)
+        Meteor.subscribe('clients.one', clientId, schema),
       ];
     },
     data() {

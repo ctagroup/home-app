@@ -1,12 +1,11 @@
 import './rolePermissionManager.html';
 import HomeRoles from '/imports/config/roles.js';
 import RolePermissions from '/imports/api/rolePermissions/rolePermissions';
-// import HomePermissions from '/imports/config/permissions.js';
-import PermissionsList from '/imports/config/permissions.js';
+import { PermissionsList } from '/imports/config/permissions.js';
 
 Template.rolePermissionManager.helpers({
   getRoles() {
-    return HomeRoles;
+    return HomeRoles.filter((role) => ['Developer', 'System Admin'].indexOf(role) === -1);
   },
 });
 
@@ -34,7 +33,7 @@ Template.roleManagerRoleItem.onCreated(function permissionManagerOnCreated() {
 
 Template.roleManagerRoleItem.events({
   'change .permissions-list'(e) {
-    console.log('Changed', e.currentTarget.value, e);
+    // console.log('Changed', e.currentTarget.value, e);
     Template.instance().state.set('selectedPermission', e.currentTarget.value);
   },
   'click .add-permission'(e) {

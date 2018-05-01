@@ -17,7 +17,7 @@ Router.route('adminDashboardhousingUnitsView', {
   waitOn() {
     return [
       Meteor.subscribe('rolePermissions.all'),
-      HousingUnitsCache.subscribe('housingUnits.list')
+      HousingUnitsCache.subscribe('housingUnits.list'),
     ];
   },
   data() {

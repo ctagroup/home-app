@@ -9,6 +9,7 @@ import {
 import './widget.html';
 import './dashboardHome.html';
 
+import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
 
 const allWidgets = [
   {
@@ -17,6 +18,7 @@ const allWidgets = [
     icon: 'fa-user',
     path: 'adminDashboardclientsView',
     roles: PendingClientsAccessRoles,
+    permissions: 'accessPendingClients',
   },
   {
     name: 'Active List',
@@ -24,6 +26,7 @@ const allWidgets = [
     icon: 'fa-user-plus',
     path: 'adminDashboardeligibleClientsView',
     roles: DefaultAdminAccessRoles,
+    permissions: 'viewEligibleClients',
   },
   {
     name: 'Housing Match',
@@ -31,6 +34,7 @@ const allWidgets = [
     icon: 'fa-bed',
     path: 'adminDashboardhousingMatchView',
     roles: DefaultAdminAccessRoles,
+    permissions: 'accessHouseMatch',
   },
   {
     name: 'Questions',
@@ -38,6 +42,7 @@ const allWidgets = [
     icon: 'fa-question',
     path: 'questionsView',
     roles: DefaultAdminAccessRoles,
+    permissions: 'accessQuestions',
   },
   {
     name: 'Surveys',
@@ -45,6 +50,7 @@ const allWidgets = [
     icon: 'fa-file-text',
     path: 'adminDashboardsurveysView',
     roles: DefaultAdminAccessRoles,
+    permissions: 'accessSurveys',
   },
   {
     name: 'Responses',
@@ -52,6 +58,7 @@ const allWidgets = [
     icon: 'fa-comment-o',
     path: 'adminDashboardresponsesView',
     roles: ResponsesAccessRoles,
+    permissions: 'accessResponses',
   },
   {
     name: 'Housing Units',
@@ -59,6 +66,7 @@ const allWidgets = [
     icon: 'fa-home',
     path: 'adminDashboardhousingUnitsView',
     roles: HousingUnitsAccessRoles,
+    permissions: 'accessHousingUnits',
   },
   {
     name: 'Households',
@@ -66,6 +74,7 @@ const allWidgets = [
     icon: 'fa-users',
     path: 'adminDashboardglobalHouseholdsView',
     roles: GlobalHouseholdsAccessRoles,
+    permissions: 'accessHouseholds',
   },
   {
     name: 'Users',
@@ -73,13 +82,15 @@ const allWidgets = [
     icon: 'fa-user-md',
     path: 'adminDashboardusersView',
     roles: DefaultAdminAccessRoles,
+    permissions: 'accessUsers',
   },
 ];
 
 Template.dashboardHome.helpers({
   widgets() {
     const allowedWidgets = _.filter(allWidgets,
-      widget => Roles.userIsInRole(Meteor.user(), widget.roles)
+      item => ableToAccess(Meteor.user(), item.permissions)
+      // widget => Roles.userIsInRole(Meteor.user(), widget.roles)
     );
     return allowedWidgets.map((widget) => {
       const doc = CollectionsCount.findOne(widget.id) || { count: 0 };

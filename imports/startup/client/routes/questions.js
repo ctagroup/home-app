@@ -41,7 +41,7 @@ Router.route('questionsNew', {
     if (sourceId) {
       return [
         Meteor.subscribe('rolePermissions.all'),
-        Meteor.subscribe('questions.one', sourceId)
+        Meteor.subscribe('questions.one', sourceId),
       ];
     }
     return [
