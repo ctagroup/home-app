@@ -1,21 +1,39 @@
 import { logger } from '/imports/utils/logger';
 import { HmisClient } from '/imports/api/hmisApi';
-import AppSettings from '/imports/api/appSettings/appSettings';
 
-
-Meteor.publish('projects.list', function publishAllProjects() {
-  logger.info(`PUB[${this.userId}]: projects.list`);
+Meteor.publish('projects.all', function publishAllProjects() {
+  logger.info(`PUB[${this.userId}]: projects.all`);
   if (!this.userId) {
-    return;
+    return [];
   }
-  const projects = HmisClient.create(this.userId).api('client').getProjects();
-  const appProjectId = AppSettings.get('appProjectId');
 
-  projects.forEach(project => {
-    const data = _.extend(project, {
-      isAppProject: project.projectId === appProjectId,
-    });
-    return this.added('localProjects', project.projectId, data);
+  const hc = HmisClient.create(this.userId);
+  // console.log('gp', hc.api('global').getGlobalProjects());
+  const api = hc.api('client');
+  const schemas = ['v2017', 'v2016', 'v2015', 'v2014'];
+  schemas.forEach(schema => {
+    try {
+      const projectsWithSchema = api.getProjects(schema).map(p => ({ ...p, schema }));
+      projectsWithSchema.forEach(project => {
+        this.added('localProjects', project.projectId, project);
+      });
+      this.ready();
+    } catch (err) {
+      logger.warn('cannot get projects for schema', schema);
+    }
   });
-  this.ready();
+  return this.ready();
+});
+
+Meteor.publish('projects.one', function publishOneProject(id, schema) {
+  logger.info(`PUB[${this.userId}]: projects.one`, id, schema);
+  if (!this.userId) {
+    return [];
+  }
+  const project = HmisClient.create(this.userId).api('client').getProject(id, schema);
+  this.added('localProjects', project.projectId, {
+    ...project,
+    schema,
+  });
+  return this.ready();
 });

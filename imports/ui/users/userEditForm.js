@@ -1,3 +1,4 @@
+import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import HomeRoles from '/imports/config/roles';
 import './userEditForm.html';
 
@@ -5,61 +6,43 @@ Template.userEditForm.helpers({
   schema() {
     const hmisRoles = this.hmisRoles || [];
     const projectsLinked = this.projectsLinked || [];
-    return new SimpleSchema({
-      'services.HMIS': {
-        type: new SimpleSchema({
-          firstName: {
-            type: String,
-            optional: true,
-          },
-          middleName: {
-            type: String,
-            optional: true,
-          },
-          lastName: {
-            type: String,
-            optional: true,
-          },
-          gender: {
-            type: Number,
-            allowedValues: [0, 1],
-            autoform: {
-              options: [
-                { value: 0, label: 'Male' },
-                { value: 1, label: 'Female' },
-              ],
-            },
-            optional: true,
-          },
-          emailAddress: {
-            type: String,
-            optional: true,
-          },
-          roles: {
-            type: [String],
-            allowedValues: hmisRoles.map(r => r.id),
-            optional: true,
-            autoform: {
-              afFieldInput: {
-                type: 'select-checkbox',
-                options: hmisRoles.map(r => ({
-                  value: r.id,
-                  label: r.roleDescription,
-                })),
-              },
-            },
-          },
-        }),
+    const typeOptions = {
+      firstName: {
+        type: String,
+        optional: true,
       },
-      'roles.__global_roles__': {
-        label: 'HOME roles',
+      middleName: {
+        type: String,
+        optional: true,
+      },
+      lastName: {
+        type: String,
+        optional: true,
+      },
+      emailAddress: {
+        type: String,
+        optional: true,
+      },
+    };
+    if (Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles)) {
+      typeOptions.roles = {
         type: [String],
-        allowedValues: HomeRoles,
+        allowedValues: hmisRoles.map(r => r.id),
+        optional: true,
         autoform: {
           afFieldInput: {
             type: 'select-checkbox',
+            options: hmisRoles.map(r => ({
+              value: r.id,
+              label: r.roleDescription,
+            })),
           },
         },
+      };
+    }
+    const schemaOptions = {
+      'services.HMIS': {
+        type: new SimpleSchema(typeOptions),
       },
       projectsLinked: {
         type: [String],
@@ -75,7 +58,20 @@ Template.userEditForm.helpers({
           },
         },
       },
-    });
+    };
+    if (Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles)) {
+      schemaOptions['roles.__global_roles__'] = {
+        label: 'HOME roles',
+        type: [String],
+        allowedValues: HomeRoles,
+        autoform: {
+          afFieldInput: {
+            type: 'select-checkbox',
+          },
+        },
+      };
+    }
+    return new SimpleSchema(schemaOptions);
   },
 });
 

@@ -92,7 +92,8 @@ export function fixMissingClientSchemasInV1Responses() {
     return;
   }
   logger.info(`Fixing missing client schemas in ${Responses.find().count()} responses...`);
-  logger.debug('using account', Meteor.settings.admins[0], !!user);
+
+  logger.debug('using account', adminEmail);
   const hc = HmisClient.create(user._id);
   let count = 0;
   const missingClients = new Set();
@@ -106,7 +107,7 @@ export function fixMissingClientSchemasInV1Responses() {
           hc.api('client').disableError(404).getClient(clientId, schema);
           logger.info(`Found ${clientId} in schema ${schema}`);
           missingClients.delete(clientId);
-          Responses.update(response._id, { $set: { clientSchema: schema } });
+          Responses.update(response._id, { $set: { clientSchema: schema, version: 1 } });
           count++;
           return true;
         } catch (e) {

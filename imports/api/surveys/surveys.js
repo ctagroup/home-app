@@ -8,13 +8,9 @@ Surveys.schema = new SimpleSchema({
   title: {
     type: String,
   },
-  active: {
+  locked: {
     type: Boolean,
-    label: 'Active (visible to surveyors, can collect responses)',
-  },
-  editable: {
-    type: Boolean,
-    label: 'Editable (can be edited by other administrators)',
+    label: 'Locked',
   },
   definition: {
     type: String,

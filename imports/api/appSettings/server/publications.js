@@ -5,7 +5,7 @@ Meteor.publish(
     if (this.userId) {
       return AppSettings.find();
     }
-    const allowedFields = ['version'];
+    const allowedFields = ['version', 'buildInfo'];
     return AppSettings.find({ _id: {
       $in: allowedFields,
     } });

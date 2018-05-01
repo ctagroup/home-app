@@ -1,5 +1,8 @@
+import { check, Match } from 'meteor/check';
+
 import { logger } from '/imports/utils/logger';
 import Users, { ChangePasswordSchema, UserCreateFormSchema } from '/imports/api/users/users';
+import Agencies from '/imports/api/agencies/agencies';
 import { HmisClient } from '/imports/api/hmisApi';
 import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 
@@ -72,7 +75,8 @@ Meteor.methods({
       projectsLinked: doc.projectsLinked || [],
     } });
 
-    const hmisId = Users.findOne(userId).services.HMIS.accountId;
+    const currentHMISData = Users.findOne(userId).services.HMIS;
+    const hmisId = currentHMISData.accountId;
     const api = HmisClient.create(this.userId).api('user-service');
 
     api.updateUser(hmisId, {
@@ -83,8 +87,14 @@ Meteor.methods({
       emailAddress: doc.services.HMIS.emailAddress,
     });
 
-    // TODO: update HMIS user roles?
-    // api.updateUserRoles(hmisId, doc.services.HMIS.roles);
+    const newRoles = doc.services.HMIS.roles;
+    const oldRoles = currentHMISData.roles;
+    const oldRoleIds = oldRoles.map(item => item.id);
+    const newRoleIds = newRoles.map(item => item.id);
+    api.updateUserRoles(hmisId, newRoles);
+
+    const removedRoleIds = oldRoleIds.filter(e => !newRoleIds.includes(e));
+    removedRoleIds.map(roleId => api.deleteUserRole(hmisId, roleId));
 
     // TODO: change HMIS password
   },
@@ -138,6 +148,53 @@ Meteor.methods({
       return Roles.removeUsersFromRoles(userId, role, Roles.GLOBAL_GROUP);
     }
     return null;
+  },
+  'users.projects.setActive'(projectId) {
+    logger.info(`METHOD[${Meteor.userId()}]: users.projects.setActive`, projectId);
+    Match.test(projectId, Match.OneOf(String, null)); // eslint-disable-line
+    if (!this.userId) {
+      throw new Meteor.Error('403', 'Forbidden');
+    }
+
+    const query = {
+      projectsMembers: {
+        $elemMatch: {
+          userId: this.userId,
+          projectId,
+        },
+      },
+    };
+    if (projectId && Agencies.find(query).count() === 0) {
+      throw new Meteor.Error(403, 'Not authorized');
+    }
+
+    Users.update(this.userId, { $set: {
+      activeProjectId: projectId,
+    } });
+  },
+
+  'users.checkToken'() {
+    logger.info(`METHOD[${this.userId}]: users.checkToken`);
+    const user = Meteor.users.findOne(this.userId);
+    const { accessToken, refreshToken, expiresAt } = user.services.HMIS;
+
+    let apiResponse = false;
+    try {
+      const hc = HmisClient.create(this.userId);
+      apiResponse = hc.api('user-service').getUser(this.userId);
+    } catch (err) {
+      apiResponse = err;
+    }
+
+    const result = {
+      accessToken: accessToken.substr(0, 8),
+      refreshToken: refreshToken.substr(0, 8),
+      expiresAt: new Date(expiresAt),
+      expiresIn: ((expiresAt - new Date()) / 1000).toFixed(2),
+      apiResponse,
+    };
+    logger.info(result);
+    return result;
   },
 
   addUserLocation(userID, timestamp, position) {

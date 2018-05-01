@@ -1,6 +1,8 @@
 import OpeningScript from '/imports/api/openingScript/openingScript';
 import moment from 'moment';
 import { logger } from '/imports/utils/logger';
+import FeatureDecisions from '/imports/both/featureDecisions';
+
 import './clientForm.html';
 
 let genderCategories;
@@ -8,6 +10,8 @@ let veteranStatus;
 let ethnicityCategories;
 let raceCategories;
 let disablingCond;
+
+const featureDecisions = FeatureDecisions.createFromMeteorSettings();
 
 function getUniversalElements() {
   /*
@@ -57,6 +61,12 @@ Template.clientForm.onRendered(() => {
 
 Template.clientForm.helpers(
   {
+    isHome() {
+      return !featureDecisions.isMc211App();
+    },
+    hideForMc211() {
+      return featureDecisions.isMc211App() ? 'display:none' : '';
+    },
     getUniversalElements() {
       getUniversalElements();
     },
@@ -80,7 +90,7 @@ Template.clientForm.helpers(
       return date;
     },
     selected(item) {
-      return this.value === item;
+      return this.value == item; // eslint-disable-line eqeqeq
     },
     getDefaultRace() {
       return [

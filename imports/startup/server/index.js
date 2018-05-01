@@ -1,5 +1,6 @@
 import { logger } from '/imports/utils/logger';
 
+import AppSettings from '/imports/api/appSettings/appSettings';
 import '/imports/api/appSettings/methods';
 import '/imports/api/appSettings/server/publications';
 
@@ -13,6 +14,9 @@ import '/imports/api/pendingClients/server/publications';
 
 import '/imports/api/eligibleClients/methods';
 import '/imports/api/eligibleClients/server/publications';
+
+import '/imports/api/files/methods';
+import '/imports/api/files/server/publications';
 
 import '/imports/api/questions/methods';
 import '/imports/api/questions/server/publications';
@@ -41,6 +45,9 @@ import '/imports/api/users/server/publications';
 import '/imports/api/projects/methods';
 import '/imports/api/projects/server/publications';
 
+import '/imports/api/agencies/methods';
+import '/imports/api/agencies/server/publications';
+
 import '/imports/api/openingScript/methods';
 import '/imports/api/logger/methods';
 import '/imports/api/aws/server/aws';
@@ -49,6 +56,8 @@ import '/imports/startup/server/migrations';
 import '/imports/startup/server/accounts';
 import '/imports/startup/server/admins';
 import '/imports/startup/server/mergeAccountsPatch';
+
+import '/imports/api/mc211/methods';
 
 
 Meteor.startup(() => {
@@ -59,7 +68,13 @@ Meteor.startup(() => {
   Meteor.settings = _.extend({
     connectionLimit: 10,
   }, Meteor.settings);
-  logger.info('Starting with settings', Meteor.settings);
+
+  const { GIT_BRANCH, GIT_TAG, GIT_COMMIT } = process.env;
+  const buildStr = (GIT_BRANCH || GIT_TAG || GIT_COMMIT) ?
+    `${GIT_TAG || 'tag'} (${(GIT_COMMIT || 'c').substr(0, 4)}/${GIT_BRANCH || 'b'})` : '';
+  logger.info(`Starting ${buildStr} with settings`, Meteor.settings);
+
+  AppSettings.set('buildInfo', buildStr);
 
   if (Meteor.settings.s3config) {
     // const { key, secret, bucket, region } = Meteor.settings.s3config;

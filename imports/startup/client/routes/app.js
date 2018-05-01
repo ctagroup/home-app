@@ -1,6 +1,9 @@
+import FeatureDecisions from '/imports/both/featureDecisions';
 import { AppController } from './controllers';
 import '/imports/ui/content/logout';
 import '/imports/ui/app/notEnoughPermissions';
+import '/imports/ui/dashboard/dashboard';
+import '/imports/ui/dashboard/dashboardMc211';
 
 
 Router.route('dashboard', {
@@ -36,6 +39,23 @@ Router.route(
     },
   }
 );
+
+const featureDecisions = FeatureDecisions.createFromMeteorSettings();
+if (featureDecisions.isMc211App()) {
+  Router.route(
+    '/reporting', {
+      name: 'reporting',
+      template: Template.Reporting,
+      controller: AppController,
+      data() {
+        return {
+          title: 'Reporting',
+        };
+      },
+    }
+  );
+}
+
 
 /*
 Router.route(

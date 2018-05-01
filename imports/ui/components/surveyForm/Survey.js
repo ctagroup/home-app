@@ -16,15 +16,18 @@ export default class Survey extends React.Component {
     this.handlePropsChange = this.handlePropsChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleToggleDebugWindow = this.handleToggleDebugWindow.bind(this);
-    this.state = computeFormState(
-      this.props.definition,
-      initialValues,
-      {},
-      { client: props.client }
-    );
+    this.state = {
+      ...computeFormState(
+        this.props.definition,
+        initialValues,
+        {},
+        { client: props.client }
+      ),
+      errors: {},
+    };
   }
 
-  handleValueChange(name, value) {
+  handleValueChange(name, value, isValid = true) {
     // check for array names i.e. 'foo[12]'
     const match = name.match(/([^[]+)\[(\d+)\]/);
     let newValues;
@@ -54,7 +57,16 @@ export default class Survey extends React.Component {
       this.state.props,
       { client: this.props.client }
     );
-    this.setState(formState);
+    const errors = this.state.errors;
+    if (isValid) {
+      delete errors[name];
+    } else {
+      errors[name] = true;
+    }
+    this.setState({
+      ...formState,
+      errors,
+    });
   }
 
   handlePropsChange(name, value) {
@@ -171,7 +183,11 @@ export default class Survey extends React.Component {
       } else {
         Alert.success('Success. Response uploaded');
       }
-      Router.go('adminDashboardresponsesView');
+      if (Roles.userIsInRole(Meteor.userId(), 'External Surveyor')) {
+        Router.go('dashboard');
+      } else {
+        Router.go('adminDashboardresponsesView');
+      }
       this.setState({ submitting: false });
     })
     .catch(err => {
@@ -246,32 +262,47 @@ export default class Survey extends React.Component {
   }
 
   renderSubmitButtons() {
-    const status = this.props.response && this.props.response.status;
+    const submissionId = this.props.response && this.props.response.submissionId;
     const client = this.props.client;
+    const hasErrors = Object.keys(this.state.errors).length > 0;
     const disabled = !client
       || this.state.submitting
-      || status === ResponseStatus.COMPLETED;
+      || hasErrors;
+      // || status === ResponseStatus.COMPLETED;
     const uploadClient = client && !client.schema;
+
+    let uploadButtonText = 'Upload client and survey';
+    if (!uploadClient) {
+      uploadButtonText = submissionId ? 'Re-Upload survey' : 'Upload survey';
+    }
 
     return (
       <div>
-        <button
-          className="btn btn-success"
-          type="button"
-          disabled={disabled}
-          onClick={() => this.handleSubmit(true, uploadClient)}
-        >
-          {uploadClient ? 'Upload client and survey' : 'Upload survey'}
-        </button>
-        &nbsp;
-        <button
-          className="btn btn-default"
-          type="button"
-          disabled={disabled}
-          onClick={() => this.handleSubmit(false, false)}
-        >
-          Pause Survey
-        </button>
+        {submissionId &&
+          <div className="alert alert-warning" role="alert">
+            Response already uploaded to HMIS (submissionId: {submissionId})
+          </div>
+        }
+        <div>
+          <button
+            className="btn btn-success"
+            type="button"
+            disabled={disabled}
+            onClick={() => this.handleSubmit(true, uploadClient)}
+          >
+            {uploadButtonText}
+          </button>
+          &nbsp;
+          <button
+            className="btn btn-default"
+            type="button"
+            disabled={disabled}
+            onClick={() => this.handleSubmit(false, false)}
+          >
+            Pause Survey
+          </button>
+        </div>
+        {hasErrors && <div className="error-message">Survey has errors</div>}
       </div>
   );
   }
@@ -283,7 +314,7 @@ export default class Survey extends React.Component {
     const status = this.props.response ? this.props.response.status : 'new';
     const clientName = fullName(client) || client._id || 'n/a';
     return (
-      <div>
+      <div className="survey">
         <p><strong>Client:</strong> {clientName}</p>
         <p><strong>Response status:</strong> {status}</p>
         <Section
@@ -292,9 +323,10 @@ export default class Survey extends React.Component {
           onValueChange={this.handleValueChange}
           onPropsChange={this.handlePropsChange}
           level={1}
+          debugMode={this.props.debugMode}
         />
         {this.renderSubmitButtons()}
-        {this.props.debug && this.renderDebugWindow()}
+        {this.props.debugMode && this.renderDebugWindow()}
       </div>
     );
   }

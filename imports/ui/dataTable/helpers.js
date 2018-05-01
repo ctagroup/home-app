@@ -71,7 +71,7 @@ export function deleteHousingUnitButton() {
 }
 
 
-export function deleteSurveyButton() {
+export function deleteSurveyButton(onSuccessCallback) {
   return {
     data: '_id',
     title: 'Delete',
@@ -84,7 +84,9 @@ export function deleteSurveyButton() {
         method: 'surveys.delete',
         args: [_id],
         onSuccess() {
-          // Meteor.setTimeout(() => location.reload(), 1500);
+          if (onSuccessCallback) {
+            onSuccessCallback(rowData);
+          }
         },
       };
       Blaze.renderWithData(Template.DataTableDeleteButton, templateData, node);
@@ -119,7 +121,6 @@ export function deleteQuestionButton(onSuccessCallback) {
     orderable: false,
   };
 }
-
 
 export function deleteUserButton() {
   return {
@@ -175,6 +176,30 @@ export function deleteResponseButton(onSuccessCallback) {
         message: `Are you sure you want to delete the response of ${name}?`,
         method: 'responses.delete',
         args: [_id],
+        onSuccess() {
+          if (onSuccessCallback) {
+            onSuccessCallback(rowData);
+          }
+        },
+      };
+      Blaze.renderWithData(Template.DataTableDeleteButton, templateData, node);
+    },
+    width: '45px',
+    orderable: false,
+  };
+}
+
+export function deleteProjectButton(onSuccessCallback) {
+  return {
+    data: '_id',
+    title: 'Delete',
+    render() { return ''; },
+    createdCell(node, _id, rowData) {
+      const templateData = {
+        _id,
+        message: `Are you sure you want to delete the project ${rowData.projectName}?`,
+        method: 'projects.delete',
+        args: [_id, rowData.schema],
         onSuccess() {
           if (onSuccessCallback) {
             onSuccessCallback(rowData);

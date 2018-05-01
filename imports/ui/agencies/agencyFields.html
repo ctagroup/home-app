@@ -1,0 +1,30 @@
+<template name="agencyFields">
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#general">General Settings</a></li>
+    <li><a data-toggle="tab" href="#userProjectGrid">Project Access</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <br />
+    <div id="general" class="tab-pane fade in active">
+      {{> afQuickField name='agencyName'}}
+      {{> afQuickField name='description'}}
+      {{> afQuickField name='members'}}
+      <p><a href="{{pathFor 'adminDashboardusersNew'}}" class="btn btn-default" data-dismiss="modal">Add new Member</a></p>
+
+
+      {{> afQuickField name='projects'}}
+      <p><a href="{{pathFor 'projectsNew'}}" class="btn btn-default" data-dismiss="modal">Add new Project</a></p>
+    </div>
+
+    <div id="userProjectGrid" class="tab-pane fade">
+      {{#if showUserProjectGrid}}
+        {{> afQuickField name='projectMembers'}}
+      {{else}}
+        <div class="alert alert-warning" role="alert">
+          Assign projects and members to the agency first.
+        </div>
+      {{/if}}
+    </div>
+  </div>
+</template>

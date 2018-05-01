@@ -1,5 +1,8 @@
 {
   "public": {
+    "features": {
+      "roleManager": true
+    },
     "staleSessionInactivityTimeout": 900000,
     "staleSessionHeartbeatInterval": 60000,
     "staleSessionPurgeInterval": 60000,

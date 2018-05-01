@@ -1,12 +1,23 @@
 import { Clients } from '/imports/api/clients/clients';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import { RecentClients } from '/imports/api/recent-clients';
-import { AppController } from './controllers';
 import Responses from '/imports/api/responses/responses';
+import FeatureDecisions from '/imports/both/featureDecisions';
 import { ClientsAccessRoles } from '/imports/config/permissions';
 import '/imports/ui/clients/clientNotFound';
 import '/imports/ui/clients/selectSurvey';
+import '/imports/ui/clients/searchClient';
+import '/imports/ui/clients/createClient';
+import '/imports/ui/clients/editClient';
+import '/imports/ui/clients/viewClient';
+import '/imports/ui/clients/viewClientMc211';
+import { AppController } from './controllers';
 
+
+const featureDecisions = FeatureDecisions.createFromMeteorSettings();
+
+const clientProfileTemplate = featureDecisions.isMc211App() ?
+  'viewClientMc211' : 'viewClient';
 
 Router.route('adminDashboardclientsView', {
   path: '/clients',
@@ -48,7 +59,7 @@ Router.route('adminDashboardclientsNew', {
 Router.route(
   '/clients/:_id', {
     name: 'viewClient',
-    template: 'viewClient',
+    template: clientProfileTemplate,
     controller: AppController,
     authorize: {
       allow() {
@@ -57,14 +68,14 @@ Router.route(
     },
     onBeforeAction() {
       // Redirect External Surveyor
-      const clientID = Router.current().params._id;
+      const clientId = Router.current().params._id;
       if (Roles.userIsInRole(Meteor.userId(), 'External Surveyor')) {
         const pausedResponse = Responses.findOne({
-          clientID,
-          responsestatus: 'Paused',
+          clientId,
+          status: 'paused',
         });
-        const hasNoResponses = Responses.find({ clientID }).count() === 0;
-        const hmisClient = Clients.findOne(clientID);
+        const hasNoResponses = Responses.find({ clientId }).count() === 0;
+        const hmisClient = Clients.findOne(clientId);
         const query = hmisClient ? { schema: hmisClient.schema } : {};
 
         if (pausedResponse) {
@@ -72,7 +83,7 @@ Router.route(
           Router.go('adminDashboardresponsesEdit', { _id: pausedResponse._id });
         } else if (hasNoResponses) {
           Bert.alert('Create new response', 'success', 'growl-top-right');
-          Router.go('selectSurvey', { _id: clientID }, { query });
+          Router.go('selectSurvey', { _id: clientId }, { query });
         } else {
           if (hmisClient) {
             Bert.alert('This client has already been surveyed', 'danger', 'growl-top-right');

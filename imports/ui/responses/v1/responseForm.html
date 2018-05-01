@@ -1,6 +1,7 @@
 <template name="responseForm">
   <div class="quesL">
-    <h3 class="page-header">{{clientName}}</h3>
+    <p><strong>Client: </strong>{{clientName}}</p>
+    <p><strong>Response status: </strong>{{this.response.status}}</p>
 
     <h2>
       {{#if isActiveRoute 'previewSurvey'}}
@@ -16,7 +17,7 @@
 
         <div class="responseSection">
 
-          {{#if displaySection contentType}}
+          {{#if equals contentType 'section'}}
             <div class="section">
               <li><h3 style="color: #1b6d85">{{content}}</h3></li>
               <!-- if survey is completed then check if we need to show message for that. -->
@@ -41,7 +42,7 @@
               {{#unless sectionSkipped sectionID}}
                 <div class="{{sectionID}}">
                   <div class="labels">
-                    {{#if displayLabel contentType}}
+                    {{#if equals contentType 'labels'}}
                       <li><h4>{{content}}</h4></li>
                     {{/if}}
                   </div>
@@ -60,7 +61,7 @@
             {{else}}
               <div class="{{sectionID}} {{hideIfSkipped sectionID}}">
                 <div class="labels">
-                  {{#if displayLabel contentType}}
+                  {{#if equals contentType 'labels'}}
                     <li><h4>{{content}}</h4></li>
                   {{/if}}
                 </div>
@@ -154,7 +155,7 @@
                                                                class="singleSelect"
                                                                id={{../content}}  name={{../content}}
                                                                value={{this.description}}
-                                {{isSelected this.description}}>
+                                {{isSelected ../content this.description}}>
                               &nbsp; {{this.description}}</label>
                           </li>
                         {{/each}}

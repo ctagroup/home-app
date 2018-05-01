@@ -5,7 +5,7 @@ import { HmisClient } from '/imports/api/hmisApi';
 Meteor.publish('globalHouseholds.list', function publishHouseholds() {
   logger.info(`PUB[${this.userId}]: globalHouseholds.list`);
   if (!this.userId) {
-    return;
+    return [];
   }
 
   const self = this;
@@ -89,6 +89,8 @@ Meteor.publish('globalHouseholds.list', function publishHouseholds() {
       callback();
     });
   });
+
+  return self.ready();
 });
 
 

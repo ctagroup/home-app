@@ -25,7 +25,7 @@ Template.housingUnitForm.helpers(
     },
     isProjectSelected(projectId) {
       const data = Router.current().data();
-      return projectId === data.projectId ? 'selected' : '';
+      return projectId === data.housingUnit.projectId ? 'selected' : '';
     },
   }
 );

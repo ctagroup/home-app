@@ -284,6 +284,11 @@ Users.schema = new SimpleSchema(
       type: [String],
       optional: true,
     },
+    activeProjectId: {
+      label: 'Active Project',
+      type: String,
+      optional: true,
+    },
   }
 );
 

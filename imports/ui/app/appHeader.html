@@ -5,11 +5,11 @@
     <a href="{{pathFor 'root'}}" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini">
-        <img alt="H O M E" src="/imgs/logo/home-circle-neg.png">
+        <img alt="{{appName}}" title="{{appName}}" src="/imgs/logo/home-circle-neg.png">
       </span>
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg">
-        <img alt="H O M E" src="/imgs/logo/home-neg.png">
+        <img alt="{{appName}}" title="{{appName}}" src="/imgs/logo/home-neg.png">
       </span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
@@ -18,6 +18,8 @@
       <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
+
+      {{> projectSelect }}
 
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">

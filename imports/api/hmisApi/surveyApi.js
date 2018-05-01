@@ -40,8 +40,10 @@ export class SurveyApi extends ApiEndpoint {
     return this.doDel(url);
   }
 
-  createQuestionGroup() {
-    throw new Error('Not implemented');
+  createQuestionGroup(name) {
+    const url = `${BASE_URL}/questiongroups`;
+    const body = { questionGroup: { questionGroupName: name } };
+    return this.doPost(url, body).questionGroup.questionGroupId; // questionIGroupId?
   }
 
   getQuestionGroups() {
@@ -114,21 +116,21 @@ export class SurveyApi extends ApiEndpoint {
     return this.doGet(url).responses.responses;
   }
 
-  createResponse(clientId, surveyId, responses) {
-    // see: https://hmis-api.github.io/survey-service-api/#clients__clientid__surveys__surveyid__responses_post
-    const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/responses`;
-    const body = { responses: { responses } };
-    return this.doPost(url, body).response;
-  }
-
   updateResponse(clientId, surveyId, submissionId, responses) {
     const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/responses/${submissionId}`;
     const body = { responses: { responses } };
     return this.doPut(url, body).response;
   }
 
-  deleteResponse(clientId, surveyId, responseId) {
-    const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/responses/${responseId}`;
+  createSubmission(clientId, surveyId, responses) {
+    // see: https://hmis-api.github.io/survey-service-api/#clients__clientid__surveys__surveyid__responses_post
+    const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/responses`;
+    const body = { responses: { responses } };
+    return this.doPost(url, body).response;
+  }
+
+  deleteSubmission(clientId, surveyId, submissionId) {
+    const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/submissions/${submissionId}`;
     return this.doDel(url);
   }
 

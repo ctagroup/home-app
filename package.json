@@ -1,23 +1,25 @@
 {
   "dependencies": {
+    "@babel/runtime": "^7.0.0-beta.44",
     "async": "http://registry.npmjs.org/async/-/async-1.0.0.tgz",
-    "aws-sdk": "^2.166.0",
-    "babel-runtime": "^6.18.0",
-    "datatables.net-bs": "^1.10.12",
+    "aws-sdk": "^2.221.1",
+    "babel-runtime": "^6.26.0",
+    "currency.js": "^1.1.1",
+    "datatables.net-bs": "^1.10.16",
     "jquery": "^1.11.10",
-    "meteor-node-stubs": "^0.2.3",
+    "meteor-node-stubs": "^0.2.11",
     "moment": "https://registry.npmjs.org/moment/-/moment-2.16.0.tgz",
     "raven": "^1.2.1",
     "react": "https://registry.npmjs.org/react/-/react-15.6.1.tgz",
     "react-datepicker": "^0.55.0",
     "react-dom": "https://registry.npmjs.org/react-dom/-/react-dom-15.6.1.tgz",
-    "react-input-mask": "^1.0.7",
-    "react-modal": "^3.1.0",
-    "react-quill": "^1.1.0",
-    "react-sortable-tree": "^1.5.0",
-    "uniforms": "^1.22.0",
-    "uniforms-bootstrap3": "^1.22.0",
-    "winston": "^2.2.0",
+    "react-input-mask": "^1.2.2",
+    "react-modal": "^3.3.2",
+    "react-quill": "^1.2.7",
+    "react-sortable-tree": "^1.8.1",
+    "uniforms": "^1.23.2",
+    "uniforms-bootstrap3": "^1.23.2",
+    "winston": "^2.4.1",
     "winston-sentry": "git+https://github.com/ualtinok/winston-sentry.git"
   },
   "devDependencies": {
@@ -26,10 +28,11 @@
     "eslint-plugin-import": "^1.8.1",
     "eslint-plugin-jsx-a11y": "^1.5.1",
     "eslint-plugin-react": "^5.2.2",
-    "raven": "^1.2.1",
-    "winston-sentry": "git+https://github.com/ualtinok/winston-sentry.git"
+    "mup-git": "^1.0.1",
+    "npm": "^5.8.0"
   },
   "scripts": {
+    "start": "meteor --settings settings.local.json",
     "lint": "eslint .",
     "test": "meteor test --driver-package practicalmeteor:mocha --port 4000"
   }

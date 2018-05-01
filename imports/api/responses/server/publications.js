@@ -77,18 +77,22 @@ Meteor.publish('responses.one', function publishSingleResponse(responseId) {
       return self.ready();
     }
 
-    const { isHMISClient, clientId, clientSchema } = response;
+    const { clientId, clientSchema } = response;
 
-    if (isHMISClient && clientSchema) {
+    if (clientId && clientSchema) {
       try {
-        response.clientDetails = hc.api('client').getClient(clientId, clientSchema);
+        const client = hc.api('client').getClient(clientId, clientSchema);
+        response.clientDetails = {
+          ...client,
+          schema: clientSchema,
+        };
       } catch (e) {
         response.clientDetails = { error: e.reason };
       }
       self.added('responses', response._id, response);
       self.ready();
     } else {
-      const localClient = PendingClients.findOne({ _id: response.clientID });
+      const localClient = PendingClients.findOne({ _id: response.clientId });
       response.clientDetails = localClient;
     }
     self.added('responses', response._id, response);

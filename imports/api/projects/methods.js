@@ -4,6 +4,21 @@ import AppSettings from '/imports/api/appSettings/appSettings';
 
 
 Meteor.methods({
+  'projects.create'(data) {
+    logger.info(`METHOD[${this.userId}]: projects.create`, data);
+    const hc = HmisClient.create(Meteor.userId());
+    return hc.api('client').createProject(data);
+  },
+  'projects.update'(data, projectId, schema) {
+    logger.info(`METHOD[${this.userId}]: projects.update`, data, projectId, schema);
+    const hc = HmisClient.create(Meteor.userId());
+    return hc.api('client').updateProject(projectId, data, schema);
+  },
+  'projects.delete'(projectId, schema) {
+    logger.info(`METHOD[${this.userId}]: projects.delete`, projectId, schema);
+    const hc = HmisClient.create(Meteor.userId());
+    return hc.api('client').deleteProject(projectId, schema);
+  },
   createProjectSetup(projectName, projectCommonName) {
     logger.info(`METHOD[${Meteor.userId()}]: createProjectSetup`, projectName);
     const hc = HmisClient.create(Meteor.userId());

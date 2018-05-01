@@ -2,7 +2,8 @@
     <nav class="navbar navbar-default navbar-fixed-bottom footer">
         <div class="container-fluid">
             <ul class="nav navbar-nav navbar-left">
-                <li><a href="#">© {{ currentYear }} - Community Technology Alliance. All Rights Reserved.</a></li>
+              <li><a href="#">© {{ currentYear }} - Community Technology Alliance. All Rights Reserved.</a></li>
+              <li><div class="build-info">{{ buildInfo }}</div></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="{{isActivePath 'privacy'}}"><a href="{{pathFor 'privacy'}}">Privacy</a></li>

@@ -1,6 +1,7 @@
 import { logger } from '/imports/utils/logger';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import { HmisClient } from '/imports/api/hmisApi';
+import { mergeByDedupId } from '/imports/api/clients/helpers';
 
 Meteor.methods({
   'clients.create'(client, schema = 'v2017') {
@@ -119,6 +120,7 @@ Meteor.methods({
         }
       );
     } else {
+      hmisClients = mergeByDedupId(hmisClients);
       mergedClients = localClients.map(
         (client) => {
           const clientz = client;

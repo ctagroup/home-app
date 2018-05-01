@@ -1,5 +1,6 @@
 import { AppController } from './controllers';
 import Projects from '/imports/api/projects/projects';
+import '/imports/ui/roleManager/roleManager.js';
 
 
 Router.route('roleManager', {

@@ -2,6 +2,7 @@ import { ContentController } from './controllers';
 import '/imports/ui/content/home';
 import '/imports/ui/content/privacy';
 import '/imports/ui/content/termsOfUse';
+import '/imports/ui/content/reporting';
 
 Router.route(
   '/', {

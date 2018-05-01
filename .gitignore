@@ -5,5 +5,4 @@
 node_modules
 *.log
 settings.local.json
-.deploy/*.copy
-.deploy/*/settings.json
+.deploy
