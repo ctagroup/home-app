@@ -1,9 +1,21 @@
 import HousingUnits from '/imports/api/housingUnits/housingUnits';
+import { HousingUnitsAccessRoles } from '/imports/config/permissions';
 import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
 import { HousingUnitsCache } from '/imports/both/cached-subscriptions';
 import '/imports/ui/housingUnits/housingUnitsCreateView';
 import '/imports/ui/housingUnits/housingUnitsEditView';
 import { AppController } from './controllers';
+
+import FeatureDecisions from '/imports/both/featureDecisions';
+
+const featureDecisions = FeatureDecisions.createFromMeteorSettings();
+let checkPermissions;
+if (featureDecisions.roleManagerEnabled()) {
+  checkPermissions = (userId) => ableToAccess(userId, 'accessHousingUnits');
+} else {
+  checkPermissions = (userId) => Roles.userIsInRole(userId, HousingUnitsAccessRoles);
+}
+
 
 Router.route('adminDashboardhousingUnitsView', {
   path: '/housingUnits',
@@ -11,12 +23,11 @@ Router.route('adminDashboardhousingUnitsView', {
   controller: AppController,
   authorize: {
     allow() {
-      return ableToAccess(Meteor.userId(), 'accessHousingUnits');
+      return checkPermissions(Meteor.userId());
     },
   },
   waitOn() {
     return [
-      Meteor.subscribe('rolePermissions.all'),
       HousingUnitsCache.subscribe('housingUnits.list'),
     ];
   },
@@ -34,11 +45,11 @@ Router.route('adminDashboardhousingUnitsNew', {
   controller: AppController,
   authorize: {
     allow() {
-      return ableToAccess(Meteor.userId(), 'accessHousingUnits');
+      return checkPermissions(Meteor.userId());
     },
   },
   waitOn() {
-    return [Meteor.subscribe('rolePermissions.all'), Meteor.subscribe('projects.all')];
+    return [Meteor.subscribe('projects.all')];
   },
   data() {
     return {
@@ -54,13 +65,12 @@ Router.route('adminDashboardhousingUnitsEdit', {
   controller: AppController,
   authorize: {
     allow() {
-      return ableToAccess(Meteor.userId(), 'accessHousingUnits');
+      return checkPermissions(Meteor.userId());
     },
   },
   waitOn() {
     const _id = this.params._id;
     return [
-      Meteor.subscribe('rolePermissions.all'),
       Meteor.subscribe('housingUnits.one', _id),
       Meteor.subscribe('projects.all'),
     ];

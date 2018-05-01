@@ -1,7 +1,19 @@
 import Projects from '/imports/api/projects/projects';
+import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
 import { AppController } from './controllers';
 import '/imports/ui/projectSetup/projectSetup';
+
+import FeatureDecisions from '/imports/both/featureDecisions';
+
+const featureDecisions = FeatureDecisions.createFromMeteorSettings();
+let checkPermissions;
+if (featureDecisions.roleManagerEnabled()) {
+  checkPermissions = (userId) => ableToAccess(userId, 'accessProjectSetup');
+} else {
+  checkPermissions = (userId) => Roles.userIsInRole(userId, DefaultAdminAccessRoles);
+}
+
 
 Router.route(
   'projectSetup', {
@@ -10,12 +22,11 @@ Router.route(
     controller: AppController,
     authorize: {
       allow() {
-        return ableToAccess(Meteor.userId(), 'accessProjectSetup');
+        return checkPermissions(Meteor.userId());
       },
     },
     waitOn() {
       return [
-        Meteor.subscribe('rolePermissions.all'),
         Meteor.subscribe('projects.all'),
       ];
     },

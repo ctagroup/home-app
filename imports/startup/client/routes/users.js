@@ -1,4 +1,5 @@
 import Users from '/imports/api/users/users';
+import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
 import { fullName } from '/imports/api/utils';
 import { AppController } from './controllers';
@@ -6,18 +7,28 @@ import '/imports/ui/users/usersListView.js';
 import '/imports/ui/users/usersCreateView.js';
 import '/imports/ui/users/usersEditView.js';
 
+import FeatureDecisions from '/imports/both/featureDecisions';
+
+const featureDecisions = FeatureDecisions.createFromMeteorSettings();
+let checkPermissions;
+if (featureDecisions.roleManagerEnabled()) {
+  checkPermissions = (userId) => ableToAccess(userId, 'accessUsers');
+} else {
+  checkPermissions = (userId) => Roles.userIsInRole(userId, DefaultAdminAccessRoles);
+}
+
+
 Router.route('adminDashboardusersView', {
   path: '/users',
   template: Template.usersListView,
   controller: AppController,
   authorize: {
     allow() {
-      return ableToAccess(Meteor.userId(), 'accessUsers');
+      return checkPermissions(Meteor.userId());
     },
   },
   waitOn() {
     return [
-      Meteor.subscribe('rolePermissions.all'),
       Meteor.subscribe('users.all'),
     ];
   },
@@ -35,11 +46,8 @@ Router.route('adminDashboardusersNew', {
   controller: AppController,
   authorize: {
     allow() {
-      return ableToAccess(Meteor.userId(), 'accessUsers');
+      return checkPermissions(Meteor.userId());
     },
-  },
-  waitOn() {
-    return Meteor.subscribe('rolePermissions.all');
   },
   data() {
     return {
@@ -59,12 +67,11 @@ Router.route('adminDashboardusersEdit', {
       if (userId === Meteor.userId()) {
         return true;
       }
-      return ableToAccess(Meteor.userId(), 'accessUsers');
+      return checkPermissions(Meteor.userId());
     },
   },
   waitOn() {
     return [
-      Meteor.subscribe('rolePermissions.all'),
       Meteor.subscribe('users.one', this.params._id),
     ];
   },

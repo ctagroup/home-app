@@ -1,9 +1,20 @@
+import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
 import Agencies from '/imports/api/agencies/agencies';
 import { AppController } from './controllers';
 import '/imports/ui/agencies/agenciesListView';
 import '/imports/ui/agencies/agenciesNew';
 import '/imports/ui/agencies/agenciesEdit';
+
+import FeatureDecisions from '/imports/both/featureDecisions';
+
+const featureDecisions = FeatureDecisions.createFromMeteorSettings();
+let checkPermissions;
+if (featureDecisions.roleManagerEnabled()) {
+  checkPermissions = (userId) => ableToAccess(userId, 'accessAgencies');
+} else {
+  checkPermissions = (userId) => Roles.userIsInRole(userId, DefaultAdminAccessRoles);
+}
 
 Router.route(
   'agenciesList', {
@@ -12,7 +23,7 @@ Router.route(
     controller: AppController,
     authorize: {
       allow() {
-        return ableToAccess(Meteor.userId(), 'accessAgencies');
+        return checkPermissions(Meteor.userId());
       },
     },
     waitOn() {
@@ -37,7 +48,7 @@ Router.route(
     controller: AppController,
     authorize: {
       allow() {
-        return ableToAccess(Meteor.userId(), 'accessAgencies');
+        return checkPermissions(Meteor.userId());
       },
     },
     waitOn() {
@@ -64,7 +75,7 @@ Router.route(
     controller: AppController,
     authorize: {
       allow() {
-        return ableToAccess(Meteor.userId(), 'accessAgencies');
+        return checkPermissions(Meteor.userId());
       },
     },
     waitOn() {

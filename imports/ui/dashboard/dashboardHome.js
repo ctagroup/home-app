@@ -10,6 +10,8 @@ import './widget.html';
 import './dashboardHome.html';
 
 import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
+import FeatureDecisions from '/imports/both/featureDecisions';
+const featureDecisions = FeatureDecisions.createFromMeteorSettings();
 
 const allWidgets = [
   {
@@ -88,10 +90,14 @@ const allWidgets = [
 
 Template.dashboardHome.helpers({
   widgets() {
-    const allowedWidgets = _.filter(allWidgets,
-      item => ableToAccess(Meteor.user(), item.permissions)
-      // widget => Roles.userIsInRole(Meteor.user(), widget.roles)
-    );
+    let mapper;
+    const user = Meteor.user();
+    if (featureDecisions.roleManagerEnabled()) {
+      mapper = (item) => ableToAccess(user, item.permissions);
+    } else {
+      mapper = (item) => Roles.userIsInRole(user, item.roles);
+    }
+    const allowedWidgets = _.filter(allWidgets, mapper);
     return allowedWidgets.map((widget) => {
       const doc = CollectionsCount.findOne(widget.id) || { count: 0 };
       return _.extend(widget, {

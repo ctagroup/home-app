@@ -1,18 +1,26 @@
+import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
 import { AppController } from './controllers';
 import '/imports/ui/openingScript/openingScript';
+
+import FeatureDecisions from '/imports/both/featureDecisions';
+
+const featureDecisions = FeatureDecisions.createFromMeteorSettings();
+let checkPermissions;
+if (featureDecisions.roleManagerEnabled()) {
+  checkPermissions = (userId) => ableToAccess(userId, 'accessOpeningScript');
+} else {
+  checkPermissions = (userId) => Roles.userIsInRole(userId, DefaultAdminAccessRoles);
+}
 
 Router.route(
   'openingScript', {
     path: '/openingScript',
     template: Template.openingScript,
     controller: AppController,
-    waitOn() {
-      return Meteor.subscribe('rolePermissions.all');
-    },
     authorize: {
       allow() {
-        return ableToAccess(Meteor.userId(), 'accessOpeningScript');
+        return checkPermissions(Meteor.userId());
       },
     },
     data() {

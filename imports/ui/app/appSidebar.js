@@ -157,10 +157,14 @@ const adminMenuItems = [
 
 Template.AppSidebar.helpers({
   collectionsMenuItems() {
-    const allowedMenuItems = _.filter(collectionsMenuItems,
-      // item => Roles.userIsInRole(Meteor.user(), item.roles)
-      item => ableToAccess(Meteor.user(), item.permissions)
-    );
+    let mapper;
+    const user = Meteor.user();
+    if (featureDecisions.roleManagerEnabled()) {
+      mapper = (item) => ableToAccess(user, item.permissions);
+    } else {
+      mapper = (item) => Roles.userIsInRole(user, item.roles);
+    }
+    const allowedMenuItems = _.filter(collectionsMenuItems, mapper);
     return allowedMenuItems;
   },
   adminMenuItems() {
