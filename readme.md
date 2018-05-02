@@ -25,7 +25,7 @@ meteor run --settings settings.local.json
 
 To run tests:
 ```
-meteor test --driver-package practicalmeteor:mocha --port 4000
+npm run test
 ```
 
 ## Deploy instructions

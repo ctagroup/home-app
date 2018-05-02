@@ -23,6 +23,7 @@
     "winston-sentry": "git+https://github.com/ualtinok/winston-sentry.git"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
     "eslint": "^2.13.1",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-plugin-import": "^1.8.1",
@@ -34,6 +35,6 @@
   "scripts": {
     "start": "meteor --settings settings.local.json",
     "lint": "eslint .",
-    "test": "meteor test --driver-package practicalmeteor:mocha --port 4000"
+    "test": "TEST_WATCH=1 meteor test --driver-package meteortesting:mocha --port 4000"
   }
 }
