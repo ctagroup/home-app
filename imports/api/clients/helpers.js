@@ -93,6 +93,7 @@ export const getReferralStatusHistory = (hc, clientId) => {
     const bTime = moment(b.dateUpdated, 'MM-DD-YYYY HH:mm:ss.SSS').unix();
     return aTime - bTime;
   });
+  return referralStatusHistory;
 };
 
 export const getHousingMatch = (hc, clientId) => {
