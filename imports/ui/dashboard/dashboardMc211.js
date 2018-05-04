@@ -6,6 +6,9 @@ import {
 } from '/imports/config/permissions';
 import './dashboardMc211.html';
 
+import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
+import FeatureDecisions from '/imports/both/featureDecisions';
+const featureDecisions = FeatureDecisions.createFromMeteorSettings();
 
 const allWidgets = [
   {
@@ -14,6 +17,7 @@ const allWidgets = [
     icon: 'fa-user',
     path: 'adminDashboardclientsView',
     roles: PendingClientsAccessRoles,
+    permissions: 'accessPendingClients',
   },
   {
     name: 'Questions',
@@ -21,6 +25,7 @@ const allWidgets = [
     icon: 'fa-question',
     path: 'questionsView',
     roles: DefaultAdminAccessRoles,
+    permissions: 'accessQuestions',
   },
   {
     name: 'Surveys',
@@ -28,6 +33,7 @@ const allWidgets = [
     icon: 'fa-file-text',
     path: 'adminDashboardsurveysView',
     roles: DefaultAdminAccessRoles,
+    permissions: 'accessSurveys',
   },
   {
     name: 'Responses',
@@ -35,6 +41,7 @@ const allWidgets = [
     icon: 'fa-comment-o',
     path: 'adminDashboardresponsesView',
     roles: ResponsesAccessRoles,
+    permissions: 'accessResponses',
   },
   {
     name: 'Users',
@@ -42,14 +49,20 @@ const allWidgets = [
     icon: 'fa-user-md',
     path: 'adminDashboardusersView',
     roles: DefaultAdminAccessRoles,
+    permissions: 'accessUsers',
   },
 ];
 
 Template.dashboardMc211.helpers({
   widgets() {
-    const allowedWidgets = _.filter(allWidgets,
-      widget => Roles.userIsInRole(Meteor.user(), widget.roles)
-    );
+    let mapper;
+    const user = Meteor.user();
+    if (featureDecisions.roleManagerEnabled()) {
+      mapper = (item) => ableToAccess(user, item.permissions);
+    } else {
+      mapper = (item) => Roles.userIsInRole(user, item.roles);
+    }
+    const allowedWidgets = _.filter(allWidgets, mapper);
     return allowedWidgets.map((widget) => {
       const doc = CollectionsCount.findOne(widget.id) || { count: 0 };
       return _.extend(widget, {

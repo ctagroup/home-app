@@ -1,11 +1,22 @@
 import { AppController } from './controllers';
 import { DefaultAdminAccessRoles } from '/imports/config/permissions';
+import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
 import Surveys from '/imports/api/surveys/surveys';
 import Questions from '/imports/api/questions/questions';
 import '/imports/ui/surveys/surveysListView';
 import '/imports/ui/surveys/surveyForm';
 import '/imports/ui/surveys/surveyFormBuilder';
 import '/imports/ui/responses/responsesNew';
+
+import FeatureDecisions from '/imports/both/featureDecisions';
+
+const featureDecisions = FeatureDecisions.createFromMeteorSettings();
+let checkPermissions;
+if (featureDecisions.roleManagerEnabled()) {
+  checkPermissions = (userId) => ableToAccess(userId, 'accessSurveys');
+} else {
+  checkPermissions = (userId) => Roles.userIsInRole(userId, DefaultAdminAccessRoles);
+}
 
 
 Router.route('adminDashboardsurveysView', {
@@ -14,11 +25,13 @@ Router.route('adminDashboardsurveysView', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+      return checkPermissions(Meteor.userId());
     },
   },
   waitOn() {
-    return Meteor.subscribe('surveys.all');
+    return [
+      Meteor.subscribe('surveys.all'),
+    ];
   },
   data() {
     return {
@@ -34,7 +47,14 @@ Router.route('surveysNew', {
   template: Template.surveyForm,
   controller: AppController,
   waitOn() {
-    return Meteor.subscribe('questions.all');
+    return [
+      Meteor.subscribe('questions.all'),
+    ];
+  },
+  authorize: {
+    allow() {
+      return checkPermissions(Meteor.userId());
+    },
   },
   data() {
     const definition = {
@@ -58,12 +78,13 @@ Router.route('surveysEdit', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+      return checkPermissions(Meteor.userId());
     },
   },
   waitOn() {
     const id = Router.current().params._id;
     return [
+      Meteor.subscribe('rolePermissions.all'),
       Meteor.subscribe('surveys.one', id),
       Meteor.subscribe('questions.all'),
     ];
@@ -86,7 +107,7 @@ Router.route('surveysEditDefinition', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+      return checkPermissions(Meteor.userId());
     },
   },
   waitOn() {
@@ -114,12 +135,14 @@ Router.route('surveysPreview', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+      return checkPermissions(Meteor.userId());
     },
   },
   waitOn() {
     const id = Router.current().params._id;
-    return Meteor.subscribe('surveys.one', id);
+    return [
+      Meteor.subscribe('surveys.one', id),
+    ];
   },
   data() {
     const id = Router.current().params._id;

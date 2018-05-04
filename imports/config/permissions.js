@@ -48,3 +48,26 @@ export const ResponsesAccessRoles = [
   'Case Manager',
   'Surveyor',
 ];
+
+export const PermissionsList = [
+  'managePermissions',
+  'manageRoles',
+  'viewUserRoles',
+  'accessAgencies',
+  'accessClients',
+  'viewEligibleClients',
+  'accessFiles',
+  'accessHouseholds',
+  'accessHouseMatch',
+  'accessHousingUnits',
+  'accessOpeningScript',
+  'accessProjects',
+  'accessProjectSetup',
+  'accessQuestions',
+  'accessResponses',
+  'accessPendingClients',
+  'accessSurveys',
+  'accessUsers',
+  // 'viewAdminRoutes',
+  // 'editClientData',
+];

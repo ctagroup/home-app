@@ -6,12 +6,26 @@ import {
   ResponsesAccessRoles,
   PendingClientsAccessRoles,
 } from '/imports/config/permissions';
+import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
 import { fullName } from '/imports/api/utils';
 import { AppController } from './controllers';
 import '/imports/ui/responses/responsesListView';
 import '/imports/ui/responses/responsesNew';
 import '/imports/ui/responses/responsesEdit';
 import '/imports/ui/responses/responsesArchive';
+
+import FeatureDecisions from '/imports/both/featureDecisions';
+
+const featureDecisions = FeatureDecisions.createFromMeteorSettings();
+let checkPermissions;
+let checkPendingPermissions;
+if (featureDecisions.roleManagerEnabled()) {
+  checkPermissions = (userId) => ableToAccess(userId, 'accessResponses');
+  checkPendingPermissions = (userId) => ableToAccess(userId, 'accessPendingClients');
+} else {
+  checkPermissions = (userId) => Roles.userIsInRole(userId, ResponsesAccessRoles);
+  checkPendingPermissions = (userId) => Roles.userIsInRole(userId, PendingClientsAccessRoles);
+}
 
 
 Router.route('adminDashboardresponsesView', {
@@ -20,7 +34,7 @@ Router.route('adminDashboardresponsesView', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), ResponsesAccessRoles);
+      return checkPermissions(Meteor.userId());
     },
   },
   waitOn() {
@@ -59,7 +73,7 @@ Router.route('adminDashboardresponsesNew', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), PendingClientsAccessRoles);
+      return checkPendingPermissions(Meteor.userId());
     },
   },
   waitOn() {
@@ -97,7 +111,7 @@ Router.route('adminDashboardresponsesEdit', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), PendingClientsAccessRoles);
+      return checkPendingPermissions(Meteor.userId());
     },
   },
   waitOn() {
@@ -159,7 +173,7 @@ Router.route('responsesArchive', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), ResponsesAccessRoles);
+      return checkPermissions(Meteor.userId());
     },
   },
   waitOn() {

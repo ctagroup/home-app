@@ -7,6 +7,10 @@ export default class FeatureDecisions {
     return this.features.appProfile === 'mc211';
   }
 
+  roleManagerEnabled() {
+    return this.features.roleManager === true;
+  }
+
   static createFromMeteorSettings() {
     return new FeatureDecisions(Meteor.settings.public.features || []);
   }

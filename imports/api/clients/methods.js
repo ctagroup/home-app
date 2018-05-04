@@ -139,6 +139,7 @@ Meteor.methods({
         )
       );
     }
+    logger.info('mergedClients', mergedClients);
     return mergedClients;
   },
 });

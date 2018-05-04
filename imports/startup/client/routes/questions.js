@@ -1,7 +1,18 @@
 import { AppController } from './controllers';
 import { DefaultAdminAccessRoles } from '/imports/config/permissions';
+import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
 import Questions from '/imports/api/questions/questions';
 import '/imports/ui/questions/questionForm';
+
+import FeatureDecisions from '/imports/both/featureDecisions';
+
+const featureDecisions = FeatureDecisions.createFromMeteorSettings();
+let checkPermissions;
+if (featureDecisions.roleManagerEnabled()) {
+  checkPermissions = (userId) => ableToAccess(userId, 'accessQuestions');
+} else {
+  checkPermissions = (userId) => Roles.userIsInRole(userId, DefaultAdminAccessRoles);
+}
 
 
 Router.route('questionsView', {
@@ -10,11 +21,13 @@ Router.route('questionsView', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+      return checkPermissions(Meteor.userId());
     },
   },
   waitOn() {
-    return Meteor.subscribe('questions.all');
+    return [
+      Meteor.subscribe('questions.all'),
+    ];
   },
   data() {
     return {
@@ -30,15 +43,18 @@ Router.route('questionsNew', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+      return checkPermissions(Meteor.userId());
     },
   },
   waitOn() {
     const sourceId = Router.current().params.query.source;
     if (sourceId) {
-      return Meteor.subscribe('questions.one', sourceId);
+      return [
+        Meteor.subscribe('questions.one', sourceId),
+      ];
     }
-    return [];
+    return [
+    ];
   },
   data() {
     const sourceId = Router.current().params.query.source;
@@ -62,11 +78,13 @@ Router.route('questionsEdit', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+      return checkPermissions(Meteor.userId());
     },
   },
   waitOn() {
-    return Meteor.subscribe('questions.all');
+    return [
+      Meteor.subscribe('questions.all'),
+    ];
   },
   data() {
     const id = Router.current().params._id;

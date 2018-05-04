@@ -1,10 +1,22 @@
 import Users from '/imports/api/users/users';
 import { DefaultAdminAccessRoles } from '/imports/config/permissions';
+import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
 import { fullName } from '/imports/api/utils';
 import { AppController } from './controllers';
 import '/imports/ui/users/usersListView.js';
 import '/imports/ui/users/usersCreateView.js';
 import '/imports/ui/users/usersEditView.js';
+
+import FeatureDecisions from '/imports/both/featureDecisions';
+
+const featureDecisions = FeatureDecisions.createFromMeteorSettings();
+let checkPermissions;
+if (featureDecisions.roleManagerEnabled()) {
+  checkPermissions = (userId) => ableToAccess(userId, 'accessUsers');
+} else {
+  checkPermissions = (userId) => Roles.userIsInRole(userId, DefaultAdminAccessRoles);
+}
+
 
 Router.route('adminDashboardusersView', {
   path: '/users',
@@ -12,11 +24,13 @@ Router.route('adminDashboardusersView', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+      return checkPermissions(Meteor.userId());
     },
   },
   waitOn() {
-    return Meteor.subscribe('users.all');
+    return [
+      Meteor.subscribe('users.all'),
+    ];
   },
   data() {
     return {
@@ -32,7 +46,7 @@ Router.route('adminDashboardusersNew', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+      return checkPermissions(Meteor.userId());
     },
   },
   data() {
@@ -53,11 +67,13 @@ Router.route('adminDashboardusersEdit', {
       if (userId === Meteor.userId()) {
         return true;
       }
-      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+      return checkPermissions(Meteor.userId());
     },
   },
   waitOn() {
-    return Meteor.subscribe('users.one', this.params._id);
+    return [
+      Meteor.subscribe('users.one', this.params._id),
+    ];
   },
   data() {
     const userId = Meteor.userId();

@@ -1,9 +1,20 @@
 import { DefaultAdminAccessRoles } from '/imports/config/permissions';
+import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
 import Projects from '/imports/api/projects/projects';
 import { AppController } from './controllers';
 import '/imports/ui/projects/projectsListView';
 import '/imports/ui/projects/projectsNew';
 import '/imports/ui/projects/projectsEdit';
+
+import FeatureDecisions from '/imports/both/featureDecisions';
+
+const featureDecisions = FeatureDecisions.createFromMeteorSettings();
+let checkPermissions;
+if (featureDecisions.roleManagerEnabled()) {
+  checkPermissions = (userId) => ableToAccess(userId, 'accessProjects');
+} else {
+  checkPermissions = (userId) => Roles.userIsInRole(userId, DefaultAdminAccessRoles);
+}
 
 
 Router.route(
@@ -13,7 +24,7 @@ Router.route(
     controller: AppController,
     authorize: {
       allow() {
-        return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+        return checkPermissions(Meteor.userId());
       },
     },
     waitOn() {
@@ -37,7 +48,7 @@ Router.route(
     controller: AppController,
     authorize: {
       allow() {
-        return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+        return checkPermissions(Meteor.userId());
       },
     },
     waitOn() {
@@ -62,7 +73,7 @@ Router.route(
     controller: AppController,
     authorize: {
       allow() {
-        return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+        return checkPermissions(Meteor.userId());
       },
     },
     waitOn() {

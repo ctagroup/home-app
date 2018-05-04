@@ -2,6 +2,10 @@ import { eachLimit } from 'async';
 import Users from '/imports/api/users/users';
 import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
+import FeatureDecisions from '/imports/both/featureDecisions';
+import { ableToAccess } from '/imports/api/rolePermissions/helpers.js';
+
+const featureDecisions = FeatureDecisions.createFromMeteorSettings();
 
 function updateHmisProfile(userId, account) {
   const projects = account.projectGroup ? account.projectGroup.projects : [];
@@ -37,7 +41,17 @@ const fields = {
 
 Meteor.publish('users.all', function publishAllUsers() {
   logger.debug(`Publishing users.all to ${this.userId}`);
-  const cursor = Users.find({}, { fields });
+
+  const extendedData = {
+    ...fields,
+    roles: 1,
+  };
+  let findOptions = { fields };
+  if (this.userId && featureDecisions.roleManagerEnabled()) {
+    if (ableToAccess(this.userId, 'viewUserRoles')) findOptions = extendedData;
+  }
+
+  const cursor = Users.find({}, findOptions);
   const api = HmisClient.create(this.userId).api('user-service');
   Meteor.defer(() => {
     eachLimit(

@@ -12,6 +12,8 @@ import {
   fixMissingClientSchemasInV1Responses,
 } from './migrations';
 
+import { migratePermissions } from './migratePermissions';
+
 Meteor.startup(() => {
   let version = AppSettings.get('version', 10);
 
@@ -77,14 +79,23 @@ Meteor.startup(() => {
       };
       check(survey, Surveys.schema);
       Surveys.upsert(id, { $set: { ...survey } }, { bypassCollection2: true });
-      AppSettings.set('version', version);
     });
+    AppSettings.set('version', version);
   }
 
   if (version === 13) {
     version++;
+    logger.info('upserting Responses');
     migrateV1Responses();
     fixMissingClientSchemasInV1Responses();
+    AppSettings.set('version', version);
+  }
+
+  if (version === 14) {
+    version++;
+    logger.info('Set up PermissionRoles');
+    migratePermissions();
+    AppSettings.set('version', version);
   }
 
   logger.info(`Migrations complete. Version: ${AppSettings.get('version')}`);

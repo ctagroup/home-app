@@ -63,18 +63,32 @@ export function stringContains(str, query = '') {
   return strLower.indexOf(queryLower) !== -1;
 }
 
+export const unique = (arr) => {
+  if (!Array.isArray(arr)) return arr;
+  const u = {};
+  u.cleanable = {};
+  const a = [];
+  for (let i = 0, l = arr.length; i < l; ++i) {
+    if (!u.cleanable.hasOwnProperty(arr[i])) {
+      a.push(arr[i]);
+      u.cleanable[arr[i]] = 1;
+    }
+  }
+  u.cleanable = null;
+  return a;
+};
 
 // Remove undef., null and empty string.
 // Via: https://stackoverflow.com/questions/286141/remove-blank-attributes-from-an-object-in-javascript
 // extended with empty string comparasion
 export const removeEmpty = (obj) =>
-Object.keys(obj)
-.filter(k => obj[k] !== null && obj[k] !== undefined && obj[k] !== '')
-.reduce((newObj, k) => (
-  typeof obj[k] === 'object' ?
-    Object.assign(newObj, { [k]: removeEmpty(obj[k]) }) :  // Recurse.
-    Object.assign(newObj, { [k]: obj[k] })),  // Copy value.
-  {});
+  Object.keys(obj)
+  .filter(k => obj[k] !== null && obj[k] !== undefined && obj[k] !== '')
+  .reduce((newObj, k) => (
+    typeof obj[k] === 'object' ?
+      Object.assign(newObj, { [k]: removeEmpty(obj[k]) }) :  // Recurse.
+      Object.assign(newObj, { [k]: obj[k] })),  // Copy value.
+    {});
 
 export function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);

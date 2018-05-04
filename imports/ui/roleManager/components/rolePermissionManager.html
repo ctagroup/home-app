@@ -1,0 +1,36 @@
+<template name="rolePermissionManager">
+  {{#each role in getRoles}}
+    {{> roleManagerRoleItem role=role }}
+  {{/each}}
+</template>
+
+<template name="roleManagerRoleItem">
+    <div class="col-sm-12 col-md-6 col-lg-4">
+        <div class="card role-card">
+          <div class="card-block">
+            <h4 class="card-title">{{role}}</h4>
+            <div class="card-text">
+              <ul>
+                {{#each rolePermission in getRolePermissions role }}
+                  {{> rolePermissionItem role=role permission=rolePermission}}
+                {{/each}}
+                {{#if availablePermissionsExist role}}
+                  <li>
+                    <select class="permissions-list">
+                      {{#each permissionName in getAvailablePermissions role}}
+                        <option value={{permissionName}}>{{permissionName}}</option>
+                      {{/each}}
+                    </select>
+                    <button class="btn btn-sm btn-primary add-permission">Add</button>
+                  </li>
+                {{/if}}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+</template>
+
+<template name="rolePermissionItem">
+  <li>{{permission.permissionName}} <a class="remove-permission">&times;</a></li>
+</template>
