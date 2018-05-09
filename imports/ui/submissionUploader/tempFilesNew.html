@@ -1,0 +1,12 @@
+<template name="tempFilesNew">
+  {{> uploadSubmission}}
+</template>
+<template name="uploadSubmission">
+  <h4 class="page-header">Upload a CSV</h4>
+
+  {{#unless uploading}}
+    <input type="file" name="uploadCSV">
+  {{else}}
+    <p><i class="fa fa-spin fa-refresh"></i> Uploading files...</p>
+  {{/unless}}
+</template>

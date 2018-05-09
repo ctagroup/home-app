@@ -1,0 +1,20 @@
+<template name="submissionUploaderForm">
+  <select>
+    <option>Survey1</option>
+    <option>Survey2</option>
+    <option>Survey3</option>
+  </select>
+  <textarea>SurveyConfig
+      {surveyId: “some-ID”,
+        columnsNumber: 10,
+        definition: [
+        {type: ‘clientName’},
+        {type: ‘startDate’},
+        {type: ‘ignore’},
+        {type: ‘question’, questionId: ‘some-uuid’, questionType: ‘text’}, {type: ‘question’, questionId: ‘some-uuid’, questionType: ‘select’}, {type: ‘reference’, questionId: ‘some-uuid’},
+        {type: ‘score’, name: ‘risks’}
+        ] }
+  </textarea>
+  <input type="file"/>
+  <p>UploadProgress</p>
+</template>

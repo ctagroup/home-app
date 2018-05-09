@@ -3,6 +3,7 @@ import './content';
 import './clients';
 import './eligibleClients';
 import './files';
+import './tempFiles';
 import './housingMatch';
 import './questions';
 import './surveys';

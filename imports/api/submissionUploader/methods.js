@@ -1,6 +1,6 @@
 import { logger } from '/imports/utils/logger';
 import { HmisClient } from '/imports/api/hmisApi';
-import Jobs from '/imports/api/jobs/jobs';
+import Jobs, { JobStatus } from '/imports/api/jobs/jobs';
 import SubmissionUploaderSurveyConfigs from
   '/imports/api/submissionUploader/submissionUploaderSurveyConfigs';
 import {
@@ -16,8 +16,18 @@ import {
 } from '/imports/api/submissionUploader/submissionUploaderProcessor';
 
 import SubmissionUploaderFixtures from '/imports/__tests__/fixtures/submissionUploader';
-import { JobStatus } from '../jobs/jobs';
+import TempFiles from '/imports/api/submissionUploader/tempFiles';
+import SubmissionUploaderFiles from './submissionUploaderFiles';
 
+const parseFile = (fileId, fileRows) => {
+  fileRows.forEach(data => {
+    Jobs.insert({
+      status: JobStatus.PENDING,
+      fileId,
+      data,
+    });
+  });
+};
 
 Meteor.methods({
   'submissionUploader.prepopulateWithTestData'() {
@@ -104,4 +114,44 @@ Meteor.methods({
 
     return jobs.length;
   },
+
+  parseUpload(data) {
+    // check(data, Array);
+    console.log('parseUpload', data);
+  },
+  'tempFiles.create'(doc) {
+    logger.info(`METHOD[${Meteor.userId()}]: files.create`, doc);
+    check(doc, TempFiles.schema);
+    // TODO: permissions
+    return TempFiles.insert(doc);
+  },
+  'tempFiles.delete'(id) {
+    logger.info(`METHOD[${Meteor.userId()}]: files.delete`, id);
+    check(id, String);
+    // TODO: permissions
+    const currentFile = TempFiles.findOne(id);
+    TempFiles.Uploads.remove(currentFile.fileId);
+    TempFiles.remove(id);
+    return;
+  },
+  processUploadedSubmission(doc) {
+    logger.info(`METHOD[${Meteor.userId()}]: processUploadedSubmission()`);
+    if (!Meteor.userId()) {
+      throw new Meteor.Error(401, 'Unauthorized');
+    }
+    // Doc.process
+    // Slice to drop info row:
+    const fileRows = doc.lines.slice(1);
+    const fileRef = SubmissionUploaderFiles.insert({
+      fileName: doc.name,
+      totalRows: fileRows.length,
+    });
+    parseFile(fileRef._id, fileRows);
+  },
+  // 'files.create'(doc) {
+  //   logger.info(`METHOD[${Meteor.userId()}]: files.create`, doc);
+  //   check(doc, Files.schema);
+  //   // TODO: permissions
+  //   return Files.insert(doc);
+  // },
 });

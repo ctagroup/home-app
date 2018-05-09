@@ -18,6 +18,9 @@ import '/imports/api/eligibleClients/server/publications';
 import '/imports/api/files/methods';
 import '/imports/api/files/server/publications';
 
+import '/imports/api/submissionUploader/methods';
+import '/imports/api/submissionUploader/server/publications';
+
 import '/imports/api/questions/methods';
 import '/imports/api/questions/server/publications';
 
