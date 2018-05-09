@@ -2,22 +2,28 @@
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import Jobs, { JobStatus } from '/imports/api/jobs/jobs';
-// import SubmissionUploaderFiles from './submissionUploaderFiles';
-import SubmissionUploaderSurveyConfigs from './submissionUploaderSurveyConfigs';
-import SubmissionUploaderFiles from './submissionUploaderFiles';
-import SubmissionUploaderFixtures from './submissionUploader.fixtures';
-import { createRowProcessor } from './rowProcessor';
+import SubmissionUploaderSurveyConfigs from
+  '/imports/api/submissionUploader/submissionUploaderSurveyConfigs';
+import SubmissionUploaderFiles from '/imports/api/submissionUploader/submissionUploaderFiles';
+import SubmissionUploaderFixtures from '/imports/__tests__/fixtures/submissionUploader';
+import createFakeClientApi from '/imports/__tests__/mocks/clientApi';
+import createFakeSurveyApi from '/imports/__tests__/mocks/surveyApi';
+
+import {
+  ClientMatcher,
+  ResponseMapper,
+  SubmissionUploader,
+  createRowProcessor,
+} from '/imports/api/submissionUploader/rowProcessor';
+
 import {
   createQueue,
   onRowCompleted,
   onRowFailed,
-  ClientMatcher,
-  SubmissionMapper,
-  SubmissionUploader,
-} from './submissionUploaderProcessor';
+} from '/imports/api/submissionUploader/submissionUploaderProcessor';
 
 
-describe('submission uploader e2e tests', function () {
+describe('xxxx submission uploader e2e tests', function () {
   beforeEach(() => {
     resetDatabase();
     SubmissionUploaderSurveyConfigs.insert({
@@ -37,17 +43,22 @@ describe('submission uploader e2e tests', function () {
       _id: 'row1',
       queueId: 'queue1',
       status: JobStatus.PENDING,
-      data: SubmissionUploaderFixtures.getSurvey1Row(),
+      data: {
+        row: SubmissionUploaderFixtures.getSurvey1Row(),
+      },
     });
   });
 
   it('will successfully process a single job', function (done) {
     const surveyId = 'survey1';
-    const surveyConfig = SubmissionUploaderSurveyConfigs.findOne(surveyId);
-    const surveyApi = null;
+    const surveyConfig = SubmissionUploaderSurveyConfigs.findOne(surveyId).definition;
+    const clientApi = createFakeClientApi();
+    clientApi.searchClient.returns(['client1']);
+    const surveyApi = createFakeSurveyApi();
+    surveyApi.createSubmission.returns({ submissionId: 'submission1' });
 
-    const clientMatcher = new ClientMatcher({ surveyConfig });
-    const submissionMapper = new SubmissionMapper({ surveyConfig });
+    const clientMatcher = new ClientMatcher({ surveyConfig, clientApi });
+    const submissionMapper = new ResponseMapper({ surveyConfig });
     const submissionUploader = new SubmissionUploader({ surveyApi });
 
     const jobProcessor = createRowProcessor({
@@ -55,6 +66,7 @@ describe('submission uploader e2e tests', function () {
       clientMatcher,
       submissionMapper,
       submissionUploader,
+      jobsStore: Jobs,
     });
     const onJobCompleted = onRowCompleted({
       jobsStore: Jobs,
@@ -76,7 +88,10 @@ describe('submission uploader e2e tests', function () {
     });
 
     // load queue with db entries
-    Jobs.find().fetch().map(row => queue.push(row));
+    Jobs.find().fetch().map(job => queue.push({
+      id: job._id,
+      data: job.data.row,
+    }));
   });
 
 
@@ -97,12 +112,15 @@ describe('submission uploader e2e tests', function () {
       Promise.resolve().then(() => {
         const job = Jobs.findOne('row1');
         expect(job.status).to.equal(JobStatus.FAILED);
-        expect(job.errorMessage).to.equal('Intentional error');
+        expect(job.error.message).to.equal('Intentional error');
         done();
       }).catch(err => done(err));
     });
 
     // load queue with db entries
-    Jobs.find().fetch().map(row => queue.push(row));
+    Jobs.find().fetch().map(job => queue.push({
+      id: job._id,
+      data: job.data.row,
+    }));
   });
 });

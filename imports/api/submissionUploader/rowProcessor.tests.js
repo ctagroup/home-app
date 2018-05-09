@@ -2,48 +2,23 @@
 import sinon from 'sinon';
 import { expect } from 'chai';
 import { JobStatus } from '/imports/api/jobs/jobs';
-import SubmissionUploaderFixtures from './submissionUploader.fixtures';
-import { createRowProcessor } from './rowProcessor';
+import SubmissionUploaderFixtures from '/imports/__tests__/fixtures/submissionUploader';
+import createFakeClientApi from '/imports/__tests__/mocks/clientApi';
+import createFakeSurveyApi from '/imports/__tests__/mocks/surveyApi';
 import {
-  // createQueue,
-  // onRowCompleted,
-  // onRowFailed,
   ClientMatcher,
   ResponseMapper,
-  // SubmissionUploader,
-} from './submissionUploaderProcessor';
+  SubmissionUploader,
+  createRowProcessor,
+} from './rowProcessor';
 
 
 describe('xxxx submission uploader - row processor', function () {
-  it('ResponseMapper will map row to responses array', () => {
-    const surveyConfig = SubmissionUploaderFixtures.getSurvey1Definition();
-    const row = SubmissionUploaderFixtures.getSurvey1Row();
-    const submissionMapper = new ResponseMapper({ surveyConfig });
-    const result = submissionMapper.mapRowToResponse(row);
-
-    expect(result).to.deep.equal([
-      {
-        questionId: 'question1',
-        responseText: '1 Child',
-      },
-      {
-        questionId: 'question3',
-        responseText: 'No',
-      },
-      {
-        questionId: 'question5',
-        responseText: 'Friends',
-      },
-    ]);
-  });
-
   it('ClientMatcher will match a client by source system id', () => {
     const surveyConfig = SubmissionUploaderFixtures.getSurvey1Definition();
     const row = SubmissionUploaderFixtures.getSurvey1Row();
 
-    const fakeHmisClientApi = {
-      searchClient: sinon.stub(),
-    };
+    const fakeHmisClientApi = createFakeClientApi();
     fakeHmisClientApi.searchClient.withArgs(281052).returns([{
       clientId: 'client1',
       firstName: 'Foo',
@@ -54,7 +29,7 @@ describe('xxxx submission uploader - row processor', function () {
 
     const clientMatcher = new ClientMatcher({
       surveyConfig,
-      hmisClientApi: fakeHmisClientApi,
+      clientApi: fakeHmisClientApi,
     });
 
     expect(clientMatcher.matchRowToClient(row)).to.equal('client1');
@@ -64,18 +39,75 @@ describe('xxxx submission uploader - row processor', function () {
     const surveyConfig = SubmissionUploaderFixtures.getSurvey1Definition();
     const row = SubmissionUploaderFixtures.getSurvey1Row();
 
-    const fakeHmisClientApi = {
-      searchClient: sinon.stub(),
-    };
+    const fakeHmisClientApi = createFakeClientApi();
     fakeHmisClientApi.searchClient.withArgs(281052).returns([]);
 
     const clientMatcher = new ClientMatcher({
       surveyConfig,
-      hmisClientApi: fakeHmisClientApi,
+      clientApi: fakeHmisClientApi,
     });
 
     expect(() => clientMatcher.matchRowToClient(row))
       .to.throw('Cannot match client using query 281052. Found 0 clients.');
+  });
+
+  // TODO: ClientMatcher will throw an exception if no sourceSystemId in definition
+
+  it('ResponseMapper will map row to responses array', () => {
+    const surveyConfig = SubmissionUploaderFixtures.getSurvey1Definition();
+    const row = SubmissionUploaderFixtures.getSurvey1Row();
+    const submissionMapper = new ResponseMapper({ surveyConfig });
+    const result = submissionMapper.mapRowToResponse(row);
+
+    expect(result).to.deep.equal([
+      {
+        questionId: 'question1',
+        responseText: '1 Child',
+        sectionId: 'section1',
+      },
+      {
+        questionId: 'question3',
+        responseText: 'No',
+        sectionId: 'section2',
+      },
+      {
+        questionId: 'question5',
+        responseText: 'Friends',
+        sectionId: 'section3',
+      },
+    ]);
+  });
+
+  it('SubmissionUploader will successfully upload a row', () => {
+    const surveyId = 'survey1';
+    const clientId = 'client1';
+    const responses = [
+      {
+        questionId: 'question1',
+        responseText: 'foo',
+      },
+      {
+        questionId: 'question2',
+        responseText: 'bar',
+      },
+    ];
+
+
+    const fakeSurveyApi = createFakeSurveyApi();
+    fakeSurveyApi.createSubmission.returns({
+      submissionId: 'submission1',
+    });
+
+    const submissionUploader = new SubmissionUploader({
+      surveyApi: fakeSurveyApi,
+    });
+    const submissionId = submissionUploader.uploadSubmission(surveyId, clientId, responses);
+    expect(submissionId).to.equal('submission1');
+    expect(fakeSurveyApi.createSubmission.getCall(0).args).to.deep.equal([
+      'client1',
+      'survey1',
+      responses,
+    ]);
   });
 
   it('will process and upload a single row', (done) => {
@@ -95,6 +127,9 @@ describe('xxxx submission uploader - row processor', function () {
       clientMatcher: fakeMatcher,
       submissionMapper,
       submissionUploader: fakeSubmissionUploader,
+      jobsStore: {
+        setJobStatus: sinon.stub(),
+      },
     });
 
     const job = {
