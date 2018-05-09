@@ -20,12 +20,17 @@ Template.uploadSubmission.events({
   'change [name="uploadCSV"]'(event, template) {
     // We'll handle the conversion and upload here.
     Papa.parse(event.target.files[0], {
-      header: true,
+      // header: true,
       step(row) {
-        console.log('Row:', row.data);
+        console.log('Row:', row, row.data);
+        Meteor.call('parseUpload', row, (err, resp) => { // (error, response) => {
+          console.log('parseUpload call', err, resp);
+        });
       },
       complete() {
-        console.log('All done!');
+        template.uploading.set(false);
+        // console.log('All done!');
+        Bert.alert('Upload complete!', 'success', 'growl-top-right');
       },
       // complete(results /* , file*/) {
       //   Meteor.call('parseUpload', results.data, (error, response) => {
