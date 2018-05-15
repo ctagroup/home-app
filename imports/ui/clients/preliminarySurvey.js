@@ -47,15 +47,27 @@ Template.preliminarySurvey.events(
         SignaturePadConfig.resizeCanvas();
       }
     },
-    'submit #release-of-information': (event) => {
+    'submit #release-of-information': (event, tmpl) => {
       event.preventDefault();
       const signaturePad = Router.current().params.signaturePad;
       if (signaturePad.isEmpty()) {
         Bert.alert('Please provide signature first.', 'error', 'growl-top-right');
       } else {
-        $('#create-client-form .signature').val(signaturePad.toDataURL());
-        $('#create-client-form .signature-img').attr('src', signaturePad.toDataURL());
-        $('#releaseOfInformationModal').modal('hide');
+        const clientId = tmpl.data.clientId;
+        const signature = signaturePad.toDataURL();
+        if (clientId) {
+          const query = {};
+          Meteor.call('clients.roi', clientId, signature);
+
+          if (Router.current().params.query.schema) {
+            query.query = { schema: Router.current().params.query.schema };
+          }
+          Router.go('selectSurvey', { _id: clientId }, query);
+        } else {
+          $('#create-client-form .signature').val(signature);
+          $('#create-client-form .signature-img').attr('src', signature);
+          $('#releaseOfInformationModal').modal('hide');
+        }
       }
       return false;
     },

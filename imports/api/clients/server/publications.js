@@ -139,18 +139,51 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
             callback();
           });
         });
+
+      eachLimit(mergedClient.clientVersions, Meteor.settings.connectionLimit,
+        ({ schema, clientId }, callback) => {
+          if (stopFunction) { callback(); return; }
+          Meteor.defer(() => {
+            try {
+              const key = `photo::${schema}::${clientId}`;
+              Meteor.call('s3bucket.get', inputClientId, 'photo', (err, res) => {
+                if (!err && res) {
+                  self.changed('localClients', inputClientId, { [key]: res });
+                  self.changed('localClients', inputClientId, { photo: res });
+                }
+                return null;
+              });
+            } catch (e) {
+              logger.warn(e);
+            } // eslint-disable-line
+            callback();
+          });
+        });
+      eachLimit(mergedClient.clientVersions, Meteor.settings.connectionLimit,
+        ({ schema, clientId }, callback) => {
+          if (stopFunction) { callback(); return; }
+          Meteor.defer(() => {
+            try {
+              const key = `signature::${schema}::${clientId}`;
+              Meteor.call('s3bucket.get', inputClientId, 'signature', (err, res) => {
+                if (!err && res) {
+                  self.changed('localClients', inputClientId, { [key]: res });
+                  self.changed('localClients', inputClientId, { signature: res });
+                }
+                return null;
+              });
+            } catch (e) {
+              logger.warn(e);
+            } // eslint-disable-line
+            callback();
+          });
+        });
     }
   } catch (err) {
     logger.error('publish singleHMISClient', err);
   }
 
   self.ready();
-
-  try {
-    Meteor.call('s3bucket.get', inputClientId, 'photo', (err, res) =>
-      self.changed('localClients', inputClientId, { photo: res })
-    );
-  } catch (e) {} // eslint-disable-line
 
   return null;
 });

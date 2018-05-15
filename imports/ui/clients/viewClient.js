@@ -191,8 +191,9 @@ Template.viewClient.events(
           schema: Router.current().params.query.schema,
         };
       }
-
-      Router.go('selectSurvey', { _id: tmpl.data.client._id }, query);
+      const client = tmpl.data.client;
+      if (!client.signature) return Router.go('signROI', { _id: client._id }, query);
+      return Router.go('selectSurvey', { _id: client._id }, query);
     },
     'click .js-close-referral-status-modal': () => {
       $('#referralStatusComments').summernote('code', '');

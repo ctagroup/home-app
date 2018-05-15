@@ -6,6 +6,7 @@ import FeatureDecisions from '/imports/both/featureDecisions';
 import { ClientsAccessRoles } from '/imports/config/permissions';
 import '/imports/ui/clients/clientNotFound';
 import '/imports/ui/clients/selectSurvey';
+import '/imports/ui/clients/signROI';
 import '/imports/ui/clients/searchClient';
 import '/imports/ui/clients/createClient';
 import '/imports/ui/clients/editClient';
@@ -186,6 +187,25 @@ Router.route(
   }
 );
 
+
+Router.route(
+  '/clients/:_id/sign-roi', {
+    name: 'signROI',
+    template: Template.signROI,
+    controller: AppController,
+    authorize: {
+      allow() {
+        return Roles.userIsInRole(Meteor.userId(), ClientsAccessRoles);
+      },
+    },
+    data() {
+      return {
+        title: 'Sign ROI',
+        clientId: this.params._id,
+      };
+    },
+  }
+);
 
 Router.onBeforeAction(
   function clientAction() {
