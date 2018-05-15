@@ -18,7 +18,7 @@ function projectOptions() {
 
   const user = Meteor.user();
   const options = allProjects.map(({ agency, project }) => ({
-    value: project._id,
+    value: JSON.stringify({ agencyId: agency._id, projectId: project._id }),
     label: `${agency.agencyName}/${project.projectName || project._id}`,
     selected: user ? user.activeProjectId === project._id : false,
   }));
@@ -44,8 +44,9 @@ Template.projectSelect.helpers({
 });
 
 Template.projectSelect.events({
+  /*
   'change #project-select'(event) {
-    const projectId = event.target.value;
+    const value = event.target.value;
     const project = Projects.findOne(projectId) || {};
     Meteor.call('users.projects.setActive', projectId, (err) => {
       if (err) {
@@ -59,17 +60,28 @@ Template.projectSelect.events({
       }
     });
   },
+  */
   'click .projectItem'() {
-    const projectId = this.value;
+    let agencyId;
+    let projectId;
+    try {
+      const value = JSON.parse(this.value);
+      agencyId = value.agencyId;
+      projectId = value.projectId;
+    } catch (err) {
+      agencyId = null;
+      projectId = null;
+    }
     const project = Projects.findOne(projectId) || {};
-    Meteor.call('users.projects.setActive', projectId, (err) => {
+    const agency = Agencies.findOne(agencyId) || {};
+    Meteor.call('users.setActiveAgencyAndProject', agency._id, projectId, (err) => {
       if (err) {
         Alert.error(err);
       } else {
         if (projectId) {
-          Alert.success(`Switched to ${project.projectName}`);
+          Alert.success(`Switched to ${agency.agencyName}/${project.projectName}`);
         } else {
-          Alert.warn('No project selected');
+          Alert.warn('No agency/project selected');
         }
       }
     });

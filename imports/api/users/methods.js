@@ -129,14 +129,16 @@ Meteor.methods({
       projectName: p.projectName,
     }));
   },
-  'users.projects.setActive'(projectId) {
-    logger.info(`METHOD[${Meteor.userId()}]: users.projects.setActive`, projectId);
+  'users.setActiveAgencyAndProject'(agencyId, projectId) {
+    logger.info(`METHOD[${this.userId}]: users.setActiveAgencyAndProject`, agencyId, projectId);
+    Match.test(agencyId, Match.OneOf(String, null)); // eslint-disable-line
     Match.test(projectId, Match.OneOf(String, null)); // eslint-disable-line
     if (!this.userId) {
       throw new Meteor.Error('403', 'Forbidden');
     }
 
     const query = {
+      _id: agencyId,
       projectsMembers: {
         $elemMatch: {
           userId: this.userId,
@@ -144,12 +146,14 @@ Meteor.methods({
         },
       },
     };
-    if (projectId && Agencies.find(query).count() === 0) {
+
+    if (agencyId && Agencies.find(query).count() === 0) {
       throw new Meteor.Error(403, 'Not authorized');
     }
 
     Users.update(this.userId, { $set: {
-      activeProjectId: projectId,
+      activeAgencyId: agencyId,
+      activeProjectId: agencyId ? projectId : null,
     } });
   },
 

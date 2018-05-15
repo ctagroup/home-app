@@ -280,8 +280,14 @@ Users.schema = new SimpleSchema(
       type: LocationEntrySchema,
     },
     projectsLinked: {
+      // TODO: unused field?
       label: 'Linked Projects',
       type: [String],
+      optional: true,
+    },
+    activeAgencyId: {
+      label: 'Active Project',
+      type: String,
       optional: true,
     },
     activeProjectId: {
