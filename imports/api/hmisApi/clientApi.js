@@ -1,3 +1,5 @@
+// https://hmis-api.github.io/client-consent-api/
+
 import moment from 'moment';
 import querystring from 'querystring';
 import { HmisApiRegistry } from './apiRegistry';
@@ -109,6 +111,11 @@ export class ClientApi extends ApiEndpoint {
     };
     const url = `${BASE_URL}/search/client?${querystring.stringify(params)}`;
     return this.doGet(url).searchResults.items;
+  }
+
+  getClientConsents(clientId) {
+    // const url = `${BASE_URL}/clients/${clientId}/consents`; // eslint-disable-line max-len
+    return this.doGet(url);
   }
 
   getClientEnrollments(clientId, schema = DEFAULT_PROJECT_SCHEMA, start = 0, limit = 9999) {

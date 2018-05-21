@@ -60,6 +60,11 @@ export class GlobalApi extends ApiEndpoint {
     const result = this.doPost(url, body);
     return result;
   }
+
+  getClientConsents(clientId) {
+    const url = `${BASE_URL}/clients/${clientId}/consents`;
+    return this.doGet(url).consents.consents;
+  }
 }
 
 HmisApiRegistry.addApi('global', GlobalApi);

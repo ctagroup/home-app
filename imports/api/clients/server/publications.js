@@ -1,6 +1,7 @@
 import { eachLimit } from 'async';
 import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
+import Users from '/imports/api/users/users';
 import {
   mergeClient,
   getEligibleClient,
@@ -9,6 +10,7 @@ import {
   getReferralStatusHistory,
   getHousingMatch,
 } from '/imports/api/clients/helpers';
+import { anyValidConsent, getPublicClientData } from '/imports/api/consents/helpers';
 
 Meteor.publish('clients.one',
 function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
@@ -28,6 +30,7 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
   let client = false;
 
   try {
+    const user = Users.findOne(this.userId);
     const hc = HmisClient.create(this.userId);
     client = hc.api('client').getClient(inputClientId, inputSchema);
     client.schema = inputSchema;
@@ -35,7 +38,16 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
     // TODO [VK]: publish by dedupClientId directly
     const clientVersions = hc.api('client').searchClient(client.dedupClientId, 50);
 
+    const consents = hc.api('global').getClientConsents(client.dedupClientId);
+    if (!anyValidConsent(consents, user.activeProjectId)) {
+      client = getPublicClientData(client);
+      client.consentIsGranted = false;
+      self.added('localClients', inputClientId, client);
+      return self.ready();
+    }
+
     const mergedClient = mergeClient(clientVersions);
+    mergeClient.consentIsGranted = true;
     self.added('localClients', inputClientId, mergedClient);
     self.ready();
 
