@@ -4,7 +4,8 @@ import * as Papa from 'papaparse';
 
 import './submissionUploaderForm.html';
 import './surveySelect.js';
-import SubmissionUploaderFiles from '../../api/submissionUploader/submissionUploaderFiles';
+import SubmissionUploaderSurveyConfigs from
+  '../../api/submissionUploader/submissionUploaderSurveyConfigs';
 
 Template.submissionUploaderForm.onCreated(() => {
   Template.instance().uploading = new ReactiveVar(false);
@@ -15,7 +16,8 @@ Template.submissionUploaderForm.onCreated(() => {
 Template.submissionUploaderForm.helpers({
   surveyConfig() {
     const surveyId = Template.instance().selectedSurveyId.get();
-    const fileConfig = SubmissionUploaderFiles.findOne(surveyId);
+    const fileConfig = SubmissionUploaderSurveyConfigs.findOne(surveyId);
+    console.log('fileConfig', surveyId, fileConfig);
     if (fileConfig) return fileConfig.definition;
     return '';
   },

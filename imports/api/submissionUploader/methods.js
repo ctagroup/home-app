@@ -95,7 +95,7 @@ Meteor.methods({
         id: job._id,
         data: job.data.row,
       }));
-      jobs.map(job => Jobs.update(job._id, { $set: { status: JobStatus.IN_PROGRESS } }));
+      jobs.map(job => Jobs.update(job._id, { $set: { status: JobStatus.PENDING } }));
     } else {
       logger.warn(`Queue ${queueName} has no jobs`);
     }
