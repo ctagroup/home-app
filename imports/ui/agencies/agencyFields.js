@@ -38,6 +38,15 @@ export function formSchema(doc = {}) {
       type: String,
       optional: true,
     },
+    consentGroups: {
+      type: [String],
+      optional: true,
+      autoform: {
+        label: 'Consent Groups',
+        type: 'tags',
+        afFieldInput: ['aa', 'bb', 'ccc'],
+      },
+    },
     members: {
       type: [String],
       optional: true,
@@ -101,6 +110,7 @@ export function form2doc(doc) {
   return {
     agencyName: doc.agencyName,
     description: doc.description,
+    consentGroups: doc.consentGroups,
     members: doc.members || [],
     projects: doc.projects || [],
     projectsMembers,
@@ -132,6 +142,8 @@ export function doc2form(doc) {
 
 Template.agencyFields.helpers({
   showUserProjectGrid() {
-    return this.doc.members.length > 0 && this.doc.projects.length > 0;
+    return this.doc.members && this.doc.projects
+      && this.doc.members.length > 0
+      && this.doc.projects.length > 0;
   },
 });

@@ -1,4 +1,4 @@
-export function isValidConsent(consent, projectId) {
+export function isValidConsent(consent, projectId) { // eslint-disable-line
   // FIXME: real logic
   return false;
 }

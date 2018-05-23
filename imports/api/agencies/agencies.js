@@ -21,6 +21,10 @@ Agencies.schema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  consentGroups: {
+    type: [String],
+    optional: true,
+  },
   projectGroupId: {
     type: String,
     defaultValue: '',
