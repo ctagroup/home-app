@@ -1,20 +1,19 @@
 <template name="submissionUploaderForm">
-  <select>
-    <option>Survey1</option>
-    <option>Survey2</option>
-    <option>Survey3</option>
-  </select>
-  <textarea>SurveyConfig
-      {surveyId: “some-ID”,
-        columnsNumber: 10,
-        definition: [
-        {type: ‘clientName’},
-        {type: ‘startDate’},
-        {type: ‘ignore’},
-        {type: ‘question’, questionId: ‘some-uuid’, questionType: ‘text’}, {type: ‘question’, questionId: ‘some-uuid’, questionType: ‘select’}, {type: ‘reference’, questionId: ‘some-uuid’},
-        {type: ‘score’, name: ‘risks’}
-        ] }
-  </textarea>
-  <input type="file"/>
-  <p>UploadProgress</p>
+  <h4 class="page-header">Select a survey:</h4>
+  {{> surveySelect selectedSurveyId=selectedSurveyId }}
+  {{#if surveySelected}}
+    Check survey definition:
+    <form id="surveyConfigForm">
+      <textarea id="surveyDefinition" name="definition" class="form-control" rows="5">{{surveyConfig}}</textarea>
+      <button class="form-control">Verify config</button>
+    </form>
+    {{#if configVerified}}
+      <h4 class="page-header">Upload a CSV</h4>
+      {{#unless uploading}}
+        <input class="form-control" type="file" name="uploadCSV">
+      {{else}}
+        <p><i class="fa fa-spin fa-refresh"></i> Uploading files...</p>
+      {{/unless}}
+    {{/if}}
+  {{/if}}
 </template>

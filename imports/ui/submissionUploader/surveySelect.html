@@ -1,0 +1,13 @@
+<template name="surveySelect">
+  <div class="dropdown surveySelect">
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuPS" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        {{currentSurvey}}
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuPS">
+        {{#each options}}
+          <li><a class="surveyItem" href="#">{{label}}</a></li>
+        {{/each}}
+      </ul>
+  </div>
+</template>

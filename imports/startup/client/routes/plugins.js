@@ -21,7 +21,6 @@ const publicRoutes = [
   'termsOfUse',
   'notEnoughPermissions',
   'signIn',
-  'tempFilesNew', //TODO remove after testing:
 ];
 
 Router.plugin('auth', {

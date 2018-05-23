@@ -1,8 +1,9 @@
 import moment from 'moment';
-import TempFiles from '/imports/api/submissionUploader/tempFiles';
+import SubmissionUploaderFiles from '/imports/api/submissionUploader/submissionUploaderFiles';
 import { deleteFileButton, TableDom } from '/imports/ui/dataTable/helpers';
 // import Alert from '/imports/ui/alert';
-import './tempFilesList.html';
+import './submissionUploaderList.html';
+import './submissionUploaderNew.js';
 
 const tableOptions = {
   columns: [
@@ -10,19 +11,31 @@ const tableOptions = {
       title: 'Filename',
       data: 'fileId',
       render(value) {
-        const upload = TempFiles.Uploads.findOne(value);
-        if (upload) {
-          const url = upload.url();
-          const { name } = upload.original;
-          return `<a href="${url}">${name}</a>`;
-        }
-        return 'File not found';
+        const file = SubmissionUploaderFiles.findOne(value);
+        return file && file.name || '';
+        // if (upload) {
+        //   const url = upload.url();
+        //   const { name } = upload.original;
+        //   return `<a href="${url}">${name}</a>`;
+        // }
+        // return 'File not found';
       },
     },
-    // {
-    //   title: 'Status',
-    //   data: 'status',
-    // },
+    {
+      title: 'Status',
+      data: 'status',
+      render(value) {
+        console.log('status', value);
+        return 'Queued';
+      },
+    },
+    {
+      title: 'Status',
+      data: 'totalRows',
+      render(value) {
+        return value;
+      },
+    },
     {
       title: 'Uploaded At',
       data: 'createdAt',
@@ -35,7 +48,7 @@ const tableOptions = {
   dom: TableDom,
 };
 
-Template.tempFilesList.helpers({
+Template.submissionUploaderList.helpers({
   addFilePath() {
     const query = {
       // clientId: this.client.clientId,
@@ -47,7 +60,7 @@ Template.tempFilesList.helpers({
     return !!this.client;
   },
   hasData() {
-    return TempFiles.find().count() > 0;
+    return SubmissionUploaderFiles.find().count() > 0;
   },
   tableOptions() {
     // if (!this.client || 1) {
@@ -59,7 +72,7 @@ Template.tempFilesList.helpers({
     //         clientId: rowData.clientId,
     //         schema: rowData.clientSchema,
     //       };
-    //       const url = Router.path('tempFilesList', {}, { query });
+    //       const url = Router.path('submissionUploaderList', {}, { query });
     //       return `<a href="${url}">${value}</a>`;
     //     },
     //   };
@@ -71,11 +84,11 @@ Template.tempFilesList.helpers({
     return tableOptions;
   },
   tableData() {
-    return () => TempFiles.find().fetch();
+    return () => SubmissionUploaderFiles.find().fetch();
   },
 });
 
-// Template.tempFilesList.events({
+// Template.submissionUploaderList.events({
 //   'click .approve'(e) {
 //     e.preventDefault();
 //     Meteor.call('mc211.approveClientFiles', this.client, (err) => {

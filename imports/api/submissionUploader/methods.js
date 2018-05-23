@@ -16,18 +16,7 @@ import {
 } from '/imports/api/submissionUploader/submissionUploaderProcessor';
 
 import SubmissionUploaderFixtures from '/imports/__tests__/fixtures/submissionUploader';
-import TempFiles from '/imports/api/submissionUploader/tempFiles';
 import SubmissionUploaderFiles from './submissionUploaderFiles';
-
-const parseFile = (fileId, fileRows) => {
-  fileRows.forEach(data => {
-    Jobs.insert({
-      status: JobStatus.PENDING,
-      fileId,
-      data,
-    });
-  });
-};
 
 Meteor.methods({
   'submissionUploader.prepopulateWithTestData'() {
@@ -60,7 +49,7 @@ Meteor.methods({
     logger.info(`METHOD[${this.userId}]: submissionUploader.run`, surveyId, queueName);
 
     if (!this.userId) {
-      // TOOD: check user role
+      // TODO: check user role
       throw new Meteor.Error(401, 'Unauthorized');
     }
 
@@ -114,44 +103,43 @@ Meteor.methods({
 
     return jobs.length;
   },
+  'submissionUploader.updateConfig'(surveyId, definition) {
+    return SubmissionUploaderSurveyConfigs.upsert(surveyId, { definition });
+  },
+  'submissionUploader.createFile'(surveyId, name) {
+    logger.info(`METHOD[${this.userId}]: submissionUploader.createFile`, surveyId, name);
 
-  parseUpload(data) {
-    // check(data, Array);
-    console.log('parseUpload', data);
-  },
-  'tempFiles.create'(doc) {
-    logger.info(`METHOD[${Meteor.userId()}]: files.create`, doc);
-    check(doc, TempFiles.schema);
-    // TODO: permissions
-    return TempFiles.insert(doc);
-  },
-  'tempFiles.delete'(id) {
-    logger.info(`METHOD[${Meteor.userId()}]: files.delete`, id);
-    check(id, String);
-    // TODO: permissions
-    const currentFile = TempFiles.findOne(id);
-    TempFiles.Uploads.remove(currentFile.fileId);
-    TempFiles.remove(id);
-    return;
-  },
-  processUploadedSubmission(doc) {
-    logger.info(`METHOD[${Meteor.userId()}]: processUploadedSubmission()`);
-    if (!Meteor.userId()) {
+    if (!this.userId) {
+      // TODO: check user role
       throw new Meteor.Error(401, 'Unauthorized');
     }
-    // Doc.process
-    // Slice to drop info row:
-    const fileRows = doc.lines.slice(1);
-    const fileRef = SubmissionUploaderFiles.insert({
-      fileName: doc.name,
-      totalRows: fileRows.length,
+    return SubmissionUploaderFiles.insert(surveyId, {
+      uploadedBy: this.userId,
+      surveyId,
+      name,
     });
-    parseFile(fileRef._id, fileRows);
   },
-  // 'files.create'(doc) {
-  //   logger.info(`METHOD[${Meteor.userId()}]: files.create`, doc);
-  //   check(doc, Files.schema);
-  //   // TODO: permissions
-  //   return Files.insert(doc);
-  // },
+  'submissionUploader.setTotalRows'(fileId, totalRows) {
+    return SubmissionUploaderFiles.update(fileId, { totalRows });
+  },
+  'submissionUploader.parseUploadRow'(submissionId, fileId, index, row) {
+    logger.info(`METHOD[${this.userId}]: submissionUploader.createFile`,
+      submissionId, fileId, index);
+    check(row, Array);
+    if (!this.userId) {
+      // TODO: check user role
+      throw new Meteor.Error(401, 'Unauthorized');
+    }
+
+    return Jobs.insert({
+      status: JobStatus.IDLE,
+      name: `${fileId}-${index}`,
+      queue: fileId,
+      data: {
+        submissionId,
+        uploadedBy: this.userId,
+        row,
+      },
+    });
+  },
 });
