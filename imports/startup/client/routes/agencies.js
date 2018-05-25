@@ -41,7 +41,7 @@ Router.route(
     },
     waitOn() {
       return [
-        Meteor.subscribe('projects.all'),
+        Meteor.subscribe('globalProjects.all'),
         Meteor.subscribe('users.all'),
       ];
     },
@@ -69,7 +69,7 @@ Router.route(
       const id = Router.current().params._id;
       return [
         Meteor.subscribe('agencies.one', id),
-        Meteor.subscribe('projects.all'),
+        Meteor.subscribe('globalProjects.all'),
         Meteor.subscribe('users.all'),
       ];
     },

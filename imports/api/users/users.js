@@ -285,8 +285,13 @@ Users.schema = new SimpleSchema(
       type: [String],
       optional: true,
     },
+    activeConsentGroupId: {
+      label: 'Active Consent Group',
+      type: String,
+      optional: true,
+    },
     activeAgencyId: {
-      label: 'Active Project',
+      label: 'Active Agency',
       type: String,
       optional: true,
     },
