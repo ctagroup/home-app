@@ -1,15 +1,20 @@
 export function isValidConsent(consent, projectId) { // eslint-disable-line
   // FIXME: real logic
-  return false;
+  return true;
 }
 
 export function anyValidConsent(consents, projectId) {
   return consents.some(consent => isValidConsent(consent, projectId));
 }
 
-export function getPublicClientData(client) {
-  const { clientId } = client;
+export function filterClientProfileFields(client) {
+  const { clientId, firstName, middleName, lastName, dob, consentIsGranted } = client;
   return {
     clientId,
+    firstName,
+    middleName,
+    lastName,
+    consentIsGranted,
+    dob,
   };
 }

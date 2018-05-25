@@ -10,7 +10,10 @@ import {
   getReferralStatusHistory,
   getHousingMatch,
 } from '/imports/api/clients/helpers';
-import { anyValidConsent, getPublicClientData } from '/imports/api/consents/helpers';
+import {
+  anyValidConsent,
+  filterClientProfileFields,
+} from '/imports/api/consents/helpers';
 
 Meteor.publish('clients.one',
 function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
@@ -40,9 +43,8 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
 
     const consents = hc.api('global').getClientConsents(client.dedupClientId);
     if (!anyValidConsent(consents, user.activeProjectId)) {
-      client = getPublicClientData(client);
       client.consentIsGranted = false;
-      self.added('localClients', inputClientId, client);
+      self.added('localClients', inputClientId, filterClientProfileFields(client));
       return self.ready();
     }
 
