@@ -8,13 +8,23 @@ export function anyValidConsent(consents, projectId) {
 }
 
 export function filterClientProfileFields(client) {
-  const { clientId, firstName, middleName, lastName, dob, consentIsGranted } = client;
+  const {
+    clientId,
+    firstName,
+    middleName,
+    lastName,
+    consentIsGranted,
+    dedupClientId,
+    dob,
+  } = client;
+
   return {
     clientId,
     firstName,
     middleName,
     lastName,
     consentIsGranted,
+    dedupClientId,
     dob,
   };
 }

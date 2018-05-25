@@ -1,3 +1,4 @@
+import Alert from '/imports/ui/alert';
 import { Clients } from '/imports/api/clients/clients';
 import Users from '/imports/api/users/users';
 import { RecentClients } from '/imports/api/recent-clients';
@@ -289,6 +290,16 @@ Template.viewClient.events(
             'eligibleClient.ignoreMatchProcess': res.ignoreMatchProcess,
             'eligibleClient.remarks': res.remarks,
           } });
+        }
+      });
+    },
+    'click #sign-roi'() {
+      const dedupClientId = this.dedupClientId;
+      Meteor.call('consents.create', dedupClientId, (err, res) => {
+        if (err) {
+          Alert.error(err);
+        } else {
+          Alert.warning('Consent created. This is a temporary approach!!!');
         }
       });
     },

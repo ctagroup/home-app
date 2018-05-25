@@ -113,11 +113,6 @@ export class ClientApi extends ApiEndpoint {
     return this.doGet(url).searchResults.items;
   }
 
-  getClientConsents(clientId) {
-    // const url = `${BASE_URL}/clients/${clientId}/consents`; // eslint-disable-line max-len
-    return this.doGet(url);
-  }
-
   getClientEnrollments(clientId, schema = DEFAULT_PROJECT_SCHEMA, start = 0, limit = 9999) {
     const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments?startIndex=${start}&maxItems=${limit}`; // eslint-disable-line max-len
     return this.doGet(url).enrollments.enrollments;
