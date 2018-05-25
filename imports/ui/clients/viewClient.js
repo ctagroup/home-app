@@ -10,6 +10,7 @@ import HomeConfig from '/imports/config/homeConfig';
 import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 
 import './clientDeleteReason.js';
+import './consentsList';
 import './viewClient.html';
 
 const mergeKeyVersions = (client, key) => {
@@ -32,7 +33,6 @@ const getLastStatus = (statusHistory) => statusHistory && statusHistory[statusHi
 Template.viewClient.helpers(
   {
     eligibleClient() {
-      console.log('zzz', this, Clients.findOne(this._id));
       const currentClientId = this._id;
       const client = Clients.findOne(currentClientId);
       return mergeKeyVersions(client, 'eligibleClient');
@@ -120,6 +120,7 @@ Template.viewClient.helpers(
 
     showEnrollments() {
       // const schema = Router.current().params.query.schema;
+      console.log(this.consentIsGranted, this);
       return (this && this.clientId && this.consentIsGranted);
     },
 

@@ -129,6 +129,36 @@ Meteor.methods({
       projectName: p.projectName,
     }));
   },
+
+  'users.setActiveConsentGroup'(consentGroupId) {
+    logger.info(`METHOD[${this.userId}]: users.setActiveConsentGroup`, consentGroupId);
+    Match.test(consentGroupId, Match.OneOf(String, null)); // eslint-disable-line
+    if (!this.userId) {
+      throw new Meteor.Error('403', 'Forbidden');
+    }
+
+    const query = {
+      _id: agencyId,
+      projectsMembers: {
+        $elemMatch: {
+          userId: this.userId,
+          projectId,
+        },
+      },
+    };
+
+    if (agencyId && Agencies.find(query).count() === 0) {
+      throw new Meteor.Error(403, 'Not authorized');
+    }
+
+    Users.update(this.userId, { $set: {
+      activeAgencyId: agencyId,
+      activeProjectId: agencyId ? projectId : null,
+    } });
+  },
+
+
+  /*
   'users.setActiveAgencyAndProject'(agencyId, projectId) {
     logger.info(`METHOD[${this.userId}]: users.setActiveAgencyAndProject`, agencyId, projectId);
     Match.test(agencyId, Match.OneOf(String, null)); // eslint-disable-line
@@ -156,6 +186,7 @@ Meteor.methods({
       activeProjectId: agencyId ? projectId : null,
     } });
   },
+  */
 
   'users.checkToken'() {
     logger.info(`METHOD[${this.userId}]: users.checkToken`);

@@ -1,0 +1,13 @@
+<template name="consentsList">
+  {{#if consents}}
+    <h3>Client Consents</h3>
+    <ul>
+    {{#each getConsentsToDisplay}}
+      <li>
+        {{status}} from {{startTime}} until {{endTime}} for projects: <strong>{{projects}}</strong>
+
+      </li>
+    {{/each}}
+    </ul>
+  {{/if}}
+</template>

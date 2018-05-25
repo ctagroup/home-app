@@ -7,7 +7,7 @@
         {{#unless this.consentIsGranted }}
           <div class="col-xs-12">
             <div class="alert alert-danger">
-              The client has not given consent. <a href="#" id="sign-roi">Click here to sign the ROI</a>.
+              The client has not given consent for selected consent group. <a href="#" id="sign-roi">Click here to sign the ROI</a>.
             </div>
           </div>
         {{/unless}}
@@ -98,6 +98,8 @@
           </div>
         </div>
       </div>
+
+      {{> consentsList this}}
 
       {{#if showEnrollments}}
         {{#if isUndefined enrollments}}<p>Loading enrollments...</p>{{/if}}

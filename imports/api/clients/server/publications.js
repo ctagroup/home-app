@@ -42,6 +42,7 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
     const clientVersions = hc.api('client').searchClient(client.dedupClientId, 50);
 
     const consents = hc.api('global').getClientConsents(client.dedupClientId);
+    console.log('consents', consents);
     if (!anyValidConsent(consents, user.activeProjectId)) {
       client.consentIsGranted = false;
       self.added('localClients', inputClientId, filterClientProfileFields(client));
@@ -50,7 +51,11 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
 
     const mergedClient = mergeClient(clientVersions);
     mergeClient.consentIsGranted = true;
-    self.added('localClients', inputClientId, mergedClient);
+    self.added('localClients', inputClientId, {
+      ...mergedClient,
+      consentIsGranted: true,
+      consents,
+    });
     self.ready();
 
     let mergedReferralStatusHistory = [];

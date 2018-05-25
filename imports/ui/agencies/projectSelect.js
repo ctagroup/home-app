@@ -3,9 +3,10 @@ import Agencies from '/imports/api/agencies/agencies';
 import Projects from '/imports/api/projects/projects';
 import Alert from '/imports/ui/alert';
 
-const NO_PROJECT_SELECTED = '--- No project selected ---';
+const NO_GROUP_SELECTED = '--- No group selected ---';
 
 function projectOptions() {
+  /*
   const allProjects = Agencies.find().fetch()
   .reduce((all, agency) => {
     const projectsIds = agency.projectsOfUser(Meteor.userId());
@@ -22,11 +23,27 @@ function projectOptions() {
     label: `${agency.agencyName}/${project.projectName || project._id}`,
     selected: user ? user.activeProjectId === project._id : false,
   }));
+  */
+  const user = Meteor.user();
+  const agencies = Agencies.find({ members: Meteor.userId() }).fetch();
 
-  return [{
+  const uniqueGroups = agencies.reduce((unique, agency) => {
+    const consentGroups = agency.consentGroups || [];
+    consentGroups.forEach(group => unique.add(group));
+    return unique;
+  }, new Set());
+
+  const options = Array.from(uniqueGroups).map(x => ({
+    value: x,
+    label: x,
+    selected: user ? user.activeConsentGroupId === x : false,
+  }));
+
+  const allOptions = [{
     value: null,
-    label: NO_PROJECT_SELECTED,
+    label: NO_GROUP_SELECTED,
   }, ...options];
+  return allOptions;
 }
 
 Template.projectSelect.helpers({
@@ -36,7 +53,7 @@ Template.projectSelect.helpers({
       return selected[0].label;
     }
     const user = Meteor.user() || {};
-    return user.activeProjectId || NO_PROJECT_SELECTED;
+    return user.activeConsentGroupId || NO_GROUP_SELECTED;
   },
   options() {
     return projectOptions();
@@ -44,23 +61,6 @@ Template.projectSelect.helpers({
 });
 
 Template.projectSelect.events({
-  /*
-  'change #project-select'(event) {
-    const value = event.target.value;
-    const project = Projects.findOne(projectId) || {};
-    Meteor.call('users.projects.setActive', projectId, (err) => {
-      if (err) {
-        Alert.error(err);
-      } else {
-        if (projectId) {
-          Alert.success(`Switched to ${project.projectName}`);
-        } else {
-          Alert.warning('No project selected');
-        }
-      }
-    });
-  },
-  */
   'click .projectItem'() {
     let agencyId;
     let projectId;

@@ -290,6 +290,7 @@ Users.schema = new SimpleSchema(
       type: String,
       optional: true,
     },
+    /*
     activeAgencyId: {
       label: 'Active Agency',
       type: String,
@@ -300,6 +301,7 @@ Users.schema = new SimpleSchema(
       type: String,
       optional: true,
     },
+    */
   }
 );
 

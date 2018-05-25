@@ -1,9 +1,9 @@
 export function isValidConsent(consent, projectId) { // eslint-disable-line
-  // FIXME: real logic
-  return true;
+  return consent.globalProjects.includes(projectId);
 }
 
 export function anyValidConsent(consents, projectId) {
+  console.log('aaaa', consents, projectId);
   return consents.some(consent => isValidConsent(consent, projectId));
 }
 
