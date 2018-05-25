@@ -31,22 +31,23 @@ const getLastStatus = (statusHistory) => statusHistory && statusHistory[statusHi
 Template.viewClient.helpers(
   {
     eligibleClient() {
-      const currentClientId = Router.current().params._id;
+      console.log('zzz', this, Clients.findOne(this._id));
+      const currentClientId = this._id;
       const client = Clients.findOne(currentClientId);
       return mergeKeyVersions(client, 'eligibleClient');
     },
     enrollments() {
-      const currentClientId = Router.current().params._id;
+      const currentClientId = this._id;
       const client = Clients.findOne(currentClientId);
       return flattenKeyVersions(client, 'enrollments');
     },
     globalHouseholds() {
-      const currentClientId = Router.current().params._id;
+      const currentClientId = this._id;
       const client = Clients.findOne(currentClientId);
       return flattenKeyVersions(client, 'globalHouseholds');
     },
     clientResponsesPath() {
-      const clientId = Router.current().params._id;
+      const clientId = this._id;
       const schema = Router.current().params.query.schema;
       const query = { clientId, schema };
       return Router.path('adminDashboardresponsesView', {}, { query });
@@ -118,7 +119,7 @@ Template.viewClient.helpers(
 
     showEnrollments() {
       // const schema = Router.current().params.query.schema;
-      return (this && this.clientId);
+      return (this && this.clientId && this.consentIsGranted);
     },
 
     showReferralStatus() {
@@ -127,14 +128,14 @@ Template.viewClient.helpers(
       );
       // const isHmisClient = Router.current().data().client.clientId
       //   && Router.current().params.query.schema;
-      return hasPermission && this && this.clientId;
+      return hasPermission && this && this.clientId && this.consentIsGranted;
     },
 
     showGlobalHousehold() {
       const hasPermission = Roles.userIsInRole(
         Meteor.user(), ['System Admin', 'Developer', 'Case Manager', 'Surveyor']
       );
-      return hasPermission && this && this.clientId;
+      return hasPermission && this && this.clientId && this.consentIsGranted;
     },
 
     getText(text, code) {

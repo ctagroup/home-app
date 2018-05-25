@@ -61,6 +61,24 @@ export class GlobalApi extends ApiEndpoint {
     return result;
   }
 
+  createClientConsent(clientId, globalProjectId, durationInDays = 30) {
+    const nowTimestamp = Math.floor(Date.now() / 1000);
+    const durationInSeconds = durationInDays * 24 * 3600;
+    const url = `${BASE_URL}/clients/${clientId}/consents`;
+    const body = {
+      consent: {
+        clientId,
+        startTime: nowTimestamp,
+        endTime: nowTimestamp + durationInSeconds,
+        globalProjects: [
+          { id: globalProjectId },
+        ],
+      },
+    };
+    const consentId = this.doPost(url, body);
+    return consentId;
+  }
+
   getClientConsents(clientId) {
     const url = `${BASE_URL}/clients/${clientId}/consents`;
     return this.doGet(url).consents.consents;

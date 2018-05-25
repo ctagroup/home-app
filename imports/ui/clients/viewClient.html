@@ -1,9 +1,17 @@
 <template name="viewClient">
-  {{log 'home'}}
   {{#with client}}
     <div id="viewClient_content">
       <div class="row client-profile-container">
         {{{alertMessages}}}
+
+        {{#unless this.consentIsGranted }}
+          <div class="col-xs-12">
+            <div class="alert alert-danger">
+              The client has not given consent. <a href="#">Click here to sign the ROI</a>.
+            </div>
+          </div>
+        {{/unless}}
+
 
         {{#if eligibleClient.ignoreMatchProcess }}
           <div class="col-xs-12">
