@@ -1,5 +1,5 @@
 import Users from '/imports/api/users/users';
-import Projects from '/imports/api/projects/projects';
+import GlobalProjects from '/imports/api/globalProjects/globalProjects';
 import { fullName } from '/imports/api/utils';
 import './agencyFields.html';
 
@@ -38,6 +38,15 @@ export function formSchema(doc = {}) {
       type: String,
       optional: true,
     },
+    consentGroups: {
+      type: [String],
+      optional: true,
+      autoform: {
+        label: 'Consent Groups',
+        type: 'tags',
+        afFieldInput: ['aa', 'bb', 'ccc'],
+      },
+    },
     members: {
       type: [String],
       optional: true,
@@ -55,7 +64,7 @@ export function formSchema(doc = {}) {
       optional: true,
       autoform: {
         type: 'select-checkbox',
-        options: () => Projects.find().fetch().map(p => ({
+        options: () => GlobalProjects.find().fetch().map(p => ({
           label: p.projectName,
           value: p._id,
         })),
@@ -67,7 +76,7 @@ export function formSchema(doc = {}) {
     const members = users.filter(u => doc.members.includes(u._id));
     const selector = { _id: { $in: doc.projects } };
     const options = { sort: { projectName: 1 } };
-    const projects = Projects.find(selector, options).fetch();
+    const projects = GlobalProjects.find(selector, options).fetch();
     projects.forEach(project => {
       const projectKey = `projectMembers._${project._id}`;
       definition[projectKey] = {
@@ -101,6 +110,7 @@ export function form2doc(doc) {
   return {
     agencyName: doc.agencyName,
     description: doc.description,
+    consentGroups: doc.consentGroups,
     members: doc.members || [],
     projects: doc.projects || [],
     projectsMembers,
@@ -132,6 +142,8 @@ export function doc2form(doc) {
 
 Template.agencyFields.helpers({
   showUserProjectGrid() {
-    return this.doc.members.length > 0 && this.doc.projects.length > 0;
+    return this.doc.members && this.doc.projects
+      && this.doc.members.length > 0
+      && this.doc.projects.length > 0;
   },
 });
