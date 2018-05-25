@@ -17,7 +17,7 @@ Template.submissionUploaderForm.helpers({
   surveyConfig() {
     const surveyId = Template.instance().selectedSurveyId.get();
     const fileConfig = SubmissionUploaderSurveyConfigs.findOne(surveyId);
-    console.log('fileConfig', surveyId, fileConfig);
+    // console.log('fileConfig', surveyId, fileConfig);
     if (fileConfig) return fileConfig.definition;
     return '';
   },
@@ -38,11 +38,11 @@ Template.submissionUploaderForm.helpers({
 Template.submissionUploaderForm.events({
   'change [name="uploadCSV"]'(event, template) {
     const file = event.target.files[0];
-    let rowsCount = 0;
     let fileId = false;
     const surveyId = template.selectedSurveyId.get();
     template.uploading.set(true);
     Meteor.call('submissionUploader.createFile', surveyId, file.name, (err, resp) => {
+      let rowsCount = -1;
       if (err) {
         console.log(err.reason);
         Bert.alert(err.reason, 'warning');
@@ -53,17 +53,17 @@ Template.submissionUploaderForm.events({
           step(row) {
             const parsed = row.data[0];
             if (parsed.length > 1 && !parsed.every(item => !item)) {
+              rowsCount++;
               // Skip header:
-              if (rowsCount === 0) { rowsCount++; return; }
+              if (rowsCount === 0) return;
               Meteor.call('submissionUploader.parseUploadRow',
-                surveyId, fileId, rowsCount - 1, parsed,
-                (error, response) => {
+                surveyId, fileId, rowsCount, parsed,
+                (error /* , response*/) => {
                   if (error) {
                     console.log(error.reason);
                     Bert.alert(error.reason, 'warning');
-                  } else {
-                    rowsCount++;
-                    console.log('job inserted: Id', response);
+                  // } else {
+                  //   console.log('job inserted: Id', response, rowsCount);
                   }
                 });
             }
@@ -71,7 +71,7 @@ Template.submissionUploaderForm.events({
           complete() {
             template.uploading.set(false);
             Bert.alert('Upload complete!', 'success', 'growl-top-right');
-            Meteor.call('submissionUploader.setTotalRows', fileId, rowsCount - 1);
+            Meteor.call('submissionUploader.setTotalRows', fileId, rowsCount);
           },
         });
       }

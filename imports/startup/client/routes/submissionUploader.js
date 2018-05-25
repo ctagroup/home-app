@@ -18,9 +18,7 @@ if (featureDecisions.isSubmissionUploader()) {
       },
     },
     waitOn() {
-      return [
-        Meteor.subscribe('submissionUploader.all'),
-      ];
+      return Meteor.subscribe('submissionUploader.all');
     },
     data() {
       return {

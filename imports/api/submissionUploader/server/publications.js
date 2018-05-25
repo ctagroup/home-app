@@ -4,7 +4,7 @@ import SubmissionUploaderFiles from
   '/imports/api/submissionUploader/submissionUploaderFiles';
 import { logger } from '/imports/utils/logger';
 
-Meteor.publishComposite('submissionUploader.all', () => {
+Meteor.publish('submissionUploader.all', function publishSubmissionUploaderFiles() {
   logger.info(`PUB[${this.userId}]: submissionUploaderFiles.all`);
   if (!this.userId) return [];
   return SubmissionUploaderFiles.find();

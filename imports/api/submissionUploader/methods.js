@@ -113,18 +113,19 @@ Meteor.methods({
       // TODO: check user role
       throw new Meteor.Error(401, 'Unauthorized');
     }
-    return SubmissionUploaderFiles.insert(surveyId, {
+    return SubmissionUploaderFiles.insert({
       uploadedBy: this.userId,
       surveyId,
       name,
     });
   },
   'submissionUploader.setTotalRows'(fileId, totalRows) {
-    return SubmissionUploaderFiles.update(fileId, { totalRows });
+    return SubmissionUploaderFiles.update(fileId, { $set: { totalRows } });
   },
   'submissionUploader.parseUploadRow'(submissionId, fileId, index, row) {
-    logger.info(`METHOD[${this.userId}]: submissionUploader.createFile`,
-      submissionId, fileId, index);
+    // NB: Logging disabled because it's ineffective for big files:
+    // logger.info(`METHOD[${this.userId}]: submissionUploader.parseUploadRow`,
+    //   submissionId, fileId, index);
     check(row, Array);
     if (!this.userId) {
       // TODO: check user role

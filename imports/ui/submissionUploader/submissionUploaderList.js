@@ -7,19 +7,23 @@ import './submissionUploaderNew.js';
 
 const tableOptions = {
   columns: [
+    // {
+    //   title: 'Filename',
+    //   data: 'fileId',
+    //   render(value) {
+    //     const file = SubmissionUploaderFiles.findOne(value);
+    //     return file && file.name || '';
+    //     // if (upload) {
+    //     //   const url = upload.url();
+    //     //   const { name } = upload.original;
+    //     //   return `<a href="${url}">${name}</a>`;
+    //     // }
+    //     // return 'File not found';
+    //   },
+    // },
     {
       title: 'Filename',
-      data: 'fileId',
-      render(value) {
-        const file = SubmissionUploaderFiles.findOne(value);
-        return file && file.name || '';
-        // if (upload) {
-        //   const url = upload.url();
-        //   const { name } = upload.original;
-        //   return `<a href="${url}">${name}</a>`;
-        // }
-        // return 'File not found';
-      },
+      data: 'name',
     },
     {
       title: 'Status',
@@ -30,7 +34,19 @@ const tableOptions = {
       },
     },
     {
-      title: 'Status',
+      title: 'Computed',
+      data: 'totalRows',
+      render(cellData, renderType, currentRow) {
+        console.log('(cellData, renderType, currentRow)', cellData, renderType, currentRow);
+        // You can return html strings, change sort order etc. here
+        // Again, see jquery.dataTables docs
+        // var img = "<img src='" + cellData + "' title='" + currentRow.profile.realname + "'>"
+        // return img;
+        return '';
+      },
+    },
+    {
+      title: 'Total',
       data: 'totalRows',
       render(value) {
         return value;
