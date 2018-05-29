@@ -19,6 +19,15 @@ Meteor.methods({
     return result;
   },
 
+  'clients.roi'(clientId, signature) {
+    try {
+      Meteor.call('s3bucket.put', clientId, 'signature', signature);
+    } catch (err) {
+      logger.error('Failed to upload photo/signature to s3', err);
+    }
+    return;
+  },
+
   'clients.update'(clientId, client, schema) {
     logger.info(`METHOD[${Meteor.userId()}]: clients.update`, clientId, schema, client);
     check(clientId, String);

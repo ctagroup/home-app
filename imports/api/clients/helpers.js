@@ -40,11 +40,12 @@ export const getEligibleClient = (hc, clientId) => {
 
 export const getClientEnrollments = (hc, clientId, schema, stopFunction) => {
   const enrollments = hc.api('client').getClientEnrollments(clientId, schema);
+  if (!enrollments) return [];
   for (let i = 0; i < enrollments.length && !stopFunction; i += 1) {
     const exits = hc.api('client').getClientsEnrollmentExits(
       clientId, enrollments[i].enrollmentId, schema
     );
-    if (exits.length > 0) {
+    if (exits && exits.length > 0) {
       enrollments[i].exits = exits[0];
     } else {
       enrollments[i].exits = false;
@@ -59,6 +60,7 @@ export const getGlobalHouseholds = (hc, clientId, schema, stopFunction) => {
   .getGlobalHouseholdMemberships(clientId);
 
   const globalHouseholds = [];
+  if (!globalHouseholdMemberships) return globalHouseholds;
   for (let i = 0; i < globalHouseholdMemberships.length && !stopFunction; i += 1) {
     const globalHousehold = hc.api('global-household').getHouseHold(
       globalHouseholdMemberships[i].globalHouseholdId
@@ -85,15 +87,16 @@ export const getGlobalHouseholds = (hc, clientId, schema, stopFunction) => {
   return globalHouseholds;
 };
 
+export const sortByTime = (history) => history.sort((a, b) => {
+  const aTime = moment(a.dateUpdated, 'MM-DD-YYYY HH:mm:ss.SSS').unix();
+  const bTime = moment(b.dateUpdated, 'MM-DD-YYYY HH:mm:ss.SSS').unix();
+  return aTime - bTime;
+});
+
 export const getReferralStatusHistory = (hc, clientId) => {
   const referralStatusHistory = hc.api('house-matching').getReferralStatusHistory(clientId);
   // Sort based on Timestamp
-  referralStatusHistory.sort((a, b) => {
-    const aTime = moment(a.dateUpdated, 'MM-DD-YYYY HH:mm:ss.SSS').unix();
-    const bTime = moment(b.dateUpdated, 'MM-DD-YYYY HH:mm:ss.SSS').unix();
-    return aTime - bTime;
-  });
-  return referralStatusHistory;
+  return sortByTime(referralStatusHistory);
 };
 
 export const getHousingMatch = (hc, clientId) => {
