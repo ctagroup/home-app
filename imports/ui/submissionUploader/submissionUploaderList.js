@@ -1,56 +1,51 @@
 import moment from 'moment';
 import SubmissionUploaderFiles from '/imports/api/submissionUploader/submissionUploaderFiles';
-import { deleteFileButton, TableDom } from '/imports/ui/dataTable/helpers';
+import { // deleteFileButton,
+  TableDom,
+} from '/imports/ui/dataTable/helpers';
 // import Alert from '/imports/ui/alert';
 import './submissionUploaderList.html';
 import './submissionUploaderNew.js';
 
 const tableOptions = {
   columns: [
-    // {
-    //   title: 'Filename',
-    //   data: 'fileId',
-    //   render(value) {
-    //     const file = SubmissionUploaderFiles.findOne(value);
-    //     return file && file.name || '';
-    //     // if (upload) {
-    //     //   const url = upload.url();
-    //     //   const { name } = upload.original;
-    //     //   return `<a href="${url}">${name}</a>`;
-    //     // }
-    //     // return 'File not found';
-    //   },
-    // },
     {
       title: 'Filename',
       data: 'name',
     },
-    {
-      title: 'Status',
-      data: 'status',
-      render(value) {
-        console.log('status', value);
-        return 'Queued';
-      },
-    },
-    {
-      title: 'Computed',
-      data: 'totalRows',
-      render(cellData, renderType, currentRow) {
-        console.log('(cellData, renderType, currentRow)', cellData, renderType, currentRow);
-        // You can return html strings, change sort order etc. here
-        // Again, see jquery.dataTables docs
-        // var img = "<img src='" + cellData + "' title='" + currentRow.profile.realname + "'>"
-        // return img;
-        return '';
-      },
-    },
+    // {
+    //   title: 'Status',
+    //   data: 'status',
+    //   render(value) {
+    //     console.log('status', value);
+    //     return 'Queued';
+    //   },
+    // },
+    // {
+    //   title: 'Processed',
+    //   data: 'totalRows',
+    //   render(cellData, renderType, currentRow) {
+    //     // currentRow._id
+
+    //     console.log('(cellData, renderType, currentRow)', cellData, renderType, currentRow);
+    //     // You can return html strings, change sort order etc. here
+    //     // Again, see jquery.dataTables docs
+    //     // var img = "<img src='" + cellData + "' title='" + currentRow.profile.realname + "'>"
+    //     // return img;
+    //     return '';
+    //   },
+    // },
     {
       title: 'Total',
       data: 'totalRows',
-      render(value) {
-        return value;
-      },
+    },
+    {
+      title: 'Processed',
+      data: 'processedRows',
+    },
+    {
+      title: 'Failed',
+      data: 'failedRows',
     },
     {
       title: 'Uploaded At',
@@ -59,10 +54,14 @@ const tableOptions = {
         return moment(value).format('MM/DD/YYYY hh:mm A');
       },
     },
-    deleteFileButton(),
+    // deleteFileButton(),
   ],
   dom: TableDom,
 };
+
+Template.submissionUploaderList.onCreated(function loadUploaderList() {
+  this.subscribe('submissionUploader.jobs');
+});
 
 Template.submissionUploaderList.helpers({
   addFilePath() {

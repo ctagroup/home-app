@@ -117,6 +117,9 @@ Meteor.methods({
       uploadedBy: this.userId,
       surveyId,
       name,
+      failedRows: 0,
+      totalRows: 0,
+      processedRows: 0,
     });
   },
   'submissionUploader.setTotalRows'(fileId, totalRows) {

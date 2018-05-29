@@ -70,8 +70,9 @@ Template.submissionUploaderForm.events({
           },
           complete() {
             template.uploading.set(false);
-            Bert.alert('Upload complete!', 'success', 'growl-top-right');
+            Bert.alert('Upload complete, processing started!', 'success', 'growl-top-right');
             Meteor.call('submissionUploader.setTotalRows', fileId, rowsCount);
+            Meteor.call('submissionUploader.run', surveyId, fileId);
           },
         });
       }
