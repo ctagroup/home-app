@@ -1,6 +1,6 @@
 <template name="consentsList">
+  <h3>Client Consents</h3>
   {{#if consents}}
-    <h3>Client Consents</h3>
     <ul>
     {{#each getConsentsToDisplay}}
       <li>
@@ -9,5 +9,7 @@
       </li>
     {{/each}}
     </ul>
+  {{else}}
+    <p>This client has not signed any consents yet.</p>
   {{/if}}
 </template>

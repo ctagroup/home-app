@@ -296,7 +296,7 @@ Template.viewClient.events(
     },
     'click #sign-roi'() {
       const dedupClientId = this.dedupClientId;
-      Meteor.call('consents.create', dedupClientId, (err, res) => {
+      Meteor.call('consents.create', dedupClientId, (err) => {
         if (err) {
           Alert.error(err);
         } else {
