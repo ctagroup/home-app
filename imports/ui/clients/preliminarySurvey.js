@@ -1,3 +1,4 @@
+import Alert from '/imports/ui/alert';
 import OpeningScript from '/imports/api/openingScript/openingScript';
 import SignaturePadConfig from '/imports/ui/signaturePadConfig';
 import './signaturePad.js';
@@ -56,13 +57,24 @@ Template.preliminarySurvey.events(
         const clientId = tmpl.data.clientId;
         const signature = signaturePad.toDataURL();
         if (clientId) {
+          const currentQuery = Router.current().params.query;
           const query = {};
           Meteor.call('clients.roi', clientId, signature);
-
-          if (Router.current().params.query.schema) {
-            query.query = { schema: Router.current().params.query.schema };
+          const dedupClientId = tmpl.data.dedupClientId;
+          Meteor.call('consents.create', dedupClientId, (err) => {
+            if (err) {
+              Alert.error(err);
+            } else {
+              Alert.success('Consent created.');
+            }
+          });
+          if (currentQuery.schema) {
+            query.query = { schema: currentQuery.schema };
           }
-          Router.go('selectSurvey', { _id: clientId }, query);
+          if (currentQuery.selectSurvey) {
+            return Router.go('selectSurvey', { _id: clientId }, query);
+          }
+          Router.go('viewClient', { _id: clientId }, query);
         } else {
           $('#create-client-form .signature').val(signature);
           $('#create-client-form .signature-img').attr('src', signature);

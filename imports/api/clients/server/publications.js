@@ -44,7 +44,14 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
     // TODO [VK]: publish by dedupClientId directly
     const clientVersions = hc.api('client').searchClient(client.dedupClientId, 50);
 
-    const consents = hc.api('global').getClientConsents(client.dedupClientId);
+    let consents = [];
+    try {
+      consents = hc.api('global').getClientConsents(client.dedupClientId);
+    } catch (err) {
+      logger.error('Error loading consents:', err);
+      client.consentErrorMessage = err;
+    }
+
     const projects = Agencies.getProjectsWithinCurrentlySelectedConsentGroup(user);
     if (!anyValidConsent(consents, projects)) {
       logger.debug('consent rejected');

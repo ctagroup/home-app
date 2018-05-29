@@ -1,4 +1,3 @@
-import Alert from '/imports/ui/alert';
 import { Clients } from '/imports/api/clients/clients';
 import Users from '/imports/api/users/users';
 import { RecentClients } from '/imports/api/recent-clients';
@@ -14,7 +13,7 @@ import './consentsList';
 import './viewClient.html';
 
 const mergeKeyVersions = (client, key) => {
-  const keyVersions = client.clientVersions
+  const keyVersions = (client.clientVersions || [])
     .map(({ clientId, schema }) => client[`${key}::${schema}::${clientId}`])
     .filter((value) => !!value);
   const mongoKey = client[key] || {};
@@ -22,7 +21,7 @@ const mergeKeyVersions = (client, key) => {
 };
 
 const flattenKeyVersions = (client, key) => {
-  const keyVersions = client.clientVersions
+  const keyVersions = (client.clientVersions || [])
     .map(({ clientId, schema }) => client[`${key}::${schema}::${clientId}`])
     .filter((value) => !!value);
   const mongoKey = client[key] || [];
@@ -187,7 +186,8 @@ Template.viewClient.events(
       });
     },
     'click .takeSurvey': (event, tmpl) => {
-      const query = {};
+      const dedupClientId = this.dedupClientId;
+      const query = { query: { dedupClientId } };
 
       if (Router.current().params.query.schema) {
         query.query = {
@@ -195,7 +195,11 @@ Template.viewClient.events(
         };
       }
       const client = tmpl.data.client;
-      if (!client.signature) return Router.go('signROI', { _id: client._id }, query);
+
+      if (!client.signature) {
+        query.query.selectSurvey = true;
+        return Router.go('signROI', { _id: client._id }, query);
+      }
       return Router.go('selectSurvey', { _id: client._id }, query);
     },
     'click .js-close-referral-status-modal': () => {
@@ -295,15 +299,15 @@ Template.viewClient.events(
         }
       });
     },
-    'click #sign-roi'() {
+    'click #sign-roi'(event, tmpl) {
+      event.preventDefault();
       const dedupClientId = this.dedupClientId;
-      Meteor.call('consents.create', dedupClientId, (err) => {
-        if (err) {
-          Alert.error(err);
-        } else {
-          Alert.warning('Consent created. This is a temporary approach!!!');
-        }
-      });
+      const query = { query: { dedupClientId } };
+      if (Router.current().params.query.schema) {
+        query.query.schema = Router.current().params.query.schema;
+      }
+      const client = tmpl.data.client;
+      return Router.go('signROI', { _id: client._id, dedupClientId }, query);
     },
   }
 );
