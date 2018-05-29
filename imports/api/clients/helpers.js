@@ -85,14 +85,16 @@ export const getGlobalHouseholds = (hc, clientId, schema, stopFunction) => {
   return globalHouseholds;
 };
 
+export const sortByTime = (history) => history.sort((a, b) => {
+  const aTime = moment(a.dateUpdated, 'MM-DD-YYYY HH:mm:ss.SSS').unix();
+  const bTime = moment(b.dateUpdated, 'MM-DD-YYYY HH:mm:ss.SSS').unix();
+  return aTime - bTime;
+});
+
 export const getReferralStatusHistory = (hc, clientId) => {
   const referralStatusHistory = hc.api('house-matching').getReferralStatusHistory(clientId);
   // Sort based on Timestamp
-  referralStatusHistory.sort((a, b) => {
-    const aTime = moment(a.dateUpdated, 'MM-DD-YYYY HH:mm:ss.SSS').unix();
-    const bTime = moment(b.dateUpdated, 'MM-DD-YYYY HH:mm:ss.SSS').unix();
-    return aTime - bTime;
-  });
+  return sortByTime(referralStatusHistory);
 };
 
 export const getHousingMatch = (hc, clientId) => {
