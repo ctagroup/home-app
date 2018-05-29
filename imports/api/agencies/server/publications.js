@@ -1,4 +1,5 @@
 import { logger } from '/imports/utils/logger';
+import Users from '/imports/api/users/users';
 import Agencies from '../agencies';
 
 
@@ -24,7 +25,9 @@ Meteor.publish('agencies.one', function publishOneAgency(id) {
 
 Meteor.publish('agencies.active', function publishAgenciesOfCurrentUser() {
   logger.info(`PUB[${this.userId}]: agencies.active`);
+  const user = Users.findOne(this.userId);
   const query = {
+    consentGroups: user.activeConsentGroupId,
     members: this.userId,
   };
   return Agencies.find(query);

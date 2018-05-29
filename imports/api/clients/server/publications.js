@@ -1,6 +1,7 @@
 import { eachLimit } from 'async';
 import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
+import Agencies from '/imports/api/agencies/agencies';
 import Users from '/imports/api/users/users';
 import {
   mergeClient,
@@ -14,6 +15,7 @@ import {
   anyValidConsent,
   filterClientProfileFields,
 } from '/imports/api/consents/helpers';
+
 
 Meteor.publish('clients.one',
 function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
@@ -42,12 +44,14 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
     const clientVersions = hc.api('client').searchClient(client.dedupClientId, 50);
 
     const consents = hc.api('global').getClientConsents(client.dedupClientId);
-    console.log('consents', consents);
-    if (!anyValidConsent(consents, user.activeProjectId)) {
+    const projects = Agencies.getProjectsWithinCurrentlySelectedConsentGroup(user);
+    if (!anyValidConsent(consents, projects)) {
+      logger.debug('consent rejected');
       client.consentIsGranted = false;
       self.added('localClients', inputClientId, filterClientProfileFields(client));
       return self.ready();
     }
+    logger.debug('consent granted');
 
     const mergedClient = mergeClient(clientVersions);
     mergeClient.consentIsGranted = true;

@@ -7,7 +7,9 @@ Template.consentsList.helpers({
       status: c.status,
       startTime: moment.unix(c.startTime).format('MM/DD/YYYY'),
       endTime: moment.unix(c.endTime).format('MM/DD/YYYY'),
-      projects: c.globalProjects.length ? c.globalProjects.join(', ') : 'no projects',
+      projects: c.globalProjects.length ?
+        c.globalProjects.map(p => p.projectName).join(', ')
+         : 'no projects',
     }));
   },
 });

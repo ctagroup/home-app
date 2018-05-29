@@ -79,7 +79,8 @@ export class GlobalApi extends ApiEndpoint {
 
   getClientConsents(clientId) {
     const url = `${BASE_URL}/clients/${clientId}/consents`;
-    return this.doGet(url).consents.consents;
+    const { consents } = this.doGet(url).consents;
+    return consents;
   }
 }
 

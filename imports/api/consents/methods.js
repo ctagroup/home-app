@@ -10,9 +10,7 @@ function createClientConsentForConsentGroup(hc, globalClientId, consentGroupId) 
     consentGroups: consentGroupId,
   };
   const agencies = Agencies.find(query).fetch();
-  console.log('matched agen', agencies);
   const globalProjectIds = agencies.reduce((all, agency) => [...all, ...agency.projects], []);
-  console.log('all proj', globalProjectIds);
   const consentId = hc.api('global').createClientConsent(globalClientId, globalProjectIds);
   return consentId;
 }
@@ -24,7 +22,7 @@ Meteor.methods({
 
     let activeConsentGroupId;
     try {
-      activeConsentGroupId = Users.findOne(this.userId).services.HMIS.activeConsentGroupId;
+      activeConsentGroupId = Users.findOne(this.userId).activeConsentGroupId;
     } catch (err) {
       throw new Meteor.Error(400, 'Consent group is not selected');
     }

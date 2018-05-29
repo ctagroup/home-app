@@ -82,4 +82,15 @@ Agencies.helpers({
   },
 });
 
+Agencies.getProjectsWithinCurrentlySelectedConsentGroup = (user) => {
+  if (!user || !user.activeConsentGroupId) {
+    return [];
+  }
+  const agencies = Agencies.find({
+    consentGroups: user.activeConsentGroupId,
+    members: user._id,
+  }).fetch();
+  return agencies.reduce((all, agency) => ([...all, ...agency.projects]), []);
+};
+
 export default Agencies;

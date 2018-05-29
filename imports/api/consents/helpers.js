@@ -1,10 +1,14 @@
-export function isValidConsent(consent, projectId) { // eslint-disable-line
-  return consent.globalProjects.includes(projectId);
+export function isValidConsent(consent, allowedProjects) { // eslint-disable-line
+  const nowTimestamp = Math.floor(Date.now() / 1000);
+  if (consent.endTime < nowTimestamp) {
+    return false;
+  }
+  const consentProjects = consent.globalProjects.map(p => p.id);
+  return consentProjects.some(projectId => allowedProjects.includes(projectId));
 }
 
-export function anyValidConsent(consents, projectId) {
-  console.log('aaaa', consents, projectId);
-  return consents.some(consent => isValidConsent(consent, projectId));
+export function anyValidConsent(consents, allowedProjects) {
+  return consents.some(consent => isValidConsent(consent, allowedProjects));
 }
 
 export function filterClientProfileFields(client) {
