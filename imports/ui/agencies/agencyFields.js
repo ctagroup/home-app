@@ -44,7 +44,12 @@ export function formSchema(doc = {}) {
       autoform: {
         label: 'Consent Groups',
         type: 'tags',
-        afFieldInput: ['aa', 'bb', 'ccc'],
+        afFieldInput: {
+          trimValue: true,
+          typeahead: {
+            source: ['groupA', 'groupB'],
+          },
+        },
       },
     },
     members: {
@@ -147,3 +152,5 @@ Template.agencyFields.helpers({
       && this.doc.projects.length > 0;
   },
 });
+
+Template.agencyFields.onRendered(() => console.log('inj') || Meteor.typeahead.inject());

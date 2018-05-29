@@ -279,29 +279,11 @@ Users.schema = new SimpleSchema(
     'locationHistory.$': {
       type: LocationEntrySchema,
     },
-    projectsLinked: {
-      // TODO: unused field?
-      label: 'Linked Projects',
-      type: [String],
-      optional: true,
-    },
     activeConsentGroupId: {
       label: 'Active Consent Group',
       type: String,
       optional: true,
     },
-    /*
-    activeAgencyId: {
-      label: 'Active Agency',
-      type: String,
-      optional: true,
-    },
-    activeProjectId: {
-      label: 'Active Project',
-      type: String,
-      optional: true,
-    },
-    */
   }
 );
 

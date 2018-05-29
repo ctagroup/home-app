@@ -138,55 +138,18 @@ Meteor.methods({
     }
 
     const query = {
-      _id: agencyId,
-      projectsMembers: {
-        $elemMatch: {
-          userId: this.userId,
-          projectId,
-        },
-      },
+      consentGroups: consentGroupId,
+      members: this.userId,
     };
 
-    if (agencyId && Agencies.find(query).count() === 0) {
+    if (consentGroupId && Agencies.find(query).count() === 0) {
       throw new Meteor.Error(403, 'Not authorized');
     }
 
     Users.update(this.userId, { $set: {
-      activeAgencyId: agencyId,
-      activeProjectId: agencyId ? projectId : null,
+      activeConsentGroupId: consentGroupId,
     } });
   },
-
-
-  /*
-  'users.setActiveAgencyAndProject'(agencyId, projectId) {
-    logger.info(`METHOD[${this.userId}]: users.setActiveAgencyAndProject`, agencyId, projectId);
-    Match.test(agencyId, Match.OneOf(String, null)); // eslint-disable-line
-    Match.test(projectId, Match.OneOf(String, null)); // eslint-disable-line
-    if (!this.userId) {
-      throw new Meteor.Error('403', 'Forbidden');
-    }
-
-    const query = {
-      _id: agencyId,
-      projectsMembers: {
-        $elemMatch: {
-          userId: this.userId,
-          projectId,
-        },
-      },
-    };
-
-    if (agencyId && Agencies.find(query).count() === 0) {
-      throw new Meteor.Error(403, 'Not authorized');
-    }
-
-    Users.update(this.userId, { $set: {
-      activeAgencyId: agencyId,
-      activeProjectId: agencyId ? projectId : null,
-    } });
-  },
-  */
 
   'users.checkToken'() {
     logger.info(`METHOD[${this.userId}]: users.checkToken`);

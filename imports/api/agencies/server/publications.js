@@ -1,6 +1,4 @@
 import { logger } from '/imports/utils/logger';
-import Users from '/imports/api/users/users';
-import { userProjectGroupId } from '/imports/api/users/helpers';
 import Agencies from '../agencies';
 
 
@@ -10,11 +8,7 @@ Meteor.publish('agencies.all', function publishUserAgencies() {
     return [];
   }
   // TODO: check permissions
-
-  const user = Users.findOne(this.userId);
-  const projectGroupId = userProjectGroupId(user);
-
-  return Agencies.find({ projectGroupId });
+  return Agencies.find();
 });
 
 Meteor.publish('agencies.one', function publishOneAgency(id) {
@@ -31,18 +25,7 @@ Meteor.publish('agencies.one', function publishOneAgency(id) {
 Meteor.publish('agencies.active', function publishAgenciesOfCurrentUser() {
   logger.info(`PUB[${this.userId}]: agencies.active`);
   const query = {
-    projectsMembers: {
-      $elemMatch: {
-        userId: this.userId,
-      },
-    },
+    members: this.userId,
   };
-  /*
-  const projectIds = Agencies.find(query).fetch()
-    .reduce((all, agency) => {
-      const projects = agency.projectsOfUser(this.userId);
-      return [...all, ...projects];
-    }, []);
-  */
   return Agencies.find(query);
 });

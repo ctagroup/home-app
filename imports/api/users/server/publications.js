@@ -31,8 +31,7 @@ const fields = {
   'services.HMIS.status': 1,
   'services.HMIS.projectGroup': 1,
   createdAt: 1,
-  projectsLinked: 1, // TODO: is it required??
-  activeProjectId: 1,
+  activeConsentGroupId: 1,
 };
 
 Meteor.publish('users.all', function publishAllUsers() {

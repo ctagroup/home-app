@@ -1,32 +1,12 @@
 import './projectSelect.html';
 import Agencies from '/imports/api/agencies/agencies';
-import Projects from '/imports/api/projects/projects';
 import Alert from '/imports/ui/alert';
 
 const NO_GROUP_SELECTED = '--- No group selected ---';
 
 function projectOptions() {
-  /*
-  const allProjects = Agencies.find().fetch()
-  .reduce((all, agency) => {
-    const projectsIds = agency.projectsOfUser(Meteor.userId());
-    const agencyProjects = projectsIds.map(projectId => ({
-      agency,
-      project: Projects.findOne(projectId) || { _id: projectId },
-    }));
-    return [...all, ...agencyProjects];
-  }, []);
-
-  const user = Meteor.user();
-  const options = allProjects.map(({ agency, project }) => ({
-    value: JSON.stringify({ agencyId: agency._id, projectId: project._id }),
-    label: `${agency.agencyName}/${project.projectName || project._id}`,
-    selected: user ? user.activeProjectId === project._id : false,
-  }));
-  */
   const user = Meteor.user();
   const agencies = Agencies.find({ members: Meteor.userId() }).fetch();
-
   const uniqueGroups = agencies.reduce((unique, agency) => {
     const consentGroups = agency.consentGroups || [];
     consentGroups.forEach(group => unique.add(group));
@@ -38,6 +18,8 @@ function projectOptions() {
     label: x,
     selected: user ? user.activeConsentGroupId === x : false,
   }));
+
+  console.log(options, user.activeConsentGroupId);
 
   const allOptions = [{
     value: null,
@@ -62,26 +44,15 @@ Template.projectSelect.helpers({
 
 Template.projectSelect.events({
   'click .projectItem'() {
-    let agencyId;
-    let projectId;
-    try {
-      const value = JSON.parse(this.value);
-      agencyId = value.agencyId;
-      projectId = value.projectId;
-    } catch (err) {
-      agencyId = null;
-      projectId = null;
-    }
-    const project = Projects.findOne(projectId) || {};
-    const agency = Agencies.findOne(agencyId) || {};
-    Meteor.call('users.setActiveAgencyAndProject', agency._id, projectId, (err) => {
+    const consentGroup = this.value;
+    Meteor.call('users.setActiveConsentGroup', consentGroup, (err) => {
       if (err) {
         Alert.error(err);
       } else {
-        if (projectId) {
-          Alert.success(`Switched to ${agency.agencyName}/${project.projectName}`);
+        if (consentGroup) {
+          Alert.success(`Switched to consent group: ${consentGroup}`);
         } else {
-          Alert.warn('No agency/project selected');
+          Alert.warning('No consent group selected');
         }
       }
     });
