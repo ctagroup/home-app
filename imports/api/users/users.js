@@ -279,8 +279,7 @@ Users.schema = new SimpleSchema(
     'locationHistory.$': {
       type: LocationEntrySchema,
     },
-    activeConsentGroupId: {
-      label: 'Active Consent Group',
+    activeProject: {
       type: String,
       optional: true,
     },

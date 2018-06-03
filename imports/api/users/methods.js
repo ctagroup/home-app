@@ -130,24 +130,20 @@ Meteor.methods({
     }));
   },
 
-  'users.setActiveConsentGroup'(consentGroupId) {
-    logger.info(`METHOD[${this.userId}]: users.setActiveConsentGroup`, consentGroupId);
-    Match.test(consentGroupId, Match.OneOf(String, null)); // eslint-disable-line
+  'users.setActiveProject'(globalProjectId) {
+    logger.info(`METHOD[${this.userId}]: users.setActiveProject`, globalProjectId);
+    Match.test(globalProjectId, Match.OneOf(String, null)); // eslint-disable-line
     if (!this.userId) {
       throw new Meteor.Error('403', 'Forbidden');
     }
 
-    const query = {
-      consentGroups: consentGroupId,
-      members: this.userId,
-    };
-
-    if (consentGroupId && Agencies.find(query).count() === 0) {
+    const agencies = Agencies.whereUserCanAccessProject(this.userId, globalProjectId);
+    if (globalProjectId && agencies.length !== 1) {
       throw new Meteor.Error(403, 'Not authorized');
     }
 
     Users.update(this.userId, { $set: {
-      activeConsentGroupId: consentGroupId,
+      activeProject: globalProjectId,
     } });
   },
 
