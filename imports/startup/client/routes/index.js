@@ -1,5 +1,6 @@
 import './app';
 import './content';
+import './consentGroups';
 import './clients';
 import './eligibleClients';
 import './files';

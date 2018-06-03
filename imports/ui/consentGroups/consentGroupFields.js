@@ -1,7 +1,22 @@
-import Users from '/imports/api/users/users';
-import GlobalProjects from '/imports/api/globalProjects/globalProjects';
-import { fullName } from '/imports/api/utils';
-import './agencyFields.html';
+import Agencies from '/imports/api/agencies/agencies';
+import { consentGroupsSchema } from '/imports/api/consentGroups/consentGroups';
+import './consentGroupFields.html';
+
+
+export function formSchema() {
+  const agencies = Agencies.find().fetch();
+  const schema = { ...consentGroupsSchema };
+  schema.agencies.autoform = {
+    type: 'select-checkbox',
+    options: () => agencies.map(a => ({
+      label: a.agencyName,
+      value: a._id,
+    })),
+  };
+  return new SimpleSchema(schema);
+}
+
+/*
 
 function userName(userId) {
   const user = Users.findOne(userId);
@@ -37,6 +52,20 @@ export function formSchema(doc = {}) {
     description: {
       type: String,
       optional: true,
+    },
+    consentGroups: {
+      type: [String],
+      optional: true,
+      autoform: {
+        label: 'Consent Groups',
+        type: 'tags',
+        afFieldInput: {
+          trimValue: true,
+          typeahead: {
+            source: ['groupA', 'groupB'],
+          },
+        },
+      },
     },
     members: {
       type: [String],
@@ -140,3 +169,4 @@ Template.agencyFields.helpers({
 });
 
 Template.agencyFields.onRendered(() => console.log('inj') || Meteor.typeahead.inject());
+*/

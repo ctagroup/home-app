@@ -1,39 +1,27 @@
 import { Mongo } from 'meteor/mongo';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
-
-const Agencies = new Mongo.Collection('agencies');
-
-const ProjectMembershipSchema = new SimpleSchema({
-  projectId: {
-    type: String,
-  },
-  userId: {
-    type: String,
-  },
+export const ConsentGroupStatus = Object.freeze({
+  NEW: 'new',
+  ACTIVE: 'active',
 });
 
-Agencies.schema = new SimpleSchema({
-  agencyName: {
+export const consentGroupsSchema = {
+  name: {
+    label: 'Name',
     type: String,
   },
   description: {
+    label: 'Description',
     type: String,
     optional: true,
   },
-  projectGroupId: {
+  agencies: {
+    type: [String],
+  },
+  status: {
     type: String,
-    defaultValue: '',
-  },
-  members: {
-    type: [String],
-  },
-  projects: {
-    type: [String],
-  },
-  projectsMembers: {
-    type: [ProjectMembershipSchema],
-    optional: true,
+    defaultValue: ConsentGroupStatus.NEW,
   },
   createdAt: {
     type: Date,
@@ -66,24 +54,12 @@ Agencies.schema = new SimpleSchema({
       return val;
     },
   },
-});
-
-Agencies.attachSchema(Agencies.schema);
-
-Agencies.helpers({
-  projectsOfUser(userId) {
-    return (this.projectsMembers || [])
-      .filter(m => m.userId === userId)
-      .map(m => m.projectId);
-  },
-});
-
-Agencies.whereUserCanAccessProject = (userId, globalProjectId) => {
-  const query = {
-    members: userId,
-    projects: globalProjectId,
-  };
-  return Agencies.find(query).fetch();
 };
 
-export default Agencies;
+const ConsentGroups = new Mongo.Collection('consentGroups');
+
+ConsentGroups.schema = new SimpleSchema(consentGroupsSchema);
+
+ConsentGroups.attachSchema(ConsentGroups.schema);
+
+export default ConsentGroups;

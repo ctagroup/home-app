@@ -1,0 +1,10 @@
+<template name="consentGroupsEdit">
+  {{#if doc}}
+    {{#autoForm schema=schema doc=doc id="consentGroupsEdit"}}
+      {{> consentGroupFields}}
+      <button type="submit" class="btn btn-primary">Update Consent Group</button>
+    {{/autoForm}}
+  {{else}}
+    <p class="notice bg-danger text-danger">Consent Group does not exist</p>
+  {{/if}}
+</template>

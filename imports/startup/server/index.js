@@ -9,6 +9,9 @@ import '/imports/api/collectionsCount/server/publications';
 import '/imports/api/consents/methods';
 import '/imports/api/consents/server/publications';
 
+import '/imports/api/consentGroups/methods';
+import '/imports/api/consentGroups/server/publications';
+
 import '/imports/api/clients/methods';
 import '/imports/api/clients/server/publications';
 
