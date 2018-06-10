@@ -2,6 +2,7 @@ import { eachLimit } from 'async';
 import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
 import {
+  sortByTime,
   mergeClient,
   getEligibleClient,
   getClientEnrollments,
@@ -100,7 +101,7 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
               mergedReferralStatusHistory =
                 mergedReferralStatusHistory.concat(referralStatusHistory);
               self.changed('localClients', inputClientId, { referralStatusHistory:
-                mergedReferralStatusHistory });
+                sortByTime(mergedReferralStatusHistory) });
             } catch (e) {
               logger.warn(e);
             }

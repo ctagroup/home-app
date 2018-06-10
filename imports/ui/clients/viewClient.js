@@ -25,7 +25,7 @@ const flattenKeyVersions = (client, key) => {
     .map(({ clientId, schema }) => client[`${key}::${schema}::${clientId}`])
     .filter((value) => !!value);
   const mongoKey = client[key] || [];
-  return [keyVersions, mongoKey].reduce((acc, val) => acc.concat(val), []);
+  return _.flatten([keyVersions, mongoKey]);
 };
 const getLastStatus = (statusHistory) => statusHistory && statusHistory[statusHistory.length - 1];
 
@@ -119,7 +119,7 @@ Template.viewClient.helpers(
 
     showEnrollments() {
       // const schema = Router.current().params.query.schema;
-      return (this.client && this.client.clientId);
+      return (this && this.clientId);
     },
 
     showReferralStatus() {
@@ -128,14 +128,14 @@ Template.viewClient.helpers(
       );
       // const isHmisClient = Router.current().data().client.clientId
       //   && Router.current().params.query.schema;
-      return hasPermission && this.client && this.client.clientId;
+      return hasPermission && this && this.clientId;
     },
 
     showGlobalHousehold() {
       const hasPermission = Roles.userIsInRole(
         Meteor.user(), ['System Admin', 'Developer', 'Case Manager', 'Surveyor']
       );
-      return hasPermission && this.client && this.client.clientId;
+      return hasPermission && this && this.clientId;
     },
 
     getText(text, code) {
