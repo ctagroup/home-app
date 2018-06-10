@@ -1,141 +1,345 @@
 <template name="viewClient">
   {{log 'home'}}
-  {{#with client}}
-    <div id="viewClient_content">
-      <div class="row client-profile-container">
-        {{{alertMessages}}}
-
-        {{#if eligibleClient.ignoreMatchProcess }}
-          <div class="col-xs-12">
-            <div class="alert alert-danger">
-              Client has been Removed from Matching
-            </div>
-          </div>
-        {{/if}}
-
-        <div class="col-xs-12 col-sm-5 col-md-5">
-          <div class="name-container">
-            {{#if photo}}
-              <img class="avatar large center-block" src="{{photo}}" />
-            {{/if}}
-            <form>
-              <div class="form-group">
-                <p class="clabel">First Name</p>
-                <p class="form-control-static cvalue">{{firstName}}</p>
-              </div>
-              <div class="form-group">
-                <p class="clabel">Middle Name</p>
-                <p class="form-control-static cvalue">{{middleName}}</p>
-              </div>
-              <div class="form-group">
-                <p class="clabel">Last Name</p>
-                <p class="form-control-static cvalue">{{lastName}}</p>
-              </div>
-              <div class="form-group">
-                <p class="clabel">Email</p>
-                <p class="form-control-static cvalue">{{emailAddress}}</p>
-              </div>
-              <div class="form-group">
-                <p class="clabel">Phone Number</p>
-                <p class="form-control-static cvalue">{{phoneNumber}}</p>
-              </div>
-          </form>
-        </div>
-      </div>
-
-      <div class="col-xs-12 col-sm-7 col-md-7">
-        <div class="info-container">
-            <div class="row">
-              <div class="col-xs-12 col-sm-6 col-md-6">
-                <div class="">
-                  <p class="clabel">Suffix</p>
-                  <p class="cvalue">{{suffix}}</p>
-                </div>
-                <div class="">
-                  <p class="clabel">SSN</p>
-                  <p class="cvalue">{{ssn}}</p>
-                </div>
-                <div class="">
-                  <p class="clabel">Date of Birth</p>
-                  <p class="cvalue dob">{{formatDate dob}}</p>
-                </div>
-                <div class="">
-                  <p class="clabel">Race</p>
-                  <p class="cvalue">{{getText 'race' race}}</p>
-                </div>
-                <div class="">
-                  <p class="clabel">ID</p>
-                  <p class="cvalue">{{_id}}</p>
-                </div>
-              </div>
-              <div class="col-xs-12 col-sm-6 col-md-6">
-                <div class="">
-                  <p class="clabel">Ethnicity</p>
-                  <p class="cvalue">{{getText 'ethnicity' ethnicity}}</p>
-                </div>
-                <div class="">
-                  <p class="clabel">Gender</p>
-                  <p class="cvalue">{{getText 'gender' gender}}</p>
-                </div>
-                <div class="">
-                  <p class="clabel">Veteran Status</p>
-                  <p class="cvalue">{{getText 'veteranStatus' veteranStatus}}</p>
-                </div>
-                <div class="">
-                  <p class="clabel">Disabling Condition</p>
-                  <p class="cvalue">{{getText 'disablingcondition' disablingConditions}}</p>
-                </div>
-              </div>
-            </div>
+  {{#with client}}    
+  <div id="viewClient_content" class="col-xs-12">
+    <div class="row client-profile-container">
+      {{{alertMessages}}}
+      {{#if eligibleClient.ignoreMatchProcess }}
+        <div class="col-xs-12">
+          <div class="alert alert-danger">
+            Client has been Removed from Matching
           </div>
         </div>
-      </div>
-
-      {{#if showEnrollments}}
-        {{#if isUndefined enrollments}}<p>Loading enrollments...</p>{{/if}}
-        {{#if enrollments}}
-          <div class="row">
-            <div class="col-xs-12">
-              <h3>Enrollments</h3>
-              <div class="table-responsive">
-                <table class="table table-hover table-striped">
-                  <thead>
-                    <tr>
-                      <th>Entry Date</th>
-                      <th>Exit Date</th>
-                      <th>Project Name</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {{#each enrollments}}
-                      <tr>
-                        <td>{{formatDate entrydate}}</td>
-                        <td>
-                          {{#with exits}}
-                            {{formatDate exitDate}}
-                          {{/with}}
-                        </td>
-                        <td>
-                          {{#with project}}
-                            <span class="js-tooltip" data-toggle="tooltip" title="{{projectCommonName}}">{{projectName}}</span>
-                          {{/with}}
-                        </td>
-                      </tr>
-                    {{/each}}
-                  </tbody>
-                  <tfoot>
-                    <tr>
-                      <th>Entry Date</th>
-                      <th>Exit Date</th>
-                      <th>Project Name</th>
-                    </tr>
-                  </tfoot>
-                </table>
-              </div>
-            </div>
-          </div>
-        {{/if}}
       {{/if}}
+
+      <div class="client-info">
+        <div class="row">
+          <div class="col-xs-12 col-sm-3">
+            {{#if photo}}
+              <img class="profile-img" alt="Profile img" src="{{photo}}" />
+            {{/if}}
+            <!-- <img src="./img/john-pic.jpg" class="profile-img" alt="Profile img"> -->
+          </div>
+          <div class="col-xs-12 col-sm-3"><div class="text-wrap">
+            <span class="title">FIRST NAME</span><h2>{{firstName}}</h2>
+            <span class="title">MIDDLE NAME</span><h2>{{middleName}}</h2>
+            <span class="title">LAST NAME</span><h2>{{lastName}}</h2>
+          </div></div>
+          <div class="col-xs-12 col-sm-3"><div class="text-wrap">
+            <span class="title">DOB</span><h4>1/1/1975</h4>
+            <span class="title">SSN</span><h4>XXX-XX-3210</h4>
+            <span class="title view-id">View: {{_id}}</span>
+          </div></div>
+          <div class="col-xs-12 col-sm-3"><div class="text-wrap">
+            <span class="title">EMAIL</span><h4>{{emailAddress}}</h4>
+            <span class="title">PHONE NUMBER</span><h4>{{phoneNumber}}</h4>
+          </div></div>
+        </div>
+      </div>
+
+
+      <div class="tab-section">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs nav-justified">
+          <li class="nav-item">
+            <a class="nav-link {{#if isActive 'overview'}}active{{/if}}" data-toggle="tab" href="#panel-overview" role="tab">Overview</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {{#if isActive 'eligibility'}}active{{/if}}" data-toggle="tab" href="#panel-eligibility" role="tab">Eligibility</a>
+          </li>
+          {{#if showReferralStatus}}
+            <li class="nav-item">
+              <a class="nav-link {{#if isActive 'referrals'}}active{{/if}}" data-toggle="tab" href="#panel-referrals" role="tab">Referrals</a>
+            </li>
+          {{/if}}
+          {{#if showEnrollments}}
+            <li class="nav-item">
+              <a class="nav-link {{#if isActive 'enrollments'}}active{{/if}}" data-toggle="tab" href="#panel-enrollments" role="tab">Enrollments</a>
+            </li>
+          {{/if}}
+<!-- TODO: Implement other tabs -->
+<!-- 
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#panel-case-management" role="tab">Case Management</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#panel-responses" role="tab">Responses</a>
+          </li>
+-->
+        </ul>
+          <!-- Tab panels -->
+          <div class="tab-content card">
+            <!--Panel 1 Overview -->
+            <div class="tab-pane fade {{#if isActive 'overview'}}in show active {{else}}no-show{{/if}}" id="panel-overview" role="tabpanel">
+              <div class="info-container">
+                <div class="row">
+                  <div class="col-xs-12 col-sm-6 col-md-6">
+                    <div class="">
+                      <p class="clabel">Suffix</p>
+                      <p class="cvalue">{{suffix}}</p>
+                    </div>
+                    <div class="">
+                      <p class="clabel">SSN</p>
+                      <p class="cvalue">{{ssn}}</p>
+                    </div>
+                    <div class="">
+                      <p class="clabel">Date of Birth</p>
+                      <p class="cvalue dob">{{formatDate dob}}</p>
+                    </div>
+                    <div class="">
+                      <p class="clabel">Race</p>
+                      <p class="cvalue">{{getText 'race' race}}</p>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-6">
+                    <div class="">
+                      <p class="clabel">Ethnicity</p>
+                      <p class="cvalue">{{getText 'ethnicity' ethnicity}}</p>
+                    </div>
+                    <div class="">
+                      <p class="clabel">Gender</p>
+                      <p class="cvalue">{{getText 'gender' gender}}</p>
+                    </div>
+                    <div class="">
+                      <p class="clabel">Veteran Status</p>
+                      <p class="cvalue">{{getText 'veteranStatus' veteranStatus}}</p>
+                    </div>
+                    <div class="">
+                      <p class="clabel">Disabling Condition</p>
+                      <p class="cvalue">{{getText 'disablingcondition' disablingConditions}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+            <!--/.Panel 1-->
+            <!--Panel 1.5 Eligibility -->
+            <div class="tab-pane fade {{#if isActive 'eligibility'}}in show active {{else}}no-show{{/if}}" id="panel-eligibility" role="tabpanel">
+              {{#with eligibleClient}}
+                {{#unless error}}
+                  <div class="row margin-top-35">
+                    <div class="col-xs-12">
+                      {{#if ignoreMatchProcess}}
+                        <div class="form-group">
+                          <h3>Matching Eligibility Status</h3>
+                          <p><strong>Removal notes: </strong>{{remarks}}</p>
+                        </div>
+                        <input class="btn btn-warning addToHousingList" value="Add client to active list" type="button">
+                      {{else}}
+                        {{> clientDeleteReason client=../../client}}
+                      {{/if}}
+                    </div>
+                  </div>
+                {{/unless}}
+              {{/with}}
+            </div>
+            <!--/.Panel 1.5-->
+            <!--Panel 2 Case Management -->
+            <div class="tab-pane fade no-show" id="panel-case-management" role="tabpanel">
+                <div class="filters-area">
+                  <h1>Case Notes</h1>
+                  <button>Add New</button>
+                  <div class="entries">
+                    <p class="entries-num">Showing 1 to 50 of 1,950 entries</p>
+                    <div class="show-select">
+                      <span>Show</span>
+                      <select name="show-entries">
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                      </select>
+                      <span class="per-page">entries per page</span>
+                    </div>
+                    <div class="seach-entry">
+                      <form action="#" id="form-search">
+                        <input type="text" placeholder="Search">
+                        <input type="submit" value="Search">
+                      </form>
+                    </div>
+                    <div class="table-pagination">
+                      <span>Page</span>
+                      <ul class="pagination-list">
+                        <li><a href="#" class="previous arrow-pag"><img src="./img/page-prev-arrow.png" class="previous-link"></a></li>
+                        <li><a href="#" class="page-num active">1</a></li>
+                        <li><a href="#" class="page-num ">2</a></li>
+                        <li><a href="#" class="page-num ">5</a></li>
+                        <li><a href="#" class="page-num ">39</a></li>
+                          <li><a href="#" class="next arrow-pag"><img src="./img/page-next-arrow.png" class="next-link"></a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="table-area">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th class="col-sm-3"><span class="title">Case Note Type</span><a href="#"><img src="./img/table-order-desc-icon.png" class="order-asc order-arrow"></a></th>
+                        <th class="col-sm-2"><span class="title">Case Manager</span><a href="#"><img src="./img/table-order-icons.png" class="order-arrow"></a></th>
+                        <th class="col-sm-2"><span class="title">Date Updated</span><a href="#"><img src="./img/table-order-icons.png" class="order-arrow"></a></th>
+                        <th class="col-sm-2"><span class="title">Subject</span><a href="#"><img src="./img/table-order-icons.png" class="order-arrow"></a></th>
+                        <th class="col-sm-3"><span class="title">Status</span><a href="#"><img src="./img/table-order-icons.png" class="order-arrow"></a></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Lorem ipsum dolor sit amet</td>
+                        <td>Lorem Ipsum</td>
+                        <td>1/1/2018</td>
+                        <td>New Job Offer</td>
+                        <td>
+                          <span class="submitted">Submitted</span>
+                          <a href="#" class="upload">RE-upload to HMIS</a>
+
+                        </td>
+                        </tr>
+                        <tr>
+                        <td>Ipsum dolor sit amet</td>
+                        <td>Ipsum DOlor</td>
+                        <td>1/1/2018</td>
+                        <td>Attending Job Fair</td>
+                        <td>
+                          <span class="submitted">Submitted</span>
+                          <a href="#" class="upload">RE-upload to HMIS</a>
+
+                        </td>
+                        </tr>
+                        <tr>
+                        <td>Lorem ipsum dolor sit amet</td>
+                        <td>Lorem Ipsum</td>
+                        <td>1/1/2018</td>
+                        <td>New Job Offer</td>
+                        <td>
+                          <span class="submitted">Submitted</span>
+                          <a href="#" class="upload">RE-upload to HMIS</a>
+
+                        </td>
+                        </tr>
+                        <tr>
+                        <td>Ipsum dolor sit amet</td>
+                        <td>Ipsum DOlor</td>
+                        <td>1/1/2018</td>
+                        <td>Attending Job Fair</td>
+                        <td>
+                          <span class="submitted">Submitted</span>
+                          <a href="#" class="upload">RE-upload to HMIS</a>
+
+                        </td>
+                        </tr>
+                    </tbody>
+                  </table>
+
+                </div>
+                
+            </div>
+            <!--/.Panel 2-->
+            
+            <!--Panel 3 Referrals -->
+            {{#if showReferralStatus}}
+              <div class="tab-pane fade {{#if isActive 'referrals'}}in show active {{else}}no-show{{/if}}" id="panel-referrals" role="tabpanel">
+
+                
+                {{#if isUndefined referralStatusHistory}}
+                  <p>Loading referral status history...</p>
+                {{else}}
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <h3>Referral Status</h3>
+                      <div class="row">
+                        <div class="col-xs-9 my-center-block">
+                          <div id="referral-timeline">
+                            <div class="navigation">
+                              {{#each getReferralStatusList}}
+                                <span class="css-tooltip-button-span" data-toggle="tooltip" data-html="true" title="{{getStatusTooltip step}}">
+                                  <a id="js-btn-step-{{step}}" class="btn {{isReferralStatusActiveButton step}} btn-sm btn-arrow-right js-open-referral-status-modal js-tooltip"
+                                     href="#step{{step}}" data-toggle="tab" data-step="{{step}}">{{title}}</a>
+                                </span>
+                              {{/each}}
+                            </div>
+          
+                            <div class="progress">
+                              <div class="progress-bar {{getProgressbarActiveStatus}} progress-bar-striped active"
+                                role="progressbar" aria-valuenow="{{getCurrentReferralStatus}}" aria-valuemin="1"
+                                aria-valuemax="{{HomeConfig.collections.clients.referralStatus.length}}"
+                                style="{{getProgressbarWidth}}">
+                                {{getCurrentReferralStatus}} / {{getReferralStatusList.length}}
+                              </div>
+                            </div>
+          
+                                          {{> referralStatusUpdateComments}}
+          
+                                      </div>
+          
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  {{/if}}
+              </div>
+            {{/if}}
+            <!--/.Panel 3-->
+            <!--Panel 4 Responses -->
+            <div class="tab-pane fade no-show" id="panel-responses" role="tabpanel">
+                <br>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil odit magnam minima, soluta doloribus
+                    reiciendis molestiae placeat unde eos molestias. Quisquam aperiam, pariatur. Tempora, placeat ratione
+                    porro voluptate odit minima.</p>
+            </div>
+            <!--/.Panel 4-->
+            {{#if showEnrollments}}
+            <!--Panel 5 Enrollments -->
+              <div class="tab-pane fade {{#if isActive 'enrollments'}}in show active {{else}}no-show{{/if}}" id="panel-enrollments" role="tabpanel">
+              
+                {{#if isUndefined enrollments}}<p>Loading enrollments...</p>{{/if}}
+                {{#if enrollments}}
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <h3>Enrollments</h3>
+                      <div class="table-responsive">
+                        <table class="table table-hover table-striped">
+                          <thead>
+                            <tr>
+                              <th>Entry Date</th>
+                              <th>Exit Date</th>
+                              <th>Project Name</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {{#each enrollments}}
+                              <tr>
+                                <td>{{formatDate entrydate}}</td>
+                                <td>
+                                  {{#with exits}}
+                                    {{formatDate exitDate}}
+                                  {{/with}}
+                                </td>
+                                <td>
+                                  {{#with project}}
+                                    <span class="js-tooltip" data-toggle="tooltip" title="{{projectCommonName}}">{{projectName}}</span>
+                                  {{/with}}
+                                </td>
+                              </tr>
+                            {{/each}}
+                          </tbody>
+                          <tfoot>
+                            <tr>
+                              <th>Entry Date</th>
+                              <th>Exit Date</th>
+                              <th>Project Name</th>
+                            </tr>
+                          </tfoot>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                {{/if}}
+              
+              </div>
+            {{/if}}
+            <!--/.Panel 5-->
+          </div>
+         
+        </div>
 
       {{#if showGlobalHousehold}}
         {{#if isUndefined globalHouseholds}}<p>Loading households...</p>{{/if}}
@@ -214,86 +418,28 @@
         {{/if}}
       {{/if}}
 
-      {{#if showReferralStatus}}
-        {{#if isUndefined referralStatusHistory}}
-          <p>Loading referral status history...</p>
-        {{else}}
-          <div class="row">
-            <div class="col-xs-12">
-              <h3>Referral Status</h3>
-              <div class="row">
-                <div class="col-xs-9 my-center-block">
-                  <div id="referral-timeline">
-                    <div class="navigation">
-                      {{#each getReferralStatusList}}
-                        <span class="css-tooltip-button-span" data-toggle="tooltip" data-html="true" title="{{getStatusTooltip step}}">
-                          <a id="js-btn-step-{{step}}" class="btn {{isReferralStatusActiveButton step}} btn-sm btn-arrow-right js-open-referral-status-modal js-tooltip"
-                             href="#step{{step}}" data-toggle="tab" data-step="{{step}}">{{title}}</a>
-                        </span>
-                      {{/each}}
-                    </div>
 
-                    <div class="progress">
-                      <div class="progress-bar {{getProgressbarActiveStatus}} progress-bar-striped active"
-                        role="progressbar" aria-valuenow="{{getCurrentReferralStatus}}" aria-valuemin="1"
-                        aria-valuemax="{{HomeConfig.collections.clients.referralStatus.length}}"
-                        style="{{getProgressbarWidth}}">
-                        {{getCurrentReferralStatus}} / {{getReferralStatusList.length}}
-                      </div>
-                    </div>
-
-                                  {{> referralStatusUpdateComments}}
-
-                              </div>
-
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          {{/if}}
-        {{/if}}
-
-          <div class="row margin-top-35">
-              <!-- edit form column -->
-              <div class="col-xs-12">
-                  <div class="form-group">
-                      <div class="col-md-8">
-                          <input class="btn btn-default back" value="Back" type="button">
-                          {{#if ../showSurveyButton }}<input class="btn btn-success takeSurvey" value="Survey" type="button">{{/if}}
-                          {{#unless isHMISClient}}
-                              {{#if ../showUploadButton }}<input class="btn btn-success add-to-hmis js-tooltip" data-toggle="tooltip" value="Upload" title="This action uploads the client information to HMIS data server." type="button" />{{/if}}
-                          {{/unless}}
-                          {{#if ../showEditButton }}<input class="btn btn-warning edit" value="Edit" type="button" />{{/if}}
-                          {{#if ../showResponsesButton }}
-                            <a href="{{clientResponsesPath}}" class="btn btn-success">Responses</a>
-                          {{/if}}
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-
-      {{#with eligibleClient}}
-        {{#unless error}}
-          <div class="row margin-top-35">
-            <div class="col-xs-12">
-              {{#if ignoreMatchProcess}}
-                <div class="form-group">
-                  <h3>Matching Eligibility Status</h3>
-                  <p><strong>Removal notes: </strong>{{remarks}}</p>
-                </div>
-                <input class="btn btn-warning addToHousingList" value="Add client to active list" type="button">
-              {{else}}
-                {{> clientDeleteReason client=../../client}}
+      <div class="row margin-top-35">
+        <!-- edit form column -->
+        <div class="col-xs-12">
+          <div class="form-group">
+            <div class="col-md-8">
+              <input class="btn btn-default back" value="Back" type="button">
+              {{#if ../showSurveyButton }}<input class="btn btn-success takeSurvey" value="Survey" type="button">{{/if}}
+              {{#unless isHMISClient}}
+                  {{#if ../showUploadButton }}<input class="btn btn-success add-to-hmis js-tooltip" data-toggle="tooltip" value="Upload" title="This action uploads the client information to HMIS data server." type="button" />{{/if}}
+              {{/unless}}
+              {{#if ../showEditButton }}<input class="btn btn-warning edit" value="Edit" type="button" />{{/if}}
+              {{#if ../showResponsesButton }}
+                <a href="{{clientResponsesPath}}" class="btn btn-success">Responses</a>
               {{/if}}
             </div>
           </div>
-        {{/unless}}
-      {{/with}}
-
+        </div>
+      </div>
+    </div>
   {{/with}}
-  </template>
-
+</template>
   <template name="referralStatusUpdateComments">
     <div class="modal fade modal-fullscreen" id="referralStatusUpdateCommentsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">

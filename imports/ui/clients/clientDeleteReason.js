@@ -82,6 +82,7 @@ Template.clientDeleteReason.onRendered(() => {
     placeholder: 'Select reason',
     allowClear: true,
     theme: 'classic',
+    width: '100%',
     // tags: true,
     // createTag: (params) => {
     //   const term = $.trim(params.term);

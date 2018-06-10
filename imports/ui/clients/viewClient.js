@@ -1,3 +1,4 @@
+import { ReactiveVar } from 'meteor/reactive-var';
 import { Clients } from '/imports/api/clients/clients';
 import Users from '/imports/api/users/users';
 import { RecentClients } from '/imports/api/recent-clients';
@@ -45,6 +46,13 @@ Template.viewClient.helpers(
       const currentClientId = Router.current().params._id;
       const client = Clients.findOne(currentClientId);
       return flattenKeyVersions(client, 'globalHouseholds');
+    },
+    isActive(tab) {
+      if (Template.instance() && Template.instance().selectedTab) {
+        const selectedTab = Template.instance().selectedTab.get();
+        return selectedTab.slice(6) === tab;
+      }
+      return false;
     },
     clientResponsesPath() {
       const clientId = Router.current().params._id;
@@ -161,6 +169,10 @@ Template.viewClient.helpers(
 
 Template.viewClient.events(
   {
+    'click .nav-link': (evt, tmpl) => {
+      const tab = evt.target.hash.slice(1);
+      tmpl.selectedTab.set(tab);
+    },
     'click .edit': (evt, tmpl) => {
       const query = {};
       const client = tmpl.data.client;
@@ -294,6 +306,10 @@ Template.viewClient.events(
     },
   }
 );
+
+Template.viewClient.onCreated(function onCreated() {
+  this.selectedTab = new ReactiveVar('panel-overview');
+});
 
 Template.viewClient.onRendered(() => {
   $('body').addClass('sidebar-collapse');
