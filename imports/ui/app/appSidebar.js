@@ -117,6 +117,11 @@ const adminMenuItems = [
     path: 'openingScript',
   },
   {
+    name: 'Consent Groups',
+    icon: 'fa-cog',
+    path: 'consentGroupsList',
+  },
+  {
     name: 'Agencies',
     icon: 'fa-cog',
     path: 'agenciesList',

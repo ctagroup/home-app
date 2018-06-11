@@ -31,7 +31,7 @@ const fields = {
   'services.HMIS.status': 1,
   'services.HMIS.projectGroup': 1,
   createdAt: 1,
-  activeConsentGroupId: 1,
+  activeProject: 1,
 };
 
 Meteor.publish('users.all', function publishAllUsers() {
