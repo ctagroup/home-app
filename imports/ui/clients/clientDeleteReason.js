@@ -39,7 +39,14 @@ Template.clientDeleteReason.events({
     tmpl.removalDetails.set(reasonsHash[reasonId].required);
   },
   'click .removeFromHousingList'(evt, tmpl) {
-    const clientId = tmpl.data.client._id;
+    const client = tmpl.data.client;
+    // drop not found:
+    const clientIds = client.clientVersions
+      .filter(({ clientId, schema }) => {
+        const data = client[`eligibleClient::${schema}::${clientId}`];
+        return data && !data.error;
+      })
+      .map(({ clientId }) => clientId);
     const remarks = $('#removalRemarks').val();
     const date = $('#removalDate').val();
     const reasonId = $('#removalReason').val();
@@ -58,7 +65,7 @@ Template.clientDeleteReason.events({
     let removeReasons = reason.text;
     if (reason.required) removeReasons = `${removeReasons} | ${remarks}`;
     removeReasons = `${removeReasons} | ${date}`;
-    Meteor.call('ignoreMatchProcess', clientId, true, removeReasons, (err, res) => {
+    Meteor.call('ignoreMatchProcess', clientIds, true, removeReasons, (err, res) => {
       if (err) {
         Bert.alert(err.reason || err.error, 'danger', 'growl-top-right');
       } else {

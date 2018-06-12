@@ -11,14 +11,6 @@ import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 import './clientDeleteReason.js';
 import './viewClient.html';
 
-const mergeKeyVersions = (client, key) => {
-  const keyVersions = client.clientVersions
-    .map(({ clientId, schema }) => client[`${key}::${schema}::${clientId}`])
-    .filter((value) => !!value);
-  const mongoKey = client[key] || {};
-  return Object.assign({}, ...keyVersions, mongoKey);
-};
-
 const flattenKeyVersions = (client, key) => {
   const keyVersions = client.clientVersions
     .map(({ clientId, schema }) => client[`${key}::${schema}::${clientId}`])
@@ -31,9 +23,15 @@ const getLastStatus = (statusHistory) => statusHistory && statusHistory[statusHi
 Template.viewClient.helpers(
   {
     eligibleClient() {
+      // TODO [VK]: check by updated at instead of schema version
       const currentClientId = Router.current().params._id;
       const client = Clients.findOne(currentClientId);
-      return mergeKeyVersions(client, 'eligibleClient');
+      const versions = flattenKeyVersions(client, 'eligibleClient');
+      const nonError = versions.filter(({ error }) => !error);
+      if (nonError.length) {
+        return nonError[nonError.length - 1];
+      }
+      return versions[versions.length - 1];
     },
     enrollments() {
       const currentClientId = Router.current().params._id;
@@ -276,15 +274,23 @@ Template.viewClient.events(
     },
 
     'click .addToHousingList'(evt, tmpl) {
-      const clientId = tmpl.data.client._id;
-      Meteor.call('ignoreMatchProcess', clientId, false, (err, res) => {
+      const client = tmpl.data.client;
+      const currentClientId = tmpl.data.client._id;
+      // drop not found:
+      const clientIds = client.clientVersions
+        .filter(({ clientId, schema }) => {
+          const data = client[`eligibleClient::${schema}::${clientId}`];
+          return data && !data.error;
+        })
+        .map(({ clientId }) => clientId);
+      Meteor.call('ignoreMatchProcess', clientIds, false, (err, res) => {
         if (err) {
           Bert.alert(err.reason || err.error, 'danger', 'growl-top-right');
         } else {
           Bert.alert('Client added to the matching process', 'success', 'growl-top-right');
           // We simulate update in client-side collection
           // Sadly, this cannot be done in meteor call (isSimulation)
-          Clients._collection.update(clientId, { $set: { // eslint-disable-line
+          Clients._collection.update(currentClientId, { $set: { // eslint-disable-line
             'eligibleClient.ignoreMatchProcess': res.ignoreMatchProcess,
             'eligibleClient.remarks': res.remarks,
           } });
