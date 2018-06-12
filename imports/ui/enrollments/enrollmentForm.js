@@ -4,8 +4,8 @@ import './enrollmentForm.html';
 
 Template.enrollmentForm.helpers({
   doc() {
+    if (!this.enrollment) return {};
     return this.enrollment;
-    // if (!this.enrollment) return {};
     // try {
     //   const obj = JSON.parse(this.enrollment.definition);
     //   const definition = JSON.stringify(obj, null, 2);
@@ -24,10 +24,6 @@ Template.enrollmentForm.helpers({
       }[this.step];
     }
     return Enrollments.schema;
-  },
-
-  fields() {
-    return ['title', 'locked', 'definition'];
   },
 });
 
