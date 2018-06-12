@@ -4,6 +4,43 @@ import ConsentGroups, { ConsentGroupStatus } from './consentGroups';
 
 // import { HmisClient } from '/imports/api/hmisApi';
 
+export function getProjectsForUser(userId) {
+  const user = Meteor.users.findOne(userId);
+
+  if (!user || !user.activeProject) {
+    logger.debug('no user or active project');
+    return {
+      view: [],
+      edit: [],
+    };
+  }
+
+  const userAgencies = Agencies.find({ 'projectsMembers.userId': userId }).fetch();
+
+  const userAgenciesIds = userAgencies.map(a => a._id);
+
+  const userConsentGroups = ConsentGroups
+    .find({ agencies: { $in: userAgenciesIds } })
+    .fetch();
+
+  const agencyIdsInConsentGroups = userConsentGroups.reduce(
+    (all, cg) => ([...all, ...cg.agencies]), []
+  );
+
+
+  const allAgencyIds = [...userAgenciesIds, ...agencyIdsInConsentGroups];
+  const allAgencies = Agencies.find({ _id: { $in: allAgencyIds } }).fetch();
+  const allProjects = allAgencies.reduce(
+    (all, agency) => ([...all, ...agency.projects]), []
+  );
+
+  return {
+    view: allProjects,
+    edit: [user.activeProject],
+  };
+}
+
+
 Meteor.methods({
   'consentGroups.create'(doc) {
     logger.info(`METHOD[${this.userId}]: consentGroups.create`, doc);
@@ -33,32 +70,6 @@ Meteor.methods({
 
   'consentGroups.getProjectsForCurrentUser'() {
     logger.info(`METHOD[${this.userId}]: consentGroups.getProjectsForCurrentUser`);
-    const user = Meteor.users.findOne(this.userId);
-
-    if (!user || !user.activeProject) {
-      return {
-        view: [],
-        edit: [],
-      };
-    }
-
-    const userAgencies = Agencies.find({ 'projectsMembers.userId': this.userId }).fetch();
-    const userAgenciesIds = userAgencies.map(a => a._id);
-
-    const projectsWithViewAccess = userAgencies.reduce((all, agency) =>
-      ([...all, ...agency.projects]),
-      []
-    );
-    const userConsentGroups = ConsentGroups
-      .find({ agencies: { $in: { userAgenciesIds } } })
-      .fetch();
-    console.log('ucg', userConsentGroups);
-    console.log(projectsWithViewAccess);
-
-    return {
-      view: [],
-      edit: [user.activeProject],
-    };
+    return getProjectsForUser(this.userId);
   },
-
 });

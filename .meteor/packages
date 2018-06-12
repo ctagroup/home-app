@@ -69,7 +69,6 @@ shell-server@0.3.1
 # So don't remove accounts-password, if you want to keep houston:admin
 accounts-password@1.5.0
 themeteorchef:bert
-practicalmeteor:mocha
 xolvio:cleaner
 johanbrook:publication-collector
 meteorhacks:subs-manager
@@ -84,3 +83,5 @@ cfs:gridfs
 google-config-ui
 dynamic-import
 yogiben:autoform-tags
+meteortesting:mocha
+practicalmeteor:mocha

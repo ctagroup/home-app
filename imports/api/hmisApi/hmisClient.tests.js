@@ -1,5 +1,6 @@
 /* eslint prefer-arrow-callback: "off", func-names: "off" */
 
+import nock from 'nock';
 import { chai } from 'meteor/practicalmeteor:chai';
 import { HmisClient } from './hmisClient';
 import { ApiRegistry } from './apiRegistry';
@@ -18,11 +19,23 @@ const fakeCollection = {
       },
     };
   },
+  update() {},
 };
 
 describe('hmisApi', function () {
   describe('client', function () {
     it('can use dummy api', function () {
+      nock('https://www.hmislynk.com')
+        .post('/hmis-authorization-service/rest/token/')
+        .query(() => true)
+        .reply(200, JSON.stringify({
+          oAuthAuthorization: {
+            accessToken: 'test-access-token',
+            expiresIn: 1000000,
+            refreshToken: 'test-refresh-token',
+          },
+        }));
+
       const registry = new ApiRegistry();
       registry.addApi('dummy', DummyApi);
 

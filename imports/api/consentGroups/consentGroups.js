@@ -1,5 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
+import Agencies from '/imports/api/agencies/agencies';
 
 export const ConsentGroupStatus = Object.freeze({
   NEW: 'new',
@@ -61,5 +62,17 @@ const ConsentGroups = new Mongo.Collection('consentGroups');
 ConsentGroups.schema = new SimpleSchema(consentGroupsSchema);
 
 ConsentGroups.attachSchema(ConsentGroups.schema);
+
+
+ConsentGroups.helpers({
+  getAllProjects() {
+    const agencies = Agencies.find({ _id: { $in: this.agencies } }).fetch();
+    const projectsWithDuplicates = agencies.reduce(
+      (all, agency) => ([...all, ...agency.projects]),
+      []
+    );
+    return _.uniq(projectsWithDuplicates);
+  },
+});
 
 export default ConsentGroups;

@@ -31,6 +31,11 @@ const getLastStatus = (statusHistory) => statusHistory && statusHistory[statusHi
 
 Template.viewClient.helpers(
   {
+    consentCanEditClient() {
+      console.log(this);
+      return false;
+    },
+
     eligibleClient() {
       const currentClientId = this._id;
       const client = Clients.findOne(currentClientId);
@@ -119,7 +124,6 @@ Template.viewClient.helpers(
 
     showEnrollments() {
       // const schema = Router.current().params.query.schema;
-      console.log(this.consentIsGranted, this);
       return (this && this.clientId && this.consentIsGranted);
     },
 

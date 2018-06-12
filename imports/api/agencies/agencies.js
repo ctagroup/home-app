@@ -86,4 +86,18 @@ Agencies.whereUserCanAccessProject = (userId, globalProjectId) => {
   return Agencies.find(query).fetch();
 };
 
+Agencies.oneWhereUserHasActiveProject = (userId, activeProjectId) => {
+  const query = {
+    members: userId,
+    projects: activeProjectId,
+    projectsMembers: {
+      $elemMatch: {
+        userId,
+        projectId: activeProjectId,
+      },
+    },
+  };
+  return Agencies.findOne(query);
+};
+
 export default Agencies;

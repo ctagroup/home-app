@@ -1,8 +1,6 @@
 import { eachLimit } from 'async';
 import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
-import Agencies from '/imports/api/agencies/agencies';
-import Users from '/imports/api/users/users';
 import {
   sortByTime,
   mergeClient,
@@ -13,7 +11,7 @@ import {
   getHousingMatch,
 } from '/imports/api/clients/helpers';
 import {
-  anyValidConsent,
+  isConsentPermissionGranted,
   filterClientProfileFields,
 } from '/imports/api/consents/helpers';
 
@@ -36,7 +34,6 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
   let client = false;
 
   try {
-    const user = Users.findOne(this.userId);
     const hc = HmisClient.create(this.userId);
     client = hc.api('client').getClient(inputClientId, inputSchema);
     client.schema = inputSchema;
@@ -44,27 +41,28 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
     // TODO [VK]: publish by dedupClientId directly
     const clientVersions = hc.api('client').searchClient(client.dedupClientId, 50);
 
+    let consentPermission;
     let consents = [];
     try {
       consents = hc.api('global').getClientConsents(client.dedupClientId);
+      consentPermission = Meteor.call('consents.checkClientAccessByConsents', consents);
     } catch (err) {
-      logger.error('Error loading consents:', err);
+      logger.error('Error during consents check:', err);
       client.consentErrorMessage = err;
     }
 
-    const projects = Agencies.getProjectsWithinCurrentlySelectedConsentGroup(user);
-    if (!anyValidConsent(consents, projects)) {
+    if (!isConsentPermissionGranted(consentPermission)) {
       logger.debug('consent rejected');
-      client.consentIsGranted = false;
       self.added('localClients', inputClientId, filterClientProfileFields(client));
       return self.ready();
     }
+
     logger.debug('consent granted');
 
     const mergedClient = mergeClient(clientVersions);
-    mergeClient.consentIsGranted = true;
     self.added('localClients', inputClientId, {
       ...mergedClient,
+      consentPermission,
       consentIsGranted: true,
       consents,
     });

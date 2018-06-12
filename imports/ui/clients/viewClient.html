@@ -7,11 +7,18 @@
         {{#unless this.consentIsGranted }}
           <div class="col-xs-12">
             <div class="alert alert-danger">
-              The client has not given consent for selected consent group.
+              The client has not given consent for your agency.
               <a href="#" id="sign-roi">Click here to sign the ROI</a>
-              or switch to different consent group.
             </div>
           </div>
+        {{else}}
+          {{#unless consentCanEditClient}}
+            <div class="col-xs-12">
+              <div class="alert alert-warning">
+                Switch you active project to obtain EDIT permissions for this client.
+              </div>
+            </div>
+          {{/unless}}
         {{/unless}}
 
 
