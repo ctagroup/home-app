@@ -26,6 +26,7 @@ Template.viewClient.helpers(
       // TODO [VK]: check by updated at instead of schema version
       const currentClientId = Router.current().params._id;
       const client = Clients.findOne(currentClientId);
+      if (!client) return null;
       const versions = flattenKeyVersions(client, 'eligibleClient');
       const nonError = versions.filter(({ error }) => !error);
       if (nonError.length) {

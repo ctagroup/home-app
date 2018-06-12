@@ -100,7 +100,7 @@ Router.route(
       if (this.params.query.schema) {
         return [
           Meteor.subscribe('clients.one', id, this.params.query.schema),
-          Meteor.subscribe('responses.all', id),
+          Meteor.subscribe('responses.all', id, this.params.query.schema),
         ];
       }
       return [

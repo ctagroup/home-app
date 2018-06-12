@@ -26,6 +26,7 @@ Router.route('adminDashboardresponsesView', {
   waitOn() {
     const { clientId, schema } = this.params.query;
 
+    console.log('const { clientId, schema } = this.params.query;', clientId, schema);
     const subscriptions = [
       Meteor.subscribe('responses.all', clientId, schema),
       Meteor.subscribe('surveys.all'),
