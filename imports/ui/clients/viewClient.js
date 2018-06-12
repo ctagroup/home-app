@@ -12,6 +12,7 @@ import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 import './clientDeleteReason.js';
 import './manageClientEnrollments.html';
 import './viewClient.html';
+import '../enrollments/enrollmentForm.js';
 
 const mergeKeyVersions = (client, key) => {
   const keyVersions = client.clientVersions
