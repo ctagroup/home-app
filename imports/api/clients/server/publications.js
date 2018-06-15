@@ -11,9 +11,10 @@ import {
   getHousingMatch,
 } from '/imports/api/clients/helpers';
 import {
-  isConsentPermissionGranted,
+  canViewClient,
   filterClientProfileFields,
 } from '/imports/api/consents/helpers';
+import { ConsentPermission } from '/imports/api/consents/consents';
 
 
 Meteor.publish('clients.one',
@@ -42,18 +43,28 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
     const clientVersions = hc.api('client').searchClient(client.dedupClientId, 50);
 
     let consentPermission;
-    let consents = [];
+    let consentItems = [];
     try {
-      consents = hc.api('global').getClientConsents(client.dedupClientId);
-      consentPermission = Meteor.call('consents.checkClientAccessByConsents', consents);
+      consentItems = hc.api('global').getClientConsents(client.dedupClientId);
+      consentPermission = Meteor.call('consents.checkClientAccessByConsents', consentItems);
+      client.consent = {
+        items: consentItems,
+        permission: consentPermission,
+      };
     } catch (err) {
       logger.error('Error during consents check:', err);
-      client.consentErrorMessage = err;
+      client.consent = {
+        permission: ConsentPermission.DENIED,
+        errorMessage: `${err}`,
+      };
     }
 
-    if (!isConsentPermissionGranted(consentPermission)) {
+    if (!canViewClient(consentPermission)) {
       logger.debug('consent rejected');
-      self.added('localClients', inputClientId, filterClientProfileFields(client));
+      self.added('localClients', inputClientId, {
+        ...filterClientProfileFields(client),
+        consent: client.consent,
+      });
       return self.ready();
     }
 
@@ -62,9 +73,7 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
     const mergedClient = mergeClient(clientVersions);
     self.added('localClients', inputClientId, {
       ...mergedClient,
-      consentPermission,
-      consentIsGranted: true,
-      consents,
+      consent: client.consent,
     });
     self.ready();
 

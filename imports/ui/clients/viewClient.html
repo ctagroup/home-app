@@ -1,10 +1,11 @@
 <template name="viewClient">
   {{#with client}}
+     {{ log this }}
     <div id="viewClient_content">
       <div class="row client-profile-container">
         {{{alertMessages}}}
 
-        {{#unless this.consentIsGranted }}
+        {{#unless consentCanViewClient }}
           <div class="col-xs-12">
             <div class="alert alert-danger">
               The client has not given consent for your agency.
@@ -12,7 +13,7 @@
             </div>
           </div>
         {{else}}
-          {{#unless consentCanEditClient}}
+          {{#unless consentCanEditClient }}
             <div class="col-xs-12">
               <div class="alert alert-warning">
                 Switch you active project to obtain EDIT permissions for this client.

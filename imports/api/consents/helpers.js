@@ -1,8 +1,12 @@
 import { ConsentPermission } from './consents';
 
 
-export function isConsentPermissionGranted(consentPermission) {
+export function canViewClient(consentPermission) {
   return [ConsentPermission.VIEW, ConsentPermission.EDIT].includes(consentPermission);
+}
+
+export function canEditClient(consentPermission) {
+  return consentPermission === ConsentPermission.EDIT;
 }
 
 export function filterClientProfileFields(client) {

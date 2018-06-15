@@ -1,15 +1,24 @@
 <template name="consentsList">
   <h3>Client Consents</h3>
-  {{#if consents}}
+  {{#if consent.items}}
     <ul>
     {{#each getConsentsToDisplay}}
       <li>
         {{status}} from {{startTime}} until {{endTime}} for projects: <strong>{{projects}}</strong>
+        {{#if consentGroup}}
+          and consent group <strong>{{consentGroup}}</strong>
+        {{/if}}
 
       </li>
     {{/each}}
     </ul>
   {{else}}
-    <p>This client has not signed any consents yet.</p>
+    {{#if consent.errorMessage}}
+      <div class="alert alert-danger">
+        {{consent.errorMessage}}
+      </div>
+    {{else}}
+      <p>This client has not signed any consents yet.</p>
+    {{/if}}
   {{/if}}
 </template>

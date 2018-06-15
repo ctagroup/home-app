@@ -8,6 +8,12 @@ import HomeConfig from '/imports/config/homeConfig';
 
 import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 
+import {
+  canViewClient,
+  canEditClient,
+} from '/imports/api/consents/helpers';
+
+
 import './clientDeleteReason.js';
 import './consentsList';
 import './viewClient.html';
@@ -32,8 +38,11 @@ const getLastStatus = (statusHistory) => statusHistory && statusHistory[statusHi
 Template.viewClient.helpers(
   {
     consentCanEditClient() {
-      console.log(this);
-      return false;
+      return canEditClient(this.consent.permission);
+    },
+
+    consentCanViewClient() {
+      return canViewClient(this.consent.permission);
     },
 
     eligibleClient() {
@@ -124,7 +133,7 @@ Template.viewClient.helpers(
 
     showEnrollments() {
       // const schema = Router.current().params.query.schema;
-      return (this && this.clientId && this.consentIsGranted);
+      return (this && this.clientId && canViewClient(this.consent.permission));
     },
 
     showReferralStatus() {
@@ -133,14 +142,14 @@ Template.viewClient.helpers(
       );
       // const isHmisClient = Router.current().data().client.clientId
       //   && Router.current().params.query.schema;
-      return hasPermission && this && this.clientId && this.consentIsGranted;
+      return hasPermission && this && this.clientId && canViewClient(this.consent.permission);
     },
 
     showGlobalHousehold() {
       const hasPermission = Roles.userIsInRole(
         Meteor.user(), ['System Admin', 'Developer', 'Case Manager', 'Surveyor']
       );
-      return hasPermission && this && this.clientId && this.consentIsGranted;
+      return hasPermission && this && this.clientId && canViewClient(this.consent.permission);
     },
 
     getText(text, code) {
