@@ -3,6 +3,8 @@ import Users from '/imports/api/users/users';
 import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
 
+const transformRoles = (roles) => roles.map(r => r.id);
+
 function updateHmisProfile(userId, account) {
   const projects = account.projectGroup ? account.projectGroup.projects : [];
   const projectGroup = account.projectGroup || {};
@@ -13,7 +15,7 @@ function updateHmisProfile(userId, account) {
     'services.HMIS.lastName': account.lastName,
     'services.HMIS.gender': account.gender,
     'services.HMIS.status': account.status,
-    'services.HMIS.roles': account.roles,
+    'services.HMIS.roles': transformRoles(account.roles),
     'services.HMIS.projects': projects,
     'services.HMIS.projectGroup': { ...projectGroup, projects: undefined },
   } });
@@ -88,4 +90,12 @@ Meteor.publish(null, function publishCurrentUserData() { // eslint-disable-line
     };
     return Users.find(this.userId, { fields: data });
   }
+});
+
+Meteor.publish('users.hmisRoles', function publishHMISRoles() { // eslint-disable-line prefer-arrow-callback, max-len
+  logger.info(`PUB[${this.userId}]: users.hmisRoles`);
+  if (!this.userId) return this.ready();
+  const hmisRoles = HmisClient.create(this.userId).api('user-service').getRoles();
+  hmisRoles.forEach(r => this.added('hmisRoles', r.id, r));
+  return this.ready();
 });

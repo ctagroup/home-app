@@ -23,3 +23,8 @@ export function userProjectGroupId(user) {
     return undefined;
   }
 }
+
+export const ensureRolesFormat = (roles) => roles.map((role) => {
+  if (typeof role === 'object') return role;
+  return { id: role };
+});
