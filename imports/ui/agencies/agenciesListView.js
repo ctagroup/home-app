@@ -1,5 +1,6 @@
 import moment from 'moment';
 import Agencies from '/imports/api/agencies/agencies';
+import ConsentGroups from '/imports/api/consentGroups/consentGroups';
 import { TableDom } from '/imports/ui/dataTable/helpers';
 import './agenciesListView.html';
 
@@ -13,8 +14,12 @@ const tableOptions = {
       },
     },
     {
-      data: 'description',
-      title: 'Description',
+      data: '_id',
+      title: 'Consent groups',
+      render(value) {
+        const consentGroups = ConsentGroups.find({ agencies: value }, { sort: { _id: 1 } }).fetch();
+        return consentGroups.map(cg => cg._id).join(', ');
+      },
     },
     {
       data: 'createdAt',

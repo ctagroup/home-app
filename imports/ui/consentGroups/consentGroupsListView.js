@@ -1,6 +1,7 @@
 import moment from 'moment';
 import ConsentGroups from '/imports/api/consentGroups/consentGroups';
 import { TableDom } from '/imports/ui/dataTable/helpers';
+import Agencies from '/imports/api/agencies/agencies';
 import './consentGroupsListView.html';
 
 const tableOptions = {
@@ -13,8 +14,27 @@ const tableOptions = {
       },
     },
     {
-      data: 'description',
-      title: 'Description',
+      data: 'agencies',
+      title: 'Agencies',
+      render(value) {
+        const agencies = value.map(id => {
+          const agency = Agencies.findOne(id);
+          return agency ? agency.agencyName : id;
+        }).join(', ');
+        return agencies;
+        // return `<a href="${Router.path('consentGroupsEdit', { _id: doc._id })}">${value}</a>`;
+      },
+    },
+    {
+      data: '_id',
+      title: '# projects',
+      render(value) {
+        return ConsentGroups.findOne(value).getAllProjects().length;
+      },
+    },
+    {
+      data: 'status',
+      title: 'Status',
     },
     {
       data: 'createdAt',

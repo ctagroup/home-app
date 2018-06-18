@@ -18,6 +18,7 @@ Router.route(
     },
     waitOn() {
       return [
+        Meteor.subscribe('agencies.all'),
         Meteor.subscribe('consentGroups.all'),
       ];
     },
