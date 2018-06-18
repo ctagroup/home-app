@@ -83,6 +83,30 @@ export class GlobalApi extends ApiEndpoint {
     const { consents } = this.doGet(url).consents;
     return consents;
   }
+
+  updateClientConsent(clientId, consentId, globalProjects) {
+    const url = `${BASE_URL}/clients/${clientId}/consents/${consentId}/projects`;
+    const data = {
+      globalProjects: {
+        globalProjects: globalProjects.map(id => ({ id })),
+      },
+    };
+    this.doPut(url, data);
+  }
+
+  searchConsents(consentGroupId, start = 0, limit = 9999) {
+    const url = `${BASE_URL}/search/consents?consentGroupId=${consentGroupId}&startIndex=${start}&maxItems=${limit}`; // eslint-disable-line
+    const { pagination, consents } = this.doGet(url).consents;
+    const remaining = limit - pagination.returned;
+    if (remaining > 0 && pagination.returned > 0) {
+      return [
+        ...consents,
+        ...this.searchConsents(consentGroupId, pagination.from + pagination.returned, remaining),
+      ];
+    }
+    return consents;
+  }
 }
 
 HmisApiRegistry.addApi('global', GlobalApi);
+

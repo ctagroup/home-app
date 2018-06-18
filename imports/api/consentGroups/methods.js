@@ -49,7 +49,10 @@ Meteor.methods({
       status: ConsentGroupStatus.NEW,
     };
     check(group, ConsentGroups.schema);
-    return ConsentGroups.insert(group);
+    return ConsentGroups.insert({
+      _id: group.name,
+      ...group,
+    });
   },
 
   'consentGroups.update'(doc, id) {
@@ -59,13 +62,17 @@ Meteor.methods({
       throw new Meteor.Error(400, `Cannot edit ${currentStatus} consent group`);
     }
     check(doc, ConsentGroups.schema);
-    return ConsentGroups.update(id, doc);
+    const updatedCount = Meteor.call('consents.synchronizeProjects');
+    ConsentGroups.update(id, doc);
+    ConsentGroups.update(id, { $set: {
+      status: updatedCount ? ConsentGroupStatus.ACTIVE : ConsentGroupStatus.NEW,
+    } });
   },
 
   'consentGroups.updateStatus'(id) {
     // TODO: make call to global consents, search for this consent group
     // if consents exist, change status to active
-    logger.info(`METHOD[${this.userId}]: consentGroups.update`, id);
+    logger.info(`METHOD[${this.userId}]: consentGroups.updateStatus`, id);
   },
 
   'consentGroups.getProjectsForCurrentUser'() {

@@ -8,6 +8,15 @@ Meteor.publish('consentGroups.all', function publishConsentGroups() {
     return [];
   }
   // TODO: check permissions
+  Meteor.setTimeout(() => {
+    try {
+      ConsentGroups.find()
+        .fetch()
+        .map(c => Meteor.call('consentGroups.updateStatus', c._id));
+    } catch (err) {
+      logger.warn('Failed to update consent group status');
+    }
+  }, 1);
   return ConsentGroups.find();
 });
 

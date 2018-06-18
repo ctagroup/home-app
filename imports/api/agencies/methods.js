@@ -19,7 +19,9 @@ Meteor.methods({
   'agencies.update'(doc, id) {
     logger.info(`METHOD[${Meteor.userId()}]: agencies.update`, doc, id);
     check(doc, Agencies.schema);
-    return Agencies.update(id, doc);
+    const result = Agencies.update(id, doc);
+    Meteor.call('consents.synchronizeProjects');
+    return result;
   },
 
 });

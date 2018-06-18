@@ -29,23 +29,59 @@ Meteor.methods({
       throw new Meteor.Error(400, 'No project selected');
     }
     const agency = Agencies.oneWhereUserHasActiveProject(user._id, user.activeProject);
+    const agencyConsentGroups = ConsentGroups.find({ agencies: agency._id }).fetch();
     const consentGroup = ConsentGroups.findOne(consentGroupId);
-    const consentGroups = ConsentGroups.find({ agencies: agency._id }).fetch();
-    const consentGroupIds = consentGroups.map(cg => cg._id);
+
+    if (agencyConsentGroups.length === 0) {
+      throw new Meteor.Error(400, 'Active agency does not belong to any consent group');
+    }
+
+    const consentGroupIds = agencyConsentGroups.map(cg => cg._id);
 
     const hc = HmisClient.create(this.userId);
 
-    if (consentGroupId) {
-      if (!consentGroup) {
-        throw new Meteor.Error(404, 'Consent group not found');
-      }
-
-      if (!consentGroupIds.includes(consentGroupId)) {
-        throw new Meteor.Error(400, 'Incorrect consent group for current project');
-      }
-      return createClientConsent(hc, globalClientId, consentGroupId, consentGroup.getAllProjects());
+    if (!consentGroup) {
+      throw new Meteor.Error(404, `Consent group ${consentGroupId} does not exist`);
     }
-    return createClientConsent(hc, globalClientId, null, agency.projects);
+
+    if (!consentGroupIds.includes(consentGroupId)) {
+      throw new Meteor.Error(400,
+        `Active agency does not belong to consent group ${consentGroupId}`
+      );
+    }
+    createClientConsent(hc, globalClientId, consentGroupId, consentGroup.getAllProjects());
+  },
+
+  'consents.synchronizeProjects'() {
+    logger.info(`METHOD[${this.userId}]: consents.synchronizeProjects`);
+    const user = Users.findOne(this.userId);
+
+    if (!user.activeProject) {
+      throw new Meteor.Error(400, 'No project selected');
+    }
+    const agency = Agencies.oneWhereUserHasActiveProject(user._id, user.activeProject);
+    const agencyConsentGroups = ConsentGroups.find({ agencies: agency._id }).fetch();
+    if (agencyConsentGroups.length === 0) {
+      throw new Meteor.Error(400, 'Active agency does not belong to any consent group');
+    }
+
+    let updatedCount = 0;
+    logger.info('synchronizing consents in agency ', agency.name);
+    const consentGroupIds = agencyConsentGroups.map(cg => cg._id);
+    consentGroupIds.forEach(id => {
+      logger.info('synchronizing consent in group', id);
+      const consentGroup = ConsentGroups.findOne(id);
+      const hc = HmisClient.create(this.userId);
+      const consents = hc.api('global').searchConsents(id);
+      const updatedProjects = consentGroup.getAllProjects();
+
+      consents.forEach(consent => {
+        const { clientId, consentId } = consent;
+        hc.api('global').updateClientConsent(clientId, consentId, updatedProjects);
+        updatedCount += 1;
+      });
+    });
+    return updatedCount;
   },
 
   'consents.checkClientAccessByConsents'(consents) {
