@@ -10,6 +10,7 @@ import testSurvey from '/imports/config/surveys/testSurvey';
 import {
   migrateV1Responses,
   fixMissingClientSchemasInV1Responses,
+  prepopulateConsents,
 } from './migrations';
 
 Meteor.startup(() => {
@@ -85,7 +86,14 @@ Meteor.startup(() => {
     version++;
     migrateV1Responses();
     fixMissingClientSchemasInV1Responses();
+    AppSettings.set('version', version);
   }
+
+  // if (version === 14) {
+  //   version++;
+  //   prepopulateConsents();
+  //   // AppSettings.set('version', version);
+  // }
 
   logger.info(`Migrations complete. Version: ${AppSettings.get('version')}`);
 });
