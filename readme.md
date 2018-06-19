@@ -71,6 +71,8 @@ sudo ee site update home.ctagroup.org --letsencrypt=off
 
 ```
 sudo ee site update home.ctagroup.org --letsencrypt=renew
+
+sudo certbot renew --nginx --cert-name mosbehome.ctagroup.org
 ```
 
 ## Mongo DB Backup & Restore from Docker Server
