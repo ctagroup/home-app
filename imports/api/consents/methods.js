@@ -9,18 +9,21 @@ import { ConsentPermission } from '/imports/api/consents/consents';
 import { getProjectsForUser } from '/imports/api/consentGroups/methods';
 
 const SECONDS_PER_YEAR = 31556926;
-const DEFAULT_CONSENT_DURATION_IN_SECONDS = 3 * SECONDS_PER_YEAR;
+export const DEFAULT_CONSENT_DURATION_IN_SECONDS = 3 * SECONDS_PER_YEAR;
 
-function createClientConsent(hc, globalClientId, consentGroupId, projectIds) {
+function createClientConsent(hc, globalClientId, consentGroupId, projectIds,
+  durationInSeconds = DEFAULT_CONSENT_DURATION_IN_SECONDS, startTimestamp = null) {
   logger.debug('creating consent for', consentGroupId, projectIds);
   const consentId = hc.api('global').createClientConsent(
-    globalClientId, consentGroupId, projectIds, DEFAULT_CONSENT_DURATION_IN_SECONDS
+    globalClientId, consentGroupId, projectIds,
+    durationInSeconds, startTimestamp
   );
   return consentId;
 }
 
 Meteor.methods({
-  'consents.create'(globalClientId, consentGroupId) {
+  'consents.create'(globalClientId, consentGroupId,
+    durationInSeconds, startTimestamp) {
     logger.info(`METHOD[${this.userId}]: consents.create`, globalClientId, consentGroupId);
 
     const user = Users.findOne(this.userId);
@@ -49,7 +52,11 @@ Meteor.methods({
         `Active agency does not belong to consent group ${consentGroupId}`
       );
     }
-    createClientConsent(hc, globalClientId, consentGroupId, consentGroup.getAllProjects());
+    createClientConsent(hc, globalClientId, consentGroupId,
+      consentGroup.getAllProjects(),
+      durationInSeconds,
+      startTimestamp
+    );
   },
 
   'consents.synchronizeProjects'() {
