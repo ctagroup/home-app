@@ -122,13 +122,18 @@ Meteor.methods({
 
     const consentGroup = ConsentGroups.findOne('MOSBE_CARS');
 
-    if (!clientId || !dedupClientId || !consentGroup) return;
+    if (!clientId || !dedupClientId || !consentGroup) {
+      logger.warn('failed to create initial consent', clientId, dedupClientId, consentGroup);
+      return;
+    }
 
     let startDate;
     const response = Responses.findOne({ clientId }, { sort: { createdAt: 1 } });
     if (response) {
       logger.info('new consent will created based on response date for cient', dedupClientId);
       startDate = moment(response.createdAt).unix();
+    } else {
+      logger.warn('no data to create consent');
     }
 
     if (startDate) {
