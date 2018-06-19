@@ -2,6 +2,7 @@ import '/imports/ui/app/appLayout';
 import '/imports/ui/content/contentLayout';
 import { CollectionsCountCache } from '/imports/both/cached-subscriptions';
 
+
 export const ContentController = RouteController.extend({
   layoutTemplate: Template.ContentLayout,
   waitOn() {
