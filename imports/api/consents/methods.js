@@ -7,6 +7,7 @@ import ConsentGroups from '/imports/api/consentGroups/consentGroups';
 import { HmisClient } from '/imports/api/hmisApi';
 import { ConsentPermission } from '/imports/api/consents/consents';
 import { getProjectsForUser } from '/imports/api/consentGroups/methods';
+import Responses from '/imports/api/responses/responses';
 
 const SECONDS_PER_YEAR = 31556926;
 export const DEFAULT_CONSENT_DURATION_IN_SECONDS = 3 * SECONDS_PER_YEAR;
@@ -114,5 +115,31 @@ Meteor.methods({
       }
     }
     return ConsentPermission.DENIED;
+  },
+
+  'consents.generateInitialConsent'({ clientId, dedupClientId }) {
+    logger.info(`METHOD[${this.userId}]: consents.generateInitialConsent`, clientId, dedupClientId);
+
+    const consentGroup = ConsentGroups.findOne('MOSBE_CARS');
+
+    if (!clientId || !dedupClientId || !consentGroup) return;
+
+    let startDate;
+    const response = Responses.findOne({ clientId }, { sort: { createdAt: 1 } });
+    if (response) {
+      logger.info('new consent will created based on response date for cient', dedupClientId);
+      startDate = moment(response.createdAt).unix();
+    }
+
+    if (startDate) {
+      const duration = DEFAULT_CONSENT_DURATION_IN_SECONDS;
+      const hc = HmisClient.create(this.userId);
+      hc.api('global').createClientConsent(dedupClientId,
+        consentGroup._id,
+        consentGroup.getAllProjects(),
+        duration,
+        startDate
+      );
+    }
   },
 });

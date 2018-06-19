@@ -46,6 +46,10 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
     let consentItems = [];
     try {
       consentItems = hc.api('global').getClientConsents(client.dedupClientId);
+      if (consentItems.length === 0) {
+        Meteor.call('consents.generateInitialConsent', client);
+        consentItems = hc.api('global').getClientConsents(client.dedupClientId);
+      }
       consentPermission = Meteor.call('consents.checkClientAccessByConsents', consentItems);
       client.consent = {
         items: consentItems,
