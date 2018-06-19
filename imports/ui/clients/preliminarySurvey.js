@@ -2,6 +2,7 @@ import Alert from '/imports/ui/alert';
 import OpeningScript from '/imports/api/openingScript/openingScript';
 import SignaturePadConfig from '/imports/ui/signaturePadConfig';
 import './signaturePad.js';
+import './selectConsentGroup.js';
 import './preliminarySurvey.html';
 
 
@@ -50,9 +51,12 @@ Template.preliminarySurvey.events(
     },
     'submit #release-of-information': (event, tmpl) => {
       event.preventDefault();
-      const signaturePad = Router.current().params.signaturePad;
+      const selectedConsentGroupId = event.target[0].value;
+      const signaturePad = Router.current().options.signaturePad;
       if (signaturePad.isEmpty()) {
         Bert.alert('Please provide signature first.', 'error', 'growl-top-right');
+      } else if (!selectedConsentGroupId) {
+        Bert.alert('Please select consent group first.', 'error', 'growl-top-right');
       } else {
         const clientId = tmpl.data.clientId;
         const signature = signaturePad.toDataURL();
@@ -61,7 +65,7 @@ Template.preliminarySurvey.events(
           const query = {};
           Meteor.call('clients.roi', clientId, signature);
           const dedupClientId = tmpl.data.dedupClientId;
-          Meteor.call('consents.create', dedupClientId, (err) => {
+          Meteor.call('consents.create', dedupClientId, selectedConsentGroupId, (err) => {
             if (err) {
               Alert.error(err);
             } else {
@@ -77,6 +81,7 @@ Template.preliminarySurvey.events(
           Router.go('viewClient', { _id: clientId }, query);
         } else {
           $('#create-client-form .signature').val(signature);
+          $('#create-client-form .consent-group').val(selectedConsentGroupId);
           $('#create-client-form .signature-img').attr('src', signature);
           $('#releaseOfInformationModal').modal('hide');
         }
