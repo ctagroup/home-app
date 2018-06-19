@@ -20,7 +20,11 @@ Meteor.methods({
     logger.info(`METHOD[${Meteor.userId()}]: agencies.update`, doc, id);
     check(doc, Agencies.schema);
     const result = Agencies.update(id, doc);
-    Meteor.call('consents.synchronizeProjects');
+    try {
+      Meteor.call('consents.synchronizeProjects');
+    } catch (err) {
+      logger.warn(err);
+    }
     return result;
   },
 

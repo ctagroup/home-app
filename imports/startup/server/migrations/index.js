@@ -10,7 +10,7 @@ import testSurvey from '/imports/config/surveys/testSurvey';
 import {
   migrateV1Responses,
   fixMissingClientSchemasInV1Responses,
-  prepopulateConsents,
+  // prepopulateConsents,
 } from './migrations';
 
 Meteor.startup(() => {
