@@ -9,11 +9,8 @@
     <div id="general" class="tab-pane fade in active">
       {{> afQuickField name='agencyName'}}
       {{> afQuickField name='description'}}
-      {{> afQuickField name="consentGroups"}}
       {{> afQuickField name='members'}}
       <p><a href="{{pathFor 'adminDashboardusersNew'}}" class="btn btn-default" data-dismiss="modal">Add new Member</a></p>
-
-
       {{> afQuickField name='projects'}}
       <p><a href="{{pathFor 'projectsNew'}}" class="btn btn-default" data-dismiss="modal">Add new Project</a></p>
     </div>

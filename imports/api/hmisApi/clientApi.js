@@ -24,9 +24,18 @@ export class ClientApi extends ApiEndpoint {
     };
   }
 
-  getClients() {
-    const url = `${BASE_URL}/clients`;
-    return this.doGet(url).Clients.clients;
+  getClients(start = 0, limit = 9999) {
+    const url = `${BASE_URL}/clients?startIndex=${start}&maxItems=${limit}`;
+    const { pagination, clients } = this.doGet(url).Clients;
+
+    const remaining = limit - pagination.returned;
+    if (remaining > 0 && pagination.returned > 0) {
+      return [
+        ...clients,
+        ...this.getClients(pagination.from + pagination.returned, remaining),
+      ];
+    }
+    return clients;
   }
 
   createClient(client, schema) {

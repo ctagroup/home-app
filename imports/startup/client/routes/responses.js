@@ -12,6 +12,7 @@ import '/imports/ui/responses/responsesListView';
 import '/imports/ui/responses/responsesNew';
 import '/imports/ui/responses/responsesEdit';
 import '/imports/ui/responses/responsesArchive';
+import { ResponseConsentController } from './consentControllers';
 
 
 Router.route('adminDashboardresponsesView', {
@@ -56,7 +57,7 @@ Router.route('adminDashboardresponsesView', {
 Router.route('adminDashboardresponsesNew', {
   path: '/responses/new',
   template: Template.responsesNew,
-  controller: AppController,
+  controller: ResponseConsentController,
   authorize: {
     allow() {
       return Roles.userIsInRole(Meteor.userId(), PendingClientsAccessRoles);
@@ -94,7 +95,7 @@ Router.route('adminDashboardresponsesNew', {
 Router.route('adminDashboardresponsesEdit', {
   path: '/responses/:_id/edit',
   template: Template.responsesEdit,
-  controller: AppController,
+  controller: ResponseConsentController,
   authorize: {
     allow() {
       return Roles.userIsInRole(Meteor.userId(), PendingClientsAccessRoles);

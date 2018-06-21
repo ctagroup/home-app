@@ -46,6 +46,7 @@ Template.viewClient.helpers(
     },
 
     eligibleClient() {
+      if (!canViewClient(this.consent.permission)) return null;
       const currentClientId = this._id;
       const client = Clients.findOne(currentClientId);
       return mergeKeyVersions(client, 'eligibleClient');

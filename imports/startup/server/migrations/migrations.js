@@ -5,6 +5,24 @@ import Responses from '/imports/api/responses/responses';
 import Surveys from '/imports/api/surveys/surveys';
 import Users from '/imports/api/users/users';
 
+function createHmisClientForSiteAdmin() {
+  if (!Meteor.settings.admins || Meteor.settings.admins.length === 0) {
+    logger.warn(`Meteor.settings.admins not specified.
+      Skipping fixMissingClientSchemasInV1Responses`);
+    return null;
+  }
+  const adminEmail = Meteor.settings.admins[0];
+  const user = Users.findOne({ 'services.HMIS.emailAddress': adminEmail });
+  if (!user) {
+    logger.warn(`Account for ${adminEmail} not found.
+      Skipping fixMissingClientSchemasInV1Responses`);
+    return null;
+  }
+  logger.info(`Fixing missing client schemas in ${Responses.find().count()} responses...`);
+
+  logger.debug('using account', adminEmail);
+  return HmisClient.create(user._id);
+}
 
 export function migrateV1Responses() {
   let count = 0;
@@ -79,22 +97,11 @@ export function migrateV1Responses() {
 
 
 export function fixMissingClientSchemasInV1Responses() {
-  if (!Meteor.settings.admins || Meteor.settings.admins.length === 0) {
-    logger.warn(`Meteor.settings.admins not specified.
-      Skipping fixMissingClientSchemasInV1Responses`);
+  const hc = createHmisClientForSiteAdmin();
+  if (!hc) {
     return;
   }
-  const adminEmail = Meteor.settings.admins[0];
-  const user = Users.findOne({ 'services.HMIS.emailAddress': adminEmail });
-  if (!user) {
-    logger.warn(`Account for ${adminEmail} not found.
-      Skipping fixMissingClientSchemasInV1Responses`);
-    return;
-  }
-  logger.info(`Fixing missing client schemas in ${Responses.find().count()} responses...`);
 
-  logger.debug('using account', adminEmail);
-  const hc = HmisClient.create(user._id);
   let count = 0;
   const missingClients = new Set();
   Responses.find().fetch()
@@ -124,3 +131,42 @@ export function fixMissingClientSchemasInV1Responses() {
   );
 }
 
+
+export function prepopulateConsents() {
+  const hc = createHmisClientForSiteAdmin();
+  if (!hc) {
+    return;
+  }
+
+  /*
+  const clients = hc.api('client')
+    .getClients(0, 100)
+    .filter(c => !!c.dedupClientId)
+    // .filter(c => {
+    //   const consents = hc.api('global').getClientConsents(c.dedupClientId);
+    //   return consents.length === 0;
+    // });
+
+  const clientsDict = clients.reduce((all, c) => {
+    const response = Responses.findOne({ clientId: c.clientId }, { sort: { createdAt: 1 } });
+    const current = all[c.dedupClientId] || {};
+    return {
+      ...all,
+      [c.dedupClientId]: {
+        ...current,
+        [`responseDate--${c.clientId}`]: response ? moment(response.createdAt).unix() : null,
+        [`responseDate--${c.clientId}`]: null,
+      },
+    };
+  }, {});
+  logger.debug('clients collected', clientsDict);
+  Object.keys(clientsDict).forEach(clientId => {
+    const duration = DEFAULT_CONSENT_DURATION_IN_SECONDS;
+    const startDates = Object.values(clientsDict[clientId]).filter(x => !!x);
+    if (startDates.length === 0) return;
+    const startTime = Math.min(startDates);
+    logger.info('creating consent for', clientId, moment.unix(startTime).format());
+    // return hc.api('global').createClientConsent(clientId, 'MOSBE_CARS', [], duration, startTime);
+  });
+  */
+}

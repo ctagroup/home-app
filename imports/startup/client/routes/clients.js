@@ -13,6 +13,7 @@ import '/imports/ui/clients/editClient';
 import '/imports/ui/clients/viewClient';
 import '/imports/ui/clients/viewClientMc211';
 import { AppController } from './controllers';
+import { ClientConsentController } from './consentControllers';
 
 
 const featureDecisions = FeatureDecisions.createFromMeteorSettings();
@@ -128,7 +129,7 @@ Router.route(
 Router.route('adminDashboardclientsEdit', {
   path: '/clients/:_id/edit',
   template: 'editClient',
-  controller: AppController,
+  controller: ClientConsentController,
   authorize: {
     allow() {
       return Roles.userIsInRole(Meteor.userId(), ClientsAccessRoles);
@@ -156,7 +157,7 @@ Router.route(
   '/clients/:_id/select-survey', {
     name: 'selectSurvey',
     template: Template.selectSurvey,
-    controller: AppController,
+    controller: ClientConsentController,
     authorize: {
       allow() {
         return Roles.userIsInRole(Meteor.userId(), ClientsAccessRoles);

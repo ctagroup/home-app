@@ -55,7 +55,8 @@ Template.projectSelect.events({
           Alert.success(`Switched to ${project.projectName}`);
           location.reload();
         } else {
-          Alert.warn('No project selected');
+          Alert.warning('No project selected');
+          location.reload();
         }
       }
     });
