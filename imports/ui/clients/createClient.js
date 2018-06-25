@@ -20,6 +20,7 @@ Template.createClient.onRendered(() => {
 
 Template.createClient.events({
   'click .save': (evt, tmpl) => {
+    const getTmplValueWrapper = (key) => (tmpl.find(key) || { value: '' }).value;
     const client = {
       firstName: tmpl.find('.firstName').value,
       middleName: tmpl.find('.middleName').value,
@@ -34,7 +35,8 @@ Template.createClient.events({
       ethnicity: tmpl.find('.ethnicity_category').value,
       gender: tmpl.find('.gender_category').value,
       veteranStatus: tmpl.find('.veteranStatus_category').value,
-      signature: tmpl.find('.signature') ? tmpl.find('.signature').value : '',
+      signature: getTmplValueWrapper('.signature'),
+      consentGroup: getTmplValueWrapper('.consent-group'),
       disablingConditions: tmpl.find('.disablingConditions_category').value,
     };
 
