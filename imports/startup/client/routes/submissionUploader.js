@@ -1,5 +1,5 @@
 import FeatureDecisions from '/imports/both/featureDecisions';
-import { FilesAccessRoles } from '/imports/config/permissions';
+import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import { AppController } from './controllers';
 // import { ContentController } from './controllers';
 import '/imports/ui/submissionUploader/submissionUploaderList';
@@ -14,7 +14,7 @@ if (featureDecisions.isSubmissionUploader()) {
     controller: AppController,
     authorize: {
       allow() {
-        return Roles.userIsInRole(Meteor.userId(), FilesAccessRoles);
+        return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
       },
     },
     waitOn() {
@@ -35,7 +35,7 @@ if (featureDecisions.isSubmissionUploader()) {
     controller: AppController,
     authorize: {
       allow() {
-        return Roles.userIsInRole(Meteor.userId(), FilesAccessRoles);
+        return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
       },
     },
     waitOn() {
