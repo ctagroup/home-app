@@ -5,6 +5,7 @@ import Questions from '/imports/api/questions/questions';
 import { logger } from '/imports/utils/logger';
 import ReferralStatusList from './referralStatusList';
 import HomeConfig from '/imports/config/homeConfig';
+import { FilesAccessRoles, HouseholdAccessRoles } from '/imports/config/permissions';
 
 import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 
@@ -20,6 +21,42 @@ const flattenKeyVersions = (client, key) => {
 };
 const getLastStatus = (statusHistory) => statusHistory && statusHistory[statusHistory.length - 1];
 
+const updateEligibility = (client) => {
+  // drop not found:
+  const clientVersions = client.clientVersions
+    .filter(({ clientId, schema }) => {
+      const data = client[`eligibleClient::${schema}::${clientId}`];
+      return data && !data.error;
+    });
+  const ignored = clientVersions.find(({ clientId, schema }) => {
+    const data = client[`eligibleClient::${schema}::${clientId}`];
+    return data.ignoreMatchProcess;
+  });
+  const updateRequired = clientVersions.filter(({ clientId, schema }) => {
+    const data = client[`eligibleClient::${schema}::${clientId}`];
+    return (!data.updating) && !data.ignoreMatchProcess;
+  });
+  if (ignored && updateRequired.length) {
+    const remarks = client[`eligibleClient::${ignored.schema}::${ignored.clientId}`].remarks;
+    const clientIds = updateRequired.map(({ clientId }) => clientId);
+    // mark updating client versions:
+    const updating = updateRequired.reduce((acc, { clientId, schema }) =>
+      ({ ...acc, [`eligibleClient::${schema}::${clientId}.updating`]: true }), {});
+    Clients._collection.update(clientId, { $set: updating});  // eslint-disable-line
+    Meteor.call('ignoreMatchProcess', clientIds, true, remarks, (err) => {
+      if (!err) {
+        const changes = updateRequired.reduce((acc, { clientId, schema }) => ({
+          ...acc,
+          [`eligibleClient::${schema}::${clientId}.ignoreMatchProcess`]: true,
+          [`eligibleClient::${schema}::${clientId}.remarks`]: remarks,
+          [`eligibleClient::${schema}::${clientId}.updating`]: false,
+        }), {});
+        Clients._collection.update(clientId, { $set: changes});  // eslint-disable-line
+      }
+    });
+  }
+};
+
 Template.viewClient.helpers(
   {
     eligibleClient() {
@@ -30,6 +67,7 @@ Template.viewClient.helpers(
       const versions = flattenKeyVersions(client, 'eligibleClient');
       const nonError = versions.filter(({ error }) => !error);
       if (nonError.length) {
+        updateEligibility(client);
         return nonError[nonError.length - 1];
       }
       return versions[versions.length - 1];
@@ -121,18 +159,14 @@ Template.viewClient.helpers(
     },
 
     showReferralStatus() {
-      const hasPermission = Roles.userIsInRole(
-        Meteor.user(), ['System Admin', 'Developer', 'Case Manager']
-      );
+      const hasPermission = Roles.userIsInRole(Meteor.userId(), FilesAccessRoles);
       // const isHmisClient = Router.current().data().client.clientId
       //   && Router.current().params.query.schema;
       return hasPermission && this && this.clientId;
     },
 
     showGlobalHousehold() {
-      const hasPermission = Roles.userIsInRole(
-        Meteor.user(), ['System Admin', 'Developer', 'Case Manager', 'Surveyor']
-      );
+      const hasPermission = Roles.userIsInRole(Meteor.userId(), HouseholdAccessRoles);
       return hasPermission && this && this.clientId;
     },
 

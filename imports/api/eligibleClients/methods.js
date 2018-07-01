@@ -23,8 +23,7 @@ Meteor.methods({
     if (Meteor.userId()) {
       const hc = HmisClient.create(Meteor.userId());
 
-      let clientIds = inputClientId;
-      if (!Array.isArray(inputClientId)) clientIds = [inputClientId];
+      const clientIds = Array.isArray(inputClientId) ? inputClientId : [inputClientId];
       eachLimit(clientIds, Meteor.settings.connectionLimit,
         ({ clientId }, callback) => {
           Meteor.defer(() => {
