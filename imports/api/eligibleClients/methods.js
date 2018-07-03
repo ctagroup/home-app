@@ -14,7 +14,7 @@ Meteor.methods({
   },
 
   ignoreMatchProcess(inputClientId, ignoreMatchProcess, remarks = '') {
-    logger.info(`METHOD[${Meteor.userId()}]: ignoreMatchProcess(${inputClientId}, ${ignoreMatchProcess})`); // eslint-disable-line max-len
+    logger.info(`METHOD[${Meteor.userId()}]: ignoreMatchProcess(${Array.isArray(inputClientId)}, ${inputClientId}, ${ignoreMatchProcess})`); // eslint-disable-line max-len
     check(inputClientId, Match.OneOf(String, [String])); // eslint-disable-line new-cap
     check(ignoreMatchProcess, Boolean);
     check(remarks, String);
@@ -25,7 +25,7 @@ Meteor.methods({
 
       const clientIds = Array.isArray(inputClientId) ? inputClientId : [inputClientId];
       eachLimit(clientIds, Meteor.settings.connectionLimit,
-        ({ clientId }, callback) => {
+        (clientId, callback) => {
           Meteor.defer(() => {
             // fetch client status
             try {

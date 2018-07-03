@@ -312,23 +312,27 @@ Template.viewClient.events(
       const client = tmpl.data.client;
       const currentClientId = tmpl.data.client._id;
       // drop not found:
-      const clientIds = client.clientVersions
+      const clientVersions = client.clientVersions
         .filter(({ clientId, schema }) => {
           const data = client[`eligibleClient::${schema}::${clientId}`];
           return data && !data.error;
-        })
-        .map(({ clientId }) => clientId);
-      Meteor.call('ignoreMatchProcess', clientIds, false, (err, res) => {
+        });
+      const clientIds = clientVersions.map(({ clientId }) => clientId);
+      // Optimistic UI approach:
+      const changes = clientVersions.reduce((acc, { clientId, schema }) => ({
+        ...acc,
+        [`eligibleClient::${schema}::${clientId}.ignoreMatchProcess`]: false,
+        [`eligibleClient::${schema}::${clientId}.remarks`]: 'Restored to active list by user',
+      }), {});
+
+      Meteor.call('ignoreMatchProcess', clientIds, false, (err /* , res*/) => {
         if (err) {
           Bert.alert(err.reason || err.error, 'danger', 'growl-top-right');
         } else {
           Bert.alert('Client added to the matching process', 'success', 'growl-top-right');
           // We simulate update in client-side collection
           // Sadly, this cannot be done in meteor call (isSimulation)
-          Clients._collection.update(currentClientId, { $set: { // eslint-disable-line
-            'eligibleClient.ignoreMatchProcess': res.ignoreMatchProcess,
-            'eligibleClient.remarks': res.remarks,
-          } });
+          Clients._collection.update(currentClientId, { $set: changes }); // eslint-disable-line
         }
       });
     },
