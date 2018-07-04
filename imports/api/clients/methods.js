@@ -120,6 +120,15 @@ Meteor.methods({
         }
       );
     } else {
+      hmisClients = hmisClients.map(
+        (client) => {
+          const clientz = client;
+          clientz._id = clientz.clientId;
+          clientz.isHMISClient = true;
+          clientz.schema = clientz.schema || client.link.split('/')[3];
+          return clientz;
+        }
+      );
       hmisClients = mergeByDedupId(hmisClients);
       mergedClients = localClients.map(
         (client) => {
@@ -128,15 +137,7 @@ Meteor.methods({
           return clientz;
         }
       ).concat(
-        hmisClients.map(
-          (client) => {
-            const clientz = client;
-            clientz._id = clientz.clientId;
-            clientz.isHMISClient = true;
-            clientz.schema = client.link.split('/')[3];
-            return clientz;
-          }
-        )
+        hmisClients
       );
     }
     return mergedClients;
