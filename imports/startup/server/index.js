@@ -1,6 +1,5 @@
 import { logger } from '/imports/utils/logger';
 
-import AppSettings from '/imports/api/appSettings/appSettings';
 import '/imports/api/appSettings/methods';
 import '/imports/api/appSettings/server/publications';
 
@@ -65,13 +64,6 @@ Meteor.startup(() => {
   Meteor.settings = _.extend({
     connectionLimit: 10,
   }, Meteor.settings);
-
-  const { GIT_BRANCH, GIT_TAG, GIT_COMMIT } = process.env;
-  const buildStr = (GIT_BRANCH || GIT_TAG || GIT_COMMIT) ?
-    `${GIT_TAG || 'tag'} (${(GIT_COMMIT || 'c').substr(0, 4)}/${GIT_BRANCH || 'b'})` : '';
-  logger.info(`Starting ${buildStr} with settings`, Meteor.settings);
-
-  AppSettings.set('buildInfo', buildStr);
 
   if (Meteor.settings.s3config) {
     // const { key, secret, bucket, region } = Meteor.settings.s3config;
