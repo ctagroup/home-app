@@ -10,6 +10,7 @@ import SubmissionUploaderSurveyConfigs from
 Template.submissionUploaderForm.onCreated(() => {
   Template.instance().uploading = new ReactiveVar(false);
   Template.instance().selectedSurveyId = new ReactiveVar(false);
+  Template.instance().selectedSurveyDetails = new ReactiveVar({ loading: false });
   Template.instance().verified = new ReactiveVar(false);
 });
 
@@ -26,6 +27,21 @@ Template.submissionUploaderForm.helpers({
   },
   selectedSurveyId() {
     return Template.instance().selectedSurveyId;
+  },
+  selectedSurveyData() {
+    const surveyId = Template.instance().selectedSurveyId.get();
+    console.log(surveyId, Template.instance());
+    const details = Template.instance().selectedSurveyDetails;
+    details.set({
+      loading: true,
+    });
+    Meteor.call('surveys.getXXX', (err, data) => {
+      details.set({
+        loading: false,
+        data: `todo ${surveyId}`,
+      });
+    });
+    return details.get();
   },
   uploading() {
     return Template.instance().uploading.get();

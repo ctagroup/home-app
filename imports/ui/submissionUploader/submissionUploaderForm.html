@@ -2,7 +2,15 @@
   <h4 class="page-header">Select a survey:</h4>
   {{> surveySelect selectedSurveyId=selectedSurveyId }}
   {{#if surveySelected}}
-    Check survey definition:
+    {{#with selectedSurveyData }}
+      {{#if loading}}
+        <p>loading...</p>
+      {{else}}
+        <div>TODO: details {{data}}</div>
+      {{/if}}
+    {{/with}}
+
+    Check uploader definition:
     <form id="surveyConfigForm">
       <textarea id="surveyDefinition" name="definition" class="form-control" rows="5">{{surveyConfig}}</textarea>
       <button class="form-control">Verify config</button>
