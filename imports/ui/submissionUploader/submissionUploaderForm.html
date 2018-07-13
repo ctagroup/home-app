@@ -2,7 +2,7 @@
   <h4 class="page-header">Select a survey:</h4>
   {{> surveySelect selectedSurveyId=selectedSurveyId }}
   {{#if surveySelected}}
-    {{#with selectedSurveyData }}
+    {{#with selectedSurveyDetails }}
       {{#if loading}}
         <p>loading...</p>
       {{else}}

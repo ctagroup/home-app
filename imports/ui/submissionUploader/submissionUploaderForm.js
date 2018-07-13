@@ -7,11 +7,27 @@ import './surveySelect.js';
 import SubmissionUploaderSurveyConfigs from
   '../../api/submissionUploader/submissionUploaderSurveyConfigs';
 
+
 Template.submissionUploaderForm.onCreated(() => {
-  Template.instance().uploading = new ReactiveVar(false);
-  Template.instance().selectedSurveyId = new ReactiveVar(false);
-  Template.instance().selectedSurveyDetails = new ReactiveVar({ loading: false });
-  Template.instance().verified = new ReactiveVar(false);
+  const template = Template.instance();
+  template.uploading = new ReactiveVar(false);
+  template.selectedSurveyId = new ReactiveVar(false);
+  template.selectedSurveyDetails = new ReactiveVar({ loading: false });
+  template.verified = new ReactiveVar(false);
+
+  Tracker.autorun(() => {
+    const surveyId = template.selectedSurveyId.get();
+    console.log(surveyId, surveyId);
+    template.selectedSurveyDetails.set({
+      loading: true,
+    });
+    Meteor.call('surveys.getXXX', (err, data) => {
+      template.selectedSurveyDetails.set({
+        loading: false,
+        data: `todo ${surveyId}`,
+      });
+    });
+  });
 });
 
 Template.submissionUploaderForm.helpers({
@@ -28,20 +44,8 @@ Template.submissionUploaderForm.helpers({
   selectedSurveyId() {
     return Template.instance().selectedSurveyId;
   },
-  selectedSurveyData() {
-    const surveyId = Template.instance().selectedSurveyId.get();
-    console.log(surveyId, Template.instance());
-    const details = Template.instance().selectedSurveyDetails;
-    details.set({
-      loading: true,
-    });
-    Meteor.call('surveys.getXXX', (err, data) => {
-      details.set({
-        loading: false,
-        data: `todo ${surveyId}`,
-      });
-    });
-    return details.get();
+  selectedSurveyDetails() {
+    return Template.instance().selectedSurveyDetails.get();
   },
   uploading() {
     return Template.instance().uploading.get();
