@@ -1,5 +1,6 @@
 import { HmisApiRegistry } from './apiRegistry';
 import { ApiEndpoint } from './apiEndpoint';
+import { logger } from '/imports/utils/logger';
 
 
 const BASE_URL = 'https://www.hmislynk.com/hmis-user-service/rest';
@@ -7,8 +8,12 @@ const BASE_URL = 'https://www.hmislynk.com/hmis-user-service/rest';
 
 class UserServiceApi extends ApiEndpoint {
   getUser(userId) {
+    logger.info(`PUB[${this.userId}]: globalHouseholds.list`);
     const url = `${BASE_URL}/accounts/${userId}`;
-    return this.doGet(url).account;
+    // return this.doGet(url).account;
+    const data = this.doGet(url).account;
+    logger.info('getUser', data);
+    return data;
   }
 
   createUser(account) {

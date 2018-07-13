@@ -28,7 +28,7 @@ Template.responseForm.helpers(
       if (this.response) {
         if (this.response.clientDetails) {
           const client = this.response.clientDetails;
-          return client.error ? client.error : fullName(client);
+          return client.error || fullName(client);
         }
         return this.response.clientId;
       }

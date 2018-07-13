@@ -5,19 +5,12 @@ import Questions from '/imports/api/questions/questions';
 import { logger } from '/imports/utils/logger';
 import ReferralStatusList from './referralStatusList';
 import HomeConfig from '/imports/config/homeConfig';
+import { FilesAccessRoles, HouseholdAccessRoles } from '/imports/config/permissions';
 
 import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 
 import './clientDeleteReason.js';
 import './viewClient.html';
-
-const mergeKeyVersions = (client, key) => {
-  const keyVersions = client.clientVersions
-    .map(({ clientId, schema }) => client[`${key}::${schema}::${clientId}`])
-    .filter((value) => !!value);
-  const mongoKey = client[key] || {};
-  return Object.assign({}, ...keyVersions, mongoKey);
-};
 
 const flattenKeyVersions = (client, key) => {
   const keyVersions = client.clientVersions
@@ -28,12 +21,56 @@ const flattenKeyVersions = (client, key) => {
 };
 const getLastStatus = (statusHistory) => statusHistory && statusHistory[statusHistory.length - 1];
 
+const updateEligibility = (client) => {
+  // drop not found:
+  const clientVersions = client.clientVersions
+    .filter(({ clientId, schema }) => {
+      const data = client[`eligibleClient::${schema}::${clientId}`];
+      return data && !data.error;
+    });
+  const ignored = clientVersions.find(({ clientId, schema }) => {
+    const data = client[`eligibleClient::${schema}::${clientId}`];
+    return data.ignoreMatchProcess;
+  });
+  const updateRequired = clientVersions.filter(({ clientId, schema }) => {
+    const data = client[`eligibleClient::${schema}::${clientId}`];
+    return (!data.updating) && !data.ignoreMatchProcess;
+  });
+  if (ignored && updateRequired.length) {
+    const remarks = client[`eligibleClient::${ignored.schema}::${ignored.clientId}`].remarks;
+    const clientIds = updateRequired.map(({ clientId }) => clientId);
+    // mark updating client versions:
+    const updating = updateRequired.reduce((acc, { clientId, schema }) =>
+      ({ ...acc, [`eligibleClient::${schema}::${clientId}.updating`]: true }), {});
+    Clients._collection.update(clientId, { $set: updating});  // eslint-disable-line
+    Meteor.call('ignoreMatchProcess', clientIds, true, remarks, (err) => {
+      if (!err) {
+        const changes = updateRequired.reduce((acc, { clientId, schema }) => ({
+          ...acc,
+          [`eligibleClient::${schema}::${clientId}.ignoreMatchProcess`]: true,
+          [`eligibleClient::${schema}::${clientId}.remarks`]: remarks,
+          [`eligibleClient::${schema}::${clientId}.updating`]: false,
+        }), {});
+        Clients._collection.update(clientId, { $set: changes});  // eslint-disable-line
+      }
+    });
+  }
+};
+
 Template.viewClient.helpers(
   {
     eligibleClient() {
+      // TODO [VK]: check by updated at instead of schema version
       const currentClientId = Router.current().params._id;
       const client = Clients.findOne(currentClientId);
-      return mergeKeyVersions(client, 'eligibleClient');
+      if (!client) return null;
+      const versions = flattenKeyVersions(client, 'eligibleClient');
+      const nonError = versions.filter(({ error }) => !error);
+      if (nonError.length) {
+        updateEligibility(client);
+        return nonError[nonError.length - 1];
+      }
+      return versions[versions.length - 1];
     },
     enrollments() {
       const currentClientId = Router.current().params._id;
@@ -122,18 +159,14 @@ Template.viewClient.helpers(
     },
 
     showReferralStatus() {
-      const hasPermission = Roles.userIsInRole(
-        Meteor.user(), ['System Admin', 'Developer', 'Case Manager']
-      );
+      const hasPermission = Roles.userIsInRole(Meteor.userId(), FilesAccessRoles);
       // const isHmisClient = Router.current().data().client.clientId
       //   && Router.current().params.query.schema;
       return hasPermission && this && this.clientId;
     },
 
     showGlobalHousehold() {
-      const hasPermission = Roles.userIsInRole(
-        Meteor.user(), ['System Admin', 'Developer', 'Case Manager', 'Surveyor']
-      );
+      const hasPermission = Roles.userIsInRole(Meteor.userId(), HouseholdAccessRoles);
       return hasPermission && this && this.clientId;
     },
 
@@ -276,18 +309,30 @@ Template.viewClient.events(
     },
 
     'click .addToHousingList'(evt, tmpl) {
-      const clientId = tmpl.data.client._id;
-      Meteor.call('ignoreMatchProcess', clientId, false, (err, res) => {
+      const client = tmpl.data.client;
+      const currentClientId = tmpl.data.client._id;
+      // drop not found:
+      const clientVersions = client.clientVersions
+        .filter(({ clientId, schema }) => {
+          const data = client[`eligibleClient::${schema}::${clientId}`];
+          return data && !data.error;
+        });
+      const clientIds = clientVersions.map(({ clientId }) => clientId);
+      // Optimistic UI approach:
+      const changes = clientVersions.reduce((acc, { clientId, schema }) => ({
+        ...acc,
+        [`eligibleClient::${schema}::${clientId}.ignoreMatchProcess`]: false,
+        [`eligibleClient::${schema}::${clientId}.remarks`]: 'Restored to active list by user',
+      }), {});
+
+      Meteor.call('ignoreMatchProcess', clientIds, false, (err /* , res*/) => {
         if (err) {
           Bert.alert(err.reason || err.error, 'danger', 'growl-top-right');
         } else {
           Bert.alert('Client added to the matching process', 'success', 'growl-top-right');
           // We simulate update in client-side collection
           // Sadly, this cannot be done in meteor call (isSimulation)
-          Clients._collection.update(clientId, { $set: { // eslint-disable-line
-            'eligibleClient.ignoreMatchProcess': res.ignoreMatchProcess,
-            'eligibleClient.remarks': res.remarks,
-          } });
+          Clients._collection.update(currentClientId, { $set: changes }); // eslint-disable-line
         }
       });
     },

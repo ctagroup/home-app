@@ -4,6 +4,7 @@ import { logger } from '/imports/utils/logger';
 import Users, { ChangePasswordSchema, UserCreateFormSchema } from '/imports/api/users/users';
 import Agencies from '/imports/api/agencies/agencies';
 import { HmisClient } from '/imports/api/hmisApi';
+import { ensureRolesFormat } from './helpers';
 
 Meteor.methods({
   'users.create'(insertDoc) {
@@ -86,8 +87,8 @@ Meteor.methods({
       emailAddress: doc.services.HMIS.emailAddress,
     });
 
-    const newRoles = doc.services.HMIS.roles;
-    const oldRoles = currentHMISData.roles;
+    const newRoles = ensureRolesFormat(doc.services.HMIS.roles);
+    const oldRoles = ensureRolesFormat(currentHMISData.roles);
     const oldRoleIds = oldRoles.map(item => item.id);
     const newRoleIds = newRoles.map(item => item.id);
     api.updateUserRoles(hmisId, newRoles);

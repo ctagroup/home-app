@@ -100,7 +100,7 @@ Router.route(
       if (this.params.query.schema) {
         return [
           Meteor.subscribe('clients.one', id, this.params.query.schema),
-          Meteor.subscribe('responses.all', id),
+          Meteor.subscribe('responses.all', id, this.params.query.schema),
         ];
       }
       return [
@@ -206,10 +206,10 @@ Router.onBeforeAction(
       if (this.params.query && this.params.query.schema) {
         client.personalId = client.clientId;
         client.isHMISClient = true;
-        client.schema = this.params.query.schema;
+        client.schema = client.schema || this.params.query.schema;
         client.url = viewClientRoute.path(
           { _id: client.clientId },
-          { query: `schema=${this.params.query.schema}` }
+          { query: `schema=${client.schema}` }
         );
       } else {
         client.url = viewClientRoute.path({ _id: client._id });
