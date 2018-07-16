@@ -2,14 +2,6 @@
   <h4 class="page-header">Select a survey:</h4>
   {{> surveySelect selectedSurveyId=selectedSurveyId }}
   {{#if surveySelected}}
-    {{#with selectedSurveyDetails }}
-      {{#if loading}}
-        <p>loading...</p>
-      {{else}}
-        <div>TODO: details {{data}}</div>
-      {{/if}}
-    {{/with}}
-
     Check uploader definition:
     <form id="surveyConfigForm">
       <textarea id="surveyDefinition" name="definition" class="form-control" rows="5">{{surveyConfig}}</textarea>
@@ -23,5 +15,33 @@
         <p><i class="fa fa-spin fa-refresh"></i> Uploading files...</p>
       {{/unless}}
     {{/if}}
+
+    {{#with selectedSurveyDetails }}
+      {{#if loading}}
+        <p>loading...</p>
+      {{else}}
+        <div>
+          <table class="table">
+            <caption>Survey Sections</caption>
+            <thead>
+              <tr>
+                <th>Section Id</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each data.sections}}
+              <tr>
+                <td>{{surveySectionId}}</td>
+                <td>{{sectionDetail}}</td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+
+        </div>
+      {{/if}}
+    {{/with}}
+
   {{/if}}
 </template>

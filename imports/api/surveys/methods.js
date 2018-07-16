@@ -190,4 +190,11 @@ Meteor.methods({
     Surveys.update(id, { $set: { hmis } });
     return surveyId;
   },
+  'surveys.getSurveySections'(surveyId) {
+    logger.info(`METHOD[${this.userId}]: surveys.getSurveySections`, surveyId);
+    check(surveyId, String);
+
+    const hc = HmisClient.create(this.userId);
+    return hc.api('survey').getSurveySections(surveyId);
+  },
 });

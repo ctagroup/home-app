@@ -17,14 +17,13 @@ Template.submissionUploaderForm.onCreated(() => {
 
   Tracker.autorun(() => {
     const surveyId = template.selectedSurveyId.get();
-    console.log(surveyId, surveyId);
     template.selectedSurveyDetails.set({
       loading: true,
     });
-    Meteor.call('surveys.getXXX', (err, data) => {
+    Meteor.call('surveys.getSurveySections', surveyId, (err, sections) => {
       template.selectedSurveyDetails.set({
         loading: false,
-        data: `todo ${surveyId}`,
+        data: { sections },
       });
     });
   });
