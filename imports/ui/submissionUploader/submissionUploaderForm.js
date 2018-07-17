@@ -22,6 +22,7 @@ Template.submissionUploaderForm.onCreated(() => {
       loading: true,
     });
     Meteor.call('surveys.getXXX', (err, data) => {
+      console.log('data', data);
       template.selectedSurveyDetails.set({
         loading: false,
         data: `todo ${surveyId}`,
