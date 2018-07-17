@@ -39,7 +39,15 @@ Template.clientDeleteReason.events({
     tmpl.removalDetails.set(reasonsHash[reasonId].required);
   },
   'click .removeFromHousingList'(evt, tmpl) {
-    const clientId = tmpl.data.client._id;
+    const client = tmpl.data.client;
+    // drop not found:
+    const clientVersions = client.clientVersions
+      .filter(({ clientId, schema }) => {
+        const data = client[`eligibleClient::${schema}::${clientId}`];
+        return data && !data.error;
+      });
+    const clientIds = clientVersions.map(({ clientId }) => clientId);
+
     const remarks = $('#removalRemarks').val();
     const date = $('#removalDate').val();
     const reasonId = $('#removalReason').val();
@@ -58,17 +66,22 @@ Template.clientDeleteReason.events({
     let removeReasons = reason.text;
     if (reason.required) removeReasons = `${removeReasons} | ${remarks}`;
     removeReasons = `${removeReasons} | ${date}`;
-    Meteor.call('ignoreMatchProcess', clientId, true, removeReasons, (err, res) => {
+
+    // Optimistic UI approach:
+    const changes = clientVersions.reduce((acc, { clientId, schema }) => ({
+      ...acc,
+      [`eligibleClient::${schema}::${clientId}.ignoreMatchProcess`]: true,
+      [`eligibleClient::${schema}::${clientId}.remarks`]: removeReasons,
+    }), {});
+
+    Meteor.call('ignoreMatchProcess', clientIds, true, removeReasons, (err) => {
       if (err) {
         Bert.alert(err.reason || err.error, 'danger', 'growl-top-right');
       } else {
         Bert.alert('Client removed for the matching process', 'success', 'growl-top-right');
         // We simulate update in client-side collection
         // Sadly, this cannot be done in meteor call (isSimulation)
-        Clients._collection.update(clientId, { $set: { // eslint-disable-line
-          'eligibleClient.ignoreMatchProcess': res.ignoreMatchProcess,
-          'eligibleClient.remarks': res.remarks,
-        } });
+        Clients._collection.update(client._id, { $set: changes }); // eslint-disable-line
       }
     });
   },

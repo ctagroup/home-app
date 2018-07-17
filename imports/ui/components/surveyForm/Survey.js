@@ -97,7 +97,10 @@ export default class Survey extends React.Component {
   */
 
   handleSubmit(uploadSurvey, uploadClient) {
-    const { _id: clientId, schema: clientSchema } = this.props.client;
+    // const { _id: clientId, schema: clientSchema } = this.props.client;
+    const clientData = this.props.response &&
+      this.props.response.clientDetails || this.props.client;
+    const { _id: clientId, schema: clientSchema } = clientData;
     const doc = {
       clientId,
       clientSchema,

@@ -3,9 +3,12 @@ import Responses from '/imports/api/responses/responses';
 import { logger } from '/imports/utils/logger';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import { HmisClient } from '/imports/api/hmisApi';
+import {
+  mergeClient,
+} from '/imports/api/clients/helpers';
 
-Meteor.publish('responses.all', function publishResponses(ofClientId) {
-  logger.info(`PUB[${this.userId}]: responses.all`, ofClientId);
+Meteor.publish('responses.all', function publishResponses(ofClientId, schema) {
+  logger.info(`PUB[${this.userId}]: responses.all`, ofClientId, schema);
   const self = this;
   let stopFunction = false;
   self.unblock();
@@ -17,9 +20,21 @@ Meteor.publish('responses.all', function publishResponses(ofClientId) {
   const hc = HmisClient.create(this.userId);
 
   if (self.userId) {
+    let clientIds = [ofClientId];
+    const clientsCache = {};
     const queue = [];
+    if (schema) {
+      // schema
+      clientsCache[ofClientId] = hc.api('client').getClient(ofClientId, schema);
+      const client = clientsCache[ofClientId];
+      const clientVersions = hc.api('client').searchClient(client.dedupClientId, 50);
+      clientVersions.forEach(item => { clientsCache[item.id] = item; });
+      const mergedClient = mergeClient(clientVersions);
+      clientIds = mergedClient.clientVersions.map(({ clientId }) => clientId);
+    }
+
     const responses = (
-      ofClientId ? Responses.find({ clientId: ofClientId })
+      ofClientId ? Responses.find({ clientId: { $in: clientIds } })
         : Responses.find()
     ).fetch();
     // Publish the local data first, so the user can get a quick feedback.
@@ -29,7 +44,7 @@ Meteor.publish('responses.all', function publishResponses(ofClientId) {
       if (clientSchema) {
         response.clientDetails = { loading: true };
         queue.push({
-          responseId: responses[i]._id,
+          responseId: response._id,
           clientId,
           clientSchema,
         });
@@ -37,11 +52,10 @@ Meteor.publish('responses.all', function publishResponses(ofClientId) {
         response.clientDetails = PendingClients.findOne({ _id: clientId })
         || { error: 'client not found (404)' };
       }
-      self.added('responses', responses[i]._id, responses[i]);
+      self.added('responses', response._id, response);
     }
     self.ready();
 
-    const clientsCache = {};
     eachLimit(queue, Meteor.settings.connectionLimit, (data, callback) => {
       if (stopFunction) {
         callback();

@@ -48,3 +48,10 @@ export const ResponsesAccessRoles = [
   'Case Manager',
   'Surveyor',
 ];
+
+export const HouseholdAccessRoles = [
+  'Developer',
+  'System Admin',
+  'Case Manager',
+  'Surveyor',
+];

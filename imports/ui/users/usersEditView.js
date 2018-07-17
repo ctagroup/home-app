@@ -2,10 +2,11 @@ import { ReactiveVar } from 'meteor/reactive-var';
 import './userEditForm';
 import './changePasswordForm';
 import './usersEditView.html';
+import HmisRoles from '/imports/api/users/hmisRoles';
 
 Template.usersEditView.helpers({
   hmisRoles() {
-    return Template.instance().hmisRoles.get();
+    return HmisRoles.find().fetch();
   },
   projectsLinked() {
     return Template.instance().projectsLinked.get();
@@ -51,10 +52,8 @@ Template.usersEditView.helpers({
 });
 
 Template.usersEditView.onCreated(function onCreated() {
-  this.hmisRoles = new ReactiveVar();
   this.projectsLinked = new ReactiveVar();
   Meteor.call('users.projects.all', (err, res) => res && this.projectsLinked.set(res));
-  Meteor.call('users.hmisRoles', (err, res) => res && this.hmisRoles.set(res));
 });
 
 Template.usersEditView.helpers({});

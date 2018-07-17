@@ -57,7 +57,13 @@ Router.route('adminDashboardusersEdit', {
     },
   },
   waitOn() {
-    return Meteor.subscribe('users.one', this.params._id);
+    const subscriptions = [
+      Meteor.subscribe('users.one', this.params._id),
+    ];
+    if (Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles)) {
+      subscriptions.push(Meteor.subscribe('users.hmisRoles'));
+    }
+    return subscriptions;
   },
   data() {
     const userId = Meteor.userId();
