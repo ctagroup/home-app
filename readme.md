@@ -294,6 +294,28 @@ The following survey is made of 2 questions (number inputs)
 
 Surveys
 
+### Submission Uploader
+
+To enable submission uploader an `"uploader": true` must be added to `settings.json` file
+E.G:
+```
+{
+  "public": {
+    "features": {
+      "appProfile": "home",
+      "uploader": true
+    }
+  }
+}
+```
+
+Currently the Submission Uploader is only available by direct links:
+/submissionUploader/list
+/submissionUploader/new
+
+## Examples
+  See `exampleUploadConfig.json` for the example of config to be input for Submission Uploader
+
 ## Meteor Components in use
 
 - Iron Router : https://github.com/iron-meteor/iron-router
