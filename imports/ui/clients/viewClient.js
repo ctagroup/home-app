@@ -22,6 +22,7 @@ const flattenKeyVersions = (client, key) => {
 const getLastStatus = (statusHistory) => statusHistory && statusHistory[statusHistory.length - 1];
 
 const updateEligibility = (client) => {
+  const currentClientId = client.clientId;
   // drop not found:
   const clientVersions = client.clientVersions
     .filter(({ clientId, schema }) => {
@@ -42,7 +43,7 @@ const updateEligibility = (client) => {
     // mark updating client versions:
     const updating = updateRequired.reduce((acc, { clientId, schema }) =>
       ({ ...acc, [`eligibleClient::${schema}::${clientId}.updating`]: true }), {});
-    Clients._collection.update(clientId, { $set: updating});  // eslint-disable-line
+    Clients._collection.update(currentClientId, { $set: updating});  // eslint-disable-line
     Meteor.call('ignoreMatchProcess', clientIds, true, remarks, (err) => {
       if (!err) {
         const changes = updateRequired.reduce((acc, { clientId, schema }) => ({
@@ -51,7 +52,7 @@ const updateEligibility = (client) => {
           [`eligibleClient::${schema}::${clientId}.remarks`]: remarks,
           [`eligibleClient::${schema}::${clientId}.updating`]: false,
         }), {});
-        Clients._collection.update(clientId, { $set: changes});  // eslint-disable-line
+        Clients._collection.update(currentClientId, { $set: changes});  // eslint-disable-line
       }
     });
   }
