@@ -12,6 +12,7 @@ Meteor.methods({
     try {
       Meteor.call('s3bucket.put', result.clientId, 'photo', client.photo);
       Meteor.call('s3bucket.put', result.clientId, 'signature', client.signature);
+      Meteor.call('consents.create', result.dedupClientId, client.consentGroup);
     } catch (err) {
       logger.error('Failed to upload photo/signature to s3', err);
     }

@@ -203,7 +203,7 @@ Router.route(
       return {
         title: 'Sign ROI',
         clientId: this.params._id,
-        dedupClientId: this.params.dedupClientId,
+        dedupClientId: this.params.query.dedupClientId,
       };
     },
   }

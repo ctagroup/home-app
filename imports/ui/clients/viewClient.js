@@ -199,6 +199,8 @@ Template.viewClient.events(
       });
     },
     'click .takeSurvey': (event, tmpl) => {
+      const client = tmpl.data.client;
+      // const { dedupClientId } = client;
       const dedupClientId = this.dedupClientId;
       const query = { query: { dedupClientId } };
 
@@ -207,11 +209,10 @@ Template.viewClient.events(
           schema: Router.current().params.query.schema,
         };
       }
-      const client = tmpl.data.client;
 
       if (!client.signature) {
         query.query.selectSurvey = true;
-        return Router.go('signROI', { _id: client._id }, query);
+        return Router.go('signROI', { _id: client._id, dedupClientId }, query);
       }
       return Router.go('selectSurvey', { _id: client._id }, query);
     },
@@ -322,12 +323,13 @@ Template.viewClient.events(
     },
     'click #sign-roi'(event, tmpl) {
       event.preventDefault();
+      const client = tmpl.data.client;
+      // const { dedupClientId } = client;
       const dedupClientId = this.dedupClientId;
       const query = { query: { dedupClientId } };
       if (Router.current().params.query.schema) {
         query.query.schema = Router.current().params.query.schema;
       }
-      const client = tmpl.data.client;
       return Router.go('signROI', { _id: client._id, dedupClientId }, query);
     },
   }
