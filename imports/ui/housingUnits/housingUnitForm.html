@@ -28,7 +28,7 @@
             <select class="form-control project_id" name="project_list" required>
               <option>Select a project</option>
               {{#each getProjects}}
-                <option {{isProjectSelected projectId}} value="{{projectId}}">{{projectName}}</option>
+                <option {{isProjectSelected projectId}} value="{{projectId}}">{{projectName}} ({{schema}})</option>
               {{/each}}
             </select>
         </div>
