@@ -21,7 +21,12 @@ Template.housingUnitForm.helpers(
       return Template.currentData().bedsCurrent;
     },
     getProjects() {
-      return Projects.find().fetch();
+      return Projects.find().fetch().sort((a, b) => {
+        if (a.projectName === b.projectName) {
+          return (a.schema || '').localeCompare(b.schema);
+        }
+        return (a.projectName || '').localeCompare(b.projectName);
+      });
     },
     isProjectSelected(projectId) {
       const data = Router.current().data();
