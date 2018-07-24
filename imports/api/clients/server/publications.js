@@ -36,7 +36,7 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
     // TODO [VK]: publish by dedupClientId directly
     const clientVersions = hc.api('client').searchClient(client.dedupClientId, 50);
 
-    const mergedClient = mergeClient(clientVersions);
+    const mergedClient = mergeClient(clientVersions, inputSchema);
     self.added('localClients', inputClientId, mergedClient);
     self.ready();
 

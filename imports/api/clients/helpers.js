@@ -5,7 +5,7 @@ import { removeEmpty } from '/imports/api/utils';
 const getVersions = (schemas) => _.map(schemas,
   (version) => ({ schema: version.schema, clientId: version.clientId }));
 
-export const mergeClient = (clientVersionsList) => {
+export const mergeClient = (clientVersionsList, schema) => {
   let sortedClientSchemas = _.map(clientVersionsList, (version) => {
     // assuming that link format is: '/hmis-clientapi/rest/{schema}/clients/{clientId}'
     const linkSchema = version.link.substring(21, 26);
@@ -15,6 +15,7 @@ export const mergeClient = (clientVersionsList) => {
   });
   sortedClientSchemas = _.sortBy(sortedClientSchemas, 'schema');
   const clientVersions = getVersions(sortedClientSchemas);
+  if (schema) sortedClientSchemas.push({ schema });
   return Object.assign({ clientVersions }, ...sortedClientSchemas);
 };
 
