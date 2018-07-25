@@ -26,6 +26,11 @@ export class GlobalApi extends ApiEndpoint {
     return mapped;
   }
 
+  getGlobalProject(globalProjectId) {
+    const url = `${BASE_URL}/global-projects/${globalProjectId}`;
+    return this.doGet(url).globalProject;
+  }
+
   getNotifications() {
     const url = `${BASE_URL}/notifications`;
     return this.doGet(url);

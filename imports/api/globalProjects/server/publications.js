@@ -12,3 +12,16 @@ Meteor.publish('globalProjects.all', function publishAllGlobalProjects() {
   projects.map(p => this.added('globalProjects', p.id, p));
   return this.ready();
 });
+
+
+Meteor.publish('globalProjects.one', function publishAllGlobalProjects(globalProjectId) {
+  logger.info(`PUB[${this.userId}]: globalProjects.one`, globalProjectId);
+  if (!this.userId) {
+    return [];
+  }
+
+  const hc = HmisClient.create(this.userId);
+  const project = hc.api('global').getGlobalProject(globalProjectId);
+  this.added('globalProjects', project.id, project);
+  return this.ready();
+});

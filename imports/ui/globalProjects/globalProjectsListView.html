@@ -1,0 +1,10 @@
+<template name="globalProjectsListView">
+  <p><a href="{{pathFor 'globalProjectsNew'}}" class="btn btn-primary"><i class="fa fa-plus"></i> New Global Project</a></p>
+  {{#if hasData}}
+    {{> ReactiveDatatable tableData=tableData options=tableOptions }}
+  {{else}}
+    <div class="alert alert-info">
+      <p>There are no global projects to show.</p>
+    </div>
+  {{/if}}
+</template>
