@@ -1,6 +1,6 @@
 // import moment from 'moment';
 import GlobalProjects from '/imports/api/globalProjects/globalProjects';
-import { TableDom /* , deleteProjectButton */ } from '/imports/ui/dataTable/helpers';
+import { TableDom, deleteGlobalProjectButton } from '/imports/ui/dataTable/helpers';
 import './globalProjectsListView.html';
 
 const tableOptions = {
@@ -20,21 +20,9 @@ const tableOptions = {
       data: 'projectsDetails',
       title: 'Details',
     },
-    /*
-    {
-      data: 'dateCreated',
-      title: 'Created At',
-      render(value, type) {
-        if (type === 'sort') {
-          return value;
-        }
-        return moment(value).format('MM/DD/YYYY h:mm A');
-      },
-    },
-    deleteProjectButton((project) => {
-      Projects._collection.remove(project._id); // eslint-disable-line
+    deleteGlobalProjectButton((project) => {
+      GlobalProjects._collection.remove(project._id); // eslint-disable-line
     }),
-    */
   ],
   dom: TableDom,
   processing: true,
@@ -50,10 +38,10 @@ Template.globalProjectsListView.helpers({
     return tableOptions;
   },
   tableData() {
-    console.log(GlobalProjects.find().fetch().filter(x => x.projects.length));
     return () => GlobalProjects.find().fetch().map((gp) => {
       const projectsDetails = gp.projects.length ?
-        gp.projects.map(p => p.source).sort().join(', ') : 'no projects';
+        gp.projects.map(p => p.source || '?').sort().join(', ')
+        : 'no projects';
       return {
         ...gp,
         projectsDetails,

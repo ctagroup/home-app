@@ -127,6 +127,11 @@ const adminMenuItems = [
     path: 'agenciesList',
   },
   {
+    name: 'Global Projects',
+    icon: 'fa-cog',
+    path: 'globalProjectsList',
+  },
+  {
     name: 'Projects',
     icon: 'fa-cog',
     path: 'projectsList',

@@ -42,7 +42,7 @@ import '/imports/api/housingMatch/server/publications';
 import '/imports/api/globalHouseholds/methods';
 import '/imports/api/globalHouseholds/server/publications';
 
-import '/imports/api/globalProjects/globalProjects';
+import '/imports/api/globalProjects/methods';
 import '/imports/api/globalProjects/server/publications';
 
 import '/imports/api/users/methods';

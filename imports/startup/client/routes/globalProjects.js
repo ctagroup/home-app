@@ -43,6 +43,7 @@ Router.route(
     waitOn() {
       return [
         Meteor.subscribe('globalProjects.all'),
+        Meteor.subscribe('projects.all'),
       ];
     },
     data() {
@@ -66,10 +67,10 @@ Router.route(
       },
     },
     waitOn() {
-      const id = Router.current().params._id;
+      // const id = Router.current().params._id;
       return [
-        Meteor.subscribe('globalProjects.all', id),
-        Meteor.subscribe('projects.all', id),
+        Meteor.subscribe('globalProjects.all'),
+        Meteor.subscribe('projects.all'),
       ];
     },
     data() {
@@ -77,7 +78,7 @@ Router.route(
       return {
         title: 'Global Projects',
         subtitle: 'Edit',
-        doc: GlobalProjects.findOne(id),
+        doc: GlobalProjects.findOne(id) || {},
       };
     },
   }

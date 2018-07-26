@@ -212,3 +212,28 @@ export function deleteProjectButton(onSuccessCallback) {
     orderable: false,
   };
 }
+
+
+export function deleteGlobalProjectButton(onSuccessCallback) {
+  return {
+    data: '_id',
+    title: 'Delete',
+    render() { return ''; },
+    createdCell(node, _id, rowData) {
+      const templateData = {
+        _id,
+        message: `Are you sure you want to delete the global project ${rowData.projectName}?`,
+        method: 'globalProjects.delete',
+        args: [_id],
+        onSuccess() {
+          if (onSuccessCallback) {
+            onSuccessCallback(rowData);
+          }
+        },
+      };
+      Blaze.renderWithData(Template.DataTableDeleteButton, templateData, node);
+    },
+    width: '45px',
+    orderable: false,
+  };
+}

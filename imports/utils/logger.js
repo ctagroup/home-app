@@ -38,7 +38,7 @@ if (Meteor.isServer) {
       handleExceptions: true,
       json: false,
       colorize: true,
-      timestamp: false,
+      timestamp: true,
     }),
   ];
 
