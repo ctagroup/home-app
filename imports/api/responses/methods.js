@@ -71,15 +71,18 @@ Meteor.methods({
     }
   },
 
-  'responses.sendEmails'(id) {
-    logger.info(`METHOD[${Meteor.userId()}]: responses.emails`, id);
+  'responses.sendEmails'(responseId) {
+    logger.info(`METHOD[${Meteor.userId()}]: responses.emails`, responseId);
     // TODO: check permissions
-    check(id, String);
+    check(responseId, String);
 
-    const response = Responses.findOne(id);
+    const response = Responses.findOne(responseId);
     const { clientId, clientSchema, surveyId } = response;
     const values = unescapeKeys(response.values);
     const survey = Surveys.findOne(surveyId);
+
+    // FIXME: survey may not be in Mongo but in HSLYNK
+    // TODO: fetch survey from HSLYNK as a fallback
 
     const definition = JSON.parse(survey.definition);
 

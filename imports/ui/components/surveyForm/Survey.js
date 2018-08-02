@@ -97,10 +97,17 @@ export default class Survey extends React.Component {
   */
 
   handleSubmit(uploadSurvey, uploadClient) {
-    // const { _id: clientId, schema: clientSchema } = this.props.client;
-    const clientData = this.props.response &&
-      this.props.response.clientDetails || this.props.client;
-    const { _id: clientId, schema: clientSchema } = clientData;
+    let clientId;
+    let clientSchema;
+
+    if (this.props.response && this.props.response.clientDetails) {
+      clientId = this.props.response.clientDetails.clientId;
+      clientSchema = this.props.response.clientDetails.clientSchema;
+    } else {
+      clientId = this.props.client._id;
+      clientSchema = this.props.client.schema;
+    }
+
     const doc = {
       clientId,
       clientSchema,
@@ -109,6 +116,7 @@ export default class Survey extends React.Component {
       values: this.state.values,
     };
     const history = [];
+    let newlyCreatedResponseId = null;
 
     this.setState({ submitting: true });
     new Promise((resolve, reject) => {
@@ -116,7 +124,7 @@ export default class Survey extends React.Component {
         const responseId = this.props.response._id;
         Meteor.call('responses.update', responseId, doc, (err) => {
           if (err) {
-            history.push('Failed to update response');
+            history.push(`Failed to update response: ${err}`);
             reject(err);
           } else {
             history.push('Response updated');
@@ -126,9 +134,10 @@ export default class Survey extends React.Component {
       } else {
         Meteor.call('responses.create', doc, (err, newResponseId) => {
           if (err) {
-            history.push('Failed to create response');
+            history.push(`Failed to create response: ${err}`);
             reject(err);
           } else {
+            newlyCreatedResponseId = newResponseId;
             history.push(`Response created: ${newResponseId}`);
             resolve(newResponseId);
           }
@@ -150,7 +159,6 @@ export default class Survey extends React.Component {
           });
         });
       }
-      history.push(`Client not uploaded (id: ${clientId})`);
       return responseId;
     })
     .then(responseId =>
@@ -194,13 +202,16 @@ export default class Survey extends React.Component {
       this.setState({ submitting: false });
     })
     .catch(err => {
-      const correlationId = 'abcd';
+      const correlationId = newlyCreatedResponseId || this.props.response._id;
       this.setState({ submitting: false });
       history.unshift('Failed to upload the response. Details:');
-      history.push(correlationId);
+      history.push(`ResponseId: ${correlationId}`);
       Alert.error(err, history.join('<br>'));
       alert(history.join('\n')); // eslint-disable-line no-alert
       logger.error(history);
+      if (newlyCreatedResponseId) {
+        Router.go('adminDashboardresponsesEdit', { _id: newlyCreatedResponseId });
+      }
     });
   }
 

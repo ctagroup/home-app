@@ -25,11 +25,6 @@ if (Meteor.isClient) {
 }
 
 if (Meteor.isServer) {
-  // const settings = _.extend({
-  //   level: 'error',
-  //   dsn: null,
-  // }, Meteor.settings.sentry);
-
   const transports = [
     new winston.transports.Console({
       level: 'debug',
@@ -38,7 +33,7 @@ if (Meteor.isServer) {
       handleExceptions: true,
       json: false,
       colorize: true,
-      timestamp: false,
+      timestamp: true,
     }),
   ];
 
