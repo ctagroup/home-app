@@ -17,7 +17,6 @@ import {
 import { ConsentPermission } from '/imports/api/consents/consents';
 
 
-Meteor.publish('clients.one',
 function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
   logger.info(`PUB[${this.userId}]: clients.one(${inputClientId}, ${inputSchema})`);
   if (!this.userId) {
@@ -227,4 +226,19 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
   self.ready();
 
   return null;
+}
+
+Meteor.publish('clients.one', pubClient);
+
+Meteor.publish('globalClients.one', function publishGlobalClient(globalClientId) {
+  logger.info(`PUB[${this.userId}]: globalClients.one`, globalClientId);
+
+  const hc = HmisClient.create(this.userId);
+  const clientVersions = hc.api('client').searchClient(globalClientId, 50);
+
+  client.schema = inputSchema;
+  client.isHMISClient = true;
+  // TODO [VK]: publish by dedupClientId directly
+
+
 });
