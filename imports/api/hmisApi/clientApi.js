@@ -141,8 +141,9 @@ export class ClientApi extends ApiEndpoint {
   // }
 
   getClientEnrollment(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId) {
-    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}`; // eslint-disable-line max-len
-    return this.doGet(url).enrollments.enrollments;
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}`;
+    // return this.doGet(url).enrollments.enrollments;
+    return this.doGet(url).enrollment;
   }
 
   getClientEnrollments(clientId, schema = DEFAULT_PROJECT_SCHEMA, start = 0, limit = 9999) {
@@ -153,6 +154,17 @@ export class ClientApi extends ApiEndpoint {
   getClientsEnrollmentExits(clientId, enrollmentId, schema = DEFAULT_PROJECT_SCHEMA) {
     const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/exits`; // eslint-disable-line max-len
     return this.doGet(url).exits.exits;
+  }
+
+  updateClientEnrollment(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, data) {
+    // TODO: verify data format
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}`;
+    return this.doPut(url, data).enrollment;
+  }
+
+  removeClientEnrollment(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId) {
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}`;
+    return this.doPut(url).enrollment;
   }
 
   createProjectSetup(projectName, projectCommonName, schema = DEFAULT_PROJECT_SCHEMA) {
@@ -199,6 +211,12 @@ export class ClientApi extends ApiEndpoint {
   postQuestionAnswer(category, data) {
     const url = `${BASE_URL}/${category}`;
     return this.doPost(url, data);
+  }
+
+  // 4c1f2271-e836-4e0d-99ed-e9ffcdbe87f0
+  getQuestions(schema = DEFAULT_PROJECT_SCHEMA, start = 0, limit = 9999) {
+    const url = `${BASE_URL}/${schema}/questions?startIndex=${start}&maxItems=${limit}`;
+    return this.doGet(url).questions.questions;
   }
 }
 

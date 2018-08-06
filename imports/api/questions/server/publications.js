@@ -15,9 +15,12 @@ Meteor.publish('questions.all', function publishAllQuestions() {
   const hc = HmisClient.create(this.userId);
   // console.log(hc.api('survey').listQuestions());
   const groups = hc.api('survey').getQuestionGroups();
+  // console.log('groups', groups);
+  // console.log('getQuestions', hc.api('client').getQuestions());
   groups.forEach(group => {
     if (stopFunction) return;
     const questions = hc.api('survey2').getQuestions(group.questionGroupId);
+    // console.log('QUESTIONS', questions);
     questions.forEach(q => {
       // self.added('housingUnits', housingUnits[i].housingInventoryId, housingUnits[i]);
       this.added('questions', q.questionId, { ...q, questionGroup: group });
