@@ -29,7 +29,11 @@ Template.editClient.events(
       const methodName = client.clientId ? 'clients.update' : 'pendingClients.update';
       const query = client.clientId ? { isHMISClient: true, schema: client.schema } : {};
 
-      Meteor.call(methodName, client._id, data, client.schema, (error, result) => {
+      const { clientVersions } = client;
+      const { clientId, schema } = clientVersions && clientVersions.length ?
+        clientVersions[clientVersions.length - 1] : { clientId: client._id, schema: client.schema };
+
+      Meteor.call(methodName, clientId, data, schema, (error, result) => {
         if (error) {
           Alert.error(error);
         } else {
