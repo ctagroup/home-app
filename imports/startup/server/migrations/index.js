@@ -85,6 +85,7 @@ Meteor.startup(() => {
     version++;
     migrateV1Responses();
     fixMissingClientSchemasInV1Responses();
+    AppSettings.set('version', version);
   }
 
   logger.info(`Migrations complete. Version: ${AppSettings.get('version')}`);

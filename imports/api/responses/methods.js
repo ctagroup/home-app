@@ -1,5 +1,6 @@
 import { HmisClient } from '/imports/api/hmisApi';
 import Surveys from '/imports/api/surveys/surveys';
+import Questions from '/imports/api/questions/questions';
 import { mapUploadedSurveySections } from '/imports/api/surveys/helpers';
 import { computeFormState, findItem, getScoringVariables } from '/imports/api/surveys/computations';
 import { logger } from '/imports/utils/logger';
@@ -200,5 +201,67 @@ Meteor.methods({
 
     const invalidQuestionValues = allQuestionValues.filter(v => !v.questionId);
     return invalidQuestionValues;
+  },
+
+  'responses.uploadV1ToHmis'(id, defaultSectionId = '7db10270-ec7f-4b11-8d26-48e334c97b95') {
+    logger.info(`METHOD[${this.userId}]: responses.uploadV1ToHmis`, id);
+
+    function assertEqual(a, b, msg = '') {
+      if (a !== b) throw new Error(`${a} !== ${b} ${msg}`);
+    }
+
+    const hc = HmisClient.create(this.userId);
+    const response = Responses.findOne(id);
+
+    assertEqual(response.version, 1, 'expected version === 1');
+    assertEqual(response.status, 'Paused', 'expected Paused status');
+    assertEqual(!!response.submissionId, false, 'Expected not submitted response');
+
+    logger.debug('RESPONSE', response);
+
+    const survey = Surveys.findOne(response.surveyId);
+
+    logger.debug('SURVEY', survey);
+
+    const questionResponses = response.section.reduce((all, s) => ([
+      ...all,
+      ...(s.response || []),
+    ]), []);
+
+    const questionValues = questionResponses
+    .map((r) => {
+      const question = Questions.findOne(r.questionID) || {};
+      return {
+        questionId: question.surveyServiceQuesId,
+        responseText: r.answer,
+        sectionId: defaultSectionId,
+      };
+    })
+    .filter(x => x.questionId)
+    .filter(x => x.responseText)
+    .filter(x => !x.responseText.startsWith('This answer should be ignored'));
+
+    const clientId = response.clientId;
+    const surveyId = survey.apiSurveyServiceId;
+
+    logger.debug({ clientId, surveyId, questionValues });
+
+    const { submissionId } = hc.api('survey').createSubmission(
+      clientId, surveyId, questionValues
+    );
+    Responses.update(id, {
+      $set: {
+        submissionId,
+        status: ResponseStatus.COMPLETED,
+        submittedAt: new Date(),
+        version: 1,
+      },
+      $unset: {
+        tmp: true,
+      },
+    }, { bypassCollection2: true });
+
+    logger.info('DONE!', submissionId);
+    return submissionId;
   },
 });

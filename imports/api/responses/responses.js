@@ -38,6 +38,7 @@ Responses.schema = new SimpleSchema({
     type: Number,
     optional: true,
     autoValue() {
+      if (this.isSet) return this.value;
       return 2;
     },
   },
