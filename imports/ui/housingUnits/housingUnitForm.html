@@ -10,7 +10,7 @@
         <label class="col-lg-3 control-label">Beds currently Available:</label>
         <div class="col-lg-8">
             <input class="form-control beds_avail" min="0" oninput="validity.valid||(value='');"
-                   value={{getBedsCurrent}} type="number" required>
+                   value={{bedsCurrent}} type="number" required>
         </div>
     </div>
 
@@ -37,32 +37,32 @@
     <div class="form-group">
         <label class="col-lg-3 control-label">Is active?:</label>
         <div class="col-lg-8">
-            <label><input type="radio" name="inactive" value="false" checked> Yes</label>
-            <label><input type="radio" name="inactive" value="true"> No<br></label>
+            <label><input type="radio" name="inactive" value="false" {{isActiveYes}}> Yes</label>
+            <label><input type="radio" name="inactive" value="true" {{isActiveNo}}> No</label>
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-lg-3 control-label">Family units:</label>
+        <label class="col-lg-3 control-label">Family unit:</label>
         <div class="col-lg-8">
-            <label><input type="radio" name="family_unit" value="true" checked> Yes</label>
-            <label><input type="radio" name="family_unit" value="false"> No<br></label>
+            <label><input type="radio" name="family_unit" value="true" {{isFamilyUnitYes}}> Yes</label>
+            <label><input type="radio" name="family_unit" value="false" {{isFamilyUnitNo}}> No</label>
         </div>
     </div>
 
     <div class="form-group">
         <label class="col-lg-3 control-label">In service:</label>
         <div class="col-lg-8">
-            <label><input type="radio" name="in_service" value="true" checked> Yes</label>
-            <label><input type="radio" name="in_service" value="false"> No<br></label>
+            <label><input type="radio" name="in_service" value="true" {{isInServiceYes}}> Yes</label>
+            <label><input type="radio" name="in_service" value="false" {{isInServiceNo}}> No<br></label>
         </div>
     </div>
 
     <div class="form-group">
         <label class="col-lg-3 control-label">Vacant:</label>
         <div class="col-lg-8">
-            <label><input type="radio" name="vacant" value="true" checked> Yes</label>
-            <label><input type="radio" name="vacant" value="false"> No<br></label>
+            <label><input type="radio" name="vacant" value="true" {{isVacantYes}}> Yes</label>
+            <label><input type="radio" name="vacant" value="false" {{isVacantNo}}> No<br></label>
         </div>
     </div>
     <!--Get all values to be checked while using form to edit-->

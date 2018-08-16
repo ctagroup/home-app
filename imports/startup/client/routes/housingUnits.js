@@ -1,6 +1,5 @@
 import HousingUnits from '/imports/api/housingUnits/housingUnits';
 import { HousingUnitsAccessRoles } from '/imports/config/permissions';
-import { HousingUnitsCache } from '/imports/both/cached-subscriptions';
 import '/imports/ui/housingUnits/housingUnitsCreateView';
 import '/imports/ui/housingUnits/housingUnitsEditView';
 import { AppController } from './controllers';
@@ -15,7 +14,7 @@ Router.route('adminDashboardhousingUnitsView', {
     },
   },
   waitOn() {
-    return HousingUnitsCache.subscribe('housingUnits.list');
+    return Meteor.subscribe('housingUnits.list');
   },
   data() {
     return {
