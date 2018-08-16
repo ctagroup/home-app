@@ -30,19 +30,23 @@ Meteor.methods({
     check(id, String);
 
     const hc = HmisClient.create(this.userId);
-    let alreadyUploaded;
+    let uploadedSurvey;
     try {
-      hc.api('survey2').getSurvey(id);
-      alreadyUploaded = true;
+      uploadedSurvey = hc.api('survey2').getSurvey(id);
     } catch (err) {
-      alreadyUploaded = false;
+      uploadedSurvey = {
+        surveyTitle: 'temp survey',
+        locked: true,
+      };
     }
 
     // create temp survey in mongo
     const tempId = Surveys.insert({
-      ...doc,
+      ...doc.$set,
+      title: uploadedSurvey.surveyTitle,
+      locked: uploadedSurvey.locked,
       hmis: {
-        surveyId: alreadyUploaded ? id : undefined,
+        surveyId: uploadedSurvey ? id : undefined,
       },
     });
 
