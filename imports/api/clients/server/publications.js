@@ -3,7 +3,8 @@ import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
 import {
   sortByTime,
-  mergeClient,
+  // mergeClient,
+  mergeClientExtended,
   getEligibleClient,
   getClientEnrollments,
   getGlobalHouseholds,
@@ -36,7 +37,8 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
     // TODO [VK]: publish by dedupClientId directly
     const clientVersions = hc.api('client').searchClient(client.dedupClientId, 50);
 
-    const mergedClient = mergeClient(clientVersions, inputSchema);
+    // const mergedClient = mergeClient(clientVersions, inputSchema);
+    const mergedClient = mergeClientExtended(clientVersions, inputSchema);
     self.added('localClients', inputClientId, mergedClient);
     self.ready();
 

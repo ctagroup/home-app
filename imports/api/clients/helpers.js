@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { removeEmpty } from '/imports/api/utils';
+import { removeEmpty, getSchemaFromLink } from '/imports/api/utils';
 
 const getVersions = (schemas) => _.map(schemas,
   (version) => ({ schema: version.schema, clientId: version.clientId }));
@@ -8,11 +8,30 @@ const getVersions = (schemas) => _.map(schemas,
 export const mergeClient = (clientVersionsList, schema) => {
   let sortedClientSchemas = _.map(clientVersionsList, (version) => {
     // assuming that link format is: '/hmis-clientapi/rest/{schema}/clients/{clientId}'
-    const linkSchema = version.link.substring(21, 26);
+    const linkSchema = getSchemaFromLink(version.link);
     return Object.assign(removeEmpty(version), {
       schema: version.schema ? version.schema : linkSchema,
     });
   });
+  sortedClientSchemas = _.sortBy(sortedClientSchemas, 'schema');
+  const clientVersions = getVersions(sortedClientSchemas);
+  if (schema) sortedClientSchemas.push({ schema });
+  return Object.assign({ clientVersions }, ...sortedClientSchemas);
+};
+
+export const mergeClientExtended = (clientVersionsList, schema) => {
+  let sortedClientSchemas = _.map(clientVersionsList, (version) => {
+    // assuming that link format is: '/hmis-clientapi/rest/{schema}/clients/{clientId}'
+    const linkSchema = getSchemaFromLink(version.link);
+    const versionSchema = version.schema || linkSchema;
+    const cleanVersion = removeEmpty(version);
+    const moreData = _.map(cleanVersion, (v, k) =>
+      ({ [`${k}::${versionSchema}::${version.clientId}`]: v }));
+    return Object.assign(cleanVersion, {
+      schema: version.schema || linkSchema,
+    }, ...moreData);
+  });
+
   sortedClientSchemas = _.sortBy(sortedClientSchemas, 'schema');
   const clientVersions = getVersions(sortedClientSchemas);
   if (schema) sortedClientSchemas.push({ schema });
@@ -27,6 +46,17 @@ export const mergeByDedupId = (hmisClients) => {
     const clientVersions = getVersions(sortedClientSchemas);
     return Object.assign({ clientVersions }, ...sortedClientSchemas);
   });
+};
+
+export const getClientVersion = (mergedClient, clientId, schema) => {
+  const clientVersion = {};
+  _.map(mergedClient, (v, k) => {
+    const key = k.split('::');
+    if (key.length === 3 && key[1] === schema && key[2] === clientId) {
+      clientVersion[key[0]] = v;
+    }
+  });
+  return clientVersion;
 };
 
 export const getEligibleClient = (hc, clientId) => {
