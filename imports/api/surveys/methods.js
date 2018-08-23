@@ -30,6 +30,8 @@ Meteor.methods({
     check(id, String);
 
     const hc = HmisClient.create(this.userId);
+
+    let tempId;
     let uploadedSurvey;
     try {
       uploadedSurvey = hc.api('survey2').getSurvey(id);
@@ -40,15 +42,25 @@ Meteor.methods({
       };
     }
 
-    // create temp survey in mongo
-    const tempId = Surveys.insert({
-      ...doc.$set,
-      title: uploadedSurvey.surveyTitle,
-      locked: uploadedSurvey.locked,
-      hmis: {
-        surveyId: uploadedSurvey ? id : undefined,
-      },
-    });
+    if (doc.$set) {
+      // survey definition updated in builder
+      tempId = Surveys.insert({
+        ...doc.$set,
+        title: uploadedSurvey.surveyTitle,
+        locked: uploadedSurvey.locked,
+        hmis: {
+          surveyId: uploadedSurvey ? id : undefined,
+        },
+      });
+    } else {
+      // survey updated via edit form
+      tempId = Surveys.insert({
+        ...doc,
+        hmis: {
+          surveyId: uploadedSurvey.surveyId,
+        },
+      });
+    }
 
     try {
       Meteor.call('surveys.uploadQuestions', tempId);

@@ -24,6 +24,20 @@ export default class Question extends Item {
     };
   }
 
+  getChoiceOptions() {
+    const options = this.props.item.options || [];
+    if (Array.isArray(options)) {
+      return options.map(o => ({
+        value: o.split('|').shift(),
+        label: o.split('|').pop(),
+      }));
+    }
+    return Object.keys(options).map(key => ({
+      value: key,
+      label: options[key],
+    }));
+  }
+
   getRefuseValue() {
     const refusable = this.props.item.refusable;
     if (!refusable) {
@@ -47,10 +61,11 @@ export default class Question extends Item {
       }
     } catch (e) {
       // handle value change
+      const choiceOptions = this.getChoiceOptions();
       switch (this.props.item.category) {
         case 'choice':
           value = event.target.value;
-          if (this.props.item.options.includes(value)) {
+          if (choiceOptions.some(o => o.value === value)) {
             this.setState({ otherSelected: false });
           }
           break;
@@ -73,11 +88,11 @@ export default class Question extends Item {
   }
 
   handleRefuseChange(event) {
-    console.log('refuse');
     this.handleChange(event);
   }
 
   handleOtherClick(event) {
+    console.log('other click', event.target.name, event.target.value);
     this.props.onChange(event.target.name, event.target.value);
     this.otherInput.focus();
   }
@@ -132,23 +147,27 @@ export default class Question extends Item {
 
   renderChoice(value, disabled) {
     const { id, other } = this.props.item;
-    const options = this.props.item.options || [];
+    const options = this.getChoiceOptions();
     const choices = options.map((v, i) => (
       <div key={`choice-${id}-${i}`}>
         <label>
           <input
             type="radio"
             name={id}
-            value={v}
+            value={v.value}
             disabled={this.isRefused() || disabled}
-            checked={!this.isRefused() && v === value}
+            checked={!this.isRefused() && v.value === value}
             onChange={this.handleChange}
-          /> {v}
+          /> {v.label}
         </label>
       </div>
     ));
     if (other) {
-      const otherValue = options.concat([DEFAULT_OTHER_VALUE]).includes(value) ? '' : value;
+      const optionsWithOther = [
+        ...options,
+        { value: 'Other', label: value },
+      ];
+      const otherValue = optionsWithOther.some(o => o.value === value) ? '' : value;
       const otherPlaceholder = typeof(other) === 'boolean' ? 'please specify' : `${other}`;
       const checked = !this.isRefused() && this.state.otherSelected;
       choices.push(
