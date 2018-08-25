@@ -4,10 +4,12 @@ import { HmisClient } from '/imports/api/hmisApi';
 import { mergeByDedupId } from '/imports/api/clients/helpers';
 
 Meteor.methods({
-  'clients.create'(client, schema = 'v2017') {
+  'clients.create'(client, schema = 'v2017', clientVersion = false) {
     logger.info(`METHOD[${Meteor.userId()}]: clients.create`, client);
     const hc = HmisClient.create(Meteor.userId());
     const result = hc.api('client').createClient(client, schema);
+
+    if (clientVersion) return result;
 
     try {
       Meteor.call('s3bucket.put', result.clientId, 'photo', client.photo);
