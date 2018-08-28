@@ -206,4 +206,9 @@ Meteor.methods({
     Surveys.update(id, { $set: { hmis } });
     return surveyId;
   },
+  'surveys.test'() {
+    const hc = HmisClient.create(this.userId);
+    return hc.api('client').getHudQuestions('v2017');
+
+  }
 });

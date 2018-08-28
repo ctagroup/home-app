@@ -167,6 +167,11 @@ export class ClientApi extends ApiEndpoint {
     const url = `${BASE_URL}/${category}`;
     return this.doPost(url, data);
   }
+
+  getHudQuestions(schema) {
+    const url = `${BASE_URL}/${schema}/questions`;
+    return this.doGet(url);
+  }
 }
 
 HmisApiRegistry.addApi('client', ClientApi);
