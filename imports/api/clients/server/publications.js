@@ -38,7 +38,8 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
     const clientVersions = hc.api('client').searchClient(client.dedupClientId, 50);
 
     // const mergedClient = mergeClient(clientVersions, inputSchema);
-    const mergedClient = mergeClientExtended(clientVersions, inputSchema);
+    const mergedClient = mergeClientExtended(
+      _.uniq([client].concat(clientVersions), (i) => i.clientId), inputSchema);
     self.added('localClients', inputClientId, mergedClient);
     self.ready();
 
