@@ -111,7 +111,7 @@ export class ClientApi extends ApiEndpoint {
     return this.doGet(url).searchResults.items;
   }
 
-  // createClientEnrollment(clientId, schema = DEFAULT_PROJECT_SCHEMA) {
+  // createClientEnrollment(enrollmentData, clientId, schema = DEFAULT_PROJECT_SCHEMA) {
   //   const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments`;
   //   // TODO [VK]: replace with real data:
   //   const body = {
@@ -164,7 +164,7 @@ export class ClientApi extends ApiEndpoint {
 
   removeClientEnrollment(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId) {
     const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}`;
-    return this.doPut(url).enrollment;
+    return this.doDel(url);
   }
 
   createProjectSetup(projectName, projectCommonName, schema = DEFAULT_PROJECT_SCHEMA) {
