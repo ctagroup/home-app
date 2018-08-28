@@ -18,7 +18,7 @@ function completedHtml(response, status) {
       statusClass = 'text-success';
   }
   const date = moment(response.submittedAt).format('MM/DD/YYYY h:mm A');
-  return `
+  let html = `
     <span class="${statusClass}">
       <i class="fa fa-check"></i> Submitted on ${date}
     </span>
@@ -26,6 +26,19 @@ function completedHtml(response, status) {
     <a id="${response._id}" href="#" class="btn UploadResponses">
       (Re-Upload to HMIS)
     </a>`;
+
+  if (response.surveyType === 'enrollment') {
+    if (!response.enrollment) {
+      html += `<div>
+        <a id="enrollment-${response._id}" data-id="${response._id}"
+        href="#" class="btn UploadEnrollment">
+          Upload Enrollment
+        </a></div>`;
+    } else {
+      html += '<div>Enrollment Uploaded</div>';
+    }
+  }
+  return html;
 }
 
 
@@ -179,6 +192,23 @@ Template.responsesListView.events(
             Alert.success('Response uploaded');
             parent.html(completedHtml(Responses.findOne(responseId)));
           }
+        }
+      });
+    },
+    'click .UploadEnrollment': (evt/* , tmpl*/) => {
+      evt.preventDefault();
+      const responseId = $(evt.currentTarget).attr('data-id');
+      const parent = $(`#enrollment-${responseId}`).parent();
+      const originalHtml = parent.html();
+      console.log(responseId);
+      parent.html(uploadingHtml);
+      Meteor.call('responses.uploadEnrollment', responseId, (err) => {
+        if (err) {
+          Alert.error(err);
+          parent.html(originalHtml);
+        } else {
+          Alert.success('Enrollment uploaded');
+          parent.html(completedHtml(Responses.findOne(responseId)));
         }
       });
     },

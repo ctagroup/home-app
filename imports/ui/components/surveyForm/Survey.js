@@ -108,9 +108,12 @@ export default class Survey extends React.Component {
       clientSchema = this.props.client.schema;
     }
 
+    const surveyType = this.props.definition.type;
+
     const doc = {
       clientId,
       clientSchema,
+      surveyType,
       status: ResponseStatus.PAUSED,
       surveyId: this.props.surveyId,
       values: this.state.values,

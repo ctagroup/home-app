@@ -20,6 +20,10 @@ Responses.schema = new SimpleSchema({
   surveyId: {
     type: String,
   },
+  surveyType: {
+    type: String,
+    optional: true,
+  },
   surveyorId: {
     type: String,
   },
@@ -33,6 +37,11 @@ Responses.schema = new SimpleSchema({
   values: {
     type: Object,
     blackbox: true,
+  },
+  enrollment: {
+    type: Object,
+    blackbox: true,
+    optional: true,
   },
   version: {
     type: Number,

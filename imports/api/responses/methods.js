@@ -6,7 +6,7 @@ import { computeFormState, findItem, getScoringVariables } from '/imports/api/su
 import { logger } from '/imports/utils/logger';
 import { escapeKeys, unescapeKeys } from '/imports/api/utils';
 import Responses, { ResponseStatus } from '/imports/api/responses/responses';
-import { prepareEmails } from '../surveys/computations';
+import { prepareEmails, iterateItems } from '../surveys/computations';
 
 function prepareValuesToUpload(values, definition, defaultSectionId) {
   const questionIds = Object.keys(values);
@@ -106,6 +106,49 @@ Meteor.methods({
         logger.error(e);
       }
     });
+  },
+
+  'responses.uploadEnrollment'(id) {
+    logger.info(`METHOD[${this.userId}]: responses.uploadEnrollment`, id);
+
+    const response = Responses.findOne(id);
+    const { clientId, clientSchema, surveyId } = response;
+    const values = unescapeKeys(response.values);
+
+    const hc = HmisClient.create(this.userId);
+
+    // check if survey exists in hslynk
+    let survey;
+    try {
+      survey = hc.api('survey2').getSurvey(surveyId);
+    } catch (err) {
+      Responses.update(id, { $set: { status: ResponseStatus.UPLOAD_ERROR } });
+      logger.error(err);
+      throw new Meteor.Error('error', `Survey ${surveyId} not uploaded.`);
+    }
+
+    const definition = JSON.parse(survey.surveyDefinition);
+
+    const data = {};
+    iterateItems(definition, (item) => {
+      if (item.enrollment && item.enrollment.updateUriTemplate) {
+        const url = item.enrollment.updateUriTemplate;
+        if (!data[url]) {
+          data[url] = {};
+        }
+        if (item.enrollment.schema === clientSchema) {
+          data[url][item.enrollment.field] = values[item.id] || 99;
+        } else {
+          data[url][item.enrollment.field] = 99;
+        }
+      }
+    });
+
+    console.log(clientId, clientSchema);
+    console.log('EI data', data);
+
+
+    throw new Meteor.Error(500, 'Not implemented');
   },
 
   'responses.uploadToHmis'(id) {
