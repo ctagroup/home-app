@@ -167,6 +167,131 @@ export class ClientApi extends ApiEndpoint {
     return this.doDel(url);
   }
 
+  /**
+   * Enrollment Cocs:
+   */
+  getEnrollmentCocs(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, start = 0, limit = 9999) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/enrollmentcocs?startIndex=${start}&maxItems=${limit}`; // eslint-disable-line max-len
+    return this.doGet(url).enrollmentCocs.enrollmentCocs;
+  }
+
+  getEnrollmentCoc(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, enrollmentCocId) {
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/enrollmentcocs/${enrollmentCocId}`; // eslint-disable-line max-len
+    return this.doGet(url).enrollmentCoc;
+  }
+
+  createEnrollmentCoc(enrollmentCoc, clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId) {
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/enrollmentcocs`; // eslint-disable-line max-len
+    const body = { enrollmentCoc };
+      // {
+      //   "informationDate": "string",
+      //   "dataCollectionStage": 0,
+      //   "cocCode": "string"
+      // }
+    return this.doPost(url, body).enrollmentCoc;
+  }
+
+  removeEnrollmentCoc(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, enrollmentCocId) {
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/enrollmentcocs/${enrollmentCocId}`; // eslint-disable-line max-len
+    return this.doDel(url);
+  }
+
+  /**
+   * Enrollment Disabilities:
+   */
+  getEnrollmentDisabilities(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, start = 0, limit = 9999) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/disabilities?startIndex=${start}&maxItems=${limit}`; // eslint-disable-line max-len
+    return this.doGet(url).disabilitiesList.disabilitiesList;
+  }
+
+  getEnrollmentDisability(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, disabilityId) {
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/disabilities/${disabilityId}`; // eslint-disable-line max-len
+    return this.doGet(url).disabilities;
+  }
+
+  createEnrollmentDisability(disabilities, clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/disabilities`; // eslint-disable-line max-len
+    const body = { disabilities };
+    return this.doPost(url, body).disabilities;
+  }
+
+  removeEnrollmentDisability(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, disabilityId) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/disabilities/${disabilityId}`; // eslint-disable-line max-len
+    return this.doDel(url);
+  }
+
+  /**
+   * Enrollment Domestic Violences:
+   */
+  getEnrollmentDomesticViolences(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, start = 0, limit = 9999) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/domesticviolences?startIndex=${start}&maxItems=${limit}`; // eslint-disable-line max-len
+    return this.doGet(url).domesticviolences.domesticviolences;
+  }
+
+  getEnrollmentDomesticViolence(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, domesticviolenceId) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/domesticviolences/${domesticviolenceId}`; // eslint-disable-line max-len
+    return this.doGet(url).domesticviolences;
+  }
+
+  createEnrollmentDomesticViolence(domesticviolence, clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/domesticviolences`; // eslint-disable-line max-len
+    const body = { domesticviolence };
+    return this.doPost(url, body).domesticviolences;
+  }
+
+  removeEnrollmentDomesticViolence(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, domesticviolenceId) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/domesticviolences/${domesticviolenceId}`; // eslint-disable-line max-len
+    return this.doDel(url);
+  }
+
+  /**
+   * Enrollment Employments:
+   */
+  getEnrollmentEmployments(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, start = 0, limit = 9999) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/employments?startIndex=${start}&maxItems=${limit}`; // eslint-disable-line max-len
+    return this.doGet(url).employments.employments;
+  }
+
+  getEnrollmentEmployment(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, employmentId) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/employments/${employmentId}`; // eslint-disable-line max-len
+    return this.doGet(url).employments;
+  }
+
+  createEnrollmentEmployment(employment, clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/employments`; // eslint-disable-line max-len
+    const body = { employment };
+    return this.doPost(url, body).employments;
+  }
+
+  removeEnrollmentEmployment(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, employmentId) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/employments/${employmentId}`; // eslint-disable-line max-len
+    return this.doDel(url);
+  }
+
+  /**
+   * Enrollment Employments:
+   */
+  getEnrollmentExits(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, start = 0, limit = 9999) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/exits?startIndex=${start}&maxItems=${limit}`; // eslint-disable-line max-len
+    return this.doGet(url).exits.exits;
+  }
+
+  getEnrollmentExit(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, exitId) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/exits/${exitId}`; // eslint-disable-line max-len
+    return this.doGet(url).exits;
+  }
+
+  createEnrollmentExit(exit, clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/exits`; // eslint-disable-line max-len
+    const body = { exit };
+    return this.doPost(url, body).exits;
+  }
+
+  removeEnrollmentExit(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, exitId) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/exits/${exitId}`; // eslint-disable-line max-len
+    return this.doDel(url);
+  }
+
   createProjectSetup(projectName, projectCommonName, schema = DEFAULT_PROJECT_SCHEMA) {
     const url = `${BASE_URL}/${schema}/projects`;
     const body = {
