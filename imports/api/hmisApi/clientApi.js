@@ -270,7 +270,7 @@ export class ClientApi extends ApiEndpoint {
   }
 
   /**
-   * Enrollment Employments:
+   * Enrollment Exits:
    */
   getEnrollmentExits(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, start = 0, limit = 9999) { // eslint-disable-line max-len
     const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/exits?startIndex=${start}&maxItems=${limit}`; // eslint-disable-line max-len
@@ -290,6 +290,78 @@ export class ClientApi extends ApiEndpoint {
 
   removeEnrollmentExit(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, exitId) { // eslint-disable-line max-len
     const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/exits/${exitId}`; // eslint-disable-line max-len
+    return this.doDel(url);
+  }
+
+  /**
+   * Enrollment Health Insurances:
+   */
+  getEnrollmentHealthInsurances(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, start = 0, limit = 9999) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/healthinsurances?startIndex=${start}&maxItems=${limit}`; // eslint-disable-line max-len
+    return this.doGet(url).healthinsurances.healthinsurances;
+  }
+
+  getEnrollmentHealthInsurance(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, healthinsuranceid) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/healthinsurances/${healthinsuranceid}`; // eslint-disable-line max-len
+    return this.doGet(url).healthinsurances;
+  }
+
+  createEnrollmentHealthInsurance(healthinsurance, clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/healthinsurances`; // eslint-disable-line max-len
+    const body = { healthinsurance };
+    return this.doPost(url, body).healthinsurances;
+  }
+
+  removeEnrollmentHealthInsurance(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, healthinsuranceid) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/healthinsurances/${healthinsuranceid}`; // eslint-disable-line max-len
+    return this.doDel(url);
+  }
+
+  /**
+   * Enrollment Health Statuses:
+   */
+  getEnrollmentHealthStatuses(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, start = 0, limit = 9999) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/healthstatuses?startIndex=${start}&maxItems=${limit}`; // eslint-disable-line max-len
+    return this.doGet(url).healthstatuses.healthstatuses;
+  }
+
+  getEnrollmentHealthStatus(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, healthstatusid) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/healthstatuses/${healthstatusid}`; // eslint-disable-line max-len
+    return this.doGet(url).healthstatuses;
+  }
+
+  createEnrollmentHealthStatus(healthstatus, clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/healthstatuses`; // eslint-disable-line max-len
+    const body = { healthstatus };
+    return this.doPost(url, body).healthstatuses;
+  }
+
+  removeEnrollmentHealthStatus(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, healthstatusid) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/healthstatuses/${healthstatusid}`; // eslint-disable-line max-len
+    return this.doDel(url);
+  }
+
+  /**
+   * Enrollment Medical Assistances:
+   */
+  getEnrollmentMedicalAssistances(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, start = 0, limit = 9999) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/medicalassistances?startIndex=${start}&maxItems=${limit}`; // eslint-disable-line max-len
+    return this.doGet(url).medicalassistances.medicalassistances;
+  }
+
+  getEnrollmentMedicalAssistance(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, medicalassistanceid) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/medicalassistances/${medicalassistanceid}`; // eslint-disable-line max-len
+    return this.doGet(url).medicalassistances;
+  }
+
+  createEnrollmentMedicalAssistance(medicalassistance, clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/medicalassistances`; // eslint-disable-line max-len
+    const body = { medicalassistance };
+    return this.doPost(url, body).medicalassistances;
+  }
+
+  removeEnrollmentMedicalAssistance(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId, medicalassistanceid) { // eslint-disable-line max-len
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}/medicalassistances/${medicalassistanceid}`; // eslint-disable-line max-len
     return this.doDel(url);
   }
 
