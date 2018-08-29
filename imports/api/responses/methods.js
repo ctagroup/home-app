@@ -6,6 +6,7 @@ import { computeFormState, findItem, getScoringVariables } from '/imports/api/su
 import { logger } from '/imports/utils/logger';
 import { escapeKeys, unescapeKeys } from '/imports/api/utils';
 import Responses, { ResponseStatus } from '/imports/api/responses/responses';
+import { getClientGlobalEnrollment } from '/imports/api/responses/helpers';
 import { prepareEmails, iterateItems } from '../surveys/computations';
 
 function prepareValuesToUpload(values, definition, defaultSectionId) {
@@ -212,8 +213,12 @@ Meteor.methods({
       const { submissionId } = hc.api('survey').createSubmission(
         clientId, surveyId, questionVaules
       );
+      const globalEnrollment = getClientGlobalEnrollment(hc, client);
+      hc.api('survey').putClientSurveySubmissions(submissionId, globalEnrollment.id);
+
       Responses.update(id, { $set: {
         submissionId,
+        globalEnrollmentId: globalEnrollment.id,
         status: ResponseStatus.COMPLETED,
         submittedAt: new Date(),
       } });

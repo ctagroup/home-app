@@ -10,7 +10,7 @@ export const mergeClient = (clientVersionsList, schema) => {
     // assuming that link format is: '/hmis-clientapi/rest/{schema}/clients/{clientId}'
     const linkSchema = version.link.substring(21, 26);
     return Object.assign(removeEmpty(version), {
-      schema: version.schema ? version.schema : linkSchema,
+      schema: version.schema || linkSchema,
     });
   });
   sortedClientSchemas = _.sortBy(sortedClientSchemas, 'schema');
@@ -45,11 +45,7 @@ export const getClientEnrollments = (hc, clientId, schema, stopFunction) => {
     const exits = hc.api('client').getClientsEnrollmentExits(
       clientId, enrollments[i].enrollmentId, schema
     );
-    if (exits.length > 0) {
-      enrollments[i].exits = exits[0];
-    } else {
-      enrollments[i].exits = false;
-    }
+    enrollments[i].exits = exits.length ? exits[0] : false;
     enrollments[i].project = hc.api('client').getProject(enrollments[i].projectid, schema);
   }
   return enrollments;

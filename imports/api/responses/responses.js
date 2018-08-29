@@ -34,6 +34,10 @@ Responses.schema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  globalEnrollmentId: {
+    type: String,
+    optional: true,
+  },
   values: {
     type: Object,
     blackbox: true,
