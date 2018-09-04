@@ -7,6 +7,11 @@ const BASE_URL = 'https://www.hmislynk.com/hmis-clientapi/rest';
 const DEFAULT_PROJECT_SCHEMA = 'v2017';
 
 export class ClientApi extends ApiEndpoint {
+  postData(relativeUrl, data) {
+    const url = relativeUrl.startsWith('/') ?
+      `${BASE_URL}${relativeUrl}` : `${BASE_URL}/${relativeUrl}`;
+    return this.doPost(url, data);
+  }
 
   getClient(clientId, schema = DEFAULT_PROJECT_SCHEMA) {
     const url = `${BASE_URL}/${schema}/clients/${clientId}`;

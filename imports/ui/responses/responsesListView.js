@@ -38,6 +38,7 @@ function completedHtml(response, status) {
       html += '<div>Enrollment Uploaded</div>';
     }
   }
+  console.log(html);
   return html;
 }
 
@@ -175,7 +176,7 @@ Template.responsesListView.events(
     'click .UploadResponses': (evt/* , tmpl*/) => {
       evt.preventDefault();
       const responseId = $(evt.currentTarget).attr('id');
-      const parent = $(`#${responseId}`).parent();
+      const parent = $(`#${responseId}`).closest('td');
       const originalHtml = parent.html();
       parent.html(uploadingHtml);
 
@@ -198,17 +199,19 @@ Template.responsesListView.events(
     'click .UploadEnrollment': (evt/* , tmpl*/) => {
       evt.preventDefault();
       const responseId = $(evt.currentTarget).attr('data-id');
-      const parent = $(`#enrollment-${responseId}`).parent();
+      const parent = $(`#${responseId}`).closest('td');
       const originalHtml = parent.html();
-      console.log(responseId);
       parent.html(uploadingHtml);
-      Meteor.call('responses.uploadEnrollment', responseId, (err) => {
+      Meteor.call('responses.uploadEnrollment', responseId, (err, res) => {
         if (err) {
           Alert.error(err);
           parent.html(originalHtml);
         } else {
           Alert.success('Enrollment uploaded');
-          parent.html(completedHtml(Responses.findOne(responseId)));
+          parent.html(completedHtml({
+            ...Responses.findOne(responseId),
+            enrollment: res,
+          }));
         }
       });
     },

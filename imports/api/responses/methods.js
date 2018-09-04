@@ -6,8 +6,9 @@ import { computeFormState, findItem, getScoringVariables } from '/imports/api/su
 import { logger } from '/imports/utils/logger';
 import { escapeKeys, unescapeKeys } from '/imports/api/utils';
 import Responses, { ResponseStatus } from '/imports/api/responses/responses';
-import { getClientGlobalEnrollment } from '/imports/api/responses/helpers';
-import { prepareEmails, iterateItems } from '../surveys/computations';
+import { prepareEmails } from '../surveys/computations';
+import { EnrollmentUploader } from './helpers';
+import Users from '/imports/api/users/users';
 
 function prepareValuesToUpload(values, definition, defaultSectionId) {
   const questionIds = Object.keys(values);
@@ -112,9 +113,14 @@ Meteor.methods({
   'responses.uploadEnrollment'(id) {
     logger.info(`METHOD[${this.userId}]: responses.uploadEnrollment`, id);
 
+    // TODO: check if projectId and clientId are from the save schema
+    const { activeProjectId } = Users.findOne(this.userId);
+    if (!activeProjectId) {
+      throw new Meteor.Error(400, 'Active project not selected');
+    }
+
     const response = Responses.findOne(id);
-    const { clientId, clientSchema, surveyId } = response;
-    const values = unescapeKeys(response.values);
+    const { surveyId } = response;
 
     const hc = HmisClient.create(this.userId);
 
@@ -128,28 +134,25 @@ Meteor.methods({
       throw new Meteor.Error('error', `Survey ${surveyId} not uploaded.`);
     }
 
-    const definition = JSON.parse(survey.surveyDefinition);
+    const enrollmentUploader = new EnrollmentUploader(response, survey);
 
-    const data = {};
-    iterateItems(definition, (item) => {
-      if (item.enrollment && item.enrollment.updateUriTemplate) {
-        const url = item.enrollment.updateUriTemplate;
-        if (!data[url]) {
-          data[url] = {};
-        }
-        if (item.enrollment.schema === clientSchema) {
-          data[url][item.enrollment.field] = values[item.id] || 99;
-        } else {
-          data[url][item.enrollment.field] = 99;
-        }
-      }
+    // projectId is reqired field when creating an enrollment
+    // FIXME: we should use project associated with the survey
+    // instead of current active user project
+    // VK: waiting for this assoc (survey-project) to be saved somewhere, note that si....
+    const dataToSend = enrollmentUploader.questionResponsesToData(activeProjectId);
+    const sortedData = enrollmentUploader.dataOrderedByUrlVariables(dataToSend);
+    const result = enrollmentUploader.upload(sortedData, hc.api('client'));
+
+    console.log(result);
+
+    Responses.update(id, {
+      $set: {
+        enrollment: result,
+      },
     });
 
-    console.log(clientId, clientSchema);
-    console.log('EI data', data);
-
-
-    throw new Meteor.Error(500, 'Not implemented');
+    return result;
   },
 
   'responses.uploadToHmis'(id) {
@@ -213,12 +216,9 @@ Meteor.methods({
       const { submissionId } = hc.api('survey').createSubmission(
         clientId, surveyId, questionVaules
       );
-      const globalEnrollment = getClientGlobalEnrollment(hc, client);
-      hc.api('survey').putClientSurveySubmissions(submissionId, globalEnrollment.id);
 
       Responses.update(id, { $set: {
         submissionId,
-        globalEnrollmentId: globalEnrollment.id,
         status: ResponseStatus.COMPLETED,
         submittedAt: new Date(),
       } });
