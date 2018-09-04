@@ -10,6 +10,15 @@ export class EnrollmentUploader {
     this.survey = survey;
   }
 
+  getCreateUriTemplateFromUpdateUriTemplate(updateUriTemplate) {
+    const parts = updateUriTemplate.split('/');
+    const lastPart = parts.pop();
+    if (lastPart.startsWith('{') && lastPart.endsWith('}')) {
+      return parts.join('/');
+    }
+    return updateUriTemplate;
+  }
+
   questionResponsesToData(projectId) {
     const { clientSchema } = this.response;
     const values = unescapeKeys(this.response.values);
@@ -21,11 +30,11 @@ export class EnrollmentUploader {
 
       if (!enrollment) return;
 
-      const { uriObject, uriObjectField, createUriTemplate } = enrollment;
+      const { uriObject, uriObjectField, updateUriTemplate } = enrollment;
 
-      if (!createUriTemplate || !uriObject || !uriObjectField) return;
+      if (!updateUriTemplate || !uriObject || !uriObjectField) return;
 
-      const uri = createUriTemplate;
+      const uri = this.getCreateUriTemplateFromUpdateUriTemplate(updateUriTemplate);
 
       if (!data[uri]) {
         data[uri] = {};
