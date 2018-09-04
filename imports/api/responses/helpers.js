@@ -40,11 +40,16 @@ export class EnrollmentUploader {
         data[uri] = {};
       }
       if (!data[uri][uriObject]) {
-        data[uri][uriObject] = {
-
-
-          projectid: projectId,
-        };
+        // provide required defaults to uriObjects
+        switch (uriObject) {
+          case 'enrollment':
+            data[uri][uriObject] = {
+              projectid: projectId,
+            };
+            break;
+          default:
+            data[uri][uriObject] = {};
+        }
       }
       if (item.enrollment.schema === clientSchema) {
         data[uri][uriObject][uriObjectField] = values[item.id] || 99;
@@ -79,24 +84,46 @@ export class EnrollmentUploader {
 
     const uriTemplates = Object.keys(sortedData);
 
+    let uploadErrorDetails = null;
+
     const responses = uriTemplates.reduce((all, uriTemplate) => {
       const uri = translateString(uriTemplate, uriTemplateVariables);
       const data = sortedData[uriTemplate];
-
-      // send data
-      const response = clientApi.postData(uri, data);
-
-      // add object id to template variables to use in successive calls
       const uriObject = Object.keys(data).shift();
-      const uriObjectId = `${uriObject}Id`;
-      const responseObjectId = response[uriObject][uriObjectId];
-      uriTemplateVariables[`{${uriObjectId.toLowerCase()}}`] = responseObjectId;
-      logger.debug('new vars', uriTemplateVariables);
-      return {
-        ...all,
-        [uriObjectId]: responseObjectId,
-      };
+
+      if (uploadErrorDetails) {
+        // we have an error, skip other urls
+        return all;
+      }
+
+      try {
+        // send data
+        const response = clientApi.postData(uri, data);
+
+        // add object id to template variables to use in successive calls
+        const uriObjectId = `${uriObject}Id`;
+        const responseObjectId = response[uriObject][uriObjectId];
+        uriTemplateVariables[`{${uriObjectId.toLowerCase()}}`] = responseObjectId;
+        logger.debug('new vars', uriTemplateVariables);
+        return {
+          ...all,
+          [uriObject]: {
+            id: responseObjectId,
+            deleteUri: `${uri}/${responseObjectId}`,
+          },
+        };
+      } catch (err) {
+        uploadErrorDetails = `An error occurred while uploading ${uriObject}: ${err}`;
+        logger.warn('An error ocurred while uploading enrollment', err);
+        return all;
+      }
     }, {});
+
+    if (uploadErrorDetails) {
+      throw new Meteor.Error(500, uploadErrorDetails);
+      // TODO: rollback, remove all data
+    }
+
     return responses;
   }
 }
