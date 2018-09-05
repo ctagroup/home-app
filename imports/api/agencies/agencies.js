@@ -76,16 +76,32 @@ Agencies.helpers({
       .filter(m => m.userId === userId)
       .map(m => m.projectId);
   },
-  getEnrollmentSurveysOfUser(userId) {
+  getProjectsWithEnrollmentSurvey(surveyId) {
     // TODO: implement real logic
-    return {
-      // v2017 project
-      '43262c8c-39ac-4224-8679-e9858451831b': {
-        entry: '1888eb2d-0eac-4fce-88c4-229895027541', // Enrollment #1 survey
-        update: '1888eb2d-0eac-4fce-88c4-229895027541', // Enrollment #1 survey
-        exit: '1888eb2d-0eac-4fce-88c4-229895027541', // Enrollment #1 survey
-      },
-    };
+
+    if (surveyId === '1888eb2d-0eac-4fce-88c4-229895027541') { // Enrollment #1 survey
+      return [
+        {
+          // v2017 project
+          projectId: '43262c8c-39ac-4224-8679-e9858451831b',
+          projectSchema: 'v2017',
+          enrollmentType: 'entry',
+        },
+        {
+          // v2017 project
+          projectId: '43262c8c-39ac-4224-8679-e9858451831b',
+          projectSchema: 'v2017',
+          enrollmentType: 'update',
+        },
+        {
+          // v2017 project
+          projectId: '43262c8c-39ac-4224-8679-e9858451831b',
+          projectSchema: 'v2017',
+          enrollmentType: 'exit',
+        },
+      ];
+    }
+    return [];
   },
 });
 
