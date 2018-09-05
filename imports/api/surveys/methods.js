@@ -2,7 +2,7 @@ import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
 import { getScoringVariables, iterateItems } from '/imports/api/surveys/computations';
 import Surveys from '/imports/api/surveys/surveys';
-import { mapUploadedSurveySections } from '/imports/api/surveys/helpers';
+import { mapUploadedSurveySections, updateDefinitionFromDoc } from '/imports/api/surveys/helpers';
 
 Meteor.methods({
   'surveys.create'(doc) {
@@ -24,7 +24,7 @@ Meteor.methods({
   },
 
   'surveys.update'(id, doc) {
-    logger.info(`METHOD[${this.userId}]: surveys.update`, id);
+    logger.info(`METHOD[${this.userId}]: surveys.update`, id, doc);
 
     // TODO: permissions
     check(id, String);
@@ -144,7 +144,7 @@ Meteor.methods({
 
   'surveys.upload'(id) {
     const hc = HmisClient.create(Meteor.userId());
-    const survey = Surveys.findOne(id);
+    const survey = updateDefinitionFromDoc(Surveys.findOne(id));
     const definition = JSON.parse(survey.definition);
     let hmis;
     let surveyId;

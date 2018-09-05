@@ -21,7 +21,7 @@ Template.surveyForm.helpers({
   },
 
   fields() {
-    return ['title', 'locked', 'definition'];
+    return ['title', 'locked', 'definition', 'hudSurvey', 'surveyVersion'];
   },
 });
 
