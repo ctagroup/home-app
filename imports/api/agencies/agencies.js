@@ -35,6 +35,11 @@ Agencies.schema = new SimpleSchema({
     type: [ProjectMembershipSchema],
     optional: true,
   },
+  enrollmentSurveys: {
+    type: Object,
+    blackbox: true,
+    defaultValue: {},
+  },
   createdAt: {
     type: Date,
     label: 'Created At',

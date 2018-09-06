@@ -17,6 +17,13 @@ const tableOptions = {
       title: 'Responses',
     },
     {
+      data: 'hudSurvey',
+      title: 'Type',
+      render(value, op, doc) {
+        return value ? `HUD ${doc.surveyVersion}` : '';
+      },
+    },
+    {
       data: 'hmis',
       title: 'Status',
       render(value) {
