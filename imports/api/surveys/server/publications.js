@@ -6,7 +6,7 @@ import SurveyQuestionsMaster from '/imports/api/surveys/surveyQuestionsMaster';
 import { updateDocFromDefinition } from '/imports/api/surveys/helpers';
 
 
-Meteor.publish('surveys.all', function publishAllSurveys() {
+Meteor.publish('surveys.all', function publishAllSurveys(/* params = {} */) {
   logger.info(`PUB[${this.userId}]: surveys.all`);
 
   const hc = HmisClient.create(this.userId);

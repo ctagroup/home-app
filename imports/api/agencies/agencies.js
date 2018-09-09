@@ -82,31 +82,43 @@ Agencies.helpers({
       .map(m => m.projectId);
   },
   getProjectsWithEnrollmentSurvey(surveyId) {
-    // TODO: implement real logic
+    return Object.keys(this.enrollmentSurveys).map(([key, value]) => {
+      if (value && value.type) {
+        return { projectId: [key.slice(1)], type: value.type, projectSchema: value.schema };
+      }
+      return false;
+    })
+    .filter(value => !!value)
+    .map(({ projectId, projectSchema, type }) =>
+      ['entry', 'update', 'exit'].map(enrollmentType => (
+        { projectId, projectSchema, enrollmentType, surveyId: type[enrollmentType].type }
+      )))
+    .reduce((acc, val) => acc.concat(val), [])
+    .filter(p => p.surveyId === surveyId);
 
-    if (surveyId === '1888eb2d-0eac-4fce-88c4-229895027541') { // Enrollment #1 survey
-      return [
-        {
-          // v2017 project
-          projectId: '43262c8c-39ac-4224-8679-e9858451831b',
-          projectSchema: 'v2017',
-          enrollmentType: 'entry',
-        },
-        {
-          // v2017 project
-          projectId: '43262c8c-39ac-4224-8679-e9858451831b',
-          projectSchema: 'v2017',
-          enrollmentType: 'update',
-        },
-        {
-          // v2017 project
-          projectId: '43262c8c-39ac-4224-8679-e9858451831b',
-          projectSchema: 'v2017',
-          enrollmentType: 'exit',
-        },
-      ];
-    }
-    return [];
+    // if (surveyId === '1888eb2d-0eac-4fce-88c4-229895027541') { // Enrollment #1 survey
+    //   return [
+    //     {
+    //       // v2017 project
+    //       projectId: '43262c8c-39ac-4224-8679-e9858451831b',
+    //       projectSchema: 'v2017',
+    //       enrollmentType: 'entry',
+    //     },
+    //     {
+    //       // v2017 project
+    //       projectId: '43262c8c-39ac-4224-8679-e9858451831b',
+    //       projectSchema: 'v2017',
+    //       enrollmentType: 'update',
+    //     },
+    //     {
+    //       // v2017 project
+    //       projectId: '43262c8c-39ac-4224-8679-e9858451831b',
+    //       projectSchema: 'v2017',
+    //       enrollmentType: 'exit',
+    //     },
+    //   ];
+    // }
+    // return [];
   },
 });
 
