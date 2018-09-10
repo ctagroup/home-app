@@ -345,12 +345,12 @@
               <div class="row">
                 <div class="col-xs-12">
                   <h3>Start enrollment</h3>
+                  <h4>for project: </h4>
+                  <!-- Select Project -->
+                  {{> dropdownHelper store=selectedProjectStore options=projects key='selectedProject' placeholder='Select project'}}
                   {{#if selectedProjectId}}
                     <!-- Render Enrollment survey for Project: -->
-                    {{> enrollmentForm step='start' projectId=selectedProjectId }}
-                  {{else}}
-                    <!-- Select Project -->
-                    {{> dropdownHelper store=selectedProjectStore options=projects key='selectedProject' placeholder='Select project'}}
+                    {{> enrollmentsNew projectId=selectedProjectId surveyId=projectEntrySurveyId }}
                   {{/if}}
                 </div>
               </div>        

@@ -81,10 +81,10 @@ Agencies.helpers({
       .filter(m => m.userId === userId)
       .map(m => m.projectId);
   },
-  getProjectSurvey(projectId, type) {
-    const [survey] = Object.entries(this.enrollmentSurveys)
+  getProjectSurveyId(projectId, type) {
+    const survey = Object.entries(this.enrollmentSurveys)
     .find(([key, value]) => {
-      if (key.slice(8) !== projectId) return false;
+      if (key.slice(7) !== projectId) return false;
       return !!value[type];
     });
     return survey && survey[1] && survey[1][type];
@@ -92,7 +92,7 @@ Agencies.helpers({
   getProjectsWithEnrollmentSurvey(surveyId) {
     return Object.entries(this.enrollmentSurveys)
     .map(([key, value]) => {
-      const [projectSchema, projectId] = key.slice(1).split('::');
+      const [projectSchema, projectId] = key.split('::');
       return ['entry', 'update', 'exit'].map(enrollmentType => (
         { projectId, projectSchema, enrollmentType, surveyId: value[enrollmentType] }
       ));

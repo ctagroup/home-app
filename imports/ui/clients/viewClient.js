@@ -15,7 +15,7 @@ import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 import './clientDeleteReason.js';
 import './manageClientEnrollments.html';
 import './viewClient.html';
-import '../enrollments/enrollmentForm.js';
+import '../enrollments/enrollmentsNew';
 import '../enrollments/dropdownHelper.js';
 
 const flattenKeyVersions = (client, key) => {
@@ -71,6 +71,16 @@ Template.viewClient.helpers(
     },
     selectedProjectId() {
       return Template.instance().selectedProject.get();
+    },
+    projectEntrySurveyId() {
+      const projectId = Template.instance().selectedProject.get();
+      if (projectId) {
+        const agencies = Agencies.find().fetch();
+        const selectedAgency =
+          agencies.find((agency) => agency.getProjectSurveyId(projectId, 'entry'));
+        return selectedAgency && selectedAgency.getProjectSurveyId(projectId, 'entry');
+      }
+      return false;
     },
     projects() {
       const allProjects = Agencies.find().fetch()
