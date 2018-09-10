@@ -3,6 +3,8 @@ import { Clients } from '/imports/api/clients/clients';
 import Users from '/imports/api/users/users';
 import { RecentClients } from '/imports/api/recent-clients';
 import Questions from '/imports/api/questions/questions';
+import Agencies from '/imports/api/agencies/agencies';
+import Projects from '/imports/api/projects/projects';
 import { logger } from '/imports/utils/logger';
 import ReferralStatusList from './referralStatusList';
 import HomeConfig from '/imports/config/homeConfig';
@@ -14,6 +16,7 @@ import './clientDeleteReason.js';
 import './manageClientEnrollments.html';
 import './viewClient.html';
 import '../enrollments/enrollmentForm.js';
+import '../enrollments/dropdownHelper.js';
 
 const flattenKeyVersions = (client, key) => {
   const keyVersions = client.clientVersions
@@ -63,6 +66,28 @@ const updateEligibility = (client) => {
 
 Template.viewClient.helpers(
   {
+    selectedProjectStore() {
+      return Template.instance().selectedProject;
+    },
+    selectedProjectId() {
+      return Template.instance().selectedProject.get();
+    },
+    projects() {
+      const allProjects = Agencies.find().fetch()
+      .reduce((all, agency) => {
+        const projectsIds = agency.projectsOfUser(Meteor.userId());
+        const agencyProjects = projectsIds.map(projectId => ({
+          agency,
+          project: Projects.findOne(projectId) || { _id: projectId },
+        }));
+        return [...all, ...agencyProjects];
+      }, []);
+
+      return allProjects.map(({ agency, project }) => ({
+        id: project._id,
+        label: `${agency.agencyName}/${project.projectName || project._id}`,
+      }));
+    },
     eligibleClient() {
       // TODO [VK]: check by updated at instead of schema version
       const currentClientId = Router.current().params._id;
@@ -356,6 +381,7 @@ Template.viewClient.events(
 
 Template.viewClient.onCreated(function onCreated() {
   this.selectedTab = new ReactiveVar('panel-overview');
+  this.selectedProject = new ReactiveVar(false);
 });
 
 Template.viewClient.onRendered(() => {
