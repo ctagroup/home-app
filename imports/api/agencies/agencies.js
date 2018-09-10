@@ -81,18 +81,22 @@ Agencies.helpers({
       .filter(m => m.userId === userId)
       .map(m => m.projectId);
   },
+  getProjectSurvey(projectId, type) {
+    const [survey] = Object.entries(this.enrollmentSurveys)
+    .find(([key, value]) => {
+      if (key.slice(8) !== projectId) return false;
+      return !!value[type];
+    });
+    return survey && survey[1] && survey[1][type];
+  },
   getProjectsWithEnrollmentSurvey(surveyId) {
-    return Object.keys(this.enrollmentSurveys).map(([key, value]) => {
-      if (value && value.type) {
-        return { projectId: [key.slice(1)], type: value.type, projectSchema: value.schema };
-      }
-      return false;
+    return Object.entries(this.enrollmentSurveys)
+    .map(([key, value]) => {
+      const [projectSchema, projectId] = key.slice(1).split('::');
+      return ['entry', 'update', 'exit'].map(enrollmentType => (
+        { projectId, projectSchema, enrollmentType, surveyId: value[enrollmentType] }
+      ));
     })
-    .filter(value => !!value)
-    .map(({ projectId, projectSchema, type }) =>
-      ['entry', 'update', 'exit'].map(enrollmentType => (
-        { projectId, projectSchema, enrollmentType, surveyId: type[enrollmentType].type }
-      )))
     .reduce((acc, val) => acc.concat(val), [])
     .filter(p => p.surveyId === surveyId);
 

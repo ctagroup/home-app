@@ -97,11 +97,10 @@ export function formSchema(doc = {}) {
         })),
       };
 
-      const projectKey = `enrollmentSurveys._${projectId}`;
+      const projectKey = `enrollmentSurveys._${project.schema}::${projectId}`;
       definition[projectKey] = {
         optional: true,
         label: `${project.projectName} (${project.schema})`,
-        schema: project.schema,
         type: new SimpleSchema({
           entry: {
             type: String,
