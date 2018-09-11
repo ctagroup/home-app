@@ -12,12 +12,20 @@ Template.surveyFormBuilder.helpers({
   },
 
   questions() {
+    const getDefinition = (definition) => {
+      if (typeof definition === 'string') {
+        return JSON.parse(definition);
+      }
+      return definition;
+    };
     return (this.questions || [])
       .map(q => {
         try {
           return {
-            ...JSON.parse(q.definition),
+            ...getDefinition(q.definition),
             hmisId: q.questionId,
+            schema: q.schema,
+            hudQuestion: q.hudQuestion,
           };
         } catch (e) {
           return null;

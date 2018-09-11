@@ -383,6 +383,7 @@ export default class SurveyBuilder extends React.Component {
       isOpen={this.state.questionModalIsOpen}
       handleClose={this.handleCloseQuestionModal}
       questions={this.getUnusedQuestions()}
+      hudSurvey={this.props.survey.hudSurvey}
     />);
   }
 

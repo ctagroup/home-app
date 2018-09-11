@@ -425,6 +425,10 @@ export class ClientApi extends ApiEndpoint {
     const url = `${BASE_URL}/${schema}/questions?startIndex=${start}&maxItems=${limit}`;
     return this.doGet(url).questions.questions;
   }
+  getV2Questions(schema = DEFAULT_PROJECT_SCHEMA, start = 0, limit = 9999) {
+    const url = `${BASE_URL}/${schema}/v2/questions?startIndex=${start}&maxItems=${limit}`;
+    return this.doGet(url).questions.questions;
+  }
 }
 
 HmisApiRegistry.addApi('client', ClientApi);

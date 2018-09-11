@@ -20,18 +20,28 @@ export default class QuestionModal extends React.Component {
     super();
     this.state = {
       searchString: '',
+      hudQuestionsOnly: false,
     };
     this.handleSeachChange = this.handleSeachChange.bind(this);
+    this.triggerHUD = this.triggerHUD.bind(this);
   }
 
   handleSeachChange(event) {
     this.setState({ searchString: event.target.value });
   }
 
+  triggerHUD() {
+    this.setState({ hudQuestionsOnly: !this.state.hudQuestionsOnly });
+  }
+
   render() {
-    const filteredQuestions = this.props.questions.filter(
+    // TODO: other schema versions select
+    let filteredQuestions = this.props.questions.filter(
       q => stringContains(q.title, this.state.searchString)
     );
+    if (this.props.hudSurvey && this.state.hudQuestionsOnly) {
+      filteredQuestions = filteredQuestions.filter(q => q.hudQuestion);
+    }
     const items = filteredQuestions.map(q => (
       <li key={q.hmisId}>
         <button onClick={(event) => this.props.handleClose(event, q)}>Add</button>
@@ -47,6 +57,17 @@ export default class QuestionModal extends React.Component {
       >
         <h2>Add Question</h2>
         <p>Add a question from Question Bank.
+          {this.props.hudSurvey && <span>
+            <label>
+              HUD only:
+              <input
+                type="checkbox"
+                value={this.state.hudQuestionsOnly}
+                onChange={this.triggerHUD}
+              />
+            </label>
+            {this.state.hudQuestionsOnly && <select><option>2017</option></select>}
+          </span>}
           <input
             type="text"
             value={this.state.searchString}
