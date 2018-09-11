@@ -8,8 +8,7 @@ import { handleItemTransform } from './helpers';
 
 export default class QuestionItemForm extends React.Component {
   render() {
-    const isDisabled = !!this.props.model.hmisId;
-
+    const isDisabled = !!this.props.model.hmisId && !!this.props.model.enrollment;
     const category = this.props.model.category;
     const choiceFields = category === 'choice' ?
       (<div className="panel panel-default">
@@ -41,7 +40,7 @@ export default class QuestionItemForm extends React.Component {
         <AutoField name="title" />
         <AutoField name="text" />
         <AutoField name="category" disabled={isDisabled} />
-        {choiceFields}
+        {!isDisabled && choiceFields}
         {showMask &&
           <AutoField
             name="mask"

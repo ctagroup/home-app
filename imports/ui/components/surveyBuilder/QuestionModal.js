@@ -36,11 +36,13 @@ export default class QuestionModal extends React.Component {
 
   render() {
     // TODO: other schema versions select
+    const { searchString } = this.state;
     let filteredQuestions = this.props.questions.filter(
-      q => stringContains(q.title, this.state.searchString)
+      q => stringContains(q.title || '', searchString) ||
+        (q.enrollment && stringContains(q.enrollment.uriObjectField || '', searchString))
     );
     if (this.props.hudSurvey && this.state.hudQuestionsOnly) {
-      filteredQuestions = filteredQuestions.filter(q => q.hudQuestion);
+      filteredQuestions = filteredQuestions.filter(q => !!q.enrollment);
     }
     const items = filteredQuestions.map(q => (
       <li key={q.hmisId}>
@@ -56,10 +58,11 @@ export default class QuestionModal extends React.Component {
         style={customStyles}
       >
         <h2>Add Question</h2>
-        <p>Add a question from Question Bank.
+        <p>Add a question from Question Bank
+          ({filteredQuestions.length}/{this.props.questions.length}).
           {this.props.hudSurvey && <span>
+            <br />HUD only:
             <label>
-              HUD only:
               <input
                 type="checkbox"
                 value={this.state.hudQuestionsOnly}

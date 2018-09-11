@@ -73,9 +73,11 @@ export default class SurveyBuilder extends React.Component {
     const nodeProps = this.getTreeProps(this.state.treeData);
     const unusedQuestions = this.props.questions.filter(
       // don't show questions already added to the survey
+      // FIXME: doesn't work after adding hud questions
       q => !(nodeProps[q._id] && nodeProps[q._id].isFromBank)
     );
-    return unusedQuestions;
+    return this.props.questions;
+    // return unusedQuestions;
   }
 
   addSectionToDefinition() {
@@ -306,6 +308,7 @@ export default class SurveyBuilder extends React.Component {
   }
 
   handleCloseQuestionModal(event, question) {
+    console.log('handleCloseQuestionModal', event, question);
     let addedQuestion;
     if (question === null) {
       const newQuestion = {
@@ -335,7 +338,7 @@ export default class SurveyBuilder extends React.Component {
     };
     const { uploadToHmis } = this.state;
     this.setState({ isUploading: true });
-    Meteor.call('surveys.update', surveyId, updateDoc, uploadToHmis, (err) => {
+    Meteor.call('surveys.update', surveyId, updateDoc, uploadToHmis || true, (err) => {
       this.setState({ isUploading: false });
       if (err) {
         Alert.error(err);
@@ -466,6 +469,7 @@ export default class SurveyBuilder extends React.Component {
         </div>
         {this.renderQuestionModal()}
         {this.renderSurveyInfo()}
+        {/*
         <div>
           <label>
             <input
@@ -476,6 +480,7 @@ export default class SurveyBuilder extends React.Component {
             Upload Survey and new questions to HMIS
           </label>
         </div>
+        */}
         <button
           className="btn btn-primary"
           onClick={this.handleSaveFormDefinition}

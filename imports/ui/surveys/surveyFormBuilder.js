@@ -12,26 +12,55 @@ Template.surveyFormBuilder.helpers({
   },
 
   questions() {
-    const getDefinition = (definition) => {
-      if (typeof definition === 'string') {
-        return JSON.parse(definition);
+    const getDefinition = (q) => {
+      if (typeof q.definition === 'string') {
+        const definition = JSON.parse(q.definition);
+        return definition;
       }
-      return definition;
+      return q.definition;
     };
-    return (this.questions || [])
+
+    const allQuestions = (this.questions || [])
       .map(q => {
         try {
+          const definition = getDefinition(q);
+          const hmisQuestionTypes = {
+            STRING: 'text',
+            INTEGER: 'number',
+            DROPDOWN: 'choice',
+            CURRENCY: 'currency',
+            DATE: 'date',
+          };
+
+          const category = hmisQuestionTypes[q.questionType];
+
+          // import HUD question definition
+          if (q.hudQuestion) {
+            return {
+              hmisId: q.questionId,
+              title: q.displayText,
+              type: 'question',
+              category,
+              options: q.options,
+              enrollment: {
+                schema: q.schema,
+                uriObjectField: q.uriObjectField,
+                updateUriTemplate: q.updateUriTemplate,
+              },
+            };
+          }
+
+          // import survey question definition
           return {
-            ...getDefinition(q.definition),
+            ...definition,
             hmisId: q.questionId,
-            schema: q.schema,
-            hudQuestion: q.hudQuestion,
           };
         } catch (e) {
           return null;
         }
       })
       .filter(q => q !== null);
+    return allQuestions;
   },
 
   schema() {
