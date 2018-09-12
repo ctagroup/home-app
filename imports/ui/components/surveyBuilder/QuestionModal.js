@@ -26,6 +26,17 @@ export default class QuestionModal extends React.Component {
     this.triggerHUD = this.triggerHUD.bind(this);
   }
 
+  getChoiceLabels(question) {
+    let labels;
+    try {
+      labels = question.category === 'choice' ?
+        Object.values(question.options) : [];
+    } catch (err) {
+      labels = Array.isArray(question.options) ? question.options : [];
+    }
+    return labels;
+  }
+
   handleSeachChange(event) {
     this.setState({ searchString: event.target.value });
   }
@@ -38,18 +49,28 @@ export default class QuestionModal extends React.Component {
     // TODO: other schema versions select
     const { searchString } = this.state;
     let filteredQuestions = this.props.questions.filter(
-      q => stringContains(q.title || '', searchString) ||
-        (q.enrollment && stringContains(q.enrollment.uriObjectField || '', searchString))
+      q => {
+        // if (q.title === 'Living Situation') {
+        //   console.log('qqqq', q);
+        // }
+        const inTitle = stringContains(q.title || '', searchString);
+        const inUriObjectField = q.enrollment
+          && stringContains(q.enrollment.uriObjectField || '', searchString);
+        const inOptions = stringContains(this.getChoiceLabels(q).join('---'), searchString);
+        return inTitle || inUriObjectField || inOptions;
+      }
     );
     if (this.props.hudSurvey && this.state.hudQuestionsOnly) {
       filteredQuestions = filteredQuestions.filter(q => !!q.enrollment);
     }
     const items = filteredQuestions.map(q => (
       <li key={q.hmisId}>
-        <button onClick={(event) => this.props.handleClose(event, q)}>Add</button>
-        <span>{q.title}</span>
+        <button onClick={(event) => this.props.handleAddQuestion(event, q, false)}>Add</button>
+        <strong> {q.title}</strong> ({q.category})<br />
+        <em>{q.enrollment && q.enrollment.uriObjectField} {this.getChoiceLabels(q).join(' ')}</em>
       </li>
     ));
+    // .sort((a, b) => a.title < b.title);
 
     return (
       <Modal
@@ -82,9 +103,15 @@ export default class QuestionModal extends React.Component {
         or
         <button
           className="btn btn-primary"
-          onClick={(event) => this.props.handleClose(event, null)}
+          onClick={(event) => this.props.handleAddQuestion(event, null, true)}
         >
           Add new question
+        </button>
+        <button
+          className="btn btn-default"
+          onClick={(event) => this.props.handleClose(event)}
+        >
+          Close
         </button>
       </Modal>
     );

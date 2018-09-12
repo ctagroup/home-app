@@ -37,6 +37,7 @@ Template.surveyFormBuilder.helpers({
           // import HUD question definition
           if (q.hudQuestion) {
             return {
+              id: q.uriObjectField,
               hmisId: q.questionId,
               title: q.displayText,
               type: 'question',

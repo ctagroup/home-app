@@ -46,7 +46,7 @@ Meteor.publish('surveys.one', function publishOneSurvey(_id) {
   const hc = HmisClient.create(this.userId);
   const survey = hc.api('survey2').getSurvey(_id);
 
-  this.added('surveys', survey.surveyId, updateDocFromDefinition({
+  const doc = updateDocFromDefinition({
     title: survey.surveyTitle,
     locked: survey.locked,
     definition: survey.surveyDefinition,
@@ -55,7 +55,9 @@ Meteor.publish('surveys.one', function publishOneSurvey(_id) {
       surveyId: survey.surveyId,
       status: 'uploaded',
     },
-  }));
+  });
+
+  this.added('surveys', survey.surveyId, doc);
   return this.ready();
 });
 

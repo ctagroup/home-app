@@ -2,7 +2,9 @@ import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
 import { getScoringVariables, iterateItems } from '/imports/api/surveys/computations';
 import Surveys from '/imports/api/surveys/surveys';
-import { mapUploadedSurveySections, updateDefinitionFromDoc } from '/imports/api/surveys/helpers';
+import {
+  mapUploadedSurveySections,
+  updateDefinitionFromDoc, updateDocFromDefinition } from '/imports/api/surveys/helpers';
 
 Meteor.methods({
   'surveys.create'(doc) {
@@ -34,7 +36,11 @@ Meteor.methods({
     let tempId;
     let uploadedSurvey;
     try {
-      uploadedSurvey = hc.api('survey2').getSurvey(id);
+      const survey = hc.api('survey2').getSurvey(id);
+      uploadedSurvey = updateDocFromDefinition({
+        ...survey,
+        definition: survey.surveyDefinition,
+      });
     } catch (err) {
       uploadedSurvey = {
         surveyTitle: 'temp survey',
@@ -51,6 +57,8 @@ Meteor.methods({
         hmis: {
           surveyId: uploadedSurvey ? id : undefined,
         },
+        hudSurvey: uploadedSurvey.hudSurvey,
+        surveyVersion: uploadedSurvey.surveyVersion,
       });
     } else {
       // survey updated via edit form

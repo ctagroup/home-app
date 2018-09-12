@@ -34,6 +34,7 @@ export default class SurveyBuilder extends React.Component {
       uploadToHmis: false,
       isUploading: false,
     };
+    this.handleAddQuestion = this.handleAddQuestion.bind(this);
     this.addSectionToDefinition = this.addSectionToDefinition.bind(this);
     this.addScoreToDefinition = this.addScoreToDefinition.bind(this);
     this.addTextToDefinition = this.addTextToDefinition.bind(this);
@@ -72,12 +73,12 @@ export default class SurveyBuilder extends React.Component {
   getUnusedQuestions() {
     const nodeProps = this.getTreeProps(this.state.treeData);
     const unusedQuestions = this.props.questions.filter(
-      // don't show questions already added to the survey
+      // don't shw questions already added to the survey
       // FIXME: doesn't work after adding hud questions
       q => !(nodeProps[q._id] && nodeProps[q._id].isFromBank)
     );
-    return this.props.questions;
-    // return unusedQuestions;
+    // return this.props.questions;
+    return unusedQuestions;
   }
 
   addSectionToDefinition() {
@@ -295,6 +296,10 @@ export default class SurveyBuilder extends React.Component {
     this.setState({ inspectedItem: null });
   }
 
+  handleCloseQuestionModal() {
+    this.setState({ questionModalIsOpen: false });
+  }
+
   handleTreeChange(treeData) {
     const definition = this.treeToDefinition(treeData, this.state.definition);
     this.setState({
@@ -307,8 +312,8 @@ export default class SurveyBuilder extends React.Component {
     this.setState({ questionModalIsOpen: true });
   }
 
-  handleCloseQuestionModal(event, question) {
-    console.log('handleCloseQuestionModal', event, question);
+  handleAddQuestion(event, question, closeModal) {
+    console.log('handleAddQuestion', event, question);
     let addedQuestion;
     if (question === null) {
       const newQuestion = {
@@ -319,11 +324,15 @@ export default class SurveyBuilder extends React.Component {
       };
       addedQuestion = this.addQuestionToDefinition(newQuestion);
     } else {
-      addedQuestion = this.addQuestionToDefinition(question);
+      addedQuestion = this.addQuestionToDefinition({
+        ...question,
+        // id: generateItemId(question.id || 'question', this.state.definition),
+      });
     }
+
     this.setState({
-      questionModalIsOpen: false,
-      inspectedItem: addedQuestion,
+      questionModalIsOpen: !closeModal,
+      inspectedItem: closeModal ? addedQuestion : this.state.inspectedItem,
     });
   }
 
@@ -384,6 +393,7 @@ export default class SurveyBuilder extends React.Component {
   renderQuestionModal() {
     return (<QuestionModal
       isOpen={this.state.questionModalIsOpen}
+      handleAddQuestion={this.handleAddQuestion}
       handleClose={this.handleCloseQuestionModal}
       questions={this.getUnusedQuestions()}
       hudSurvey={this.props.survey.hudSurvey}
