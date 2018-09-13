@@ -427,7 +427,16 @@ export class ClientApi extends ApiEndpoint {
   }
   getV2Questions(schema = DEFAULT_PROJECT_SCHEMA, start = 0, limit = 9999) {
     const url = `${BASE_URL}/${schema}/v2/questions?startIndex=${start}&maxItems=${limit}`;
-    return this.doGet(url).questions.questions;
+
+    const { pagination, questions } = this.doGet(url).questions;
+    const remaining = limit - pagination.returned;
+    if (remaining > 0 && pagination.returned > 0) {
+      return [
+        ...questions,
+        ...this.getV2Questions(schema, pagination.from + pagination.returned, remaining),
+      ];
+    }
+    return questions;
   }
 }
 

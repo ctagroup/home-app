@@ -13,6 +13,7 @@ Meteor.publish('questions.hud', function publishHudQuestions(schema = 'v2017') {
 
   const hc = HmisClient.create(this.userId);
   const questions = hc.api('client').getV2Questions(schema);
+  logger.debug('# HUD questions', questions.length);
   if (stopFunction) return;
   questions.forEach(q =>
     this.added('questions', q.questionId, { ...q, schema, hudQuestion: true }));
