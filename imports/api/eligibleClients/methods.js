@@ -36,8 +36,11 @@ Meteor.methods({
               eligibleClient.ignoreMatchProcess = ignoreMatchProcess;
               eligibleClient.remarks = remarks;
               delete eligibleClient.links;
-              hc.api('house-matching').updateEligibleClient(eligibleClient);
-
+              if (eligibleClient.clientDedupId) {
+                hc.api('house-matching').v3updateEligibleClient(eligibleClient);
+              } else {
+                hc.api('house-matching').updateEligibleClient(eligibleClient);
+              }
               // return updated eligible client object to the client
               eligibleClientOutput = eligibleClient;
             } catch (e) {

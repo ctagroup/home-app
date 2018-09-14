@@ -33,6 +33,11 @@ class HouseMatchingApi extends ApiEndpoint {
     return this.doPut(url, client);
   }
 
+  v3updateEligibleClient(client) {
+    const url = `${BASE_URL}/v3/eligibleclients/${client.clientDedupId}`;
+    return this.doPut(url, client);
+  }
+
   getHousingMatches(pageNumber = 0, size = 9999) {
     const url = `${BASE_URL}/matches?page=${pageNumber}&size=${size}`;
     const response = this.doGet(url);
