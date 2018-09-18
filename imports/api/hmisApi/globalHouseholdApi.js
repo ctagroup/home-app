@@ -49,8 +49,9 @@ class GlobalHouseHoldApi extends ApiEndpoint {
   }
 
   getHouseholds(page = 0, limit = 30) {
-    const url = `${BASE_URL}/global-households?page=${page}&limit=${limit}`;
+    const url = `${BASE_URL}/generic-households?page=${page}&limit=${limit}`;
     const response = this.doGet(url);
+    console.log(response);
     let globalHouseholds = response.content;
     if (response.page.number < response.page.totalPages - 1) {
       globalHouseholds = _.union(
@@ -62,7 +63,7 @@ class GlobalHouseHoldApi extends ApiEndpoint {
   }
 
   getHousehold(householdId) {
-    const url = `${BASE_URL}/global-households/${householdId}`;
+    const url = `${BASE_URL}/generic-households/${householdId}`;
     return this.doGet(url);
   }
 
