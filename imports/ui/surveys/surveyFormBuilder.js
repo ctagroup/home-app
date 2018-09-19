@@ -42,7 +42,7 @@ Template.surveyFormBuilder.helpers({
               title: q.displayText,
               type: 'question',
               category,
-              options: q.options,
+              options: q.definition.options,
               enrollment: {
                 schema: q.schema,
                 uriObjectField: q.uriObjectField,
