@@ -46,7 +46,7 @@ export const getClientEnrollments = (hc, clientId, schema, stopFunction) => {
       clientId, enrollments[i].enrollmentId, schema
     );
     enrollments[i].exits = exits.length ? exits[0] : false;
-    enrollments[i].project = hc.api('client').getProject(enrollments[i].projectid, schema);
+    enrollments[i].project = hc.api('client').getProject(enrollments[i].projectId, schema);
   }
   return enrollments;
 };

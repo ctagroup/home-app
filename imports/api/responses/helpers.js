@@ -25,12 +25,14 @@ export class EnrollmentUploader {
 
     const data = {};
     const definition = JSON.parse(this.survey.surveyDefinition);
-    iterateItems(definition, (item) => {
-      const { enrollment } = item;
-
+    iterateItems(definition, ({ enrollment, id }) => {
       if (!enrollment) return;
 
-      const { uriObject, uriObjectField, updateUriTemplate } = enrollment;
+      const { updateUriTemplate } = enrollment;
+      let { uriObjectField } = enrollment;
+
+      let uriObject = '';
+      [uriObject, uriObjectField] = uriObjectField.split('.');
 
       if (!updateUriTemplate || !uriObject || !uriObjectField) return;
 
@@ -44,15 +46,15 @@ export class EnrollmentUploader {
         switch (uriObject) {
           case 'enrollment':
             data[uri][uriObject] = {
-              projectid: projectId,
+              projectId,
             };
             break;
           default:
             data[uri][uriObject] = {};
         }
       }
-      if (item.enrollment.schema === clientSchema) {
-        data[uri][uriObject][uriObjectField] = values[item.id] || 99;
+      if (enrollment.schema === clientSchema) {
+        data[uri][uriObject][uriObjectField] = values[id] || 99;
       } else {
         data[uri][uriObject][uriObjectField] = 99;
       }
