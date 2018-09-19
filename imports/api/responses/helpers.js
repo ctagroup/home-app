@@ -46,7 +46,7 @@ export class EnrollmentUploader {
         switch (uriObject) {
           case 'enrollment':
             data[uri][uriObject] = {
-              projectid: projectId,
+              projectId,
             };
             break;
           default:

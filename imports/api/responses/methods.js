@@ -142,9 +142,10 @@ Meteor.methods({
     // VK: waiting for this assoc (survey-project) to be saved somewhere, note that si....
     const dataToSend = enrollmentUploader.questionResponsesToData(activeProjectId);
     const sortedData = enrollmentUploader.dataOrderedByUrlVariables(dataToSend);
+    logger.debug('sorted', sortedData);
     const result = enrollmentUploader.upload(sortedData, hc.api('client'));
 
-    console.log(result);
+    logger.debug('enrollment upload result', result);
 
     Responses.update(id, {
       $set: {
