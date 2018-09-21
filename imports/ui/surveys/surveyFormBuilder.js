@@ -44,6 +44,7 @@ Template.surveyFormBuilder.helpers({
               category,
               options: q.definition.options,
               enrollment: {
+                hudQuestionId: q.hudQuestionId,
                 schema: q.schema,
                 uriObjectField: q.uriObjectField,
                 updateUriTemplate: q.updateUriTemplate,
@@ -61,6 +62,7 @@ Template.surveyFormBuilder.helpers({
         }
       })
       .filter(q => q !== null);
+    console.log('allQuestions', allQuestions.length);
     return allQuestions;
   },
 

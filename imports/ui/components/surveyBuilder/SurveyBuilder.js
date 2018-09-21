@@ -71,14 +71,14 @@ export default class SurveyBuilder extends React.Component {
   }
 
   getUnusedQuestions() {
-    const nodeProps = this.getTreeProps(this.state.treeData);
-    const unusedQuestions = this.props.questions.filter(
-      // don't shw questions already added to the survey
-      // FIXME: doesn't work after adding hud questions
-      q => !(nodeProps[q._id] && nodeProps[q._id].isFromBank)
-    );
-    // return this.props.questions;
-    return unusedQuestions;
+    // const nodeProps = this.getTreeProps(this.state.treeData);
+    // const unusedQuestions = this.props.questions.filter(
+    //   // don't shw questions already added to the survey
+    //   // FIXME: doesn't work after adding hud questions
+    //   q => !(nodeProps[q._id] && nodeProps[q._id].isFromBank)
+    // );
+    // return unusedQuestions;
+    return this.props.questions;
   }
 
   addSectionToDefinition() {

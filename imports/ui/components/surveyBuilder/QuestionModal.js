@@ -56,8 +56,10 @@ export default class QuestionModal extends React.Component {
         const inTitle = stringContains(q.title || '', searchString);
         const inUriObjectField = q.enrollment
           && stringContains(q.enrollment.uriObjectField || '', searchString);
+        const inHudQuestionId = q.enrollment
+          && stringContains(q.enrollment.hudQuestionId, searchString);
         const inOptions = stringContains(this.getChoiceLabels(q).join('---'), searchString);
-        return inTitle || inUriObjectField || inOptions;
+        return inTitle || inUriObjectField || inOptions || inHudQuestionId;
       }
     );
     if (this.props.hudSurvey && this.state.hudQuestionsOnly) {
@@ -66,11 +68,13 @@ export default class QuestionModal extends React.Component {
     const items = filteredQuestions.map(q => (
       <li key={q.hmisId}>
         <button onClick={(event) => this.props.handleAddQuestion(event, q, false)}>Add</button>
-        <strong> {q.title}</strong> ({q.category})<br />
+        <strong> {q.title}</strong>
+        ({q.category}) {q.enrollment ? q.enrollment.hudQuestionId : null}<br />
         <em>{q.enrollment && q.enrollment.uriObjectField} {this.getChoiceLabels(q).join(' ')}</em>
       </li>
     ));
     // .sort((a, b) => a.title < b.title);
+    console.log(this.props.questions);
 
     return (
       <Modal
