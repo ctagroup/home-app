@@ -10,13 +10,30 @@ export class EnrollmentUploader {
     this.survey = survey;
   }
 
-  getCreateUriTemplateFromUpdateUriTemplate(updateUriTemplate) {
-    const parts = updateUriTemplate.split('/');
-    const lastPart = parts.pop();
-    if (lastPart.startsWith('{') && lastPart.endsWith('}')) {
-      return parts.join('/');
+  getPostOrPutUri(uri) {
+    // we are simply counting /{abcd} here
+    // in the future, more complex regex may be required
+    const regex = /\/\{.+?\}/g;
+    const numberOfUnresolvedVariables = (uri.match(regex) || []).length;
+
+    if (numberOfUnresolvedVariables === 0) {
+      return {
+        postUri: null,
+        putUri: uri,
+      };
     }
-    return updateUriTemplate;
+
+    if (numberOfUnresolvedVariables === 1) {
+      // this is post request
+      return {
+        postUri: uri.replace(regex, ''),
+        putUri: null,
+      };
+    }
+
+    throw new Error(
+      `Got ${numberOfUnresolvedVariables} unresolved variables in ${uri}. Expected 0 or 1`
+    );
   }
 
   questionResponsesToData(projectId) {
@@ -36,7 +53,7 @@ export class EnrollmentUploader {
 
       if (!updateUriTemplate || !uriObject || !uriObjectField) return;
 
-      const uri = this.getCreateUriTemplateFromUpdateUriTemplate(updateUriTemplate);
+      const uri = updateUriTemplate;
 
       if (!data[uri]) {
         data[uri] = {};
@@ -89,7 +106,11 @@ export class EnrollmentUploader {
     let uploadErrorDetails = null;
 
     const responses = uriTemplates.reduce((all, uriTemplate) => {
-      const uri = translateString(uriTemplate, uriTemplateVariables);
+      const translated = translateString(uriTemplate, uriTemplateVariables);
+
+      const { postUri, putUri } = this.getPostOrPutUri(translated);
+      console.log('post/put', postUri, putUri);
+
       const data = sortedData[uriTemplate];
       const uriObject = Object.keys(data).shift();
 
@@ -100,19 +121,23 @@ export class EnrollmentUploader {
 
       try {
         // send data
-        const response = clientApi.postData(uri, data);
+        const response = postUri ?
+          clientApi.postData(postUri, data) : clientApi.putData(putUri, data);
 
         // add object id to template variables to use in successive calls
         const uriObjectId = `${uriObject}Id`;
         const responseObjectId = response[uriObject][uriObjectId];
         uriTemplateVariables[`{${uriObjectId.toLowerCase()}}`] = responseObjectId;
         logger.debug('new vars', uriTemplateVariables);
-        return {
+
+        return postUri ? {
           ...all,
           [uriObject]: {
             id: responseObjectId,
-            deleteUri: `${uri}/${responseObjectId}`,
+            deleteUri: `${postUri}/${responseObjectId}`,
           },
+        } : {
+          ...all,
         };
       } catch (err) {
         uploadErrorDetails = `An error occurred while uploading ${uriObject}: ${err}`;

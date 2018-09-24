@@ -38,7 +38,6 @@ function completedHtml(response, status) {
       html += '<div>Enrollment Uploaded</div>';
     }
   }
-  console.log(html);
   return html;
 }
 
