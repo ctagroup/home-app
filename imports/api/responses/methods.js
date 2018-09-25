@@ -110,14 +110,16 @@ Meteor.methods({
     });
   },
 
-  'responses.uploadEnrollment'(id) {
+  'responses.uploadEnrollment'(id, projectId, dataCollectionStage = 0) {
     logger.info(`METHOD[${this.userId}]: responses.uploadEnrollment`, id);
 
     // TODO: check if projectId and clientId are from the save schema
     const { activeProjectId } = Users.findOne(this.userId);
-    if (!activeProjectId) {
+    if (!projectId && !activeProjectId) {
       throw new Meteor.Error(400, 'Active project not selected');
     }
+
+    const targetProjectId = projectId || activeProjectId;
 
     const response = Responses.findOne(id);
     const { surveyId } = response;
@@ -140,7 +142,10 @@ Meteor.methods({
     // FIXME: we should use project associated with the survey
     // instead of current active user project
     // VK: waiting for this assoc (survey-project) to be saved somewhere, note that si....
-    const dataToSend = enrollmentUploader.questionResponsesToData(activeProjectId);
+    const dataToSend = enrollmentUploader.questionResponsesToData(
+      targetProjectId,
+      dataCollectionStage
+    );
     const sortedData = enrollmentUploader.dataOrderedByUrlVariables(dataToSend);
     logger.debug('sorted', sortedData);
     const result = enrollmentUploader.upload(sortedData, hc.api('client'));

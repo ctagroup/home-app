@@ -36,7 +36,7 @@ export class EnrollmentUploader {
     );
   }
 
-  questionResponsesToData(projectId) {
+  questionResponsesToData(projectId, dataCollectionStage) {
     const { clientSchema } = this.response;
     const values = unescapeKeys(this.response.values);
 
@@ -46,6 +46,7 @@ export class EnrollmentUploader {
       if (!enrollment) return;
 
       const { updateUriTemplate } = enrollment;
+      const defaultObject = enrollment.defaultObject || {};
       let { uriObjectField } = enrollment;
 
       let uriObject = '';
@@ -59,15 +60,18 @@ export class EnrollmentUploader {
         data[uri] = {};
       }
       if (!data[uri][uriObject]) {
-        // provide required defaults to uriObjects
         switch (uriObject) {
           case 'enrollment':
             data[uri][uriObject] = {
+              ...defaultObject,
               projectId,
             };
             break;
           default:
-            data[uri][uriObject] = {};
+            data[uri][uriObject] = {
+              ...defaultObject,
+              dataCollectionStage,
+            };
         }
       }
       if (enrollment.schema === clientSchema) {
