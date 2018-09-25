@@ -27,7 +27,7 @@ export default class Question extends Item {
   getChoiceOptions() {
     const options = this.props.item.options || [];
     if (Array.isArray(options)) {
-      return options.map(o => ({
+      return options.filter(o => !!o).map(o => ({
         value: o.split('|').shift(),
         label: o.split('|').pop(),
       }));
