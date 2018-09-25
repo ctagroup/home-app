@@ -114,12 +114,16 @@ Meteor.methods({
     logger.info(`METHOD[${this.userId}]: responses.uploadEnrollment`, id);
 
     // TODO: check if projectId and clientId are from the save schema
-    const { activeProjectId } = Users.findOne(this.userId);
+    let { activeProjectId } = Users.findOne(this.userId);
     if (!activeProjectId) {
       throw new Meteor.Error(400, 'Active project not selected');
     }
 
     const response = Responses.findOne(id);
+    if (response.enrollmentInfo) {
+      const { projectId } = response.enrollmentInfo;
+      activeProjectId = projectId;
+    }
     const { surveyId } = response;
 
     const hc = HmisClient.create(this.userId);

@@ -10,6 +10,9 @@ Template.enrollmentsNew.onCreated(function onEnrollmentsNew() {
   this.subscribe('surveys.all', () => this.surveyLoaded.set(true));
 });
 Template.enrollmentsNew.helpers({
+  client() {
+    return this.client;
+  },
   surveyLoaded() {
     return Template.instance().surveyLoaded.get();
   },
@@ -30,6 +33,9 @@ Template.enrollmentsNew.helpers({
   },
   surveyId() {
     return this.surveyId;
+  },
+  enrollmentInfo() {
+    return this.enrollmentInfo;
   },
   isAdmin() {
     return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);

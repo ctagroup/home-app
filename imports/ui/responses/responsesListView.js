@@ -38,7 +38,7 @@ function completedHtml(response, status) {
       html += '<div>Enrollment Uploaded</div>';
     }
   }
-  console.log(html);
+  // console.log(html);
   return html;
 }
 
@@ -51,10 +51,7 @@ const tableOptions = {
       render(value, type, doc) {
         const survey = Surveys.findOne({ _id: value });
         const url = Router.path('adminDashboardresponsesEdit', { _id: doc._id });
-        let title = value;
-        if (survey) {
-          title = survey.title;
-        }
+        const title = survey ? survey.title : value;
         return `<a href="${url}">${title}</a>`;
       },
     },

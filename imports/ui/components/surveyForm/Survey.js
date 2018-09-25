@@ -118,6 +118,7 @@ export default class Survey extends React.Component {
       surveyId: this.props.surveyId,
       values: this.state.values,
     };
+    if (this.props.enrollmentInfo) doc.enrollmentInfo = this.props.enrollmentInfo;
     const history = [];
     let newlyCreatedResponseId = null;
 
@@ -227,9 +228,7 @@ export default class Survey extends React.Component {
   renderDebugTable(name, data) {
     const rows = (Object.keys(data || {})).sort().map(v => {
       let text = `${data[v]}`;
-      if (text.length > 50) {
-        text = `${text.substring(0, 47)}...`;
-      }
+      if (text.length > 50) text = `${text.substring(0, 47)}...`;
       return (
         <tr key={`${name}-${v}`}>
           <td>{v}</td>
