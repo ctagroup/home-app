@@ -66,6 +66,22 @@ const updateEligibility = (client) => {
 
 Template.viewClient.helpers(
   {
+    currentClient() {
+      return this;
+    },
+    enrollmentInfo() {
+      const projectId = Template.instance().selectedProject.get();
+      if (!projectId) return {};
+      // const project = Projects.findOne(selectedProjectId);
+      // get agency
+      // get enrollmentSurveys
+      // get enr id
+
+      return {
+        projectId,
+        // enrollmentId: project,
+      };
+    },
     selectedProjectStore() {
       return Template.instance().selectedProject;
     },

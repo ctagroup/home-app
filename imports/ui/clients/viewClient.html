@@ -303,23 +303,32 @@
                       <thead>
                         <tr>
                           <th>Entry Date</th>
+                          <th>Update Date</th>
                           <th>Exit Date</th>
                           <th>Project Name</th>
+                          <th>Update</th>
+                          <th>Exit</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {{#each enrollments}}
+                        {{#each enrollment in enrollments}}
                           <tr>
-                            <td>{{formatDate entrydate}}</td>
+                            <td>{{formatDate enrollment.entrydate}}</td>
                             <td>
                               {{#with exits}}
                                 {{formatDate exitDate}}
                               {{/with}}
                             </td>
                             <td>
-                              {{#with project}}
+                              {{#with enrollment.project}}
                                 <span class="js-tooltip" data-toggle="tooltip" title="{{projectCommonName}}">{{projectName}}</span>
                               {{/with}}
+                            </td>
+                            <td>
+                              <a>Update Enrollment</a>
+                            </td>
+                            <td>
+                              <a>Exit Enrollment</a>
                             </td>
                           </tr>
                         {{/each}}
@@ -327,8 +336,11 @@
                       <tfoot>
                         <tr>
                           <th>Entry Date</th>
+                          <th>Update Date</th>
                           <th>Exit Date</th>
                           <th>Project Name</th>
+                          <th>Update</th>
+                          <th>Exit</th>
                         </tr>
                       </tfoot>
                     </table>
@@ -350,7 +362,7 @@
                   {{> dropdownHelper store=selectedProjectStore options=projects key='selectedProject' placeholder='Select project'}}
                   {{#if selectedProjectId}}
                     <!-- Render Enrollment survey for Project: -->
-                    {{> enrollmentsNew projectId=selectedProjectId surveyId=projectEntrySurveyId }}
+                    {{> enrollmentsNew client=currentClient projectId=selectedProjectId surveyId=projectEntrySurveyId enrollmentInfo=enrollmentInfo }}
                   {{/if}}
                 </div>
               </div>        

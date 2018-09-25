@@ -110,19 +110,27 @@ Meteor.methods({
     });
   },
 
-  'responses.uploadEnrollment'(id, projectId, dataCollectionStage = 0) {
+  'responses.uploadEnrollment'(id) {
     logger.info(`METHOD[${this.userId}]: responses.uploadEnrollment`, id);
 
-    // TODO: check if projectId and clientId are from the save schema
-    const { activeProjectId } = Users.findOne(this.userId);
-    if (!projectId && !activeProjectId) {
-      throw new Meteor.Error(400, 'Active project not selected');
-    }
-
-    const targetProjectId = projectId || activeProjectId;
 
     const response = Responses.findOne(id);
+    let projectId = null;
+    let dataCollectionStage;
+    if (response.enrollmentInfo) {
+      projectId = response.enrollmentInfo.projectId;
+      dataCollectionStage = response.enrollmentInfo.dataCollectionStage || 0;
+    }
     const { surveyId } = response;
+
+
+    if (!projectId) {
+      projectId = Users.findOne(this.userId).activeProjectId;
+    }
+
+    if (!projectId) {
+      throw new Meteor.Error(400, 'Active project not set');
+    }
 
     const hc = HmisClient.create(this.userId);
 
@@ -143,7 +151,7 @@ Meteor.methods({
     // instead of current active user project
     // VK: waiting for this assoc (survey-project) to be saved somewhere, note that si....
     const dataToSend = enrollmentUploader.questionResponsesToData(
-      targetProjectId,
+      projectId,
       dataCollectionStage
     );
     const sortedData = enrollmentUploader.dataOrderedByUrlVariables(dataToSend);
