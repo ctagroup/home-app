@@ -1,4 +1,4 @@
-import moment from 'moment';
+// import moment from 'moment';
 import Enrollments from '/imports/api/enrollments/enrollments';
 import { TableDom } from '/imports/ui/dataTable/helpers';
 import './enrollmentsListView.html';
@@ -24,7 +24,7 @@ const tableOptions = {
     //   data: '',
     //   title: 'Project Name',
     //   render() {
-        
+
     //   },
     // },
     // {
