@@ -88,6 +88,10 @@ Template.viewClient.helpers(
     selectedProjectId() {
       return Template.instance().selectedProject.get();
     },
+    selectedProject() {
+      const selectedProjectId = Template.instance().selectedProject.get();
+      return Projects.findOne(selectedProjectId);
+    },
     projectEntrySurveyId() {
       const projectId = Template.instance().selectedProject.get();
       if (projectId) {
@@ -255,6 +259,15 @@ Template.viewClient.helpers(
 
 Template.viewClient.events(
   {
+    // 'click .updateLink': (evt) => {
+    //   evt.preventDefault();
+    //   const enrollmentId = evt.target.id.slice(2);
+
+    // },
+    // 'click .exitLink': (evt) => {
+    //   evt.preventDefault();
+    //   const enrollmentId = evt.target.id.slice(2);
+    // },
     'click .nav-link': (evt, tmpl) => {
       const tab = evt.target.hash.slice(1);
       tmpl.selectedTab.set(tab);

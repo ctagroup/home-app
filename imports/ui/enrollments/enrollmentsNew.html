@@ -1,5 +1,4 @@
 <template name="enrollmentsNew">
-  <!-- { {> enrollmentForm kind='start'}}  -->
   {{#if surveyLoaded}}
     <div>{{> React
       component=component
@@ -8,6 +7,7 @@
       client=client
       debugMode=isAdmin
       projectId=projectId
+      project=project
       isEnrollment=isEnrollment
       enrollmentInfo=enrollmentInfo
     }}</div>

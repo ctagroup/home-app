@@ -298,6 +298,7 @@
               <div class="row">
                 <div class="col-xs-12">
                   <h3>Enrollments</h3>
+                  {{> enrollmentsListView enrollments=enrollments}}
                   <div class="table-responsive">
                     <table class="table table-hover table-striped">
                       <thead>
@@ -325,10 +326,10 @@
                               {{/with}}
                             </td>
                             <td>
-                              <a>Update Enrollment</a>
+                              <a id="u-{{enrollment.id}}" class="updateLink">Update Enrollment</a>
                             </td>
                             <td>
-                              <a>Exit Enrollment</a>
+                              <a id="e-{{enrollment.id}}" class="exitLink">Exit Enrollment</a>
                             </td>
                           </tr>
                         {{/each}}
@@ -362,7 +363,13 @@
                   {{> dropdownHelper store=selectedProjectStore options=projects key='selectedProject' placeholder='Select project'}}
                   {{#if selectedProjectId}}
                     <!-- Render Enrollment survey for Project: -->
-                    {{> enrollmentsNew client=currentClient projectId=selectedProjectId surveyId=projectEntrySurveyId enrollmentInfo=enrollmentInfo }}
+                    {{> enrollmentsNew 
+                      client=currentClient
+                      projectId=selectedProjectId
+                      project=selectedProject
+                      surveyId=projectEntrySurveyId
+                      enrollmentInfo=enrollmentInfo
+                    }}
                   {{/if}}
                 </div>
               </div>        
