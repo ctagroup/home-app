@@ -110,6 +110,7 @@ export default class Survey extends React.Component {
 
     const surveyType = this.props.definition.type;
 
+
     const doc = {
       clientId,
       clientSchema,
@@ -119,6 +120,7 @@ export default class Survey extends React.Component {
       values: this.state.values,
     };
     if (this.props.enrollmentInfo) doc.enrollmentInfo = this.props.enrollmentInfo;
+    // const isEnrollmentSurvey = this.props.isEnrollment;
     const history = [];
     let newlyCreatedResponseId = null;
 

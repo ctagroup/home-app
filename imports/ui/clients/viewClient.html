@@ -375,7 +375,31 @@
               </div>        
             </div>      
             <!--/.Panel 5.5-->
-
+            {{#if updateEnrolment}}
+              <!--Panel 5.6 Update enrollment -->
+              <div class="tab-pane fade {{#if isActive 'create-enrollment'}}in show active {{else}}no-show{{/if}}" id="panel-enrollments" role="tabpanel">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <h3>Start enrollment</h3>
+                    <h4>for project: </h4>
+                    <!-- Select Project -->
+                    {{> dropdownHelper store=selectedProjectStore options=projects key='selectedProject' placeholder='Select project'}}
+                    {{#if selectedProjectId}}
+                      <!-- Render Enrollment survey for Project: -->
+                      {{> enrollmentsUpdate 
+                        client=currentClient
+                        projectId=selectedProjectId
+                        project=selectedProject
+                        surveyId=projectUpdateSurveyId
+                        enrollmentInfo=enrollmentInfo
+                      }}
+                    {{/if}}
+                  </div>
+                </div>        
+              </div>      
+              <!--/.Panel 5.6-->
+              {{/if}} 
+            
           </div>
          
         </div>

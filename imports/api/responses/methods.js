@@ -179,6 +179,7 @@ Meteor.methods({
 
     const response = Responses.findOne(id);
     const { clientId, surveyId } = response;
+    const { enrollmentInfo } = response;
     const values = unescapeKeys(response.values);
 
     const hc = HmisClient.create(Meteor.userId());
@@ -236,6 +237,8 @@ Meteor.methods({
         status: ResponseStatus.COMPLETED,
         submittedAt: new Date(),
       } });
+      // Uploading enrollment survey as an enrollment:
+      if (enrollmentInfo) Meteor.call('responses.uploadEnrollment', id);
     } catch (e) {
       logger.error(`Response upload ${e}`, e.stack);
       Responses.update(id, { $set: { status: ResponseStatus.UPLOAD_ERROR } });

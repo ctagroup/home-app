@@ -16,6 +16,7 @@ import './clientDeleteReason.js';
 import './manageClientEnrollments.html';
 import './viewClient.html';
 import '../enrollments/enrollmentsNew';
+import '../enrollments/enrollmentsUpdate';
 import '../enrollments/dropdownHelper.js';
 
 const extendQueryWithParam = (query, param, value) => {
@@ -81,6 +82,10 @@ const updateEligibility = (client) => {
 
 Template.viewClient.helpers(
   {
+    updateEnrolment() {
+      // TODO: add reactive var for update state
+      return false;
+    },
     currentClient() {
       return this;
     },
