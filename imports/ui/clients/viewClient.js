@@ -18,6 +18,21 @@ import './viewClient.html';
 import '../enrollments/enrollmentsNew';
 import '../enrollments/dropdownHelper.js';
 
+const extendQueryWithParam = (query, param, value) => {
+  if (query === '') return `?${param}=${value}`;
+  const paramsString = query.startsWith('?') ? query.slice(1) : query;
+  const searchParams = new URLSearchParams(paramsString);
+  searchParams.set(param, value);
+  return `?${searchParams.toString()}`;
+};
+const removeQueryFromParam = (query, param) => {
+  if (query === '') return '';
+  const paramsString = query.startsWith('?') ? query.slice(1) : query;
+  const searchParams = new URLSearchParams(paramsString);
+  searchParams.delete(param);
+  return `?${searchParams.toString()}`;
+};
+
 const flattenKeyVersions = (client, key) => {
   const keyVersions = client.clientVersions
     .map(({ clientId, schema }) => client[`${key}::${schema}::${clientId}`])
@@ -271,6 +286,27 @@ Template.viewClient.events(
     'click .nav-link': (evt, tmpl) => {
       const tab = evt.target.hash.slice(1);
       tmpl.selectedTab.set(tab);
+      const { _id } = Router.current().params;
+      // const { _id, query, hash } = Router.current().params;
+      let newLocation = '';
+      switch (tab) {
+        case 'panel-create-enrollment': {
+          Router.current().params.query.dataCollectionStage = 1;
+          newLocation = extendQueryWithParam(
+            extendQueryWithParam(window.location.search, 'selectedTab', tab),
+            'dataCollectionStage', 1);
+          break;
+        }
+        default: {
+          newLocation = removeQueryFromParam(
+            extendQueryWithParam(window.location.search, 'selectedTab', tab),
+            'dataCollectionStage');
+        }
+      }
+      // !NB: Push to history and Router.current().params to skip page reload;
+      history.replaceState(history.state, tab, _id + newLocation);
+      Router.current().params.query.selectedTab = tab;
+      // Router.go(Router.current().route.getName(), { _id }, { query, hash });
     },
     'click .edit': (evt, tmpl) => {
       const query = {};

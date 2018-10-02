@@ -198,6 +198,7 @@ export default class Survey extends React.Component {
       } else {
         Alert.success('Success. Response uploaded');
       }
+      // TODO: upload enrollment if any:
       if (Roles.userIsInRole(Meteor.userId(), 'External Surveyor')) {
         Router.go('dashboard');
       } else {

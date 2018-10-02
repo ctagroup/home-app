@@ -148,9 +148,11 @@ Router.route(
       const isExtSurveyor = Roles.userIsInRole(Meteor.userId(), 'External Surveyor');
       const pendingClient = PendingClients.findOne({ _id: this.params._id });
       const client = Clients.findOne({ _id: this.params._id });
+      const { dataCollectionStage } = this.params.query;
       return {
         isPendingClient: !!pendingClient,
         client: pendingClient || client,
+        dataCollectionStage,
         showSurveyButton: !isExtSurveyor,
         showUploadButton: !client,
         showEditButton: !isExtSurveyor,
