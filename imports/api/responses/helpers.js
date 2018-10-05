@@ -65,6 +65,7 @@ export class EnrollmentUploader {
             data[uri][uriObject] = {
               ...defaultObject,
               projectId,
+              entryDate: values.entryDate,
             };
             break;
           default:

@@ -48,7 +48,6 @@ Template.enrollmentsNew.helpers({
     return this.client;
   },
   project() {
-    console.log(this.project);
     return this.project;
   },
   surveyLoaded() {

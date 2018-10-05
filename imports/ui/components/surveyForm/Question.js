@@ -294,8 +294,14 @@ export default class Question extends Item {
     const value = this.props.formState.values[id];
     const disabled = this.props.formState.props[`${id}.skip`];
     const hasError = !!this.state.error;
+
+    if (disabled && value) {
+      // if field is disable but has a value, emit an evet to clear the field
+      this.props.onChange(id, '', true);
+    }
+
     return (
-      <div className={`question item ${hasError ? 'error' : ''}`}>
+      <div className={`question item ${hasError ? 'error' : ''} ${disabled ? 'disabled' : ''}`}>
         {this.renderTitle()}
         <div className="text">{text}</div>
         {this.renderQuestionCategory(this.isRefused() ? '' : value, disabled)}
