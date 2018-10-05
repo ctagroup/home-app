@@ -12,6 +12,7 @@ import { FilesAccessRoles, HouseholdAccessRoles } from '/imports/config/permissi
 
 import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 
+import './enrollmentsListView.js';
 import './clientDeleteReason.js';
 import './manageClientEnrollments.html';
 import './viewClient.html';
@@ -99,6 +100,7 @@ Template.viewClient.helpers(
 
       return {
         projectId,
+        dataCollectionStage: Router.current().params.query.dataCollectionStage,
         // enrollmentId: project,
       };
     },

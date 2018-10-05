@@ -109,6 +109,8 @@ export class EnrollmentUploader {
 
     let uploadErrorDetails = null;
 
+    const responseCount = {};
+
     const responses = uriTemplates.reduce((all, uriTemplate) => {
       const translated = translateString(uriTemplate, uriTemplateVariables);
 
@@ -130,15 +132,18 @@ export class EnrollmentUploader {
 
         // add object id to template variables to use in successive calls
         const uriObjectId = `${uriObject}Id`;
+        const responseKey = `${uriObject}-${responseCount[uriObject] || 0}`;
+        responseCount[uriObject] = (responseCount[uriObject] || 0) + 1;
         const responseObjectId = response[uriObject][uriObjectId];
         uriTemplateVariables[`{${uriObjectId.toLowerCase()}}`] = responseObjectId;
         logger.debug('new vars', uriTemplateVariables);
 
+        const baseUri = postUri.split('?')[0].split('#')[0];
         return postUri ? {
           ...all,
-          [uriObject]: {
+          [responseKey]: {
             id: responseObjectId,
-            deleteUri: `${postUri}/${responseObjectId}`,
+            updateUri: `${baseUri}/${responseObjectId}`,
           },
         } : {
           ...all,
