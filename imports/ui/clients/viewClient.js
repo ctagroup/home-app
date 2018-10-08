@@ -490,7 +490,9 @@ Template.viewClient.events(
 );
 
 Template.viewClient.onCreated(function onCreated() {
-  const tab = Router.current().params.query.selectedTab || 'panel-overview';
+  let tab = Router.current().params.query.selectedTab || 'panel-overview';
+  // update tab not available on page load:
+  tab = tab === 'panel-update-enrollment' ? 'panel-overview' : tab;
   this.selectedTab = new ReactiveVar(tab);
   this.selectedProject = new ReactiveVar(false);
   this.selectedEnrollment = new ReactiveVar(false);
