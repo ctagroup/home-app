@@ -93,7 +93,8 @@ Template.viewClient.helpers(
   {
     updateEnrollment() {
       const enrollmentId = Template.instance().selectedEnrollment.get();
-      if (!enrollmentId) return false;
+      // if (!enrollmentId) return false;
+      console.log('updateEnrollment', enrollmentId);
       return enrollmentId;
     },
     currentClient() {
@@ -302,6 +303,7 @@ Template.viewClient.events(
         'dataCollectionStage', dataCollectionStages.UPDATE);
       pushToURI(tab, _id + newLocation);
       Router.current().params.query.selectedTab = tab;
+      tmpl.selectedTab.set(tab);
     },
     'click .exitLink': (evt, tmpl) => {
       evt.preventDefault();
@@ -315,6 +317,7 @@ Template.viewClient.events(
         'dataCollectionStage', dataCollectionStages.EXIT);
       pushToURI(tab, _id + newLocation);
       Router.current().params.query.selectedTab = tab;
+      tmpl.selectedTab.set(tab);
     },
     'click .nav-link': (evt, tmpl) => {
       const tab = evt.target.hash.slice(1);
