@@ -12,6 +12,9 @@ Template.enrollmentsUpdate.onCreated(function onEnrollmentsNew() {
 });
 
 Template.enrollmentsUpdate.helpers({
+  dataCollectionStage() {
+    return Router.current().params.query.dataCollectionStage;
+  },
   client() {
     return this.client;
   },

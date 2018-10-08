@@ -20,6 +20,13 @@ import '../enrollments/enrollmentsNew';
 import '../enrollments/enrollmentsUpdate';
 import '../enrollments/dropdownHelper.js';
 
+// TODO: move to global import
+const dataCollectionStages = {
+  START: 1,
+  UPDATE: 2,
+  EXIT: 3,
+};
+
 const extendQueryWithParam = (query, param, value) => {
   if (query === '') return `?${param}=${value}`;
   const paramsString = query.startsWith('?') ? query.slice(1) : query;
@@ -34,6 +41,7 @@ const removeQueryFromParam = (query, param) => {
   searchParams.delete(param);
   return `?${searchParams.toString()}`;
 };
+const pushToURI = (name, url) => history.replaceState(history.state, name, url);
 
 const flattenKeyVersions = (client, key) => {
   const keyVersions = client.clientVersions
@@ -83,9 +91,10 @@ const updateEligibility = (client) => {
 
 Template.viewClient.helpers(
   {
-    updateEnrolment() {
-      // TODO: add reactive var for update state
-      return false;
+    updateEnrollment() {
+      const enrollmentId = Template.instance().selectedEnrollment.get();
+      if (!enrollmentId) return false;
+      return enrollmentId;
     },
     currentClient() {
       return this;
@@ -281,27 +290,45 @@ Template.viewClient.helpers(
 
 Template.viewClient.events(
   {
-    // 'click .updateLink': (evt) => {
-    //   evt.preventDefault();
-    //   const enrollmentId = evt.target.id.slice(2);
-
-    // },
-    // 'click .exitLink': (evt) => {
-    //   evt.preventDefault();
-    //   const enrollmentId = evt.target.id.slice(2);
-    // },
+    'click .updateLink': (evt, tmpl) => {
+      evt.preventDefault();
+      const enrollmentId = evt.target.id.slice(2);
+      tmpl.selectedEnrollment.set(enrollmentId);
+      Router.current().params.query.dataCollectionStage = dataCollectionStages.UPDATE;
+      const tab = 'panel-update-enrollment';
+      const { _id } = Router.current().params;
+      const newLocation = extendQueryWithParam(
+        extendQueryWithParam(window.location.search, 'selectedTab', tab),
+        'dataCollectionStage', dataCollectionStages.UPDATE);
+      pushToURI(tab, _id + newLocation);
+      Router.current().params.query.selectedTab = tab;
+    },
+    'click .exitLink': (evt, tmpl) => {
+      evt.preventDefault();
+      const enrollmentId = evt.target.id.slice(2);
+      tmpl.selectedEnrollment.set(enrollmentId);
+      Router.current().params.query.dataCollectionStage = dataCollectionStages.EXIT;
+      const tab = 'panel-update-enrollment';
+      const { _id } = Router.current().params;
+      const newLocation = extendQueryWithParam(
+        extendQueryWithParam(window.location.search, 'selectedTab', tab),
+        'dataCollectionStage', dataCollectionStages.EXIT);
+      pushToURI(tab, _id + newLocation);
+      Router.current().params.query.selectedTab = tab;
+    },
     'click .nav-link': (evt, tmpl) => {
       const tab = evt.target.hash.slice(1);
       tmpl.selectedTab.set(tab);
       const { _id } = Router.current().params;
       // const { _id, query, hash } = Router.current().params;
+      tmpl.selectedEnrollment.set(false); // Remove selectedEnrollment
       let newLocation = '';
       switch (tab) {
         case 'panel-create-enrollment': {
-          Router.current().params.query.dataCollectionStage = 1;
+          Router.current().params.query.dataCollectionStage = dataCollectionStages.START;
           newLocation = extendQueryWithParam(
             extendQueryWithParam(window.location.search, 'selectedTab', tab),
-            'dataCollectionStage', 1);
+            'dataCollectionStage', dataCollectionStages.START);
           break;
         }
         default: {
@@ -311,16 +338,14 @@ Template.viewClient.events(
         }
       }
       // !NB: Push to history and Router.current().params to skip page reload;
-      history.replaceState(history.state, tab, _id + newLocation);
+      pushToURI(tab, _id + newLocation);
       Router.current().params.query.selectedTab = tab;
       // Router.go(Router.current().route.getName(), { _id }, { query, hash });
     },
     'click .edit': (evt, tmpl) => {
       const query = {};
       const client = tmpl.data.client;
-      if (client.schema) {
-        query.query = `schema=${client.schema}`;
-      }
+      if (client.schema) query.query = `schema=${client.schema}`;
       Router.go('adminDashboardclientsEdit', { _id: client._id }, query);
     },
     'click .back': () => {
@@ -462,8 +487,10 @@ Template.viewClient.events(
 );
 
 Template.viewClient.onCreated(function onCreated() {
-  this.selectedTab = new ReactiveVar('panel-overview');
+  const tab = Router.current().params.query.selectedTab || 'panel-overview';
+  this.selectedTab = new ReactiveVar(tab);
   this.selectedProject = new ReactiveVar(false);
+  this.selectedEnrollment = new ReactiveVar(false);
 });
 
 Template.viewClient.onRendered(() => {

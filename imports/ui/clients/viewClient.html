@@ -59,6 +59,11 @@
             <li class="nav-item">
               <a class="nav-link {{#if isActive 'create-enrollment'}}active{{/if}}" data-toggle="tab" href="#panel-create-enrollment" role="tab">Create Enrollment</a>
             </li>
+            {{#if updateEnrollment}}
+              <li class="nav-item">
+                <a class="nav-link {{#if isActive 'update-enrollment'}}active{{/if}}" data-toggle="tab" href="#panel-update-enrollment" role="tab">Create Enrollment</a>
+              </li>
+            {{/if}}
           {{/if}}
 <!-- TODO: Implement other tabs -->
 <!-- 
@@ -139,7 +144,7 @@
           </div>
           <!--/.Panel 1.5-->
           <!--Panel 2 Case Management -->
-          <div class="tab-pane fade no-show" id="panel-case-management" role="tabpanel">
+          <!-- <div class="tab-pane fade no-show" id="panel-case-management" role="tabpanel">
               <div class="filters-area">
                 <h1>Case Notes</h1>
                 <button>Add New</button>
@@ -234,7 +239,7 @@
 
               </div>
               
-          </div>
+          </div> -->
           <!--/.Panel 2-->
           
           <!--Panel 3 Referrals -->
@@ -375,18 +380,18 @@
               </div>        
             </div>      
             <!--/.Panel 5.5-->
-            {{#if updateEnrolment}}
+            {{#if updateEnrollment}}
               <!--Panel 5.6 Update enrollment -->
-              <div class="tab-pane fade {{#if isActive 'create-enrollment'}}in show active {{else}}no-show{{/if}}" id="panel-enrollments" role="tabpanel">
+              <div class="tab-pane fade {{#if isActive 'update-enrollment'}}in show active {{else}}no-show{{/if}}" id="panel-update-enrollment" role="tabpanel">
                 <div class="row">
                   <div class="col-xs-12">
-                    <h3>Start enrollment</h3>
+                    <h3>Update enrollment</h3>
                     <h4>for project: </h4>
                     <!-- Select Project -->
                     {{> dropdownHelper store=selectedProjectStore options=projects key='selectedProject' placeholder='Select project'}}
                     {{#if selectedProjectId}}
                       <!-- Render Enrollment survey for Project: -->
-                      {{> enrollmentsUpdate 
+                      {{> enrollmentsUpdate
                         client=currentClient
                         projectId=selectedProjectId
                         project=selectedProject
@@ -398,7 +403,7 @@
                 </div>        
               </div>      
               <!--/.Panel 5.6-->
-              {{/if}} 
+            {{/if}}
             
           </div>
          
