@@ -22,9 +22,9 @@ import '../enrollments/dropdownHelper.js';
 
 // TODO: move to global import
 const dataCollectionStages = {
-  START: 1,
-  UPDATE: 2,
-  EXIT: 3,
+  ENTRY: 0,
+  UPDATE: 1,
+  EXIT: 2,
 };
 
 const extendQueryWithParam = (query, param, value) => {
@@ -92,8 +92,12 @@ const updateEligibility = (client) => {
 Template.viewClient.helpers(
   {
     updateEnrollment() {
-      const enrollmentId = Template.instance().selectedEnrollment.get();
-      return enrollmentId;
+      const { enrollmentId, dataCollectionStage } = Template.instance().selectedEnrollment.get();
+      return dataCollectionStage === dataCollectionStages.UPDATE & enrollmentId;
+    },
+    exitEnrollment() {
+      const { enrollmentId, dataCollectionStage } = Template.instance().selectedEnrollment.get();
+      return dataCollectionStage === dataCollectionStages.EXIT & enrollmentId;
     },
     currentClient() {
       return this;
@@ -112,7 +116,7 @@ Template.viewClient.helpers(
       };
     },
     updateEnrollmentInfo() {
-      const selectedEnrollmentId = Template.instance().selectedEnrollment.get();
+      const selectedEnrollmentId = Template.instance().selectedEnrollment.get().enrollmentId;
       const enrollment =
         this.enrollments.find(({ enrollmentId }) => enrollmentId === selectedEnrollmentId);
       const projectId = enrollment && enrollment.projectId;
@@ -142,7 +146,7 @@ Template.viewClient.helpers(
       return false;
     },
     projectUpdateSurveyId() {
-      const selectedEnrollmentId = Template.instance().selectedEnrollment.get();
+      const selectedEnrollmentId = Template.instance().selectedEnrollment.get().enrollmentId;
       const enrollment =
         this.enrollments.find(({ enrollmentId }) => enrollmentId === selectedEnrollmentId);
 
@@ -156,14 +160,14 @@ Template.viewClient.helpers(
       return false;
     },
     updateEnrollmentProjectId() {
-      const selectedEnrollmentId = Template.instance().selectedEnrollment.get();
+      const selectedEnrollmentId = Template.instance().selectedEnrollment.get().enrollmentId;
       const enrollment =
         this.enrollments.find(({ enrollmentId }) => enrollmentId === selectedEnrollmentId);
 
       return enrollment && enrollment.projectId;
     },
     updateEnrollmentProject() {
-      const selectedEnrollmentId = Template.instance().selectedEnrollment.get();
+      const selectedEnrollmentId = Template.instance().selectedEnrollment.get().enrollmentId;
       const enrollment =
         this.enrollments.find(({ enrollmentId }) => enrollmentId === selectedEnrollmentId);
 
@@ -330,7 +334,8 @@ Template.viewClient.events(
     'click .updateLink': (evt, tmpl) => {
       evt.preventDefault();
       const enrollmentId = evt.target.id.slice(2);
-      tmpl.selectedEnrollment.set(enrollmentId);
+      const dataCollectionStage = dataCollectionStages.UPDATE;
+      tmpl.selectedEnrollment.set({ enrollmentId, dataCollectionStage });
       Router.current().params.query.dataCollectionStage = dataCollectionStages.UPDATE;
       const tab = 'panel-update-enrollment';
       const { _id } = Router.current().params;
@@ -344,7 +349,8 @@ Template.viewClient.events(
     'click .exitLink': (evt, tmpl) => {
       evt.preventDefault();
       const enrollmentId = evt.target.id.slice(2);
-      tmpl.selectedEnrollment.set(enrollmentId);
+      const dataCollectionStage = dataCollectionStages.EXIT;
+      tmpl.selectedEnrollment.set({ enrollmentId, dataCollectionStage });
       Router.current().params.query.dataCollectionStage = dataCollectionStages.EXIT;
       const tab = 'panel-exit-enrollment';
       const { _id } = Router.current().params;
@@ -360,14 +366,14 @@ Template.viewClient.events(
       tmpl.selectedTab.set(tab);
       const { _id } = Router.current().params;
       // const { _id, query, hash } = Router.current().params;
-      tmpl.selectedEnrollment.set(false); // Remove selectedEnrollment
+      tmpl.selectedEnrollment.set({}); // Remove selectedEnrollment
       let newLocation = '';
       switch (tab) {
         case 'panel-create-enrollment': {
-          Router.current().params.query.dataCollectionStage = dataCollectionStages.START;
+          Router.current().params.query.dataCollectionStage = dataCollectionStages.ENTRY;
           newLocation = extendQueryWithParam(
             extendQueryWithParam(window.location.search, 'selectedTab', tab),
-            'dataCollectionStage', dataCollectionStages.START);
+            'dataCollectionStage', dataCollectionStages.ENTRY);
           break;
         }
         default: {
@@ -531,7 +537,7 @@ Template.viewClient.onCreated(function onCreated() {
   tab = tab === 'panel-update-enrollment' ? 'panel-overview' : tab;
   this.selectedTab = new ReactiveVar(tab);
   this.selectedProject = new ReactiveVar(false);
-  this.selectedEnrollment = new ReactiveVar(false);
+  this.selectedEnrollment = new ReactiveVar({});
 });
 
 Template.viewClient.onRendered(() => {
