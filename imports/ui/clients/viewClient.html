@@ -366,7 +366,9 @@
                   <h3>Start enrollment</h3>
                   <h4>for project: </h4>
                   <!-- Select Project -->
-                  {{> dropdownHelper store=selectedProjectStore options=projects key='selectedProject' placeholder='Select project'}}
+                  <div class="project-select">
+                    {{> dropdownHelper store=selectedProjectStore options=projects key='selectedProject' placeholder='Select project'}}
+                  </div>
                   {{#if selectedProjectId}}
                     <!-- Render Enrollment survey for Project: -->
                     {{> enrollmentsNew 
@@ -387,19 +389,14 @@
                 <div class="row">
                   <div class="col-xs-12">
                     <h3>Update enrollment</h3>
-                    <h4>for project: </h4>
-                    <!-- Select Project -->
-                    {{> dropdownHelper store=selectedProjectStore options=projects key='selectedProject' placeholder='Select project'}}
-                    {{#if selectedProjectId}}
-                      <!-- Render Enrollment survey for Project: -->
-                      {{> enrollmentsUpdate
-                        client=currentClient
-                        projectId=selectedProjectId
-                        project=selectedProject
-                        surveyId=projectUpdateSurveyId
-                        enrollmentInfo=enrollmentInfo
-                      }}
-                    {{/if}}
+                    <!-- updateEnrollment -->
+                    {{> enrollmentsUpdate
+                      client=currentClient
+                      projectId=updateEnrollmentProjectId
+                      project=updateEnrollmentProject
+                      surveyId=projectUpdateSurveyId
+                      enrollmentInfo=updateEnrollmentInfo
+                    }}
                   </div>
                 </div>        
               </div>      

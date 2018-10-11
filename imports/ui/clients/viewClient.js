@@ -93,8 +93,6 @@ Template.viewClient.helpers(
   {
     updateEnrollment() {
       const enrollmentId = Template.instance().selectedEnrollment.get();
-      // if (!enrollmentId) return false;
-      console.log('updateEnrollment', enrollmentId);
       return enrollmentId;
     },
     currentClient() {
@@ -111,7 +109,16 @@ Template.viewClient.helpers(
       return {
         projectId,
         dataCollectionStage: Router.current().params.query.dataCollectionStage,
-        // enrollmentId: project,
+      };
+    },
+    updateEnrollmentInfo() {
+      const selectedEnrollmentId = Template.instance().selectedEnrollment.get();
+      const enrollment =
+        this.enrollments.find(({ enrollmentId }) => enrollmentId === selectedEnrollmentId);
+      const projectId = enrollment && enrollment.projectId;
+      return {
+        projectId,
+        dataCollectionStage: Router.current().params.query.dataCollectionStage,
       };
     },
     selectedProjectStore() {
@@ -133,6 +140,35 @@ Template.viewClient.helpers(
         return selectedAgency && selectedAgency.getProjectSurveyId(projectId, 'entry');
       }
       return false;
+    },
+    projectUpdateSurveyId() {
+      const selectedEnrollmentId = Template.instance().selectedEnrollment.get();
+      const enrollment =
+        this.enrollments.find(({ enrollmentId }) => enrollmentId === selectedEnrollmentId);
+
+      const projectId = enrollment && enrollment.projectId;
+      if (projectId) {
+        const agencies = Agencies.find().fetch();
+        const selectedAgency =
+          agencies.find((agency) => agency.getProjectSurveyId(projectId, 'update'));
+        return selectedAgency && selectedAgency.getProjectSurveyId(projectId, 'update');
+      }
+      return false;
+    },
+    updateEnrollmentProjectId() {
+      const selectedEnrollmentId = Template.instance().selectedEnrollment.get();
+      const enrollment =
+        this.enrollments.find(({ enrollmentId }) => enrollmentId === selectedEnrollmentId);
+
+      return enrollment && enrollment.projectId;
+    },
+    updateEnrollmentProject() {
+      const selectedEnrollmentId = Template.instance().selectedEnrollment.get();
+      const enrollment =
+        this.enrollments.find(({ enrollmentId }) => enrollmentId === selectedEnrollmentId);
+
+      const projectId = enrollment && enrollment.projectId;
+      return Projects.findOne(projectId);
     },
     projects() {
       const allProjects = Agencies.find().fetch()
@@ -310,7 +346,7 @@ Template.viewClient.events(
       const enrollmentId = evt.target.id.slice(2);
       tmpl.selectedEnrollment.set(enrollmentId);
       Router.current().params.query.dataCollectionStage = dataCollectionStages.EXIT;
-      const tab = 'panel-update-enrollment';
+      const tab = 'panel-exit-enrollment';
       const { _id } = Router.current().params;
       const newLocation = extendQueryWithParam(
         extendQueryWithParam(window.location.search, 'selectedTab', tab),
