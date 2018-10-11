@@ -21,7 +21,11 @@ export default class Survey extends React.Component {
         this.props.definition,
         initialValues,
         {},
-        { client: props.client }
+        {
+          client: props.client,
+          project: props.project || {},
+          enrollmentInfo: props.enrollmentInfo || {},
+        }
       ),
       errors: {},
     };
