@@ -92,12 +92,16 @@ const updateEligibility = (client) => {
 Template.viewClient.helpers(
   {
     updateEnrollment() {
-      const { enrollmentId, dataCollectionStage } = Template.instance().selectedEnrollment.get();
-      return dataCollectionStage === dataCollectionStages.UPDATE & enrollmentId;
+      const enrollmentId = Template.instance().selectedEnrollment.get();
+      const dataCollectionStage = Template.instance().dataCollectionStage.get();
+      console.log('{ enrollmentId, dataCollectionStage }', { enrollmentId, dataCollectionStage });
+      return dataCollectionStage / 1 === dataCollectionStages.UPDATE & enrollmentId;
     },
     exitEnrollment() {
-      const { enrollmentId, dataCollectionStage } = Template.instance().selectedEnrollment.get();
-      return dataCollectionStage === dataCollectionStages.EXIT & enrollmentId;
+      const enrollmentId = Template.instance().selectedEnrollment.get();
+      const dataCollectionStage = Template.instance().dataCollectionStage.get();
+      console.log('{ enrollmentId, dataCollectionStage }', { enrollmentId, dataCollectionStage });
+      return dataCollectionStage / 1 === dataCollectionStages.EXIT & enrollmentId;
     },
     currentClient() {
       return this;
@@ -116,7 +120,7 @@ Template.viewClient.helpers(
       };
     },
     updateEnrollmentInfo() {
-      const selectedEnrollmentId = Template.instance().selectedEnrollment.get().enrollmentId;
+      const selectedEnrollmentId = Template.instance().selectedEnrollment.get();
       const enrollment =
         this.enrollments.find(({ enrollmentId }) => enrollmentId === selectedEnrollmentId);
       const projectId = enrollment && enrollment.projectId;
@@ -146,7 +150,7 @@ Template.viewClient.helpers(
       return false;
     },
     projectUpdateSurveyId() {
-      const selectedEnrollmentId = Template.instance().selectedEnrollment.get().enrollmentId;
+      const selectedEnrollmentId = Template.instance().selectedEnrollment.get();
       const enrollment =
         this.enrollments.find(({ enrollmentId }) => enrollmentId === selectedEnrollmentId);
 
@@ -160,14 +164,14 @@ Template.viewClient.helpers(
       return false;
     },
     updateEnrollmentProjectId() {
-      const selectedEnrollmentId = Template.instance().selectedEnrollment.get().enrollmentId;
+      const selectedEnrollmentId = Template.instance().selectedEnrollment.get();
       const enrollment =
         this.enrollments.find(({ enrollmentId }) => enrollmentId === selectedEnrollmentId);
 
       return enrollment && enrollment.projectId;
     },
     updateEnrollmentProject() {
-      const selectedEnrollmentId = Template.instance().selectedEnrollment.get().enrollmentId;
+      const selectedEnrollmentId = Template.instance().selectedEnrollment.get();
       const enrollment =
         this.enrollments.find(({ enrollmentId }) => enrollmentId === selectedEnrollmentId);
 
@@ -329,20 +333,22 @@ Template.viewClient.helpers(
   }
 );
 
+// TODO: merge update end exit workflows:
 Template.viewClient.events(
   {
     'click .updateLink': (evt, tmpl) => {
       evt.preventDefault();
       const enrollmentId = evt.target.id.slice(2);
       const dataCollectionStage = dataCollectionStages.UPDATE;
-      tmpl.selectedEnrollment.set({ enrollmentId, dataCollectionStage });
-      Router.current().params.query.dataCollectionStage = dataCollectionStages.UPDATE;
+      tmpl.dataCollectionStage.set(dataCollectionStage);
+      tmpl.selectedEnrollment.set(enrollmentId);
       const tab = 'panel-update-enrollment';
       const { _id } = Router.current().params;
       const newLocation = extendQueryWithParam(
         extendQueryWithParam(window.location.search, 'selectedTab', tab),
-        'dataCollectionStage', dataCollectionStages.UPDATE);
+        'dataCollectionStage', dataCollectionStage);
       pushToURI(tab, _id + newLocation);
+      Router.current().params.query.dataCollectionStage = dataCollectionStage;
       Router.current().params.query.selectedTab = tab;
       tmpl.selectedTab.set(tab);
     },
@@ -350,14 +356,15 @@ Template.viewClient.events(
       evt.preventDefault();
       const enrollmentId = evt.target.id.slice(2);
       const dataCollectionStage = dataCollectionStages.EXIT;
-      tmpl.selectedEnrollment.set({ enrollmentId, dataCollectionStage });
-      Router.current().params.query.dataCollectionStage = dataCollectionStages.EXIT;
+      tmpl.dataCollectionStage.set(dataCollectionStage);
+      tmpl.selectedEnrollment.set(enrollmentId);
       const tab = 'panel-exit-enrollment';
       const { _id } = Router.current().params;
       const newLocation = extendQueryWithParam(
         extendQueryWithParam(window.location.search, 'selectedTab', tab),
-        'dataCollectionStage', dataCollectionStages.EXIT);
+        'dataCollectionStage', dataCollectionStage);
       pushToURI(tab, _id + newLocation);
+      Router.current().params.query.dataCollectionStage = dataCollectionStage;
       Router.current().params.query.selectedTab = tab;
       tmpl.selectedTab.set(tab);
     },
@@ -366,7 +373,7 @@ Template.viewClient.events(
       tmpl.selectedTab.set(tab);
       const { _id } = Router.current().params;
       // const { _id, query, hash } = Router.current().params;
-      tmpl.selectedEnrollment.set({}); // Remove selectedEnrollment
+      tmpl.selectedEnrollment.set(false); // Remove selectedEnrollment
       let newLocation = '';
       switch (tab) {
         case 'panel-create-enrollment': {
@@ -537,7 +544,8 @@ Template.viewClient.onCreated(function onCreated() {
   tab = tab === 'panel-update-enrollment' ? 'panel-overview' : tab;
   this.selectedTab = new ReactiveVar(tab);
   this.selectedProject = new ReactiveVar(false);
-  this.selectedEnrollment = new ReactiveVar({});
+  this.selectedEnrollment = new ReactiveVar(false);
+  this.dataCollectionStage = new ReactiveVar(0);
 });
 
 Template.viewClient.onRendered(() => {
