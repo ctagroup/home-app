@@ -119,8 +119,11 @@ Template.viewClient.helpers(
     },
     updateEnrollmentInfo() {
       const selectedEnrollmentId = Template.instance().selectedEnrollment.get();
+      const currentClientId = Router.current().params._id;
+      const client = Clients.findOne(currentClientId);
+      const enrollments = flattenKeyVersions(client, 'enrollments');
       const enrollment =
-        this.enrollments.find(({ enrollmentId }) => enrollmentId === selectedEnrollmentId);
+        enrollments.find(({ enrollmentId }) => enrollmentId === selectedEnrollmentId);
       const projectId = enrollment && enrollment.projectId;
       return {
         projectId,
@@ -149,8 +152,11 @@ Template.viewClient.helpers(
     },
     projectUpdateSurveyId() {
       const selectedEnrollmentId = Template.instance().selectedEnrollment.get();
+      const currentClientId = Router.current().params._id;
+      const client = Clients.findOne(currentClientId);
+      const enrollments = flattenKeyVersions(client, 'enrollments');
       const enrollment =
-        this.enrollments.find(({ enrollmentId }) => enrollmentId === selectedEnrollmentId);
+        enrollments.find(({ enrollmentId }) => enrollmentId === selectedEnrollmentId);
 
       const projectId = enrollment && enrollment.projectId;
       if (projectId) {
@@ -163,15 +169,21 @@ Template.viewClient.helpers(
     },
     updateEnrollmentProjectId() {
       const selectedEnrollmentId = Template.instance().selectedEnrollment.get();
+      const currentClientId = Router.current().params._id;
+      const client = Clients.findOne(currentClientId);
+      const enrollments = flattenKeyVersions(client, 'enrollments');
       const enrollment =
-        this.enrollments.find(({ enrollmentId }) => enrollmentId === selectedEnrollmentId);
+        enrollments.find(({ enrollmentId }) => enrollmentId === selectedEnrollmentId);
 
       return enrollment && enrollment.projectId;
     },
     updateEnrollmentProject() {
       const selectedEnrollmentId = Template.instance().selectedEnrollment.get();
+      const currentClientId = Router.current().params._id;
+      const client = Clients.findOne(currentClientId);
+      const enrollments = flattenKeyVersions(client, 'enrollments');
       const enrollment =
-        this.enrollments.find(({ enrollmentId }) => enrollmentId === selectedEnrollmentId);
+        enrollments.find(({ enrollmentId }) => enrollmentId === selectedEnrollmentId);
 
       const projectId = enrollment && enrollment.projectId;
       return Projects.findOne(projectId);
