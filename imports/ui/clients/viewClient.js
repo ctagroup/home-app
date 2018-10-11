@@ -94,14 +94,12 @@ Template.viewClient.helpers(
     updateEnrollment() {
       const enrollmentId = Template.instance().selectedEnrollment.get();
       const dataCollectionStage = Template.instance().dataCollectionStage.get();
-      console.log('{ enrollmentId, dataCollectionStage }', { enrollmentId, dataCollectionStage });
-      return dataCollectionStage / 1 === dataCollectionStages.UPDATE & enrollmentId;
+      return dataCollectionStage / 1 === dataCollectionStages.UPDATE && enrollmentId;
     },
     exitEnrollment() {
       const enrollmentId = Template.instance().selectedEnrollment.get();
       const dataCollectionStage = Template.instance().dataCollectionStage.get();
-      console.log('{ enrollmentId, dataCollectionStage }', { enrollmentId, dataCollectionStage });
-      return dataCollectionStage / 1 === dataCollectionStages.EXIT & enrollmentId;
+      return dataCollectionStage / 1 === dataCollectionStages.EXIT && enrollmentId;
     },
     currentClient() {
       return this;
