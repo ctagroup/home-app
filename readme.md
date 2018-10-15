@@ -210,7 +210,6 @@ This sets question1 as skipped (value is erased, question cannot be edited)
 Reduces will apply transformations to the value of an operand. Reducers can be chained using `:` notation.
 
 As an example `client.dob:age` will return age based on the date of birth of a client
-```
 
 Reducers can be applied to arrays (set of values for a certain column in a grid):
 ```
