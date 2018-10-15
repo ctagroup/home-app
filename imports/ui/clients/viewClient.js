@@ -5,6 +5,7 @@ import { RecentClients } from '/imports/api/recent-clients';
 import Questions from '/imports/api/questions/questions';
 import Agencies from '/imports/api/agencies/agencies';
 import Projects from '/imports/api/projects/projects';
+import Responses from '/imports/api/responses/responses';
 import { logger } from '/imports/utils/logger';
 import ReferralStatusList from './referralStatusList';
 import HomeConfig from '/imports/config/homeConfig';
@@ -114,7 +115,7 @@ Template.viewClient.helpers(
 
       return {
         projectId,
-        dataCollectionStage: Router.current().params.query.dataCollectionStage,
+        dataCollectionStage: parseInt(Router.current().params.query.dataCollectionStage, 10),
       };
     },
     updateEnrollmentInfo() {
@@ -220,7 +221,8 @@ Template.viewClient.helpers(
     enrollments() {
       const currentClientId = Router.current().params._id;
       const client = Clients.findOne(currentClientId);
-      return flattenKeyVersions(client, 'enrollments');
+      const enrollments = flattenKeyVersions(client, 'enrollments');
+      return enrollments;
     },
     globalHouseholds() {
       const currentClientId = Router.current().params._id;
@@ -340,6 +342,16 @@ Template.viewClient.helpers(
         default: return definition;
       }
     },
+
+    enrollmentResponses(enrollmentId, dataCollectionStage) {
+      const responses = Responses.find({
+        'enrollment.enrollment-0.id': enrollmentId,
+        'enrollmentInfo.dataCollectionStage': `${dataCollectionStage}`,
+      }).fetch();
+      return responses;
+    },
+
+
   }
 );
 
@@ -556,6 +568,11 @@ Template.viewClient.onCreated(function onCreated() {
   this.selectedProject = new ReactiveVar(false);
   this.selectedEnrollment = new ReactiveVar(false);
   this.dataCollectionStage = new ReactiveVar(0);
+  this.autorun(() => {
+    const enrollmentIds = flattenKeyVersions(this.data.client, 'enrollments')
+      .map(e => e.enrollmentId);
+    Meteor.subscribe('responses.enrollments', enrollmentIds);
+  });
 });
 
 Template.viewClient.onRendered(() => {

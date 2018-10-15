@@ -13,7 +13,7 @@ Template.enrollmentsUpdate.onCreated(function onEnrollmentsNew() {
 
 Template.enrollmentsUpdate.helpers({
   dataCollectionStage() {
-    return Router.current().params.query.dataCollectionStage;
+    return parseInt(Router.current().params.query.dataCollectionStage, 10);
   },
   client() {
     return this.client;

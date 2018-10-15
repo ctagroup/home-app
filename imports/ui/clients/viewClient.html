@@ -1,6 +1,6 @@
 <template name="viewClient">
   {{log 'home'}}
-  {{#with client}}    
+  {{#with client}}
   <div id="viewClient_content" class="col-xs-12">
     <div class="row client-profile-container">
       {{{alertMessages}}}
@@ -71,7 +71,7 @@
             {{/if}}
           {{/if}}
 <!-- TODO: Implement other tabs -->
-<!-- 
+<!--
           <li class="nav-item">
             <a class="nav-link active" data-toggle="tab" href="#panel-case-management" role="tab">Case Management</a>
           </li>
@@ -243,15 +243,15 @@
                 </table>
 
               </div>
-              
+
           </div> -->
           <!--/.Panel 2-->
-          
+
           <!--Panel 3 Referrals -->
           {{#if showReferralStatus}}
             <div class="tab-pane fade {{#if isActive 'referrals'}}in show active {{else}}no-show{{/if}}" id="panel-referrals" role="tabpanel">
 
-              
+
               {{#if isUndefined referralStatusHistory}}
                 <p>Loading referral status history...</p>
               {{else}}
@@ -269,7 +269,7 @@
                               </span>
                             {{/each}}
                           </div>
-        
+
                           <div class="progress">
                             <div class="progress-bar {{getProgressbarActiveStatus}} progress-bar-striped active"
                               role="progressbar" aria-valuenow="{{getCurrentReferralStatus}}" aria-valuemin="1"
@@ -278,11 +278,11 @@
                               {{getCurrentReferralStatus}} / {{getReferralStatusList.length}}
                             </div>
                           </div>
-        
+
                                         {{> referralStatusUpdateComments}}
-        
+
                                     </div>
-        
+
                                 </div>
                             </div>
                         </div>
@@ -302,7 +302,7 @@
           {{#if showEnrollments}}
           <!--Panel 5 Enrollments -->
           <div class="tab-pane fade {{#if isActive 'enrollments'}}in show active {{else}}no-show{{/if}}" id="panel-enrollments" role="tabpanel">
-          
+
             {{#if isUndefined enrollments}}<p>Loading enrollments...</p>{{/if}}
             {{#if enrollments}}
               <div class="row">
@@ -313,47 +313,54 @@
                     <table class="table table-hover table-striped">
                       <thead>
                         <tr>
-                          <th>Entry Date</th>
-                          <th>Update Date</th>
-                          <th>Exit Date</th>
                           <th>Project Name</th>
-                          <th>Update</th>
-                          <th>Exit</th>
+                          <th>Date updated</th>
+                          <th>Entry Response</th>
+                          <th>Update Response</th>
+                          <th>Exit Response</th>
                         </tr>
                       </thead>
                       <tbody>
                         {{#each enrollment in enrollments}}
-                          <!-- { {log enrollment}} -->
                           <tr>
-                            <td>{{formatDate enrollment.entrydate}}</td>
-                            <td>
-                              {{#with exits}}
-                                {{formatDate exitDate}}
-                              {{/with}}
-                            </td>
                             <td>
                               {{#with enrollment.project}}
                                 <span class="js-tooltip" data-toggle="tooltip" title="{{projectCommonName}}">{{projectName}}</span>
                               {{/with}}
                             </td>
+
+                            <td>{{formatDate enrollment.dateUpdated}}</td>
+
                             <td>
-                              <a id="u-{{enrollment.enrollmentId}}" class="updateLink">Update Enrollment</a>
+                              <ul>
+                                {{#each enrollmentResponses enrollment.enrollmentId 0}}
+                                  <li><a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDate createdAt}}</a></li>
+                                {{/each}}
+                              </ul>
                             </td>
+
                             <td>
-                              <a id="e-{{enrollment.enrollmentId}}" class="exitLink">Exit Enrollment</a>
+                              <ul>
+                                {{#each enrollmentResponses enrollment.enrollmentId 1}}
+                                <li><a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDate createdAt}}</a></li>
+                                {{/each}}
+                              </ul>
+                              <a id="u-{{enrollment.enrollmentId}}" class="updateLink btn btn-default">Update Enrollment</a>
                             </td>
+
+                            <td>
+                              <ul>
+                                {{#each enrollmentResponses enrollment.enrollmentId 2}}
+                                  <li><a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDate createdAt}}</a></li>
+                                {{/each}}
+                              </ul>
+                              <a id="e-{{enrollment.enrollmentId}}" class="exitLink btn btn-default">Exit Enrollment</a>
+                            </td>
+
                           </tr>
                         {{/each}}
                       </tbody>
                       <tfoot>
-                        <tr>
-                          <th>Entry Date</th>
-                          <th>Update Date</th>
-                          <th>Exit Date</th>
-                          <th>Project Name</th>
-                          <th>Update</th>
-                          <th>Exit</th>
-                        </tr>
                       </tfoot>
                     </table>
                   </div>
@@ -376,7 +383,7 @@
                   </div>
                   {{#if selectedProjectId}}
                     <!-- Render Enrollment survey for Project: -->
-                    {{> enrollmentsNew 
+                    {{> enrollmentsNew
                       client=currentClient
                       projectId=selectedProjectId
                       project=selectedProject
@@ -385,8 +392,8 @@
                     }}
                   {{/if}}
                 </div>
-              </div>        
-            </div>      
+              </div>
+            </div>
             <!--/.Panel 5.5-->
             {{#if updateEnrollment}}
               <!--Panel 5.6 Update enrollment -->
@@ -403,8 +410,8 @@
                       enrollmentInfo=updateEnrollmentInfo
                     }}
                   </div>
-                </div>        
-              </div>      
+                </div>
+              </div>
               <!--/.Panel 5.6-->
             {{/if}}
             {{#if exitEnrollment}}
@@ -422,13 +429,13 @@
                       enrollmentInfo=updateEnrollmentInfo
                     }}
                   </div>
-                </div>        
-              </div>      
+                </div>
+              </div>
               <!--/.Panel 5.7-->
             {{/if}}
-            
+
           </div>
-         
+
         </div>
 
       {{#if showGlobalHousehold}}

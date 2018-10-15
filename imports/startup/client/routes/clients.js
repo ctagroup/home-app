@@ -152,7 +152,7 @@ Router.route(
       return {
         isPendingClient: !!pendingClient,
         client: pendingClient || client,
-        dataCollectionStage,
+        dataCollectionStage: parseInt(dataCollectionStage, 10),
         showSurveyButton: !isExtSurveyor,
         showUploadButton: !client,
         showEditButton: !isExtSurveyor,

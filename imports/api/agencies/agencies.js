@@ -99,30 +99,6 @@ Agencies.helpers({
     })
     .reduce((acc, val) => acc.concat(val), [])
     .filter(p => p.surveyId === surveyId);
-
-    // if (surveyId === '1888eb2d-0eac-4fce-88c4-229895027541') { // Enrollment #1 survey
-    //   return [
-    //     {
-    //       // v2017 project
-    //       projectId: '43262c8c-39ac-4224-8679-e9858451831b',
-    //       projectSchema: 'v2017',
-    //       enrollmentType: 'entry',
-    //     },
-    //     {
-    //       // v2017 project
-    //       projectId: '43262c8c-39ac-4224-8679-e9858451831b',
-    //       projectSchema: 'v2017',
-    //       enrollmentType: 'update',
-    //     },
-    //     {
-    //       // v2017 project
-    //       projectId: '43262c8c-39ac-4224-8679-e9858451831b',
-    //       projectSchema: 'v2017',
-    //       enrollmentType: 'exit',
-    //     },
-    //   ];
-    // }
-    // return [];
   },
 });
 
