@@ -113,7 +113,6 @@ Meteor.methods({
   'responses.uploadEnrollment'(id) {
     logger.info(`METHOD[${this.userId}]: responses.uploadEnrollment`, id);
 
-
     const response = Responses.findOne(id);
     let projectId = null;
     let dataCollectionStage;
@@ -122,7 +121,6 @@ Meteor.methods({
       dataCollectionStage = response.enrollmentInfo.dataCollectionStage || 0;
     }
     const { surveyId } = response;
-
 
     if (!projectId) {
       projectId = Users.findOne(this.userId).activeProjectId;

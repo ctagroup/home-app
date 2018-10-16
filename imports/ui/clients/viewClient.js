@@ -129,6 +129,7 @@ Template.viewClient.helpers(
       return {
         projectId,
         dataCollectionStage: Router.current().params.query.dataCollectionStage,
+        enrollmentId: Router.current().params.query.enrollmentId,
       };
     },
     selectedProjectStore() {
@@ -222,7 +223,12 @@ Template.viewClient.helpers(
       const currentClientId = Router.current().params._id;
       const client = Clients.findOne(currentClientId);
       const enrollments = flattenKeyVersions(client, 'enrollments');
-      return enrollments;
+      return enrollments.sort((a, b) => {
+        if (a.entryDate === b.entryDate) {
+          return a.dateUpdated < b.dateUpdated;
+        }
+        return a.entryDate < b.entryDate;
+      });
     },
     globalHouseholds() {
       const currentClientId = Router.current().params._id;
@@ -344,10 +350,19 @@ Template.viewClient.helpers(
     },
 
     enrollmentResponses(enrollmentId, dataCollectionStage) {
-      const responses = Responses.find({
-        'enrollment.enrollment-0.id': enrollmentId,
-        'enrollmentInfo.dataCollectionStage': `${dataCollectionStage}`,
-      }).fetch();
+      let responses;
+      if (dataCollectionStage === 0) {
+        responses = Responses.find({
+          'enrollment.enrollment-0.id': enrollmentId,
+          'enrollmentInfo.dataCollectionStage': dataCollectionStage,
+        }).fetch();
+      } else {
+        responses = Responses.find({
+          'enrollmentInfo.enrollmentId': enrollmentId,
+          'enrollmentInfo.dataCollectionStage': dataCollectionStage,
+        }).fetch();
+        // console.log('aa', responses, enrollmentId, dataCollectionStage);
+      }
       return responses;
     },
 
@@ -366,11 +381,12 @@ Template.viewClient.events(
       tmpl.selectedEnrollment.set(enrollmentId);
       const tab = 'panel-update-enrollment';
       const { _id } = Router.current().params;
-      const newLocation = extendQueryWithParam(
-        extendQueryWithParam(window.location.search, 'selectedTab', tab),
-        'dataCollectionStage', dataCollectionStage);
+      const query1 = extendQueryWithParam(window.location.search, 'selectedTab', tab);
+      const query2 = extendQueryWithParam(query1, 'enrollmentId', enrollmentId);
+      const newLocation = extendQueryWithParam(query2, 'dataCollectionStage', dataCollectionStage);
       pushToURI(tab, _id + newLocation);
       Router.current().params.query.dataCollectionStage = dataCollectionStage;
+      Router.current().params.query.enrollmentId = enrollmentId;
       Router.current().params.query.selectedTab = tab;
       tmpl.selectedTab.set(tab);
     },
@@ -382,11 +398,12 @@ Template.viewClient.events(
       tmpl.selectedEnrollment.set(enrollmentId);
       const tab = 'panel-exit-enrollment';
       const { _id } = Router.current().params;
-      const newLocation = extendQueryWithParam(
-        extendQueryWithParam(window.location.search, 'selectedTab', tab),
-        'dataCollectionStage', dataCollectionStage);
+      const query1 = extendQueryWithParam(window.location.search, 'selectedTab', tab);
+      const query2 = extendQueryWithParam(query1, 'enrollmentId', enrollmentId);
+      const newLocation = extendQueryWithParam(query2, 'dataCollectionStage', dataCollectionStage);
       pushToURI(tab, _id + newLocation);
       Router.current().params.query.dataCollectionStage = dataCollectionStage;
+      Router.current().params.query.enrollmentId = enrollmentId;
       Router.current().params.query.selectedTab = tab;
       tmpl.selectedTab.set(tab);
     },

@@ -143,6 +143,7 @@ export default class Survey extends React.Component {
         });
       } else {
         Meteor.call('responses.create', doc, (err, newResponseId) => {
+          console.log(doc);
           if (err) {
             history.push(`Failed to create response: ${err}`);
             reject(err);

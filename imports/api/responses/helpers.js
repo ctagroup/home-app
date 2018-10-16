@@ -103,6 +103,14 @@ export class EnrollmentUploader {
       '{clientid}': this.response.clientId,
     };
 
+    try {
+      if (this.response.enrollmentInfo.enrollmentId) {
+        uriTemplateVariables['{enrollmentid}'] = this.response.enrollmentInfo.enrollmentId;
+      }
+    } catch (err) {
+      // this must be new enrollment
+    }
+
     logger.debug('uploading', sortedData, uriTemplateVariables);
     // todo: add existing variables
 

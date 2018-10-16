@@ -313,28 +313,29 @@
                     <table class="table table-hover table-striped">
                       <thead>
                         <tr>
+                          <th>Entry Date</th>
                           <th>Project Name</th>
-                          <th>Date updated</th>
                           <th>Entry Response</th>
                           <th>Update Response</th>
                           <th>Exit Response</th>
+                          <th>Date updated</th>
                         </tr>
                       </thead>
                       <tbody>
                         {{#each enrollment in enrollments}}
                           <tr>
+                            <td>{{formatDate enrollment.entryDate}}</td>
+
                             <td>
                               {{#with enrollment.project}}
                                 <span class="js-tooltip" data-toggle="tooltip" title="{{projectCommonName}}">{{projectName}}</span>
                               {{/with}}
                             </td>
 
-                            <td>{{formatDate enrollment.dateUpdated}}</td>
-
                             <td>
                               <ul>
                                 {{#each enrollmentResponses enrollment.enrollmentId 0}}
-                                  <li><a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDate createdAt}}</a></li>
+                                  <li><a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDateTime createdAt}}</a></li>
                                 {{/each}}
                               </ul>
                             </td>
@@ -342,20 +343,22 @@
                             <td>
                               <ul>
                                 {{#each enrollmentResponses enrollment.enrollmentId 1}}
-                                <li><a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDate createdAt}}</a></li>
+                                <li><a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDateTime createdAt}}</a></li>
                                 {{/each}}
                               </ul>
-                              <a id="u-{{enrollment.enrollmentId}}" class="updateLink btn btn-default">Update Enrollment</a>
+                              <a id="u-{{enrollment.enrollmentId}}" class="updateLink btn btn-default"><i class="fa fa-plus"></i> Update Enrollment</a>
                             </td>
 
                             <td>
                               <ul>
                                 {{#each enrollmentResponses enrollment.enrollmentId 2}}
-                                  <li><a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDate createdAt}}</a></li>
+                                  <li><a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDateTime createdAt}}</a></li>
                                 {{/each}}
                               </ul>
-                              <a id="e-{{enrollment.enrollmentId}}" class="exitLink btn btn-default">Exit Enrollment</a>
+                              <a id="e-{{enrollment.enrollmentId}}" class="exitLink btn btn-default"><i class="fa fa-plus"></i> Exit Enrollment</a>
                             </td>
+
+                            <td>{{formatDate enrollment.dateUpdated}}</td>
 
                           </tr>
                         {{/each}}

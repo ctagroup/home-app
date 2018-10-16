@@ -6,6 +6,10 @@ Template.registerHelper('formatDate',
   date => (date ? moment.utc(date).format('MM/DD/YYYY') : '')
 );
 
+Template.registerHelper('formatDateTime',
+  date => (date ? moment.utc(date).format('MM/DD/YYYY hh:mm:ss A') : '')
+);
+
 UI.registerHelper('log', (value, name = '') => {
   console.log(`Template ${name}`, value); // eslint-disable-line no-console
 });
