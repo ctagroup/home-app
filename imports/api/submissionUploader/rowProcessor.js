@@ -5,7 +5,11 @@ import { JobStatus } from '/imports/api/jobs/jobs';
 
 export class ClientMatcher {
   constructor({ surveyConfig, clientApi }) {
-    this.surveyConfig = surveyConfig;
+    if (typeof surveyConfig === 'string') {
+      this.surveyConfig = JSON.parse(surveyConfig);
+    } else {
+      this.surveyConfig = surveyConfig;
+    }
     this.clientApi = clientApi;
   }
 
@@ -32,7 +36,11 @@ export class ClientMatcher {
 
 export class ResponseMapper {
   constructor({ surveyConfig }) {
-    this.surveyConfig = surveyConfig;
+    if (typeof surveyConfig === 'string') {
+      this.surveyConfig = JSON.parse(surveyConfig);
+    } else {
+      this.surveyConfig = surveyConfig;
+    }
   }
 
   mapRowToResponse(row) {

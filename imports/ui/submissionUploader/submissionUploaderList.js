@@ -1,5 +1,6 @@
 import moment from 'moment';
 import SubmissionUploaderFiles from '/imports/api/submissionUploader/submissionUploaderFiles';
+import Jobs, { JobStatus } from '/imports/api/jobs/jobs';
 import { // deleteFileButton,
   TableDom,
 } from '/imports/ui/dataTable/helpers';
@@ -41,11 +42,17 @@ const tableOptions = {
     },
     {
       title: 'Processed',
-      data: 'processedRows',
+      data: '_id',
+      render(fileId) {
+        return Jobs.find({ queue: fileId, status: JobStatus.SUCCESS }).count();
+      },
     },
     {
       title: 'Failed',
-      data: 'failedRows',
+      data: '_id',
+      render(fileId) {
+        return Jobs.find({ queue: fileId, status: JobStatus.FAILED }).count();
+      },
     },
     {
       title: 'Uploaded At',
