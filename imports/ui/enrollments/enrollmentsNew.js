@@ -16,7 +16,8 @@ Template.enrollmentsNew.onCreated(function onEnrollmentsNew() {
   const client = this.data && this.data.client;
   if (client && client.clientVersions) {
     const { clientVersions } = client;
-    if (! _.find(clientVersions, ({ schema }) => schema === requiredSchema)) {
+    const requiredClient = _.find(clientVersions, ({ schema }) => schema === requiredSchema);
+    if (!requiredClient) {
       Meteor.callPromise('clients.create', client, requiredSchema, true)
       .then(
         ({ clientId, schema }) => ({
@@ -39,6 +40,12 @@ Template.enrollmentsNew.onCreated(function onEnrollmentsNew() {
         Router.go('viewClient', { _id: id }, query);
       })
       .catch(err => Alert.error(err));
+    }
+    // Redirect to v2017 client version if not selected but exist:
+    if (client.schema !== requiredSchema) {
+      const { schema, clientId } = requiredClient;
+      const query = schema ? { query: { schema } } : {};
+      Router.go('viewClient', { _id: clientId }, query);
     }
   }
 });
