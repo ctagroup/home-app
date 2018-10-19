@@ -26,6 +26,7 @@ const dataCollectionStages = {
   ENTRY: 1,
   UPDATE: 2,
   EXIT: 3,
+  ANNUAL: 5, // Annual Assessments
 };
 
 const extendQueryWithParam = (query, param, value) => {
@@ -206,12 +207,21 @@ Template.viewClient.helpers(
     projects() {
       const allProjects = Agencies.find().fetch()
       .reduce((all, agency) => {
-        const projectsIds = agency.projectsOfUser(Meteor.userId());
-        const agencyProjects = projectsIds.map(projectId => ({
-          agency,
-          project: Projects.findOne(projectId) || { _id: projectId },
-        }));
-        return [...all, ...agencyProjects];
+        if (agency.enrollmentSurveys) {
+          const projectsIds = agency.projectsOfUser(Meteor.userId());
+          const agencyProjects = projectsIds.map(projectId => {
+            // Getting only agencies with surveys:
+            if (agency.getProjectSurveyId(projectId, 'entry')) {
+              return {
+                agency,
+                project: Projects.findOne(projectId) || { _id: projectId },
+              };
+            }
+            return null;
+          }).filter(i => i);
+          return [...all, ...agencyProjects];
+        }
+        return all;
       }, []);
 
       return allProjects.map(({ agency, project }) => ({
@@ -237,7 +247,9 @@ Template.viewClient.helpers(
       const client = Clients.findOne(currentClientId);
       const enrollments = flattenKeyVersions(client, 'enrollments');
 
-      return enrollments.filter(withResponse).sort((a, b) => {
+      return enrollments
+      .filter(withResponse)
+      .sort((a, b) => {
         if (a.entryDate === b.entryDate) {
           return a.dateUpdated < b.dateUpdated;
         }
@@ -386,28 +398,27 @@ Template.viewClient.events(
   {
     'click .updateLink': (evt, tmpl) => {
       evt.preventDefault();
+      let dataCollectionStage;
+      let tab;
+      switch (evt.target.id[0]) {
+        case 'u':
+          dataCollectionStage = dataCollectionStages.UPDATE;
+          tab = 'panel-update-enrollment';
+          break;
+        case 'e':
+          dataCollectionStage = dataCollectionStages.EXIT;
+          tab = 'panel-exit-enrollment';
+          break;
+        case 'a':
+          dataCollectionStage = dataCollectionStages.ANNUAL;
+          tab = 'panel-annual-enrollment';
+          break;
+        default:
+          return;
+      }
       const enrollmentId = evt.target.id.slice(2);
-      const dataCollectionStage = dataCollectionStages.UPDATE;
       tmpl.dataCollectionStage.set(dataCollectionStage);
       tmpl.selectedEnrollment.set(enrollmentId);
-      const tab = 'panel-update-enrollment';
-      const { _id } = Router.current().params;
-      const query1 = extendQueryWithParam(window.location.search, 'selectedTab', tab);
-      const query2 = extendQueryWithParam(query1, 'enrollmentId', enrollmentId);
-      const newLocation = extendQueryWithParam(query2, 'dataCollectionStage', dataCollectionStage);
-      pushToURI(tab, _id + newLocation);
-      Router.current().params.query.dataCollectionStage = dataCollectionStage;
-      Router.current().params.query.enrollmentId = enrollmentId;
-      Router.current().params.query.selectedTab = tab;
-      tmpl.selectedTab.set(tab);
-    },
-    'click .exitLink': (evt, tmpl) => {
-      evt.preventDefault();
-      const enrollmentId = evt.target.id.slice(2);
-      const dataCollectionStage = dataCollectionStages.EXIT;
-      tmpl.dataCollectionStage.set(dataCollectionStage);
-      tmpl.selectedEnrollment.set(enrollmentId);
-      const tab = 'panel-exit-enrollment';
       const { _id } = Router.current().params;
       const query1 = extendQueryWithParam(window.location.search, 'selectedTab', tab);
       const query2 = extendQueryWithParam(query1, 'enrollmentId', enrollmentId);

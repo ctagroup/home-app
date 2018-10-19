@@ -345,7 +345,7 @@
                                 <li><a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDateTime createdAt}}</a></li>
                                 {{/each}}
                               </ul>
-                              <a id="u-{{enrollment.enrollmentId}}" class="updateLink btn btn-default"><i class="fa fa-plus"></i> Update Enrollment</a>
+                              <a id="u-{{enrollment.enrollmentId}}" class="updateLink update btn btn-default"><i class="fa fa-plus"></i> Update Enrollment</a>
                             </td>
 
                             <td>
@@ -355,7 +355,7 @@
                                 {{/each}}
                               </ul>
                               {{#unless enrollmentExited enrollment.enrollmentId}}
-                                <a id="e-{{enrollment.enrollmentId}}" class="exitLink btn btn-default"><i class="fa fa-plus"></i> Exit Enrollment</a>
+                                <a id="e-{{enrollment.enrollmentId}}" class="updateLink btn btn-default"><i class="fa fa-plus"></i> Exit Enrollment</a>
                               {{/unless}}
                             </td>
 
