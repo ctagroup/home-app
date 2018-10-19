@@ -334,7 +334,7 @@
 
                             <td>
                               <ul>
-                                {{#each enrollmentResponses enrollment.enrollmentId 0}}
+                                {{#each enrollmentResponses enrollment.enrollmentId dataCollectionStages.ENTRY}}
                                   <li><a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDateTime createdAt}}</a></li>
                                 {{/each}}
                               </ul>
@@ -342,7 +342,7 @@
 
                             <td>
                               <ul>
-                                {{#each enrollmentResponses enrollment.enrollmentId 1}}
+                                {{#each enrollmentResponses enrollment.enrollmentId dataCollectionStages.UPDATE}}
                                 <li><a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDateTime createdAt}}</a></li>
                                 {{/each}}
                               </ul>
@@ -351,11 +351,13 @@
 
                             <td>
                               <ul>
-                                {{#each enrollmentResponses enrollment.enrollmentId 2}}
+                                {{#each enrollmentResponses enrollment.enrollmentId dataCollectionStages.EXIT}}
                                   <li><a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDateTime createdAt}}</a></li>
                                 {{/each}}
                               </ul>
-                              <a id="e-{{enrollment.enrollmentId}}" class="exitLink btn btn-default"><i class="fa fa-plus"></i> Exit Enrollment</a>
+                              {{#unless enrollmentExited enrollment.enrollmentId}}
+                                <a id="e-{{enrollment.enrollmentId}}" class="exitLink btn btn-default"><i class="fa fa-plus"></i> Exit Enrollment</a>
+                              {{/unless}}
                             </td>
 
                             <td>{{formatDate enrollment.dateUpdated}}</td>

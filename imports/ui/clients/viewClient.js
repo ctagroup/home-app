@@ -23,9 +23,9 @@ import '../enrollments/dropdownHelper.js';
 
 // TODO: move to global import
 const dataCollectionStages = {
-  ENTRY: 0,
-  UPDATE: 1,
-  EXIT: 2,
+  ENTRY: 1,
+  UPDATE: 2,
+  EXIT: 3,
 };
 
 const extendQueryWithParam = (query, param, value) => {
@@ -92,6 +92,9 @@ const updateEligibility = (client) => {
 
 Template.viewClient.helpers(
   {
+    dataCollectionStages() {
+      return dataCollectionStages;
+    },
     updateEnrollment() {
       const enrollmentId = Template.instance().selectedEnrollment.get();
       const dataCollectionStage = Template.instance().dataCollectionStage.get();
@@ -350,23 +353,20 @@ Template.viewClient.helpers(
     },
 
     enrollmentResponses(enrollmentId, dataCollectionStage) {
-      let responses;
-      if (dataCollectionStage === 0) {
-        responses = Responses.find({
-          'enrollment.enrollment-0.id': enrollmentId,
-          'enrollmentInfo.dataCollectionStage': dataCollectionStage,
-        }).fetch();
+      const options = { 'enrollmentInfo.dataCollectionStage': dataCollectionStage };
+      if (dataCollectionStage === dataCollectionStages.ENTRY) {
+        options['enrollment.enrollment-0.id'] = enrollmentId;
       } else {
-        responses = Responses.find({
-          'enrollmentInfo.enrollmentId': enrollmentId,
-          'enrollmentInfo.dataCollectionStage': dataCollectionStage,
-        }).fetch();
-        // console.log('aa', responses, enrollmentId, dataCollectionStage);
+        options['enrollmentInfo.enrollmentId'] = enrollmentId;
       }
-      return responses;
+      return Responses.find(options).fetch();
     },
-
-
+    enrollmentExited(enrollmentId) {
+      return Responses.find({
+        'enrollmentInfo.enrollmentId': enrollmentId,
+        'enrollmentInfo.dataCollectionStage': dataCollectionStages.EXIT,
+      }).count() >= 1;
+    },
   }
 );
 
