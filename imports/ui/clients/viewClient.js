@@ -90,8 +90,18 @@ const updateEligibility = (client) => {
   }
 };
 
+const withResponse = (enrollment) => Responses.find({
+  'enrollment.enrollment-0.id': enrollment.enrollmentId,
+  'enrollmentInfo.dataCollectionStage': dataCollectionStages.ENTRY,
+}).count() > 0;
+
 Template.viewClient.helpers(
   {
+    formatSSN(ssn) {
+      if (!ssn) return '';
+      // XXX-XX-3210
+      return `XXX-XX${ssn.slice(6)}`;
+    },
     dataCollectionStages() {
       return dataCollectionStages;
     },
@@ -226,7 +236,8 @@ Template.viewClient.helpers(
       const currentClientId = Router.current().params._id;
       const client = Clients.findOne(currentClientId);
       const enrollments = flattenKeyVersions(client, 'enrollments');
-      return enrollments.sort((a, b) => {
+
+      return enrollments.filter(withResponse).sort((a, b) => {
         if (a.entryDate === b.entryDate) {
           return a.dateUpdated < b.dateUpdated;
         }

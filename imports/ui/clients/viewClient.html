@@ -26,8 +26,8 @@
             <span class="title">LAST NAME</span><h2>{{lastName}}</h2>
           </div></div>
           <div class="col-xs-12 col-sm-3"><div class="text-wrap">
-            <span class="title">DOB</span><h4>1/1/1975</h4>
-            <span class="title">SSN</span><h4>XXX-XX-3210</h4>
+            <span class="title">DOB</span><h4>{{formatDate dob}}</h4>
+            <span class="title">SSN</span><h4>{{formatSSN ssn}}</h4>
             <span class="title view-id">View: {{_id}}</span>
           </div></div>
           <div class="col-xs-12 col-sm-3"><div class="text-wrap">
@@ -251,7 +251,6 @@
           {{#if showReferralStatus}}
             <div class="tab-pane fade {{#if isActive 'referrals'}}in show active {{else}}no-show{{/if}}" id="panel-referrals" role="tabpanel">
 
-
               {{#if isUndefined referralStatusHistory}}
                 <p>Loading referral status history...</p>
               {{else}}
@@ -279,15 +278,15 @@
                             </div>
                           </div>
 
-                                        {{> referralStatusUpdateComments}}
+                          {{> referralStatusUpdateComments}}
 
-                                    </div>
-
-                                </div>
-                            </div>
                         </div>
+
+                      </div>
                     </div>
-                {{/if}}
+                  </div>
+                </div>
+              {{/if}}
             </div>
           {{/if}}
           <!--/.Panel 3-->
