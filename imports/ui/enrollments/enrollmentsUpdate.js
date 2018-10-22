@@ -49,6 +49,7 @@ Template.enrollmentsUpdate.helpers({
     return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
   },
   initialValues() {
-    return unescapeKeys(this.response.values);
+    const values = (this.response && this.response.values) || {};
+    return unescapeKeys(values);
   },
 });

@@ -111,6 +111,11 @@ Template.viewClient.helpers(
       const dataCollectionStage = Template.instance().dataCollectionStage.get();
       return dataCollectionStage / 1 === dataCollectionStages.UPDATE && enrollmentId;
     },
+    annualEnrollment() {
+      const enrollmentId = Template.instance().selectedEnrollment.get();
+      const dataCollectionStage = Template.instance().dataCollectionStage.get();
+      return dataCollectionStage / 1 === dataCollectionStages.ANNUAL && enrollmentId;
+    },
     exitEnrollment() {
       const enrollmentId = Template.instance().selectedEnrollment.get();
       const dataCollectionStage = Template.instance().dataCollectionStage.get();
@@ -248,7 +253,7 @@ Template.viewClient.helpers(
       const enrollments = flattenKeyVersions(client, 'enrollments');
 
       return enrollments
-      .filter(withResponse)
+      // .filter(withResponse)
       .sort((a, b) => {
         if (a.entryDate === b.entryDate) {
           return a.dateUpdated < b.dateUpdated;

@@ -346,6 +346,7 @@
                                 {{/each}}
                               </ul>
                               <a id="u-{{enrollment.enrollmentId}}" class="updateLink update btn btn-default"><i class="fa fa-plus"></i> Update Enrollment</a>
+                              <a id="a-{{enrollment.enrollmentId}}" class="updateLink update btn btn-default"><i class="fa fa-plus"></i> Annual assessment</a>
                             </td>
 
                             <td>
@@ -405,6 +406,25 @@
                 <div class="row">
                   <div class="col-xs-12">
                     <h3>Update enrollment</h3>
+                    <!-- updateEnrollment -->
+                    {{> enrollmentsUpdate
+                      client=currentClient
+                      projectId=updateEnrollmentProjectId
+                      project=updateEnrollmentProject
+                      surveyId=projectUpdateSurveyId
+                      enrollmentInfo=updateEnrollmentInfo
+                    }}
+                  </div>
+                </div>
+              </div>
+              <!--/.Panel 5.6-->
+            {{/if}}
+            {{#if annualEnrollment}}
+              <!--Panel 5.6 Update enrollment -->
+              <div class="tab-pane fade {{#if isActive 'annual-enrollment'}} in show active {{else}} no-show {{/if}}" id="panel-annual-enrollment" role="tabpanel">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <h3>Annual enrollment</h3>
                     <!-- updateEnrollment -->
                     {{> enrollmentsUpdate
                       client=currentClient
