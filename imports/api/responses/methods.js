@@ -67,6 +67,7 @@ Meteor.methods({
       const { clientId, surveyId, submissionId } = Responses.findOne(id);
       const hc = HmisClient.create(this.userId);
       hc.api('survey').deleteSubmission(clientId, surveyId, submissionId);
+      // Meteor.call('responses.deleteEnrollment', id);
     } catch (err) {
       logger.warn('Failed to delete response', err);
     } finally {
@@ -157,14 +158,26 @@ Meteor.methods({
     const result = enrollmentUploader.upload(sortedData, hc.api('client'));
 
     logger.debug('enrollment upload result', result);
-
-    Responses.update(id, {
-      $set: {
-        enrollment: result,
-      },
-    });
+    if (Object.keys(result).length > 0) {
+      // new enrollment has been crated
+      Responses.update(id, {
+        $set: {
+          enrollment: result,
+        },
+      });
+    }
 
     return result;
+  },
+
+  'responses.deleteEnrollment'(id) {
+    logger.info(`METHOD[${this.userId}]: responses.uploadEnrollment`, id);
+    const response = Responses.findOne(id);
+    if (response.enrollment) {
+      Object.values(response.enrollment).forEach(entry => {
+        throw new Error('deleteEnrollment is not implemented yet', entry.updateUri);
+      });
+    }
   },
 
   'responses.uploadToHmis'(id) {

@@ -10,25 +10,36 @@ export class EnrollmentUploader {
     this.survey = survey;
   }
 
-  getPostOrPutUri(uri) {
+  getMappingFromTemplatesToExistingUris() {
+    if (this.response.enrollment) {
+      const keys = Object.keys(this.response.enrollment);
+      return keys.reduce((all, key) => {
+        const entry = this.response.enrollment[key];
+        if (entry.uriTemplate) {
+          return {
+            ...all,
+            [entry.uriTemplate]: entry.updateUri,
+          };
+        }
+        return all;
+      }, {});
+    }
+    return {};
+  }
+
+  getPostUri(uri) {
     // we are simply counting /{abcd} here
     // in the future, more complex regex may be required
     const regex = /\/\{.+?\}/g;
     const numberOfUnresolvedVariables = (uri.match(regex) || []).length;
 
     if (numberOfUnresolvedVariables === 0) {
-      return {
-        postUri: null,
-        putUri: uri,
-      };
+      return uri;
     }
 
     if (numberOfUnresolvedVariables === 1) {
       // this is post request
-      return {
-        postUri: uri.replace(regex, ''),
-        putUri: null,
-      };
+      return uri.replace(regex, '');
     }
 
     throw new Error(
@@ -119,16 +130,26 @@ export class EnrollmentUploader {
     let uploadErrorDetails = null;
 
     const responseCount = {};
+    const mappingForPutOps = this.getMappingFromTemplatesToExistingUris();
 
     const responses = uriTemplates.reduce((all, uriTemplate) => {
-      const translated = translateString(uriTemplate, uriTemplateVariables);
+      let postUri;
+      let putUri;
 
-      const { postUri, putUri } = this.getPostOrPutUri(translated);
-      console.log('post/put', postUri, putUri);
+      if (mappingForPutOps[uriTemplate]) {
+        // do PUT
+        putUri = mappingForPutOps[uriTemplate];
+      } else {
+        // do POST
+        const translated = translateString(uriTemplate, uriTemplateVariables);
+        postUri = this.getPostUri(translated);
+      }
 
       const data = sortedData[uriTemplate];
       const uriObject = Object.keys(data).shift();
 
+      // console.log('post/put', postUri, putUri);
+      // console.log(data, uriObject);
       if (uploadErrorDetails) {
         // we have an error, skip other urls
         return all;
@@ -136,8 +157,11 @@ export class EnrollmentUploader {
 
       try {
         // send data
-        const response = postUri ?
-          clientApi.postData(postUri, data) : clientApi.putData(putUri, data);
+        if (putUri) {
+          clientApi.putData(putUri, data);
+          return all;
+        }
+        const response = clientApi.postData(postUri, data);
 
         // add object id to template variables to use in successive calls
         const uriObjectId = `${uriObject}Id`;
@@ -153,6 +177,7 @@ export class EnrollmentUploader {
           [responseKey]: {
             id: responseObjectId,
             updateUri: `${baseUri}/${responseObjectId}`,
+            uriTemplate,
           },
         } : {
           ...all,
@@ -172,31 +197,3 @@ export class EnrollmentUploader {
     return responses;
   }
 }
-
-// const getEnrollmentIds = (hc, clientId, schema) =>
-//   hc.api('client').getClientEnrollments(clientId, schema)
-//     .map(({ id }) => ({
-//       enrollmentId: id,
-//       clientId,
-//       source: schema.slice(1),
-//     }));
-
-// export const getClientGlobalEnrollment = (hc, client) => {
-//   const { dedupClientId, clientVersions } = client;
-//   const globalEnrollments = hc.api('global').getClientEnrollments(dedupClientId);
-//   if (globalEnrollments[0]) return globalEnrollments[0];
-
-//   // Create enrollment if none:
-//   let enrollments;
-//   if (clientVersions) {
-//     // Merged Client
-//     enrollments = clientVersions
-//       .map(({ clientId, schema }) => getEnrollmentIds(hc, clientId, schema))
-//       .reduce((acc, val) => acc.concat(val), []); // flatten once
-//   } else {
-//     const { clientId, schema } = client;
-//     enrollments = getEnrollmentIds(hc, clientId, schema);
-//   }
-//   const globalEnrollment = hc.api('global').createGlobalEnrollment(dedupClientId, enrollments);
-//   return globalEnrollment;
-// };

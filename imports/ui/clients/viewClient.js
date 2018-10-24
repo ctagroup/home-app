@@ -91,10 +91,12 @@ const updateEligibility = (client) => {
   }
 };
 
+/*
 const withResponse = (enrollment) => Responses.find({
   'enrollment.enrollment-0.id': enrollment.enrollmentId,
   'enrollmentInfo.dataCollectionStage': dataCollectionStages.ENTRY,
 }).count() > 0;
+*/
 
 Template.viewClient.helpers(
   {
