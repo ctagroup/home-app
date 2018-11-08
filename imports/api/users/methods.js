@@ -168,8 +168,8 @@ Meteor.methods({
     }
 
     const result = {
-      accessToken: accessToken.substr(0, 8),
-      refreshToken: refreshToken.substr(0, 8),
+      accessToken,
+      refreshToken,
       expiresAt: new Date(expiresAt),
       expiresIn: ((expiresAt - new Date()) / 1000).toFixed(2),
       apiResponse,

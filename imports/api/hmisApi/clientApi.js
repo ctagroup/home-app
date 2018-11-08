@@ -1,5 +1,6 @@
 import moment from 'moment';
 import querystring from 'querystring';
+import { removeEmpty } from '/imports/api/utils';
 import { HmisApiRegistry } from './apiRegistry';
 import { ApiEndpoint } from './apiEndpoint';
 
@@ -30,7 +31,7 @@ export class ClientApi extends ApiEndpoint {
   createClient(client, schema) {
     const dob = moment(client.dob);
     const body = {
-      client: {
+      client: removeEmpty({
         firstName: client.firstName,
         middleName: client.middleName,
         lastName: client.lastName,
@@ -50,7 +51,7 @@ export class ClientApi extends ApiEndpoint {
         sourceSystemId: client._id || '',
         phoneNumber: client.phoneNumber,
         emailAddress: client.emailAddress,
-      },
+      }),
     };
 
     const url = `${BASE_URL}/${schema}/clients`;
