@@ -91,12 +91,15 @@ const updateEligibility = (client) => {
   }
 };
 
-/*
-const withResponse = (enrollment) => Responses.find({
-  'enrollment.enrollment-0.id': enrollment.enrollmentId,
-  'enrollmentInfo.dataCollectionStage': dataCollectionStages.ENTRY,
-}).count() > 0;
-*/
+function getEnrollmentSurveyIdForProject(projectId, surveyType) {
+  if (projectId) {
+    const agencies = Agencies.find().fetch();
+    const selectedAgency =
+      agencies.find((agency) => agency.getProjectSurveyId(projectId, surveyType));
+    return selectedAgency && selectedAgency.getProjectSurveyId(projectId, surveyType);
+  }
+  return false;
+}
 
 Template.viewClient.helpers(
   {
@@ -164,14 +167,8 @@ Template.viewClient.helpers(
       return Projects.findOne(selectedProjectId);
     },
     projectEntrySurveyId() {
-      const projectId = Template.instance().selectedProject.get();
-      if (projectId) {
-        const agencies = Agencies.find().fetch();
-        const selectedAgency =
-          agencies.find((agency) => agency.getProjectSurveyId(projectId, 'entry'));
-        return selectedAgency && selectedAgency.getProjectSurveyId(projectId, 'entry');
-      }
-      return false;
+      const selectedProjectId = Template.instance().selectedProject.get();
+      return getEnrollmentSurveyIdForProject(selectedProjectId, 'entry');
     },
     projectUpdateSurveyId() {
       const selectedEnrollmentId = Template.instance().selectedEnrollment.get();
@@ -280,6 +277,18 @@ Template.viewClient.helpers(
       const schema = Router.current().params.query.schema;
       const query = { clientId, schema };
       return Router.path('adminDashboardresponsesView', {}, { query });
+    },
+    viewEnrollmentPath(enrollment, enrollmentSurveyType) {
+      const { _id } = Router.current().params;
+      const { schema } = Router.current().params.query;
+      const { enrollmentId } = enrollment;
+      const projectId = Meteor.user().activeProjectId;
+      const surveyId = getEnrollmentSurveyIdForProject(projectId, enrollmentSurveyType);
+
+      return Router.path('viewEnrollmentAsResponse',
+        { _id, enrollmentId },
+        { query: { schema, surveyId } }
+      );
     },
     isReferralStatusActive(step) {
       const client = Router.current().data().client;

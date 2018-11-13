@@ -2,9 +2,12 @@ import { Clients } from '/imports/api/clients/clients';
 // import { GlobalEnrollments } from '/imports/api/enrollments/enrollments';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import { RecentClients } from '/imports/api/recent-clients';
+import Enrollments from '/imports/api/enrollments/enrollments';
+import Surveys from '/imports/api/surveys/surveys';
 import Responses from '/imports/api/responses/responses';
 import FeatureDecisions from '/imports/both/featureDecisions';
 import { ClientsAccessRoles } from '/imports/config/permissions';
+import '/imports/ui/enrollments/viewEnrollmentAsResponse';
 import '/imports/ui/clients/clientNotFound';
 import '/imports/ui/clients/selectSurvey';
 import '/imports/ui/clients/searchClient';
@@ -91,6 +94,41 @@ Router.route('adminDashboardclientsNew', {
 //     },
 //   }
 // );
+
+Router.route('/clients/:_id/enrollments/:enrollmentId', {
+  name: 'viewEnrollmentAsResponse',
+  template: 'viewEnrollmentAsResponse',
+  controller: AppController,
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), ClientsAccessRoles);
+    },
+  },
+  // onBeforeAction() {
+  // },
+  waitOn() {
+    const { _id, enrollmentId } = this.params;
+    const { schema, surveyId } = this.params.query;
+    return [
+      Meteor.subscribe('clients.one', _id, schema),
+      Meteor.subscribe('surveys.one', surveyId),
+      Meteor.subscribe('enrollments.one', _id, schema, enrollmentId),
+    ];
+  },
+  data() {
+    const { _id, enrollmentId } = this.params;
+    const { surveyId } = this.params.query;
+    const client = Clients.findOne(_id);
+    const survey = Surveys.findOne(surveyId);
+    const enrollment = Enrollments.findOne(enrollmentId);
+    console.log(enrollment);
+    return {
+      client,
+      survey,
+      enrollment,
+    };
+  },
+});
 
 Router.route(
   '/clients/:_id', {

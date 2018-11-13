@@ -5,6 +5,23 @@ import {
   getClientGlobalEnrollments,
 } from '/imports/api/enrollments/helpers';
 
+
+Meteor.publish('enrollments.one', function publishEnrollment(clientId, schema, enrollmentId) {
+  logger.info(`PUB[${this.userId}]: enrollments.one`, clientId, schema, enrollmentId);
+  if (!this.userId) return [];
+
+  try {
+    const hc = HmisClient.create(this.userId);
+    const enrollment = hc.api('client').debug().getClientEnrollment(clientId, schema, enrollmentId);
+    logger.debug(enrollment);
+    this.added('enrollments', enrollment.enrollmentId, enrollment);
+  } catch (err) {
+    logger.error('enrollments.one', err);
+  }
+
+  return this.ready();
+});
+
 Meteor.publish('client.globalEnrollments',
 function pubClient(dedupClientId, inputSchema = 'v2015', loadDetails = false) {
   logger.info(`PUB[${this.userId}]: clients.one(${dedupClientId}, ${inputSchema})`);

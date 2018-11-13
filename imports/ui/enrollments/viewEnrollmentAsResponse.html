@@ -1,0 +1,14 @@
+<template name="viewEnrollmentAsResponse">
+  {{#if survey}}
+    <div>{{> React
+      component=component
+      definition=definition
+      initialValues=initialValues
+      client=client
+      surveyId=surveyId
+      debugMode=isAdmin
+    }}</div>
+  {{else}}
+    <p>Survey does not exists</p>
+  {{/if}}
+</template>

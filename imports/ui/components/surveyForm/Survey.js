@@ -90,16 +90,6 @@ export default class Survey extends React.Component {
     this.setState(formState);
   }
 
-  /*
-  handleSubmit(uploadSurvey, uploadClient) {
-    const values = this.state.values;
-    const definition = this.props.definition;
-    const formState = computeFormState(definition, values, {}, { client: this.props.client });
-
-    const emails = prepareEmails(definition, formState);
-  }
-  */
-
   handleSubmit(uploadSurvey, uploadClient) {
     let clientId;
     let clientSchema;
@@ -113,7 +103,6 @@ export default class Survey extends React.Component {
     }
 
     const surveyType = this.props.definition.type;
-
 
     const doc = {
       clientId,

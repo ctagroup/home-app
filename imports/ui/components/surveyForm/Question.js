@@ -92,7 +92,6 @@ export default class Question extends Item {
   }
 
   handleOtherClick(event) {
-    console.log('other click', event.target.name, event.target.value);
     this.props.onChange(event.target.name, event.target.value);
     this.otherInput.focus();
   }
@@ -156,7 +155,7 @@ export default class Question extends Item {
             name={id}
             value={v.value}
             disabled={this.isRefused() || disabled}
-            checked={!this.isRefused() && v.value === value}
+            checked={!this.isRefused() && v.value == value} // eslint-disable-line
             onChange={this.handleChange}
           /> {v.label}
         </label>

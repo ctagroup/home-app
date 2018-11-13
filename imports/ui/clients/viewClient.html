@@ -1,5 +1,4 @@
 <template name="viewClient">
-  {{log 'home'}}
   {{#with client}}
   <div id="viewClient_content" class="col-xs-12">
     <div class="row client-profile-container">
@@ -308,7 +307,7 @@
                 <div class="col-xs-12">
                   <h3>Enrollments</h3>
                   <!-- { {> enrollmentsListView enrollments=enrollments}} -->
-                  <div class="table-responsive">
+                  <div class="table-responsive enrollments-list">
                     <table class="table table-hover table-striped">
                       <thead>
                         <tr>
@@ -333,16 +332,22 @@
 
                             <td>
                               <ul>
+                                <li><a href="{{viewEnrollmentPath enrollment 'entry'}}" class="btn btn-primary">
+                                  <i class="fa fa-eye"></i> View
+                                </a></li>
                                 {{#each enrollmentResponses enrollment.enrollmentId dataCollectionStages.ENTRY}}
-                                  <li><a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDateTime createdAt}}</a></li>
+                                  <li><i class="fal fa-poll-h"></i> <a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDateTime createdAt}}</a></li>
                                 {{/each}}
                               </ul>
                             </td>
 
                             <td>
                               <ul>
+                                <li><a href="{{viewEnrollmentPath enrollment 'update'}}" class="btn btn-primary">
+                                  <i class="fa fa-eye"></i> View
+                                </a></li>
                                 {{#each enrollmentResponses enrollment.enrollmentId dataCollectionStages.UPDATE}}
-                                <li><a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDateTime createdAt}}</a></li>
+                                  <li><i class="fal fa-poll-h"></i> <a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDateTime createdAt}}</a></li>
                                 {{/each}}
                               </ul>
                               <a id="u-{{enrollment.enrollmentId}}" class="updateLink update btn btn-default"><i class="fa fa-plus"></i> Update Enrollment</a>
@@ -351,8 +356,11 @@
 
                             <td>
                               <ul>
+                                <li><a href="{{viewEnrollmentPath enrollment 'exit'}}" class="btn btn-primary">
+                                  <i class="fa fa-eye"></i> View
+                                </a></li>
                                 {{#each enrollmentResponses enrollment.enrollmentId dataCollectionStages.EXIT}}
-                                  <li><a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDateTime createdAt}}</a></li>
+                                  <li><i class="fal fa-poll-h"></i> <a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDateTime createdAt}}</a></li>
                                 {{/each}}
                               </ul>
                               {{#unless enrollmentExited enrollment.enrollmentId}}

@@ -14,6 +14,9 @@ import '/imports/api/pendingClients/server/publications';
 import '/imports/api/eligibleClients/methods';
 import '/imports/api/eligibleClients/server/publications';
 
+import '/imports/api/enrollments/server/publications';
+// import '/imports/api/enrollments/methods';
+
 import '/imports/api/files/methods';
 import '/imports/api/files/server/publications';
 
