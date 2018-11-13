@@ -80,7 +80,7 @@ export const getClientEnrollments = (hc, clientId, schema, stopFunction) => {
     } else {
       enrollments[i].exits = false;
     }
-    enrollments[i].project = hc.api('client').getProject(enrollments[i].projectid, schema);
+    enrollments[i].project = hc.api('client').getProject(enrollments[i].projectId, schema);
   }
   return enrollments;
 };

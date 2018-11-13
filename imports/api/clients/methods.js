@@ -2,11 +2,15 @@ import { logger } from '/imports/utils/logger';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import { HmisClient } from '/imports/api/hmisApi';
 import { mergeByDedupId } from '/imports/api/clients/helpers';
+import eventPublisher, {
+  ClientCreatedEvent,
+  ClientUpdatedEvent,
+} from '/imports/api/eventLog/events';
 
 Meteor.methods({
   'clients.create'(client, schema = 'v2017') {
-    logger.info(`METHOD[${Meteor.userId()}]: clients.create`, client);
-    const hc = HmisClient.create(Meteor.userId());
+    logger.info(`METHOD[${this.userId}]: clients.create`, client);
+    const hc = HmisClient.create(this.userId);
     const result = hc.api('client').createClient(client, schema);
 
     try {
@@ -15,6 +19,8 @@ Meteor.methods({
     } catch (err) {
       logger.error('Failed to upload photo/signature to s3', err);
     }
+
+    eventPublisher.publish(new ClientCreatedEvent(result, { userId: this.userId }));
 
     return result;
   },
@@ -25,6 +31,13 @@ Meteor.methods({
     check(schema, String);
     const hc = HmisClient.create(Meteor.userId());
     hc.api('client').updateClient(clientId, client, schema);
+
+    eventPublisher.publish(new ClientUpdatedEvent({
+      ...client,
+      clientId,
+      schema,
+    }, { userId: this.userId }));
+
     return client;
   },
 
