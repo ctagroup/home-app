@@ -23,7 +23,10 @@ Meteor.injectedMethods = (methods, registerScopeCallback = null) => {
       [name](...args) {
         const scope = container.createScope();
         // TODO: get number of arguments, default values??
-        const builder = (ctx) => () => methods[name].call(this, ...args, ctx);
+        const builder = (ctx) => () => {
+          this.context = ctx;
+          methods[name].call(this, ...args);
+        };
         scope.register({
           userId: awilix.asValue(this.userId),
           [name]: awilix.asFunction(builder),

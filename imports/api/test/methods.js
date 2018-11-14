@@ -3,7 +3,9 @@ import '/imports/startup/server/diContainer';
 
 
 Meteor.injectedMethods({
-  'diExample.searchClient'(query, { hmisClient }) {
+  'diExample.searchClient'(query) {
+    const { hmisClient, userId, connectionString } = this.context;
+    console.log(query, userId, connectionString);
     const results = hmisClient.api('client').searchClient(query);
     return results;
   },
