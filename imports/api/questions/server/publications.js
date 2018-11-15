@@ -25,6 +25,7 @@ Meteor.publish('questions.all', function publishAllQuestions() {
     });
     this.ready();
   });
+  this.ready();
 });
 
 Meteor.publish('questions.one', function publishOneQuestion(id) {
