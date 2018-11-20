@@ -26,6 +26,8 @@ Meteor.methods({
   'surveys.update'(id, doc) {
     logger.info(`METHOD[${this.userId}]: surveys.update`, id);
 
+    console.log(doc);
+
     // TODO: permissions
     check(id, String);
 
@@ -42,7 +44,7 @@ Meteor.methods({
 
     // create temp survey in mongo
     const tempId = Surveys.insert({
-      ...doc.$set,
+      ...(doc.$set || doc),
       title: uploadedSurvey.surveyTitle,
       locked: uploadedSurvey.locked,
       hmis: {
