@@ -155,25 +155,40 @@ Meteor.methods({
     // we are only interested in values for questions which have hmisIds
     const questionVaules = allQuestionValues.filter(v => v.questionId);
 
+    let submissionId = response.submissionId;
     try {
-      if (response.submissionId) {
+      if (submissionId) {
         // if this response has already been submitted
-        logger.info(`Deleting old submission ${id}`);
+        logger.info(`Updating existing submission, doc id ${id}`);
+        const submissionResponses = hc.api('survey').getSubmissionResponses(
+          clientId, surveyId, submissionId
+        );
+        const updatedResponses = submissionResponses.map(r => {
+          const newValue = questionVaules.find(qv => r.questionId === qv.questionId);
+          return {
+            ...r,
+            responseText: newValue.responseText,
+          };
+        });
+        hc.api('survey').updateSubmissionResponses(
+          clientId, surveyId, submissionId, updatedResponses
+        );
+        Responses.update(id, { $set: {
+          status: ResponseStatus.COMPLETED,
+        } });
+      } else {
+        logger.info(`Sending new submission, response doc ${id}`);
+        // create new submission - send all question values in one call
+        submissionId = hc.api('survey').createSubmission(
+          clientId, surveyId, questionVaules
+        ).submissionId;
 
-        // delete old submission
-        hc.api('survey').deleteSubmission(clientId, surveyId, response.submissionId);
-        Responses.update(id, { $unset: { submissionId: true } });
+        Responses.update(id, { $set: {
+          submissionId,
+          status: ResponseStatus.COMPLETED,
+          submittedAt: new Date(),
+        } });
       }
-      logger.info(`Submitting responses ${id}`);
-      // create new submission - send all question values in one call
-      const { submissionId } = hc.api('survey').createSubmission(
-        clientId, surveyId, questionVaules
-      );
-      Responses.update(id, { $set: {
-        submissionId,
-        status: ResponseStatus.COMPLETED,
-        submittedAt: new Date(),
-      } });
     } catch (e) {
       logger.error(`Response upload ${e}`, e.stack);
       Responses.update(id, { $set: { status: ResponseStatus.UPLOAD_ERROR } });

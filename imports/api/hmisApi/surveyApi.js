@@ -129,6 +129,28 @@ export class SurveyApi extends ApiEndpoint {
     return this.doPost(url, body).response;
   }
 
+  getSubmissionResponses(clientId, surveyId, submissionId, start = 0, limit = 9999) {
+    const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/submissions/${submissionId}?startIndex=${start}&limit=${limit}`; // eslint-disable-line
+    const { pagination, responses } = this.doGet(url).responses;
+    const remaining = limit - pagination.returned;
+    if (remaining > 0 && pagination.returned > 0) {
+      return [
+        ...responses,
+        ...this.getSubmissionResponses(clientId,
+          surveyId, submissionId, pagination.from + pagination.returned, remaining
+        ),
+      ];
+    }
+    return responses;
+  }
+
+  updateSubmissionResponses(clientId, surveyId, submissionId, responses) {
+    // see: https://hmis-api.github.io/survey-service-api/#clients__clientid__surveys__surveyid__responses_post
+    const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/submissions/${submissionId}`;
+    const body = { responses: { responses } };
+    return this.doPut(url, body);
+  }
+
   deleteSubmission(clientId, surveyId, submissionId) {
     const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/submissions/${submissionId}`;
     return this.doDel(url);
