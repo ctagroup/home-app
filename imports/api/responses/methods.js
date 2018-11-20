@@ -340,4 +340,14 @@ Meteor.methods({
     logger.info('DONE!', submissionId);
     return submissionId;
   },
+  'responses.count'() {
+    logger.info(`METHOD[${this.userId}]: responses.count`);
+
+    function count() {
+      return Responses._collection // eslint-disable-line
+      .rawCollection().distinct('clientId');
+    }
+
+    return count();
+  },
 });
