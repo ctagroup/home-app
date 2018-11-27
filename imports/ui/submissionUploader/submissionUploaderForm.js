@@ -1,6 +1,7 @@
 import { ReactiveVar } from 'meteor/reactive-var';
-// import Papa from 'papaparse';
 import * as Papa from 'papaparse';
+
+import Surveys from '/imports/api/surveys/surveys';
 
 import './submissionUploaderForm.html';
 import './surveySelect.js';
@@ -17,6 +18,7 @@ Template.submissionUploaderForm.onCreated(() => {
 
   Tracker.autorun(() => {
     const surveyId = template.selectedSurveyId.get();
+    if (!surveyId) return;
     template.selectedSurveyDetails.set({
       loading: true,
     });
@@ -26,6 +28,16 @@ Template.submissionUploaderForm.onCreated(() => {
         data: { sections },
       });
     });
+    Meteor.call('surveys.getSurveySectionQuestions', surveyId,
+      (err, resp) => {
+        if (resp) {
+          const { sections, sectionQuestions } = resp;
+          template.selectedSurveyDetails.set({
+            loading: false,
+            data: { sections, sectionQuestions },
+          });
+        }
+      });
   });
 });
 
@@ -45,6 +57,23 @@ Template.submissionUploaderForm.helpers({
   },
   selectedSurveyDetails() {
     return Template.instance().selectedSurveyDetails.get();
+  },
+  selectedSurveySectionQuestions(sectionId) {
+    const details = Template.instance().selectedSurveyDetails.get();
+    if (details && details.data && details.data.sectionQuestions) {
+      const { sectionQuestions } = details.data;
+      const selectedSectionQuestions = sectionQuestions[sectionId];
+      return selectedSectionQuestions;
+    }
+    return [];
+  },
+  surveyData() {
+    const surveyId = Template.instance().selectedSurveyId.get();
+    if (!surveyId) return {};
+    const survey = Surveys.findOne(surveyId);
+    if (!survey.definition) return {};
+    const data = JSON.parse(survey.definition);
+    return data;
   },
   uploading() {
     return Template.instance().uploading.get();

@@ -197,4 +197,19 @@ Meteor.methods({
     const hc = HmisClient.create(this.userId);
     return hc.api('survey').getSurveySections(surveyId);
   },
+  'surveys.getSurveyQuestions'(surveyId) {
+    return surveyId;
+  },
+  'surveys.getSurveySectionQuestions'(surveyId) {
+    logger.info(`METHOD[${this.userId}]: surveys.getSurveySections`, surveyId);
+    check(surveyId, String);
+
+    const hc = HmisClient.create(this.userId);
+    const sections = hc.api('survey').getSurveySections(surveyId);
+    const sectionQuestions = sections.reduce((acc, { surveySectionId }) => ({
+      ...acc,
+      [surveySectionId]: hc.api('survey').getQuestionMappings(surveyId, surveySectionId),
+    }), {});
+    return { sections, sectionQuestions };
+  },
 });
