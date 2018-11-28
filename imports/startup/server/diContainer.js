@@ -44,8 +44,43 @@ Meteor.injectedMethods = (methods, registerScopeCallback = null) => {
       },
     };
   }, {});
-  console.log(injectedMethods);
-  Meteor.methods(injectedMethods);
+  return Meteor.methods(injectedMethods);
+};
+
+Meteor.injectedPublish = (name, publishFcn, registerScopeCallback = null) => {
+  /*
+  const builder = (ctx) => {
+    this.context = ctx;
+    console.log('builder', ctx);
+    console.log('TODO: call publish');
+  };
+
+  const scope = container.createScope();
+  scope.register({
+    userId: awilix.asValue(this.userId),
+    fcn: awilix.asFunction(builder),
+  });
+  if (registerScopeCallback) {
+    const data = registerScopeCallback() || {};
+    scope.register(data);
+  }
+
+  console.log('xxx', scope.resolve('fcn'), scope.resolve('userId'));
+  */
+  return Meteor.publish(name, function () {
+    const builder = (ctx) => {
+      this.context = ctx;
+      return publishFcn;
+    };
+    const scope = container.createScope();
+    scope.register({
+      userId: awilix.asValue(this.userId),
+      builderFcn: awilix.asFunction(builder),
+    });
+
+    // console.log('todo', scope.resolve('builderFcn'), scope.resolve('userId'));
+    return scope.resolve('builderFcn').call(this);
+  });
 };
 
 export default container;
