@@ -15,6 +15,15 @@ export function fullName(user) {
   return parts.join(' ').trim();
 }
 
+export function getSchemaFromLink(link, defaultValue = '') {
+  try {
+    const regex = /\/(v\d{4})\//g;
+    return regex.exec(link)[1];
+  } catch (e) {
+    return defaultValue;
+  }
+}
+
 export function getClientSchemaFromLinks(links, defaultValue = '') {
   try {
     const link = links[0];

@@ -1,6 +1,17 @@
 <template name="editClient">
 	<div id="editClient_content">
-    {{#with client}}
+		<div class="dropdown versionSelect">
+				<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuPS" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+					{{currentVersion}}
+					<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" aria-labelledby="dropdownMenuPS">
+					{{#each options}}
+						<li><a class="versionItem" href="#">{{label}}</a></li>
+					{{/each}}
+				</ul>
+		</div>
+    {{#with selectedClient}}
 			<h3 class="page-header">{{firstName}} {{lastName}}</h3>
 			<div class="row">
 				<div class="col-md-8 col-sm-6 col-xs-12 personal-info">

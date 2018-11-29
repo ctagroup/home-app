@@ -3,7 +3,8 @@ import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
 import {
   sortByTime,
-  mergeClient,
+  // mergeClient,
+  mergeClientExtended,
   getEligibleClient,
   getClientEnrollments,
   getGlobalHouseholds,
@@ -30,16 +31,19 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
 
   try {
     const hc = HmisClient.create(this.userId);
-    if (inputSchema) {
-      client = hc.api('client').getClient(inputClientId, inputSchema);
-      client.schema = inputSchema;
-      client.isHMISClient = true;
-    }
-    // TODO [VK]: publish by dedupClientId directly
-    const dedupClientId = inputSchema ? client.dedupClientId : inputClientId;
-    const clientVersions = hc.api('client').searchClient(dedupClientId, 50);
+    client = hc.api('client').getClient(inputClientId, inputSchema);
+    client.schema = inputSchema;
+    client.isHMISClient = true;
 
-    const mergedClient = mergeClient(clientVersions, inputSchema);
+    // TODO [VK]: publish by dedupClientId directly
+    // NOTE [PG]: it's currently not possible because not all clients have dedupId :(
+    let clientVersions = [client];
+    if (client.dedupClientId) {
+      clientVersions = hc.api('client').searchClient(client.dedupClientId, 50);
+    }
+    const mergedClient = mergeClientExtended(clientVersions, inputSchema);
+
+    // const mergedClient = mergeClient(clientVersions, inputSchema);
     self.added('localClients', inputClientId, mergedClient);
     self.ready();
 
