@@ -15,8 +15,3 @@ import './openingScript';
 import './projects';
 import './agencies';
 import './plugins';
-
-Meteor.startup(() => {
-  console.log('aaa');
-  Meteor.subscribe('test.injection', 123, 456);
-});

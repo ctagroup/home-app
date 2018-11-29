@@ -10,3 +10,7 @@ import '/imports/ui/globalHouseholds/globalHouseholdCreateView';
 import '/imports/ui/globalHouseholds/globalHouseholdEditView';
 
 import '/imports/startup/client/routes';
+
+Meteor.startup(() => {
+  Meteor.subscribe('diExample.publication', 123, 456);
+});
