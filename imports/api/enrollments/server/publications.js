@@ -1,19 +1,25 @@
 import { eachLimit } from 'async';
 import { HmisClient } from '/imports/api/hmisApi';
-import { logger } from '/imports/utils/logger';
 import {
   getClientGlobalEnrollments,
 } from '/imports/api/enrollments/helpers';
 
 
-Meteor.publish('enrollments.one', function publishEnrollment(clientId, schema, enrollmentId) {
+Meteor.injectedPublish('enrollments.one',
+function publishEnrollment(clientId, schema, enrollmentId) {
+  const { logger, hmisClient } = this.context;
   logger.info(`PUB[${this.userId}]: enrollments.one`, clientId, schema, enrollmentId);
   if (!this.userId) return [];
 
   try {
-    const hc = HmisClient.create(this.userId);
-    const enrollment = hc.api('client').debug().getClientEnrollment(clientId, schema, enrollmentId);
+    logger.debug('-------------------------');
+    logger.debug('-------------------------');
+    logger.debug('-------------------------');
+    const enrollment = hmisClient.api('client').getClientEnrollment(clientId, schema, enrollmentId);
     logger.debug(enrollment);
+    logger.debug('-------------------------');
+    logger.debug('-------------------------');
+    logger.debug('-------------------------');
     this.added('enrollments', enrollment.enrollmentId, enrollment);
   } catch (err) {
     logger.error('enrollments.one', err);
@@ -22,8 +28,9 @@ Meteor.publish('enrollments.one', function publishEnrollment(clientId, schema, e
   return this.ready();
 });
 
-Meteor.publish('client.globalEnrollments',
+Meteor.injectedPublish('client.globalEnrollments',
 function pubClient(dedupClientId, inputSchema = 'v2015', loadDetails = false) {
+  const { logger } = this.context;
   logger.info(`PUB[${this.userId}]: clients.one(${dedupClientId}, ${inputSchema})`);
   if (!this.userId) return [];
   const self = this;

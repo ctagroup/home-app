@@ -121,7 +121,7 @@ Router.route('/clients/:_id/enrollments/:enrollmentId', {
     const client = Clients.findOne(_id);
     const survey = Surveys.findOne(surveyId);
     const enrollment = Enrollments.findOne(enrollmentId);
-    console.log(enrollment);
+    console.log('aaa', enrollment);
     return {
       client,
       survey,
