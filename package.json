@@ -10,6 +10,7 @@
     "jquery": "^1.11.10",
     "meteor-node-stubs": "^0.2.11",
     "moment": "https://registry.npmjs.org/moment/-/moment-2.16.0.tgz",
+    "nock": "^10.0.2",
     "raven": "^1.2.1",
     "react": "https://registry.npmjs.org/react/-/react-15.6.1.tgz",
     "react-datepicker": "^0.55.0",
@@ -35,6 +36,6 @@
   "scripts": {
     "start": "meteor --settings settings.local.json",
     "lint": "eslint .",
-    "test": "meteor test --driver-package practicalmeteor:mocha --port 4000"
+    "test": "meteor test --driver-package meteortesting:mocha --port 4000"
   }
 }

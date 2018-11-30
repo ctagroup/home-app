@@ -31,6 +31,7 @@ Template.viewEnrollmentAsResponse.helpers({
   },
   initialValues() {
     const definition = JSON.parse(this.survey.definition);
+    console.log(this.enrollment);
     return mapEnrollmentToSurveyInitialValues(this.enrollment, definition);
   },
 });

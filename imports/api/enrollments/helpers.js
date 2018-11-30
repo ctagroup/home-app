@@ -1,35 +1,31 @@
 import _ from 'lodash';
 import { itemsToArray } from '/imports/api/surveys/computations';
 
+
 export function mapEnrollmentToSurveyInitialValues(enrollment, definition) {
-
-  const data = {
-    enrollment: {
-      entryDate: '2018-11-20',
-    },
-    enrollmentCoc: {
-      cocCode: 'CA-602',
-    },
-    disabilities: [
-      {
-        disabilityResponse: 1,
-        indefiniteandImpairs: 1,
-        disabilityType: 5,
-      },
-    ]
-  }
-
   const enrollmentSurveyItems = itemsToArray(definition).filter(item => !!item.enrollment);
-  console.log('mapEnrollmentToSurveyInitialValues ', enrollment, enrollmentSurveyItems);
 
-  _.get()
+  return enrollmentSurveyItems.reduce((all, item) => {
+    const path = item.enrollment.uriObjectField;
+    const pathParts = path.split('.');
+    let value;
 
-  return {
-    entryDate:	,
-    'question-4':	,
-    'question-21':	1,
-    'question-21a':	1,
-  };
+    switch (pathParts[0]) {
+      case 'disabilities':
+        value = enrollment.disabilities
+          .find(d => d.disabilityType === item.enrollment.defaultObject.disabilityType)
+          [pathParts[1]];
+        break;
+      default:
+        value = _.get(enrollment, path);
+    }
+
+    if (value === undefined) return all;
+    return {
+      ...all,
+      [item.id]: value,
+    };
+  }, {});
 }
 
 export const getClientGlobalEnrollments = (hc, dedupClientId, stopFunction) => {
