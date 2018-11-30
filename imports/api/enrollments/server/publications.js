@@ -7,19 +7,12 @@ import {
 
 Meteor.injectedPublish('enrollments.one',
 function publishEnrollment(clientId, schema, enrollmentId) {
-  const { logger, hmisClient } = this.context;
+  const { logger, enrollmentsRepository } = this.context;
   logger.info(`PUB[${this.userId}]: enrollments.one`, clientId, schema, enrollmentId);
   if (!this.userId) return [];
 
   try {
-    logger.debug('-------------------------');
-    logger.debug('-------------------------');
-    logger.debug('-------------------------');
-    const enrollment = hmisClient.api('client').getClientEnrollment(clientId, schema, enrollmentId);
-    logger.debug(enrollment);
-    logger.debug('-------------------------');
-    logger.debug('-------------------------');
-    logger.debug('-------------------------');
+    const enrollment = enrollmentsRepository.getClientEnrollment(clientId, schema, enrollmentId);
     this.added('enrollments', enrollment.enrollmentId, enrollment);
   } catch (err) {
     logger.error('enrollments.one', err);

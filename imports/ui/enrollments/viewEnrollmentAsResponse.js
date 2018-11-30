@@ -1,5 +1,6 @@
 import EnrollmentAsSurvey from '/imports/ui/components/surveyForm/EnrollmentAsSurvey';
 import { DefaultAdminAccessRoles } from '/imports/config/permissions';
+import { mapEnrollmentToSurveyInitialValues } from '/imports/api/enrollments/helpers';
 
 import './viewEnrollmentAsResponse.html';
 
@@ -23,16 +24,13 @@ Template.viewEnrollmentAsResponse.helpers({
     };
   },
   surveyId() {
-    console.log(this.client);
     return this.survey._id;
   },
   isAdmin() {
     return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
   },
   initialValues() {
-    return {
-      'enrollment-1': 1,
-      'enrollment-2': 99,
-    };
+    const definition = JSON.parse(this.survey.definition);
+    return mapEnrollmentToSurveyInitialValues(this.enrollment, definition);
   },
 });

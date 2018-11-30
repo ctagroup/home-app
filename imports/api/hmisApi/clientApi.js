@@ -154,7 +154,7 @@ export class ClientApi extends ApiEndpoint {
   // }
 
   getClientEnrollment(clientId, schema = DEFAULT_PROJECT_SCHEMA, enrollmentId) {
-    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}`;
+    const url = `${BASE_URL}/${schema}/clients/${clientId}/enrollments/${enrollmentId}?includeChildLinks=true`; // eslint-disable-line max-len
     // return this.doGet(url).enrollments.enrollments;
     return this.doGet(url).enrollment;
   }

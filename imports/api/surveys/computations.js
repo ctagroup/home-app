@@ -366,6 +366,12 @@ export function iterateItems(definition, callback) {
   return undefined;
 }
 
+export function itemsToArray(definition) {
+  const items = [];
+  iterateItems(definition, (item) => { items.push(item); return undefined; });
+  return items;
+}
+
 export function findItem(itemId, definition) {
   // TODO: add tests
   if (definition.id === itemId) {
@@ -420,6 +426,8 @@ export function parseText(text, formState) {
 
 export function prepareEmails(definition, formState) {
   const emailsToSend = formState.emails || [];
+
+  if (!definition.emails) return [];
 
   return emailsToSend
     .map(email => {

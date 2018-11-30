@@ -6,6 +6,13 @@ Template.registerHelper('formatDate',
   date => (date ? moment.utc(date).format('MM/DD/YYYY') : '')
 );
 
+Template.registerHelper('formatDate99', date => {
+  if (!date) return '';
+  if (date === 99) return 'dnc';
+  return moment.utc(date).format('MM/DD/YYYY');
+});
+
+
 Template.registerHelper('formatDateTime',
   date => (date ? moment.utc(date).format('MM/DD/YYYY hh:mm:ss A') : '')
 );

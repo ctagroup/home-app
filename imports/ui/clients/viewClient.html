@@ -306,7 +306,6 @@
               <div class="row">
                 <div class="col-xs-12">
                   <h3>Enrollments</h3>
-                  <!-- { {> enrollmentsListView enrollments=enrollments}} -->
                   <div class="table-responsive enrollments-list">
                     <table class="table table-hover table-striped">
                       <thead>
@@ -322,7 +321,7 @@
                       <tbody>
                         {{#each enrollment in enrollments}}
                           <tr>
-                            <td>{{formatDate enrollment.entryDate}}</td>
+                            <td>{{formatDate99 enrollment.entryDate}}</td>
 
                             <td>
                               {{#with enrollment.project}}

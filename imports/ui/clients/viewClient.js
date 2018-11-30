@@ -255,9 +255,9 @@ Template.viewClient.helpers(
       // .filter(withResponse)
       .sort((a, b) => {
         if (a.entryDate === b.entryDate) {
-          return a.dateUpdated < b.dateUpdated;
+          return a.dateUpdated - b.dateUpdated;
         }
-        return a.entryDate < b.entryDate;
+        return a.entryDate - b.entryDate;
       });
     },
     globalHouseholds() {

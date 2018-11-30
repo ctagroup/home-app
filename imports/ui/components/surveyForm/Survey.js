@@ -29,6 +29,7 @@ export default class Survey extends React.Component {
       ),
       errors: {},
     };
+    console.log(this.state);
   }
 
   handleValueChange(name, value, isValid = true) {
