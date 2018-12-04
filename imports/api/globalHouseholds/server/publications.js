@@ -28,7 +28,7 @@ Meteor.publish('globalHouseholds.list', function publishHouseholds() {
     if (household.links[0].rel.indexOf('v2014') !== -1) {
       household.schema = 'v2014';
     }
-    self.added('localGlobalHouseholds', household.globalHouseholdId, household);
+    self.added('localGlobalHouseholds', household.genericHouseholdId, household);
   }
   self.ready();
 
@@ -37,13 +37,13 @@ Meteor.publish('globalHouseholds.list', function publishHouseholds() {
   for (let i = 0; i < globalHouseholds.length && !stopFunction; i += 1) {
     const household = globalHouseholds[i];
     clientsQueue.push({
-      globalHouseholdId: household.globalHouseholdId,
+      genericHouseholdId: household.genericHouseholdId,
       clientId: household.headOfHouseholdId,
       schema: household.schema,
     });
     if (household.userId) {
       usersQueue.push({
-        globalHouseholdId: household.globalHouseholdId,
+        genericHouseholdId: household.genericHouseholdId,
         userId: household.userId,
       });
     }
@@ -54,7 +54,7 @@ Meteor.publish('globalHouseholds.list', function publishHouseholds() {
       callback();
       return;
     }
-    const { globalHouseholdId, clientId, schema } = data;
+    const { genericHouseholdId, clientId, schema } = data;
     let clientDetails;
     Meteor.defer(() => {
       try {
@@ -63,7 +63,7 @@ Meteor.publish('globalHouseholds.list', function publishHouseholds() {
       } catch (e) {
         clientDetails = { error: e.reason };
       }
-      self.changed('localGlobalHouseholds', globalHouseholdId, {
+      self.changed('localGlobalHouseholds', genericHouseholdId, {
         headOfHouseholdClient: clientDetails,
       });
       callback();
@@ -75,7 +75,7 @@ Meteor.publish('globalHouseholds.list', function publishHouseholds() {
       callback();
       return;
     }
-    const { globalHouseholdId, userId } = data;
+    const { genericHouseholdId, userId } = data;
     let userDetails;
     Meteor.defer(() => {
       try {
@@ -83,7 +83,7 @@ Meteor.publish('globalHouseholds.list', function publishHouseholds() {
       } catch (e) {
         userDetails = { error: e.reason };
       }
-      self.changed('localGlobalHouseholds', globalHouseholdId, {
+      self.changed('localGlobalHouseholds', genericHouseholdId, {
         userDetails,
       });
       callback();
@@ -94,8 +94,8 @@ Meteor.publish('globalHouseholds.list', function publishHouseholds() {
 });
 
 
-Meteor.publish('globalHouseholds.one', function publishHousehold(globalHouseholdId) {
-  logger.info(`PUB[${this.userId}]: globalHouseholds.one`, globalHouseholdId);
+Meteor.publish('globalHouseholds.one', function publishHousehold(genericHouseholdId) {
+  logger.info(`PUB[${this.userId}]: globalHouseholds.one`, genericHouseholdId);
   if (!this.userId) {
     return [];
   }
@@ -109,8 +109,8 @@ Meteor.publish('globalHouseholds.one', function publishHousehold(globalHousehold
   });
 
   const hc = HmisClient.create(this.userId);
-  const household = hc.api('global-household').getHousehold(globalHouseholdId);
-  household.clients = hc.api('global-household').getHouseholdMembers(globalHouseholdId);
+  const household = hc.api('global-household').getHousehold(genericHouseholdId);
+  household.clients = hc.api('global-household').getHouseholdMembers(genericHouseholdId);
 
   for (let i = 0; i < household.clients.length && !stopFunction; i += 1) {
     const client = household.clients[i];
@@ -122,7 +122,7 @@ Meteor.publish('globalHouseholds.one', function publishHousehold(globalHousehold
     client.clientDetails = hc.api('client').getClient(client.globalClientId, schema);
     client.clientDetails.schema = schema;
   }
-  self.added('localGlobalHouseholds', household.globalHouseholdId, household);
+  self.added('localGlobalHouseholds', household.genericHouseholdId, household);
 
   return self.ready();
 });

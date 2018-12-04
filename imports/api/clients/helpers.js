@@ -91,8 +91,8 @@ export const getGlobalHouseholds = (hc, clientId, schema, stopFunction) => {
 
   const globalHouseholds = [];
   for (let i = 0; i < globalHouseholdMemberships.length && !stopFunction; i += 1) {
-    const { globalHouseholdId } = globalHouseholdMemberships[i];
-    const globalHousehold = hc.api('global-household').getHouseHold(globalHouseholdId);
+    const { genericHouseholdId } = globalHouseholdMemberships[i];
+    const globalHousehold = hc.api('global-household').getHouseHold(genericHouseholdId);
 
     if (globalHousehold) {
       let hohSchema = 'v2015';

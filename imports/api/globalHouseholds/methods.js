@@ -63,10 +63,10 @@ Meteor.methods({
     }
   },
 
-  deleteHousehold(globalHouseholdId) {
-    logger.info(`METHOD[${Meteor.userId()}]: deleteHousehold`, globalHouseholdId);
+  deleteHousehold(genericHouseholdId) {
+    logger.info(`METHOD[${Meteor.userId()}]: deleteHousehold`, genericHouseholdId);
     const hc = HmisClient.create(Meteor.userId());
-    return hc.api('global-household').deleteGlobalHousehold(globalHouseholdId);
+    return hc.api('global-household').deleteGlobalHousehold(genericHouseholdId);
   },
 
 });

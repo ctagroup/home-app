@@ -12,7 +12,7 @@ class GlobalHouseHoldApi extends ApiEndpoint {
       ],
     };
     const household = this.doPost(url, body)[0];
-    this.addMembersToHousehold(household.globalHouseholdId, householdMembers);
+    this.addMembersToHousehold(household.genericHouseholdId, householdMembers);
     return household;
   }
 
