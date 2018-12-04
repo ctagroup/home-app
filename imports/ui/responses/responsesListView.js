@@ -43,6 +43,7 @@ function completedHtml(response, status) {
 
 
 const tableOptions = {
+  pageLength: 50,
   columns: [
     {
       data: 'surveyId',
