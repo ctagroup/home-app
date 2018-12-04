@@ -1,6 +1,7 @@
 // Auto-register following apis:
 import './clientApi';
 import './globalHouseholdApi';
+import './globalHouseholdApi2';
 import './houseMatchingApi';
 import './houseMatchingApi2';
 import './housingApi';
