@@ -1,43 +1,7 @@
 /* eslint prefer-arrow-callback: "off", func-names: "off" */
 
-// import nock from 'nock';
-// import { HmisClient } from './hmisClient';
-// import { ApiRegistry } from './apiRegistry';
 import { chai } from 'meteor/practicalmeteor:chai';
-
 import { mapEnrollmentToSurveyInitialValues } from './helpers';
-
-const enrollmentSurveyDefinition = {
-  items: [
-    {
-      id: 'question1',
-      enrollment: {
-        schema: 'v2017',
-        uriObjectField: 'enrollment.entryDate',
-      },
-    },
-    {
-      id: 'disability-type5',
-      enrollment: {
-        schema: 'v2017',
-        uriObjectField: 'disabilities.disabilityResponse',
-        defaultObject: {
-          disabilityType: 5,
-        },
-      },
-    },
-    {
-      id: 'disability-typ6',
-      enrollment: {
-        schema: 'v2017',
-        uriObjectField: 'disabilities.disabilityResponse',
-        defaultObject: {
-          disabilityType: 6,
-        },
-      },
-    },
-  ],
-};
 
 describe('enrollments helpers', function () {
   it('will map single value via mapEnrollmentToSurveyInitialValues', function () {
@@ -125,5 +89,4 @@ describe('enrollments helpers', function () {
 
     chai.assert.deepEqual(actual, expected);
   });
-
 });

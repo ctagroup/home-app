@@ -23,8 +23,7 @@ class EnrollmentsRepository {
     const submissionDates = expander.getSubmissionDates();
     if (submissionDates.length) {
       const latestDate = submissionDates.pop();
-      // TODO: filter by iterval (latestDate-2mins...latestDate)
-      expander.filterByDate(latestDate);
+      expander.filterByDate(latestDate, 2 * 60);
     }
     if (dataCollectionStage) expander.filterByDataCollectionStage(dataCollectionStage);
 

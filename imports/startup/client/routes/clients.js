@@ -104,15 +104,15 @@ Router.route('/clients/:_id/enrollments/:enrollmentId', {
       return Roles.userIsInRole(Meteor.userId(), ClientsAccessRoles);
     },
   },
-  // onBeforeAction() {
-  // },
   waitOn() {
     const { _id, enrollmentId } = this.params;
-    const { schema, surveyId } = this.params.query;
+    const { schema, surveyId, dataCollectionStage } = this.params.query;
     return [
       Meteor.subscribe('clients.one', _id, schema),
       Meteor.subscribe('surveys.one', surveyId),
-      Meteor.subscribe('enrollments.one', _id, schema, enrollmentId),
+      Meteor.subscribe('enrollments.one', _id, schema, enrollmentId,
+        parseInt(dataCollectionStage, 10)
+      ),
     ];
   },
   data() {
@@ -121,7 +121,7 @@ Router.route('/clients/:_id/enrollments/:enrollmentId', {
     const client = Clients.findOne(_id);
     const survey = Surveys.findOne(surveyId);
     const enrollment = Enrollments.findOne(enrollmentId);
-    console.log('enrollment in router', enrollment);
+    console.log('enrollment data', enrollment);
     return {
       client,
       survey,

@@ -285,9 +285,16 @@ Template.viewClient.helpers(
       const projectId = Meteor.user().activeProjectId;
       const surveyId = getEnrollmentSurveyIdForProject(projectId, enrollmentSurveyType);
 
+      const enrollmentSurveyTypeMap = {
+        entry: dataCollectionStages.ENTRY,
+        update: dataCollectionStages.UPDATE,
+        exit: dataCollectionStages.EXIT,
+      };
+      const dataCollectionStage = enrollmentSurveyTypeMap[enrollmentSurveyType];
+
       return Router.path('viewEnrollmentAsResponse',
         { _id, enrollmentId },
-        { query: { schema, surveyId } }
+        { query: { schema, surveyId, dataCollectionStage } }
       );
     },
     isReferralStatusActive(step) {

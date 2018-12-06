@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 
 export default class EnrollmentExpander {
   constructor(enrollment, hmisClient) {
@@ -26,7 +27,7 @@ export default class EnrollmentExpander {
           dateItems.forEach(dateItem => dateItem.data.forEach(data => {
             this.resultSet.push({
               data,
-              dataCollectionDate: dateStr,
+              dataCollectionDate: moment(dateStr),
               dataCollectionStage: dataCollectionStage * 1,
               uriObject,
             });
@@ -37,8 +38,11 @@ export default class EnrollmentExpander {
     return this;
   }
 
-  filterByDate(date) {
-    this.resultSet = this.resultSet.filter(x => x.dataCollectionDate === date);
+  filterByDate(date, precisionInSeconds = 0) {
+    this.resultSet = this.resultSet.filter(x => {
+      const delta = (moment(date) - x.dataCollectionDate) / 1000;
+      return delta <= precisionInSeconds;
+    });
     return this;
   }
 

@@ -21,8 +21,7 @@ container.register({
   hmisClient: awilix.asFunction(hmisClientFactory),
   logger: awilix.asValue(logger),
   enrollmentsRepository: awilix.asClass(EnrollmentsRepository),
-  enrollmentsTranslationService: awilix.asClass(EnrollmentsTranslationService)
-
+  enrollmentsTranslationService: awilix.asClass(EnrollmentsTranslationService),
 });
 
 registerInjectedMeteorMethods(container);

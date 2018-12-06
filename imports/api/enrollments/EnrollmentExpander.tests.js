@@ -1,13 +1,10 @@
 /* eslint prefer-arrow-callback: "off", func-names: "off" */
 
-// import nock from 'nock';
-// import { HmisClient } from './hmisClient';
-// import { ApiRegistry } from './apiRegistry';
 import { chai } from 'meteor/practicalmeteor:chai';
 
 import {
   getEnrollmentDetails,
-  getEnrollmentResultSet,
+  // getEnrollmentResultSet,
 } from '/imports/__tests__/fixtures/enrollmentDetails';
 import EnrollmentExpander from './EnrollmentExpander';
 
@@ -25,6 +22,7 @@ describe('EnrollmentExpander', function () {
     chai.assert.equal(expander.getResultSet().length, 4);
   });
 
+  /* THIS TEST IS TOO LONG AND COMPLEX - WE WILL NEED TO PUT HERE SOME FAKE DATA
   it.only('will construct fullEnrollment object', function () {
     const expander = new EnrollmentExpander(getEnrollmentDetails());
     expander.resultSet = getEnrollmentResultSet();
@@ -170,4 +168,5 @@ describe('EnrollmentExpander', function () {
 
     chai.assert.deepEqual(expander.toFullEnrollmentObject(), expected);
   });
+  */
 });

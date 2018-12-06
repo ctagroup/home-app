@@ -6,14 +6,17 @@ import {
 
 
 Meteor.injectedPublish('enrollments.one',
-function publishEnrollment(clientId, schema, enrollmentId) {
+function publishEnrollment(clientId, schema, enrollmentId, dataCollectionStage) {
   const { logger, enrollmentsRepository } = this.context;
-  logger.info(`PUB[${this.userId}]: enrollments.one`, clientId, schema, enrollmentId);
+  logger.info(`PUB[${this.userId}]: enrollments.one`,
+    clientId, schema, enrollmentId, dataCollectionStage
+  );
   if (!this.userId) return [];
 
   try {
-    const enrollment = enrollmentsRepository.getClientEnrollment(clientId, schema, enrollmentId);
-    console.log('enrrr', enrollment);
+    const enrollment = enrollmentsRepository.getClientEnrollment(
+      clientId, schema, enrollmentId, dataCollectionStage
+    );
     this.added('enrollments', enrollment.enrollmentId, enrollment);
   } catch (err) {
     logger.error('enrollments.one', err);

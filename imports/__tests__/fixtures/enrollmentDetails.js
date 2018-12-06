@@ -1,10 +1,12 @@
+/* eslint-disable */
+
 export const getEnrollmentDetails = () => ({
   _id: 'b398c95d-b099-414e-972a-f8617281d723',
   enrollmentId: 'b398c95d-b099-414e-972a-f8617281d723',
   entryLinks: {
     entryrhys: {
       '1': {
-        '11-29-2018 18:48': [
+        '2018-11-29T18:48': [
           {
             data: [
               {
@@ -21,7 +23,7 @@ export const getEnrollmentDetails = () => ({
   enrollmentLinks: {
     enrollmentcocs: {
       '1': {
-        '11-29-2018 18:49': [
+        '2018-11-29T18:49': [
           {
             data: [
               {
@@ -36,7 +38,7 @@ export const getEnrollmentDetails = () => ({
     },
     dateOfEngagements: {
       unspecified_stage: {
-        '11-29-2018 18:49': [
+        '2018-11-29T18:49': [
           {
             data: [
               {
@@ -51,7 +53,7 @@ export const getEnrollmentDetails = () => ({
     },
     disabilities: {
       '1': {
-        '11-29-2018 18:48': [
+        '2018-11-29T18:48': [
           {
             data: [
               {
@@ -66,7 +68,7 @@ export const getEnrollmentDetails = () => ({
             groupBy: 'dateUpdated'
           }
         ],
-        '11-29-2018 18:49': [
+        '2018-11-29T18:49': [
           {
             data: [
               {
@@ -93,7 +95,7 @@ export const getEnrollmentDetails = () => ({
     },
     domesticViolences: {
       '1': {
-        '11-29-2018 18:48': [
+        '2018-11-29T18:48': [
           {
             data: [
               {
@@ -108,7 +110,7 @@ export const getEnrollmentDetails = () => ({
     },
     employments: {
       '1': {
-        '11-29-2018 18:49': [
+        '2018-11-29T18:49': [
           {
             data: [
               {
@@ -123,7 +125,7 @@ export const getEnrollmentDetails = () => ({
     },
     healthinsurances: {
       '1': {
-        '11-29-2018 18:49': [
+        '2018-11-29T18:49': [
           {
             data: [
               {
@@ -138,7 +140,7 @@ export const getEnrollmentDetails = () => ({
     },
     healthStatuses: {
       '1': {
-        '11-29-2018 18:49': [
+        '2018-11-29T18:49': [
           {
             data: [
               {
@@ -153,7 +155,7 @@ export const getEnrollmentDetails = () => ({
     },
     incomeandsources: {
       '1': {
-        '11-29-2018 18:49': [
+        '2018-11-29T18:49': [
           {
             data: [
               {
@@ -168,7 +170,7 @@ export const getEnrollmentDetails = () => ({
     },
     noncashbenefits: {
       '1': {
-        '11-29-2018 18:48': [
+        '2018-11-29T18:48': [
           {
             data: [
               {
@@ -183,7 +185,7 @@ export const getEnrollmentDetails = () => ({
     },
     residentialMoveinDates: {
       unspecified_stage: {
-        '11-29-2018 18:48': [
+        '2018-11-29T18:48': [
           {
             data: [
               {
