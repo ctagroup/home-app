@@ -514,7 +514,7 @@
     "dom-helpers": {
       "version": "3.3.1",
       "resolved": "https://registry.npmjs.org/dom-helpers/-/dom-helpers-3.3.1.tgz",
-      "integrity": "sha512-2Sm+JaYn74OiTM2wHvxJOo3roiq/h25Yi69Fqk269cNUwIXsCvATB6CRSFC9Am/20G2b28hGv/+7NiWydIrPvg=="
+      "integrity": "sha1-/BpOFf/fYN3eA6SAqcD+zoId1KY="
     },
     "encoding": {
       "version": "0.1.12",
@@ -826,7 +826,7 @@
     "fast-diff": {
       "version": "1.1.2",
       "resolved": "https://registry.npmjs.org/fast-diff/-/fast-diff-1.1.2.tgz",
-      "integrity": "sha512-KaJUt+M9t1qaIteSvjc6P3RbMdXsNhK61GRftR6SNxqmhthcd9MGIi4T+o0jD8LUSpSnSKXE20nLtJ3fOHxQig=="
+      "integrity": "sha1-S2LEK44D3j+EhGC2OQeZIGldAVQ="
     },
     "fast-levenshtein": {
       "version": "2.0.6",
@@ -7102,7 +7102,7 @@
     "quill-delta": {
       "version": "3.6.2",
       "resolved": "https://registry.npmjs.org/quill-delta/-/quill-delta-3.6.2.tgz",
-      "integrity": "sha512-grWEQq9woEidPDogtDNxQKmy2LFf9zBC0EU/YTSw6TwKmMjtihTxdnPtPRfrqazB2MSJ7YdCWxmsJ7aQKRSEgg==",
+      "integrity": "sha1-du7QFjuLCaB2+6at4pMHxCtAuNg=",
       "requires": {
         "deep-equal": "1.0.1",
         "extend": "3.0.1",
@@ -7112,7 +7112,7 @@
     "raf": {
       "version": "3.4.0",
       "resolved": "https://registry.npmjs.org/raf/-/raf-3.4.0.tgz",
-      "integrity": "sha512-pDP/NMRAXoTfrhCfyfSEwJAKLaxBU9eApMeBPB1TkDouZmvPerIClV8lTAd+uF8ZiTaVl69e1FCxQrAd/VTjGw==",
+      "integrity": "sha1-ooh2iBtLwsqRF9QTgWPduA94FXU=",
       "requires": {
         "performance-now": "2.1.0"
       }
@@ -7167,7 +7167,7 @@
     "react-dnd": {
       "version": "2.5.4",
       "resolved": "https://registry.npmjs.org/react-dnd/-/react-dnd-2.5.4.tgz",
-      "integrity": "sha512-y9YmnusURc+3KPgvhYKvZ9oCucj51MSZWODyaeV0KFU0cquzA7dCD1g/OIYUKtNoZ+MXtacDngkdud2TklMSjw==",
+      "integrity": "sha1-C23F6dDfwpCfT0/nNuVTTzr9G9k=",
       "requires": {
         "disposables": "1.0.2",
         "dnd-core": "2.6.0",
@@ -7180,7 +7180,7 @@
     "react-dnd-html5-backend": {
       "version": "2.5.4",
       "resolved": "https://registry.npmjs.org/react-dnd-html5-backend/-/react-dnd-html5-backend-2.5.4.tgz",
-      "integrity": "sha512-jDqAkm/hI8Tl4HcsbhkBgB6HgpJR1e+ML1SbfxaegXYiuMxEVQm0FOwEH5WxUoo6fmIG4N+H0rSm59POuZOCaA==",
+      "integrity": "sha1-l0rQg/Z7EtVpd6WxcfX/6ynXg1I=",
       "requires": {
         "lodash": "4.17.4"
       }
@@ -7378,7 +7378,7 @@
     "redux": {
       "version": "3.7.2",
       "resolved": "https://registry.npmjs.org/redux/-/redux-3.7.2.tgz",
-      "integrity": "sha512-pNqnf9q1hI5HHZRBkj3bAngGZW/JMCmexDlOxw4XagXY2o1327nHH54LoTjiPJ0gizoqPDRqWyX/00g0hD6w+A==",
+      "integrity": "sha1-BrcxIyFZAdJdBlvjQusCa8HIU3s=",
       "requires": {
         "lodash": "4.17.4",
         "lodash-es": "4.17.8",
