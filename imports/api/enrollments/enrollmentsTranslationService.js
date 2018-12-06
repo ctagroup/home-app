@@ -3,11 +3,11 @@
 
 class EnrollmentsTranslationService {
   translateFromForeign(foreign) {
-
+    return foreign;
   }
 
   translateToForeign(native) {
-
+    return native;
   }
 }
 

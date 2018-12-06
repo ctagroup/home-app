@@ -13,6 +13,7 @@ function publishEnrollment(clientId, schema, enrollmentId) {
 
   try {
     const enrollment = enrollmentsRepository.getClientEnrollment(clientId, schema, enrollmentId);
+    console.log('enrrr', enrollment);
     this.added('enrollments', enrollment.enrollmentId, enrollment);
   } catch (err) {
     logger.error('enrollments.one', err);

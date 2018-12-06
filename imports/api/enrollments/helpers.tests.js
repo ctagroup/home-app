@@ -40,7 +40,7 @@ const enrollmentSurveyDefinition = {
 };
 
 describe('enrollments helpers', function () {
-  it.only('will map single value via mapEnrollmentToSurveyInitialValues', function () {
+  it('will map single value via mapEnrollmentToSurveyInitialValues', function () {
     const enrollmentData = {
       enrollment: {
         entryDate: '2018-11-20',
@@ -76,7 +76,7 @@ describe('enrollments helpers', function () {
   });
 
 
-  it.only('will map array of values via mapEnrollmentToSurveyInitialValues', function () {
+  it('will map array of values via mapEnrollmentToSurveyInitialValues', function () {
     const enrollmentData = {
       disabilities: [
         {

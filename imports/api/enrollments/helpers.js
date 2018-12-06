@@ -13,14 +13,14 @@ export function mapEnrollmentToSurveyInitialValues(enrollment, definition) {
     switch (pathParts[0]) {
       case 'disabilities':
         value = enrollment.disabilities
-          .find(d => d.disabilityType === item.enrollment.defaultObject.disabilityType)
-          [pathParts[1]];
+          .find(d => d.disabilityType == item.enrollment.defaultObject.disabilityType) || {}; // eslint-disable-line
+        value = value[pathParts[1]];
         break;
       default:
         value = _.get(enrollment, path);
     }
-
     if (value === undefined) return all;
+    if (typeof(value) === 'string') value = value.trim();
     return {
       ...all,
       [item.id]: value,
