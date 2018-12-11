@@ -94,3 +94,22 @@ export function isLocation(n) {
   // TODO: check location
   return n;
 }
+
+export function escapeString(str) {
+  if (!str) {
+    return str;
+  }
+
+  var entityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': '&quot;',
+    "'": '&#39;',
+    "/": '&#x2F;'
+  };
+
+  return String(str).replace(/[&<>"'\/]/g, function (s) {
+    return entityMap[s];
+  });
+}
