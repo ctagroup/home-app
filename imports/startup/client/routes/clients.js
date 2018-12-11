@@ -212,7 +212,7 @@ Router.onBeforeAction(
           { query: `schema=${client.schema}` }
         );
       } else {
-        const routeOptions = client.schema ? { query: `schema=${client.schema}` } : {}
+        const routeOptions = client.schema ? { query: `schema=${client.schema}` } : {};
         client.url = viewClientRoute.path(
           { _id: client._id },
           routeOptions
