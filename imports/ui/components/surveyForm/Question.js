@@ -6,10 +6,11 @@ import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import Item from './Item';
 import { isNumeric } from '/imports/api/utils';
+import { isLocation } from '/imports/api/utils';
 
 const DEFAULT_OTHER_VALUE = 'Other';
 
-export const MISSING_HMIS_ID_ICON = <i className="fa fa-exclamation-circle" aria-hidden></i>;
+export const MISSING_HMIS_ID_ICON = <i className="fa fa-exclamation-circle" aria-hidden />;
 
 export default class Question extends Item {
   constructor() {
@@ -29,7 +30,7 @@ export default class Question extends Item {
     if (!refusable) {
       return null;
     }
-    const refuseValue = typeof(refusable) === 'boolean' ? 'Refused' : refusable;
+    const refuseValue = typeof refusable === 'boolean' ? 'Refused' : refusable;
     return refuseValue;
   }
 
@@ -96,6 +97,14 @@ export default class Question extends Item {
         }
       }
     }
+    if (this.props.item.category === 'location' && !isRefused) {
+      if (value.length > 0) {
+        if (!isLocation(value)) {
+          this.setState({ error: `${value} is not a location` });
+          return false;
+        }
+      }
+    }
     this.setState({ error: null });
     return true;
   }
@@ -114,6 +123,8 @@ export default class Question extends Item {
         return this.renderNumberInput(value, disabled);
       case 'currency':
         return this.renderCurrencyInput(value, disabled);
+      case 'location':
+        return this.renderLocationInput(value, disabled);
       default:
         return this.renderInput(value, 'text', disabled);
     }
@@ -143,13 +154,14 @@ export default class Question extends Item {
             disabled={this.isRefused() || disabled}
             checked={!this.isRefused() && v === value}
             onChange={this.handleChange}
-          /> {v}
+          />{' '}
+          {v}
         </label>
       </div>
     ));
     if (other) {
       const otherValue = options.concat([DEFAULT_OTHER_VALUE]).includes(value) ? '' : value;
-      const otherPlaceholder = typeof(other) === 'boolean' ? 'please specify' : `${other}`;
+      const otherPlaceholder = typeof other === 'boolean' ? 'please specify' : `${other}`;
       const checked = !this.isRefused() && this.state.otherSelected;
       choices.push(
         <div key={`choice-${id}-other`}>
@@ -161,7 +173,8 @@ export default class Question extends Item {
               checked={checked}
               value={DEFAULT_OTHER_VALUE}
               onChange={this.handleOtherClick}
-            /> <span>Other: </span>
+            />{' '}
+            <span>Other: </span>
             <input
               type="text"
               name={id}
@@ -170,17 +183,15 @@ export default class Question extends Item {
               value={otherValue || ''}
               onChange={this.handleChange}
               onFocus={this.handleOtherFocus}
-              ref={(input) => { this.otherInput = input; }}
+              ref={input => {
+                this.otherInput = input;
+              }}
             />
           </label>
         </div>
       );
     }
-    return (
-      <div>
-        {choices}
-      </div>
-    );
+    return <div>{choices}</div>;
   }
 
   renderInput(value, type, disabled) {
@@ -202,15 +213,33 @@ export default class Question extends Item {
   renderCurrencyInput(value, disabled) {
     const { id } = this.props.item;
 
-    return (<CurrencyInput
-      id={id}
-      value={value === undefined ? '0' : value}
-      onChange={(x, number) => this.props.onChange(this.props.item.id, number)}
-      disabled={this.isRefused() || disabled}
-    />);
+    return (
+      <CurrencyInput
+        id={id}
+        value={value === undefined ? '0' : value}
+        onChange={(x, number) => this.props.onChange(this.props.item.id, number)}
+        disabled={this.isRefused() || disabled}
+      />
+    );
   }
 
   renderNumberInput(value, disabled) {
+    const { id } = this.props.item;
+    const mask = this.props.item.mask;
+    return (
+      <InputMask
+        id={id}
+        name={id}
+        mask={mask}
+        value={value === undefined ? '' : value}
+        onChange={this.handleChange}
+        disabled={this.isRefused() || disabled}
+      />
+    );
+  }
+
+  renderLocationInput(value, disabled) {
+    // TODO: Make this location specific
     const { id } = this.props.item;
     const mask = this.props.item.mask;
     return (
@@ -248,27 +277,53 @@ export default class Question extends Item {
   }
 
   renderTitle() {
-    const icon = this.props.item.hmisId ?
-      null : MISSING_HMIS_ID_ICON;
+    const icon = this.props.item.hmisId ? null : MISSING_HMIS_ID_ICON;
     const title = `${this.props.item.title}`;
     switch (this.props.level) {
       case 1:
-        return <h1 className="title">{title} {icon}</h1>;
+        return (
+          <h1 className="title">
+            {title} {icon}
+          </h1>
+        );
       case 2:
-        return <h2 className="title">{title} {icon}</h2>;
+        return (
+          <h2 className="title">
+            {title} {icon}
+          </h2>
+        );
       case 3:
-        return <h3 className="title">{title} {icon}</h3>;
+        return (
+          <h3 className="title">
+            {title} {icon}
+          </h3>
+        );
       case 4:
-        return <h4 className="title">{title} {icon}</h4>;
+        return (
+          <h4 className="title">
+            {title} {icon}
+          </h4>
+        );
       case 5:
-        return <h5 className="title">{title} {icon}</h5>;
+        return (
+          <h5 className="title">
+            {title} {icon}
+          </h5>
+        );
       case 6:
-        return <h6 className="title">{title} {icon}</h6>;
+        return (
+          <h6 className="title">
+            {title} {icon}
+          </h6>
+        );
       default:
-        return <div className="title">{title} {icon}</div>;
+        return (
+          <div className="title">
+            {title} {icon}
+          </div>
+        );
     }
   }
-
 
   render() {
     const { id, text } = this.props.item;
