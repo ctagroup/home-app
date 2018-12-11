@@ -79,11 +79,10 @@ class GlobalHouseHoldApi extends ApiEndpoint {
     return householdMembers;
   }
 
-  // TODO: revisit this method, not documented.
   getGlobalHouseholdMemberships(clientId, page = 0, limit = 9999) {
-    const OLD_BASE_URL = 'https://www.hmislynk.com/global-household-api';
-    const url = `${OLD_BASE_URL}/members?clientid=${clientId}&page=${page}&size=${limit}`; // eslint-disable-line max-len
-    return this.doGet(url);
+    const url = `${BASE_URL}/members?clientid=${clientId}&page=${page}&size=${limit}`; // eslint-disable-line max-len
+    const response = this.doGet(url);
+    return response.content;
   }
 
 }
