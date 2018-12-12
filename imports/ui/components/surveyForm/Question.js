@@ -239,7 +239,6 @@ export default class Question extends Item {
   }
 
   renderLocationInput(value, disabled) {
-    // TODO: Make this location specific
     const { id } = this.props.item;
     const mask = this.props.item.mask;
     return (

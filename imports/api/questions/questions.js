@@ -8,6 +8,7 @@ const categoryOptions = [
   { value: 'grid', label: 'Grid' },
   { value: 'number', label: 'Number' },
   { value: 'text', label: 'Text' },
+  { value: 'location', label: 'Location' },
 ];
 
 const GridColumnSchema = new SimpleSchema({
@@ -112,7 +113,7 @@ Questions.schema = new SimpleSchema({
       } else if (this.isUpsert) {
         val = { $setOnInsert: new Date() };
       } else {
-        this.unset();  // Prevent user from supplying their own value
+        this.unset(); // Prevent user from supplying their own value
       }
       return val;
     },
@@ -129,7 +130,6 @@ Questions.schema = new SimpleSchema({
       return val;
     },
   },
-
 });
 
 Questions.attachSchema(Questions.schema);

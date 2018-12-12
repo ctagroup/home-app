@@ -1,8 +1,6 @@
-export const RuleConditionDefinitionSchema = new SimpleSchema({
-});
+export const RuleConditionDefinitionSchema = new SimpleSchema({});
 
-export const RuleActionDefinitionSchema = new SimpleSchema({
-});
+export const RuleActionDefinitionSchema = new SimpleSchema({});
 
 export const RuleDefinitionSchema = new SimpleSchema({
   type: {
@@ -41,7 +39,6 @@ export const RuleDefinitionSchema = new SimpleSchema({
     type: [String],
     optional: true,
   },
-
 });
 
 export const GridColumnDefinitionSchema = new SimpleSchema({
@@ -62,7 +59,6 @@ export const GridColumnDefinitionSchema = new SimpleSchema({
   },
 });
 
-
 export const ItemDefinitionSchema = new SimpleSchema({
   id: {
     type: String,
@@ -77,98 +73,113 @@ export const ItemDefinitionSchema = new SimpleSchema({
   },
 });
 
-export const GridDefinitionSchema = new SimpleSchema([ItemDefinitionSchema, {
-  title: {
-    type: String,
-    optional: true,
+export const GridDefinitionSchema = new SimpleSchema([
+  ItemDefinitionSchema,
+  {
+    title: {
+      type: String,
+      optional: true,
+    },
+    text: {
+      type: String,
+      optional: true,
+    },
+    hmisId: {
+      type: String,
+      optional: true,
+    },
+    rows: {
+      type: Number,
+    },
+    columns: {
+      type: [GridColumnDefinitionSchema],
+    },
   },
-  text: {
-    type: String,
-    optional: true,
-  },
-  hmisId: {
-    type: String,
-    optional: true,
-  },
-  rows: {
-    type: Number,
-  },
-  columns: {
-    type: [GridColumnDefinitionSchema],
-  },
-}]);
+]);
 
-export const QuestionDefinitionSchema = new SimpleSchema([ItemDefinitionSchema, {
-  hmisId: {
-    type: String,
-    optional: true,
+export const QuestionDefinitionSchema = new SimpleSchema([
+  ItemDefinitionSchema,
+  {
+    hmisId: {
+      type: String,
+      optional: true,
+    },
+    title: {
+      type: String,
+      optional: true,
+    },
+    text: {
+      type: String,
+      optional: true,
+    },
+    mask: {
+      type: String,
+      optional: true,
+    },
+    category: {
+      type: String,
+      allowedValues: ['choice', 'text', 'number', 'date', 'grid', 'location'],
+    },
+    options: {
+      type: [String],
+      optional: true,
+    },
+    refusable: {
+      type: Boolean,
+      optional: true,
+    },
+    other: {
+      type: Boolean,
+      optional: true,
+    },
+    otherValue: {
+      type: String,
+      optional: true,
+    },
   },
-  title: {
-    type: String,
-    optional: true,
-  },
-  text: {
-    type: String,
-    optional: true,
-  },
-  mask: {
-    type: String,
-    optional: true,
-  },
-  category: {
-    type: String,
-    allowedValues: ['choice', 'text', 'number', 'date', 'grid'],
-  },
-  options: {
-    type: [String],
-    optional: true,
-  },
-  refusable: {
-    type: Boolean,
-    optional: true,
-  },
-  other: {
-    type: Boolean,
-    optional: true,
-  },
-  otherValue: {
-    type: String,
-    optional: true,
-  },
-}]);
+]);
 
-export const TextDefinitionSchema = new SimpleSchema([ItemDefinitionSchema, {
-  title: {
-    type: String,
-    optional: true,
+export const TextDefinitionSchema = new SimpleSchema([
+  ItemDefinitionSchema,
+  {
+    title: {
+      type: String,
+      optional: true,
+    },
+    text: {
+      type: String,
+      optional: true,
+    },
   },
-  text: {
-    type: String,
-    optional: true,
-  },
-}]);
+]);
 
-export const ScoreDefinitionSchema = new SimpleSchema([ItemDefinitionSchema, {
-  score: {
-    type: String,
+export const ScoreDefinitionSchema = new SimpleSchema([
+  ItemDefinitionSchema,
+  {
+    score: {
+      type: String,
+    },
+    text: {
+      type: String,
+      optional: true,
+    },
   },
-  text: {
-    type: String,
-    optional: true,
-  },
-}]);
+]);
 
-export const SectionDefinitionSchema = new SimpleSchema([ItemDefinitionSchema, {
-  title: {
-    type: String,
-    optional: true,
+export const SectionDefinitionSchema = new SimpleSchema([
+  ItemDefinitionSchema,
+  {
+    title: {
+      type: String,
+      optional: true,
+    },
+    skip: {
+      type: String,
+      optional: true,
+    },
+    items: {
+      type: [Object],
+      optional: true,
+    },
   },
-  skip: {
-    type: String,
-    optional: true,
-  },
-  items: {
-    type: [Object],
-    optional: true,
-  },
-}]);
+]);
