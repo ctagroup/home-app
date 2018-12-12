@@ -7,7 +7,7 @@ import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import Item from './Item';
 import { isNumeric, isLocation } from '/imports/api/utils';
-import { getLatLongFromAdressOrDevice, getAddressFromLatLong } from '/imports/utils/location';
+import { getLatLongFromAddressOrDevice, getAddressFromLatLong } from '/imports/utils/location';
 
 const DEFAULT_OTHER_VALUE = 'Other';
 
@@ -248,7 +248,7 @@ export default class Question extends Item {
     const autoLoc = this.props.item.autoLoc;
     let location;
     if (autoLoc) {
-      const latLong = getLatLongFromAdressOrDevice();
+      const latLong = getLatLongFromAddressOrDevice();
       const locVal = getAddressFromLatLong(latLong);
       location = (
         <div key={`location-${id}`}>

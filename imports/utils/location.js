@@ -1,13 +1,16 @@
+import { logger } from '/imports/utils/logger';
 import { escapeString } from '/imports/api/utils';
 
 const BASE_URL = 'https://geocode.xyz/';
+const LOCATION_ERROR = 'Unable to get location, please enter address manually';
 
 export function getAddressFromLatLong(latLng) {
     const latLngStr = latLng.join(',');
     const response = makeGeocodeAPICall(latLngStr);
 
     if (response.error) {
-        throw new Meteor.Error(escapeString(response.error.description));
+        logger.error(escapeString(response.error.description));
+        throw new Meteor.Error(LOCATION_ERROR);
     }
 
     let stnumber = response.stnumber ? response.stnumber : '',
@@ -20,7 +23,7 @@ export function getAddressFromLatLong(latLng) {
     return escapeString(`${stnumber} ${staddress} ${city} ${state} ${country} ${postal}`);
 }
 
-export function getLatLongFromAdressOrDevice(address) {
+export function getLatLongFromAddressOrDevice(address) {
     let latLng = [];
 
     if (address !== null) {
@@ -35,6 +38,8 @@ export function getLatLongFromAdressOrDevice(address) {
         if (location !== null && location.coords) {
             latLng[0] = location.coords.latitude;
             latLng[1] = location.coords.longitude;
+        } else {
+            throw new Meteor.error(LOCATION_ERROR);
         }
     }
 
