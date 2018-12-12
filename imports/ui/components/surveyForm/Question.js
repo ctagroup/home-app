@@ -2,6 +2,7 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 import InputMask from 'react-input-mask';
 import CurrencyInput from '/imports/ui/components/CurrencyInput';
+import LocationInput from '/imports/ui/components/LocationInput';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import Item from './Item';
@@ -57,6 +58,9 @@ export default class Question extends Item {
           break;
         case 'date':
           value = date ? date.format('YYYY-MM-DD') : '';
+          break;
+        case 'location':
+          value = event.target.address.join(',');
           break;
         default:
           value = event.target.value;
@@ -239,18 +243,53 @@ export default class Question extends Item {
   }
 
   renderLocationInput(value, disabled) {
-    const { id } = this.props.item;
-    const mask = this.props.item.mask;
-    return (
-      <InputMask
-        id={id}
-        name={id}
-        mask={mask}
-        value={value === undefined ? '' : value}
-        onChange={this.handleChange}
-        disabled={this.isRefused() || disabled}
-      />
-    );
+    const id = this.props.item;
+    const address = this.props.item.address || [];
+    const location = address.map((v, i) => (
+      <div key={`location-${id}-${i}`}>
+        <label>
+          <input
+            type="text"
+            name={id}
+            value={v}
+            disabled={this.isRefused() || disabled}
+            checked={!this.isRefused() && v === value}
+            onChange={this.handleChange}
+          />{' '}
+          {v}
+        </label>
+      </div>
+    ));
+    return <div>{location}</div>;
+    // const { id } = this.props.item;
+    // const autoLocation = null;
+
+    // return (
+    //   <p>
+    //     <span>
+    //       <label>
+    //         <input
+    //           type="radio"
+    //           value={autoLocation}
+    //           rel="autoLoc"
+    //           onChange={this.handleAutoLocation}
+    //           checked={this.isAutoLocation()}
+    //           disabled={disabled}
+    //         />
+    //         <span> {autoLocation}</span>
+    //       </label>
+    //     </span>
+    //     <span>
+    //       <LocationInput
+    //         id={id}
+    //         name={id}
+    //         value={value === undefined ? '' : value}
+    //         onChange={this.handleChange}
+    //         disabled={this.isRefused() || disabled}
+    //       />
+    //     </span>
+    //   </p>
+    // );
   }
 
   renderRefuseCheckbox(disabled) {

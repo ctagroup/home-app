@@ -21,7 +21,22 @@ export default class QuestionItemForm extends React.Component {
         </div>
       ) : null;
 
-    const showMask = category === 'text' || category === 'number' || category === 'location';
+    const locationFields =
+      category === 'location' ? (
+        <div className="panel panel-default">
+          <div className="panel-heading">Location</div>
+          <div className="panel-body">
+            <AutoField
+              name="autoLocation"
+              label="Automatically determine location"
+              disabled={isDisabled}
+            />
+            <AutoField name="address" disabled={isDisabled} />
+          </div>
+        </div>
+      ) : null;
+
+    const showMask = category === 'text' || category === 'number';
     const { isInFormBuilder, questions } = this.props;
 
     return (
@@ -38,6 +53,7 @@ export default class QuestionItemForm extends React.Component {
         <AutoField name="text" />
         <AutoField name="category" disabled={isDisabled} />
         {choiceFields}
+        {locationFields}
         {showMask && (
           <AutoField
             name="mask"

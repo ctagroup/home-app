@@ -136,6 +136,14 @@ export const QuestionDefinitionSchema = new SimpleSchema([
       type: String,
       optional: true,
     },
+    address: {
+      type: [String],
+      optional: true,
+    },
+    autoLocation: {
+      type: Boolean,
+      optional: true,
+    },
   },
 ]);
 
