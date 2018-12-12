@@ -23,7 +23,7 @@ export function getAddressFromLatLong(latLng) {
     return escapeString(`${stnumber} ${staddress} ${city} ${state} ${country} ${postal}`);
 }
 
-export function getLatLongFromAdressOrDevice(address) {
+export function getLatLongFromAddressOrDevice(address) {
     let latLng = [];
 
     if (address !== null) {
