@@ -6,8 +6,8 @@ import LocationInput from '/imports/ui/components/LocationInput';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import Item from './Item';
-import { isNumeric } from '/imports/api/utils';
-import { isLocation } from '/imports/api/utils';
+import { isNumeric, isLocation } from '/imports/api/utils';
+import { getLatLongFromAdressOrDevice, getAddressFromLatLong } from '/imports/utils/location';
 
 const DEFAULT_OTHER_VALUE = 'Other';
 
@@ -59,9 +59,6 @@ export default class Question extends Item {
         case 'date':
           value = date ? date.format('YYYY-MM-DD') : '';
           break;
-        case 'location':
-          value = event.target.address.join(',');
-          break;
         default:
           value = event.target.value;
           break;
@@ -102,9 +99,12 @@ export default class Question extends Item {
       }
     }
     if (this.props.item.category === 'location' && !isRefused) {
-      if (value.length > 0) {
-        if (!isLocation(value)) {
-          this.setState({ error: `${value} is not a location` });
+      const address = this.props.item.address || [];
+      if (address.length > 0) {
+        // Need to convert the address to a String
+        const val = address.join(',');
+        if (!isLocation(val)) {
+          this.setState({ error: `${val} is not a location` });
           return false;
         }
       }
@@ -245,51 +245,44 @@ export default class Question extends Item {
   renderLocationInput(value, disabled) {
     const id = this.props.item;
     const address = this.props.item.address || [];
-    const location = address.map((v, i) => (
-      <div key={`location-${id}-${i}`}>
-        <label>
-          <input
-            type="text"
-            name={id}
-            value={v}
-            disabled={this.isRefused() || disabled}
-            checked={!this.isRefused() && v === value}
-            onChange={this.handleChange}
-          />{' '}
-          {v}
-        </label>
-      </div>
-    ));
+    const autoLoc = this.props.item.autoLoc;
+    let location;
+    if (autoLoc) {
+      const latLong = getLatLongFromAdressOrDevice();
+      const locVal = getAddressFromLatLong(latLong);
+      location = (
+        <div key={`location-${id}`}>
+          <label>
+            <input
+              type="text"
+              name={id}
+              value={locVal}
+              disabled={this.isRefused() || disabled}
+              checked={!this.isRefused() && locVal === value}
+              onChange={this.handleChange}
+            />{' '}
+            {locVal}
+          </label>
+        </div>
+      );
+    } else {
+      location = address.map((v, i) => (
+        <div key={`location-${id}-${i}`}>
+          <label>
+            <input
+              type="text"
+              name={id}
+              value={v}
+              disabled={this.isRefused() || disabled}
+              checked={!this.isRefused() && v === value}
+              onChange={this.handleChange}
+            />{' '}
+            {v}
+          </label>
+        </div>
+      ));
+    }
     return <div>{location}</div>;
-    // const { id } = this.props.item;
-    // const autoLocation = null;
-
-    // return (
-    //   <p>
-    //     <span>
-    //       <label>
-    //         <input
-    //           type="radio"
-    //           value={autoLocation}
-    //           rel="autoLoc"
-    //           onChange={this.handleAutoLocation}
-    //           checked={this.isAutoLocation()}
-    //           disabled={disabled}
-    //         />
-    //         <span> {autoLocation}</span>
-    //       </label>
-    //     </span>
-    //     <span>
-    //       <LocationInput
-    //         id={id}
-    //         name={id}
-    //         value={value === undefined ? '' : value}
-    //         onChange={this.handleChange}
-    //         disabled={this.isRefused() || disabled}
-    //       />
-    //     </span>
-    //   </p>
-    // );
   }
 
   renderRefuseCheckbox(disabled) {

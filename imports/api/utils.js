@@ -95,7 +95,7 @@ export function isNumeric(n) {
 export function isLocation(str) {
   // If we can get a latitude/longitude then we're assuming it's a valid location
   const latLng = getLatLongFromAdressOrDevice(str);
-  return latLng && latLng.length === 2 ? true : false;
+  return latLng && latLng.length === 2;
 }
 
 export function escapeString(str) {
@@ -104,12 +104,12 @@ export function escapeString(str) {
   }
 
   var entityMap = {
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
     '"': '&quot;',
     "'": '&#39;',
-    "/": '&#x2F;'
+    '/': '&#x2F;',
   };
 
   return String(str).replace(/[&<>"'\/]/g, function (s) {
