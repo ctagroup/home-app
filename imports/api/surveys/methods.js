@@ -196,4 +196,9 @@ Meteor.methods({
     Surveys.update(id, { $set: { hmis } });
     return surveyId;
   },
+
+  'surveys.getGeocodedLocation'(url) {
+      const hc = HmisClient.create(this.userId);
+      return hc.api('survey2').getGeocodedLocation(url);  
+  }
 });

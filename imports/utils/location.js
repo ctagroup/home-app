@@ -1,3 +1,5 @@
+// TODO: Error handling
+
 import { logger } from '/imports/utils/logger';
 import { escapeString } from '/imports/api/utils';
 
@@ -8,19 +10,22 @@ export function getAddressFromLatLong(latLng) {
     const latLngStr = latLng.join(',');
     const response = makeGeocodeAPICall(latLngStr);
 
-    if (response.error) {
-        logger.error(escapeString(response.error.description));
-        throw new Meteor.Error(LOCATION_ERROR);
-    }
+    makeGeocodeAPICall(latLngStr).then(result => {
+        if (result.error) {
+            logger.error(escapeString(response.error.description));
+        }
 
-    let stnumber = response.stnumber ? response.stnumber : '',
+        let stnumber = response.stnumber ? response.stnumber : '',
         staddress = response.staddress ? response.staddress : '',
         city = response.city ? response.city : '',
         state = response.state ? response.state : '',
         country = response.country ? response.country : '',
         postal = response.postal ? response.postal : ''; 
 
-    return escapeString(`${stnumber} ${staddress} ${city} ${state} ${country} ${postal}`);
+        return escapeString(`${stnumber} ${staddress} ${city} ${state} ${country} ${postal}`);
+    }).catch(error => {
+        return '';
+    });
 }
 
 export function getLatLongFromAddressOrDevice(address) {
@@ -28,18 +33,20 @@ export function getLatLongFromAddressOrDevice(address) {
 
     if (address !== null) {
         // TODO: Improve this to add USA if not already there, if country isn't specified the result can be incorrect
-        const response = makeGeocodeAPICall(address);
-        if (!response.error) {
-            latLng[0] = response.latt ? escapeString(response.latt) : '';
-            latLng[1] = response.longt ? escapeString(response.longt) : '';
-        }
+        makeGeocodeAPICall(address).then(result => {
+            if (!result.error) {
+                latLng[0] = result.latt ? escapeString(result.latt) : '';
+                latLng[1] = result.longt ? escapeString(result.longt) : '';
+            }
+            return latLng;
+        }).catch(error => {
+            return latLng;
+        });
     } else {
         const location = Geolocation.currentLocation();
         if (location !== null && location.coords) {
             latLng[0] = location.coords.latitude;
             latLng[1] = location.coords.longitude;
-        } else {
-            throw new Meteor.error(LOCATION_ERROR);
         }
     }
 
@@ -50,5 +57,14 @@ function makeGeocodeAPICall(location) {
     // TODO: When a lat/long is passed in this returns 1 main address if found but can also return
     // multiple "alt" addresses, user should confirm which one because the main address isn't always the correct one
     const url = `${BASE_URL}?locate=${encodeURIComponent(location)}&json=1`;
-    return this.doGet(url);
+    
+    return new Promise((resolve, reject) => {
+        Meteor.call('surveys.getGeocodedLocation', url, (err, res) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(res);
+            }
+        });
+    });  
 }
