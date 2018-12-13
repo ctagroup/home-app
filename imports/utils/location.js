@@ -11,8 +11,7 @@ function makeGeocodeAPICall(location) {
   // multiple "alt" addresses, user should confirm which one because the main address
   // isn't always the correct one
   const url = `${BASE_URL}?locate=${encodeURIComponent(location)}&json=1`;
-
-  return new Promise((resolve, reject) => {
+  const promise = new Promise((resolve, reject) => {
     Meteor.call('surveys.getGeocodedLocation', url, (err, res) => {
       if (err) {
         reject(err);
@@ -21,51 +20,47 @@ function makeGeocodeAPICall(location) {
       }
     });
   });
+
+  promise.then(res => {
+    return res;
+  }).catch(err => {
+    return err;
+  });
 }
 
 export function getAddressFromLatLong(latLng) {
-  const latLngStr = latLng.join(',');
   let address = '';
-  makeGeocodeAPICall(latLngStr)
-    .then(result => {
-      if (result.error) {
-        logger.error(escapeString(response.error.description));
-      }
+  const latLngStr = latLng.join(',');
+  const response = makeGeocodeAPICall(latLngStr);
+  
+    if (response.error) {
+      logger.error(escapeString(response.error.description));
+    }
 
-      if (result.standard) {
-        const stnumber = result.standard.stnumber ? result.standard.stnumber : '';
-        const staddress = result.standard.staddress ? result.standard.staddress : '';
-        const city = result.standard.city ? result.standard.city : '';
-        const state = result.standard.state ? result.standard.state : '';
-        const country = result.standard.country ? result.standard.country : '';
-        const postal = result.standard.postal ? result.standard.postal : '';
+    if (response.standard) {
+      const stnumber = response.standard.stnumber ? response.standard.stnumber : '';
+      const staddress = response.standard.staddress ? response.standard.staddress : '';
+      const city = response.standard.city ? response.standard.city : '';
+      const state = response.standard.state ? response.standard.state : '';
+      const country = response.standard.country ? response.standard.country : '';
+      const postal = response.standard.postal ? response.standard.postal : '';
 
-        address = escapeString(`${stnumber} ${staddress} ${city} ${state} ${country} ${postal}`);
-      }
+      address = escapeString(`${stnumber} ${staddress} ${city} ${state} ${country} ${postal}`);
+    }
 
-      return address;
-    })
-    .catch(error => {
-      return address;
-    });
+    return address;
 }
 
 export function getLatLongFromAddressOrDevice(address) {
-  const latLng = [];
+  let latLng = [];
 
   if (address !== null) {
     // TODO: Improve this to add USA if not already there, if country isn't specified the result can be incorrect
-    makeGeocodeAPICall(address)
-      .then(result => {
-        if (!result.error) {
-          latLng[0] = result.latt ? escapeString(result.latt) : '';
-          latLng[1] = result.longt ? escapeString(result.longt) : '';
-        }
-        return latLng;
-      })
-      .catch(error => {
-        return latLng;
-      });
+    const response = makeGeocodeAPICall(address);
+    if (!response.error) {
+          latLng[0] = response.latt ? escapeString(response.latt) : '';
+          latLng[1] = response.longt ? escapeString(response.longt) : '';
+        }     
   } else {
     const location = Geolocation.currentLocation();
     if (location !== null && location.coords) {
