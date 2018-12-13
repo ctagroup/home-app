@@ -2,12 +2,11 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 import InputMask from 'react-input-mask';
 import CurrencyInput from '/imports/ui/components/CurrencyInput';
-import LocationInput from '/imports/ui/components/LocationInput';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import Item from './Item';
 import { isNumeric, isLocation } from '/imports/api/utils';
-import { getLatLongFromAddressOrDevice, getAddressFromLatLong } from '/imports/utils/location';
+import { getLatLongFromAddressOrDevice } from '/imports/utils/location';
 
 const DEFAULT_OTHER_VALUE = 'Other';
 

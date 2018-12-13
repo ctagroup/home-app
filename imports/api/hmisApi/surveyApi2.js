@@ -81,6 +81,10 @@ export class SurveyApi2 extends ApiEndpoint {
     return this.doPost(url, body).question;
   }
 
+  getGeocodedLocation(url) {   
+    return this.doGet(url);
+  }
+
 }
 
 
