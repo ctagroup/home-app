@@ -58,6 +58,9 @@ export default class Question extends Item {
         case 'date':
           value = date ? date.format('YYYY-MM-DD') : '';
           break;
+        case 'location':
+          // TODO: value += prevValue;
+          break;
         default:
           value = event.target.value;
           break;
@@ -98,12 +101,10 @@ export default class Question extends Item {
       }
     }
     if (this.props.item.category === 'location' && !isRefused) {
-      const address = this.props.item.address || [];
-      if (address.length > 0) {
+      if (value.length > 0) {
         // Need to convert the address to a String
-        const val = address.join(',');
-        if (!isLocation(val)) {
-          this.setState({ error: `${val} is not a location` });
+        if (!isLocation(value)) {
+          this.setState({ error: `${value} is not a location` });
           return false;
         }
       }
