@@ -17,8 +17,9 @@
     {{> afQuickField name="options"}} {{> afQuickField name="other"}} {{/if}}
 
     {{#if afFieldValueIs name="category" value="location"}}
-    {{> afQuickField name="autoLocation"}} {{> afQuickField name="address"}}
-    {{/if}}
+    {{> afQuickField name="autoLocation"}}
+    {{> afQuickField name="longLatCheck"}}
+    {{> afQuickField name="addressFields"}} {{/if}}
 
     {{#if afFieldValueIs name="category" value="grid"}}
     {{> afQuickField name="columns" label="Grid Columns"}} {{/if}}

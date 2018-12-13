@@ -136,11 +136,15 @@ export const QuestionDefinitionSchema = new SimpleSchema([
       type: String,
       optional: true,
     },
-    address: {
+    addressFields: {
       type: [String],
       optional: true,
     },
     autoLocation: {
+      type: Boolean,
+      optional: true,
+    },
+    longLatCheck: {
       type: Boolean,
       optional: true,
     },

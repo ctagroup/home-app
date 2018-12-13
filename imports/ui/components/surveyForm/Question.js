@@ -244,45 +244,40 @@ export default class Question extends Item {
 
   renderLocationInput(value, disabled) {
     const id = this.props.item;
-    const address = this.props.item.address || [];
-    const autoLoc = this.props.item.autoLoc;
+    const addressFields = this.props.item.addressFields || [];
+    const autoLoc = this.props.item.autoLocation;
+    // const longLatCheck = this.props.item.longLatCheck;
     let location;
     if (autoLoc) {
-      const latLong = getLatLongFromAddressOrDevice();
-      const locVal = getAddressFromLatLong(latLong);
-      location = (
-        <div key={`location-${id}`}>
-          <label>
-            <input
-              type="text"
-              name={id}
-              value={locVal}
-              disabled={this.isRefused() || disabled}
-              checked={!this.isRefused() && locVal === value}
-              onChange={this.handleChange}
-            />{' '}
-            {locVal}
-          </label>
-        </div>
-      );
+      const latLongVal = getLatLongFromAddressOrDevice();
+      const latLongStr = ['Latitude', 'Longitude'];
+      location = latLongVal.map((v, i) => (
+        <tr>
+          <td>{latLongStr[i]} </td>
+          <td>{v}</td>
+        </tr>
+      ));
     } else {
-      location = address.map((v, i) => (
-        <div key={`location-${id}-${i}`}>
-          <label>
+      location = addressFields.map(v => (
+        <tr>
+          <td>{v} </td>
+          <td>
             <input
               type="text"
               name={id}
-              value={v}
               disabled={this.isRefused() || disabled}
               checked={!this.isRefused() && v === value}
               onChange={this.handleChange}
-            />{' '}
-            {v}
-          </label>
-        </div>
+            />
+          </td>
+        </tr>
       ));
     }
-    return <div>{location}</div>;
+    return (
+      <div key={`location-${id}`}>
+        <table>{location}</table>
+      </div>
+    );
   }
 
   renderRefuseCheckbox(disabled) {
