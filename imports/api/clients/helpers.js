@@ -91,15 +91,12 @@ export const getGlobalHouseholds = (hc, clientId, schema, stopFunction) => {
 
   const globalHouseholds = [];
   for (let i = 0; i < globalHouseholdMemberships.length && !stopFunction; i += 1) {
-    const globalHousehold = hc.api('global-household').getHouseHold(
-      globalHouseholdMemberships[i].globalHouseholdId
-    );
+    const { genericHouseholdId } = globalHouseholdMemberships[i];
+    const globalHousehold = hc.api('global-household').getHouseHold(genericHouseholdId);
 
     if (globalHousehold) {
       let hohSchema = 'v2015';
-      if (globalHousehold.links[0].rel.indexOf('v2014') !== -1) {
-        hohSchema = 'v2014';
-      }
+      if (globalHousehold.links[0].rel.indexOf('v2014') !== -1) hohSchema = 'v2014';
 
       globalHousehold.headOfHouseholdClient = hc.api('client').getClient(
         globalHousehold.headOfHouseholdId,
