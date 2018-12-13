@@ -8,23 +8,26 @@ const LOCATION_ERROR = 'Unable to get location, please enter address manually';
 
 export function getAddressFromLatLong(latLng) {
     const latLngStr = latLng.join(',');
-    const response = makeGeocodeAPICall(latLngStr);
-
+    const address = '';
     makeGeocodeAPICall(latLngStr).then(result => {
         if (result.error) {
             logger.error(escapeString(response.error.description));
         }
 
-        let stnumber = response.stnumber ? response.stnumber : '',
-        staddress = response.staddress ? response.staddress : '',
-        city = response.city ? response.city : '',
-        state = response.state ? response.state : '',
-        country = response.country ? response.country : '',
-        postal = response.postal ? response.postal : ''; 
+        if (result.standard) {
+            let stnumber = result.standard.stnumber ? result.standard.stnumber : '',
+            staddress = result.standard.staddress ? result.standard.staddress : '',
+            city = result.standard.city ? result.standard.city : '',
+            state = result.standard.state ? result.standard.state : '',
+            country = result.standard.country ? result.standard.country : '',
+            postal = result.standard.postal ? result.standard.postal : '';
 
-        return escapeString(`${stnumber} ${staddress} ${city} ${state} ${country} ${postal}`);
+            address = escapeString(`${stnumber} ${staddress} ${city} ${state} ${country} ${postal}`);
+        }
+
+        return address;
     }).catch(error => {
-        return '';
+        return address;
     });
 }
 
