@@ -10,7 +10,9 @@ import { getLatLongFromAddressOrDevice } from '/imports/utils/location';
 
 const DEFAULT_OTHER_VALUE = 'Other';
 
-export const MISSING_HMIS_ID_ICON = <i className="fa fa-exclamation-circle" aria-hidden />;
+export const MISSING_HMIS_ID_ICON = (
+  <i className="fa fa-exclamation-circle" aria-hidden />
+);
 
 export default class Question extends Item {
   constructor() {
@@ -19,9 +21,10 @@ export default class Question extends Item {
     this.handleRefuseChange = this.handleRefuseChange.bind(this);
     this.handleOtherFocus = this.handleOtherFocus.bind(this);
     this.handleOtherClick = this.handleOtherClick.bind(this);
+    this.handleButtonClick = this.handleButtonClick.bind(this);
     this.state = {
       otherSelected: false,
-      error: null,
+      error: null
     };
   }
 
@@ -32,6 +35,12 @@ export default class Question extends Item {
     }
     const refuseValue = typeof refusable === 'boolean' ? 'Refused' : refusable;
     return refuseValue;
+  }
+
+  getAddressValue() {
+    const fields = document.getElementsByName('addressInput');
+    const values = Array.prototype.map.call(fields, f => f.value);
+    return values.join(',');
   }
 
   handleChange(event, date) {
@@ -57,9 +66,6 @@ export default class Question extends Item {
           break;
         case 'date':
           value = date ? date.format('YYYY-MM-DD') : '';
-          break;
-        case 'location':
-          // TODO: value += prevValue;
           break;
         default:
           value = event.target.value;
@@ -100,21 +106,29 @@ export default class Question extends Item {
         }
       }
     }
-    if (this.props.item.category === 'location' && !isRefused) {
+    this.setState({ error: null });
+    return true;
+  }
+
+  handleButtonClick(event) {
+    if (this.props.item.category === 'location') {
+      const value = this.getAddressValue();
       if (value.length > 0) {
-        // Need to convert the address to a String
-        if (!isLocation(value)) {
+        if (isLocation(value)) {
+          this.setState({ error: null });
+          return true;
+        } else {
           this.setState({ error: `${value} is not a location` });
           return false;
         }
       }
     }
-    this.setState({ error: null });
-    return true;
   }
 
   isRefused() {
-    return this.props.formState.values[this.props.item.id] === this.getRefuseValue();
+    return (
+      this.props.formState.values[this.props.item.id] === this.getRefuseValue()
+    );
   }
 
   renderQuestionCategory(value, disabled) {
@@ -164,8 +178,11 @@ export default class Question extends Item {
       </div>
     ));
     if (other) {
-      const otherValue = options.concat([DEFAULT_OTHER_VALUE]).includes(value) ? '' : value;
-      const otherPlaceholder = typeof other === 'boolean' ? 'please specify' : `${other}`;
+      const otherValue = options.concat([DEFAULT_OTHER_VALUE]).includes(value)
+        ? ''
+        : value;
+      const otherPlaceholder =
+        typeof other === 'boolean' ? 'please specify' : `${other}`;
       const checked = !this.isRefused() && this.state.otherSelected;
       choices.push(
         <div key={`choice-${id}-other`}>
@@ -221,7 +238,9 @@ export default class Question extends Item {
       <CurrencyInput
         id={id}
         value={value === undefined ? '0' : value}
-        onChange={(x, number) => this.props.onChange(this.props.item.id, number)}
+        onChange={(x, number) =>
+          this.props.onChange(this.props.item.id, number)
+        }
         disabled={this.isRefused() || disabled}
       />
     );
@@ -243,41 +262,61 @@ export default class Question extends Item {
   }
 
   renderLocationInput(value, disabled) {
-    const id = this.props.item;
+    const { id } = this.props.item;
     const addressFields = this.props.item.addressFields || [];
+    let currAddress = [];
     const autoLoc = this.props.item.autoLocation;
     // const longLatCheck = this.props.item.longLatCheck;
     let location;
     if (autoLoc) {
       const latLongVal = getLatLongFromAddressOrDevice();
-      const latLongStr = ['Latitude', 'Longitude'];
-      location = latLongVal.map((v, i) => (
-        <tr>
-          <td>{latLongStr[i]} </td>
-          <td>{v}</td>
-        </tr>
-      ));
+      location = (
+        <table>
+          <tr>
+            <td>Latitude: </td>
+            <td> </td>
+            <td>{latLongVal[0]}</td>
+          </tr>
+          <tr>
+            <td>Longitude: </td>
+            <td> </td>
+            <td>{latLongVal[1]}</td>
+          </tr>
+        </table>
+      );
     } else {
-      location = addressFields.map(v => (
+      let tempLoc = addressFields.map((v, i) => (
         <tr>
           <td>{v} </td>
           <td>
             <input
+              id={`address-${i}`}
               type="text"
-              name={id}
+              name="addressInput"
               disabled={this.isRefused() || disabled}
-              checked={!this.isRefused() && v === value}
               onChange={this.handleChange}
             />
           </td>
         </tr>
       ));
+      location = (
+        <table>
+          {tempLoc}
+          <tr>
+            <button
+              id="addressValidation"
+              className="btn btn-default"
+              type="button"
+              onClick={this.handleButtonClick}
+              disabled={this.isRefused() || disabled}
+            >
+              Validate Address
+            </button>
+          </tr>
+        </table>
+      );
     }
-    return (
-      <div key={`location-${id}`}>
-        <table>{location}</table>
-      </div>
-    );
+    return <div key={`location-${id}`}>{location}</div>;
   }
 
   renderRefuseCheckbox(disabled) {

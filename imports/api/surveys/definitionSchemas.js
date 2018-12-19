@@ -5,72 +5,72 @@ export const RuleActionDefinitionSchema = new SimpleSchema({});
 export const RuleDefinitionSchema = new SimpleSchema({
   type: {
     type: String,
-    allowedValues: ['always', 'any', 'all'],
+    allowedValues: ['always', 'any', 'all']
   },
   always: {
     type: Array,
-    optional: true,
+    optional: true
   },
   'always.$': {
     type: [String],
-    optional: true,
+    optional: true
   },
   any: {
     type: Array,
-    optional: true,
+    optional: true
   },
   'any.$': {
     type: [String],
-    optional: true,
+    optional: true
   },
   all: {
     type: Array,
-    optional: true,
+    optional: true
   },
   'all.$': {
     type: [String],
-    optional: true,
+    optional: true
   },
   then: {
     type: Array,
-    optional: true,
+    optional: true
   },
   'then.$': {
     type: [String],
-    optional: true,
-  },
+    optional: true
+  }
 });
 
 export const GridColumnDefinitionSchema = new SimpleSchema({
   id: {
-    type: String,
+    type: String
   },
   title: {
     type: String,
-    optional: true,
+    optional: true
   },
   type: {
     type: String,
-    allowedValues: ['question'],
+    allowedValues: ['question']
   },
   category: {
     type: String,
-    allowedValues: ['date', 'number', 'text'],
-  },
+    allowedValues: ['date', 'number', 'text']
+  }
 });
 
 export const ItemDefinitionSchema = new SimpleSchema({
   id: {
-    type: String,
+    type: String
   },
   type: {
     type: String,
-    allowedValues: ['section', 'question', 'score', 'text', 'grid'],
+    allowedValues: ['section', 'question', 'score', 'text', 'grid']
   },
   rules: {
     type: [RuleDefinitionSchema],
-    optional: true,
-  },
+    optional: true
+  }
 });
 
 export const GridDefinitionSchema = new SimpleSchema([
@@ -78,23 +78,23 @@ export const GridDefinitionSchema = new SimpleSchema([
   {
     title: {
       type: String,
-      optional: true,
+      optional: true
     },
     text: {
       type: String,
-      optional: true,
+      optional: true
     },
     hmisId: {
       type: String,
-      optional: true,
+      optional: true
     },
     rows: {
-      type: Number,
+      type: Number
     },
     columns: {
-      type: [GridColumnDefinitionSchema],
-    },
-  },
+      type: [GridColumnDefinitionSchema]
+    }
+  }
 ]);
 
 export const QuestionDefinitionSchema = new SimpleSchema([
@@ -102,53 +102,57 @@ export const QuestionDefinitionSchema = new SimpleSchema([
   {
     hmisId: {
       type: String,
-      optional: true,
+      optional: true
     },
     title: {
       type: String,
-      optional: true,
+      optional: true
     },
     text: {
       type: String,
-      optional: true,
+      optional: true
     },
     mask: {
       type: String,
-      optional: true,
+      optional: true
     },
     category: {
       type: String,
-      allowedValues: ['choice', 'text', 'number', 'date', 'grid', 'location'],
+      allowedValues: ['choice', 'text', 'number', 'date', 'grid', 'location']
     },
     options: {
       type: [String],
-      optional: true,
+      optional: true
     },
     refusable: {
       type: Boolean,
-      optional: true,
+      optional: true
     },
     other: {
       type: Boolean,
-      optional: true,
+      optional: true
     },
     otherValue: {
       type: String,
-      optional: true,
+      optional: true
     },
     addressFields: {
       type: [String],
-      optional: true,
+      optional: true
+    },
+    addressValidation: {
+      type: Boolean,
+      optional: true
     },
     autoLocation: {
       type: Boolean,
-      optional: true,
+      optional: true
     },
     longLatCheck: {
       type: Boolean,
-      optional: true,
-    },
-  },
+      optional: true
+    }
+  }
 ]);
 
 export const TextDefinitionSchema = new SimpleSchema([
@@ -156,26 +160,26 @@ export const TextDefinitionSchema = new SimpleSchema([
   {
     title: {
       type: String,
-      optional: true,
+      optional: true
     },
     text: {
       type: String,
-      optional: true,
-    },
-  },
+      optional: true
+    }
+  }
 ]);
 
 export const ScoreDefinitionSchema = new SimpleSchema([
   ItemDefinitionSchema,
   {
     score: {
-      type: String,
+      type: String
     },
     text: {
       type: String,
-      optional: true,
-    },
-  },
+      optional: true
+    }
+  }
 ]);
 
 export const SectionDefinitionSchema = new SimpleSchema([
@@ -183,15 +187,15 @@ export const SectionDefinitionSchema = new SimpleSchema([
   {
     title: {
       type: String,
-      optional: true,
+      optional: true
     },
     skip: {
       type: String,
-      optional: true,
+      optional: true
     },
     items: {
       type: [Object],
-      optional: true,
-    },
-  },
+      optional: true
+    }
+  }
 ]);
