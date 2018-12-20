@@ -112,9 +112,21 @@ export default class Question extends Item {
 
   handleButtonClick(event) {
     if (this.props.item.category === 'location') {
-      const value = this.getAddressValue();
+      const addressFields = this.props.item.addressFields || [];
+      let value = this.getAddressValue();
+      let addressType;
+      for (let i = 0; i < addressFields.length; i++) {
+        let addLwrCase = addressFields[i].toLowerCase();
+        if (addLwrCase.includes('zip')) {
+          addressType = 'zip';
+        } else if (addLwrCase.includes('lat') || addLwrCase.includes('long')) {
+          addressType = 'coords';
+        } else {
+          addressType = 'address';
+        }
+      }
       if (value.length > 0) {
-        if (isLocation(value)) {
+        if (isLocation(value, addressType)) {
           this.setState({ error: null });
           return true;
         } else {

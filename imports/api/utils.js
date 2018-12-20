@@ -1,4 +1,7 @@
-import { getLatLongFromAddressOrDevice } from '/imports/utils/location.js';
+import {
+  getLatLongFromAddressOrDevice,
+  getAddressFromLatLong
+} from '/imports/utils/location.js';
 
 export function fullName(user) {
   if (!user) {
@@ -92,10 +95,20 @@ export function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-export function isLocation(str) {
-  // If we can get a latitude/longitude then we're assuming it's a valid location
-  const latLng = getLatLongFromAddressOrDevice(str);
-  return latLng && latLng.length === 2;
+export function isLocation(str, type) {
+  switch (type) {
+    case 'zip':
+      // TODO: Zip specific address code here
+      break;
+    case 'coords':
+      // TODO: maybe have this function return true/false
+      str = getAddressFromLatLong(str);
+      break;
+    default:
+      // If we can get a latitude/longitude then we're assuming it's a valid location
+      const latLng = getLatLongFromAddressOrDevice(str);
+      return latLng && latLng.length === 2;
+  }
 }
 
 export function escapeString(str) {
@@ -109,10 +122,10 @@ export function escapeString(str) {
     '>': '&gt;',
     '"': '&quot;',
     "'": '&#39;',
-    '/': '&#x2F;',
+    '/': '&#x2F;'
   };
 
-  return String(str).replace(/[&<>"'\/]/g, function (s) {
+  return String(str).replace(/[&<>"'\/]/g, function(s) {
     return entityMap[s];
   });
 }
