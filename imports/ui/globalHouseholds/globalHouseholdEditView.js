@@ -23,10 +23,10 @@ Template.globalHouseholdEditView.events(
         Bert.alert('You must pick up a Head of Household.', 'danger', 'growl-top-right');
         return;
       }
-      const globalHouseholdId = Router.current().params._id;
-      const globalHousehold = GlobalHouseholds.findOne({ _id: globalHouseholdId });
+      const genericHouseholdId = Router.current().params._id;
+      const globalHousehold = GlobalHouseholds.findOne({ _id: genericHouseholdId });
       const globalHouseholdObject = {
-        globalHouseholdId,
+        genericHouseholdId,
         headOfHouseholdId,
         inactive: $('input[name=inactive]:checked').val(),
       };
@@ -41,7 +41,7 @@ Template.globalHouseholdEditView.events(
             // dateUpdate: '',
             // userCreate: '',
             // userUpdate: user.services.HMIS.accountId,
-            globalHouseholdId,
+            genericHouseholdId,
           };
           newGlobalHouseholdMembers.push(optionArray);
         }
@@ -49,7 +49,7 @@ Template.globalHouseholdEditView.events(
       const oldGlobalHouseholdMembers = globalHousehold.clients;
       Meteor.call(
         'updateGlobalHousehold',
-        globalHouseholdId,
+        genericHouseholdId,
         oldGlobalHouseholdMembers,
         newGlobalHouseholdMembers,
         globalHouseholdObject,

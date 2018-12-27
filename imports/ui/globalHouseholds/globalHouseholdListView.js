@@ -8,11 +8,11 @@ const tableOptions = {
   columns: [
     {
       title: 'Global Household ID',
-      data: 'globalHouseholdId', // note: access nested data like this
+      data: 'genericHouseholdId', // note: access nested data like this
     },
     {
       title: 'Head of HouseHold',
-      data: 'globalHouseholdId', // note: access nested data like this
+      data: 'genericHouseholdId', // note: access nested data like this
       render(val, type, doc) {
         const client = doc.headOfHouseholdClient;
         if (client.loading) {
@@ -51,7 +51,7 @@ const tableOptions = {
     },
     {
       title: 'User',
-      data: 'globalHouseholdId', // note: access nested data like this
+      data: 'genericHouseholdId', // note: access nested data like this
       render(val, type, doc) {
         const user = doc.userDetails;
         if (user.loading) {

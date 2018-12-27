@@ -212,7 +212,11 @@ Router.onBeforeAction(
           { query: `schema=${client.schema}` }
         );
       } else {
-        client.url = viewClientRoute.path({ _id: client._id });
+        const routeOptions = client.schema ? { query: `schema=${client.schema}` } : {};
+        client.url = viewClientRoute.path(
+          { _id: client._id },
+          routeOptions
+        );
       }
       RecentClients.upsert(client);
       this.next();

@@ -37,7 +37,7 @@ Template.globalHouseholdCreateView.events(
           } else {
             Bert.alert('New household created', 'success', 'growl-top-right');
             // TODO: redirect to a new household
-            Router.go('adminDashboardglobalHouseholdsEdit', { _id: result.globalHouseholdId });
+            Router.go('adminDashboardglobalHouseholdsEdit', { _id: result.genericHouseholdId });
           }
         });
     },
