@@ -19,6 +19,7 @@
     "react-modal": "^3.3.2",
     "react-quill": "^1.2.7",
     "react-sortable-tree": "^1.8.1",
+    "react-table": "^6.8.6",
     "uniforms": "^1.23.2",
     "uniforms-bootstrap3": "^1.23.2",
     "winston": "^2.4.1",
