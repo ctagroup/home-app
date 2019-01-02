@@ -8,30 +8,34 @@ Meteor.publish('surveys.all', function publishAllSurveys() {
   logger.info(`PUB[${this.userId}]: surveys.all`);
 
   const hc = HmisClient.create(this.userId);
-  const surveys = hc.api('survey2').getSurveys();
-  const localSurveys = Surveys.find({ version: 2 }).fetch();
+  try {
+    const surveys = hc.api('survey2').getSurveys() || [];
+    const localSurveys = Surveys.find({ version: 2 }).fetch();
 
-  surveys.filter(s => !!s.surveyDefinition).forEach(s => {
-    this.added('surveys', s.surveyId, {
-      version: 2,
-      title: s.surveyTitle,
-      definition: s.surveyDefinition,
-      hmis: {
-        surveyId: s.surveyId,
-        status: 'uploaded',
-      },
-      numberOfResponses: Responses.find({ surveyId: s.surveyId }).count(),
-      createdAt: '',
+    surveys.filter(s => !!s.surveyDefinition).forEach(s => {
+      this.added('surveys', s.surveyId, {
+        version: 2,
+        title: s.surveyTitle,
+        definition: s.surveyDefinition,
+        hmis: {
+          surveyId: s.surveyId,
+          status: 'uploaded',
+        },
+        numberOfResponses: Responses.find({ surveyId: s.surveyId }).count(),
+        createdAt: '',
+      });
     });
-  });
-  localSurveys.map(s => this.added('surveys', s._id, {
-    ...s,
-    hmis: {
-      status: 'not uploaded',
-    },
-    numberOfResponses: Responses.find({ surveyId: s._id }).count(),
-  }));
-  this.ready();
+    localSurveys.map(s => this.added('surveys', s._id, {
+      ...s,
+      hmis: {
+        status: 'not uploaded',
+      },
+      numberOfResponses: Responses.find({ surveyId: s._id }).count(),
+    }));
+  } catch (e) {
+    logger.warn(e);
+  }
+  return this.ready();
 });
 
 Meteor.publish('surveys.one', function publishOneSurvey(_id) {
