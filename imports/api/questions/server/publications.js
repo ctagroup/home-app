@@ -13,18 +13,21 @@ Meteor.publish('questions.all', function publishAllQuestions() {
   });
 
   const hc = HmisClient.create(this.userId);
-  const groups = hc.api('survey').getQuestionGroups();
-  groups.forEach(group => {
-    if (stopFunction) {
-      return;
-    }
-    const questions = hc.api('survey2').getQuestions(group.questionGroupId);
-    questions.forEach(q => {
-      // self.added('housingUnits', housingUnits[i].housingInventoryId, housingUnits[i]);
-      this.added('questions', q.questionId, { ...q, questionGroup: group });
+  try {
+    const groups = hc.api('survey').getQuestionGroups() || [];
+    groups.forEach(group => {
+      if (stopFunction) return;
+      const questions = hc.api('survey2').getQuestions(group.questionGroupId) || [];
+      questions.forEach(q => {
+        // self.added('housingUnits', housingUnits[i].housingInventoryId, housingUnits[i]);
+        this.added('questions', q.questionId, { ...q, questionGroup: group });
+      });
+      this.ready();
     });
-    this.ready();
-  });
+  } catch (e) {
+    logger.warn(e);
+  }
+  return this.ready();
 });
 
 Meteor.publish('questions.one', function publishOneQuestion(id) {

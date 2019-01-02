@@ -1,11 +1,12 @@
 import { HmisApiRegistry } from './apiRegistry';
 import { ApiEndpoint } from './apiEndpoint';
 
-const BASE_URL = 'https://www.hmislynk.com/global-household-api';
+const BASE_URL = 'https://www.hmislynk.com/global-household-api/rest';
+const BASE_GLOBAL_URL = 'https://www.hmislynk.com/hmis-globalapi/rest';
 
 class GlobalHouseHoldApi extends ApiEndpoint {
   createGlobalHousehold(householdMembers, householdObject) {
-    const url = `${BASE_URL}/global-households`;
+    const url = `${BASE_GLOBAL_URL}/global-households`;
     const body = {
       globalHouseholds: [
         householdObject,
@@ -17,34 +18,32 @@ class GlobalHouseHoldApi extends ApiEndpoint {
   }
 
   updateGlobalHousehold(householdId, householdObject) {
-    const url = `${BASE_URL}/global-households/${householdId}`;
+    const url = `${BASE_GLOBAL_URL}/global-households/${householdId}`;
     const body = householdObject;
     return this.doPut(url, body);
   }
 
   deleteGlobalHousehold(householdId) {
-    const url = `${BASE_URL}/global-households/${householdId}`;
+    const url = `${BASE_GLOBAL_URL}/global-households/${householdId}`;
     return this.doDel(url);
   }
 
   addMembersToHousehold(householdId, householdMembers) {
-    const url = `${BASE_URL}/global-households/${householdId}/members`;
-    const body = {
-      members: householdMembers,
-    };
+    const url = `${BASE_GLOBAL_URL}/generic-households/${householdId}/members`;
+    const body = { members: householdMembers };
     return this.doPost(url, body);
   }
 
   updateMembersOfHousehold(householdId, householdMembers) {
     // WARNING: will update existing members only,
     // will not replace current members with householdMembers
-    const url = `${BASE_URL}/global-households/${householdId}/members`;
+    const url = `${BASE_GLOBAL_URL}/generic-households/${householdId}/members`;
     const body = { members: householdMembers };
     return this.doPut(url, body);
   }
 
   deleteMemberFromHousehold(householdId, membershipId) {
-    const url = `${BASE_URL}/global-households/${householdId}/members/${membershipId}`;
+    const url = `${BASE_GLOBAL_URL}/generic-households/${householdId}/members/${membershipId}`;
     return this.doDel(url);
   }
 
@@ -68,7 +67,7 @@ class GlobalHouseHoldApi extends ApiEndpoint {
   }
 
   getHouseholdMembers(householdId, page = 0, size = 9999) {
-    const url = `${BASE_URL}/global-households/${householdId}/members?page=${page}&size=${size}`;
+    const url = `${BASE_URL}/generic-households/${householdId}/members?page=${page}&size=${size}`;
     const response = this.doGet(url);
     let householdMembers = response.content;
     if (response.page.number < response.page.totalPages - 1) {
@@ -82,9 +81,10 @@ class GlobalHouseHoldApi extends ApiEndpoint {
 
   getGlobalHouseholdMemberships(clientId, page = 0, limit = 9999) {
     const url = `${BASE_URL}/members?clientid=${clientId}&page=${page}&size=${limit}`; // eslint-disable-line max-len
-    return this.doGet(url);
+    const response = this.doGet(url);
+    return response.content;
   }
 
 }
 
-HmisApiRegistry.addApi('global-household-old', GlobalHouseHoldApi);
+HmisApiRegistry.addApi('global-household', GlobalHouseHoldApi);

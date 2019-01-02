@@ -34,8 +34,13 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
     client = hc.api('client').getClient(inputClientId, inputSchema);
     client.schema = inputSchema;
     client.isHMISClient = true;
+
     // TODO [VK]: publish by dedupClientId directly
-    const clientVersions = hc.api('client').searchClient(client.dedupClientId, 50);
+    // NOTE [PG]: it's currently not possible because not all clients have dedupId :(
+    let clientVersions = [client];
+    if (client.dedupClientId) {
+      clientVersions = hc.api('client').searchClient(client.dedupClientId, 50);
+    }
 
     // const mergedClient = mergeClient(clientVersions, inputSchema);
     const mergedClient = mergeClientExtended(

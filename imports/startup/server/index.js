@@ -1,5 +1,7 @@
 import { logger } from '/imports/utils/logger';
 
+import eventPublisher, { ServerStartedEvent } from '/imports/api/eventLog/events';
+
 import '/imports/api/appSettings/methods';
 import '/imports/api/appSettings/server/publications';
 
@@ -13,6 +15,8 @@ import '/imports/api/pendingClients/server/publications';
 
 import '/imports/api/eligibleClients/methods';
 import '/imports/api/eligibleClients/server/publications';
+
+import '/imports/api/eventLog/server/publications';
 
 import '/imports/api/files/methods';
 import '/imports/api/files/server/publications';
@@ -57,6 +61,7 @@ import '/imports/api/mc211/methods';
 
 
 Meteor.startup(() => {
+  eventPublisher.publish(new ServerStartedEvent());
   /* eslint-disable */
 	process.env.MAIL_URL = 'smtp://postmaster%40sandbox99bfa58d2ea34f7893748e31be4823e8.mailgun.org:e9efb86cb5eeb210c6bdc66775bcf3ca@smtp.mailgun.org:587';
   /* eslint-enable */

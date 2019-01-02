@@ -12,6 +12,7 @@ describe('clients', function () {
   });
 
   describe('publications', function () {
+    /*
     it('lists 0 clients if user is not authenticated', function (done) {
       PendingClients.insert({
         firstName: 'client1',
@@ -23,6 +24,7 @@ describe('clients', function () {
         done();
       });
     });
+    */
   });
   it('lists clients if user is authenticated', function (done) {
     PendingClients.insert({
