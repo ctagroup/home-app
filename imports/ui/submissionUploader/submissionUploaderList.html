@@ -1,0 +1,10 @@
+<template name="submissionUploaderList">
+  {{#if hasData}}
+    {{> ReactiveDatatable tableData=tableData options=tableOptions }}
+  {{else}}
+  <div class="alert alert-info">
+    <p>There are no files to show.</p>
+  </div>
+  {{/if}}
+  <a  href="{{pathFor 'submissionUploaderNew'}}" class="btn btn-large btn-default">New</a>
+</template>

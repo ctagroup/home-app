@@ -3,6 +3,10 @@ export default class FeatureDecisions {
     this.features = features;
   }
 
+  isSubmissionUploader() {
+    return this.features.uploader === true;
+  }
+
   isMc211App() {
     return this.features.appProfile === 'mc211';
   }

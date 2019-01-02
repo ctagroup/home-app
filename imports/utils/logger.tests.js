@@ -1,5 +1,5 @@
 /* eslint prefer-arrow-callback: "off", func-names: "off" */
-import { chai } from 'meteor/practicalmeteor:chai';
+import chai from 'chai';
 import { sanitize } from './logger';
 
 describe('logger', function () {

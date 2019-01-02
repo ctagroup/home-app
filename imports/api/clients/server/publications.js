@@ -15,9 +15,7 @@ import {
 Meteor.publish('clients.one',
 function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
   logger.info(`PUB[${this.userId}]: clients.one(${inputClientId}, ${inputSchema})`);
-  if (!this.userId) {
-    return [];
-  }
+  if (!this.userId) return [];
   // TODO: check permissions to get the data
   const self = this;
   let stopFunction = false;
