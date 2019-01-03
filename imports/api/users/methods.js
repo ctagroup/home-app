@@ -174,8 +174,12 @@ Meteor.methods({
       expiresIn: ((expiresAt - new Date()) / 1000).toFixed(2),
       apiResponse,
     };
-    logger.info(result);
-    return result;
+    logger.info('user data', result);
+    return {
+      ...result,
+      accessToken: accessToken.substr(0, 8),
+      refreshToken: refreshToken.substr(0, 8),
+    };
   },
 
   addUserLocation(userID, timestamp, position) {

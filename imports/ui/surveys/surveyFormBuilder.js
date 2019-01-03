@@ -12,11 +12,49 @@ Template.surveyFormBuilder.helpers({
   },
 
   questions() {
-    return (this.questions || [])
+    const getDefinition = (q) => {
+      if (typeof q.definition === 'string') {
+        const definition = JSON.parse(q.definition);
+        return definition;
+      }
+      return q.definition;
+    };
+
+    const allQuestions = (this.questions || [])
       .map(q => {
         try {
+          const definition = getDefinition(q);
+          const hmisQuestionTypes = {
+            STRING: 'text',
+            INTEGER: 'number',
+            DROPDOWN: 'choice',
+            CURRENCY: 'currency',
+            DATE: 'date',
+          };
+
+          const category = hmisQuestionTypes[q.questionType];
+
+          // import HUD question definition
+          if (q.hudQuestion) {
+            return {
+              id: q.uriObjectField,
+              hmisId: q.questionId,
+              title: q.displayText,
+              type: 'question',
+              category,
+              options: q.definition.options,
+              enrollment: {
+                hudQuestionId: q.hudQuestionId,
+                schema: q.schema,
+                uriObjectField: q.uriObjectField,
+                updateUriTemplate: q.updateUriTemplate,
+              },
+            };
+          }
+
+          // import survey question definition
           return {
-            ...JSON.parse(q.definition),
+            ...definition,
             hmisId: q.questionId,
           };
         } catch (e) {
@@ -24,6 +62,8 @@ Template.surveyFormBuilder.helpers({
         }
       })
       .filter(q => q !== null);
+    console.log('allQuestions', allQuestions.length);
+    return allQuestions;
   },
 
   schema() {

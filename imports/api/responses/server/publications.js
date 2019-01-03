@@ -113,3 +113,10 @@ Meteor.publish('responses.one', function publishSingleResponse(responseId) {
   }
   return self.ready();
 });
+
+Meteor.publish('responses.enrollments', function publishSingleResponse(enrollmentIds) {
+  logger.info(`PUB[${this.userId}]: responses.enrollments`, enrollmentIds);
+  return Responses.find({
+    'enrollment.enrollment-0.id': { $in: enrollmentIds },
+  });
+});

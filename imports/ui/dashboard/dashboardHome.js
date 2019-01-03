@@ -1,3 +1,4 @@
+import { ReactiveVar } from 'meteor/reactive-var';
 import CollectionsCount from '/imports/api/collectionsCount/collectionsCount';
 import {
   DefaultAdminAccessRoles,
@@ -54,6 +55,13 @@ const allWidgets = [
     roles: ResponsesAccessRoles,
   },
   {
+    name: 'Surveyed Clients',
+    id: 'surveyed',
+    icon: 'fa-user',
+    path: 'adminDashboardclientsView',
+    roles: PendingClientsAccessRoles,
+  },
+  {
     name: 'Housing Units',
     id: 'housingUnits',
     icon: 'fa-home',
@@ -76,12 +84,31 @@ const allWidgets = [
   },
 ];
 
+Template.dashboardHome.onCreated(function onDashboardCreated() {
+  this.surveyedCount = new ReactiveVar(false);
+});
+Template.dashboardHome.onRendered(function onDashboardRendered() {
+  Meteor.call('responses.count', (err, res) => {
+    if (!err) this.surveyedCount.set(res.length);
+  });
+});
+
 Template.dashboardHome.helpers({
   widgets() {
     const allowedWidgets = _.filter(allWidgets,
       widget => Roles.userIsInRole(Meteor.user(), widget.roles)
     );
     return allowedWidgets.map((widget) => {
+      if (widget.id === 'surveyed') {
+        const count = Template.instance().surveyedCount.get();
+
+        return _.extend(widget, {
+          icon: widget.icon || 'fa-file-text',
+          color: widget.color || 'primary',
+          count: count || 0,
+          loading: count === false,
+        });
+      }
       const doc = CollectionsCount.findOne(widget.id) || { count: 0 };
       return _.extend(widget, {
         icon: widget.icon || 'fa-file-text',

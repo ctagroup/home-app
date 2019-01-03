@@ -1,0 +1,6 @@
+<template name="selectEnrollmentSurveys">
+  {{> dropdownHelper store=schemaVersionStore options=schemaVersions key='surveySchema' placeholder='Select schema'}}
+  {{> dropdownHelper options=hudSurveys key='createSurvey' placeholder='Select enrollment create survey'}}
+  {{> dropdownHelper options=hudSurveys key='updateSurvey' placeholder='Select enrollment update survey'}}
+  {{> dropdownHelper options=hudSurveys key='exitSurvey' placeholder='Select enrollment exit survey'}}
+</template>

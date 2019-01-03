@@ -35,6 +35,11 @@ Agencies.schema = new SimpleSchema({
     type: [ProjectMembershipSchema],
     optional: true,
   },
+  enrollmentSurveys: {
+    type: Object,
+    blackbox: true,
+    defaultValue: {},
+  },
   createdAt: {
     type: Date,
     label: 'Created At',
@@ -75,6 +80,25 @@ Agencies.helpers({
     return (this.projectsMembers || [])
       .filter(m => m.userId === userId)
       .map(m => m.projectId);
+  },
+  getProjectSurveyId(projectId, type) {
+    const survey = Object.entries(this.enrollmentSurveys)
+    .find(([key, value]) => {
+      if (key.slice(7) !== projectId) return false;
+      return !!value[type];
+    });
+    return survey && survey[1] && survey[1][type];
+  },
+  getProjectsWithEnrollmentSurvey(surveyId) {
+    return Object.entries(this.enrollmentSurveys)
+    .map(([key, value]) => {
+      const [projectSchema, projectId] = key.split('::');
+      return ['entry', 'update', 'exit'].map(enrollmentType => (
+        { projectId, projectSchema, enrollmentType, surveyId: value[enrollmentType] }
+      ));
+    })
+    .reduce((acc, val) => acc.concat(val), [])
+    .filter(p => p.surveyId === surveyId);
   },
 });
 

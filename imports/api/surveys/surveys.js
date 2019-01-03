@@ -2,6 +2,7 @@ import { Mongo } from 'meteor/mongo';
 
 
 const Surveys = new Mongo.Collection('surveys');
+const schemaVersions = ['v2017'].map(i => ({ value: i, label: i }));
 
 SimpleSchema.debug = true;
 Surveys.schema = new SimpleSchema({
@@ -38,6 +39,20 @@ Surveys.schema = new SimpleSchema({
     label: 'HMIS data',
     optional: true,
     blackbox: true,
+  },
+  hudSurvey: {
+    type: Boolean,
+    label: 'Enrollment Survey?',
+    optional: true,
+  },
+  surveyVersion: {
+    type: String,
+    label: 'Enrollment Schema Version',
+    allowedValues: schemaVersions.map(o => o.value),
+    autoform: {
+      options: schemaVersions,
+    },
+    optional: true,
   },
   createdAt: {
     type: Date,

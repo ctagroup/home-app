@@ -42,6 +42,7 @@ Router.route(
     waitOn() {
       return [
         Meteor.subscribe('projects.all'),
+        Meteor.subscribe('surveys.all'),
         Meteor.subscribe('users.all'),
       ];
     },
@@ -70,6 +71,7 @@ Router.route(
       return [
         Meteor.subscribe('agencies.one', id),
         Meteor.subscribe('projects.all'),
+        Meteor.subscribe('surveys.all'),
         Meteor.subscribe('users.all'),
       ];
     },

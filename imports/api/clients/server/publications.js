@@ -46,6 +46,8 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
     self.added('localClients', inputClientId, mergedClient);
     self.ready();
 
+    logger.debug(mergedClient);
+
     let mergedReferralStatusHistory = [];
     let mergedHousingMatch = {};
     let mergedMatchingScore = 0;

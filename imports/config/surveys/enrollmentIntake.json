@@ -1,0 +1,3070 @@
+{
+  "variables": {},
+  "items": [
+    {
+      "id": "section-pe",
+      "title": "Program Entry",
+      "type": "section",
+      "items": [
+        {
+          "id": "entryDate",
+          "hmisId": "80b4e2cf-85c5-4532-86ca-8cdc9ce3a67d",
+          "title": "1. Program Start Date",
+          "type": "question",
+          "category": "date",
+          "options": {},
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "enrollment.entryDate",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}"
+          },
+          "items": []
+        },
+        {
+          "id": "question-2",
+          "hmisId": "5dd6070f-7fce-48db-8376-6b3377d1f3e0",
+          "title": "2. Relationship to Head of Household",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "1": "Self (head of household)",
+            "2": "Head of household’s child",
+            "3": "Head of household’s spouse or partner",
+            "4": "Head of household’s other relation member (other relation to head of household)",
+            "5": "Other: non-relation member"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "enrollment.relationshipToHOH",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}"
+          },
+          "items": []
+        },
+        {
+          "id": "question-4",
+          "title": "4. Client Location (CoC)",
+          "type": "question",
+          "category": "choice",
+          "options": [
+            "CA-600|CA-600 Los Angeles",
+            "CA-602|CA-602 Orange County",
+            "CA-606|CA-606 Long Beach",
+            "CA-607|CA-607 Pasadena",
+            "CA-611|CA-611 Ventura County",
+            "CA-612|CA-612 Gendale",
+            "CA-614|CA-614 San Luis Obispo County"
+          ],
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "enrollmentCoc.cocCode",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/enrollmentcocs/{enrollmentcocid}"
+          },
+          "items": [],
+          "hmisId": "441d61d3-b026-43b8-94bc-ba4ae5623b3d"
+        }
+      ]
+    },
+    {
+      "id": "section-ces-placement",
+      "title": "CES Placement",
+      "type": "section",
+      "items": [
+        {
+          "id": "question-5",
+          "title": "5. Was the client placed into this housing program through CES?",
+          "type": "question",
+          "category": "choice",
+          "items": [],
+          "options": [
+            "No",
+            "CES for Single Adults",
+            "CES for Families",
+            "CES for Youth"
+          ],
+          "hmisId": "2464b360-890e-47b8-8c8f-c47e07dd887d"
+        }
+      ]
+    },
+    {
+      "id": "section-housing-move-in",
+      "title": "Housing Move-In",
+      "type": "section",
+      "items": [
+        {
+          "id": "question-6",
+          "title": "6. Has the client moved-in to permanent housing?",
+          "text": "Engagement means an interactive client relationship results in a deliberate client assessment.",
+          "type": "question",
+          "category": "choice",
+          "items": [],
+          "options": [
+            "Yes",
+            "No"
+          ],
+          "hmisId": "5b3c50ff-6a06-4ddb-84c4-69517da055ff"
+        },
+        {
+          "id": "question-6a",
+          "hmisId": "0aaab4b2-fedd-42eb-9e3c-3b8760c9efe2",
+          "title": "Move-in date",
+          "type": "question",
+          "category": "date",
+          "options": {},
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "residentialMoveinDate.residentialMoveInDate",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/residentialmoveindates/{residentialmoveindateid}"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "question-6a.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.question-6",
+                  "Yes"
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "question-6a.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        }
+      ]
+    },
+    {
+      "id": "section-outreach",
+      "title": "Outreach",
+      "type": "section",
+      "items": [
+        {
+          "id": "question-7",
+          "title": "7. Has the client been engaged?",
+          "type": "question",
+          "category": "choice",
+          "items": [],
+          "options": [
+            "Yes",
+            "No"
+          ],
+          "hmisId": "130bbf07-63fc-4db1-94f4-27fb0aafc302"
+        },
+        {
+          "id": "question-7a",
+          "hmisId": "f978c1f0-8cd1-4032-89b4-8a56f85178c8",
+          "title": "Engagement Date?",
+          "type": "question",
+          "category": "date",
+          "options": {},
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "dateOfEngagement.dateOfEngagement",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/dateofengagements/{dateofengagementid}"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "question-7a.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.question-7",
+                  "Yes"
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "question-7a.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        }
+      ]
+    },
+    {
+      "id": "section-homelessness",
+      "title": "Homelessness",
+      "type": "section",
+      "items": [
+        {
+          "id": "question-9a",
+          "title": "9. What was the situation you wereliving in immediately prior to project entry?",
+          "text": "(Type of residence)",
+          "type": "question",
+          "category": "choice",
+          "options": [
+            "--- Literally Homeless Situations ---",
+            "16|Place not meant for habitation",
+            "1|Emergency shelter, including hotel or motel paid for with emergency shelter",
+            "18|Safe Haven",
+            "27|Interim Housing",
+            "--- Institutional Situations ---",
+            "15|Foster care home or foster care group home",
+            "6|Hospital or other residential non-psychiatric medical facility",
+            "7|Jail, prison or juvenile detention facility",
+            "24|Long-term care facility or nursing home",
+            "4|Psychiatric hospital or other psychiatric facility",
+            "5|Substance abuse treatment facility or detox center",
+            "--- Transitional & Permanent Housing Situations ---",
+            "14|Hotel or motel paid for without emergency shelter voucher",
+            "23|Owned by client, no ongoing housing subsidy",
+            "21|Owned by client, with ongoing housing subsidy",
+            "3|Permanent housing (other than RRH) for formerly homeless persons",
+            "22|Rental by client, no ongoing housing subsidy",
+            "19|Rental by client, with VASH subsidy",
+            "25|Rental by client, with GPD TIP subsidy",
+            "20|Rental by client, with other housing subsidy (including RRH)",
+            "26|Residential project orhalfway house with no homelesscriteria",
+            "12|Staying or living in a family member's room, apartmentor house",
+            "13|Staying or living in a friend’s room, apartment or house",
+            "2|Transitional housing for homeless persons (includinghomeless youth)",
+            "--- Other ---",
+            "8|Client doesn’t know",
+            "9|Client refused",
+            "99|Data not collected"
+          ],
+          "hmisId": "f304a84a-73e2-4198-80dd-c1a12198d7d0",
+          "items": []
+        },
+        {
+          "id": "question-9b",
+          "title": "9. What was the situation you wereliving in immediately prior to project entry?",
+          "text": "(Type of residence)",
+          "type": "question",
+          "category": "choice",
+          "options": [
+            "--- HOMELESS SITUATION ---",
+            "16|Place not meant for habitation",
+            "1|Emergency shelter, including hotel or motel paid for with emergency shelter",
+            "18|Safe Haven",
+            "27|Interim Housing",
+            "--- INSTITUTIONAL SITUATION ---",
+            "15|Foster care home or foster care group home",
+            "6|Hospital or other residential non-psychiatric medical facility",
+            "7|Jail, prison or juvenile detention facility",
+            "24|Long-term care facility or nursing home",
+            "4|Psychiatric hospital or other psychiatric facility",
+            "5|Substance abuse treatment facility or detox center",
+            "--- TRANSITIONAL AND PERMANENT HOUSING SITUATION ---",
+            "14|Hotel or motel paid for without emergency shelter voucher",
+            "23|Owned by client, no ongoing housing subsidy",
+            "21|Owned by client, with ongoing housing subsidy",
+            "3|Permanent housing (other than RRH) forformerly homeless persons",
+            "22|Rental by client, no ongoing housing subsidy",
+            "19|Rental by client, with VASH subsidy",
+            "25|Rental by client, with GPD TIP subsidy",
+            "20|Rental by client, with other housing subsidy (including RRH)",
+            "26|Residential project orhalfway house with no homeless criteria",
+            "12|Staying or living in a family member's room, apartment or house",
+            "13|Staying or living in a friend’s room, apartment or house",
+            "2|Transitional housing for homeless persons (including homeless youth)",
+            "8|Client doesn’t know",
+            "9|Client refused",
+            "99|Data not collected"
+          ],
+          "hmisId": "f304a84a-73e2-4198-80dd-c1a12198d7d0",
+          "items": []
+        },
+        {
+          "id": "logic1",
+          "type": "hidden",
+          "rules": [
+            {
+              "always": [
+                [
+                  "set",
+                  "show9b",
+                  0
+                ],
+                [
+                  "set",
+                  "from_lhs",
+                  0
+                ],
+                [
+                  "set",
+                  "from_tphs",
+                  0
+                ],
+                [
+                  "set",
+                  "from_institution",
+                  0
+                ],
+                [
+                  "pset",
+                  "question-9a.skip",
+                  0
+                ],
+                [
+                  "pset",
+                  "question-9b.skip",
+                  1
+                ],
+                [
+                  "pset",
+                  "question-10.skip",
+                  1
+                ],
+                [
+                  "pset",
+                  "question-10c.skip",
+                  1
+                ],
+                [
+                  "pset",
+                  "question-11.skip",
+                  1
+                ],
+                [
+                  "pset",
+                  "question-12.skip",
+                  1
+                ],
+                [
+                  "pset",
+                  "question-13.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "show9b",
+                  1
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "question-9a.skip",
+                  1
+                ],
+                [
+                  "pset",
+                  "question-9b.skip",
+                  0
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.question-9a",
+                  16
+                ],
+                [
+                  "==",
+                  "values.question-9a",
+                  1
+                ],
+                [
+                  "==",
+                  "values.question-9a",
+                  18
+                ],
+                [
+                  "==",
+                  "values.question-9a",
+                  27
+                ]
+              ],
+              "then": [
+                [
+                  "set",
+                  "from_lhs",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.question-9a",
+                  15
+                ],
+                [
+                  "==",
+                  "values.question-9a",
+                  6
+                ],
+                [
+                  "==",
+                  "values.question-9a",
+                  7
+                ],
+                [
+                  "==",
+                  "values.question-9a",
+                  24
+                ],
+                [
+                  "==",
+                  "values.question-9a",
+                  4
+                ],
+                [
+                  "==",
+                  "values.question-9a",
+                  5
+                ]
+              ],
+              "then": [
+                [
+                  "set",
+                  "from_institution",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.question-9a",
+                  14
+                ],
+                [
+                  "==",
+                  "values.question-9a",
+                  23
+                ],
+                [
+                  "==",
+                  "values.question-9a",
+                  21
+                ],
+                [
+                  "==",
+                  "values.question-9a",
+                  3
+                ],
+                [
+                  "==",
+                  "values.question-9a",
+                  22
+                ],
+                [
+                  "==",
+                  "values.question-9a",
+                  19
+                ],
+                [
+                  "==",
+                  "values.question-9a",
+                  25
+                ],
+                [
+                  "==",
+                  "values.question-9a",
+                  20
+                ],
+                [
+                  "==",
+                  "values.question-9a",
+                  26
+                ],
+                [
+                  "==",
+                  "values.question-9a",
+                  12
+                ],
+                [
+                  "==",
+                  "values.question-9a",
+                  13
+                ],
+                [
+                  "==",
+                  "values.question-9a",
+                  2
+                ]
+              ],
+              "then": [
+                [
+                  "set",
+                  "from_tphs",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "variables.from_lhs",
+                  1
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "question-10.skip",
+                  1
+                ],
+                [
+                  "pset",
+                  "question-11.skip",
+                  0
+                ],
+                [
+                  "pset",
+                  "question-12.skip",
+                  0
+                ],
+                [
+                  "pset",
+                  "question-13.skip",
+                  0
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "variables.from_institution",
+                  1
+                ],
+                [
+                  "==",
+                  "variables.from_tphs",
+                  1
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "question-10.skip",
+                  0
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.question-10",
+                  10
+                ],
+                [
+                  "==",
+                  "values.question-10",
+                  11
+                ]
+              ],
+              "then": [
+                [
+                  "set",
+                  "less_than_7_days",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.question-10",
+                  10
+                ],
+                [
+                  "==",
+                  "values.question-10",
+                  11
+                ],
+                [
+                  "==",
+                  "values.question-10",
+                  2
+                ],
+                [
+                  "==",
+                  "values.question-10",
+                  3
+                ]
+              ],
+              "then": [
+                [
+                  "set",
+                  "less_than_90_days",
+                  1
+                ]
+              ]
+            },
+            {
+              "all": [
+                [
+                  "==",
+                  "variables.from_institution",
+                  1
+                ],
+                [
+                  "==",
+                  "variables.less_than_90_days",
+                  1
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "question-10c.skip",
+                  0
+                ]
+              ]
+            },
+            {
+              "all": [
+                [
+                  "==",
+                  "variables.from_tphs",
+                  1
+                ],
+                [
+                  "==",
+                  "variables.less_than_7_days",
+                  1
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "question-10c.skip",
+                  0
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "project.projectType",
+                  1
+                ],
+                [
+                  "==",
+                  "project.projectType",
+                  4
+                ],
+                [
+                  "==",
+                  "project.projectType",
+                  5
+                ]
+              ],
+              "then": [
+                [
+                  "set",
+                  "show9b",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "variables.less_than_7_days",
+                  1
+                ],
+                [
+                  "==",
+                  "variables.less_than_90_days",
+                  1
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "question-10c.skip",
+                  0
+                ],
+                [
+                  "pset",
+                  "question-11.skip",
+                  0
+                ],
+                [
+                  "pset",
+                  "question-12.skip",
+                  0
+                ],
+                [
+                  "pset",
+                  "question-13.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        },
+        {
+          "id": "question-10",
+          "title": "10. How long was the client staying in that place?",
+          "text": "(Length of stay in prior living situation)",
+          "type": "question",
+          "category": "choice",
+          "options": [
+            "10|One nightor less",
+            "11|Two to six nights",
+            "2|One week or more, but less than one month",
+            "3|One month or more, but less than 90 days",
+            "4|90 days or more, but less than one year",
+            "5|One year or longer",
+            "8|Client doesn’t know",
+            "9|Client refused",
+            "99|Data not collected"
+          ],
+          "hmisId": "ea8dced6-b5a3-4c32-9b1a-cfebf08f8bb3",
+          "rules": [
+            {
+              "any": [
+                [
+                  "==",
+                  "values.question-xyz",
+                  "Yes"
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "question-10.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        },
+        {
+          "id": "question-11",
+          "hmisId": "1ef4fcb2-c795-4e14-8432-4483f9642daf",
+          "title": "11. What approximate date did you start living on the streets, emergency shelter, or safe haven?",
+          "type": "question",
+          "category": "date",
+          "options": {},
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "enrollment.dateToStreetESSH",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}"
+          },
+          "items": []
+        },
+        {
+          "id": "question-12",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edad41",
+          "title": "12. In the past three years, how many times have you returned to the streets, an emergency shelter, or a safe haven after being housed?",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "1": "One time",
+            "2": "Two times",
+            "3": "Three times",
+            "4": "Four or more times",
+            "8": "Client does not know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "enrollment.timesHomelessPastThreeYears",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}"
+          },
+          "items": []
+        },
+        {
+          "id": "question-13",
+          "hmisId": "29be9611-58a1-496c-9d47-5930f99e280d",
+          "title": "13. In those three years, what is the total number of months spent homeless on the streets, in an emergency shelter, or in a safe haven?",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "1": "More than 12 months",
+            "7": "More than 12 months",
+            "8": "Client does not know",
+            "9": "Client refused",
+            "99": "Data not collected",
+            "100": "0 months",
+            "101": "1 month",
+            "102": "2 months",
+            "103": "3 months",
+            "104": "4 months",
+            "105": "5 months",
+            "106": "6 months",
+            "107": "7 months",
+            "108": "8 months",
+            "109": "9 months",
+            "110": "10 months",
+            "111": "11 months",
+            "112": "12 months"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "enrollment.monthsHomelessPastThreeYears",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}"
+          },
+          "items": []
+        }
+      ]
+    },
+    {
+      "id": "section-disabling-conds",
+      "title": "Disabling Conditions and Barriers",
+      "type": "section",
+      "items": [
+        {
+          "id": "question-21",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf05",
+          "title": "21. Do you have a physical disability?",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "hudQuestionId": "4.5",
+            "schema": "v2017",
+            "uriObjectField": "disabilities.disabilityResponse",
+            "defaultObject": {
+              "disabilityType": "5"
+            },
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/disabilities/{disabilityid}#5"
+          },
+          "items": []
+        },
+        {
+          "id": "question-21a",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edad23",
+          "title": "21a. Do you expect this condition to be of long-continued and indefinite duration AND substantially impair your ability to live independly?",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "hudQuestionId": "4.5.2A",
+            "schema": "v2017",
+            "uriObjectField": "disabilities.indefiniteandImpairs",
+            "defaultObject": {
+              "disabilityType": "5"
+            },
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/disabilities/{disabilityid}#5"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "question-21a.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.question-21",
+                  "1"
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "question-21a.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        },
+        {
+          "id": "question-22",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf05",
+          "title": "22. Have you ever been told you have a learning disability or developmental disability?",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "hudQuestionId": "4.6",
+            "schema": "v2017",
+            "uriObjectField": "disabilities.disabilityResponse",
+            "defaultObject": {
+              "disabilityType": "6"
+            },
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/disabilities/{disabilityid}#6"
+          },
+          "items": []
+        },
+        {
+          "id": "question-22a",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edad24",
+          "title": "22a. Do you expect this condition to be of long-continued and indefinite duration AND substantially impair your ability to live independly?",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "hudQuestionId": "4.5.2A",
+            "schema": "v2017",
+            "uriObjectField": "disabilities.indefiniteandImpairs",
+            "defaultObject": {
+              "disabilityType": "6"
+            },
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/disabilities/{disabilityid}#6"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "question-22a.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.question-22",
+                  "1"
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "question-22a.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        },
+        {
+          "id": "question-23",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf05",
+          "title": "23. Do you have a chronic health condition?",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "hudQuestionId": "4.7",
+            "schema": "v2017",
+            "uriObjectField": "disabilities.disabilityResponse",
+            "defaultObject": {
+              "disabilityType": "7"
+            },
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/disabilities/{disabilityid}#7"
+          },
+          "items": []
+        },
+        {
+          "id": "question-23a",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edad25",
+          "title": "23a. Do you expect this condition to be of long-continued and indefinite duration AND substantially impair your ability to live independly?",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "hudQuestionId": "4.5.2A",
+            "schema": "v2017",
+            "uriObjectField": "disabilities.indefiniteandImpairs",
+            "defaultObject": {
+              "disabilityType": "7"
+            },
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/disabilities/{disabilityid}#7"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "question-23a.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.question-23",
+                  "1"
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "question-23a.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        },
+        {
+          "id": "question-24",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf05",
+          "title": "24. Have you been diagnosed with AIDS or have you tested positive for HIV?",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "hudQuestionId": "4.8",
+            "schema": "v2017",
+            "uriObjectField": "disabilities.disabilityResponse",
+            "defaultObject": {
+              "disabilityType": "8"
+            },
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/disabilities/{disabilityid}#8"
+          },
+          "items": []
+        },
+        {
+          "id": "question-24a",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edad26",
+          "title": "24a. Do you expect this condition to be of long-continued and indefinite duration AND substantially impair your ability to live independly?",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "hudQuestionId": "4.5.2A",
+            "schema": "v2017",
+            "uriObjectField": "disabilities.indefiniteandImpairs",
+            "defaultObject": {
+              "disabilityType": "8"
+            },
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/disabilities/{disabilityid}#8"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "question-24a.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.question-24",
+                  "1"
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "question-24a.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        },
+        {
+          "id": "question-25",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf05",
+          "title": "25. Do you feel you currently have a mental health problem?",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "hudQuestionId": "4.8",
+            "schema": "v2017",
+            "uriObjectField": "disabilities.disabilityResponse",
+            "defaultObject": {
+              "disabilityType": "8"
+            },
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/disabilities/{disabilityid}#8b"
+          },
+          "items": []
+        },
+        {
+          "id": "question-25a",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edad27",
+          "title": "25a. Do you expect this condition to be of long-continued and indefinite duration AND substantially impair your ability to live independly?",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "hudQuestionId": "4.5.2A",
+            "schema": "v2017",
+            "uriObjectField": "disabilities.indefiniteandImpairs",
+            "defaultObject": {
+              "disabilityType": "8"
+            },
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/disabilities/{disabilityid}#8b"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "question-25a.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.question-25",
+                  "1"
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "question-25a.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        },
+        {
+          "id": "question-26",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf05",
+          "title": "26. Do you currently have a drug or alcohol problem?",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Alcohol abuse",
+            "2": "Drug abuse",
+            "3": "Both alcohol and drug abuse",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "hudQuestionId": "4.8",
+            "schema": "v2017",
+            "uriObjectField": "disabilities.disabilityResponse",
+            "defaultObject": {
+              "disabilityType": "10"
+            },
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/disabilities/{disabilityid}#10"
+          },
+          "items": []
+        },
+        {
+          "id": "question-26a",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edad28",
+          "title": "26a. Do you expect this condition to be of long-continued and indefinite duration AND substantially impair your ability to live independly?",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "hudQuestionId": "4.5.2A",
+            "schema": "v2017",
+            "uriObjectField": "disabilities.indefiniteandImpairs",
+            "defaultObject": {
+              "disabilityType": "10"
+            },
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/disabilities/{disabilityid}#10"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "question-26a.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.question-26",
+                  "1"
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "question-26a.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        },
+        {
+          "id": "question-27",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf27",
+          "title": "27. Have you been a victim of domestic violence or a victim of intimate partner violence?",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "domesticViolence.domesticViolenceVictim",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/domesticviolences/{domesticviolenceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "question-27a",
+          "hmisId": "792651cf-0400-47bf-b0cb-0531a357cd1b",
+          "title": "27a. If you experienced domestic or intimate partner violence, how long ago did  Within the past three months you have this experience?",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "1": "Within the past three months",
+            "2": "Three to six months ago (excluding six months exactly)",
+            "3": "Six months to one year ago (excluding one year exactly)",
+            "4": "One year ago or more",
+            "8": "Client does not know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "domesticViolence.whenOccurred",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/domesticviolences/{domesticviolenceid}"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "question-27a.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.question-27",
+                  "1"
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "question-27a.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        },
+        {
+          "id": "question-27b",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf28",
+          "title": "27b. Are you currently fleeing?",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "domesticViolence.currentlyFleeing",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/domesticviolences/{domesticviolenceid}"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "question-27b.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.question-27",
+                  "1"
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "question-27b.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        },
+        {
+          "id": "question-28",
+          "title": "28. Is the client chronically homeless?",
+          "type": "question",
+          "category": "choice",
+          "items": [],
+          "options": [
+            "Yes",
+            "No",
+            "Client doesn't know",
+            "Client refused"
+          ],
+          "hmisId": "cf3e1a9b-a3b0-41e0-b748-21b7ec57989a"
+        }
+      ]
+    },
+    {
+      "id": "section-15",
+      "title": "Tuberculosis",
+      "type": "section",
+      "items": [
+        {
+          "id": "question-29",
+          "title": "29. Do you have a cough that has lasted longer than 3 weeks?",
+          "type": "question",
+          "category": "choice",
+          "items": [],
+          "options": [
+            "Yes",
+            "No",
+            "Client doesn't know",
+            "Client refused"
+          ],
+          "hmisId": "864c7b5c-3da9-469a-95ec-c56a3c56ad1c"
+        },
+        {
+          "id": "question-30",
+          "title": "30. Have you recently lost weight without explanation during the past month?",
+          "type": "question",
+          "category": "choice",
+          "items": [],
+          "options": [
+            "Yes",
+            "No",
+            "Client doesn't know",
+            "Client refused"
+          ],
+          "hmisId": "84f8ae7d-9762-45b2-95a0-6e45e0a185d1"
+        },
+        {
+          "id": "question-31",
+          "title": "31. Have you had frequent night sweats during the past month, soaking your sheets or clothing?",
+          "type": "question",
+          "category": "choice",
+          "items": [],
+          "options": [
+            "Yes",
+            "No",
+            "Client doesn't know",
+            "Client refused"
+          ],
+          "hmisId": "29a6dd91-7bbd-40b3-ab52-18f7ba3ecf08"
+        },
+        {
+          "id": "question-32",
+          "title": "32. Have you coughed up blood in the past month?",
+          "type": "question",
+          "category": "choice",
+          "items": [],
+          "options": [
+            "Yes",
+            "No",
+            "Client doesn't know",
+            "Client refused"
+          ],
+          "hmisId": "a3edb57d-7d72-4db6-b985-c14491893596"
+        },
+        {
+          "id": "question-33",
+          "title": "33. Have you been feeling much more tired than usual over the past month?",
+          "type": "question",
+          "category": "choice",
+          "items": [],
+          "options": [
+            "Yes",
+            "No",
+            "Client doesn't know",
+            "Client refused"
+          ],
+          "hmisId": "6739f21a-bd82-4b13-aadb-e9419f7f9b39"
+        },
+        {
+          "id": "question-34",
+          "title": "34. Have you had fevers almost daily for more than one week?",
+          "type": "question",
+          "category": "choice",
+          "items": [],
+          "options": [
+            "Yes",
+            "No",
+            "Client doesn't know",
+            "Client refused"
+          ],
+          "hmisId": "6aaf5714-3dfe-488c-959a-d6daf143c87d"
+        }
+      ]
+    },
+    {
+      "id": "section-9",
+      "title": "Employment",
+      "type": "section",
+      "items": [
+        {
+          "id": "employment.employed",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf35",
+          "title": "35. Are you currently employed?",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "employment.employed",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/employments/{employmentid}"
+          },
+          "items": []
+        },
+        {
+          "id": "employment.notEmployedReason",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf37",
+          "title": "35a. Are you...",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "1": "Looking for work",
+            "2": "Unable to work",
+            "3": "Not looking for work",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "employment.notEmployedReason",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/employments/{employmentid}"
+          },
+          "items": []
+        },
+        {
+          "id": "employment.employmentType",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf36",
+          "title": "35b. What type of employment do you have?",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "1": "Full-time",
+            "2": "Part-time",
+            "3": "Seasonal / sporadic (including day labor)",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "employment.employmentType",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/employments/{employmentid}"
+          },
+          "items": []
+        }
+      ]
+    },
+    {
+      "id": "section-3",
+      "title": "Cash Income for Individual",
+      "type": "section",
+      "items": [
+        {
+          "id": "incomeAndSource.incomeFromAnySource",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf46",
+          "title": "36. Do you receive any cash income?",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.incomeFromAnySource",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.earned",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf92",
+          "title": "Earned Income",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.earned",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.earnedAmount",
+          "hmisId": "42afc95a-1348-4883-a96a-880bf41c522c",
+          "title": "Earned Income Amount",
+          "type": "question",
+          "category": "currency",
+          "options": {},
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.earnedAmount",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "incomeAndSource.earnedAmount.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.incomeAndSource.earned",
+                  "1"
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "incomeAndSource.earnedAmount.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.unemployment",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf19",
+          "title": "Unemployment Insurance",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.unemployment",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.unemploymentAmount",
+          "hmisId": "5bdcd60c-c968-4793-ab61-91e64efa286d",
+          "title": "Unemployment Insurance Amount",
+          "type": "question",
+          "category": "currency",
+          "options": {},
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.unemploymentAmount",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "incomeAndSource.unemploymentAmount.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.incomeAndSource.unemployment",
+                  "1"
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "incomeAndSource.unemploymentAmount.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.ssi",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf93",
+          "title": "Supplemental Security Income (SSI)",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.ssi",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.ssiAmount",
+          "hmisId": "158fc206-140f-4a7d-8a8a-eb659c8d83bb",
+          "title": "Supplemental Security Income (SSI) Amount",
+          "type": "question",
+          "category": "currency",
+          "options": {},
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.ssiAmount",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "incomeAndSource.ssiAmount.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.incomeAndSource.ssi",
+                  "1"
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "incomeAndSource.ssiAmount.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.ssdi",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf94",
+          "title": "Social Security Disability Insurance",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.ssdi",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.ssdiAmount",
+          "hmisId": "d96ebe6b-3edb-40ac-b6f6-5ff89175ca32",
+          "title": "Social Security Disability Insurance Amount",
+          "type": "question",
+          "category": "currency",
+          "options": {},
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.ssdiAmount",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "incomeAndSource.ssdiAmount.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.incomeAndSource.ssdi",
+                  "1"
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "incomeAndSource.ssdiAmount.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.vaDisabilityService",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf96",
+          "title": "VA Service-Connected Disability Compensation",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.vaDisabilityService",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.vaDisabilityServiceAmount",
+          "hmisId": "a5a40905-3148-45cd-b361-906d25979217",
+          "title": "VA Service-Connected Disability Compensation Amount",
+          "type": "question",
+          "category": "currency",
+          "options": {},
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.vaDisabilityServiceAmount",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "incomeAndSource.vaDisabilityServiceAmount.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.incomeAndSource.vaDisabilityService",
+                  "1"
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "incomeAndSource.vaDisabilityServiceAmount.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.vaDisabilityNonService",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf97",
+          "title": "VA Non-Service-Connected Disability Pension",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.vaDisabilityNonService",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.vaDisabilityNonServiceAmount",
+          "hmisId": "fa8b5db9-679c-4f26-9f2e-4f49005f1d81",
+          "title": "VA Non-Service-Connected Disability Pension Amount",
+          "type": "question",
+          "category": "currency",
+          "options": {},
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.vaDisabilityNonServiceAmount",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "incomeAndSource.vaDisabilityNonServiceAmount.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.incomeAndSource.vaDisabilityNonService",
+                  "1"
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "incomeAndSource.vaDisabilityNonServiceAmount.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.privateDisability",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf98",
+          "title": "Private Disability Insurance",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.privateDisability",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.privateDisabilityAmount",
+          "hmisId": "370690cf-7c35-48ef-aba2-1d0871b85ba4",
+          "title": "Private Disability Insurance Amount",
+          "type": "question",
+          "category": "currency",
+          "options": {},
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.privateDisabilityAmount",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "incomeAndSource.privateDisabilityAmount.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.incomeAndSource.privateDisability",
+                  1
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "incomeAndSource.privateDisabilityAmount.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.workersComp",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf99",
+          "title": "Worker's Compensation",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.workersComp",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.workersCompAmount",
+          "hmisId": "749c3641-8583-451d-906d-8cfdc604f020",
+          "title": "Worker's Compensation Amount",
+          "type": "question",
+          "category": "currency",
+          "options": {},
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.workersCompAmount",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "incomeAndSource.workersCompAmount.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.incomeAndSource.workersComp",
+                  "1"
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "incomeAndSource.workersCompAmount.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.ga",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf61",
+          "title": "General Assistance",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.ga",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.gaAmount",
+          "hmisId": "32ed272d-387e-443a-939d-87f9f30ad8a0",
+          "title": "General Assistance Amount",
+          "type": "question",
+          "category": "currency",
+          "options": {},
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.gaAmount",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "incomeAndSource.gaAmount.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.incomeAndSource.ga",
+                  "1"
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "incomeAndSource.gaAmount.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.socSecRetirement",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf40",
+          "title": "Retirement Income from Social Security",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.socSecRetirement",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.socSecRetirementAmount",
+          "hmisId": "7f43325d-2ea0-4301-a8c7-32f32418d755",
+          "title": "Retirement Income from Social Security Amount",
+          "type": "question",
+          "category": "currency",
+          "options": {},
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.socSecRetirementAmount",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "incomeAndSource.socSecRetirementAmount.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.incomeAndSource.socSecRetirement",
+                  1
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "incomeAndSource.socSecRetirementAmount.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.pension",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf41",
+          "title": "Pension or retirement income from a former job",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.pension",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.pensionAmount",
+          "hmisId": "4631a407-1725-49cd-b15e-d092583f2a32",
+          "title": "Pension or retirement income from a former job Amount",
+          "type": "question",
+          "category": "currency",
+          "options": {},
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.pensionAmount",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "incomeAndSource.pensionAmount.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.incomeAndSource.pension",
+                  "1"
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "incomeAndSource.pensionAmount.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.childSupport",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf42",
+          "title": "Child Support",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.childSupport",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.childSupportAmount",
+          "hmisId": "5004648c-ecff-46f5-8166-854db8280b90",
+          "title": "Child Support Amount",
+          "type": "question",
+          "category": "currency",
+          "options": {},
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.childSupportAmount",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "incomeAndSource.childSupportAmount.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.incomeAndSource.childSupport",
+                  "1"
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "incomeAndSource.childSupportAmount.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.alimony",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf43",
+          "title": "Alimony and other spousal support",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.alimony",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.alimonyAmount",
+          "hmisId": "492405a8-6f31-4b15-ab5a-696446c2d9c6",
+          "title": "Alimony and other spousal support Amount",
+          "type": "question",
+          "category": "currency",
+          "options": {},
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.alimonyAmount",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "incomeAndSource.alimonyAmount.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.incomeAndSource.alimony",
+                  "1"
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "incomeAndSource.alimonyAmount.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.otherSource",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf44",
+          "title": "Other Source",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.otherSource",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.otherSourceIdentify",
+          "hmisId": "ef5954eb-956f-41cb-9984-8af51967c21b",
+          "title": "Specify Other Source",
+          "type": "question",
+          "category": "text",
+          "options": {},
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.otherSourceIdentify",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "incomeAndSource.otherSourceIdentify.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.incomeAndSource.otherSource",
+                  "1"
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "incomeAndSource.otherSourceIdentify.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        },
+        {
+          "id": "incomeAndSource.otherSourceAmount",
+          "hmisId": "3619e5f7-996b-41c2-83bf-2698477f155c",
+          "title": "Other Source Amount",
+          "type": "question",
+          "category": "currency",
+          "options": {},
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "incomeAndSource.otherSourceAmount",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/incomeandsources/{incomeandsourceid}"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "incomeAndSource.otherSourceAmount.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.incomeAndSource.otherSource",
+                  "1"
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "incomeAndSource.otherSourceAmount.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        },
+        {
+          "id": "question-36a",
+          "title": "36a. Income Documentation",
+          "type": "question",
+          "category": "choice",
+          "items": [],
+          "options": [
+            "GR Form",
+            "Pay Stub",
+            "Utility Allowance",
+            "Child Support Forms",
+            "Social Security Forms",
+            "SSI Forms",
+            "CalWORKs Form",
+            "Unemployment Insurance Forms",
+            "W-2 Forms, SSDI Form",
+            "Workmans Comp",
+            "Self Employment Docs",
+            "Pension Letter/Stub, Unemployment Forms",
+            "Self Declaration",
+            "Employer Printout/Letter",
+            " VA Documentation"
+          ],
+          "other": true,
+          "hmisId": "7336db33-7e18-406f-a91d-3d991c939aa1"
+        }
+      ]
+    },
+    {
+      "id": "section-4",
+      "title": "Non-Cash Benefits",
+      "type": "section",
+      "items": [
+        {
+          "id": "nonCashBenefits.benefitsFromAnySource",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf45",
+          "title": "37. Do you recieve any non-cash benefits",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "noncashBenefits.benefitsFromAnySource",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/noncashbenefits/{noncashbenefitid}"
+          },
+          "items": []
+        },
+        {
+          "id": "nonCashBenefits.snap",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf47",
+          "title": "Food Stamps/CalFresh (Supplemental Nutrition Assistance Program, SNAP)",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "noncashBenefits.snap",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/noncashbenefits/{noncashbenefitid}"
+          },
+          "items": []
+        },
+        {
+          "id": "noncashbenefits.wic",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf02",
+          "title": "WIC (Special Supplemental Nutrition Program for Women, Infants, and Children)",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "noncashBenefits.wic",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/noncashbenefits/{noncashbenefitid}"
+          },
+          "items": []
+        },
+        {
+          "id": "nonCashBenefits.tanfChildcare",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf48",
+          "title": "CalWorks child care services",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "noncashBenefits.tanfChildcare",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/noncashbenefits/{noncashbenefitid}"
+          },
+          "items": []
+        },
+        {
+          "id": "nonCashBenefits.tanfTransportation",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf49",
+          "title": "CalWorks transportation services",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "noncashBenefits.tanfTransportation",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/noncashbenefits/{noncashbenefitid}"
+          },
+          "items": []
+        },
+        {
+          "id": "nonCashBenefits.otherTanf",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf50",
+          "title": "Other CalWorks-funded services",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "noncashBenefits.otherTanf",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/noncashbenefits/{noncashbenefitid}"
+          },
+          "items": []
+        }
+      ]
+    },
+    {
+      "id": "section-5",
+      "title": "Health Insurance",
+      "type": "section",
+      "items": [
+        {
+          "id": "healthInsurance.insuranceFromAnySource",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf52",
+          "title": "38. Are you covered by any type of Health Insurance?",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "healthInsurance.insuranceFromAnySource",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/healthinsurances/{healthinsuranceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "healthInsurance.medicaid",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf53",
+          "title": "Medi-Cal (MEDICAID)",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "healthInsurance.medicaid",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/healthinsurances/{healthinsuranceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "healthInsurance.medicare",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf54",
+          "title": "MEDICARE",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "healthInsurance.medicare",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/healthinsurances/{healthinsuranceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "healthInsurance.schip",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf55",
+          "title": "State Children's Health Insurance Program",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "healthInsurance.schip",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/healthinsurances/{healthinsuranceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "healthInsurance.vaMedicalServices",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf56",
+          "title": "VA medical services",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "healthInsurance.vaMedicalServices",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/healthinsurances/{healthinsuranceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "healthInsurance.employerProvided",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf57",
+          "title": "Employer-provided health insurance",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "healthInsurance.employerProvided",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/healthinsurances/{healthinsuranceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "healthInsurance.cobra",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf58",
+          "title": "COBRA",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "healthInsurance.cobra",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/healthinsurances/{healthinsuranceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "healthInsurance.privatePay",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf59",
+          "title": "Private pay health insurance",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "healthInsurance.privatePay",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/healthinsurances/{healthinsuranceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "healthInsurance.stateHealthInAdults",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf20",
+          "title": "State Health Insurance for Adults",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "healthInsurance.stateHealthInAdults",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/healthinsurances/{healthinsuranceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "healthInsurance.indianHealthServices",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf21",
+          "title": "Indian Health Services Program",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "healthInsurance.indianHealthServices",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/healthinsurances/{healthinsuranceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "healthInsurance.otherInsurance",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf23",
+          "title": "Other insurance",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "healthInsurance.otherInsurance",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/healthinsurances/{healthinsuranceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "healthInsurance.otherInsuranceIdentify",
+          "hmisId": "7b8d6089-a7d1-4b8f-95f2-d54e1dfdc7b7",
+          "title": "Specify other insurance",
+          "type": "question",
+          "category": "text",
+          "options": {},
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "healthInsurance.otherInsuranceIdentify",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/healthinsurances/{healthinsuranceid}"
+          },
+          "items": []
+        },
+        {
+          "id": "question-38a",
+          "title": "38a. Health Insurance Provider",
+          "type": "question",
+          "category": "choice",
+          "items": [],
+          "options": [
+            "Health Net",
+            "Molina",
+            "My Health LA (DHS)",
+            "Anthem Blue Cross",
+            "Kaiser Permanente",
+            "VA",
+            "Anthem Blue Cross",
+            "Kaiser Permanente",
+            "VA",
+            "L.A. Care",
+            "Care 1st Health Plan",
+            "Unknown"
+          ],
+          "other": true,
+          "hmisId": "d81ddbd6-64ff-4298-a345-21c289a4da67"
+        }
+      ]
+    },
+    {
+      "id": "section-6",
+      "title": "Youth/TAY",
+      "type": "section",
+      "items": [
+        {
+          "id": "question-39",
+          "title": "39. Did you run away from home or a foster care home?",
+          "type": "question",
+          "category": "choice",
+          "items": [],
+          "options": [
+            "Yes",
+            "No",
+            "Client doesn't know",
+            "Client refused"
+          ],
+          "hmisId": "c41e8f84-bf95-48a4-bd1e-116c3b3b7bdf"
+        },
+        {
+          "id": "entryrhy.formerlyWardChildWelfrForestCare",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edad83",
+          "title": "40. Are you a current or former foster care youth?",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesnt know",
+            "9": "Client refused",
+            "99": "Data Not Collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "entryrhy.formerlyWardChildWelfrForestCare",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/entryrhys/{entryrhyid}"
+          },
+          "items": []
+        },
+        {
+          "id": "entryrhy.formerlyWardOfJuvenileJustice",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edad86",
+          "title": "41. Have you ever been in the juvenile justice system?",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesnt know",
+            "9": "Client refused",
+            "99": "Data Not Collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "entryrhy.formerlyWardOfJuvenileJustice",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/entryrhys/{entryrhyid}"
+          },
+          "items": []
+        },
+        {
+          "id": "question-42",
+          "title": "42. Have you ever been on adult probation?",
+          "type": "question",
+          "category": "choice",
+          "items": [],
+          "options": [
+            "Yes",
+            "No",
+            "Client doesn't know",
+            "Client refused"
+          ],
+          "hmisId": "7cc5bb68-c58c-40e2-a2e7-f091444a80bc"
+        },
+        {
+          "id": "entryrhy.sexualOrientation",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edad82",
+          "title": "43. Which of the following best represents how you think about yourself?",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "1": "Heterosexual",
+            "2": "Gay",
+            "3": "Lesbian",
+            "4": "Bisexual",
+            "5": "Questioning / Unsure",
+            "8": "Client doesnt know",
+            "9": "Client refused",
+            "99": "Data Not Collected"
+          },
+          "enrollment": {
+            "schema": "v2017",
+            "uriObjectField": "entryrhy.sexualOrientation",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/entryrhys/{entryrhyid}"
+          },
+          "items": []
+        }
+      ]
+    },
+    {
+      "id": "section-7",
+      "title": "Health and Education",
+      "type": "section",
+      "items": [
+        {
+          "id": "question-44",
+          "hmisId": "024c9acd-d3e1-4cc4-9800-a9db85edaf32",
+          "title": "44. Are you pregnant?",
+          "type": "question",
+          "category": "choice",
+          "options": {
+            "0": "No",
+            "1": "Yes",
+            "8": "Client doesn't know",
+            "9": "Client refused",
+            "99": "Data not collected"
+          },
+          "enrollment": {
+            "hudQuestionId": "R10.1",
+            "schema": "v2017",
+            "uriObjectField": "healthStatus.healthStatus",
+            "defaultObject": {
+              "healthCategory": "30"
+            },
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/healthstatuses/{healthstatusid}"
+          },
+          "items": []
+        },
+        {
+          "id": "question-44a",
+          "hmisId": "78001954-a702-4871-abb6-498129932f22",
+          "title": "44a. What is your due date?",
+          "type": "question",
+          "category": "date",
+          "options": {},
+          "enrollment": {
+            "hudQuestionId": "R10.A",
+            "schema": "v2017",
+            "uriObjectField": "healthStatus.dueDate",
+            "updateUriTemplate": "/v2017/clients/{clientid}/enrollments/{enrollmentid}/healthstatuses/{healthstatusid}"
+          },
+          "rules": [
+            {
+              "always": [
+                [
+                  "pset",
+                  "question-44a.skip",
+                  1
+                ]
+              ]
+            },
+            {
+              "any": [
+                [
+                  "==",
+                  "values.question-44",
+                  1
+                ]
+              ],
+              "then": [
+                [
+                  "pset",
+                  "question-44a.skip",
+                  0
+                ]
+              ]
+            }
+          ],
+          "items": []
+        }
+      ]
+    }
+  ],
+  "type": "enrollment",
+  "surveyVersion": "v2017"
+}

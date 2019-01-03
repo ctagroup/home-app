@@ -5,6 +5,10 @@ const BASE_URL = 'https://www.hmislynk.com/survey-api/rest';
 const DEFAULT_GROUP_ID = '95bdca23-5135-4552-9f11-819cab1aaa45';
 
 export class SurveyApi extends ApiEndpoint {
+  listQuestions(startIndex = 0) {
+    const url = `${BASE_URL}/questions?startIndex=${startIndex}`;
+    return this.doGet(url).questions;
+  }
 
   createSurvey(survey) {
     const url = `${BASE_URL}/surveys`;
@@ -154,6 +158,33 @@ export class SurveyApi extends ApiEndpoint {
   deleteSubmission(clientId, surveyId, submissionId) {
     const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/submissions/${submissionId}`;
     return this.doDel(url);
+  }
+
+  getClientsSurveySubmissions() {
+    const url = `${BASE_URL}/clientsurveysubmissions`;
+    // TODO: load all pages?
+    return this.doGet(url).clientSurveySubmissions.clientSurveySubmissions;
+  }
+
+  getClientSurveySubmissions(clientId, start = 0, limit = 9999) {
+    const url = `${BASE_URL}/clientsurveysubmissions/${clientId}?startIndex=${start}&limit=${limit}`; // eslint-disable-line max-len
+
+    const { pagination, clientSurveySubmissions } = this.doGet(url).surveys;
+    const remaining = limit - pagination.returned;
+    if (remaining > 0 && pagination.returned > 0) {
+      return [
+        ...clientSurveySubmissions,
+        ...this.getClientSurveySubmissions(clientId, pagination.from + pagination.returned, remaining), // eslint-disable-line max-len
+      ];
+    }
+    return clientSurveySubmissions;
+  }
+
+  putClientSurveySubmissions(clientSubmissionId, globalEnrollmentId) {
+    // Add globalEnrollmentId to Submission:
+    const url = `${BASE_URL}/clientsurveysubmissions/${clientSubmissionId}`;
+    const body = { clientsurveysubmission: { globalEnrollmentId } };
+    return this.doPut(url, body);
   }
 
   createSectionScores(clientId, surveyId, sectionId, sectionScore) {

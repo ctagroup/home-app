@@ -2,6 +2,7 @@
   <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#general">General Settings</a></li>
     <li><a data-toggle="tab" href="#userProjectGrid">Project Access</a></li>
+    <li><a data-toggle="tab" href="#enrollmentSurveys">Enrollment Surveys</a></li>
   </ul>
 
   <div class="tab-content">
@@ -26,5 +27,16 @@
         </div>
       {{/if}}
     </div>
+
+    <div id="enrollmentSurveys" class="tab-pane fade">
+      {{#if showEnrollmentSurveys}}
+        {{> afQuickField name='enrollmentSurveys'}}
+      {{else}}
+        <div class="alert alert-warning" role="alert">
+          Assign projectsto the agency first.
+        </div>
+      {{/if}}
+    </div>
+
   </div>
 </template>

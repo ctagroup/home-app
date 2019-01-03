@@ -10,7 +10,7 @@ export const mergeClient = (clientVersionsList, schema) => {
     // assuming that link format is: '/hmis-clientapi/rest/{schema}/clients/{clientId}'
     const linkSchema = getSchemaFromLink(version.link);
     return Object.assign(removeEmpty(version), {
-      schema: version.schema ? version.schema : linkSchema,
+      schema: version.schema || linkSchema,
     });
   });
   sortedClientSchemas = _.sortBy(sortedClientSchemas, 'schema');
