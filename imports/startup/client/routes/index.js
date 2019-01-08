@@ -16,3 +16,4 @@ import './openingScript';
 import './projects';
 import './agencies';
 import './plugins';
+import './test';

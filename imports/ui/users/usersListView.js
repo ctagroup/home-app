@@ -26,8 +26,8 @@ const tableOptions = {
     {
       title: 'Mail',
       data: 'services.HMIS.emailAddress',
-      createdCell(node, value) {
-        $(node).html(`<a href="mailto:${value}" class="btn btn-default btn-xs"><i class="fa fa-envelope"></i></a>`); // eslint-disable-line max-len
+      render(value) {
+        return `<a href="mailto:${value}" class="btn btn-default btn-xs"><i class="fa fa-envelope"></i></a>`; // eslint-disable-line max-len
       },
       width: '40px',
       searchable: false,

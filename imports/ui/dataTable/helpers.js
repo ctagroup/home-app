@@ -12,10 +12,10 @@ export function editButton(path, options) {
     render() {
       return '';
     },
-    createdCell(node, cellData) {
+    createdCell(node, _id) {
       const data = {
         path,
-        _id: cellData,
+        _id,
       };
       Blaze.renderWithData(Template.DataTableEditButton, data, node);
     },

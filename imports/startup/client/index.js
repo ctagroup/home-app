@@ -8,5 +8,6 @@ import '/imports/ui/housingUnits/housingUnitsListView';
 import '/imports/ui/globalHouseholds/globalHouseholdListView';
 import '/imports/ui/globalHouseholds/globalHouseholdCreateView';
 import '/imports/ui/globalHouseholds/globalHouseholdEditView';
+import '/imports/ui/dataTable/dataTable';
 
 import '/imports/startup/client/routes';
