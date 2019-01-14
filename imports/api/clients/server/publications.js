@@ -27,10 +27,9 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
     stopFunction = true;
   });
 
-  let client = false;
-
   try {
     const hc = HmisClient.create(this.userId);
+    let client = false;
     client = hc.api('client').getClient(inputClientId, inputSchema);
     client.schema = inputSchema;
     client.isHMISClient = true;
@@ -39,7 +38,7 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
     // NOTE [PG]: it's currently not possible because not all clients have dedupId :(
     let clientVersions = [client];
     if (client.dedupClientId) {
-      clientVersions = hc.api('client').searchClient(client.dedupClientId, 50);
+      clientVersions = hc.api('client').searchClient(client.dedupClientId);
     }
 
     // const mergedClient = mergeClient(clientVersions, inputSchema);

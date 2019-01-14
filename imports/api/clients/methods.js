@@ -58,18 +58,21 @@ Meteor.methods({
 
   searchClient(query, options) {
     logger.info(`METHOD[${Meteor.userId()}]: searchClient(${query})`);
-    const optionz = options || {};
+    let { sort, order, page, limit, excludeLocalClients } = options || {};
+    sort = sort || 'firstName'
+    order = order || 'asc'
+    const startIndex = page * limit
 
     // guard against client-side DOS: hard limit to 50
-    optionz.limit = Math.min(50, Math.abs(optionz.limit || 50));
+    limit = Math.min(50, Math.abs(limit || 50));
 
     const hc = HmisClient.create(Meteor.userId());
-    let hmisClients = hc.api('client').searchClient(query, optionz.limit);
+    let hmisClients = hc.api('client').searchClient(query, limit, startIndex, sort, order);
 
     hmisClients = hmisClients.filter(client => client.link);
 
     let localClients = [];
-    if (!optionz.excludeLocalClients) {
+    if (!excludeLocalClients) {
       try {
         localClients = PendingClients.aggregate([
           {
@@ -101,7 +104,7 @@ Meteor.methods({
             },
           },
           {
-            $limit: optionz.limit,
+            $limit: limit,
           },
         ], { explain: false });
       } catch (err) {

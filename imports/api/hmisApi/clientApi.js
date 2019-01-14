@@ -101,12 +101,13 @@ export class ClientApi extends ApiEndpoint {
     return this.doGet(`https://www.hmislynk.com${apiUrl}`).client;
   }
 
-  searchClient(query, limit = 10) {
+  searchClient(query, limit = 50, startIndex = 0, sort = 'firstName', order = 'asc') {
     const params = {
       q: query,
       maxItems: limit,
-      sort: 'firstName',
-      order: 'asc',
+      sort,
+      startIndex,
+      order, // asc-desc
     };
     const url = `${BASE_URL}/search/client?${querystring.stringify(params)}`;
     return this.doGet(url).searchResults.items;
