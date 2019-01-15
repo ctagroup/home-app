@@ -1,75 +1,90 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
+import { transformColumn } from './helpers.jsx';
+import _ from 'lodash';
 
 class ControlledTable extends Component {
   constructor(props) {
     super(props);
     const {
       page,
-    //   onPageChange,
-    //   onPageSizeChange,
-
+      onPageChange,
+      onPageSizeChange,
     } = props;
-    // const defaultPageSizeChange = (pageSize, pageIndex) => this.setState({ page });
-    // const defaultPageChange = (page) => this.setState({ page });
-    // this.onPageChange = onPageChange || defaultPageChange;
-    // this.onPageChange = onPageChange || defaultPageChange;
+    const defaultPageSizeChange = (pageSize, pageIndex) => this.setState({ pageIndex, pageSize });
+    const defaultPageChange = (pageIndex) => this.setState({ pageIndex });
+    this.onPageChange = onPageChange || defaultPageChange;
+    this.onPageSizeChange = onPageSizeChange || defaultPageSizeChange;
     this.page = page;
+
+    const columns = (props || {}).options.columns.map(transformColumn);
+    this.state = {
+      columns,
+      data: ((props || {}).data) || [],
+      pages: null,
+      loading: true,
+    };
+    this.fetchData = this.fetchData.bind(this);
+  }
+
+  fetchData(state /* , instance*/) {
+    this.setState({ loading: true });
+    if (this.props.loadData) {
+      this.props.loadData(
+        state.page,
+        state.pageSize,
+        state.sorted,
+        state.filtered,
+        (res) => {
+          let filteredData = res.data;
+          const { pageSize, page, sorted, filtered } = state;
+          if (filtered.length) {
+            const reducer = (filteredSoFar, nextFilter) =>
+              filteredSoFar.filter((row) => (`${row[nextFilter.id]}`).includes(nextFilter.value));
+            filteredData = filtered.reduce(reducer, filteredData);
+          }
+          // console.log('res, sorted', res, sorted);
+          const sortedData = _.orderBy(
+            filteredData,
+            sorted.map(({ id }) => (row) => {
+              const selected = row[id];
+              if (selected === null) return -Infinity;
+              if (selected === undefined) return -Infinity;
+              if (typeof selected === 'string') return selected.toLowerCase();
+              return selected;
+            }),
+            sorted.map(d => (d.desc ? 'desc' : 'asc'))
+          );
+
+          return this.setState({
+            data: sortedData.slice(pageSize * page, pageSize * page + pageSize),
+            // pages: Math.ceil(filteredData.length / pageSize),
+            pages: res.pages,
+            loading: false,
+          });
+        });
+    }
   }
 
   render() {
+    const { data, pages, loading, columns } = this.state;
+    const minSize = Math.min(50, data.length);
+    const defaultPageSize = [5, 10, 20, 25, 50, 100]
+      .find((curr) => (curr - minSize) < 0);
     return (
       <ReactTable
+        columns={columns}
+        // Forces table not to paginate or sort automatically, so we can handle it server-side:
+        manual
         resizable={false}
-        // Props
-        page={0} // the index of the page you wish to display
-        pageSize={20} // the number of rows per page to be displayed
-        sorted={[{ // the sorting model for the table
-          id: 'lastName',
-          desc: true,
-        }, {
-          id: 'firstName',
-          desc: true,
-        }]}
-        expanded={{ // The nested row indexes on the current page that should appear expanded
-          1: true,
-          4: true,
-          5: {
-            2: true,
-            3: true,
-          },
-        }}
-        filtered={[{ // the current filters model
-          id: 'lastName',
-          value: 'linsley',
-        }]}
-        resized={[{ // the current resized column model
-          id: 'lastName',
-          value: 446.25,
-        }]}
-
-        // Callbacks
-        // onPageChange={this.onPageChange} // Called when the page index is changed by the user
-
-        // Called when the pageSize is changed by the user.
-        // The resolve page is also sent to maintain approximate position in the data
-        // onPageSizeChange={(pageSize, pageIndex) => {...}}
-
-        // Called when a sortable column header is clicked with the column itself
-        //   and if the shiftkey was held.
-        // If the column is a pivoted column, `column` will be an array of columns
-        // onSortedChange={(newSorted, column, shiftKey) => {...}}
-
-        // Called when an expander is clicked. Use this to manage `expanded`
-        // onExpandedChange={(newExpanded, index, event) => {...}}
-
-        // Called when a user enters a value into a filter input field
-        //   or the value passed to the onFiltersChange handler by the Filter option.
-        // onFilteredChange={(filtered, column) => {...}}
-
-        // Called when a user clicks on a resizing component (the right edge of a column header)
-        // onResizedChange={(newResized, event) => {...}}
+        data={data}
+        pages={pages} // Display the total number of pages
+        loading={loading} // Display the loading overlay when we need it
+        onFetchData={this.fetchData} // Request new data when things change
+        filterable
+        defaultPageSize={defaultPageSize}
+        className="-highlight"
       />
     );
   }

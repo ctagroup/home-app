@@ -11,9 +11,9 @@ Router.route('adminDashboardeligibleClientsView', {
       return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
     },
   },
-  waitOn() {
-    return Meteor.subscribe('eligibleClients.list');
-  },
+  // waitOn() {
+  //   return Meteor.subscribe('eligibleClients.list');
+  // },
   data() {
     return {
       title: 'Eligible Clients',

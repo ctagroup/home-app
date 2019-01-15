@@ -27,25 +27,6 @@ const tableOptions = {
       data: 'questionGroup.questionGroupName',
     },
     editButton('questionsEdit'),
-    /*
-    {
-      data: '_id',
-      title: 'Clone',
-      render() {
-        return '';
-      },
-      createdCell(node, cellData) {
-        const data = {
-          path: 'questionsNew',
-          query: `source=${cellData}`,
-          _id: cellData,
-        };
-        Blaze.renderWithData(Template.DataTableEditButton, data, node);
-      },
-      width: '45px',
-      orderable: false,
-    },
-    */
     deleteQuestionButton((question) => {
       console.log(question);
       Questions._collection.remove(question._id); // eslint-disable-line

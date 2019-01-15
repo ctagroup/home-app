@@ -26,6 +26,19 @@ class HouseMatchingApi extends ApiEndpoint {
     return eligibleClients;
   }
 
+  getEligibleClientsPage(pageNumber = 0, size = 9999, sort = 'firstName', order = 'desc') {
+    const params = {
+      page: pageNumber,
+      size,
+    };
+    if (sort) params.sort = sort;
+    if (order) params.order = order;
+    const url = `${BASE_URL}/v3/eligibleclients?${querystring.stringify(params)}`;
+    const response = this.doGet(url);
+    // console.log('getEligibleClientsPage', url, response);
+    return response;
+  }
+
   getEligibleClient(clientId) {
     const url = `${BASE_URL}/v2/eligibleclients/${clientId}`;
     return this.doGet(url);

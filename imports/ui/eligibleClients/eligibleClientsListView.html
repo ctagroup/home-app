@@ -1,10 +1,12 @@
 <template name="eligibleClientsListView">
   <p><a href="" class="btn btn-primary postHousingMatchScores">Send Housing Match Scores</a></p>
-  {{#if hasData}}
-    {{> ReactiveDatatable tableData=tableData options=tableOptions class="table dataTable"}}
-  {{else}}
+  <!-- {{#if hasData}} -->
+    <!-- { {> ReactiveDatatable tableData=tableData options=tableOptions class="table dataTable"}} -->
+    <!-- { {> dataTable tableData=tableData options=tableOptions class="table dataTable"}} -->
+    {{> controlledTable tableData=tableData options=tableOptions class="table dataTable" loadData=loadData}}
+  <!-- {{else}}
     <div class="alert alert-info">
       <p>There are no visible items in this collection.</p>
     </div>
-  {{/if}}
+  {{/if}} -->
 </template>
