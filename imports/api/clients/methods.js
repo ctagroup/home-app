@@ -71,7 +71,7 @@ Meteor.methods({
     }, inputSchema); // { clientId, schema }
   },
 
-  searchClient(query, options) {
+  async searchClient(query, options) {
     logger.info(`METHOD[${Meteor.userId()}]: searchClient(${query})`);
     const optionz = options || {};
 
@@ -122,6 +122,8 @@ Meteor.methods({
       } catch (err) {
         logger.warn(err);
       }
+
+      localClients = await localClients.toArray();
 
       // Removing entries where we have data coming from HMIS.
       for (let i = localClients.length - 1; i >= 0; i -= 1) {
