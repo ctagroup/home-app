@@ -58,10 +58,11 @@ Meteor.methods({
 
   searchClient(query, options) {
     logger.info(`METHOD[${Meteor.userId()}]: searchClient(${query})`);
-    let { sort, order, page, limit, excludeLocalClients } = options || {};
-    sort = sort || 'firstName'
-    order = order || 'asc'
-    const startIndex = page * limit
+    let { sort, order, limit } = options || {};
+    const { page, excludeLocalClients } = options || {};
+    sort = sort || 'firstName';
+    order = order || 'asc';
+    const startIndex = page * limit;
 
     // guard against client-side DOS: hard limit to 50
     limit = Math.min(50, Math.abs(limit || 50));
