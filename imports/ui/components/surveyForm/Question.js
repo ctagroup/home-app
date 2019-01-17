@@ -31,14 +31,16 @@ export default class Question extends Item {
   getChoiceOptions() {
     const options = this.props.item.options || [];
     if (Array.isArray(options)) {
-      return options.filter(o => !!o).map(o => ({
-        value: o.split('|').shift(),
-        label: o.split('|').pop(),
-      }));
+      return options
+        .filter(o => !!o)
+        .map(o => ({
+          value: o.split('|').shift(),
+          label: o.split('|').pop()
+        }));
     }
     return Object.keys(options).map(key => ({
       value: key,
-      label: options[key],
+      label: options[key]
     }));
   }
 
@@ -47,7 +49,7 @@ export default class Question extends Item {
     if (!refusable) {
       return null;
     }
-    const refuseValue = typeof(refusable) === 'boolean' ? 'Refused' : refusable;
+    const refuseValue = typeof refusable === 'boolean' ? 'Refused' : refusable;
     return refuseValue;
   }
 
@@ -130,9 +132,7 @@ export default class Question extends Item {
       let addressType;
       for (let i = 0; i < addressFields.length; i++) {
         let addLwrCase = addressFields[i].toLowerCase();
-        if (addLwrCase.includes('zip')) {
-          addressType = 'zip';
-        } else if (addLwrCase.includes('lat') || addLwrCase.includes('long')) {
+        if (addLwrCase.includes('lat') || addLwrCase.includes('long')) {
           addressType = 'coords';
         } else {
           addressType = 'address';
@@ -151,7 +151,9 @@ export default class Question extends Item {
   }
 
   isRefused() {
-    return this.props.formState.values[this.props.item.id] === this.getRefuseValue();
+    return (
+      this.props.formState.values[this.props.item.id] === this.getRefuseValue()
+    );
   }
 
   renderQuestionCategory(value, disabled) {
@@ -195,17 +197,18 @@ export default class Question extends Item {
             disabled={this.isRefused() || disabled}
             checked={!this.isRefused() && v.value == value} // eslint-disable-line
             onChange={this.handleChange}
-          /> {v.label}
+          />{' '}
+          {v.label}
         </label>
       </div>
     ));
     if (other) {
-      const optionsWithOther = [
-        ...options,
-        { value: 'Other', label: value },
-      ];
-      const otherValue = optionsWithOther.some(o => o.value === value) ? '' : value;
-      const otherPlaceholder = typeof(other) === 'boolean' ? 'please specify' : `${other}`;
+      const optionsWithOther = [...options, { value: 'Other', label: value }];
+      const otherValue = optionsWithOther.some(o => o.value === value)
+        ? ''
+        : value;
+      const otherPlaceholder =
+        typeof other === 'boolean' ? 'please specify' : `${other}`;
       const checked = !this.isRefused() && this.state.otherSelected;
       choices.push(
         <div key={`choice-${id}-other`}>
@@ -217,7 +220,8 @@ export default class Question extends Item {
               checked={checked}
               value={DEFAULT_OTHER_VALUE}
               onChange={this.handleOtherClick}
-            /> <span>Other: </span>
+            />{' '}
+            <span>Other: </span>
             <input
               type="text"
               name={id}
@@ -226,17 +230,15 @@ export default class Question extends Item {
               value={otherValue || ''}
               onChange={this.handleChange}
               onFocus={this.handleOtherFocus}
-              ref={input => { this.otherInput = input; }}
+              ref={input => {
+                this.otherInput = input;
+              }}
             />
           </label>
         </div>
       );
     }
-    return (
-	<div>
-	    {choices}
-	</div>
-    );
+    return <div>{choices}</div>;
   }
 
   renderInput(value, type, disabled) {
@@ -370,19 +372,47 @@ export default class Question extends Item {
     const title = `${this.props.item.title}`;
     switch (this.props.level) {
       case 1:
-        return <h1 className="title">{title} {icon}</h1>;
+        return (
+          <h1 className="title">
+            {title} {icon}
+          </h1>
+        );
       case 2:
-        return <h2 className="title">{title} {icon}</h2>;
+        return (
+          <h2 className="title">
+            {title} {icon}
+          </h2>
+        );
       case 3:
-        return <h3 className="title">{title} {icon}</h3>;
+        return (
+          <h3 className="title">
+            {title} {icon}
+          </h3>
+        );
       case 4:
-        return <h4 className="title">{title} {icon}</h4>;
+        return (
+          <h4 className="title">
+            {title} {icon}
+          </h4>
+        );
       case 5:
-        return <h5 className="title">{title} {icon}</h5>;
+        return (
+          <h5 className="title">
+            {title} {icon}
+          </h5>
+        );
       case 6:
-        return <h6 className="title">{title} {icon}</h6>;
+        return (
+          <h6 className="title">
+            {title} {icon}
+          </h6>
+        );
       default:
-        return <div className="title">{title} {icon}</div>;
+        return (
+          <div className="title">
+            {title} {icon}
+          </div>
+        );
     }
   }
 
@@ -398,7 +428,11 @@ export default class Question extends Item {
     }
 
     return (
-      <div className={`question item ${hasError ? 'error' : ''} ${disabled ? 'disabled' : ''}`}>
+      <div
+        className={`question item ${hasError ? 'error' : ''} ${
+          disabled ? 'disabled' : ''
+        }`}
+      >
         {this.renderTitle()}
         <div className="text">{text}</div>
         {this.renderQuestionCategory(this.isRefused() ? '' : value, disabled)}

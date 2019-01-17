@@ -98,9 +98,6 @@ export function isNumeric(n) {
 
 export function isLocation(str, type) {
   switch (type) {
-    case 'zip':
-      // TODO: Zip specific address code here
-      break;
     case 'coords':
       // TODO: maybe have this function return true/false
       str = getAddressFromLatLong(str);
