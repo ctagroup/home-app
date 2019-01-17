@@ -28,12 +28,26 @@ export default class Question extends Item {
     };
   }
 
+  getChoiceOptions() {
+    const options = this.props.item.options || [];
+    if (Array.isArray(options)) {
+      return options.filter(o => !!o).map(o => ({
+        value: o.split('|').shift(),
+        label: o.split('|').pop(),
+      }));
+    }
+    return Object.keys(options).map(key => ({
+      value: key,
+      label: options[key],
+    }));
+  }
+
   getRefuseValue() {
     const refusable = this.props.item.refusable;
     if (!refusable) {
       return null;
     }
-    const refuseValue = typeof refusable === 'boolean' ? 'Refused' : refusable;
+    const refuseValue = typeof(refusable) === 'boolean' ? 'Refused' : refusable;
     return refuseValue;
   }
 
@@ -60,7 +74,7 @@ export default class Question extends Item {
       switch (this.props.item.category) {
         case 'choice':
           value = event.target.value;
-          if (this.props.item.options.includes(value)) {
+          if (choiceOptions.some(o => o.value === value)) {
             this.setState({ otherSelected: false });
           }
           break;
@@ -83,7 +97,6 @@ export default class Question extends Item {
   }
 
   handleRefuseChange(event) {
-    console.log('refuse');
     this.handleChange(event);
   }
 
@@ -138,9 +151,7 @@ export default class Question extends Item {
   }
 
   isRefused() {
-    return (
-      this.props.formState.values[this.props.item.id] === this.getRefuseValue()
-    );
+    return this.props.formState.values[this.props.item.id] === this.getRefuseValue();
   }
 
   renderQuestionCategory(value, disabled) {
@@ -173,28 +184,28 @@ export default class Question extends Item {
 
   renderChoice(value, disabled) {
     const { id, other } = this.props.item;
-    const options = this.props.item.options || [];
+    const options = this.getChoiceOptions();
     const choices = options.map((v, i) => (
       <div key={`choice-${id}-${i}`}>
         <label>
           <input
             type="radio"
             name={id}
-            value={v}
+            value={v.value}
             disabled={this.isRefused() || disabled}
-            checked={!this.isRefused() && v === value}
+            checked={!this.isRefused() && v.value == value} // eslint-disable-line
             onChange={this.handleChange}
-          />{' '}
-          {v}
+          /> {v.label}
         </label>
       </div>
     ));
     if (other) {
-      const otherValue = options.concat([DEFAULT_OTHER_VALUE]).includes(value)
-        ? ''
-        : value;
-      const otherPlaceholder =
-        typeof other === 'boolean' ? 'please specify' : `${other}`;
+      const optionsWithOther = [
+        ...options,
+        { value: 'Other', label: value },
+      ];
+      const otherValue = optionsWithOther.some(o => o.value === value) ? '' : value;
+      const otherPlaceholder = typeof(other) === 'boolean' ? 'please specify' : `${other}`;
       const checked = !this.isRefused() && this.state.otherSelected;
       choices.push(
         <div key={`choice-${id}-other`}>
@@ -206,8 +217,7 @@ export default class Question extends Item {
               checked={checked}
               value={DEFAULT_OTHER_VALUE}
               onChange={this.handleOtherClick}
-            />{' '}
-            <span>Other: </span>
+            /> <span>Other: </span>
             <input
               type="text"
               name={id}
@@ -216,15 +226,17 @@ export default class Question extends Item {
               value={otherValue || ''}
               onChange={this.handleChange}
               onFocus={this.handleOtherFocus}
-              ref={input => {
-                this.otherInput = input;
-              }}
+              ref={input => { this.otherInput = input; }}
             />
           </label>
         </div>
       );
     }
-    return <div>{choices}</div>;
+    return (
+	<div>
+	    {choices}
+	</div>
+    );
   }
 
   renderInput(value, type, disabled) {
@@ -358,47 +370,19 @@ export default class Question extends Item {
     const title = `${this.props.item.title}`;
     switch (this.props.level) {
       case 1:
-        return (
-          <h1 className="title">
-            {title} {icon}
-          </h1>
-        );
+        return <h1 className="title">{title} {icon}</h1>;
       case 2:
-        return (
-          <h2 className="title">
-            {title} {icon}
-          </h2>
-        );
+        return <h2 className="title">{title} {icon}</h2>;
       case 3:
-        return (
-          <h3 className="title">
-            {title} {icon}
-          </h3>
-        );
+        return <h3 className="title">{title} {icon}</h3>;
       case 4:
-        return (
-          <h4 className="title">
-            {title} {icon}
-          </h4>
-        );
+        return <h4 className="title">{title} {icon}</h4>;
       case 5:
-        return (
-          <h5 className="title">
-            {title} {icon}
-          </h5>
-        );
+        return <h5 className="title">{title} {icon}</h5>;
       case 6:
-        return (
-          <h6 className="title">
-            {title} {icon}
-          </h6>
-        );
+        return <h6 className="title">{title} {icon}</h6>;
       default:
-        return (
-          <div className="title">
-            {title} {icon}
-          </div>
-        );
+        return <div className="title">{title} {icon}</div>;
     }
   }
 
@@ -407,8 +391,14 @@ export default class Question extends Item {
     const value = this.props.formState.values[id];
     const disabled = this.props.formState.props[`${id}.skip`];
     const hasError = !!this.state.error;
+
+    if (disabled && value) {
+      // if field is disable but has a value, emit an evet to clear the field
+      this.props.onChange(id, '', true);
+    }
+
     return (
-      <div className={`question item ${hasError ? 'error' : ''}`}>
+      <div className={`question item ${hasError ? 'error' : ''} ${disabled ? 'disabled' : ''}`}>
         {this.renderTitle()}
         <div className="text">{text}</div>
         {this.renderQuestionCategory(this.isRefused() ? '' : value, disabled)}

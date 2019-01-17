@@ -7,6 +7,44 @@ import { ApiEndpoint } from './apiEndpoint';
 const BASE_URL = 'https://www.hmislynk.com/hmis-globalapi/rest';
 
 export class GlobalApi extends ApiEndpoint {
+  getClientEnrollments(dedupClientId, start = 0, limit = 9999) {
+    const options = `?startIndex=${start}&limit=${limit}`;
+    const url = `${BASE_URL}/clients/${dedupClientId}/global-enrollments${options}`;
+    const { pagination, globalEnrollments } = this.doGet(url).globalEnrollments;
+    const remaining = limit - pagination.returned;
+    if (remaining > 0 && pagination.returned > 0) {
+      const startFrom = pagination.from + pagination.returned;
+      return [
+        ...globalEnrollments,
+        ...this.getClientEnrollments(dedupClientId, startFrom, remaining),
+      ];
+    }
+    return globalEnrollments;
+  }
+
+  getClientEnrollment(dedupClientId, globalEnrollmentId) {
+    const url = `${BASE_URL}/clients/${dedupClientId}/global-enrollments/${globalEnrollmentId}`;
+    return this.doGet(url).globalEnrollment;
+  }
+
+  createClientEnrollment(dedupClientId, enrollments) {
+    const url = `${BASE_URL}/clients/${dedupClientId}/global-enrollments`;
+    // enrollments example:
+    // [{
+    //   enrollmentId: '637fbfbb-e75c-49f1-900f-1aa0015aefab',
+    //   source: '2016',
+    //   clientId: '6bf95840-8567-469b-9efe-8c6351294e55',
+    // }]
+    const body = {
+      globalEnrollment: {
+        enrollments: {
+          enrollments,
+        },
+      },
+    };
+    return this.doPost(url, body).globalEnrollment;
+  }
+
   getGlobalProjects(start = 0, limit = 9999) {
     const url = `${BASE_URL}/global-projects?startIndex=${start}&maxItems=${limit}`;
     const { pagination, globalProjects } = this.doGet(url).globalProjects;

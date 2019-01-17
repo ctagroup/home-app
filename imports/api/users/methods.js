@@ -4,6 +4,7 @@ import { logger } from '/imports/utils/logger';
 import Users, { ChangePasswordSchema, UserCreateFormSchema } from '/imports/api/users/users';
 import Agencies from '/imports/api/agencies/agencies';
 import { HmisClient } from '/imports/api/hmisApi';
+import HomeApiClient from '/imports/api/homeApi/homeApiClient';
 import { ensureRolesFormat } from './helpers';
 
 Meteor.methods({
@@ -174,8 +175,17 @@ Meteor.methods({
       expiresIn: ((expiresAt - new Date()) / 1000).toFixed(2),
       apiResponse,
     };
-    logger.info(result);
-    return result;
+    logger.info('user data', result);
+    return {
+      ...result,
+      accessToken: accessToken.substr(0, 8),
+      refreshToken: refreshToken.substr(0, 8),
+    };
+  },
+
+  'users.loginToHomeApi'() {
+    const client = HomeApiClient.create(this.userId);
+    return client.updateUserHmisCredentials();
   },
 
   addUserLocation(userID, timestamp, position) {

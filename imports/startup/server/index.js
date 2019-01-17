@@ -1,3 +1,5 @@
+import './diContainer';
+
 import { logger } from '/imports/utils/logger';
 
 import eventPublisher, { ServerStartedEvent } from '/imports/api/eventLog/events';
@@ -17,9 +19,13 @@ import '/imports/api/eligibleClients/methods';
 import '/imports/api/eligibleClients/server/publications';
 
 import '/imports/api/eventLog/server/publications';
+import '/imports/api/enrollments/server/publications';
 
 import '/imports/api/files/methods';
 import '/imports/api/files/server/publications';
+
+import '/imports/api/submissionUploader/methods';
+import '/imports/api/submissionUploader/server/publications';
 
 import '/imports/api/questions/methods';
 import '/imports/api/questions/server/publications';
@@ -48,6 +54,9 @@ import '/imports/api/projects/server/publications';
 import '/imports/api/agencies/methods';
 import '/imports/api/agencies/server/publications';
 
+import '/imports/api/diExample/methods';
+import '/imports/api/diExample/server/publications';
+
 import '/imports/api/openingScript/methods';
 import '/imports/api/logger/methods';
 import '/imports/api/aws/server/aws';
@@ -56,9 +65,9 @@ import '/imports/startup/server/migrations';
 import '/imports/startup/server/accounts';
 import '/imports/startup/server/admins';
 import '/imports/startup/server/mergeAccountsPatch';
+import '/imports/startup/server/diContainer';
 
 import '/imports/api/mc211/methods';
-
 
 Meteor.startup(() => {
   eventPublisher.publish(new ServerStartedEvent());

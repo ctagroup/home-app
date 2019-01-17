@@ -1,9 +1,13 @@
 import { Clients } from '/imports/api/clients/clients';
+// import { GlobalEnrollments } from '/imports/api/enrollments/enrollments';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import { RecentClients } from '/imports/api/recent-clients';
+import Enrollments from '/imports/api/enrollments/enrollments';
+import Surveys from '/imports/api/surveys/surveys';
 import Responses from '/imports/api/responses/responses';
 import FeatureDecisions from '/imports/both/featureDecisions';
 import { ClientsAccessRoles } from '/imports/config/permissions';
+import '/imports/ui/enrollments/viewEnrollmentAsResponse';
 import '/imports/ui/clients/clientNotFound';
 import '/imports/ui/clients/selectSurvey';
 import '/imports/ui/clients/searchClient';
@@ -52,6 +56,76 @@ Router.route('adminDashboardclientsNew', {
     return {
       title: 'Clients',
       subtitle: 'New',
+    };
+  },
+});
+
+// Router.route(
+//   '/clients/:_id/enrollments', {
+//     name: 'manageClientEnrollments',
+//     template: 'manageClientEnrollments',
+//     controller: AppController,
+//     authorize: {
+//       allow() {
+//         return Roles.userIsInRole(Meteor.userId(), ClientsAccessRoles);
+//       },
+//     },
+//     waitOn() {
+//       const id = Router.current().params._id;
+//       return [
+//         Meteor.subscribe('clients.one', id, false, false),
+//         Meteor.subscribe('client.globalEnrollments', id, this.params.query.schema),
+//       ];
+//     },
+//     data() {
+//       const isExtSurveyor = Roles.userIsInRole(Meteor.userId(), 'External Surveyor');
+//       const pendingClient = PendingClients.findOne({ _id: this.params._id });
+//       const client = Clients.findOne({ _id: this.params._id });
+//       const enrollments = GlobalEnrollments.find({ _id: this.params._id });
+//       return {
+//         isPendingClient: !!pendingClient,
+//         enrollments,
+//         client: pendingClient || client,
+//         showSurveyButton: !isExtSurveyor,
+//         showUploadButton: !client,
+//         showEditButton: !isExtSurveyor,
+//         showResponsesButton: !isExtSurveyor,
+//       };
+//     },
+//   }
+// );
+
+Router.route('/clients/:_id/enrollments/:enrollmentId', {
+  name: 'viewEnrollmentAsResponse',
+  template: 'viewEnrollmentAsResponse',
+  controller: AppController,
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), ClientsAccessRoles);
+    },
+  },
+  waitOn() {
+    const { _id, enrollmentId } = this.params;
+    const { schema, surveyId, dataCollectionStage } = this.params.query;
+    return [
+      Meteor.subscribe('clients.one', _id, schema),
+      Meteor.subscribe('surveys.one', surveyId),
+      Meteor.subscribe('enrollments.one', _id, schema, enrollmentId,
+        parseInt(dataCollectionStage, 10)
+      ),
+    ];
+  },
+  data() {
+    const { _id, enrollmentId } = this.params;
+    const { surveyId } = this.params.query;
+    const client = Clients.findOne(_id);
+    const survey = Surveys.findOne(surveyId);
+    const enrollment = Enrollments.findOne(enrollmentId);
+    console.log('enrollment data', enrollment);
+    return {
+      client,
+      survey,
+      enrollment,
     };
   },
 });
@@ -112,9 +186,11 @@ Router.route(
       const isExtSurveyor = Roles.userIsInRole(Meteor.userId(), 'External Surveyor');
       const pendingClient = PendingClients.findOne({ _id: this.params._id });
       const client = Clients.findOne({ _id: this.params._id });
+      const { dataCollectionStage } = this.params.query;
       return {
         isPendingClient: !!pendingClient,
         client: pendingClient || client,
+        dataCollectionStage: parseInt(dataCollectionStage, 10),
         showSurveyButton: !isExtSurveyor,
         showUploadButton: !client,
         showEditButton: !isExtSurveyor,

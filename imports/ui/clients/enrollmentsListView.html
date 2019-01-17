@@ -1,0 +1,9 @@
+<template name="enrollmentsListView">
+  {{#if hasData}}
+    {{> ReactiveDatatable tableData=tableData options=tableOptions }}
+  {{else}}
+    <div class="alert alert-info">
+      <p>There are no enrollments to show.</p>
+    </div>
+  {{/if}}
+</template>

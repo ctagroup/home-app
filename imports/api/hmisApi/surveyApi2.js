@@ -1,5 +1,6 @@
 import { HmisApiRegistry } from './apiRegistry';
 import { ApiEndpoint } from './apiEndpoint';
+// import { throws } from 'assert';
 
 const BASE_URL = 'https://www.hmislynk.com/survey-api/rest/v2';
 
@@ -80,6 +81,9 @@ export class SurveyApi2 extends ApiEndpoint {
     const body = { question };
     return this.doPost(url, body).question;
   }
+  // getQuestion(questionGroupId, questionId) {
+  //   return this.doGet
+  // },
 
   getGeocodedLocation(url) {   
     return this.doGet(url);

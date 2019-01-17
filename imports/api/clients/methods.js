@@ -8,10 +8,12 @@ import eventPublisher, {
 } from '/imports/api/eventLog/events';
 
 Meteor.methods({
-  'clients.create'(client, schema = 'v2017') {
-    logger.info(`METHOD[${this.userId}]: clients.create`, client);
-    const hc = HmisClient.create(this.userId);
+  'clients.create'(client, schema = 'v2017', clientVersion = false) {
+    logger.info(`METHOD[${Meteor.userId()}]: clients.create`, client);
+    const hc = HmisClient.create(Meteor.userId());
     const result = hc.api('client').createClient(client, schema);
+
+    if (clientVersion) return result;
 
     try {
       Meteor.call('s3bucket.put', result.clientId, 'photo', client.photo);
@@ -56,7 +58,20 @@ Meteor.methods({
     );
   },
 
-  searchClient(query, options) {
+  saveToSchema(client, inputSchema) {
+    // Creates a client version if it doesn't exist for this version
+    const { clientVersions } = client;
+    // Check if exists:
+    const clientVersion = clientVersions.find(({ schema }) => schema === inputSchema);
+    if (clientVersion) return clientVersion;
+
+    const hc = HmisClient.create(Meteor.userId());
+    return hc.api('client').createClient({
+      ...client, suffix: client.nameSuffix || '',
+    }, inputSchema); // { clientId, schema }
+  },
+
+  async searchClient(query, options) {
     logger.info(`METHOD[${Meteor.userId()}]: searchClient(${query})`);
     const optionz = options || {};
 
@@ -107,6 +122,8 @@ Meteor.methods({
       } catch (err) {
         logger.warn(err);
       }
+
+      localClients = await localClients.toArray();
 
       // Removing entries where we have data coming from HMIS.
       for (let i = localClients.length - 1; i >= 0; i -= 1) {

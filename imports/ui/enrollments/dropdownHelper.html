@@ -1,0 +1,13 @@
+<template name="dropdownHelper">
+  <div class="dropdown ">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuPS" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      {{selectedValue}}
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuPS">
+      {{#each options}}
+        <li><a class="optionItem" href="#">{{label}}</a></li>
+      {{/each}}
+    </ul>
+  </div>
+</template>

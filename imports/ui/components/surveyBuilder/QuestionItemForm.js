@@ -7,37 +7,21 @@ import { handleItemTransform } from './helpers';
 
 export default class QuestionItemForm extends React.Component {
   render() {
-    const isDisabled = !!this.props.model.hmisId;
+    const isHmisQuestion = !!this.props.model.hmisId;
+    const isHudQuestion = !!this.props.model.enrollment;
+    const isDisabled = isHmisQuestion || isHudQuestion;
 
     const category = this.props.model.category;
-    const choiceFields =
-      category === 'choice' ? (
+    const choiceFields = category === 'choice' ? (
         <div className="panel panel-default">
           <div className="panel-heading">Choice</div>
           <div className="panel-body">
             <AutoField name="options" disabled={isDisabled} />
-            <AutoField name="other" label="Add 'Other' option" disabled={isDisabled} />
-          </div>
-        </div>
-      ) : null;
-
-    const locationFields =
-      category === 'location' ? (
-        <div className="panel panel-default">
-          <div className="panel-heading">Location</div>
-          <div className="panel-body">
             <AutoField
-              name="autoLocation"
-              label="Automatically determine location"
-              disabled={isDisabled}
-            />
-            <AutoField
-              name="longLatCheck"
-              label="Enable this to enter longitude/latitude fields, disable for address/zip fields"
-              disabled={isDisabled}
-            />
-            <AutoField name="addressFields" disabled={isDisabled} />
-          </div>
+	    	name="other" 
+	    	label="Add 'Other' option" 
+	    	disabled={isDisabled} 
+	    />
         </div>
       ) : null;
 
@@ -57,18 +41,16 @@ export default class QuestionItemForm extends React.Component {
         <AutoField name="title" />
         <AutoField name="text" />
         <AutoField name="category" disabled={isDisabled} />
-        {choiceFields}
-        {locationFields}
-        {showMask && (
+        {isDisabled ? 'You cannot edit choices for this question' : choiceFields}
+        {showMask &&
           <AutoField
             name="mask"
             help="9 - digit, a - char, * - digit or char, \9 - 9"
             disabled={isDisabled}
           />
-        )}
+        }
         <AutoField name="refusable" disabled={isDisabled} />
-        {isInFormBuilder && (
-          <ListField
+        {isInFormBuilder && <ListField
             name="rules"
             itemProps={{ component: RuleField }}
             addIcon={

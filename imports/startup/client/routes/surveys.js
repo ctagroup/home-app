@@ -94,6 +94,7 @@ Router.route('surveysEditDefinition', {
     return [
       Meteor.subscribe('surveys.one', id),
       Meteor.subscribe('questions.all'),
+      Meteor.subscribe('questions.hud'),
     ];
   },
   data() {

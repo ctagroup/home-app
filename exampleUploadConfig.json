@@ -1,0 +1,256 @@
+[
+  {
+    "title": "AssessmentCustomID",
+    "type": "ignore"
+  },
+  {
+    "title": "AssessmentID",
+    "type": "ignore"
+  },
+  {
+    "title": "AssessmentName",
+    "type": "ignore"
+  },
+  {
+    "title": "PersonalID",
+    "type": "clientSourceSystemId"
+  },
+  {
+    "title": "OrganizationID",
+    "type": "ignore"
+  },
+  {
+    "title": "InformationDate",
+    "type": "ignore"
+  },
+  {
+    "title": "DateCreated",
+    "type": "startDate" 
+  },
+  {
+    "title": "DateUpdated",
+    "type": "ignore" 
+  },
+  {
+    "title": "UserID",
+    "type": "ignore" 
+  },
+  {
+    "title": "DateDeleted",
+    "type": "endDate" 
+  },
+  {
+    "title": "ExportID",
+    "type": "ignore" 
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q1_v2",
+    "type": "question",
+    "questionId": "id1",
+    "sectionId": "sectionId1"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q1a_v2",
+    "type": "question",
+    "questionId": "id1",
+    "sectionId": "sectionId1"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q1",
+    "type": "question",
+    "questionId": "id2",
+    "sectionId": "sectionId1"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q2",
+    "type": "question",
+    "questionId": "id3",
+    "sectionId": "sectionId1"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q3",
+    "type": "question",
+    "questionId": "id4",
+    "sectionId": "sectionId1"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q5",
+    "type": "question",
+    "questionId": "id5",
+    "sectionId": "sectionId1"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q7",
+    "type": "question",
+    "questionId": "id6",
+    "sectionId": "sectionId1"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q6",
+    "type": "question",
+    "questionId": "id7",
+    "sectionId": "sectionId1"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q4",
+    "type": "question",
+    "questionId": "id8",
+    "sectionId": "sectionId1"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q4f_v2",
+    "type": "question",
+    "questionId": "id9",
+    "sectionId": "sectionId1"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q8",
+    "type": "question",
+    "questionId": "id10",
+    "sectionId": "sectionId2"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q9",
+    "type": "question",
+    "questionId": "id11",
+    "sectionId": "sectionId2"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q10",
+    "type": "question",
+    "questionId": "id12",
+    "sectionId": "sectionId2"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q11",
+    "type": "question",
+    "questionId": "id13",
+    "sectionId": "sectionId2"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q12",
+    "type": "question",
+    "questionId": "id14",
+    "sectionId": "sectionId2"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q14",
+    "type": "question",
+    "questionId": "id15",
+    "sectionId": "sectionId2"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q15",
+    "type": "question",
+    "questionId": "id16",
+    "sectionId": "sectionId2"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q17",
+    "type": "question",
+    "questionId": "id17",
+    "sectionId": "sectionId2"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q13_v2",
+    "type": "question",
+    "questionId": "id18",
+    "sectionId": "sectionId2"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q14_v2",
+    "type": "question",
+    "questionId": "id19",
+    "sectionId": "sectionId2"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q15_v2",
+    "type": "question",
+    "questionId": "id20",
+    "sectionId": "sectionId2"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q16_v2",
+    "type": "question",
+    "questionId": "id21",
+    "sectionId": "sectionId2"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q17_v2",
+    "type": "question",
+    "questionId": "id22",
+    "sectionId": "sectionId2"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q18_v2",
+    "type": "question",
+    "questionId": "id23",
+    "sectionId": "sectionId2"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q19_v2",
+    "type": "question",
+    "questionId": "id24",
+    "sectionId": "sectionId2"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q20_v2",
+    "type": "question",
+    "questionId": "id25",
+    "sectionId": "sectionId2"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q21_v2",
+    "type": "question",
+    "questionId": "id26",
+    "sectionId": "sectionId2"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q22_v2",
+    "type": "question",
+    "questionId": "id27",
+    "sectionId": "sectionId2"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q23a_v2",
+    "type": "question",
+    "questionId": "id28",
+    "sectionId": "sectionId2"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q23b_v2",
+    "type": "question",
+    "questionId": "id29",
+    "sectionId": "sectionId2"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q23c_v2",
+    "type": "question",
+    "questionId": "id30",
+    "sectionId": "sectionId2"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q24_v2",
+    "type": "question",
+    "questionId": "id31",
+    "sectionId": "sectionId3"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q49",
+    "type": "question",
+    "questionId": "id32",
+    "sectionId": "sectionId3"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q26_v2",
+    "type": "question",
+    "questionId": "id33",
+    "sectionId": "sectionId3"
+  },
+  {
+    "title": "client_assessment_demographics.vi_spdat_q50",
+    "type": "question",
+    "questionId": "id34",
+    "sectionId": "sectionId3"
+  }
+]

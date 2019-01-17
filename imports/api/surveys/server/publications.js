@@ -3,8 +3,10 @@ import Surveys from '/imports/api/surveys/surveys';
 import Responses from '/imports/api/responses/responses';
 import { HmisClient } from '/imports/api/hmisApi';
 import SurveyQuestionsMaster from '/imports/api/surveys/surveyQuestionsMaster';
+import { updateDocFromDefinition } from '/imports/api/surveys/helpers';
 
-Meteor.publish('surveys.all', function publishAllSurveys() {
+
+Meteor.publish('surveys.all', function publishAllSurveys(/* params = {} */) {
   logger.info(`PUB[${this.userId}]: surveys.all`);
 
   const hc = HmisClient.create(this.userId);
@@ -47,7 +49,7 @@ Meteor.publish('surveys.one', function publishOneSurvey(_id) {
   const hc = HmisClient.create(this.userId);
   const survey = hc.api('survey2').getSurvey(_id);
 
-  this.added('surveys', survey.surveyId, {
+  const doc = updateDocFromDefinition({
     title: survey.surveyTitle,
     locked: survey.locked,
     definition: survey.surveyDefinition,
@@ -57,6 +59,8 @@ Meteor.publish('surveys.one', function publishOneSurvey(_id) {
       status: 'uploaded',
     },
   });
+
+  this.added('surveys', survey.surveyId, doc);
   return this.ready();
 });
 

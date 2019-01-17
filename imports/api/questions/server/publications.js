@@ -2,6 +2,25 @@ import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
 import Questions from '/imports/api/questions/questions';
 
+Meteor.publish('questions.hud', function publishHudQuestions(schema = 'v2017') {
+  logger.info(`PUB[${this.userId}]: questions.hud`);
+
+  let stopFunction = false;
+  this.unblock();
+  this.onStop(() => {
+    stopFunction = true;
+  });
+
+  const hc = HmisClient.create(this.userId);
+  const questions = hc.api('client').getV2Questions(schema);
+  logger.debug('# HUD questions', questions.length);
+  // const fs = require('fs');
+  // fs.writeFileSync('/tmp/hud.json', JSON.stringify(questions));
+  if (stopFunction) return;
+  questions.forEach(q =>
+    this.added('questions', q.questionId, { ...q, schema, hudQuestion: true }));
+  this.ready();
+});
 
 Meteor.publish('questions.all', function publishAllQuestions() {
   logger.info(`PUB[${this.userId}]: questions.all`);

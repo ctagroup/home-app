@@ -44,7 +44,7 @@ describe('hmisApi', function () {
         appSecret: 'secret',
       };
       const client = new HmisClient('userId', config, registry, fakeCollection);
-      client.authData = { expiresAt: new Date().getTime() + 60 * 1000 };
+      client.authData = { expiresAt: new Date().getTime() + 10 * 60 * 1000 };
       const api = client.api('dummy');
       chai.assert.equal(api.bar(), 'baz');
     });

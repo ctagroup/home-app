@@ -1,0 +1,20 @@
+<template name="enrollmentsUpdate">
+  {{#if surveyLoaded}}
+    <div>{{> React
+      component=component
+      surveyId=surveyId
+      definition=definition
+      client=client
+      debugMode=isAdmin
+      projectId=projectId
+      project=project
+      isEnrollment=isEnrollment
+      enrollmentInfo=enrollmentInfo
+      
+      initialValues=initialValues
+      response=response
+    }}</div>
+  {{else}}
+    Loading...
+  {{/if}}
+</template>

@@ -21,7 +21,7 @@ Template.surveyForm.helpers({
   },
 
   fields() {
-    return ['title', 'locked', 'definition'];
+    return ['title', 'locked', 'definition', 'hudSurvey', 'surveyVersion'];
   },
 });
 
@@ -35,7 +35,7 @@ AutoForm.hooks({
             Alert.error(err);
           } else {
             Alert.success('Survey updated');
-            Router.go('adminDashboardsurveysView');
+            // Router.go('adminDashboardsurveysView');
           }
           this.done();
         });

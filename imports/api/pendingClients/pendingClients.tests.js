@@ -1,10 +1,4 @@
-/**
- * Created by pgorecki on 09.04.17.
- */
-
-// Run tests with: meteor test --driver-package practicalmeteor:mocha --port 4000
-
-import { chai } from 'meteor/practicalmeteor:chai';
+import chai from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { PendingClients } from './pendingClients';
 
