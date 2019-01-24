@@ -88,7 +88,7 @@ export default class HomeApiClient {
   }
 
   updateUserHmisCredentials() {
-    const url = this.absoluteUrl('/api/v1/users/updateCredentials');
+    const url = this.absoluteUrl('/api/v1/auth/updateCredentials/');
     const user = this.usersCollection.findOne(this.userId);
     const { accessToken, refreshToken, expiresAt } = user.services.HMIS || {};
     return this.doPost(url, {
