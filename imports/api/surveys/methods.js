@@ -28,8 +28,6 @@ Meteor.methods({
   'surveys.update'(id, doc) {
     logger.info(`METHOD[${this.userId}]: surveys.update`, id, doc);
 
-    console.log(doc);
-
     // TODO: permissions
     check(id, String);
 
