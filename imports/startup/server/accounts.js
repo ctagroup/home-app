@@ -1,5 +1,16 @@
 import { logger } from '/imports/utils/logger';
 import { userEmails } from '/imports/api/users/helpers';
+import HomeApiClient from '/imports/api/homeApi/homeApiClient';
+
+
+function sendUserHmisCredentialsToApi(user) {
+  try {
+    const client = HomeApiClient.create(user._id);
+    client.updateUserHmisCredentials();
+  } catch (err) {
+    logger.debug('Falied to send user credentials to api', err);
+  }
+}
 
 Accounts.onLogin(({ user }) => {
   const adminEmails = Meteor.settings.admins || [];
@@ -7,6 +18,10 @@ Accounts.onLogin(({ user }) => {
   if (result.length > 0 && !Roles.userIsInRole(user._id, 'Developer')) {
     logger.info(`User ${user._id} promoted to Developer ROLE`);
     Roles.addUsersToRoles(user._id, 'Developer', Roles.GLOBAL_GROUP);
+  }
+
+  if (Meteor.settings.homeApi) {
+    sendUserHmisCredentialsToApi(user);
   }
 });
 
