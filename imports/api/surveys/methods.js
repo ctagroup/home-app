@@ -4,7 +4,11 @@ import { getScoringVariables, iterateItems } from '/imports/api/surveys/computat
 import Surveys from '/imports/api/surveys/surveys';
 import {
   mapUploadedSurveySections,
-  updateDefinitionFromDoc, updateDocFromDefinition } from '/imports/api/surveys/helpers';
+  updateDefinitionFromDoc, updateDocFromDefinition
+} from '/imports/api/surveys/helpers';
+import eventPublisher, {
+  SurveyUpdatedEvent,
+} from '/imports/api/eventLog/events';
 
 Meteor.methods({
   'surveys.create'(doc) {
@@ -72,8 +76,9 @@ Meteor.methods({
 
     try {
       Meteor.call('surveys.uploadQuestions', tempId);
-      Meteor.call('surveys.upload', tempId);
+      const hmisSurveyId = Meteor.call('surveys.upload', tempId);
       Surveys.remove(id);
+      eventPublisher.publish(new SurveyUpdatedEvent(hmisSurveyId, { userId: this.userId }));
     } catch (e) {
       logger.error(`Failed to upload survey ${e}`);
       throw new Meteor.Error('hmis.api', `Survey created, failed to upload! ${e}`);

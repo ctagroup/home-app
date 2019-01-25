@@ -4,6 +4,26 @@ import Responses from '/imports/api/responses/responses';
 import { HmisClient } from '/imports/api/hmisApi';
 import SurveyQuestionsMaster from '/imports/api/surveys/surveyQuestionsMaster';
 import { updateDocFromDefinition } from '/imports/api/surveys/helpers';
+import eventPublisher, {
+  SurveyUpdatedEvent,
+} from '/imports/api/eventLog/events';
+
+
+function loadSurvey(surveyId, userId) {
+  const hc = HmisClient.create(userId);
+  const survey = hc.api('survey2').getSurvey(surveyId);
+  const doc = updateDocFromDefinition({
+    title: survey.surveyTitle,
+    locked: survey.locked,
+    definition: survey.surveyDefinition,
+    version: 2,
+    hmis: {
+      surveyId: survey.surveyId,
+      status: 'uploaded',
+    },
+  });
+  return doc;
+}
 
 
 Meteor.publish('surveys.all', function publishAllSurveys(/* params = {} */) {
@@ -40,27 +60,26 @@ Meteor.publish('surveys.all', function publishAllSurveys(/* params = {} */) {
   return this.ready();
 });
 
+
 Meteor.publish('surveys.one', function publishOneSurvey(_id) {
   logger.info(`PUB[${this.userId}]: surveys.one`, _id);
   if (Surveys.find({ _id, version: 2 }).count()) {
     return Surveys.find({ _id, version: 2 });
   }
 
-  const hc = HmisClient.create(this.userId);
-  const survey = hc.api('survey2').getSurvey(_id);
+  const doc = loadSurvey(_id, this.userId);
+  this.added('surveys', _id, doc);
 
-  const doc = updateDocFromDefinition({
-    title: survey.surveyTitle,
-    locked: survey.locked,
-    definition: survey.surveyDefinition,
-    version: 2,
-    hmis: {
-      surveyId: survey.surveyId,
-      status: 'uploaded',
-    },
-  });
+  const surveyUpdatedEvent = (event) => {
+    if (event.surveyId === _id) {
+      const changedDoc = loadSurvey(event.surveyId, this.userId);
+      this.changed('surveys', event.surveyId, changedDoc);
+    }
+  };
 
-  this.added('surveys', survey.surveyId, doc);
+  eventPublisher.addListener(SurveyUpdatedEvent, surveyUpdatedEvent);
+  this.onStop(() => eventPublisher.removeListener(SurveyUpdatedEvent, surveyUpdatedEvent));
+
   return this.ready();
 });
 

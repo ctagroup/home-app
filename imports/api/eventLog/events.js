@@ -17,6 +17,13 @@ export class SystemEvent {
   }
 }
 
+export class SurveyUpdatedEvent extends SystemEvent {
+  constructor(surveyId, context) {
+    super(context);
+    this.surveyId = surveyId;
+  }
+}
+
 export class DataEvent extends SystemEvent {
   constructor(data, context) {
     super(context);
@@ -51,6 +58,10 @@ class EventPublisher extends EventEmitter2 {
 
   addListener(eventClass, callback, ...args) {
     super.on(eventClass.name, callback, ...args);
+  }
+
+  removeListener(eventClass, callback, ...args) {
+    super.off(eventClass.name, callback, ...args);
   }
 }
 
