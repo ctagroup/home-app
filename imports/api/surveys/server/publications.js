@@ -1,8 +1,11 @@
 import { logger } from '/imports/utils/logger';
 import Surveys from '/imports/api/surveys/surveys';
+import SurveyCaches from '/imports/api/surveys/surveyCaches';
 import Responses from '/imports/api/responses/responses';
 import { HmisClient } from '/imports/api/hmisApi';
 import SurveyQuestionsMaster from '/imports/api/surveys/surveyQuestionsMaster';
+
+// TODO [VK]: force reaload cache flag?
 
 Meteor.publish('surveys.all', function publishAllSurveys() {
   logger.info(`PUB[${this.userId}]: surveys.all`);
@@ -68,3 +71,31 @@ Meteor.publish('surveys.v1', function publishAllSurveys() {
   ];
 });
 
+
+Meteor.publish('surveyCaches.all', function publishAllSurveyCaches() {
+  logger.info(`PUB[${this.userId}]: surveyCaches.all`);
+
+  const surveyCursor = SurveyCaches.find();
+  // .fetch();
+  const localSurveysCursor = Surveys.find({ version: 2 });
+  if (surveyCursor.count()) return [surveyCursor, localSurveysCursor];
+
+  const hc = HmisClient.create(this.userId);
+  try {
+    const surveys = hc.api('survey2').getSurveys() || [];
+    const localSurveys = Surveys.find({ version: 2 }).fetch();
+
+    surveys.forEach(s => {
+      if (!s.surveyDefinition) return;
+      this.added('surveyCaches', s.surveyId, {
+        version: 2,
+        title: s.surveyTitle,
+        createdAt: '',
+      });
+    });
+    localSurveys.map(s => this.added('surveyCaches', s._id, s));
+  } catch (e) {
+    logger.warn(e);
+  }
+  return this.ready();
+});

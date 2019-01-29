@@ -11,6 +11,7 @@ export function editButton(path, options) {
   return Object.assign({
     data: '_id',
     title: 'Edit',
+    filterable: false,
     render() {
       return '';
     },
@@ -39,6 +40,7 @@ export function deleteHouseholdButton() {
   return {
     data: '_id',
     title: 'Delete',
+    filterable: false,
     render() { return ''; },
     createdCell(node, _id) {
       const templateData = {
@@ -75,6 +77,7 @@ export function deleteHousingUnitButton() {
   return {
     data: '_id',
     title: 'Delete',
+    filterable: false,
     render() { return ''; },
     createdCell(node, _id, rowData) {
       const name = rowData.aliasName || _id;
@@ -113,6 +116,7 @@ export function deleteSurveyButton(onSuccessCallback) {
   return {
     data: '_id',
     title: 'Delete',
+    filterable: false,
     render() { return ''; },
     createdCell(node, _id, rowData) {
       const title = rowData.title || _id;
@@ -155,6 +159,7 @@ export function deleteQuestionButton(onSuccessCallback) {
   return {
     data: '_id',
     title: 'Delete',
+    filterable: false,
     render() { return ''; },
     createdCell(node, _id, rowData) {
       const title = rowData.displayText || _id;
@@ -196,6 +201,7 @@ export function deleteUserButton() {
   return {
     data: '_id',
     title: 'Delete',
+    filterable: false,
     render() { return ''; },
     createdCell(node, _id) {
       const name = '';
@@ -233,6 +239,7 @@ export function deleteFileButton() {
   return {
     data: '_id',
     title: 'Delete',
+    filterable: false,
     render() { return ''; },
     createdCell(node, _id) {
       const templateData = {
@@ -262,6 +269,7 @@ export function deleteResponseButton(onSuccessCallback) {
   return {
     data: '_id',
     title: 'Delete',
+    filterable: false,
     render() { return ''; },
     createdCell(node, _id, rowData) {
       const name = fullName(rowData.clientDetails) || rowData.clientId;
@@ -303,6 +311,7 @@ export function deleteProjectButton(onSuccessCallback) {
   return {
     data: '_id',
     title: 'Delete',
+    filterable: false,
     render() { return ''; },
     createdCell(node, _id, rowData) {
       const templateData = {

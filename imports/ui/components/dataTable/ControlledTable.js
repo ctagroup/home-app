@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import { transformColumn } from './helpers.jsx';
+import { transformColumn, formatDate } from './helpers.jsx';
 import _ from 'lodash';
 
 class ControlledTable extends Component {
@@ -30,6 +30,9 @@ class ControlledTable extends Component {
 
   fetchData(state /* , instance*/) {
     this.setState({ loading: true });
+    const columnsMap =
+      this.state.columns.reduce((acc, value) => ({ ...acc, [value.id]: value }), {});
+
     if (this.props.loadData) {
       this.props.loadData(
         state.page,
@@ -41,7 +44,17 @@ class ControlledTable extends Component {
           const { pageSize, page, sorted, filtered } = state;
           if (filtered.length) {
             const reducer = (filteredSoFar, nextFilter) =>
-              filteredSoFar.filter((row) => (`${row[nextFilter.id]}`).includes(nextFilter.value));
+              filteredSoFar.filter((row) => {
+                const column = columnsMap[nextFilter.id];
+                if (column.filterMethod) {
+                  return columnsMap[nextFilter.id].filterMethod(nextFilter, row, column);
+                }
+                if (row[nextFilter.id] instanceof Date) {
+                  return formatDate(row[nextFilter.id]).includes(nextFilter.value.toLowerCase());
+                }
+                return (`${row[nextFilter.id]}`)
+                  .toLowerCase().includes(nextFilter.value.toLowerCase());
+              });
             filteredData = filtered.reduce(reducer, filteredData);
           }
           // console.log('res, sorted', res, sorted);

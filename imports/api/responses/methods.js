@@ -1,6 +1,7 @@
 import { HmisClient } from '/imports/api/hmisApi';
 import Surveys from '/imports/api/surveys/surveys';
 import Questions from '/imports/api/questions/questions';
+import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import { mapUploadedSurveySections } from '/imports/api/surveys/helpers';
 import { computeFormState, findItem, getScoringVariables } from '/imports/api/surveys/computations';
 import { logger } from '/imports/utils/logger';
@@ -278,5 +279,74 @@ Meteor.methods({
 
     logger.info('DONE!', submissionId);
     return submissionId;
+  },
+  getResponsesPage(pageNumber = 0, pageSize = 50, sort = 'firstName', order = 'desc') {
+    // TODO [VK]: if client id is set..
+    logger.info(`METHOD[${Meteor.userId()}]: getResponsesPage(${pageNumber}, ${pageSize}, ${sort}, ${order})`); // eslint-disable-line max-len
+    if (!Meteor.userId()) {
+      throw new Meteor.Error(401, 'Unauthorized');
+    }
+    // const self = this;
+
+
+    const hc = HmisClient.create(Meteor.userId());
+    const clientsList = hc.api('client').getClients(); // .disableError(404);
+    // TODO: replace with Cached value
+    const clientsMap =
+      clientsList.reduce((acc, client) => ({ ...acc, [client.clientId]: client }), {});
+    // console.log('clientsMap', clientsMap);
+
+    // const responsesPage =
+    //   hc.api('house-matching-v2').getResponsesPage(pageNumber, pageSize, sort, order);
+
+    // const clientsCache = {};
+    const queue = [];
+
+    const responses = Responses.find().fetch();
+    const responsesOutput = [];
+    // Publish the local data first, so the user can get a quick feedback.
+    for (let i = 0, len = responses.length; i < len; i++) {
+      const response = responses[i];
+      const { clientId, clientSchema } = response;
+      if (clientSchema) {
+        response.clientDetails = { loading: true };
+        queue.push({
+          responseId: response._id,
+          clientId,
+          clientSchema,
+        });
+      } else {
+        response.clientDetails = PendingClients.findOne({ _id: clientId })
+        || { error: 'client not found (404)' };
+      }
+      if (clientsMap[clientId]) { response.clientDetails = clientsMap[clientId]; }
+      // self.added('responses', response._id, response);
+      responsesOutput.push(response);
+    }
+    // self.ready();
+
+
+    return { content: responsesOutput, page: { totalPages: responsesOutput.length ? 1 : 0 } };
+
+    // eachLimit(queue, Meteor.settings.connectionLimit, (data, callback) => {
+    //   if (stopFunction) {
+    //     callback();
+    //     return;
+    //   }
+    //   Meteor.defer(() => {
+    //     const apiEndpoint = hc.api('client'); // .disableError(404);
+    //     const { responseId, clientId, clientSchema } = data;
+    //     if (!clientsCache[clientId]) {
+    //       try {
+    //         clientsCache[clientId] = apiEndpoint.getClient(clientId, clientSchema);
+    //         clientsCache[clientId].schema = clientSchema;
+    //       } catch (e) {
+    //         clientsCache[clientId] = { error: e.reason };
+    //       }
+    //     }
+    //     self.changed('responses', responseId, { clientDetails: clientsCache[clientId] });
+    //     callback();
+    //   });
+    // });
   },
 });
