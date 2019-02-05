@@ -1,5 +1,4 @@
 import { logger } from '/imports/utils/logger';
-import path from 'path';
 
 let counter = 0;
 function getCorrelationId() {
@@ -69,6 +68,23 @@ export default class HomeApiClient {
     throw new Meteor.Error('home.api', `${message} (${code})`, { code });
   }
 
+  doGet(url) {
+    const options = {
+      headers: this.getRequestHeaders(),
+      correlationId: getCorrelationId(),
+    };
+    this.logger.debug(`HOME API:get#${options.correlationId} ${url}`, options);
+    let response = false;
+    try {
+      response = HTTP.get(url, options);
+    } catch (err) {
+      this.throwApiError('post', url, options, err);
+    }
+    delete response.content;
+    this.logger.debug(`HOME API:get#${options.correlationId} res (${url})`, response);
+    return response.data;
+  }
+
   doPost(url, data) {
     const options = {
       headers: this.getRequestHeaders(),
@@ -83,7 +99,7 @@ export default class HomeApiClient {
       this.throwApiError('post', url, options, err);
     }
     delete response.content;
-    this.logger.debug(`HMIS API:post#${options.correlationId} res (${url})`, response);
+    this.logger.debug(`HOME API:post#${options.correlationId} res (${url})`, response);
     return response.data;
   }
 

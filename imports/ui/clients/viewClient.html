@@ -46,6 +46,9 @@
           <li class="nav-item">
             <a class="nav-link {{#if isActive 'eligibility'}}active{{/if}}" data-toggle="tab" href="#panel-eligibility" role="tab">Eligibility</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link {{#if isActive 'rois'}}active{{/if}}" data-toggle="tab" href="#panel-rois" role="tab">ROIs</a>
+          </li>
           {{#if showReferralStatus}}
             <li class="nav-item">
               <a class="nav-link {{#if isActive 'referrals'}}active{{/if}}" data-toggle="tab" href="#panel-referrals" role="tab">Referrals</a>
@@ -146,6 +149,59 @@
               {{/unless}}
             {{/with}}
           </div>
+
+          <!--Panel ROIS -->
+          <div class="tab-pane fade {{#if isActive 'rois'}}in show active {{else}}no-show{{/if}}" id="panel-rois" role="tabpanel">
+            {{#with getClientRois}}
+              <div class="row margin-top-35">
+                <div class="col-xs-12">
+                  {{#with loading}}
+                    <p>Loading...</p>
+                  {{/with}}
+                  {{#with data}}
+                    <table class="table">
+                      <thead>
+                        <th>Id</th>
+                        <th>Date from</th>
+                        <th>Date To</th>
+                        <th>Notes</th>
+                        <th>Actions</th>
+                      </thead>
+                      <tbody>
+                        {{#each this}}
+                          <tr>
+                            <td>{{this.id}}</td>
+                            <td>{{this.startDate}}</td>
+                            <td>{{this.endDate}}</td>
+                            <td>{{this.notes}}</td>
+                            <td>
+                              <a href="{{pathFor 'clientRoisEdit' this.id}}" class="editRoi btn btn-default">
+                                <i class="fa fa-pencil"></i> Edit
+                              </a>
+                              <!--
+                              <a class="deleteRoi btn btn-danger">
+                                <i class="fa fa-remove"></i> Delete
+                              </a>
+                              -->
+                              </td>
+                          </tr>
+                        {{/each}}
+                      </tbody>
+                    </table>
+                  {{/with}}
+                  {{#with error}}
+                    <p class="alert alert-error">{{this}}</p>
+                  {{/with}}
+                  <a href="{{pathFor 'clientRoisNew'}}" class="btn btn-primary">
+                    <i class="fa fa-plus"></i> New ROI
+                  </a>
+
+                </div>
+              </div>
+            {{/with}}
+
+          </div>
+
           <!--/.Panel 1.5-->
           <!--Panel 2 Case Management -->
           <!-- <div class="tab-pane fade no-show" id="panel-case-management" role="tabpanel">

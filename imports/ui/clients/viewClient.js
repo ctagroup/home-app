@@ -413,6 +413,10 @@ Template.viewClient.helpers(
         'enrollmentInfo.dataCollectionStage': dataCollectionStages.EXIT,
       }).count() >= 1;
     },
+
+    getClientRois() {
+      return Template.instance().clientRois.get();
+    },
   }
 );
 
@@ -630,10 +634,22 @@ Template.viewClient.onCreated(function onCreated() {
   this.selectedProject = new ReactiveVar(false);
   this.selectedEnrollment = new ReactiveVar(false);
   this.dataCollectionStage = new ReactiveVar(0);
+  this.clientRois = new ReactiveVar({
+    loading: true,
+  });
   this.autorun(() => {
     const enrollmentIds = flattenKeyVersions(this.data.client, 'enrollments')
       .map(e => e.enrollmentId);
     Meteor.subscribe('responses.enrollments', enrollmentIds);
+
+    const dedupClientId = this.data.client.dedupClientId;
+    console.log(this.data.client);
+    Meteor.call('roiApi', 'getRoisForClient', dedupClientId, (error, data) => {
+      this.clientRois.set({
+        error,
+        data,
+      });
+    });
   });
 });
 
