@@ -84,3 +84,4 @@ cfs:gridfs
 google-config-ui
 dynamic-import
 meteortesting:mocha
+littledata:synced-cron

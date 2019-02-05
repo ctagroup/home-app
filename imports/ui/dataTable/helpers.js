@@ -7,6 +7,9 @@ import React from 'react';
 
 export const TableDom = '<"box"<"box-header"<"box-toolbar"<"clearfix"ri><"pull-left"<lf>><"pull-right"p>>><"box-body table-responsive"t>>'; // eslint-disable-line max-len
 
+// eslint-disable-next-line react/react-in-jsx-scope
+const blazeData = (name, data) => (<BlazeTemplate name={name} data={data} />);
+
 export function editButton(path, options) {
   return Object.assign({
     data: '_id',
@@ -28,8 +31,7 @@ export function editButton(path, options) {
         _id,
         row,
       };
-      // eslint-disable-next-line react/react-in-jsx-scope
-      return (<BlazeTemplate name={'DataTableEditButton'} data={data} />);
+      return blazeData('DataTableEditButton', data);
     },
     width: '45px',
     orderable: false,
@@ -64,8 +66,7 @@ export function deleteHouseholdButton() {
           Meteor.setTimeout(() => location.reload(), 1500);
         },
       };
-      // eslint-disable-next-line react/react-in-jsx-scope
-      return (<BlazeTemplate name={'DataTableDeleteButton'} data={templateData} />);
+      return blazeData('DataTableDeleteButton', templateData);
     },
     width: '45px',
     orderable: false,
@@ -103,8 +104,7 @@ export function deleteHousingUnitButton() {
           // Meteor.setTimeout(() => location.reload(), 1500);
         },
       };
-      // eslint-disable-next-line react/react-in-jsx-scope
-      return (<BlazeTemplate name={'DataTableDeleteButton'} data={templateData} />);
+      return blazeData('DataTableDeleteButton', templateData);
     },
     width: '45px',
     orderable: false,
@@ -146,8 +146,7 @@ export function deleteSurveyButton(onSuccessCallback) {
           }
         },
       };
-      // eslint-disable-next-line react/react-in-jsx-scope
-      return (<BlazeTemplate name={'DataTableDeleteButton'} data={templateData} />);
+      return blazeData('DataTableDeleteButton', templateData);
     },
     width: '45px',
     orderable: false,
@@ -189,8 +188,7 @@ export function deleteQuestionButton(onSuccessCallback) {
           }
         },
       };
-      // eslint-disable-next-line react/react-in-jsx-scope
-      return (<BlazeTemplate name={'DataTableDeleteButton'} data={templateData} />);
+      return blazeData('DataTableDeleteButton', templateData);
     },
     width: '45px',
     orderable: false,
@@ -227,8 +225,7 @@ export function deleteUserButton() {
           // Meteor.setTimeout(() => location.reload(), 1500);
         },
       };
-      // eslint-disable-next-line react/react-in-jsx-scope
-      return (<BlazeTemplate name={'DataTableDeleteButton'} data={templateData} />);
+      return blazeData('DataTableDeleteButton', templateData);
     },
     width: '45px',
     orderable: false,
@@ -236,29 +233,24 @@ export function deleteUserButton() {
 }
 
 export function deleteFileButton() {
+  const composeData = (_id) => ({
+    _id,
+    message: 'Are you sure you want to delete this file?',
+    method: 'files.delete',
+    args: [_id],
+  });
   return {
     data: '_id',
     title: 'Delete',
     filterable: false,
     render() { return ''; },
     createdCell(node, _id) {
-      const templateData = {
-        _id,
-        message: 'Are you sure you want to delete this file?',
-        method: 'files.delete',
-        args: [_id],
-      };
+      const templateData = composeData(_id);
       Blaze.renderWithData(Template.DataTableDeleteButton, templateData, node);
     },
     reactCreatedCell(node, _id) {
-      const templateData = {
-        _id,
-        message: 'Are you sure you want to delete this file?',
-        method: 'files.delete',
-        args: [_id],
-      };
-      // eslint-disable-next-line react/react-in-jsx-scope
-      return (<BlazeTemplate name={'DataTableDeleteButton'} data={templateData} />);
+      const templateData = composeData(_id);
+      return blazeData('DataTableDeleteButton', templateData);
     },
     width: '45px',
     orderable: false,
@@ -266,41 +258,33 @@ export function deleteFileButton() {
 }
 
 export function deleteResponseButton(onSuccessCallback) {
+  const composeData = (_id, rowData) => {
+    const name = fullName(rowData.clientDetails) || rowData.clientId;
+    return {
+      _id,
+      message: `Are you sure you want to delete the response of ${name}?`,
+      method: 'responses.delete',
+      args: [_id],
+      onSuccess() {
+        if (onSuccessCallback) {
+          onSuccessCallback(rowData);
+        }
+      },
+    };
+  };
+
   return {
     data: '_id',
     title: 'Delete',
     filterable: false,
     render() { return ''; },
     createdCell(node, _id, rowData) {
-      const name = fullName(rowData.clientDetails) || rowData.clientId;
-      const templateData = {
-        _id,
-        message: `Are you sure you want to delete the response of ${name}?`,
-        method: 'responses.delete',
-        args: [_id],
-        onSuccess() {
-          if (onSuccessCallback) {
-            onSuccessCallback(rowData);
-          }
-        },
-      };
+      const templateData = composeData(_id, rowData);
       Blaze.renderWithData(Template.DataTableDeleteButton, templateData, node);
     },
     reactCreatedCell(node, _id, rowData) {
-      const name = fullName(rowData.clientDetails) || rowData.clientId;
-      const templateData = {
-        _id,
-        message: `Are you sure you want to delete the response of ${name}?`,
-        method: 'responses.delete',
-        args: [_id],
-        onSuccess() {
-          if (onSuccessCallback) {
-            onSuccessCallback(rowData);
-          }
-        },
-      };
-      // eslint-disable-next-line react/react-in-jsx-scope
-      return (<BlazeTemplate name={'DataTableDeleteButton'} data={templateData} />);
+      const templateData = composeData(_id, rowData);
+      return blazeData('DataTableDeleteButton', templateData);
     },
     width: '45px',
     orderable: false,
@@ -308,39 +292,31 @@ export function deleteResponseButton(onSuccessCallback) {
 }
 
 export function deleteProjectButton(onSuccessCallback) {
+  const composeData = (_id, rowData) => (
+    {
+      _id,
+      message: `Are you sure you want to delete the project ${rowData.projectName}?`,
+      method: 'projects.delete',
+      args: [_id, rowData.schema],
+      onSuccess() {
+        if (onSuccessCallback) {
+          onSuccessCallback(rowData);
+        }
+      },
+    }
+  );
   return {
     data: '_id',
     title: 'Delete',
     filterable: false,
     render() { return ''; },
     createdCell(node, _id, rowData) {
-      const templateData = {
-        _id,
-        message: `Are you sure you want to delete the project ${rowData.projectName}?`,
-        method: 'projects.delete',
-        args: [_id, rowData.schema],
-        onSuccess() {
-          if (onSuccessCallback) {
-            onSuccessCallback(rowData);
-          }
-        },
-      };
+      const templateData = composeData(_id, rowData);
       Blaze.renderWithData(Template.DataTableDeleteButton, templateData, node);
     },
     reactCreatedCell(node, _id, rowData) {
-      const templateData = {
-        _id,
-        message: `Are you sure you want to delete the project ${rowData.projectName}?`,
-        method: 'projects.delete',
-        args: [_id, rowData.schema],
-        onSuccess() {
-          if (onSuccessCallback) {
-            onSuccessCallback(rowData);
-          }
-        },
-      };
-      // eslint-disable-next-line react/react-in-jsx-scope
-      return (<BlazeTemplate name={'DataTableDeleteButton'} data={templateData} />);
+      const templateData = composeData(_id, rowData);
+      return blazeData('DataTableDeleteButton', templateData);
     },
     width: '45px',
     orderable: false,

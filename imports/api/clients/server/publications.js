@@ -11,6 +11,7 @@ import {
   getReferralStatusHistory,
   getHousingMatch,
 } from '/imports/api/clients/helpers';
+import { ClientsCache } from '/imports/api/clients/clientsCache';
 
 Meteor.publish('clients.one',
 function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
@@ -160,4 +161,34 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
   } catch (e) {} // eslint-disable-line
 
   return null;
+});
+
+Meteor.publish('clients.all', function pubClients(force = false) {
+  logger.info(`PUB[${this.userId}]: clients.all`);
+
+  let stopFunction = false;
+  this.unblock();
+  this.onStop(() => {
+    stopFunction = true;
+  });
+
+  const hc = HmisClient.create(this.userId);
+  try {
+    const cachedClients = ClientsCache.find().fetch();
+    if (cachedClients.length && !force) {
+      cachedClients.forEach(client => { this.added('localClients', client.clientId, client); });
+    } else {
+      const clients = hc.api('client').getAllClients() || [];
+      clients.forEach(client => {
+        if (stopFunction) return;
+        this.added('localClients', client.clientId, client);
+        this.ready();
+      });
+      // ClientsCache.updateMany({}, { upsert: true });
+      ClientsCache.rawCollection().insertMany(clients, { ordered: false });
+    }
+  } catch (e) {
+    logger.warn(e);
+  }
+  return this.ready();
 });

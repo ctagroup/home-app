@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import { transformColumn } from './helpers.jsx';
+import { transformColumn, formatDate } from './helpers.jsx';
 
 class DataTable extends Component {
   // Universal search/filter
@@ -15,6 +15,8 @@ class DataTable extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.filterColumns = this.filterColumns.bind(this);
+    this.columnsMap =
+      this.state.columns.reduce((acc, value) => ({ ...acc, [value.id]: value }), {});
   }
 
   handleChange(event) {
@@ -31,9 +33,17 @@ class DataTable extends Component {
     const matchColumns = columns.filter(({ data }) => data !== '_id');
     const lowerCaseFilter = filter.toLowerCase();
     return input.filter(item => {
-      const out = matchColumns.map(({ data }) => (item[data]))
-        .find(column => (
-          column !== undefined && column.toString().toLowerCase().includes(lowerCaseFilter)));
+      const out = matchColumns.map((column) =>
+          ({ data: item[column.data], filterMethod: column.filterMethod, column }))
+        .find(({ data, filterMethod, column }) => {
+          if (filterMethod) {
+            return data !== undefined && filterMethod({ value: lowerCaseFilter }, item, column);
+          }
+          if (data instanceof Date) {
+            return formatDate(data).includes(lowerCaseFilter);
+          }
+          return data !== undefined && data.toString().toLowerCase().includes(lowerCaseFilter);
+        });
       return out !== false && out !== undefined;
     });
   }

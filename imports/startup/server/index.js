@@ -1,3 +1,5 @@
+import { SyncedCron } from 'meteor/littledata:synced-cron';
+
 import { logger } from '/imports/utils/logger';
 
 import eventPublisher, { ServerStartedEvent } from '/imports/api/eventLog/events';
@@ -75,4 +77,5 @@ Meteor.startup(() => {
   } else {
     logger.warn('S3 config is missing');
   }
+  SyncedCron.start();
 });

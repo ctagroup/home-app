@@ -7,27 +7,37 @@ import SurveyQuestionsMaster from '/imports/api/surveys/surveyQuestionsMaster';
 
 // TODO [VK]: force reaload cache flag?
 
-Meteor.publish('surveys.all', function publishAllSurveys() {
+Meteor.publish('surveys.all', function publishAllSurveys(force = false) {
   logger.info(`PUB[${this.userId}]: surveys.all`);
 
   const hc = HmisClient.create(this.userId);
   try {
-    const surveys = hc.api('survey2').getSurveys() || [];
     const localSurveys = Surveys.find({ version: 2 }).fetch();
-
-    surveys.filter(s => !!s.surveyDefinition).forEach(s => {
-      this.added('surveys', s.surveyId, {
-        version: 2,
-        title: s.surveyTitle,
-        definition: s.surveyDefinition,
-        hmis: {
+    const surveyCaches = SurveyCaches.find().fetch();
+    const surveysList = [];
+    if (surveyCaches.length && !force) {
+      surveyCaches.map((survey) => this.added('surveys', survey.surveyId, survey));
+    } else {
+      const surveys = hc.api('survey2').getSurveys() || [];
+      surveys.forEach(s => {
+        if (!s.surveyDefinition) return;
+        const surveyData = {
           surveyId: s.surveyId,
-          status: 'uploaded',
-        },
-        numberOfResponses: Responses.find({ surveyId: s.surveyId }).count(),
-        createdAt: '',
+          version: 2,
+          title: s.surveyTitle,
+          definition: s.surveyDefinition,
+          hmis: {
+            surveyId: s.surveyId,
+            status: 'uploaded',
+          },
+          numberOfResponses: Responses.find({ surveyId: s.surveyId }).count(),
+          createdAt: '',
+        };
+        this.added('surveys', s.surveyId, surveyData);
+        surveysList.push(surveyData);
       });
-    });
+      SurveyCaches.rawCollection().insertMany(surveysList, { ordered: false });
+    }
     localSurveys.map(s => this.added('surveys', s._id, {
       ...s,
       hmis: {
@@ -69,33 +79,4 @@ Meteor.publish('surveys.v1', function publishAllSurveys() {
     Surveys.find({ version: 1 }),
     SurveyQuestionsMaster.find(),
   ];
-});
-
-
-Meteor.publish('surveyCaches.all', function publishAllSurveyCaches() {
-  logger.info(`PUB[${this.userId}]: surveyCaches.all`);
-
-  const surveyCursor = SurveyCaches.find();
-  // .fetch();
-  const localSurveysCursor = Surveys.find({ version: 2 });
-  if (surveyCursor.count()) return [surveyCursor, localSurveysCursor];
-
-  const hc = HmisClient.create(this.userId);
-  try {
-    const surveys = hc.api('survey2').getSurveys() || [];
-    const localSurveys = Surveys.find({ version: 2 }).fetch();
-
-    surveys.forEach(s => {
-      if (!s.surveyDefinition) return;
-      this.added('surveyCaches', s.surveyId, {
-        version: 2,
-        title: s.surveyTitle,
-        createdAt: '',
-      });
-    });
-    localSurveys.map(s => this.added('surveyCaches', s._id, s));
-  } catch (e) {
-    logger.warn(e);
-  }
-  return this.ready();
 });

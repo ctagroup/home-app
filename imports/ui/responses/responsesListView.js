@@ -3,6 +3,7 @@ import { deleteResponseButton, TableDom } from '/imports/ui/dataTable/helpers';
 import moment from 'moment';
 import Responses, { ResponseStatus } from '/imports/api/responses/responses';
 import Surveys from '/imports/api/surveys/surveys';
+import { Clients } from '/imports/api/clients/clients';
 import { fullName } from '/imports/api/utils';
 import './responsesListView.html';
 
@@ -37,7 +38,7 @@ const tableOptions = {
       render(value, type, doc) {
         const survey = Surveys.findOne({ _id: value });
         const title = survey ? survey.title : value;
-        const url = Router.path('adminDashboardresponsesEdit', { _id: doc._id });
+        const url = Router.path('adminDashboardresponsesEdit', { _id: doc._id, surveyId: value });
         return `<a href="${url}">${title}</a>`;
       },
       filterMethod(filter, row, column) {
@@ -53,7 +54,9 @@ const tableOptions = {
       data: 'clientId',
       title: 'Client',
       render(value, type, response) {
-        const clientDetails = response.clientDetails || { loading: true };
+        const clientData = Clients.findOne(response.clientId);
+        // const clientDetails = response.clientDetails || { loading: true };
+        const clientDetails = clientData || { loading: true };
 
         if (clientDetails.loading) {
           return 'Loading...';
@@ -78,7 +81,10 @@ const tableOptions = {
       },
       filterMethod(filter, row /* , column*/) {
         const response = row;
-        const clientDetails = response.clientDetails || { loading: true };
+        const clientData = Clients.findOne(response.clientId);
+        // const clientDetails = response.clientDetails || { loading: true };
+        const clientDetails = clientData || { loading: true };
+        // TODO: trigger client data load if no data coming from subscription
         let value = '';
         if (clientDetails.loading) {
           value = 'Loading...';
