@@ -643,7 +643,6 @@ Template.viewClient.onCreated(function onCreated() {
     Meteor.subscribe('responses.enrollments', enrollmentIds);
 
     const dedupClientId = this.data.client.dedupClientId;
-    console.log(this.data.client);
     Meteor.call('roiApi', 'getRoisForClient', dedupClientId, (error, data) => {
       this.clientRois.set({
         error,

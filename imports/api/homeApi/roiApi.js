@@ -3,6 +3,7 @@ import HomeApiClient from './homeApiClient';
 
 class RoiApiClient extends HomeApiClient {
   getRoisForClient(clientId) {
+    console.log('aaaa', this);
     const url = this.absoluteUrl(`/api/v1/clients/${clientId}/rois/`);
     return this.doGet(url);
   }

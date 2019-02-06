@@ -1,0 +1,19 @@
+<template name="roisEdit">
+  {{#with getRoi}}
+    {{log this}}
+    {{#with loading}}
+      <p>Loading...</p>
+    {{/with}}
+
+    {{#with data}}
+      <form>
+        {{> roisForm data=data}}
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+    {{/with}}
+
+    {{#with error}}
+      <p class="alert alert-error">{{this}}</p>
+    {{/with}}
+  {{/with}}
+</template>
