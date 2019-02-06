@@ -1,6 +1,11 @@
+import yaml from 'js-yaml';
 import Alert from '/imports/ui/alert';
 import Surveys from '/imports/api/surveys/surveys';
 import './surveyForm.html';
+
+// hack to reload subscription on form submission
+// survey publication is based on external api, not mongo
+// so there is no document to change
 
 Template.surveyForm.helpers({
   doc() {
@@ -9,7 +14,7 @@ Template.surveyForm.helpers({
     }
     try {
       const obj = JSON.parse(this.survey.definition);
-      const definition = JSON.stringify(obj, null, 2);
+      const definition = yaml.safeDump(obj);
       return Object.assign(this.survey, { definition });
     } catch (e) {
       return this.survey;
@@ -29,6 +34,8 @@ Template.surveyForm.helpers({
 AutoForm.hooks({
   surveyForm: {
     onSubmit: function onSubmit(insertDoc, updateDoc, currentDoc) {
+      const jsonDefinition = JSON.stringify(yaml.safeLoad(insertDoc.definition));
+      Object.assign(insertDoc, { definition: jsonDefinition });
       if (currentDoc._id) {
         Meteor.call('surveys.update', currentDoc._id, insertDoc, (err) => {
           if (err) {

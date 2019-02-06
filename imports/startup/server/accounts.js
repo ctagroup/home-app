@@ -21,7 +21,7 @@ Accounts.onLogin(({ user }) => {
   }
 
   if (Meteor.settings.homeApi) {
-    sendUserHmisCredentialsToApi(user, Meteor.settings.homeApi);
+    sendUserHmisCredentialsToApi(user);
   }
 });
 
