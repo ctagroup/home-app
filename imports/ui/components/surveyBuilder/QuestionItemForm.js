@@ -5,6 +5,7 @@ import QuestionPicker from '/imports/ui/components/surveyBuilder/formFields/Ques
 import { QuestionDefinitionSchema } from '/imports/api/surveys/definitionSchemas';
 import { handleItemTransform } from './helpers';
 
+
 export default class QuestionItemForm extends React.Component {
   render() {
     const isHmisQuestion = !!this.props.model.hmisId;
@@ -12,21 +13,22 @@ export default class QuestionItemForm extends React.Component {
     const isDisabled = isHmisQuestion || isHudQuestion;
 
     const category = this.props.model.category;
-    const choiceFields = category === 'choice' ? (
-        <div className="panel panel-default">
-          <div className="panel-heading">Choice</div>
-          <div className="panel-body">
-            <AutoField name="options" disabled={isDisabled} />
-            <AutoField
-	    	name="other" 
-	    	label="Add 'Other' option" 
-	    	disabled={isDisabled} 
-	    />
+    const choiceFields = category === 'choice' ?
+      (<div className="panel panel-default">
+        <div className="panel-heading">Choice</div>
+        <div className="panel-body">
+          <AutoField name="options" disabled={isDisabled} />
+          <AutoField
+            name="other"
+            label="Add 'Other' option"
+            disabled={isDisabled}
+          />
         </div>
-      ) : null;
+      </div>) : null;
 
     const showMask = category === 'text' || category === 'number';
     const { isInFormBuilder, questions } = this.props;
+
 
     return (
       <AutoForm
@@ -51,20 +53,11 @@ export default class QuestionItemForm extends React.Component {
         }
         <AutoField name="refusable" disabled={isDisabled} />
         {isInFormBuilder && <ListField
-            name="rules"
-            itemProps={{ component: RuleField }}
-            addIcon={
-              <span>
-                <i className="glyphicon glyphicon-plus" /> Add Rule
-              </span>
-            }
-            removeIcon={
-              <span>
-                <i className="glyphicon glyphicon-minus" /> Delete Rule
-              </span>
-            }
-          />
-        )}
+          name="rules"
+          itemProps={{ component: RuleField }}
+          addIcon={<span><i className="glyphicon glyphicon-plus" /> Add Rule</span>}
+          removeIcon={<span><i className="glyphicon glyphicon-minus" /> Delete Rule</span>}
+        />}
       </AutoForm>
     );
   }
