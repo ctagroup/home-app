@@ -73,6 +73,7 @@ export default class Question extends Item {
       }
     } catch (e) {
       // handle value change
+      const choiceOptions = this.getChoiceOptions();
       switch (this.props.item.category) {
         case 'choice':
           value = event.target.value;
