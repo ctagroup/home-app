@@ -20,10 +20,17 @@ export default class HomeApiClient {
   }
 
   getRequestHeaders() {
+    let accessToken;
+    try {
+      accessToken = this.usersCollection.findOne(this.userId).services.HMIS.accessToken;
+    } catch (err) {
+      accessToken = null;
+    }
+
     return {
       'X-HMIS-TrustedApp-Id': this.appId,
       'X-HOME-ApiKey': this.settings.apiKey,
-      Authorization: `HMISUserAuth session_token=${this.accessToken}`,
+      Authorization: `HMISUserAuth session_token=${accessToken}`,
       Accept: 'application/json',
       'Content-Type': 'application/json',
     };
@@ -65,7 +72,10 @@ export default class HomeApiClient {
       message = 'HOME API Server Error';
     }
 
-    throw new Meteor.Error('home.api', `${message} (${code})`, { code });
+    throw new Meteor.Error('home.api', `${message} (${code})`, {
+      code,
+      data: httpError.response.data,
+    });
   }
 
   doGet(url) {
@@ -115,8 +125,8 @@ export default class HomeApiClient {
     });
   }
 
-  static create(user) {
-    return new this(user,
+  static create(userId) {
+    return new this(userId,
       Meteor.settings.appId, Meteor.users, Meteor.settings.homeApi, logger);
   }
 }

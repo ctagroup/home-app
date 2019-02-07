@@ -16,10 +16,11 @@ import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 import './enrollmentsListView.js';
 import './clientDeleteReason.js';
 import './manageClientEnrollments.html';
-import './viewClient.html';
+import './panelRois.js';
 import '../enrollments/enrollmentsNew';
 import '../enrollments/enrollmentsUpdate';
 import '../enrollments/dropdownHelper.js';
+import './viewClient.html';
 
 // TODO: move to global import
 const dataCollectionStages = {
@@ -127,7 +128,7 @@ Template.viewClient.helpers(
       return dataCollectionStage / 1 === dataCollectionStages.EXIT && enrollmentId;
     },
     currentClient() {
-      return this;
+      return Template.instance().data.client;
     },
     enrollmentInfo() {
       const projectId = Template.instance().selectedProject.get();
@@ -413,10 +414,6 @@ Template.viewClient.helpers(
         'enrollmentInfo.dataCollectionStage': dataCollectionStages.EXIT,
       }).count() >= 1;
     },
-
-    getClientRois() {
-      return Template.instance().clientRois.get();
-    },
   }
 );
 
@@ -634,21 +631,10 @@ Template.viewClient.onCreated(function onCreated() {
   this.selectedProject = new ReactiveVar(false);
   this.selectedEnrollment = new ReactiveVar(false);
   this.dataCollectionStage = new ReactiveVar(0);
-  this.clientRois = new ReactiveVar({
-    loading: true,
-  });
   this.autorun(() => {
     const enrollmentIds = flattenKeyVersions(this.data.client, 'enrollments')
       .map(e => e.enrollmentId);
     Meteor.subscribe('responses.enrollments', enrollmentIds);
-
-    const dedupClientId = this.data.client.dedupClientId;
-    Meteor.call('roiApi', 'getRoisForClient', dedupClientId, (error, data) => {
-      this.clientRois.set({
-        error,
-        data,
-      });
-    });
   });
 });
 
