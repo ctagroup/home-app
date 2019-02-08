@@ -4,7 +4,7 @@ import './roisForm.html';
 
 Template.roisForm.helpers({
   fieldError(fieldId) {
-    return this.errors[fieldId];
+    return (this.errors || {})[fieldId];
   },
   fieldErrors() {
     const keys = Object.keys(this.errors || {});
@@ -13,7 +13,4 @@ Template.roisForm.helpers({
 });
 
 Template.roisForm.onRendered(() => {
-  $('.js-datepicker').datetimepicker({
-    format: 'MM-DD-YYYY',
-  });
 });

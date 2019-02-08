@@ -1,29 +1,36 @@
 <template name="roisForm">
   <div class="form-group row">
     <div class="col-xs-2">
-      <label for="startDate">Start Date</label>
-      <input type="date" class="form-control" id="startDate" placeholder="Start Date">
+      <label for="startDate">Start Date:</label>
+      {{log this 'xxx'}}
+      <input type="date" class="form-control" id="startDate" placeholder="Start Date" value="{{this.data.startDate}}">
       {{#with fieldError 'startDate'}}
         <p class="text-danger">{{this}}</p>
       {{/with}}
     </div>
 
     <div class="col-xs-2">
-      <label for="endDate">End Date</label>
-      <input type="date" class="form-control " id="endDate" placeholder="End Date">
+      <label for="endDate">End Date:</label>
+      <input type="date" class="form-control " id="endDate" placeholder="End Date" value="{{this.data.endDate}}">
       {{#with fieldError 'endDate'}}
         <p class="text-danger">{{this}}</p>
       {{/with}}
     </div>
   </div>
 
-  <div class="form-group" id="signaturePad">
-    {{> signaturePad}}
-  </div>
+  <p>Signature:</p>
+  {{#if this.data.signature}}
+    <div><img src="{{this.data.signature}}" style="max-height: 200px;" alt="client signature"></div>
+    <br />
+  {{else}}
+    <div class="form-group" id="signaturePad">
+        {{> signaturePad}}
+    </div>
+  {{/if}}
 
   <div class="form-group">
-    <label for="notes">Notes</label>
-    <textarea id="notes" class="form-control" rows="3"></textarea>
+    <label for="notes">Notes:</label>
+    <textarea id="notes" class="form-control" rows="3">{{this.data.notes}}</textarea>
   </div>
   {{#each fieldErrors}}
     <p class="text-danger">{{this}}</p>

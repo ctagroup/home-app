@@ -26,7 +26,7 @@ Template.roisNew.events({
     Meteor.call('roiApi', 'createRoi', data, (err) => {
       if (err) {
         Alert.error(err);
-        template.errors.set(err.details.data);
+        template.errors.set(err.details && err.details.data);
       } else {
         Alert.success('ROI Signed');
         window.history.back();

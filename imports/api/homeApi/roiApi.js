@@ -18,16 +18,22 @@ class RoiApiClient extends HomeApiClient {
     });
   }
 
-  updateRoi(id, { startDate, endDate }) {
-    const url = this.absoluteUrl(`/api/v1/rois/${id}`);
-    return this.doPut(url, {
+  getRoi(id) {
+    const url = this.absoluteUrl(`/api/v1/rois/${id}/`);
+    return this.doGet(url);
+  }
+
+  updateRoi(id, { startDate, endDate, notes }) {
+    const url = this.absoluteUrl(`/api/v1/rois/${id}/`);
+    return this.doPatch(url, {
       startDate,
       endDate,
+      notes,
     });
   }
 
   deleteRoi(id) {
-    const url = this.absoluteUrl(`/api/v1/rois/${id}`);
+    const url = this.absoluteUrl(`/api/v1/rois/${id}/`);
     return this.doDel(url);
   }
 }

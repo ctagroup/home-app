@@ -113,6 +113,42 @@ export default class HomeApiClient {
     return response.data;
   }
 
+  doPatch(url, data) {
+    const options = {
+      headers: this.getRequestHeaders(),
+      data,
+      correlationId: getCorrelationId(),
+    };
+    this.logger.debug(`HOME API:patch#${options.correlationId} ${url}`, options);
+    let response = false;
+    try {
+      response = HTTP.patch(url, options);
+    } catch (err) {
+      this.throwApiError('patch', url, options, err);
+    }
+    delete response.content;
+    this.logger.debug(`HOME API:patch#${options.correlationId} res (${url})`, response);
+    return response.data;
+  }
+
+  doPut(url, data) {
+    const options = {
+      headers: this.getRequestHeaders(),
+      data,
+      correlationId: getCorrelationId(),
+    };
+    this.logger.debug(`HOME API:put#${options.correlationId} ${url}`, options);
+    let response = false;
+    try {
+      response = HTTP.put(url, options);
+    } catch (err) {
+      this.throwApiError('put', url, options, err);
+    }
+    delete response.content;
+    this.logger.debug(`HOME API:put#${options.correlationId} res (${url})`, response);
+    return response.data;
+  }
+
   updateUserHmisCredentials() {
     const url = this.absoluteUrl('/api/v1/auth/updateCredentials/');
     const user = this.usersCollection.findOne(this.userId);
