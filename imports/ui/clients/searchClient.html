@@ -79,4 +79,9 @@
       DOB: {{formatDate dob}}
     </div>
   {{/if}}
+  {{#if viewAll}}
+   <div class="text-muted">
+    <a href="javascript:void(0);" id="/clients/view_all/{{searchStr}}" class="btn btn-sm btn-block btn-primary text-center view_all">View All</a>
+   </div>
+   {{/if}}
 </template>

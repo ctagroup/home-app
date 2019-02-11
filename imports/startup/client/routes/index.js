@@ -1,6 +1,7 @@
 import './app';
 import './content';
 import './clients';
+import './searchClients';
 import './eligibleClients';
 import './eventLog';
 import './files';

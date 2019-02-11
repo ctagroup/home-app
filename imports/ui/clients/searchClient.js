@@ -2,7 +2,7 @@ import moment from 'moment';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import { TableDom } from '/imports/ui/dataTable/helpers';
 import Alert from '/imports/ui/alert';
-import { fullName } from '/imports/api/utils';
+import { fullName, viewAll } from '/imports/api/utils';
 import './searchClient.html';
 
 // TODO: move to dedicated template
@@ -60,10 +60,12 @@ const debouncedSearch = _.debounce((query, options, callback) => {
   Meteor.call('searchClient', query, options, (err, res) => {
     if (err) {
       Alert.error(err);
-    } else {
+    } else { var i=2;
       const clients = res.map(r => ({
         ...r,
         fullName: fullName(r),
+		viewAll:viewAll(i++),
+		searchStr:query
       }));
       callback(clients);
     }
@@ -146,6 +148,9 @@ Template.searchClient.events(
     'click .client-search-icon-container': () => {
       $('#search-client-keyword').focus();
     },
+	'click .view_all': () => {
+		Router.go($(".view_all").attr('id'));
+	},
   }
 );
 
