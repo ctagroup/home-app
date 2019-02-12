@@ -1,3 +1,5 @@
 <template name="viewAllClient">
+    {{#if hasData}}
     {{> ReactiveDatatable tableData=tableData options=tableOptions class="table dataTable"}}
+	{{/if}}
 </template>

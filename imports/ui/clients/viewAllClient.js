@@ -1,21 +1,16 @@
-import { Mongo } from 'meteor/mongo';
-//const SearchClient = Meteor.isClient ? new Mongo.Collection('search') : undefined;
-const SearchClient = new Mongo.Collection('search');
-
 import moment from 'moment';
 import { TableDom } from '/imports/ui/dataTable/helpers';
-import Alert from '/imports/ui/alert';
-import { fullName,viewAll } from '/imports/api/utils';
+import { ReactiveVar } from 'meteor/reactive-var';
 import './viewAllClient.html';
 
 const tableOptions = {
   columns: [
     {
       title: 'Client Name',
-	  data: function(row){
-		  const name = (`${row.firstName.trim()} ${row.lastName.trim()}`).trim();
-		  return `<a href="/clients/${row.clientId}?schema=${row.schema}">${name}</a>`;
-	  }
+      data(row) {
+        const name = (`${row.firstName.trim()} ${row.lastName.trim()}`).trim();
+        return `<a href="/clients/${row.clientId}?schema=${row.schema}">${name}</a>`;
+      },
     },
     {
       title: 'Date of Birth',
@@ -28,30 +23,31 @@ const tableOptions = {
   dom: TableDom,
 };
 
-console.log(SearchClient.find().count());
+let tableData = [];
+
+Template.viewAllClient.onCreated(function () {
+  const searchKey = Router.current().params.searchKey || '';
+  this.records = new ReactiveVar(0);
+  Meteor.call('searchClient', searchKey, { limit: 0 }, (err, res) => {
+    if (err) {
+      tableData = [];
+    } else {
+      this.records.set(res.length);
+      tableData = res;
+    }
+  });
+});
+
 Template.viewAllClient.helpers(
   {
+    hasData() {
+      return Template.instance().records.get() > 0;
+    },
     tableOptions() {
       return tableOptions;
     },
-   tableData() { 
-	return () => SearchClient.find({}).fetch();
-   }
+    tableData() {
+      return () => tableData.map(r => ({ ...r }));
+    },
   }
 );
-
-// const dummy=[{name: 'shanni',dob: '11-12'},{name:'shanni2',dob: '12-12'}];
-// Template.viewAllClient.helpers(
-  // {
-    // tableOptions() {
-      // return tableOptions;
-    // },
-   // tableData() {
-      // return () => dummy.map(r => ({...r}))
-    // }
-  // }
-// );
-
-
-
-

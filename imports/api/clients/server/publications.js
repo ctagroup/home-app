@@ -162,21 +162,3 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
 
   return null;
 });
-
-Meteor.publish('search',function(term){
-	var self = this;
-	Meteor.call('searchClient', term, {limit:0}, (err, res) => {
-		if (err) { 
-			self.ready();
-		} 
-		else {  
-			//self.added('search', null, res);
-			//self.added('search', "mySearch", {results: res});
-			// logger.info('data---'+res.length);
-            for (let i = 0; i < res.length; i++) { 
-			  self.added('search', res[i].clientId, res[i]);
-			}
-			self.ready();
-		}
-	});
-});

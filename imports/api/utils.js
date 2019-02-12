@@ -89,12 +89,3 @@ Object.keys(obj)
 export function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
-
-export function viewAll(records){
-	if(records>10){
-		return true;
-	}
-	else{
-		return false;
-	}
-}

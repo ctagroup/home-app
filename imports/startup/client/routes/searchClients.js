@@ -11,12 +11,6 @@ Router.route('adminDashboardsearchClientsView', {
       return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
     },
   },
-  waitOn() {
-    var term = this.params.searchKey;
-    return [
-		Meteor.subscribe('search', term)
-	]
-  },
   data() {
     return {
       title: 'Search Clients',
