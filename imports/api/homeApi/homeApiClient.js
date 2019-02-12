@@ -1,5 +1,4 @@
 import { logger } from '/imports/utils/logger';
-import path from 'path';
 
 let counter = 0;
 function getCorrelationId() {
@@ -21,10 +20,17 @@ export default class HomeApiClient {
   }
 
   getRequestHeaders() {
+    let accessToken;
+    try {
+      accessToken = this.usersCollection.findOne(this.userId).services.HMIS.accessToken;
+    } catch (err) {
+      accessToken = null;
+    }
+
     return {
       'X-HMIS-TrustedApp-Id': this.appId,
       'X-HOME-ApiKey': this.settings.apiKey,
-      Authorization: `HMISUserAuth session_token=${this.accessToken}`,
+      Authorization: `HMISUserAuth session_token=${accessToken}`,
       Accept: 'application/json',
       'Content-Type': 'application/json',
     };
@@ -66,7 +72,27 @@ export default class HomeApiClient {
       message = 'HOME API Server Error';
     }
 
-    throw new Meteor.Error('home.api', `${message} (${code})`, { code });
+    throw new Meteor.Error('home.api', `${message} (${code})`, {
+      code,
+      data: httpError.response.data,
+    });
+  }
+
+  doGet(url) {
+    const options = {
+      headers: this.getRequestHeaders(),
+      correlationId: getCorrelationId(),
+    };
+    this.logger.debug(`HOME API:get#${options.correlationId} ${url}`, options);
+    let response = false;
+    try {
+      response = HTTP.get(url, options);
+    } catch (err) {
+      this.throwApiError('post', url, options, err);
+    }
+    delete response.content;
+    this.logger.debug(`HOME API:get#${options.correlationId} res (${url})`, response);
+    return response.data;
   }
 
   doPost(url, data) {
@@ -83,7 +109,43 @@ export default class HomeApiClient {
       this.throwApiError('post', url, options, err);
     }
     delete response.content;
-    this.logger.debug(`HMIS API:post#${options.correlationId} res (${url})`, response);
+    this.logger.debug(`HOME API:post#${options.correlationId} res (${url})`, response);
+    return response.data;
+  }
+
+  doPatch(url, data) {
+    const options = {
+      headers: this.getRequestHeaders(),
+      data,
+      correlationId: getCorrelationId(),
+    };
+    this.logger.debug(`HOME API:patch#${options.correlationId} ${url}`, options);
+    let response = false;
+    try {
+      response = HTTP.patch(url, options);
+    } catch (err) {
+      this.throwApiError('patch', url, options, err);
+    }
+    delete response.content;
+    this.logger.debug(`HOME API:patch#${options.correlationId} res (${url})`, response);
+    return response.data;
+  }
+
+  doPut(url, data) {
+    const options = {
+      headers: this.getRequestHeaders(),
+      data,
+      correlationId: getCorrelationId(),
+    };
+    this.logger.debug(`HOME API:put#${options.correlationId} ${url}`, options);
+    let response = false;
+    try {
+      response = HTTP.put(url, options);
+    } catch (err) {
+      this.throwApiError('put', url, options, err);
+    }
+    delete response.content;
+    this.logger.debug(`HOME API:put#${options.correlationId} res (${url})`, response);
     return response.data;
   }
 
@@ -99,8 +161,8 @@ export default class HomeApiClient {
     });
   }
 
-  static create(user) {
-    return new this(user,
+  static create(userId) {
+    return new this(userId,
       Meteor.settings.appId, Meteor.users, Meteor.settings.homeApi, logger);
   }
 }

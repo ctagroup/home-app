@@ -16,10 +16,11 @@ import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 import './enrollmentsListView.js';
 import './clientDeleteReason.js';
 import './manageClientEnrollments.html';
-import './viewClient.html';
+import './panelRois.js';
 import '../enrollments/enrollmentsNew';
 import '../enrollments/enrollmentsUpdate';
 import '../enrollments/dropdownHelper.js';
+import './viewClient.html';
 
 // TODO: move to global import
 const dataCollectionStages = {
@@ -127,7 +128,7 @@ Template.viewClient.helpers(
       return dataCollectionStage / 1 === dataCollectionStages.EXIT && enrollmentId;
     },
     currentClient() {
-      return this;
+      return Template.instance().data.client;
     },
     enrollmentInfo() {
       const projectId = Template.instance().selectedProject.get();

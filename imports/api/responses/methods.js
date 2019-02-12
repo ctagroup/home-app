@@ -190,7 +190,6 @@ Meteor.methods({
 
     const response = Responses.findOne(id);
     const { clientId, surveyId } = response;
-    const { enrollmentInfo } = response;
     const values = unescapeKeys(response.values);
 
     const hc = HmisClient.create(Meteor.userId());

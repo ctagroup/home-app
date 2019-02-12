@@ -46,6 +46,9 @@
           <li class="nav-item">
             <a class="nav-link {{#if isActive 'eligibility'}}active{{/if}}" data-toggle="tab" href="#panel-eligibility" role="tab">Eligibility</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link {{#if isActive 'rois'}}active{{/if}}" data-toggle="tab" href="#panel-rois" role="tab">ROIs</a>
+          </li>
           {{#if showReferralStatus}}
             <li class="nav-item">
               <a class="nav-link {{#if isActive 'referrals'}}active{{/if}}" data-toggle="tab" href="#panel-referrals" role="tab">Referrals</a>
@@ -146,6 +149,12 @@
               {{/unless}}
             {{/with}}
           </div>
+
+          <!--Panel ROIS -->
+          <div class="tab-pane fade {{#if isActive 'rois'}}in show active {{else}}no-show{{/if}}" id="panel-rois" role="tabpanel">
+            {{>panelRois client=currentClient}}
+          </div>
+
           <!--/.Panel 1.5-->
           <!--Panel 2 Case Management -->
           <!-- <div class="tab-pane fade no-show" id="panel-case-management" role="tabpanel">

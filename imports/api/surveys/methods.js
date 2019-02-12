@@ -4,7 +4,7 @@ import { getScoringVariables, iterateItems } from '/imports/api/surveys/computat
 import Surveys from '/imports/api/surveys/surveys';
 import {
   mapUploadedSurveySections,
-  updateDefinitionFromDoc, updateDocFromDefinition
+  updateDefinitionFromDoc, updateDocFromDefinition,
 } from '/imports/api/surveys/helpers';
 import eventPublisher, {
   SurveyUpdatedEvent,
