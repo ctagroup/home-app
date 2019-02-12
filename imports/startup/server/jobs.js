@@ -6,6 +6,7 @@ SyncedCron.add({
     return parser.text('every day');
   },
   job() {
+    Meteor.call('reloadClients');
     return true;
   },
 });
@@ -17,6 +18,7 @@ SyncedCron.add({
     return parser.text('every day');
   },
   job() {
+    Meteor.call('reloadSurveys');
     return true;
   },
 });

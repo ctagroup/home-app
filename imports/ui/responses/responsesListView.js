@@ -55,6 +55,16 @@ const tableOptions = {
       title: 'Client',
       render(value, type, response) {
         const clientData = Clients.findOne(response.clientId);
+        if (!clientData) {
+          Meteor.setTimeout(() => {
+            const clientDataReload = Clients.findOne(response.clientId);
+            if (!clientDataReload) {
+              Meteor.call('reloadClients', (err, res) => {
+                if (!err) { console.log('ClientsCache reloaded', res); }
+              });
+            }
+          }, 500);
+        }
         // const clientDetails = response.clientDetails || { loading: true };
         const clientDetails = clientData || { loading: true };
 

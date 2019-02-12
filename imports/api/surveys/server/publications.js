@@ -16,7 +16,10 @@ Meteor.publish('surveys.all', function publishAllSurveys(force = false) {
     const surveyCaches = SurveyCaches.find().fetch();
     const surveysList = [];
     if (surveyCaches.length && !force) {
-      surveyCaches.map((survey) => this.added('surveys', survey.surveyId, survey));
+      surveyCaches.forEach((survey) => {
+        survey.numberOfResponses = Responses.find({ surveyId: survey.surveyId }).count(); // eslint-disable-line
+        this.added('surveys', survey.surveyId, survey);
+      });
     } else {
       const surveys = hc.api('survey2').getSurveys() || [];
       surveys.forEach(s => {

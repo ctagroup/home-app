@@ -10,6 +10,7 @@ import { FilesAccessRoles, HouseholdAccessRoles } from '/imports/config/permissi
 import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 
 import './clientDeleteReason.js';
+import './clientTagList.js';
 import './viewClient.html';
 
 const flattenKeyVersions = (client, key) => {

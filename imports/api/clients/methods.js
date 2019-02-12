@@ -1,7 +1,8 @@
 import { logger } from '/imports/utils/logger';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
+import { ClientsCache } from '/imports/api/clients/clientsCache';
 import { HmisClient } from '/imports/api/hmisApi';
-import { mergeByDedupId } from '/imports/api/clients/helpers';
+import { mergeByDedupId, filterClientForCache } from '/imports/api/clients/helpers';
 import eventPublisher, {
   ClientCreatedEvent,
   ClientUpdatedEvent,
@@ -158,5 +159,12 @@ Meteor.methods({
       );
     }
     return mergedClients;
+  },
+
+  reloadClients() {
+    const hc = HmisClient.create(this.userId);
+    const clients = hc.api('client').getAllClients() || [];
+    const clientBasics = clients.map(filterClientForCache);
+    ClientsCache.rawCollection().insertMany(clientBasics, { ordered: false });
   },
 });

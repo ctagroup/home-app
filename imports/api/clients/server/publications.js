@@ -10,6 +10,7 @@ import {
   getGlobalHouseholds,
   getReferralStatusHistory,
   getHousingMatch,
+  filterClientForCache,
 } from '/imports/api/clients/helpers';
 import { ClientsCache } from '/imports/api/clients/clientsCache';
 
@@ -179,13 +180,22 @@ Meteor.publish('clients.all', function pubClients(force = false) {
       cachedClients.forEach(client => { this.added('localClients', client.clientId, client); });
     } else {
       const clients = hc.api('client').getAllClients() || [];
-      clients.forEach(client => {
-        if (stopFunction) return;
+      const clientBasics = clients.map(client => {
+        if (stopFunction) return null;
         this.added('localClients', client.clientId, client);
         this.ready();
-      });
+        return filterClientForCache(client);
+        // return {
+        //   clientId: client.clientId,
+        //   dedupClientId: client.dedupClientId,
+        //   firstName: client.firstName,
+        //   middleName: client.middleName,
+        //   lastName: client.lastName,
+        //   dob: client.dob,
+        // };
+      }).filter(c => c);
       // ClientsCache.updateMany({}, { upsert: true });
-      ClientsCache.rawCollection().insertMany(clients, { ordered: false });
+      ClientsCache.rawCollection().insertMany(clientBasics, { ordered: false });
     }
   } catch (e) {
     logger.warn(e);
