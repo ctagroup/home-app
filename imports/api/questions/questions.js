@@ -101,6 +101,13 @@ Questions.schema = new SimpleSchema({
       return 2;
     },
   },
+  hudQuestion: {
+    type: Boolean,
+    optional: true,
+    autoValue() {
+      return false;
+    },
+  },
   createdAt: {
     type: Date,
     label: 'Created At',

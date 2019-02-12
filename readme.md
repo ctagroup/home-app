@@ -25,7 +25,7 @@ meteor run --settings settings.local.json
 
 To run tests:
 ```
-meteor test --driver-package practicalmeteor:mocha --port 4000
+npm run test
 ```
 
 ## Deploy instructions
@@ -113,7 +113,7 @@ Each publication and method should log its details:
 
 ```
 logger.info(`PUB[${this.userId}]: name`, params);
-logger.info(`METHOD[${Meteor.userId()}]: name`, params);
+logger.info(`METHOD[${this.userId}]: name`, params);
 ```
 
 Each method call should use Bert to report succes/error as below. `err` can be a string or an exception.
@@ -124,7 +124,6 @@ import Alert from '/imports/ui/alert';
 Alert.error(err);
 Alert.success('Question updated');
 ```
-
 
 If you make a call to edit/remove HMIS item you need to update local (client side) collection to reflect the
 changes. Ie.
@@ -145,6 +144,18 @@ Use `authorize` key in a router to check user permissions:
 
 ## Survey definition
 
+Survey definition describes the elements of the survey and its interal logic. Survey definition is written using JSON format
+and consists of the following fields:
+
+```
+{
+  "title": "Test Survey",
+  "variables": { ... },
+  "items": [ ... ]
+}
+```
+
+
 
 ### Survey logic
 
@@ -160,6 +171,12 @@ Form `props` are similar to values because the are persistent - when a change oc
 ### Special variables
 
 Some variables have special meaning. Set `variables.ID.hidden` equal to `1` to hide element with a given ID.
+
+### Rules
+
+Survey item can have any number of associated rules that handle survey logic. Each rule consists of conditions and actions.
+If conditions are satisfied then actions are fired. All rules are evaluated from top to bottom of the survey definition, before
+any update in UI takes place.
 
 ### Conditions
 
@@ -193,7 +210,6 @@ This sets question1 as skipped (value is erased, question cannot be edited)
 Reduces will apply transformations to the value of an operand. Reducers can be chained using `:` notation.
 
 As an example `client.dob:age` will return age based on the date of birth of a client
-```
 
 Reducers can be applied to arrays (set of values for a certain column in a grid):
 ```
@@ -205,8 +221,99 @@ Avaliable reducers:
 
 - `date`: transforms timestamp (number) to a date,
 - `age`: calculates age given the value (date) and the current date
-- `min/max`: returns min/max from an array
+- `min`: returns min value from an array
+- `max`: returns max value from an array
 
+### Scoring responses
+
+Each variable that starts with `score.` is treated as a scoring variable and it's value will be submitted to HMIS when
+surevy responses are uploaded. Keep in mind that HMIS calculates the sum of all scores automatically, so there is no
+need to send a variable that hold the total survey score.
+
+### Survey items
+
+
+### Examples
+
+The following survey is made of 2 questions (number inputs)
+
+```
+{
+  "title": "Test Survey",
+  "id": "dummy",
+  "variables": {
+    "score.A": 0,
+    "score.B": 0,
+    "grandtotal": 0
+  },
+  "items": [
+    {
+      "id": "question1",
+      "title": "Enter first number",
+      "type": "question",
+      "category": "number"
+    },
+    {
+      "id": "question2",
+      "title": "Enter second number",
+      "type": "question",
+      "category": "number"
+    },
+    {
+      "id": "summary",
+      "type": "text",
+      "title": "Scoring Summary",
+      "text": "First score: {{variables.score.A}}<br />Second score: {{variables.score.B}}<br /><strong>GRAND TOTAL: {{variables.grandtotal}}</strong>",
+      "rules": [
+        {
+          "always": [
+            [
+              "set",
+              "score.A",
+              "values.question1"
+            ],
+            [
+              "set",
+              "score.B",
+              "values.question2"
+            ],
+            [
+              "sum",
+              "grandtotal",
+              "variables.score.A",
+              "variables.score.B"
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+Surveys
+
+### Submission Uploader
+
+To enable submission uploader an `"uploader": true` must be added to `settings.json` file
+E.G:
+```
+{
+  "public": {
+    "features": {
+      "appProfile": "home",
+      "uploader": true
+    }
+  }
+}
+```
+
+Currently the Submission Uploader is only available by direct links:
+/submissionUploader/list
+/submissionUploader/new
+
+## Examples
+  See `exampleUploadConfig.json` for the example of config to be input for Submission Uploader
 
 ## Meteor Components in use
 

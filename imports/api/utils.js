@@ -67,6 +67,7 @@ export function trimText(str = '', maxLen = 50) {
 }
 
 export function stringContains(str, query = '') {
+  if (!str) return false;
   const strLower = str.toLowerCase();
   const queryLower = query.toLowerCase();
   return strLower.indexOf(queryLower) !== -1;

@@ -7,7 +7,9 @@ import './selectSurvey.html';
 Template.selectSurvey.helpers(
   {
     getSurveys() {
-      return Surveys.find({ 'hmis.surveyId': { $exists: true } }).fetch();
+      const surveys = Surveys.find({ 'hmis.surveyId': { $exists: true } }).fetch();
+      return surveys;
+      // return Surveys.find({ 'hmis.surveyId': { $exists: true } }).fetch();
     },
     getSurveyedClient() {
       return PendingClients.find().fetch();
@@ -18,17 +20,12 @@ Template.selectSurvey.helpers(
 Template.selectSurvey.events(
   {
     'click .nextLogSurvey': (evt, tmpl) => {
-      const surveyID = tmpl.find('.surveyList').value;
-      const clientID = Router.current().params._id;
+      const surveyId = tmpl.find('.surveyList').value;
+      const clientId = Router.current().params._id;
 
-      if (!surveyID) {
-        return;
-      }
+      if (!surveyId) return;
 
-      const query = {
-        clientId: clientID,
-        surveyId: surveyID,
-      };
+      const query = { clientId, surveyId };
 
       if (Router.current().params.query.schema) {
         query.schema = Router.current().params.query.schema;

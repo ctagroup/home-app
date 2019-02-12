@@ -3,7 +3,14 @@ import { logger } from '/imports/utils/logger';
 import { getScoringVariables, iterateItems } from '/imports/api/surveys/computations';
 import Surveys from '/imports/api/surveys/surveys';
 import SurveyCaches from '/imports/api/surveys/surveyCaches';
-import { mapUploadedSurveySections } from '/imports/api/surveys/helpers';
+import {
+  mapUploadedSurveySections,
+  updateDefinitionFromDoc,
+  updateDocFromDefinition,
+} from '/imports/api/surveys/helpers';
+import eventPublisher, {
+  SurveyUpdatedEvent,
+} from '/imports/api/eventLog/events';
 
 Meteor.methods({
   'surveys.create'(doc) {
@@ -25,17 +32,21 @@ Meteor.methods({
   },
 
   'surveys.update'(id, doc) {
-    logger.info(`METHOD[${this.userId}]: surveys.update`, id);
-
-    console.log(doc);
+    logger.info(`METHOD[${this.userId}]: surveys.update`, id, doc);
 
     // TODO: permissions
     check(id, String);
 
     const hc = HmisClient.create(this.userId);
+
+    let tempId;
     let uploadedSurvey;
     try {
-      uploadedSurvey = hc.api('survey2').getSurvey(id);
+      const survey = hc.api('survey2').getSurvey(id);
+      uploadedSurvey = updateDocFromDefinition({
+        ...survey,
+        definition: survey.surveyDefinition,
+      });
     } catch (err) {
       uploadedSurvey = {
         surveyTitle: 'temp survey',
@@ -43,20 +54,33 @@ Meteor.methods({
       };
     }
 
-    // create temp survey in mongo
-    const tempId = Surveys.insert({
-      ...(doc.$set || doc),
-      title: uploadedSurvey.surveyTitle,
-      locked: uploadedSurvey.locked,
-      hmis: {
-        surveyId: uploadedSurvey ? id : undefined,
-      },
-    });
+    if (doc.$set) {
+      // survey definition updated in builder
+      tempId = Surveys.insert({
+        ...doc.$set,
+        title: uploadedSurvey.surveyTitle,
+        locked: uploadedSurvey.locked,
+        hmis: {
+          surveyId: uploadedSurvey ? id : undefined,
+        },
+        hudSurvey: uploadedSurvey.hudSurvey,
+        surveyVersion: uploadedSurvey.surveyVersion,
+      });
+    } else {
+      // survey updated via edit form
+      tempId = Surveys.insert({
+        ...doc,
+        hmis: {
+          surveyId: uploadedSurvey.surveyId,
+        },
+      });
+    }
 
     try {
       Meteor.call('surveys.uploadQuestions', tempId);
-      Meteor.call('surveys.upload', tempId);
+      const hmisSurveyId = Meteor.call('surveys.upload', tempId);
       Surveys.remove(id);
+      eventPublisher.publish(new SurveyUpdatedEvent(hmisSurveyId, { userId: this.userId }));
     } catch (e) {
       logger.error(`Failed to upload survey ${e}`);
       throw new Meteor.Error('hmis.api', `Survey created, failed to upload! ${e}`);
@@ -135,7 +159,7 @@ Meteor.methods({
 
   'surveys.upload'(id) {
     const hc = HmisClient.create(Meteor.userId());
-    const survey = Surveys.findOne(id);
+    const survey = updateDefinitionFromDoc(Surveys.findOne(id));
     const definition = JSON.parse(survey.definition);
     let hmis;
     let surveyId;
@@ -213,5 +237,28 @@ Meteor.methods({
       createdAt: '',
     }));
     SurveyCaches.rawCollection().insertMany(surveysList, { ordered: false });
+  },
+
+  'surveys.getSurveySections'(surveyId) {
+    logger.info(`METHOD[${this.userId}]: surveys.getSurveySections`, surveyId);
+    check(surveyId, String);
+
+    const hc = HmisClient.create(this.userId);
+    return hc.api('survey').getSurveySections(surveyId);
+  },
+  'surveys.getSurveyQuestions'(surveyId) {
+    return surveyId;
+  },
+  'surveys.getSurveySectionQuestions'(surveyId) {
+    logger.info(`METHOD[${this.userId}]: surveys.getSurveySections`, surveyId);
+    check(surveyId, String);
+
+    const hc = HmisClient.create(this.userId);
+    const sections = hc.api('survey').getSurveySections(surveyId);
+    const sectionQuestions = sections.reduce((acc, { surveySectionId }) => ({
+      ...acc,
+      [surveySectionId]: hc.api('survey').getQuestionMappings(surveyId, surveySectionId),
+    }), {});
+    return { sections, sectionQuestions };
   },
 });

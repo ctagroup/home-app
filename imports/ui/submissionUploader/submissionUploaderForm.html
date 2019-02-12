@@ -1,0 +1,79 @@
+<template name="submissionUploaderForm">
+  <h4 class="page-header">Select a survey:</h4>
+  {{> surveySelect selectedSurveyId=selectedSurveyId }}
+  {{#if surveySelected}}
+    Check uploader definition:
+    <form id="surveyConfigForm">
+      <textarea id="surveyDefinition" name="definition" class="form-control" rows="5">{{surveyConfig}}</textarea>
+      <button class="form-control">Verify config</button>
+    </form>
+    {{#if configVerified}}
+      <h4 class="page-header">Upload a CSV</h4>
+      {{#unless uploading}}
+        <input class="form-control" type="file" name="uploadCSV">
+      {{else}}
+        <p><i class="fa fa-spin fa-refresh"></i> Uploading files...</p>
+      {{/unless}}
+    {{/if}}
+
+    {{#with surveyData}}
+      {{#if items}}
+        {{#each item in items}}
+          {{> renderSurveyItem item=item}}
+        {{/each}}
+      {{/if}}
+    {{/with}}
+
+    {{#with selectedSurveyDetails }}
+      {{#if loading}}
+        <p>loading...</p>
+      {{else}}
+        <div>
+          <table class="table">
+            <caption>Survey Sections</caption>
+            <thead>
+              <tr>
+                <th>Section Id</th>
+                <th>Description</th>
+                <th>Questions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each data.sections}}
+              <tr>
+                <td>{{surveySectionId}}</td>
+                <td>{{sectionDetail}}</td>
+                <td>
+                  <ul>
+                    {{#each selectedSurveySectionQuestions sectionId}}
+                      <li><strong>{{questionId}} : </strong>{{displayText}}</li>
+                    {{/each}}
+                  </ul>
+                </td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+
+        </div>
+      {{/if}}
+    {{/with}}
+
+  {{/if}}
+</template>
+
+<template name="renderSurveyItem">
+  {{#if equals item.type 'section'}}
+    <h3>Section: {{item.title}}</h3>
+    <h4>{{item.hmisId}}</h4>
+    <div style="padding-left: 15px;">
+      {{#each sectionItem in item.items}}
+        {{>renderSurveyItem item=sectionItem}}
+      {{/each}}
+    </div>
+  {{/if}}
+  {{#if equals item.type 'question'}}
+    <h4>Question: {{item.title}}</h4>
+    <h5>{{item.hmisId}}</h5>
+  {{/if}}
+</template>

@@ -1,7 +1,8 @@
+import yaml from 'js-yaml';
 import { Mongo } from 'meteor/mongo';
 
-
 const Surveys = new Mongo.Collection('surveys');
+const schemaVersions = ['v2017'].map(i => ({ value: i, label: i }));
 
 SimpleSchema.debug = true;
 Surveys.schema = new SimpleSchema({
@@ -19,9 +20,9 @@ Surveys.schema = new SimpleSchema({
     },
     custom() {
       try {
-        JSON.parse(this.value);
+        yaml.safeLoad(this.value);
       } catch (e) {
-        return 'invalidJson';
+        return 'invalidYaml';
       }
       return null;
     },
@@ -38,6 +39,20 @@ Surveys.schema = new SimpleSchema({
     label: 'HMIS data',
     optional: true,
     blackbox: true,
+  },
+  hudSurvey: {
+    type: Boolean,
+    label: 'Enrollment Survey?',
+    optional: true,
+  },
+  surveyVersion: {
+    type: String,
+    label: 'Enrollment Schema Version',
+    allowedValues: schemaVersions.map(o => o.value),
+    autoform: {
+      options: schemaVersions,
+    },
+    optional: true,
   },
   createdAt: {
     type: Date,
@@ -70,7 +85,7 @@ Surveys.schema = new SimpleSchema({
 });
 
 Surveys.schema.messages({
-  invalidJson: 'Invalid JSON',
+  invalidYaml: 'Invalid Yaml format',
 });
 
 Surveys.attachSchema(Surveys.schema);

@@ -8,6 +8,8 @@ import { logger } from '/imports/utils/logger';
 import { escapeKeys, unescapeKeys } from '/imports/api/utils';
 import Responses, { ResponseStatus } from '/imports/api/responses/responses';
 import { prepareEmails } from '../surveys/computations';
+import { EnrollmentUploader } from './helpers';
+import Users from '/imports/api/users/users';
 
 function prepareValuesToUpload(values, definition, defaultSectionId) {
   const questionIds = Object.keys(values);
@@ -66,6 +68,7 @@ Meteor.methods({
       const { clientId, surveyId, submissionId } = Responses.findOne(id);
       const hc = HmisClient.create(this.userId);
       hc.api('survey').deleteSubmission(clientId, surveyId, submissionId);
+      // Meteor.call('responses.deleteEnrollment', id);
     } catch (err) {
       logger.warn('Failed to delete response', err);
     } finally {
@@ -109,6 +112,75 @@ Meteor.methods({
     });
   },
 
+  'responses.uploadEnrollment'(id) {
+    logger.info(`METHOD[${this.userId}]: responses.uploadEnrollment`, id);
+
+    const response = Responses.findOne(id);
+    let projectId = null;
+    let dataCollectionStage;
+    if (response.enrollmentInfo) {
+      projectId = response.enrollmentInfo.projectId;
+      dataCollectionStage = response.enrollmentInfo.dataCollectionStage || 0;
+    }
+    const { surveyId } = response;
+
+    if (!projectId) {
+      projectId = Users.findOne(this.userId).activeProjectId;
+    }
+
+    if (!projectId) {
+      throw new Meteor.Error(400, 'Active project not set');
+    }
+
+    const hc = HmisClient.create(this.userId);
+
+    // check if survey exists in hslynk
+    let survey;
+    try {
+      survey = hc.api('survey2').getSurvey(surveyId);
+    } catch (err) {
+      Responses.update(id, { $set: { status: ResponseStatus.UPLOAD_ERROR } });
+      logger.error(err);
+      throw new Meteor.Error('error', `Survey ${surveyId} not uploaded.`);
+    }
+
+    const enrollmentUploader = new EnrollmentUploader(response, survey);
+
+    // projectId is reqired field when creating an enrollment
+    // FIXME: we should use project associated with the survey
+    // instead of current active user project
+    // VK: waiting for this assoc (survey-project) to be saved somewhere, note that si....
+    const dataToSend = enrollmentUploader.questionResponsesToData(
+      projectId,
+      dataCollectionStage
+    );
+    const sortedData = enrollmentUploader.dataOrderedByUrlVariables(dataToSend);
+    logger.debug('sorted', sortedData);
+    const result = enrollmentUploader.upload(sortedData, hc.api('client'));
+
+    logger.debug('enrollment upload result', result);
+    if (Object.keys(result).length > 0) {
+      // new enrollment has been crated
+      Responses.update(id, {
+        $set: {
+          enrollment: result,
+        },
+      });
+    }
+
+    return result;
+  },
+
+  'responses.deleteEnrollment'(id) {
+    logger.info(`METHOD[${this.userId}]: responses.uploadEnrollment`, id);
+    const response = Responses.findOne(id);
+    if (response.enrollment) {
+      Object.values(response.enrollment).forEach(entry => {
+        throw new Error('deleteEnrollment is not implemented yet', entry.updateUri);
+      });
+    }
+  },
+
   'responses.uploadToHmis'(id) {
     logger.info(`METHOD[${Meteor.userId()}]: responses.uploadToHmis`, id);
     check(id, String);
@@ -119,6 +191,7 @@ Meteor.methods({
 
     const response = Responses.findOne(id);
     const { clientId, surveyId } = response;
+    // const { enrollmentInfo } = response;
     const values = unescapeKeys(response.values);
 
     const hc = HmisClient.create(Meteor.userId());
@@ -348,5 +421,15 @@ Meteor.methods({
     //     callback();
     //   });
     // });
+  },
+  'responses.count'() {
+    logger.info(`METHOD[${this.userId}]: responses.count`);
+
+    function count() {
+      return Responses._collection // eslint-disable-line
+      .rawCollection().distinct('clientId');
+    }
+
+    return count();
   },
 });

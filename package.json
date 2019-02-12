@@ -1,16 +1,20 @@
 {
   "dependencies": {
-    "@babel/runtime": "^7.0.0-beta.44",
+    "@babel/runtime": "^7.3.1",
     "async": "http://registry.npmjs.org/async/-/async-1.0.0.tgz",
+    "awilix": "^4.0.1",
     "aws-sdk": "^2.221.1",
     "babel-runtime": "^6.26.0",
+    "better-queue": "^3.8.10",
     "currency.js": "^1.1.1",
     "datatables.net-bs": "^1.10.16",
     "eventemitter2": "^5.0.1",
     "jquery": "^1.11.10",
+    "js-yaml": "^3.12.1",
     "meteor-node-stubs": "^0.2.11",
     "moment": "https://registry.npmjs.org/moment/-/moment-2.16.0.tgz",
     "nock": "^10.0.2",
+    "papaparse": "^4.6.2",
     "raven": "^1.2.1",
     "react": "https://registry.npmjs.org/react/-/react-15.6.1.tgz",
     "react-datepicker": "^0.55.0",
@@ -20,23 +24,27 @@
     "react-quill": "^1.2.7",
     "react-sortable-tree": "^1.8.1",
     "react-table": "^6.8.6",
+    "underscore": "^1.9.1",
     "uniforms": "^1.23.2",
     "uniforms-bootstrap3": "^1.23.2",
     "winston": "^2.4.1",
     "winston-sentry": "git+https://github.com/ualtinok/winston-sentry.git"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
     "eslint": "^2.13.1",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-plugin-import": "^1.8.1",
     "eslint-plugin-jsx-a11y": "^1.5.1",
     "eslint-plugin-react": "^5.2.2",
     "mup-git": "^1.0.1",
-    "npm": "^5.8.0"
+    "npm": "^5.8.0",
+    "sinon": "^5.1.1"
   },
   "scripts": {
     "start": "meteor --settings settings.local.json",
     "lint": "eslint .",
-    "test": "meteor test --driver-package meteortesting:mocha --port 4000"
+    "test": "meteor test --once --driver-package meteortesting:mocha --port 4000",
+    "test:watch": "meteor test --driver-package meteortesting:mocha --port 4000"
   }
 }

@@ -20,24 +20,61 @@ export default class QuestionModal extends React.Component {
     super();
     this.state = {
       searchString: '',
+      hudQuestionsOnly: false,
     };
     this.handleSeachChange = this.handleSeachChange.bind(this);
+    this.triggerHUD = this.triggerHUD.bind(this);
+  }
+
+  getChoiceLabels(question) {
+    let labels;
+    try {
+      labels = question.category === 'choice' ?
+        Object.values(question.options) : [];
+    } catch (err) {
+      labels = Array.isArray(question.options) ? question.options : [];
+    }
+    return labels;
   }
 
   handleSeachChange(event) {
     this.setState({ searchString: event.target.value });
   }
 
+  triggerHUD() {
+    this.setState({ hudQuestionsOnly: !this.state.hudQuestionsOnly });
+  }
+
   render() {
-    const filteredQuestions = this.props.questions.filter(
-      q => stringContains(q.title, this.state.searchString)
+    // TODO: other schema versions select
+    const { searchString } = this.state;
+    let filteredQuestions = this.props.questions.filter(
+      q => {
+        // if (q.title === 'Living Situation') {
+        //   console.log('qqqq', q);
+        // }
+        const inTitle = stringContains(q.title || '', searchString);
+        const inUriObjectField = q.enrollment
+          && stringContains(q.enrollment.uriObjectField || '', searchString);
+        const inHudQuestionId = q.enrollment
+          && stringContains(q.enrollment.hudQuestionId, searchString);
+        const inOptions = stringContains(this.getChoiceLabels(q).join('---'), searchString);
+        return inTitle || inUriObjectField || inOptions || inHudQuestionId;
+      }
     );
+    if (this.props.hudSurvey && this.state.hudQuestionsOnly) {
+      filteredQuestions = filteredQuestions.filter(q => !!q.enrollment);
+    }
     const items = filteredQuestions.map(q => (
       <li key={q.hmisId}>
-        <button onClick={(event) => this.props.handleClose(event, q)}>Add</button>
-        <span>{q.title}</span>
+        <button onClick={(event) => this.props.handleAddQuestion(event, q, false)}>Add</button>
+        <strong> {q.title}</strong>
+        ({q.category}) {q.enrollment ? q.enrollment.hudQuestionId : null}<br />
+        <em>{q.enrollment && q.enrollment.uriObjectField} {this.getChoiceLabels(q).join(' ')}</em>
       </li>
     ));
+    // .sort((a, b) => a.title < b.title);
+    console.log(this.props.questions);
 
     return (
       <Modal
@@ -46,7 +83,19 @@ export default class QuestionModal extends React.Component {
         style={customStyles}
       >
         <h2>Add Question</h2>
-        <p>Add a question from Question Bank.
+        <p>Add a question from Question Bank
+          ({filteredQuestions.length}/{this.props.questions.length}).
+          {this.props.hudSurvey && <span>
+            <br />HUD only:
+            <label>
+              <input
+                type="checkbox"
+                value={this.state.hudQuestionsOnly}
+                onChange={this.triggerHUD}
+              />
+            </label>
+            {this.state.hudQuestionsOnly && <select><option>2017</option></select>}
+          </span>}
           <input
             type="text"
             value={this.state.searchString}
@@ -58,9 +107,15 @@ export default class QuestionModal extends React.Component {
         or
         <button
           className="btn btn-primary"
-          onClick={(event) => this.props.handleClose(event, null)}
+          onClick={(event) => this.props.handleAddQuestion(event, null, true)}
         >
           Add new question
+        </button>
+        <button
+          className="btn btn-default"
+          onClick={(event) => this.props.handleClose(event)}
+        >
+          Close
         </button>
       </Modal>
     );

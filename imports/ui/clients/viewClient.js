@@ -1,7 +1,11 @@
+import { ReactiveVar } from 'meteor/reactive-var';
 import { Clients } from '/imports/api/clients/clients';
 import Users from '/imports/api/users/users';
 import { RecentClients } from '/imports/api/recent-clients';
 import Questions from '/imports/api/questions/questions';
+import Agencies from '/imports/api/agencies/agencies';
+import Projects from '/imports/api/projects/projects';
+import Responses from '/imports/api/responses/responses';
 import { logger } from '/imports/utils/logger';
 import ReferralStatusList from './referralStatusList';
 import HomeConfig from '/imports/config/homeConfig';
@@ -9,9 +13,38 @@ import { FilesAccessRoles, HouseholdAccessRoles } from '/imports/config/permissi
 
 import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 
+import './enrollmentsListView.js';
 import './clientDeleteReason.js';
 import './clientTagList.js';
+import './manageClientEnrollments.html';
 import './viewClient.html';
+import '../enrollments/enrollmentsNew';
+import '../enrollments/enrollmentsUpdate';
+import '../enrollments/dropdownHelper.js';
+
+// TODO: move to global import
+const dataCollectionStages = {
+  ENTRY: 1,
+  UPDATE: 2,
+  EXIT: 3,
+  ANNUAL: 5, // Annual Assessments
+};
+
+const extendQueryWithParam = (query, param, value) => {
+  if (query === '') return `?${param}=${value}`;
+  const paramsString = query.startsWith('?') ? query.slice(1) : query;
+  const searchParams = new URLSearchParams(paramsString);
+  searchParams.set(param, value);
+  return `?${searchParams.toString()}`;
+};
+const removeQueryFromParam = (query, param) => {
+  if (query === '') return '';
+  const paramsString = query.startsWith('?') ? query.slice(1) : query;
+  const searchParams = new URLSearchParams(paramsString);
+  searchParams.delete(param);
+  return `?${searchParams.toString()}`;
+};
+const pushToURI = (name, url) => history.replaceState(history.state, name, url);
 
 const flattenKeyVersions = (client, key) => {
   const keyVersions = client.clientVersions
@@ -61,8 +94,148 @@ const updateEligibility = (client) => {
   }
 };
 
+function getEnrollmentSurveyIdForProject(projectId, surveyType) {
+  if (projectId) {
+    const agencies = Agencies.find().fetch();
+    const selectedAgency =
+      agencies.find((agency) => agency.getProjectSurveyId(projectId, surveyType));
+    return selectedAgency && selectedAgency.getProjectSurveyId(projectId, surveyType);
+  }
+  return false;
+}
+
 Template.viewClient.helpers(
   {
+    formatSSN(ssn) {
+      if (!ssn) return '';
+      // XXX-XX-3210
+      return `XXX-XX${ssn.slice(6)}`;
+    },
+    dataCollectionStages() {
+      return dataCollectionStages;
+    },
+    updateEnrollment() {
+      const enrollmentId = Template.instance().selectedEnrollment.get();
+      const dataCollectionStage = Template.instance().dataCollectionStage.get();
+      return dataCollectionStage / 1 === dataCollectionStages.UPDATE && enrollmentId;
+    },
+    annualEnrollment() {
+      const enrollmentId = Template.instance().selectedEnrollment.get();
+      const dataCollectionStage = Template.instance().dataCollectionStage.get();
+      return dataCollectionStage / 1 === dataCollectionStages.ANNUAL && enrollmentId;
+    },
+    exitEnrollment() {
+      const enrollmentId = Template.instance().selectedEnrollment.get();
+      const dataCollectionStage = Template.instance().dataCollectionStage.get();
+      return dataCollectionStage / 1 === dataCollectionStages.EXIT && enrollmentId;
+    },
+    currentClient() {
+      return this;
+    },
+    enrollmentInfo() {
+      const projectId = Template.instance().selectedProject.get();
+      if (!projectId) return {};
+      // const project = Projects.findOne(selectedProjectId);
+      // get agency
+      // get enrollmentSurveys
+      // get enr id
+
+      return {
+        projectId,
+        dataCollectionStage: parseInt(Router.current().params.query.dataCollectionStage, 10),
+      };
+    },
+    updateEnrollmentInfo() {
+      const selectedEnrollmentId = Template.instance().selectedEnrollment.get();
+      const currentClientId = Router.current().params._id;
+      const client = Clients.findOne(currentClientId);
+      const enrollments = flattenKeyVersions(client, 'enrollments');
+      const enrollment =
+        enrollments.find(({ enrollmentId }) => enrollmentId === selectedEnrollmentId);
+      const projectId = enrollment && enrollment.projectId;
+      return {
+        projectId,
+        dataCollectionStage: Router.current().params.query.dataCollectionStage,
+        enrollmentId: Router.current().params.query.enrollmentId,
+      };
+    },
+    selectedProjectStore() {
+      return Template.instance().selectedProject;
+    },
+    selectedProjectId() {
+      return Template.instance().selectedProject.get();
+    },
+    selectedProject() {
+      const selectedProjectId = Template.instance().selectedProject.get();
+      return Projects.findOne(selectedProjectId);
+    },
+    projectEntrySurveyId() {
+      const selectedProjectId = Template.instance().selectedProject.get();
+      return getEnrollmentSurveyIdForProject(selectedProjectId, 'entry');
+    },
+    projectUpdateSurveyId() {
+      const selectedEnrollmentId = Template.instance().selectedEnrollment.get();
+      const currentClientId = Router.current().params._id;
+      const client = Clients.findOne(currentClientId);
+      const enrollments = flattenKeyVersions(client, 'enrollments');
+      const enrollment =
+        enrollments.find(({ enrollmentId }) => enrollmentId === selectedEnrollmentId);
+
+      const projectId = enrollment && enrollment.projectId;
+      if (projectId) {
+        const agencies = Agencies.find().fetch();
+        const selectedAgency =
+          agencies.find((agency) => agency.getProjectSurveyId(projectId, 'update'));
+        return selectedAgency && selectedAgency.getProjectSurveyId(projectId, 'update');
+      }
+      return false;
+    },
+    updateEnrollmentProjectId() {
+      const selectedEnrollmentId = Template.instance().selectedEnrollment.get();
+      const currentClientId = Router.current().params._id;
+      const client = Clients.findOne(currentClientId);
+      const enrollments = flattenKeyVersions(client, 'enrollments');
+      const enrollment =
+        enrollments.find(({ enrollmentId }) => enrollmentId === selectedEnrollmentId);
+
+      return enrollment && enrollment.projectId;
+    },
+    updateEnrollmentProject() {
+      const selectedEnrollmentId = Template.instance().selectedEnrollment.get();
+      const currentClientId = Router.current().params._id;
+      const client = Clients.findOne(currentClientId);
+      const enrollments = flattenKeyVersions(client, 'enrollments');
+      const enrollment =
+        enrollments.find(({ enrollmentId }) => enrollmentId === selectedEnrollmentId);
+
+      const projectId = enrollment && enrollment.projectId;
+      return Projects.findOne(projectId);
+    },
+    projects() {
+      const allProjects = Agencies.find().fetch()
+      .reduce((all, agency) => {
+        if (agency.enrollmentSurveys) {
+          const projectsIds = agency.projectsOfUser(Meteor.userId());
+          const agencyProjects = projectsIds.map(projectId => {
+            // Getting only agencies with surveys:
+            if (agency.getProjectSurveyId(projectId, 'entry')) {
+              return {
+                agency,
+                project: Projects.findOne(projectId) || { _id: projectId },
+              };
+            }
+            return null;
+          }).filter(i => i);
+          return [...all, ...agencyProjects];
+        }
+        return all;
+      }, []);
+
+      return allProjects.map(({ agency, project }) => ({
+        id: project._id,
+        label: `${agency.agencyName}/${project.projectName || project._id}`,
+      }));
+    },
     eligibleClient() {
       // TODO [VK]: check by updated at instead of schema version
       const currentClientId = Router.current().params._id;
@@ -79,18 +252,53 @@ Template.viewClient.helpers(
     enrollments() {
       const currentClientId = Router.current().params._id;
       const client = Clients.findOne(currentClientId);
-      return flattenKeyVersions(client, 'enrollments');
+      const enrollments = flattenKeyVersions(client, 'enrollments');
+
+      return enrollments
+      // .filter(withResponse)
+      .sort((a, b) => {
+        if (a.entryDate === b.entryDate) {
+          return a.dateUpdated - b.dateUpdated;
+        }
+        return a.entryDate - b.entryDate;
+      });
     },
     globalHouseholds() {
       const currentClientId = Router.current().params._id;
       const client = Clients.findOne(currentClientId);
       return flattenKeyVersions(client, 'globalHouseholds');
     },
+    isActive(tab) {
+      if (Template.instance() && Template.instance().selectedTab) {
+        const selectedTab = Template.instance().selectedTab.get();
+        return selectedTab.slice(6) === tab;
+      }
+      return false;
+    },
     clientResponsesPath() {
       const clientId = Router.current().params._id;
       const schema = Router.current().params.query.schema;
       const query = { clientId, schema };
       return Router.path('adminDashboardresponsesView', {}, { query });
+    },
+    viewEnrollmentPath(enrollment, enrollmentSurveyType) {
+      const { _id } = Router.current().params;
+      const { schema } = Router.current().params.query;
+      const { enrollmentId } = enrollment;
+      const projectId = Meteor.user().activeProjectId;
+      const surveyId = getEnrollmentSurveyIdForProject(projectId, enrollmentSurveyType);
+
+      const enrollmentSurveyTypeMap = {
+        entry: dataCollectionStages.ENTRY,
+        update: dataCollectionStages.UPDATE,
+        exit: dataCollectionStages.EXIT,
+      };
+      const dataCollectionStage = enrollmentSurveyTypeMap[enrollmentSurveyType];
+
+      return Router.path('viewEnrollmentAsResponse',
+        { _id, enrollmentId },
+        { query: { schema, surveyId, dataCollectionStage } }
+      );
     },
     isReferralStatusActive(step) {
       const client = Router.current().data().client;
@@ -192,17 +400,91 @@ Template.viewClient.helpers(
         default: return definition;
       }
     },
+
+    enrollmentResponses(enrollmentId, dataCollectionStage) {
+      const options = { 'enrollmentInfo.dataCollectionStage': dataCollectionStage };
+      if (dataCollectionStage === dataCollectionStages.ENTRY) {
+        options['enrollment.enrollment-0.id'] = enrollmentId;
+      } else {
+        options['enrollmentInfo.enrollmentId'] = enrollmentId;
+      }
+      return Responses.find(options).fetch();
+    },
+    enrollmentExited(enrollmentId) {
+      return Responses.find({
+        'enrollmentInfo.enrollmentId': enrollmentId,
+        'enrollmentInfo.dataCollectionStage': dataCollectionStages.EXIT,
+      }).count() >= 1;
+    },
   }
 );
 
+// TODO: merge update end exit workflows:
 Template.viewClient.events(
   {
+    'click .updateLink': (evt, tmpl) => {
+      evt.preventDefault();
+      let dataCollectionStage;
+      let tab;
+      switch (evt.target.id[0]) {
+        case 'u':
+          dataCollectionStage = dataCollectionStages.UPDATE;
+          tab = 'panel-update-enrollment';
+          break;
+        case 'e':
+          dataCollectionStage = dataCollectionStages.EXIT;
+          tab = 'panel-exit-enrollment';
+          break;
+        case 'a':
+          dataCollectionStage = dataCollectionStages.ANNUAL;
+          tab = 'panel-annual-enrollment';
+          break;
+        default:
+          return;
+      }
+      const enrollmentId = evt.target.id.slice(2);
+      tmpl.dataCollectionStage.set(dataCollectionStage);
+      tmpl.selectedEnrollment.set(enrollmentId);
+      const { _id } = Router.current().params;
+      const query1 = extendQueryWithParam(window.location.search, 'selectedTab', tab);
+      const query2 = extendQueryWithParam(query1, 'enrollmentId', enrollmentId);
+      const newLocation = extendQueryWithParam(query2, 'dataCollectionStage', dataCollectionStage);
+      pushToURI(tab, _id + newLocation);
+      Router.current().params.query.dataCollectionStage = dataCollectionStage;
+      Router.current().params.query.enrollmentId = enrollmentId;
+      Router.current().params.query.selectedTab = tab;
+      tmpl.selectedTab.set(tab);
+    },
+    'click .nav-link': (evt, tmpl) => {
+      const tab = evt.target.hash.slice(1);
+      tmpl.selectedTab.set(tab);
+      const { _id } = Router.current().params;
+      // const { _id, query, hash } = Router.current().params;
+      tmpl.selectedEnrollment.set(false); // Remove selectedEnrollment
+      let newLocation = '';
+      switch (tab) {
+        case 'panel-create-enrollment': {
+          Router.current().params.query.dataCollectionStage = dataCollectionStages.ENTRY;
+          newLocation = extendQueryWithParam(
+            extendQueryWithParam(window.location.search, 'selectedTab', tab),
+            'dataCollectionStage', dataCollectionStages.ENTRY);
+          break;
+        }
+        default: {
+          newLocation = removeQueryFromParam(
+            extendQueryWithParam(window.location.search, 'selectedTab', tab),
+            'dataCollectionStage');
+        }
+      }
+      // !NB: Push to history and Router.current().params to skip page reload;
+      pushToURI(tab, _id + newLocation);
+      Router.current().params.query.selectedTab = tab;
+      // Router.go(Router.current().route.getName(), { _id }, { query, hash });
+    },
     'click .edit': (evt, tmpl) => {
       const query = {};
       const client = tmpl.data.client;
-      if (client.schema) {
-        query.query = `schema=${client.schema}`;
-      }
+      if (client.schema) query.query = `schema=${client.schema}`;
       Router.go('adminDashboardclientsEdit', { _id: client._id }, query);
     },
     'click .back': () => {
@@ -342,6 +624,21 @@ Template.viewClient.events(
     },
   }
 );
+
+Template.viewClient.onCreated(function onCreated() {
+  let tab = Router.current().params.query.selectedTab || 'panel-overview';
+  // update tab not available on page load:
+  tab = tab === 'panel-update-enrollment' ? 'panel-overview' : tab;
+  this.selectedTab = new ReactiveVar(tab);
+  this.selectedProject = new ReactiveVar(false);
+  this.selectedEnrollment = new ReactiveVar(false);
+  this.dataCollectionStage = new ReactiveVar(0);
+  this.autorun(() => {
+    const enrollmentIds = flattenKeyVersions(this.data.client, 'enrollments')
+      .map(e => e.enrollmentId);
+    Meteor.subscribe('responses.enrollments', enrollmentIds);
+  });
+});
 
 Template.viewClient.onRendered(() => {
   $('body').addClass('sidebar-collapse');

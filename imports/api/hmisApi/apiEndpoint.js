@@ -36,14 +36,17 @@ export class ApiEndpoint {
   }
 
   doGet(url) {
+    const logGetRequests = false;
     const headers = this.getRequestHeaders();
     const options = {
       headers,
       correlationId: getCorrelationId(),
     };
-    logger.debug(`HMIS API:get#${options.correlationId} (${url})`,
-      this.logGetDetails ? options : ''
-    );
+    if (logGetRequests) {
+      logger.debug(`HMIS API:get#${options.correlationId} (${url})`,
+        this.logGetDetails ? options : ''
+      );
+    }
 
     let response = false;
     try {
@@ -52,9 +55,11 @@ export class ApiEndpoint {
       this.throwApiError('get', url, headers, err, this.logGetDetails);
     }
     delete response.content;
-    logger.debug(`HMIS API:get#${options.correlationId} res (${url})`,
-      this.logGetDetails ? response : response.statusCode
-    );
+    if (logGetRequests) {
+      logger.debug(`HMIS API:get#${options.correlationId} res (${url})`,
+        this.logGetDetails ? response : response.statusCode
+      );
+    }
     return response.data;
   }
 

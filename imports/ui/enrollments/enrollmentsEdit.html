@@ -1,0 +1,24 @@
+<template name="enrollmentsEdit">
+  {{#if response}}
+    {{#if survey}}
+      {{#if enrollment}}
+        <div>{{> React
+          component=component
+          definition=definition
+          initialValues=initialValues
+          client=client
+          response=response
+          enrollment=enrollment
+          surveyId=surveyId
+          debugMode=isAdmin
+        }}</div>
+      {{else}}
+        <p>Enrollment does not exist</p>
+      {{/if}}
+    {{else}}
+      <p>Survey does not exist</p>
+    {{/if}}
+  {{else}}
+    <p>Responses does not exist</p>
+  {{/if}}
+</template>

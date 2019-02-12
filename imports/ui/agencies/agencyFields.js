@@ -1,5 +1,6 @@
 import Users from '/imports/api/users/users';
 import Projects from '/imports/api/projects/projects';
+import Surveys from '/imports/api/surveys/surveys';
 import { fullName } from '/imports/api/utils';
 import './agencyFields.html';
 
@@ -82,6 +83,45 @@ export function formSchema(doc = {}) {
     });
   }
 
+  if (Array.isArray(doc.projects)) {
+    doc.projects.forEach(projectId => {
+      const project = Projects.findOne(projectId) || {};
+      const autoform = {
+        type: 'select',
+        options: () => Surveys.find({
+          hudSurvey: true,
+          surveyVersion: project.schema,
+        }).fetch().map(s => ({
+          label: s.title,
+          value: s._id,
+        })),
+      };
+
+      const projectKey = `enrollmentSurveys._${project.schema}::${projectId}`;
+      definition[projectKey] = {
+        optional: true,
+        label: `${project.projectName} (${project.schema})`,
+        type: new SimpleSchema({
+          entry: {
+            type: String,
+            optional: true,
+            autoform,
+          },
+          update: {
+            type: String,
+            optional: true,
+            autoform,
+          },
+          exit: {
+            type: String,
+            optional: true,
+            autoform,
+          },
+        }),
+      };
+    });
+  }
+
   return new SimpleSchema(definition);
 }
 
@@ -98,12 +138,21 @@ export function form2doc(doc) {
     return [...all, ...memberships];
   }, []);
 
+  const enrollmentSurveys = Object.keys(doc.enrollmentSurveys || {}).reduce((all, key) => {
+    const projectId = key.substring(1);
+    return {
+      ...all,
+      [projectId]: doc.enrollmentSurveys[key],
+    };
+  }, {});
+
   return {
     agencyName: doc.agencyName,
     description: doc.description,
     members: doc.members || [],
     projects: doc.projects || [],
     projectsMembers,
+    enrollmentSurveys,
   };
 }
 
@@ -123,9 +172,18 @@ export function doc2form(doc) {
     };
   }, {});
 
+  const enrollmentSurveys = Object.keys(doc.enrollmentSurveys || {}).reduce((all, projectId) => {
+    const key = `_${projectId}`;
+    return {
+      ...all,
+      [key]: doc.enrollmentSurveys[projectId],
+    };
+  }, {});
+
   const form = {
     ...doc,
     projectMembers,
+    enrollmentSurveys,
   };
   return form;
 }
@@ -133,5 +191,8 @@ export function doc2form(doc) {
 Template.agencyFields.helpers({
   showUserProjectGrid() {
     return this.doc.members.length > 0 && this.doc.projects.length > 0;
+  },
+  showEnrollmentSurveys() {
+    return this.doc.members.length > 0;
   },
 });
