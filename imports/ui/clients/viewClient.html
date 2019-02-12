@@ -69,6 +69,9 @@
               </li>
             {{/if}}
           {{/if}}
+          <li class="nav-item">
+            <a class="nav-link {{#if isActive 'client-tags'}}active{{/if}}" data-toggle="tab" href="#panel-client-tags" role="tab">Tags</a>
+          </li>
 <!-- TODO: Implement other tabs -->
 <!--
           <li class="nav-item">
@@ -464,6 +467,17 @@
               </div>
               <!--/.Panel 5.7-->
             {{/if}}
+
+            <!--Panel 6 Tags -->
+            <div class="tab-pane fade {{#if isActive 'client-tags'}}in show active {{else}}no-show{{/if}}" id="panel-client-tags" role="tabpanel">
+              <div class="row">
+                <div class="col-xs-12">
+                  <h3>Tags</h3>
+                  {{> clientTagListView}}
+                </div>
+              </div>
+            </div>
+            <!--/.Panel 6-->
 
           </div>
 

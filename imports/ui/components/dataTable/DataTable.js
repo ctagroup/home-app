@@ -51,13 +51,15 @@ class DataTable extends Component {
   render() {
     const { data, columns, filter } = this.state;
     const filteredData = this.filterColumns(data, columns, filter);
+    const { disableSearch } = this.props;
+    const searchable = !disableSearch;
 
     const minSize = Math.min(50, data.length);
     const defaultPageSize = [5, 10, 20, 25, 50, 100]
       .find((curr) => (curr - minSize) > 0);
     return (
       <div style={{ padding: '10px' }}>
-        <div
+        {searchable && <div
           id="DataTables_Table_0_filter" className="dataTables_filter"
           style={{ display: 'inline-block' }}
         >
@@ -68,7 +70,7 @@ class DataTable extends Component {
             placeholder="" aria-controls="DataTables_Table_0"
           />
           </label>
-        </div>
+        </div>}
         <ReactTable
           resizable={false}
           data={filteredData}
