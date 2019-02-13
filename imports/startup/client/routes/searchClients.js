@@ -3,8 +3,8 @@ import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 
 
 Router.route('adminDashboardsearchClientsView', {
-  path: '/clients/view_all/:searchKey',
-  template: 'viewAllClient',
+  path: '/clients/searchClientsView/:searchKey',
+  template: 'viewAllClients',
   controller: AppController,
   authorize: {
     allow() {

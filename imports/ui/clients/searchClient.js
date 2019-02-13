@@ -150,9 +150,6 @@ Template.searchClient.events(
     'click .client-search-icon-container': () => {
       $('#search-client-keyword').focus();
     },
-    'click .view_all': () => {
-      Router.go($('.view_all').attr('search-client'));
-    },
   }
 );
 

@@ -14,7 +14,7 @@ import '/imports/ui/housingUnits/housingUnitsListView';
 import '/imports/ui/globalHouseholds/globalHouseholdListView';
 import '/imports/ui/globalHouseholds/globalHouseholdCreateView';
 import '/imports/ui/globalHouseholds/globalHouseholdEditView';
-import '/imports/ui/clients/viewAllClient';
+import '/imports/ui/clients/viewAllClients';
 
 import '/imports/startup/client/routes';
 
