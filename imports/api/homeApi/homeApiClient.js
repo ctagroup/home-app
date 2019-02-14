@@ -1,5 +1,5 @@
 import { logger } from '/imports/utils/logger';
-import path from 'path';
+// import path from 'path';
 
 let counter = 0;
 function getCorrelationId() {

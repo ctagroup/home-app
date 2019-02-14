@@ -34,9 +34,11 @@ class DataTable extends Component {
     const lowerCaseFilter = filter.toLowerCase();
     return input.filter(item => {
       const out = matchColumns.map((column) =>
-          ({ data: item[column.data], filterMethod: column.filterMethod, column }))
-        .find(({ data, filterMethod, column }) => {
+          ({ filterMethod: column.filterMethod, column }))
+        .find(({ filterMethod, column }) => {
+          let data = item[column.data];
           if (filterMethod) {
+            if (column.dataAccessor) data = column.dataAccessor(item);
             return data !== undefined && filterMethod({ value: lowerCaseFilter }, item, column);
           }
           if (data instanceof Date) {

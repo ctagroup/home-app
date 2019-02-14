@@ -1,7 +1,8 @@
 <template name="questionsListView">
   <p><a href="{{pathFor 'questionsNew'}}" class="btn btn-primary"><i class="fa fa-plus"></i> New Question</a></p>
   {{#if hasData}}
-      {{> ReactiveDatatable tableData=tableData options=tableOptions }}
+      {{> dataTable tableData=tableData options=tableOptions }}
+      <!-- { {> ReactiveDatatable tableData=tableData options=tableOptions }} -->
   {{else}}
       <div class="alert alert-info">
           <p>There are no visible items in this collection.</p>
