@@ -145,6 +145,7 @@ export const allowedClientCacheKeys = [
   'middleName',
   'lastName',
   'dob',
+  'schema',
 ];
 
 export const filterClientForCache = (client) =>
