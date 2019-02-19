@@ -1,6 +1,4 @@
 import '/imports/ui/content/login';
-
-
 AccountsTemplates.configure({
   privacyUrl: 'privacy',
   termsUrl: 'terms-of-use',

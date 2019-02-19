@@ -23,19 +23,4 @@ describe('clients publications', function () {
       done();
     });
   });
-
-  /*
-  can't make this test works - callback is not being called if publication returns []
-  it('lists 0 clients if user is not authenticated', function (done) {
-    PendingClients.insert({
-      firstName: 'client1',
-      lastName: 'client1',
-    });
-    const collector = new PublicationCollector({ userId: undefined });
-    collector.collect('pendingClients.all', (collections) => {
-      chai.assert.typeOf(collections.clients, 'undefined');
-      done();
-    });
-  });
-  */
 });

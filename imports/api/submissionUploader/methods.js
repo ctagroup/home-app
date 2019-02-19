@@ -31,10 +31,6 @@ Meteor.methods({
     const SOURCE_SYSTEM_ID_INDEX = 1;
     row[SOURCE_SYSTEM_ID_INDEX] = -1; // strangely, -1 gets matched to a client
     Meteor.call('submissionUploader.addJob', 'job #2', 'file1', row);
-
-    // Run the queue using:
-    // Meteor.call('submissionUploader.run', '4b79f42f-e793-4be4-a35f-4b7b56f14572',
-    //   'file1', function (err, res) { console.log(err,res) })
   },
   'submissionUploader.addJob'(jobName, queueName, row) {
     return Jobs.insert({

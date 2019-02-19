@@ -1,5 +1,4 @@
 export function handleItemTransform(mode, model) {
-  console.log('mm', model);
   const transformed = {
     ...model,
     rules: (model.rules || []).map(r => {

@@ -98,7 +98,6 @@ Template.viewClientMc211.helpers(
     },
 
     showEnrollments() {
-      // const schema = Router.current().params.query.schema;
       return (this.client && this.client.clientId);
     },
 
@@ -106,8 +105,7 @@ Template.viewClientMc211.helpers(
       const hasPermission = Roles.userIsInRole(
         Meteor.user(), ['System Admin', 'Developer', 'Case Manager']
       );
-      // const isHmisClient = Router.current().data().client.clientId
-      //   && Router.current().params.query.schema;
+
       return hasPermission && this.client && this.client.clientId;
     },
 
@@ -244,8 +242,6 @@ Template.viewClientMc211.events(
             progressSelector.removeClass()
               .addClass(`progress-bar progress-bar-${cssClass} progress-bar-striped active`);
 
-            // $('#referral-timeline .navigation a').removeClass()
-            //   .addClass('btn btn-sm btn-arrow-right btn-default');
             $(`#js-btn-step-${step}`).removeClass('btn-default').addClass(`btn-${cssClass}`);
             // e.relatedTarget // previous tab
 

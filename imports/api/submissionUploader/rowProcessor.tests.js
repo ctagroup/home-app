@@ -13,7 +13,7 @@ import {
 } from './rowProcessor';
 
 
-describe('xxxx submission uploader - row processor', function () {
+describe('submission uploader - row processor', function () {
   it('ClientMatcher will match a client by source system id', () => {
     const surveyConfig = SubmissionUploaderFixtures.getSurvey1Definition();
     const row = SubmissionUploaderFixtures.getSurvey1Row();

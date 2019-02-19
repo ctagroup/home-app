@@ -363,7 +363,6 @@ Template.surveyEditTemplate.events(
       const secValue = tmpl.find('.section').value;
       logger.log(`section value: ${secValue}`);
       if (secValue === 'sectionSelect') {
-        alert('Please select/enter a section');
         return false;
       }
       Session.set('section_id', tmpl.find('.section').value);
@@ -490,7 +489,6 @@ Template.sortableItemTarget.events(
         contentType = cont[i].content_type;
       }
       if (contentType === 'question') {
-        alert('Question cannot be edited');
         input.hide();
         template.$('.name').show();
       } else {
@@ -573,7 +571,6 @@ Template.sortableItemTarget.events(
       if (surveyQuestionsMasterCollection.find({}).count() === 0) {
         Meteor.setTimeout(
           () => {
-            alert('Not nice to delete the entire list! Add some attributes instead.');
           }, 1000
         );
       }

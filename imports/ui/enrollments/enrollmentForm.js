@@ -59,29 +59,7 @@ Template.enrollmentForm.helpers({
 
 AutoForm.hooks({
   enrollmentForm: {
-    onSubmit: function onSubmit(insertDoc, updateDoc, currentDoc) {
-      console.log('onSubmit', insertDoc, updateDoc, currentDoc);
-      // if (currentDoc._id) {
-      //   Meteor.call('enrollments.update', currentDoc._id, insertDoc, (err) => {
-      //     if (err) {
-      //       Alert.error(err);
-      //     } else {
-      //       Alert.success('Enrollment updated');
-      //       Router.go('adminDashboardenrollmentsView');
-      //     }
-      //     this.done();
-      //   });
-      // } else {
-      //   Meteor.call('enrollments.create', insertDoc, (err) => {
-      //     if (err) {
-      //       Alert.error(err);
-      //     } else {
-      //       Alert.success('Enrollment created');
-      //       Router.go('adminDashboardenrollmentsView');
-      //     }
-      //     this.done();
-      //   });
-      // }
+    onSubmit: function onSubmit() {
       return false;
     },
   },

@@ -6,56 +6,9 @@ import Responses from '/imports/api/responses/responses';
 
 Meteor.methods({
   'pendingClients.create'(client) {
-    // TODO: check permissions
-    // TODO: check schema
     logger.info(`METHOD[${Meteor.userId()}]: pendingClients.create`, client);
     return PendingClients.insert(client);
   },
-
-  /*
-  addPendingClient(
-    firstName,
-    middleName,
-    lastName,
-    suffix,
-    emailAddress,
-    phoneNumber,
-    photo,
-    ssn,
-    dob,
-    race,
-    ethnicity,
-    gender,
-    veteranStatus,
-    disablingConditions,
-    signature
-  ) {
-    // TODO: check permissions
-    logger.info(`METHOD[${Meteor.userId()}]: addPendingClient`);
-
-    const client = PendingClients.insert(
-      {
-        firstName,
-        middleName,
-        lastName,
-        suffix,
-        emailAddress,
-        phoneNumber,
-        photo,
-        ssn,
-        dob,
-        race,
-        ethnicity,
-        gender,
-        veteranStatus,
-        disablingConditions,
-        signature,
-      }
-    );
-    return client;
-  },
-  */
-
   'pendingClients.update'(clientId, client) {
     logger.info(`METHOD[${Meteor.userId()}]: updatePendingClient`, clientId, client);
 

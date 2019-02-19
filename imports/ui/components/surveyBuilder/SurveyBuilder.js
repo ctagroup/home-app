@@ -71,13 +71,6 @@ export default class SurveyBuilder extends React.Component {
   }
 
   getUnusedQuestions() {
-    // const nodeProps = this.getTreeProps(this.state.treeData);
-    // const unusedQuestions = this.props.questions.filter(
-    //   // don't shw questions already added to the survey
-    //   // FIXME: doesn't work after adding hud questions
-    //   q => !(nodeProps[q._id] && nodeProps[q._id].isFromBank)
-    // );
-    // return unusedQuestions;
     return this.props.questions;
   }
 
@@ -313,7 +306,6 @@ export default class SurveyBuilder extends React.Component {
   }
 
   handleAddQuestion(event, question, closeModal) {
-    console.log('handleAddQuestion', event, question);
     let addedQuestion;
     if (question === null) {
       const newQuestion = {

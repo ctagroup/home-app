@@ -12,7 +12,6 @@ Template.selectEnrollmentSurveys.onCreated(function selectSurveysCreated() {
 
 Template.selectEnrollmentSurveys.helpers({
   schemaVersionStore() {
-    console.log('tmpl', Template.instance(), Template.instance().selectedSchema);
     return Template.instance().selectedSchema;
   },
   schemaVersions() {
@@ -21,7 +20,6 @@ Template.selectEnrollmentSurveys.helpers({
   },
   hudSurveys() {
     const surveyVersion = Template.instance().selectedSchema.get();
-    console.log('here', surveyVersion);
     const surveys = Surveys.find({ hudSurvey: true, surveyVersion }).fetch();
     return surveys;
   },

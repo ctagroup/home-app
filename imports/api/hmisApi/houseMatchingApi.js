@@ -63,15 +63,9 @@ class HouseMatchingApi extends ApiEndpoint {
 
   postHousingMatch() {
     throw new Meteor.Error(500, 'Not yet implemented');
-    // const url = `${BASE_URL}/matches`;
-    // const body = {};
-    // return this.doPost(url, body);
   }
   postHousingMatchScores() {
     throw new Meteor.Error(500, 'Not yet implemented');
-    // const url = `${BASE_URL}/scores`;
-    // const body = {};
-    // return this.doPost(url, body);
   }
   updateClientMatchStatus(clientId, status, comments = '', recipients = []) {
     const url = `${BASE_URL}/matches/client/${clientId}/status`;

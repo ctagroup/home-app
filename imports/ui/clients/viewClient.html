@@ -17,7 +17,6 @@
             {{#if photo}}
               <img class="profile-img" alt="Profile img" src="{{photo}}" />
             {{/if}}
-            <!-- <img src="./img/john-pic.jpg" class="profile-img" alt="Profile img"> -->
           </div>
           <div class="col-xs-12 col-sm-3"><div class="text-wrap">
             <span class="title">FIRST NAME</span><h2>{{firstName}}</h2>
@@ -72,15 +71,7 @@
               </li>
             {{/if}}
           {{/if}}
-<!-- TODO: Implement other tabs -->
-<!--
-          <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#panel-case-management" role="tab">Case Management</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#panel-responses" role="tab">Responses</a>
-          </li>
--->
+
         </ul>
         <!-- Tab panels -->
         <div class="tab-content card">
@@ -156,104 +147,7 @@
           </div>
 
           <!--/.Panel 1.5-->
-          <!--Panel 2 Case Management -->
-          <!-- <div class="tab-pane fade no-show" id="panel-case-management" role="tabpanel">
-              <div class="filters-area">
-                <h1>Case Notes</h1>
-                <button>Add New</button>
-                <div class="entries">
-                  <p class="entries-num">Showing 1 to 50 of 1,950 entries</p>
-                  <div class="show-select">
-                    <span>Show</span>
-                    <select name="show-entries">
-                      <option value="50">50</option>
-                      <option value="100">100</option>
-                    </select>
-                    <span class="per-page">entries per page</span>
-                  </div>
-                  <div class="seach-entry">
-                    <form action="#" id="form-search">
-                      <input type="text" placeholder="Search">
-                      <input type="submit" value="Search">
-                    </form>
-                  </div>
-                  <div class="table-pagination">
-                    <span>Page</span>
-                    <ul class="pagination-list">
-                      <li><a href="#" class="previous arrow-pag"><img src="./img/page-prev-arrow.png" class="previous-link"></a></li>
-                      <li><a href="#" class="page-num active">1</a></li>
-                      <li><a href="#" class="page-num ">2</a></li>
-                      <li><a href="#" class="page-num ">5</a></li>
-                      <li><a href="#" class="page-num ">39</a></li>
-                        <li><a href="#" class="next arrow-pag"><img src="./img/page-next-arrow.png" class="next-link"></a></li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              <div class="table-area">
-                <table>
-                  <thead>
-                    <tr>
-                      <th class="col-sm-3"><span class="title">Case Note Type</span><a href="#"><img src="./img/table-order-desc-icon.png" class="order-asc order-arrow"></a></th>
-                      <th class="col-sm-2"><span class="title">Case Manager</span><a href="#"><img src="./img/table-order-icons.png" class="order-arrow"></a></th>
-                      <th class="col-sm-2"><span class="title">Date Updated</span><a href="#"><img src="./img/table-order-icons.png" class="order-arrow"></a></th>
-                      <th class="col-sm-2"><span class="title">Subject</span><a href="#"><img src="./img/table-order-icons.png" class="order-arrow"></a></th>
-                      <th class="col-sm-3"><span class="title">Status</span><a href="#"><img src="./img/table-order-icons.png" class="order-arrow"></a></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Lorem ipsum dolor sit amet</td>
-                      <td>Lorem Ipsum</td>
-                      <td>1/1/2018</td>
-                      <td>New Job Offer</td>
-                      <td>
-                        <span class="submitted">Submitted</span>
-                        <a href="#" class="upload">RE-upload to HMIS</a>
-
-                      </td>
-                      </tr>
-                      <tr>
-                      <td>Ipsum dolor sit amet</td>
-                      <td>Ipsum DOlor</td>
-                      <td>1/1/2018</td>
-                      <td>Attending Job Fair</td>
-                      <td>
-                        <span class="submitted">Submitted</span>
-                        <a href="#" class="upload">RE-upload to HMIS</a>
-
-                      </td>
-                      </tr>
-                      <tr>
-                      <td>Lorem ipsum dolor sit amet</td>
-                      <td>Lorem Ipsum</td>
-                      <td>1/1/2018</td>
-                      <td>New Job Offer</td>
-                      <td>
-                        <span class="submitted">Submitted</span>
-                        <a href="#" class="upload">RE-upload to HMIS</a>
-
-                      </td>
-                      </tr>
-                      <tr>
-                      <td>Ipsum dolor sit amet</td>
-                      <td>Ipsum DOlor</td>
-                      <td>1/1/2018</td>
-                      <td>Attending Job Fair</td>
-                      <td>
-                        <span class="submitted">Submitted</span>
-                        <a href="#" class="upload">RE-upload to HMIS</a>
-
-                      </td>
-                      </tr>
-                  </tbody>
-                </table>
-
-              </div>
-
-          </div> -->
-          <!--/.Panel 2-->
+         
 
           <!--Panel 3 Referrals -->
           {{#if showReferralStatus}}

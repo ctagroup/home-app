@@ -26,7 +26,6 @@ export function setFields(status) {
       (
         document.getElementById('q_dataType').value === 'Single Select'
       )) {
-    // $('#options').attr('disabled', status);
     $('#aoptions :input').attr('disabled', status);
     if (status === false) {
       $('.optionadd').unbind('click', false);

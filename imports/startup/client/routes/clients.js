@@ -1,5 +1,4 @@
 import { Clients } from '/imports/api/clients/clients';
-// import { GlobalEnrollments } from '/imports/api/enrollments/enrollments';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import { RecentClients } from '/imports/api/recent-clients';
 import Enrollments from '/imports/api/enrollments/enrollments';
@@ -60,41 +59,6 @@ Router.route('adminDashboardclientsNew', {
   },
 });
 
-// Router.route(
-//   '/clients/:_id/enrollments', {
-//     name: 'manageClientEnrollments',
-//     template: 'manageClientEnrollments',
-//     controller: AppController,
-//     authorize: {
-//       allow() {
-//         return Roles.userIsInRole(Meteor.userId(), ClientsAccessRoles);
-//       },
-//     },
-//     waitOn() {
-//       const id = Router.current().params._id;
-//       return [
-//         Meteor.subscribe('clients.one', id, false, false),
-//         Meteor.subscribe('client.globalEnrollments', id, this.params.query.schema),
-//       ];
-//     },
-//     data() {
-//       const isExtSurveyor = Roles.userIsInRole(Meteor.userId(), 'External Surveyor');
-//       const pendingClient = PendingClients.findOne({ _id: this.params._id });
-//       const client = Clients.findOne({ _id: this.params._id });
-//       const enrollments = GlobalEnrollments.find({ _id: this.params._id });
-//       return {
-//         isPendingClient: !!pendingClient,
-//         enrollments,
-//         client: pendingClient || client,
-//         showSurveyButton: !isExtSurveyor,
-//         showUploadButton: !client,
-//         showEditButton: !isExtSurveyor,
-//         showResponsesButton: !isExtSurveyor,
-//       };
-//     },
-//   }
-// );
-
 Router.route('/clients/:_id/enrollments/:enrollmentId', {
   name: 'viewEnrollmentAsResponse',
   template: 'viewEnrollmentAsResponse',
@@ -121,7 +85,6 @@ Router.route('/clients/:_id/enrollments/:enrollmentId', {
     const client = Clients.findOne(_id);
     const survey = Surveys.findOne(surveyId);
     const enrollment = Enrollments.findOne(enrollmentId);
-    console.log('enrollment data', enrollment);
     return {
       client,
       survey,

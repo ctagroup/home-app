@@ -77,7 +77,6 @@ Meteor.methods({
 
     const hc = HmisClient.create(this.userId);
     const groups = hc.api('survey').getQuestionGroups();
-    console.log(groups);
     if (groups.length > 0) throw new Meteor.Error('Question group already exists');
     // return hc.api('survey').createQuestionGroup('default');
   },

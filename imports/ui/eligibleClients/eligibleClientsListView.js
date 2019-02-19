@@ -22,7 +22,6 @@ const tableOptions = {
       data: 'surveyScore',
       render(value, type, doc) {
         const client = doc.client;
-        // console.log(client);
         const query = {
           clientId: doc.clientId,
           schema: client.schema,

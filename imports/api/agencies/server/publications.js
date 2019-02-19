@@ -37,12 +37,6 @@ Meteor.publish('agencies.active', function publishAgenciesOfCurrentUser() {
       },
     },
   };
-  /*
-  const projectIds = Agencies.find(query).fetch()
-    .reduce((all, agency) => {
-      const projects = agency.projectsOfUser(this.userId);
-      return [...all, ...projects];
-    }, []);
-  */
+
   return Agencies.find(query);
 });

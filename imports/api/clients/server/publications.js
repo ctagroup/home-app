@@ -40,7 +40,6 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
       clientVersions = hc.api('client').searchClient(client.dedupClientId, 50);
     }
 
-    // const mergedClient = mergeClient(clientVersions, inputSchema);
     const mergedClient = mergeClientExtended(
       _.uniq([client].concat(clientVersions), (i) => i.clientId), inputSchema);
     self.added('localClients', inputClientId, mergedClient);
@@ -99,8 +98,7 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
             // fetch client status
             try {
               const referralStatusHistory = getReferralStatusHistory(hc, clientId);
-              // self.changed('localClients', inputClientId,
-              //   { { clientId/schema } : referralStatusHistory });
+
               const key = `referralStatusHistory::${schema}::${clientId}`;
               self.changed('localClients', inputClientId, { [key]: referralStatusHistory });
               mergedReferralStatusHistory =

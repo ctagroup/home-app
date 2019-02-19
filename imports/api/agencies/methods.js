@@ -2,8 +2,6 @@ import { logger } from '/imports/utils/logger';
 import Agencies from '/imports/api/agencies/agencies';
 import Users from '/imports/api/users/users';
 import { userProjectGroupId } from '/imports/api/users/helpers';
-// import { HmisClient } from '/imports/api/hmisApi';
-
 Meteor.methods({
   'agencies.create'(doc) {
     logger.info(`METHOD[${Meteor.userId()}]: agencies.create`, doc);

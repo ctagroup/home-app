@@ -26,7 +26,7 @@ function loadSurvey(surveyId, userId) {
 }
 
 
-Meteor.publish('surveys.all', function publishAllSurveys(/* params = {} */) {
+Meteor.publish('surveys.all', function publishAllSurveys() {
   logger.info(`PUB[${this.userId}]: surveys.all`);
 
   const hc = HmisClient.create(this.userId);

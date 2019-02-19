@@ -92,11 +92,10 @@ Template.submissionUploaderForm.events({
     Meteor.call('submissionUploader.createFile', surveyId, file.name, (err, resp) => {
       let rowsCount = -1;
       if (err) {
-        console.log(err.reason);
         Bert.alert(err.reason, 'warning');
       } else {
         fileId = resp;
-        // Bert.alert('File metadata is set!', 'success', 'growl-top-right');
+
         Papa.parse(file, {
           step(row) {
             const parsed = row.data[0];
@@ -108,10 +107,7 @@ Template.submissionUploaderForm.events({
                 surveyId, fileId, rowsCount, parsed,
                 (error /* , response*/) => {
                   if (error) {
-                    console.log(error.reason);
                     Bert.alert(error.reason, 'warning');
-                  // } else {
-                  //   console.log('job inserted: Id', response, rowsCount);
                   }
                 });
             }
@@ -131,12 +127,10 @@ Template.submissionUploaderForm.events({
     const target = event.target;
     const definition = target.definition.value;
     const surveyId = template.selectedSurveyId.get();
-    Meteor.call('submissionUploader.updateConfig', surveyId, definition, (error, response) => {
+    Meteor.call('submissionUploader.updateConfig', surveyId, definition, (error) => {
       if (error) {
-        console.log(error.reason);
         Bert.alert(error.reason, 'warning');
       } else {
-        console.log('parseUpload call', response);
         template.verified.set(true);
         Bert.alert('Config updated!', 'success', 'growl-top-right');
       }

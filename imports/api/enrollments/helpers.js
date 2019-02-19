@@ -28,8 +28,7 @@ export function mapEnrollmentToSurveyInitialValues(enrollment, definition) {
   }, {});
 }
 
-export const getClientGlobalEnrollments = (hc, dedupClientId, stopFunction) => {
-  console.log('stopFunction', stopFunction);
+export const getClientGlobalEnrollments = (hc, dedupClientId) => {
   const globalEnrollments = hc.api('global').getClientEnrollments(dedupClientId);
   return globalEnrollments;
 };

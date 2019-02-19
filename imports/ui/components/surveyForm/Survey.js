@@ -29,7 +29,6 @@ export default class Survey extends React.Component {
       ),
       errors: {},
     };
-    console.log(this.state);
   }
 
   handleValueChange(name, value, isValid = true) {
@@ -114,7 +113,6 @@ export default class Survey extends React.Component {
       values: this.state.values,
     };
     if (this.props.enrollmentInfo) doc.enrollmentInfo = this.props.enrollmentInfo;
-    // const isEnrollmentSurvey = this.props.isEnrollment;
     const history = [];
     let newlyCreatedResponseId = null;
 

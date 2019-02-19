@@ -133,11 +133,6 @@ Template.viewClient.helpers(
     enrollmentInfo() {
       const projectId = Template.instance().selectedProject.get();
       if (!projectId) return {};
-      // const project = Projects.findOne(selectedProjectId);
-      // get agency
-      // get enrollmentSurveys
-      // get enr id
-
       return {
         projectId,
         dataCollectionStage: parseInt(Router.current().params.query.dataCollectionStage, 10),

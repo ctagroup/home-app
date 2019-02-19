@@ -81,10 +81,6 @@ export class SurveyApi2 extends ApiEndpoint {
     const body = { question };
     return this.doPost(url, body).question;
   }
-  // getQuestion(questionGroupId, questionId) {
-  //   return this.doGet
-  // },
-
 }
 
 

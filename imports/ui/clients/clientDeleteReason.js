@@ -96,17 +96,5 @@ Template.clientDeleteReason.onRendered(() => {
     allowClear: true,
     theme: 'classic',
     width: '100%',
-    // tags: true,
-    // createTag: (params) => {
-    //   const term = $.trim(params.term);
-
-    //   if (term === '') return null;
-
-    //   return {
-    //     id: term.replace(/\s+/g, '_').toLowerCase(),
-    //     text: term,
-    //     newTag: true, // add additional parameters
-    //   };
-    // },
   });
 });

@@ -55,14 +55,3 @@ if (featureDecisions.isMc211App()) {
     }
   );
 }
-
-
-/*
-Router.route(
-  '/chat/', {
-    name: 'chat',
-    template: 'chat',
-    controller: 'AppController',
-  }
-);
-*/

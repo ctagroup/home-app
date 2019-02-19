@@ -19,8 +19,4 @@ Meteor.publishComposite('files.all', (clientId) => {
     ],
   };
 });
-/*
-Meteor.publish('files.all', function publishFiles() {
-  return Files.find();
-});
-*/
+

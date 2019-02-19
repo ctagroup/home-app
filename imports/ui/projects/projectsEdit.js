@@ -7,7 +7,6 @@ Template.projectsEdit.helpers({
     return formSchema(this.doc);
   },
   doc() {
-    console.log(this.doc);
     return this.doc;
   },
 });

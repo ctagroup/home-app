@@ -50,9 +50,6 @@ export default class QuestionModal extends React.Component {
     const { searchString } = this.state;
     let filteredQuestions = this.props.questions.filter(
       q => {
-        // if (q.title === 'Living Situation') {
-        //   console.log('qqqq', q);
-        // }
         const inTitle = stringContains(q.title || '', searchString);
         const inUriObjectField = q.enrollment
           && stringContains(q.enrollment.uriObjectField || '', searchString);
@@ -73,8 +70,6 @@ export default class QuestionModal extends React.Component {
         <em>{q.enrollment && q.enrollment.uriObjectField} {this.getChoiceLabels(q).join(' ')}</em>
       </li>
     ));
-    // .sort((a, b) => a.title < b.title);
-    console.log(this.props.questions);
 
     return (
       <Modal

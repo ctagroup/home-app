@@ -19,8 +19,7 @@ export function migrateV1Responses() {
         logger.warn(`No HMIS accountId for user ${oldResponse.userID}, exists? ${!!surveyor}`);
         surveyorId = null;
       }
-      // console.log(oldResponse.userID, surveyor);
-      // throw new Error();
+
       const newResponse = {
         ...oldResponse,
         clientId: oldResponse.clientID,

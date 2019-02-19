@@ -62,7 +62,6 @@ Template.surveyFormBuilder.helpers({
         }
       })
       .filter(q => q !== null);
-    console.log('allQuestions', allQuestions.length);
     return allQuestions;
   },
 

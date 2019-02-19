@@ -37,10 +37,6 @@ Template.globalHouseholdEditView.events(
             householdMembershipId: $(item).find('.householdMembershipId').val(),
             globalClientId: $(item).find('.clientID').text(),
             relationshipToHeadOfHousehold: $(item).find('.relationshiptohoh').val(),
-            // dateCreate: '',
-            // dateUpdate: '',
-            // userCreate: '',
-            // userUpdate: user.services.HMIS.accountId,
             genericHouseholdId,
           };
           newGlobalHouseholdMembers.push(optionArray);

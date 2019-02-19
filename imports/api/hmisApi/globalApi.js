@@ -29,12 +29,7 @@ export class GlobalApi extends ApiEndpoint {
 
   createClientEnrollment(dedupClientId, enrollments) {
     const url = `${BASE_URL}/clients/${dedupClientId}/global-enrollments`;
-    // enrollments example:
-    // [{
-    //   enrollmentId: '637fbfbb-e75c-49f1-900f-1aa0015aefab',
-    //   source: '2016',
-    //   clientId: '6bf95840-8567-469b-9efe-8c6351294e55',
-    // }]
+
     const body = {
       globalEnrollment: {
         enrollments: {
