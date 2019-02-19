@@ -5,8 +5,7 @@ import CurrencyInput from '/imports/ui/components/CurrencyInput';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import Item from './Item';
-import { isNumeric, isLocation } from '/imports/api/utils';
-import { getLatLongFromAddressOrDevice } from '/imports/utils/location';
+import { isNumeric, getLatLongFromDevice } from '/imports/api/utils';
 
 const DEFAULT_OTHER_VALUE = 'Other';
 
@@ -140,13 +139,39 @@ export default class Question extends Item {
         }
       }
       if (value.length > 0) {
-        if (isLocation(value, addressType)) {
-          this.setState({ error: null });
-          return true;
-        } else {
-          this.setState({ error: `${value} is not a location` });
-          return false;
-        }
+        const url = `https://geocode.xyz/?locate=${encodeURIComponent(value)}&json=1`;
+        return new Promise((resolve, reject) => {
+          // TODO: Locations should be saved with flag to indicate if they were validated successfully or not
+          // because locations should still be able to be saved if validation is unsuccessful
+          Meteor.call('surveys.getGeocodedLocation', url, (error, result) => {
+            if (error) {
+              this.setState({ error: "Location could not be validated. This may be due to a high volume of requests at this time." });
+              resolve(false);
+              //reject(error);
+            } else {
+              if (addressType === 'coords') {
+                // TODO: For now return true/false but we may want to populate address fields based on current lat/long
+                if (result.standard && result.standard.stnumber && result.standard.staddress 
+                  && result.standard.city && result.standard.state && result.standard.country && result.standard.postal) {
+                  this.setState({ error: null });
+                  resolve(true);
+                } else {
+                  this.setState({ error: `${value} is not a location` });
+                  resolve(false);
+                }
+              } else {
+                // If we can get a latitude/longitude then we're assuming the address is a valid location
+                if (result.latt && result.longt) {
+                  this.setState({ error: null });
+                  resolve(true);
+                } else {
+                  this.setState({ error: `${value} is not a location` });
+                  resolve(false);
+                }
+              }
+            }
+          });
+        });
       }
     }
   }
@@ -296,7 +321,7 @@ export default class Question extends Item {
     // const longLatCheck = this.props.item.longLatCheck;
     let location;
     if (autoLoc) {
-      const latLongVal = getLatLongFromAddressOrDevice();
+      const latLongVal = getLatLongFromDevice();
       location = (
         <table>
           <tr>

@@ -1,8 +1,3 @@
-import {
-  getLatLongFromAddressOrDevice,
-  getAddressFromLatLong
-} from '/imports/utils/location.js';
-
 export function fullName(user) {
   if (!user) {
     return undefined;
@@ -96,19 +91,6 @@ export function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-export function isLocation(str, type) {
-  switch (type) {
-    case 'coords':
-      // TODO: maybe have this function return true/false
-      str = getAddressFromLatLong(str);
-      break;
-    default:
-      // If we can get a latitude/longitude then we're assuming it's a valid location
-      const latLng = getLatLongFromAddressOrDevice(str);
-      return latLng && latLng.length === 2;
-  }
-}
-
 export function escapeString(str) {
   if (!str) {
     return str;
@@ -126,4 +108,14 @@ export function escapeString(str) {
   return String(str).replace(/[&<>"'\/]/g, function(s) {
     return entityMap[s];
   });
+}
+
+export function getLatLongFromDevice() {
+  const latLng = [];
+  const location = Geolocation.currentLocation();
+  if (location !== null && location.coords) {
+    latLng[0] = location.coords.latitude;
+    latLng[1] = location.coords.longitude;
+  }
+  return latLng;
 }
