@@ -1,5 +1,6 @@
 import { eachLimit } from 'async';
 import { HmisClient } from '/imports/api/hmisApi';
+import { ClientsAccessRoles } from '/imports/config/permissions';
 import {
   getClientGlobalEnrollments,
 } from '/imports/api/enrollments/helpers';
@@ -11,7 +12,12 @@ function publishEnrollment(clientId, schema, enrollmentId, dataCollectionStage) 
   logger.info(`PUB[${this.userId}]: enrollments.one`,
     clientId, schema, enrollmentId, dataCollectionStage
   );
-  if (!this.userId) return [];
+  check(clientId, String);
+  check(schema, String);
+  check(enrollmentId, String);
+  if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
+    return [];
+  }
 
   try {
     const enrollment = enrollmentsRepository.getClientEnrollment(
@@ -29,7 +35,12 @@ Meteor.injectedPublish('client.globalEnrollments',
 function pubClient(dedupClientId, inputSchema = 'v2015', loadDetails = false) {
   const { logger } = this.context;
   logger.info(`PUB[${this.userId}]: clients.one(${dedupClientId}, ${inputSchema})`);
-  if (!this.userId) return [];
+  check(dedupClientId, String);
+  check(inputSchema, String);
+  if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
+    return [];
+  }
+
   const self = this;
   let stopFunction = false;
   self.unblock();
@@ -59,8 +70,5 @@ function pubClient(dedupClientId, inputSchema = 'v2015', loadDetails = false) {
   } catch (err) {
     logger.error('publish singleHMISClient', err);
   }
-
-  self.ready();
-
-  return null;
+  return self.ready();
 });

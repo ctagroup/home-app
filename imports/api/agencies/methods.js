@@ -1,4 +1,5 @@
 import { logger } from '/imports/utils/logger';
+import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import Agencies from '/imports/api/agencies/agencies';
 import Users from '/imports/api/users/users';
 import { userProjectGroupId } from '/imports/api/users/helpers';
@@ -6,7 +7,10 @@ import { userProjectGroupId } from '/imports/api/users/helpers';
 
 Meteor.methods({
   'agencies.create'(doc) {
-    logger.info(`METHOD[${Meteor.userId()}]: agencies.create`, doc);
+    if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
+    logger.info(`METHOD[${this.userId}]: agencies.create`, doc);
     const user = Users.findOne(this.userId);
     const agency = {
       ...doc,
@@ -17,7 +21,10 @@ Meteor.methods({
   },
 
   'agencies.update'(doc, id) {
-    logger.info(`METHOD[${Meteor.userId()}]: agencies.update`, doc, id);
+    logger.info(`METHOD[${this.userId}]: agencies.update`, doc, id);
+    if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
     check(doc, Agencies.schema);
     return Agencies.update(id, doc);
   },

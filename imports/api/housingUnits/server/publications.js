@@ -1,15 +1,20 @@
 import { eachLimit } from 'async';
 import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
+import { HousingUnitsAccessRoles } from '/imports/config/permissions';
 
-Meteor.publish(
-  'housingUnits.list', function publishAllHousingUnits(fetchProjectsDetails = true) {
+
+Meteor.publish('housingUnits.list',
+  function publishAllHousingUnits(fetchProjectsDetails = true) {
     logger.info(`PUB[${this.userId}]: housingUnits.list`);
-    const self = this;
-    let stopFunction = false;
-    self.unblock();
+    if (!Roles.userIsInRole(this.userId, HousingUnitsAccessRoles)) {
+      return [];
+    }
 
-    self.onStop(() => {
+    let stopFunction = false;
+    this.unblock();
+
+    this.onStop(() => {
       stopFunction = true;
     });
 
@@ -32,9 +37,9 @@ Meteor.publish(
           schema,
         });
       }
-      self.added('housingUnits', housingUnits[i].housingInventoryId, housingUnits[i]);
+      this.added('housingUnits', housingUnits[i].housingInventoryId, housingUnits[i]);
     }
-    self.ready();
+    this.ready();
 
     const projectsCache = {};
     eachLimit(queue, Meteor.settings.connectionLimit, (data, callback) => {
@@ -55,22 +60,28 @@ Meteor.publish(
           }
           projectsCache[projectId] = project;
           housingUnits[i].project = projectsCache[projectId];
-          self.changed('housingUnits', housingUnits[i].housingInventoryId, housingUnits[i]);
+          this.changed('housingUnits', housingUnits[i].housingInventoryId, housingUnits[i]);
           callback();
         });
       } else {
         // react project from cache
         housingUnits[i].project = projectsCache[projectId];
-        self.changed('housingUnits', housingUnits[i].housingInventoryId, housingUnits[i]);
+        this.changed('housingUnits', housingUnits[i].housingInventoryId, housingUnits[i]);
         callback();
       }
     });
+    return this.ready();
   }
 );
 
 Meteor.publish(
   'housingUnits.one', function publishOneHousingUnit(housingUnitId) {
     logger.info(`PUB[${this.userId}]: housingUnits.one`, housingUnitId);
+    check(housingUnitId, String);
+    if (!Roles.userIsInRole(this.userId, HousingUnitsAccessRoles)) {
+      return [];
+    }
+
     const hc = HmisClient.create(this.userId);
     const housingUnit = hc.api('housing').getHousingUnit(housingUnitId);
 
@@ -88,6 +99,6 @@ Meteor.publish(
     }
 
     this.added('housingUnits', housingUnit.housingInventoryId, housingUnit);
-    this.ready();
+    return this.ready();
   }
 );

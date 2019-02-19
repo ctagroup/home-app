@@ -1,9 +1,9 @@
 import { eachLimit } from 'async';
+import { ClientsAccessRoles } from '/imports/config/permissions';
 import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
 import {
   sortByTime,
-  // mergeClient,
   mergeClientExtended,
   getEligibleClient,
   getClientEnrollments,
@@ -15,8 +15,13 @@ import {
 Meteor.publish('clients.one',
 function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
   logger.info(`PUB[${this.userId}]: clients.one(${inputClientId}, ${inputSchema})`);
-  if (!this.userId) return [];
-  // TODO: check permissions to get the data
+
+  check(inputClientId, String);
+  check(inputSchema, String);
+  if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
+    return [];
+  }
+
   const self = this;
   let stopFunction = false;
   self.unblock();
@@ -34,13 +39,11 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
     client.isHMISClient = true;
 
     // TODO [VK]: publish by dedupClientId directly
-    // NOTE [PG]: it's currently not possible because not all clients have dedupId :(
     let clientVersions = [client];
     if (client.dedupClientId) {
       clientVersions = hc.api('client').searchClient(client.dedupClientId, 50);
     }
 
-    // const mergedClient = mergeClient(clientVersions, inputSchema);
     const mergedClient = mergeClientExtended(
       _.uniq([client].concat(clientVersions), (i) => i.clientId), inputSchema);
     self.added('localClients', inputClientId, mergedClient);
@@ -99,8 +102,6 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
             // fetch client status
             try {
               const referralStatusHistory = getReferralStatusHistory(hc, clientId);
-              // self.changed('localClients', inputClientId,
-              //   { { clientId/schema } : referralStatusHistory });
               const key = `referralStatusHistory::${schema}::${clientId}`;
               self.changed('localClients', inputClientId, { [key]: referralStatusHistory });
               mergedReferralStatusHistory =
@@ -158,7 +159,9 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
     Meteor.call('s3bucket.get', inputClientId, 'photo', (err, res) =>
       self.changed('localClients', inputClientId, { photo: res })
     );
-  } catch (e) {} // eslint-disable-line
+  } catch (e) {
+    logger.debug('Failed to get client photo');
+  }
 
   return null;
 });

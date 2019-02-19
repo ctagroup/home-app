@@ -1,9 +1,9 @@
 import {
+  ClientsAccessRoles,
   DefaultAdminAccessRoles,
   FilesAccessRoles,
   GlobalHouseholdsAccessRoles,
   HousingUnitsAccessRoles,
-  PendingClientsAccessRoles,
   ResponsesAccessRoles,
 } from '/imports/config/permissions';
 import FeatureDecisions from '/imports/both/featureDecisions';
@@ -12,10 +12,10 @@ import './appSidebar.html';
 
 const homeMenuItems = [
   {
-    name: 'Pending Clients',
+    name: 'Clients',
     icon: 'fa-user',
     path: 'adminDashboardclientsView',
-    roles: PendingClientsAccessRoles,
+    roles: ClientsAccessRoles,
   },
   {
     name: 'Active List',
@@ -72,7 +72,7 @@ const mc211MenuItems = [
     name: 'Clients',
     icon: 'fa-user',
     path: 'adminDashboardclientsView',
-    roles: PendingClientsAccessRoles,
+    roles: ClientsAccessRoles,
   },
   {
     name: 'Responses',

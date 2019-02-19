@@ -6,9 +6,10 @@ import { computeFormState, findItem, getScoringVariables } from '/imports/api/su
 import { logger } from '/imports/utils/logger';
 import { escapeKeys, unescapeKeys } from '/imports/api/utils';
 import Responses, { ResponseStatus } from '/imports/api/responses/responses';
-import { prepareEmails } from '../surveys/computations';
+import { ResponsesAccessRoles } from '/imports/config/permissions';
 import { EnrollmentUploader } from './helpers';
 import Users from '/imports/api/users/users';
+import { prepareEmails } from '../surveys/computations';
 
 function prepareValuesToUpload(values, definition, defaultSectionId) {
   const questionIds = Object.keys(values);
@@ -26,9 +27,13 @@ function prepareValuesToUpload(values, definition, defaultSectionId) {
 
 Meteor.methods({
   'responses.create'(doc) {
-    logger.info(`METHOD[${Meteor.userId()}]: responses.create`, doc);
+    logger.info(`METHOD[${this.userId}]: responses.create`, doc);
     check(doc, Object);
-    const surveyorId = Meteor.users.findOne(Meteor.userId()).services.HMIS.accountId;
+    if (!Roles.userIsInRole(this.userId, ResponsesAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
+
+    const surveyorId = Meteor.users.findOne(this.userId).services.HMIS.accountId;
     const response = Object.assign({}, doc, {
       surveyorId,
       status: ResponseStatus.PAUSED,
@@ -36,15 +41,17 @@ Meteor.methods({
       values: escapeKeys(doc.values),
     });
 
-    // TODO: check permissions
     check(response, Responses.schema);
     return Responses.insert(response);
   },
 
   'responses.update'(id, doc) {
-    logger.info(`METHOD[${Meteor.userId()}]: responses.update`, id, doc);
+    logger.info(`METHOD[${this.userId}]: responses.update`, id, doc);
     check(id, String);
     check(doc, Object);
+    if (!Roles.userIsInRole(this.userId, ResponsesAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
 
     const oldResponse = Responses.findOne(id);
 
@@ -60,8 +67,10 @@ Meteor.methods({
 
   'responses.delete'(id) {
     logger.info(`METHOD[${this.userId}]: responses.delete`, id);
-    // TODO: check permissions
     check(id, String);
+    if (!Roles.userIsInRole(this.userId, ResponsesAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
 
     try {
       const { clientId, surveyId, submissionId } = Responses.findOne(id);
@@ -77,8 +86,10 @@ Meteor.methods({
 
   'responses.sendEmails'(responseId) {
     logger.info(`METHOD[${Meteor.userId()}]: responses.emails`, responseId);
-    // TODO: check permissions
     check(responseId, String);
+    if (!Roles.userIsInRole(this.userId, ResponsesAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
 
     const response = Responses.findOne(responseId);
     const { clientId, clientSchema, surveyId } = response;
@@ -113,6 +124,10 @@ Meteor.methods({
 
   'responses.uploadEnrollment'(id) {
     logger.info(`METHOD[${this.userId}]: responses.uploadEnrollment`, id);
+    check(id, String);
+    if (!Roles.userIsInRole(this.userId, ResponsesAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
 
     const response = Responses.findOne(id);
     let projectId = null;

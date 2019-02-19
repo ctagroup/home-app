@@ -2,6 +2,7 @@ import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
 import { getScoringVariables, iterateItems } from '/imports/api/surveys/computations';
 import Surveys from '/imports/api/surveys/surveys';
+import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import {
   mapUploadedSurveySections,
   updateDefinitionFromDoc, updateDocFromDefinition,
@@ -12,11 +13,13 @@ import eventPublisher, {
 
 Meteor.methods({
   'surveys.create'(doc) {
-    logger.info(`METHOD[${Meteor.userId()}]: surveys.create`, doc);
+    logger.info(`METHOD[${this.userId}]: surveys.create`, doc);
     check(doc, Surveys.schema);
-    // TODO: permissions check
-    const id = Surveys.insert(doc);
+    if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
 
+    const id = Surveys.insert(doc);
     try {
       Meteor.call('surveys.uploadQuestions', id);
       Meteor.call('surveys.upload', id);
@@ -32,11 +35,12 @@ Meteor.methods({
   'surveys.update'(id, doc) {
     logger.info(`METHOD[${this.userId}]: surveys.update`, id, doc);
 
-    // TODO: permissions
     check(id, String);
+    if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
 
     const hc = HmisClient.create(this.userId);
-
     let tempId;
     let uploadedSurvey;
     try {
@@ -90,9 +94,12 @@ Meteor.methods({
   },
 
   'surveys.delete'(id) {
-    logger.info(`METHOD[${Meteor.userId()}]: surveys.delete`, id);
+    logger.info(`METHOD[${this.userId}]: surveys.delete`, id);
     check(id, String);
-    // TODO: permissions check
+    if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
+
     const numRemoved = Surveys.remove(id);
     if (numRemoved === 0) {
       const hc = HmisClient.create(this.userId);
@@ -102,11 +109,17 @@ Meteor.methods({
   },
 
   'surveys.uploadQuestions'(id) {
-    const hc = HmisClient.create(Meteor.userId());
+    logger.info(`METHOD[${this.userId}]: surveys.uploadQuestions`, id);
+    check(id, String);
+    if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
+
+    const hc = HmisClient.create(this.userId);
     const survey = Surveys.findOne(id);
     const definition = JSON.parse(survey.definition);
 
-    // TODO: make sure question group exists
+    // make sure question group exists
     const groups = hc.api('survey').getQuestionGroups();
     let groupId;
     if (groups.length === 0) {
@@ -156,7 +169,13 @@ Meteor.methods({
   },
 
   'surveys.upload'(id) {
-    const hc = HmisClient.create(Meteor.userId());
+    logger.info(`METHOD[${this.userId}]: surveys.upload`, id);
+    check(id, String);
+    if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
+
+    const hc = HmisClient.create(this.userId);
     const survey = updateDefinitionFromDoc(Surveys.findOne(id));
     const definition = JSON.parse(survey.definition);
     let hmis;
@@ -219,19 +238,24 @@ Meteor.methods({
     Surveys.update(id, { $set: { hmis } });
     return surveyId;
   },
+
   'surveys.getSurveySections'(surveyId) {
     logger.info(`METHOD[${this.userId}]: surveys.getSurveySections`, surveyId);
     check(surveyId, String);
+    if (!this.userId) {
+      throw new Meteor.Error(401, 'Unathorized');
+    }
 
     const hc = HmisClient.create(this.userId);
     return hc.api('survey').getSurveySections(surveyId);
   },
-  'surveys.getSurveyQuestions'(surveyId) {
-    return surveyId;
-  },
+
   'surveys.getSurveySectionQuestions'(surveyId) {
-    logger.info(`METHOD[${this.userId}]: surveys.getSurveySections`, surveyId);
+    logger.info(`METHOD[${this.userId}]: surveys.getSurveySectionQuestions`, surveyId);
     check(surveyId, String);
+    if (!this.userId) {
+      throw new Meteor.Error(401, 'Unathorized');
+    }
 
     const hc = HmisClient.create(this.userId);
     const sections = hc.api('survey').getSurveySections(surveyId);

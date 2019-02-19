@@ -2,19 +2,20 @@ import { eachLimit } from 'async';
 import moment from 'moment';
 import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
+import { DefaultAdminAccessRoles } from '/imports/config/permissions';
+
 
 Meteor.publish(
   'housingMatch.list', function publishHousingMatch() {
     logger.info(`PUB[${this.userId}]: housingMatch.list`);
-    let stopFunction = false;
+    if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
+      return [];
+    }
 
+    let stopFunction = false;
     this.onStop(() => {
       stopFunction = true;
     });
-
-    if (!this.userId) {
-      return [];
-    }
 
     try {
       const hc = HmisClient.create(this.userId);

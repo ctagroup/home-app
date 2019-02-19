@@ -32,26 +32,10 @@ export const HousingUnitsAccessRoles = [
   'Program Manager',
 ];
 
-export const PendingClientsAccessRoles = [
-  'Developer',
-  'System Admin',
-  'Program Manager',
-  'Case Manager',
-  'Surveyor',
-  'External Surveyor',
-];
-
 export const ResponsesAccessRoles = [
   'Developer',
   'System Admin',
   'Program Manager',
-  'Case Manager',
-  'Surveyor',
-];
-
-export const HouseholdAccessRoles = [
-  'Developer',
-  'System Admin',
   'Case Manager',
   'Surveyor',
 ];

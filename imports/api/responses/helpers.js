@@ -148,8 +148,6 @@ export class EnrollmentUploader {
       const data = sortedData[uriTemplate];
       const uriObject = Object.keys(data).shift();
 
-      // console.log('post/put', postUri, putUri);
-      // console.log(data, uriObject);
       if (uploadErrorDetails) {
         // we have an error, skip other urls
         return all;

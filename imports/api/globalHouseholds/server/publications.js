@@ -1,10 +1,12 @@
-import { logger } from '/imports/utils/logger';
 import { eachLimit } from 'async';
+import { logger } from '/imports/utils/logger';
 import { HmisClient } from '/imports/api/hmisApi';
+import { GlobalHouseholdsAccessRoles } from '/imports/config/permissions';
+
 
 Meteor.publish('globalHouseholds.list', function publishHouseholds() {
   logger.info(`PUB[${this.userId}]: globalHouseholds.list`);
-  if (!this.userId) {
+  if (!Roles.userIsInRole(this.userId, GlobalHouseholdsAccessRoles)) {
     return [];
   }
 
@@ -96,7 +98,7 @@ Meteor.publish('globalHouseholds.list', function publishHouseholds() {
 
 Meteor.publish('globalHouseholds.one', function publishHousehold(genericHouseholdId) {
   logger.info(`PUB[${this.userId}]: globalHouseholds.one`, genericHouseholdId);
-  if (!this.userId) {
+  if (!Roles.userIsInRole(this.userId, GlobalHouseholdsAccessRoles)) {
     return [];
   }
 

@@ -1,7 +1,7 @@
 import CollectionsCount from '/imports/api/collectionsCount/collectionsCount';
 import {
+  ClientsAccessRoles,
   DefaultAdminAccessRoles,
-  PendingClientsAccessRoles,
   ResponsesAccessRoles,
 } from '/imports/config/permissions';
 import './dashboardMc211.html';
@@ -13,7 +13,7 @@ const allWidgets = [
     id: 'clients',
     icon: 'fa-user',
     path: 'adminDashboardclientsView',
-    roles: PendingClientsAccessRoles,
+    roles: ClientsAccessRoles,
   },
   {
     name: 'Questions',

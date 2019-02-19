@@ -3,23 +3,31 @@ import Responses from '/imports/api/responses/responses';
 import { logger } from '/imports/utils/logger';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import { HmisClient } from '/imports/api/hmisApi';
+import { ResponsesAccessRoles } from '/imports/config/permissions';
+
+
 import {
   mergeClient,
 } from '/imports/api/clients/helpers';
 
 Meteor.publish('responses.all', function publishResponses(ofClientId, schema) {
   logger.info(`PUB[${this.userId}]: responses.all`, ofClientId, schema);
-  const self = this;
-  let stopFunction = false;
-  self.unblock();
+  check(ofClientId, String);
+  check(schema, String);
+  if (!Roles.userIsInRole(this.userId, ResponsesAccessRoles)) {
+    return [];
+  }
 
-  self.onStop(() => {
+  let stopFunction = false;
+  this.unblock();
+
+  this.onStop(() => {
     stopFunction = true;
   });
 
   const hc = HmisClient.create(this.userId);
 
-  if (self.userId) {
+  if (this.userId) {
     let clientIds = [ofClientId];
     const clientsCache = {};
     const queue = [];
@@ -52,9 +60,9 @@ Meteor.publish('responses.all', function publishResponses(ofClientId, schema) {
         response.clientDetails = PendingClients.findOne({ _id: clientId })
         || { error: 'client not found (404)' };
       }
-      self.added('responses', response._id, response);
+      this.added('responses', response._id, response);
     }
-    self.ready();
+    this.ready();
 
     eachLimit(queue, Meteor.settings.connectionLimit, (data, callback) => {
       if (stopFunction) {
@@ -72,23 +80,27 @@ Meteor.publish('responses.all', function publishResponses(ofClientId, schema) {
             clientsCache[clientId] = { error: e.reason };
           }
         }
-        self.changed('responses', responseId, { clientDetails: clientsCache[clientId] });
+        this.changed('responses', responseId, { clientDetails: clientsCache[clientId] });
         callback();
       });
     });
   }
-  return self.ready();
+  return this.ready();
 });
 
 Meteor.publish('responses.one', function publishSingleResponse(responseId) {
   logger.info(`PUB[${this.userId}]: responses.one`, responseId);
-  const self = this;
+  check(responseId, String);
+  if (!Roles.userIsInRole(this.userId, ResponsesAccessRoles)) {
+    return [];
+  }
+
   const hc = HmisClient.create(this.userId);
 
-  if (self.userId) {
+  if (this.userId) {
     const response = Responses.findOne({ _id: responseId });
     if (!response) {
-      return self.ready();
+      return this.ready();
     }
 
     const { clientId, clientSchema } = response;
@@ -103,19 +115,24 @@ Meteor.publish('responses.one', function publishSingleResponse(responseId) {
       } catch (e) {
         response.clientDetails = { error: e.reason };
       }
-      self.added('responses', response._id, response);
-      self.ready();
+      this.added('responses', response._id, response);
+      this.ready();
     } else {
       const localClient = PendingClients.findOne({ _id: response.clientId });
       response.clientDetails = localClient;
     }
-    self.added('responses', response._id, response);
+    this.added('responses', response._id, response);
   }
-  return self.ready();
+  return this.ready();
 });
 
 Meteor.publish('responses.enrollments', function publishSingleResponse(enrollmentIds) {
   logger.info(`PUB[${this.userId}]: responses.enrollments`, enrollmentIds);
+  check(enrollmentIds, [String]);
+  if (!Roles.userIsInRole(this.userId, ResponsesAccessRoles)) {
+    return [];
+  }
+
   return Responses.find({
     'enrollment.enrollment-0.id': { $in: enrollmentIds },
   });

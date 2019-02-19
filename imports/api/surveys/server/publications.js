@@ -7,6 +7,7 @@ import { updateDocFromDefinition } from '/imports/api/surveys/helpers';
 import eventPublisher, {
   SurveyUpdatedEvent,
 } from '/imports/api/eventLog/events';
+import { ClientsAccessRoles } from '/imports/config/permissions';
 
 
 function loadSurvey(surveyId, userId) {
@@ -26,8 +27,11 @@ function loadSurvey(surveyId, userId) {
 }
 
 
-Meteor.publish('surveys.all', function publishAllSurveys(/* params = {} */) {
+Meteor.publish('surveys.all', function publishAllSurveys() {
   logger.info(`PUB[${this.userId}]: surveys.all`);
+  if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
+    return [];
+  }
 
   const hc = HmisClient.create(this.userId);
   try {
@@ -63,6 +67,11 @@ Meteor.publish('surveys.all', function publishAllSurveys(/* params = {} */) {
 
 Meteor.publish('surveys.one', function publishOneSurvey(_id) {
   logger.info(`PUB[${this.userId}]: surveys.one`, _id);
+  check(_id, String);
+  if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
+    return [];
+  }
+
   if (Surveys.find({ _id, version: 2 }).count()) {
     return Surveys.find({ _id, version: 2 });
   }
@@ -85,6 +94,9 @@ Meteor.publish('surveys.one', function publishOneSurvey(_id) {
 
 Meteor.publish('surveys.v1', function publishAllSurveys() {
   logger.info(`PUB[${this.userId}]: surveys.v1`);
+  if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
+    return [];
+  }
   return [
     Surveys.find({ version: 1 }),
     SurveyQuestionsMaster.find(),

@@ -1,4 +1,5 @@
 import { logger } from '/imports/utils/logger';
+import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import Users from '/imports/api/users/users';
 import { userProjectGroupId } from '/imports/api/users/helpers';
 import Agencies from '../agencies';
@@ -6,25 +7,21 @@ import Agencies from '../agencies';
 
 Meteor.publish('agencies.all', function publishUserAgencies() {
   logger.info(`PUB[${this.userId}]: agencies.all`);
-  if (!this.userId) {
+  if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
     return [];
   }
-  // TODO: check permissions
-
   const user = Users.findOne(this.userId);
   const projectGroupId = userProjectGroupId(user);
-
+  check(projectGroupId, String);
   return Agencies.find({ projectGroupId });
 });
 
 Meteor.publish('agencies.one', function publishOneAgency(id) {
   logger.info(`PUB[${this.userId}]: agencies.one`, id);
-  if (!this.userId) {
+  if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
     return [];
   }
-
-  // TODO: check permissions
-
+  check(id, String);
   return Agencies.find(id);
 });
 
@@ -37,12 +34,5 @@ Meteor.publish('agencies.active', function publishAgenciesOfCurrentUser() {
       },
     },
   };
-  /*
-  const projectIds = Agencies.find(query).fetch()
-    .reduce((all, agency) => {
-      const projects = agency.projectsOfUser(this.userId);
-      return [...all, ...projects];
-    }, []);
-  */
   return Agencies.find(query);
 });

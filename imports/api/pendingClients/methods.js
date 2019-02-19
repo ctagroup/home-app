@@ -1,4 +1,5 @@
 import { PendingClients } from './pendingClients';
+import { ClientsAccessRoles } from '/imports/config/permissions';
 import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
 import Responses from '/imports/api/responses/responses';
@@ -6,60 +7,23 @@ import Responses from '/imports/api/responses/responses';
 
 Meteor.methods({
   'pendingClients.create'(client) {
-    // TODO: check permissions
-    // TODO: check schema
-    logger.info(`METHOD[${Meteor.userId()}]: pendingClients.create`, client);
+    logger.info(`METHOD[${this.userId}]: pendingClients.create`, client);
+    check(client, PendingClients.schema);
+    if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
     return PendingClients.insert(client);
   },
 
-  /*
-  addPendingClient(
-    firstName,
-    middleName,
-    lastName,
-    suffix,
-    emailAddress,
-    phoneNumber,
-    photo,
-    ssn,
-    dob,
-    race,
-    ethnicity,
-    gender,
-    veteranStatus,
-    disablingConditions,
-    signature
-  ) {
-    // TODO: check permissions
-    logger.info(`METHOD[${Meteor.userId()}]: addPendingClient`);
-
-    const client = PendingClients.insert(
-      {
-        firstName,
-        middleName,
-        lastName,
-        suffix,
-        emailAddress,
-        phoneNumber,
-        photo,
-        ssn,
-        dob,
-        race,
-        ethnicity,
-        gender,
-        veteranStatus,
-        disablingConditions,
-        signature,
-      }
-    );
-    return client;
-  },
-  */
-
   'pendingClients.update'(clientId, client) {
-    logger.info(`METHOD[${Meteor.userId()}]: updatePendingClient`, clientId, client);
+    logger.info(`METHOD[${this.userId}]: updatePendingClient`, clientId, client);
 
-    // TODO: check permissions
+
+    check(clientId, String);
+    check(client, PendingClients.schema);
+    if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
 
     if (!PendingClients.findOne(clientId)) {
       throw new Meteor.Error('404', 'Pending client not found');
@@ -94,8 +58,12 @@ Meteor.methods({
   },
 
   'pendingClients.delete'(clientId) {
-    logger.info(`METHOD[${Meteor.userId()}]: removePendingClient`, clientId);
-    // TODO: check permissions
+    logger.info(`METHOD[${this.userId}]: removePendingClient`, clientId);
+    check(clientId, String);
+    if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
+
     if (!PendingClients.findOne(clientId)) {
       throw new Meteor.Error('404', 'Pending client not found');
     }
@@ -103,8 +71,12 @@ Meteor.methods({
   },
 
   uploadPendingClientToHmis(clientId, schema = 'v2017') {
-    logger.info(`METHOD[${Meteor.userId()}]: uploadPendingClientToHmis`, clientId, schema);
+    logger.info(`METHOD[${this.userId}]: uploadPendingClientToHmis`, clientId, schema);
     check(clientId, String);
+    check(schema, String);
+    if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
 
     const client = PendingClients.findOne(clientId);
 
@@ -112,7 +84,7 @@ Meteor.methods({
       throw new Meteor.Error('404', `Pending client ${clientId} not found`);
     }
 
-    const hc = HmisClient.create(Meteor.userId());
+    const hc = HmisClient.create(this.userId);
     const response = hc.api('client').createClient(client, schema);
     logger.info(`client ${clientId} is now known in HMIS as ${response.clientId}`);
 
