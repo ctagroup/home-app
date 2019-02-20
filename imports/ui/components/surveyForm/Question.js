@@ -10,9 +10,7 @@ import { getLatLongFromAddressOrDevice } from '/imports/utils/location';
 
 const DEFAULT_OTHER_VALUE = 'Other';
 
-export const MISSING_HMIS_ID_ICON = (
-  <i className="fa fa-exclamation-circle" aria-hidden />
-);
+export const MISSING_HMIS_ID_ICON = <i className="fa fa-exclamation-circle" aria-hidden></i>;
 
 export default class Question extends Item {
   constructor() {
@@ -31,12 +29,20 @@ export default class Question extends Item {
   getChoiceOptions() {
     const options = this.props.item.options || [];
     if (Array.isArray(options)) {
-      return options
-        .filter(o => !!o)
-        .map(o => ({
-          value: o.split('|').shift(),
-          label: o.split('|').pop(),
-        }));
+      return options.filter(o => !!o).map(o => {
+        if (typeof o === 'string') {
+          const label = o.split('|').pop();
+          const value = o.split('|').shift();
+          return {
+            value,
+            label,
+          };
+        }
+        return {
+          value: o,
+          label: o,
+        };
+      });
     }
     return Object.keys(options).map(key => ({
       value: key,
@@ -49,7 +55,7 @@ export default class Question extends Item {
     if (!refusable) {
       return null;
     }
-    const refuseValue = typeof refusable === 'boolean' ? 'Refused' : refusable;
+    const refuseValue = typeof(refusable) === 'boolean' ? 'Refused' : refusable;
     return refuseValue;
   }
 
@@ -76,6 +82,7 @@ export default class Question extends Item {
       const choiceOptions = this.getChoiceOptions();
       switch (this.props.item.category) {
         case 'choice':
+        case 'select':
           value = event.target.value;
           if (choiceOptions.some(o => o.value === value)) {
             this.setState({ otherSelected: false });
@@ -156,23 +163,25 @@ export default class Question extends Item {
   }
 
   isRefused() {
-    return (
-      this.props.formState.values[this.props.item.id] === this.getRefuseValue()
-    );
+    return this.props.formState.values[this.props.item.id] === this.getRefuseValue();
   }
 
   renderQuestionCategory(value, disabled) {
     switch (this.props.item.category) {
-      case 'date':
-        return this.renderDatePicker(value, disabled);
       case 'choice':
         return this.renderChoice(value, disabled);
-      case 'number':
-        return this.renderNumberInput(value, disabled);
       case 'currency':
         return this.renderCurrencyInput(value, disabled);
       case 'location':
         return this.renderLocationInput(value, disabled);
+      case 'date':
+        return this.renderDatePicker(value, disabled);
+      case 'number':
+        return this.renderNumberInput(value, disabled);
+      case 'select':
+        return this.renderSelect(value, disabled);
+      case 'textarea':
+        return this.renderTextarea(value, disabled);
       default:
         return this.renderInput(value, 'text', disabled);
     }
@@ -248,6 +257,64 @@ export default class Question extends Item {
     return <div>{choices}</div>;
   }
 
+  renderSelect(value, disabled) {
+    const { id, other } = this.props.item;
+    const options = this.getChoiceOptions();
+    const htmlOptions = options.map((v, i) => (
+      <option
+        key={`choice-${id}-${i}`}
+        value={v.value}
+      >
+        {v.label}
+      </option>
+    ));
+
+    let otherOption = null;
+    if (other) {
+      const otherValue = [...options, { value: 'Other' }].some(o => o.value === value) ? '' : value;
+      const otherPlaceholder = typeof(other) === 'boolean' ? 'please specify' : `${other}`;
+      const otherChecked = !this.isRefused() && this.state.otherSelected;
+      otherOption = (
+        <div>
+          <input
+            name={id}
+            type="checkbox"
+            disabled={this.isRefused() || disabled}
+            checked={otherChecked}
+            value={DEFAULT_OTHER_VALUE}
+            onChange={this.handleOtherClick}
+          />
+          <span>Other: </span>
+          <input
+            type="text"
+            name={id}
+            placeholder={otherPlaceholder}
+            disabled={this.isRefused() || disabled}
+            value={otherValue || ''}
+            onChange={this.handleChange}
+            onFocus={this.handleOtherFocus}
+            ref={(input) => { this.otherInput = input; }}
+          />
+        </div>
+      );
+    }
+    return (
+      <div>
+        <select
+          id={id}
+          value={value}
+          disabled={this.isRefused() || disabled}
+          onChange={this.handleChange}
+        >
+          <option value="">--- Please select ---</option>
+          {htmlOptions}
+        </select>
+        {otherOption}
+      </div>
+    );
+  }
+
+
   renderInput(value, type, disabled) {
     const { id } = this.props.item;
     const mask = this.props.item.mask;
@@ -261,6 +328,13 @@ export default class Question extends Item {
         onChange={this.handleChange}
         disabled={this.isRefused() || disabled}
       />
+    );
+  }
+
+  renderTextarea(value, disabled) {
+    const { id } = this.props.item;
+    return (
+      <textarea id={id} disabled={disabled} rows={5}>{value}</textarea>
     );
   }
 

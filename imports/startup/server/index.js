@@ -61,6 +61,8 @@ import '/imports/api/openingScript/methods';
 import '/imports/api/logger/methods';
 import '/imports/api/aws/server/aws';
 
+import '/imports/api/homeApi/methods';
+
 import '/imports/startup/server/migrations';
 import '/imports/startup/server/accounts';
 import '/imports/startup/server/admins';
