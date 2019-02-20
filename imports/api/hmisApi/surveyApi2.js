@@ -85,11 +85,9 @@ export class SurveyApi2 extends ApiEndpoint {
   //   return this.doGet
   // },
 
-  getGeocodedLocation(url) {   
+  getGeocodedLocation(url) {
     return this.doGet(url);
   }
-
 }
-
 
 HmisApiRegistry.addApi('survey2', SurveyApi2);

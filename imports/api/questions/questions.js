@@ -8,82 +8,82 @@ const categoryOptions = [
   { value: 'grid', label: 'Grid' },
   { value: 'number', label: 'Number' },
   { value: 'text', label: 'Text' },
-  { value: 'location', label: 'Location' }
+  { value: 'location', label: 'Location' },
 ];
 
 const GridColumnSchema = new SimpleSchema({
   id: {
-    type: String
+    type: String,
   },
   title: {
-    type: String
+    type: String,
   },
   type: {
     type: String,
     allowedValues: ['question'],
     autoform: {
-      type: 'hidden'
-    }
+      type: 'hidden',
+    },
   },
   category: {
     type: String,
     allowedValues: categoryOptions.map(o => o.value),
     autoform: {
-      options: categoryOptions
-    }
-  }
+      options: categoryOptions,
+    },
+  },
 });
 
 SimpleSchema.messages({
-  questionCategoryisRequired: 'Provide question category'
+  questionCategoryisRequired: 'Provide question category',
 });
 
 Questions.schema = new SimpleSchema({
   title: {
     type: String,
     autoform: {
-      rows: 2
-    }
+      rows: 2,
+    },
   },
   text: {
     type: String,
     label: 'Additional description',
     autoform: {
-      rows: 5
+      rows: 5,
     },
-    optional: true
+    optional: true,
   },
   category: {
     type: String,
     allowedValues: categoryOptions.map(o => o.value),
     autoform: {
-      options: categoryOptions
-    }
+      options: categoryOptions,
+    },
   },
   refusable: {
-    type: Boolean
+    type: Boolean,
   },
   options: {
     type: [String],
-    optional: true
+    optional: true,
   },
   other: {
     type: String,
     label: 'Other (leave empty if other value is not allowed)',
-    optional: true
+    optional: true,
   },
   columns: {
     type: [GridColumnSchema],
     label: 'Grid columns',
-    optional: true
+    optional: true,
   },
   active: {
     type: Boolean,
-    label: 'Active (show this question in the Survey Builder)'
+    label: 'Active (show this question in the Survey Builder)',
   },
   questionCategory: {
     type: String,
-    optional: true
+    optional: true,
   },
   questionSubcategory: {
     type: String,
@@ -93,21 +93,21 @@ Questions.schema = new SimpleSchema({
         return 'questionCategoryisRequired';
       }
       return undefined;
-    }
+    },
   },
   version: {
     type: Number,
     optional: true,
     autoValue() {
       return 2;
-    }
+    },
   },
   hudQuestion: {
     type: Boolean,
     optional: true,
     autoValue() {
       return false;
-    }
+    },
   },
   createdAt: {
     type: Date,
@@ -123,7 +123,7 @@ Questions.schema = new SimpleSchema({
         this.unset(); // Prevent user from supplying their own value
       }
       return val;
-    }
+    },
   },
   updatedAt: {
     type: Date,
@@ -135,8 +135,8 @@ Questions.schema = new SimpleSchema({
         val = new Date();
       }
       return val;
-    }
-  }
+    },
+  },
 });
 
 Questions.attachSchema(Questions.schema);

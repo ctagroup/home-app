@@ -33,12 +33,12 @@ export function getAddressFromLatLong(latLng) {
       }
 
       if (result.standard) {
-        const stnumber = result.standard.stnumber ? result.standard.stnumber : '';
-        const staddress = result.standard.staddress ? result.standard.staddress : '';
-        const city = result.standard.city ? result.standard.city : '';
-        const state = result.standard.state ? result.standard.state : '';
-        const country = result.standard.country ? result.standard.country : '';
-        const postal = result.standard.postal ? result.standard.postal : '';
+        const stnumber = result.standard.stnumber || '';
+        const staddress = result.standard.staddress || '';
+        const city = result.standard.city || '';
+        const state = result.standard.state || '';
+        const country = result.standard.country || '';
+        const postal = result.standard.postal || '';
 
         address = escapeString(`${stnumber} ${staddress} ${city} ${state} ${country} ${postal}`);
       }

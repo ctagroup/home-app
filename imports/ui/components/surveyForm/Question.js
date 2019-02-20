@@ -24,7 +24,7 @@ export default class Question extends Item {
     this.handleButtonClick = this.handleButtonClick.bind(this);
     this.state = {
       otherSelected: false,
-      error: null
+      error: null,
     };
   }
 
@@ -35,12 +35,12 @@ export default class Question extends Item {
         .filter(o => !!o)
         .map(o => ({
           value: o.split('|').shift(),
-          label: o.split('|').pop()
+          label: o.split('|').pop(),
         }));
     }
     return Object.keys(options).map(key => ({
       value: key,
-      label: options[key]
+      label: options[key],
     }));
   }
 
@@ -130,18 +130,21 @@ export default class Question extends Item {
     if (this.props.item.category === 'location') {
       const addressFields = this.props.item.addressFields || [];
       let value = this.getAddressValue();
-      let addressType;
+      let addressType = 'address';
       for (let i = 0; i < addressFields.length; i++) {
         let addLwrCase = addressFields[i].toLowerCase();
+        // TODO: This basically means the address fields have to be exclusively
+        // Long/Lat or address. No combinations.
         if (addLwrCase.includes('lat') || addLwrCase.includes('long')) {
           addressType = 'coords';
-        } else {
-          addressType = 'address';
         }
       }
       if (value.length > 0) {
         if (isLocation(value, addressType)) {
-          this.setState({ error: null });
+          this.setState({
+            error: null,
+            message: `${value} is a valid location`,
+          });
           return true;
         } else {
           this.setState({ error: `${value} is not a location` });
@@ -149,6 +152,7 @@ export default class Question extends Item {
         }
       }
     }
+    return false; // default if not a location
   }
 
   isRefused() {
@@ -198,7 +202,8 @@ export default class Question extends Item {
             disabled={this.isRefused() || disabled}
             checked={!this.isRefused() && v.value == value} // eslint-disable-line
             onChange={this.handleChange}
-          />{' '}
+          />
+          {'&nbsp;'}
           {v.label}
         </label>
       </div>
@@ -221,7 +226,8 @@ export default class Question extends Item {
               checked={checked}
               value={DEFAULT_OTHER_VALUE}
               onChange={this.handleOtherClick}
-            />{' '}
+            />
+            {'&nbsp;'}
             <span>Other: </span>
             <input
               type="text"
