@@ -5,7 +5,8 @@ import CurrencyInput from '/imports/ui/components/CurrencyInput';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import Item from './Item';
-import { isNumeric, getLatLongFromDevice } from '/imports/api/utils';
+import { isNumeric, getLatLongFromDevice, createGeocodeUrl } from '/imports/api/utils';
+import { logger } from '/imports/utils/logger';
 
 const DEFAULT_OTHER_VALUE = 'Other';
 
@@ -143,38 +144,29 @@ export default class Question extends Item {
         // Long/Lat or address. No combinations.
         if (addLwrCase.includes('lat') || addLwrCase.includes('long')) {
           addressType = 'coords';
+          break;
         }
       }
       if (value.length > 0) {
-        const url = `https://geocode.xyz/?locate=${encodeURIComponent(value)}&json=1`;
+        const url = createGeocodeUrl(value, addressType)
         return new Promise((resolve, reject) => {
-          // TODO: Locations should be saved with flag to indicate if they were validated successfully or not
-          // because locations should still be able to be saved if validation is unsuccessful
           Meteor.call('surveys.getGeocodedLocation', url, (error, result) => {
             if (error) {
-              this.setState({ error: "Location could not be validated. This may be due to a high volume of requests at this time." });
+              this.setState({ error: 'Location could not be validated.' });
               resolve(false);
-              //reject(error);
             } else {
-              if (addressType === 'coords') {
-                // TODO: For now return true/false but we may want to populate address fields based on current lat/long
-                if (result.standard && result.standard.stnumber && result.standard.staddress 
-                  && result.standard.city && result.standard.state && result.standard.country && result.standard.postal) {
-                  this.setState({ error: null, message: `${value} is a valid location` });
-                  resolve(true);
-                } else {
-                  this.setState({ error: `${value} is not a location` });
-                  resolve(false);
-                }
+              // We're assuming the location is valid if the geocoding API returns a result
+              // In the future we may want to populate address fields based on the result
+              if (result.results && result.results.length > 0) {
+                this.setState({ error: null, message: `\"${value}\" validated successfully.` });
+                resolve(true);
               } else {
-                // If we can get a latitude/longitude then we're assuming the address is a valid location
-                if (result.latt && result.longt) {
-                  this.setState({ error: null, message: `${value} is a valid location` });
-                  resolve(true);
-                } else {
-                  this.setState({ error: `${value} is not a location` });
-                  resolve(false);
-                }
+                this.setState({ error: `\"${value}\" did not validate successfully.` });
+                resolve(false);
+              }              
+              if (result.rate) {
+                const geocodingApiLimitMsg = `You have ${result.rate.remaining}/${result.rate.limit} requests to OpenCage Geocoding API remaining today.`;
+                logger.info(geocodingApiLimitMsg);
               }
             }
           });

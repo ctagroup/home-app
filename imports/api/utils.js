@@ -119,3 +119,12 @@ export function getLatLongFromDevice() {
   }
   return latLng;
 }
+
+export function createGeocodeUrl(location, addressType) {
+  const apiKey = '88e54b6832d340aba770a6449045c79d'; // Max. 2500 requests/day
+  const baseUrl = `https://api.opencagedata.com/geocode/v1/json?key=${apiKey}`;
+  if (addressType === 'coords') {
+    location = location.replace(',', '+');
+  }
+  return `${baseUrl}&q=${encodeURIComponent(location)}`;
+}
