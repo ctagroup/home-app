@@ -124,3 +124,13 @@ export function escapeString(str) {
     return entityMap[s];
   });
 }
+
+export function getLatLongFromDevice() {
+  const latLng = [];
+  const location = Geolocation.currentLocation();
+  if (location !== null && location.coords) {
+    latLng[0] = location.coords.latitude;
+    latLng[1] = location.coords.longitude;
+  }
+  return latLng;
+}
