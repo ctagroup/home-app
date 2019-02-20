@@ -152,16 +152,22 @@ export default class Question extends Item {
         return new Promise((resolve, reject) => {
           Meteor.call('surveys.getGeocodedLocation', url, (error, result) => {
             if (error) {
-              this.setState({ error: 'Location could not be validated.' });
+              const msg = 'Location could not be validated due the API call returning an error.';
+              this.setState({ error: null, message: msg });
+              logger.info(msg);
               resolve(false);
             } else {
-              // We're assuming the location is valid if the geocoding API returns a result
+              // We're assuming the location is valid if the geocoding API result isn't empty
               // In the future we may want to populate address fields based on the result
               if (result.results && result.results.length > 0) {
-                this.setState({ error: null, message: `\"${value}\" validated successfully.` });
+                const msg = `\"${value}\" validated successfully.`;
+                this.setState({ error: null, message: msg });
+                logger.info(msg);
                 resolve(true);
               } else {
-                this.setState({ error: `\"${value}\" did not validate successfully.` });
+                const msg = `\"${value}\" did not validate successfully.`;
+                this.setState({ error: null, message: msg });
+                logger.info(msg);
                 resolve(false);
               }              
               if (result.rate) {
