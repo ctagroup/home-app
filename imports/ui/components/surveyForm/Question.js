@@ -19,7 +19,6 @@ export default class Question extends Item {
     this.handleRefuseChange = this.handleRefuseChange.bind(this);
     this.handleOtherFocus = this.handleOtherFocus.bind(this);
     this.handleOtherClick = this.handleOtherClick.bind(this);
-    this.handleButtonClick = this.handleButtonClick.bind(this);
     this.state = {
       otherSelected: false,
       error: null,
@@ -133,13 +132,13 @@ export default class Question extends Item {
     return true;
   }
 
-  handleButtonClick(event) {
+  handleButtonClick() {
     if (this.props.item.category === 'location') {
       const addressFields = this.props.item.addressFields || [];
-      let value = this.getAddressValue();
+      const value = this.getAddressValue();
       let addressType = 'address';
       for (let i = 0; i < addressFields.length; i++) {
-        let addLwrCase = addressFields[i].toLowerCase();
+        const addLwrCase = addressFields[i].toLowerCase();
         // TODO: This basically means the address fields have to be exclusively
         // Long/Lat or address. No combinations.
         if (addLwrCase.includes('lat') || addLwrCase.includes('long')) {
@@ -148,8 +147,8 @@ export default class Question extends Item {
         }
       }
       if (value.length > 0) {
-        const url = createGeocodeUrl(value, addressType)
-        return new Promise((resolve, reject) => {
+        const url = createGeocodeUrl(value, addressType);
+        return new Promise((resolve) => {
           Meteor.call('surveys.getGeocodedLocation', url, (error, result) => {
             if (error) {
               const msg = 'Location could not be validated due the API call returning an error.';
@@ -169,16 +168,19 @@ export default class Question extends Item {
                 this.setState({ error: null, message: msg });
                 logger.info(msg);
                 resolve(false);
-              }              
+              }
               if (result.rate) {
-                const geocodingApiLimitMsg = `You have ${result.rate.remaining}/${result.rate.limit} requests to OpenCage Geocoding API remaining today.`;
-                logger.info(geocodingApiLimitMsg);
+				// Log current request rates for OpenCage Geocoding API remaining today
+                const geoLimitMsg =
+					`You have ${result.rate.remaining}/${result.rate.limit} requests.`;
+                logger.info(geoLimitMsg);
               }
             }
           });
         });
       }
     }
+    return false;
   }
 
   isRefused() {
@@ -390,7 +392,6 @@ export default class Question extends Item {
   renderLocationInput(value, disabled) {
     const { id } = this.props.item;
     const addressFields = this.props.item.addressFields || [];
-    let currAddress = [];
     const autoLoc = this.props.item.autoLocation;
     // const longLatCheck = this.props.item.longLatCheck;
     let location;

@@ -91,28 +91,9 @@ export function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-export function escapeString(str) {
-  if (!str) {
-    return str;
-  }
-
-  var entityMap = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;',
-    '/': '&#x2F;',
-  };
-
-  return String(str).replace(/[&<>"'\/]/g, function (s) {
-    return entityMap[s];
-  });
-}
-
 export function getLatLongFromDevice() {
   const latLng = [];
-  const location = Geolocation.currentLocation();
+  const location = Geolocation.currentLocation(); // eslint-disable-line no-undef
   if (location !== null && location.coords) {
     latLng[0] = location.coords.latitude;
     latLng[1] = location.coords.longitude;
@@ -123,8 +104,9 @@ export function getLatLongFromDevice() {
 export function createGeocodeUrl(location, addressType) {
   const apiKey = '88e54b6832d340aba770a6449045c79d'; // Max. 2500 requests/day
   const baseUrl = `https://api.opencagedata.com/geocode/v1/json?key=${apiKey}`;
+  let loc = location;
   if (addressType === 'coords') {
-    location = location.replace(',', '+');
+    loc = location.replace(',', '+');
   }
-  return `${baseUrl}&q=${encodeURIComponent(location)}`;
+  return `${baseUrl}&q=${encodeURIComponent(loc)}`;
 }
