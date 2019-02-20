@@ -181,6 +181,7 @@ export default class Question extends Item {
         });
       }
     }
+	return false;
   }
 
   isRefused() {

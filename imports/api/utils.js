@@ -1,8 +1,3 @@
-import {
-  getLatLongFromAddressOrDevice,
-  getAddressFromLatLong,
-} from '/imports/utils/location.js';
-
 export function fullName(user) {
   if (!user) {
     return undefined;
@@ -94,16 +89,6 @@ export const removeEmpty = obj =>
 
 export function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
-}
-
-export function isLocation(str, type) {
-  if(type.equals('coords')) {
-    str = getAddressFromLatLong(str);
-  }
-  
-  // If we can get a latitude/longitude then we're assuming it's a valid location
-  const latLng = getLatLongFromAddressOrDevice(str);
-  return latLng && latLng.length === 2;
 }
 
 export function escapeString(str) {
