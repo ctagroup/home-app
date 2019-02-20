@@ -231,7 +231,7 @@ export default class Question extends Item {
             checked={!this.isRefused() && v.value == value} // eslint-disable-line
             onChange={this.handleChange}
           />
-          {'&nbsp;'}
+          {'\xa0'}
           {v.label}
         </label>
       </div>
@@ -255,7 +255,7 @@ export default class Question extends Item {
               value={DEFAULT_OTHER_VALUE}
               onChange={this.handleOtherClick}
             />
-            {'&nbsp;'}
+            {'\xa0'}
             <span>Other: </span>
             <input
               type="text"
