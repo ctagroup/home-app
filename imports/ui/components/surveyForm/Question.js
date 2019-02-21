@@ -171,9 +171,10 @@ export default class Question extends Item {
                 resolve(false);
               }
               if (result.rate) {
-				// Log current request rates for OpenCage Geocoding API remaining today
+                // Log remaining requests, OpenCage Geocoder API allows 2500/day
                 const geoLimitMsg =
-					`You have ${result.rate.remaining}/${result.rate.limit} requests.`;
+                  `You have ${result.rate.remaining}/${result.rate.limit} remaining ` +
+                  'requests to OpenCage Geocoder API today.';
                 logger.info(geoLimitMsg);
               }
             }
