@@ -148,10 +148,6 @@ export const QuestionDefinitionSchema = new SimpleSchema([
       type: Boolean,
       optional: true,
     },
-    longLatCheck: {
-      type: Boolean,
-      optional: true,
-    },
   },
 ]);
 

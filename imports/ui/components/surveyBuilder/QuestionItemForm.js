@@ -36,11 +36,6 @@ export default class QuestionItemForm extends React.Component {
               label="Automatically determine location"
               disabled={isDisabled}
             />
-            <AutoField
-              name="longLatCheck"
-              label="Enable this for latitude/longitude fields, disable for address/zip fields."
-              disabled={isDisabled}
-            />
             <AutoField name="addressFields" disabled={isDisabled} />
           </div>
         </div>

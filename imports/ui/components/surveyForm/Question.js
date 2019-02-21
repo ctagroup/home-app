@@ -138,7 +138,7 @@ export default class Question extends Item {
       const value = this.getAddressValue();
 
       if (value.length > 0) {
-        const url = createGeocodeUrl(value, this.props.item.longLatCheck);
+        const url = createGeocodeUrl(value);
         return new Promise((resolve) => {
           Meteor.call('surveys.getGeocodedLocation', url, (error, result) => {
             if (error) {
@@ -161,9 +161,9 @@ export default class Question extends Item {
                 resolve(false);
               }
               if (result.rate) {
-				// Log current request rates for OpenCage Geocoding API remaining today
+                // Log current request rates for OpenCage Geocoding API remaining today
                 const geoLimitMsg =
-					`You have ${result.rate.remaining}/${result.rate.limit} requests.`;
+                    `You have ${result.rate.remaining}/${result.rate.limit} requests.`;
                 logger.info(geoLimitMsg);
               }
             }

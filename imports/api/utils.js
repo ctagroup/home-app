@@ -101,12 +101,8 @@ export function getLatLongFromDevice() {
   return latLng;
 }
 
-export function createGeocodeUrl(location, isCoords) {
+export function createGeocodeUrl(location) {
   const apiKey = '88e54b6832d340aba770a6449045c79d'; // Max. 2500 requests/day
   const baseUrl = `https://api.opencagedata.com/geocode/v1/json?key=${apiKey}`;
-  let loc = location;
-  if (isCoords) {
-    loc = location.replace(',', '+');
-  }
-  return `${baseUrl}&q=${encodeURIComponent(loc)}`;
+  return `${baseUrl}&q=${encodeURIComponent(location)}`;
 }
