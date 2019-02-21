@@ -35,7 +35,7 @@ Meteor.publish('surveys.all', function publishAllSurveys(/* params = {} */) {
     const localSurveys = Surveys.find({ version: 2 }).fetch();
 
     surveys.filter(s => !!s.surveyDefinition).forEach(s => {
-      this.added('surveys', s.surveyId, {
+      this.added('surveys', s.surveyId, updateDocFromDefinition({
         version: 2,
         title: s.surveyTitle,
         definition: s.surveyDefinition,
@@ -45,7 +45,7 @@ Meteor.publish('surveys.all', function publishAllSurveys(/* params = {} */) {
         },
         numberOfResponses: Responses.find({ surveyId: s.surveyId }).count(),
         createdAt: '',
-      });
+      }));
     });
     localSurveys.map(s => this.added('surveys', s._id, {
       ...s,
