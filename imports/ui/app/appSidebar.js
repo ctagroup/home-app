@@ -126,6 +126,11 @@ const adminMenuItems = [
     icon: 'fa-cog',
     path: 'projectsList',
   },
+  {
+    name: 'Tags',
+    icon: 'fa-tags',
+    path: 'tagList',
+  },
   featureDecisions.isMc211App() ? {
     name: 'Reporting',
     icon: 'fa-envelope',

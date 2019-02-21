@@ -7,9 +7,9 @@ class TagItem extends Component {
   // }
   render() {
     // const { name: inputName, className, style, disabled } = this.props;
+    const { data: { title } } = this.props;
     const editable = true;
     const removable = true;
-    const title = 'TagName';
 
     return (
       <span className="btn btn-default btn-sm" style={{ margin: '5px' }}>

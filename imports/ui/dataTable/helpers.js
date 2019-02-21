@@ -322,3 +322,31 @@ export function deleteProjectButton(onSuccessCallback) {
     orderable: false,
   };
 }
+
+export function removeClientTagButton(onSuccessCallback, dateFunc) {
+  const date = dateFunc();
+  const composeData = (_id, rowData) => (
+    {
+      _id,
+      message: `Are you sure you want to remove ${rowData}?`,
+      method: 'clientTags.delete',
+      args: [_id, date],
+      onSuccess() {
+        if (onSuccessCallback) onSuccessCallback(rowData);
+      },
+    }
+  );
+  return {
+    data: '_id',
+    title: 'Delete',
+    filterable: false,
+    render() { return ''; },
+    reactCreatedCell(node, _id, rowData) {
+      console.log('node, _id, rowData', node, _id, rowData, date);
+      const templateData = composeData(_id, rowData);
+      return blazeData('DataTableDeleteButton', templateData);
+    },
+    width: '45px',
+    orderable: false,
+  };
+}

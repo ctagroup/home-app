@@ -4,18 +4,24 @@ import TagItem from './TagItem';
 class TagList extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = { name: '' };
     this.handleChange = this.handleChange.bind(this);
-    this.addTag = this.props.newTagHandler;
+    this.addTagHandler = this.addTagHandler.bind(this);
   }
 
-  handleChange(key, input) {
+  addTagHandler() {
+    this.props.newTagHandler(this.state.name);
+  }
+
+  handleChange(key, event) {
+    const input = event.target.value;
     this.setState({ [key]: input });
   }
 
   render() {
     // const { name: inputName, className, style, disabled } = this.props;
     // const { maskedValue } = this.state;
+    const { tags } = this.props;
 
     return (
       <div className="tag-list">
@@ -26,10 +32,10 @@ class TagList extends Component {
             placeholder="Enter new tag name.."
             onChange={(value) => this.handleChange('name', value)}
           />
-          <button className="btn" onClick={this.addTag}>Add</button>
+          <button className="btn" onClick={this.addTagHandler}>Add</button>
         </div>
         <div>
-          {[1, 2, 3].map(() => (<TagItem />))}
+          {tags.map((tag) => (<TagItem key={`tag-${tag.tagId}`} data={tag} />))}
         </div>
       </div>
     );

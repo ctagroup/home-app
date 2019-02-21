@@ -2,17 +2,33 @@ import React, { Component } from 'react';
 import Select from 'react-select';
 // import ClientTagItem from './ClientTagItem';
 import DataTable from '/imports/ui/components/dataTable/DataTable';
+import { removeClientTagButton } from '/imports/ui/dataTable/helpers.js';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 
 class ClientTagList extends Component {
   constructor() {
     super();
-    this.state = { date: moment.now() };
+    this.state = {};
     this.handleChange = this.handleChange.bind(this);
     this.renderDatePicker = this.renderDatePicker.bind(this);
     this.toggleNewTag = this.toggleNewTag.bind(this);
     this.renderNewClientTag = this.renderNewClientTag.bind(this);
+    this.createNewTag = this.createNewTag.bind(this);
+    this.getDate = this.getDate.bind(this);
+  }
+
+  getDate() {
+    return (this.state.date || { toDate() { return Date.now(); } }).toDate();
+  }
+
+  createNewTag() {
+    const newTagData = {
+      tagId: this.state.newTagId.value,
+      appliedOn: (this.state.newTagDate || { toDate() { return Date.now(); } }).toDate(),
+      action: this.state.newTagAction.value,
+    };
+    this.props.newClientTagHandler(newTagData);
   }
 
   toggleNewTag() {
@@ -27,7 +43,7 @@ class ClientTagList extends Component {
     const dateValue = this.state && this.state[key];
     return (<DatePicker
       className="form-control"
-      selected={dateValue ? moment(dateValue) : ''}
+      selected={dateValue ? moment(dateValue) : moment(Date.now())}
       onChange={(value) => this.handleChange(key, value)}
       placeholderText="MM/DD/YYYY"
     />);
@@ -35,10 +51,8 @@ class ClientTagList extends Component {
 
   renderNewClientTag() {
     const { newTag, newTagId, newTagAction } = this.state || {};
-    const tagList = [
-      { _id: 1, title: 'First' },
-      { _id: 1, title: 'Second' },
-    ].map(({ _id, title }) => ({ value: _id, label: title }));
+    const { tags } = this.props;
+    const tagList = tags.map(({ tagId, title }) => ({ value: tagId, label: title }));
 
     const actionsList = [{ value: 0, label: 'Removed' }, { value: 1, label: 'Added' }];
 
@@ -89,36 +103,37 @@ class ClientTagList extends Component {
   }
 
   render() {
-    // TODO: needed columns: title, status, appliedOn, appliedBy, remove
+    // TODO: needed columns: title, action, appliedOn, appliedBy, remove
 
     // const { name: inputName, className, style, disabled } = this.props;
-    // const { tags } = this.props;
+    const { tags, clientTags } = this.props;
+    // TODO: use collection instead?
+    const tagMap = tags.reduce((acc, tag) => ({ ...acc, [tag.tagId]: tag }), {});
 
+    const activeDate = this.getDate;
+    const activeDateInMs = activeDate().valueOf();
+    // const activeTags = clientTags.filter(({ appliedOn }) => appliedOn < activeDateInMs);
+    const activeTags = clientTags.filter(({ appliedOn }) => {
+      console.log('appliedOn < activeDateInMs', appliedOn < activeDateInMs);
+      return appliedOn < activeDateInMs;
+    });
 
     const tableOptions = {
       columns: [
         {
           title: 'Tag Name',
           data: 'title',
-          // render(value) {
-          //   return moment(value).format('MM/DD/YYYY');
-          // },
-        },
-        {
-          title: 'Status',
-          data: 'status',
-          render(value) {
-            return value == 0 ? 'Removed' : 'Added'; // eslint-disable-line eqeqeq
+          render(value, op, doc) {
+            return (tagMap[doc.tagId] || {}).title;
+            // return moment(value).format('MM/DD/YYYY');
           },
         },
         {
-          title: 'Client Name',
-          data: '_id',
-          // render(value) {
-          //   const client = PendingClients.findOne({ _id: value });
-          //   const name = (`${client.firstName.trim()} ${client.lastName.trim()}`).trim();
-          //   return `<a href="/clients/${value}">${name}</a>`;
-          // },
+          title: 'Action',
+          data: 'action',
+          render(value) {
+            return value == 0 ? 'Removed' : 'Added'; // eslint-disable-line eqeqeq
+          },
         },
         {
           title: 'Applied On',
@@ -127,11 +142,22 @@ class ClientTagList extends Component {
             return moment(value).format('MM/DD/YYYY');
           },
         },
+        // {
+        //   title: 'Applied By',
+        //   data: 'appliedBy',
+        //   render(value) {
+        //     const user Clients.find().fetch();
+        //     return moment(value).format('MM/DD/YYYY');
+        //   },
+        // },
+        removeClientTagButton((clientTag) => {
+          console.log('removeClientTagButton', clientTag, activeDateInMs);
+          // Projects._collection.remove(project._id); // eslint-disable-line
+        }, activeDate),
       ],
     };
 
-    const tags = [{ title: 'First' }, { title: 'Second' }];
-    const tableData = tags;
+    const tableData = activeTags;
     const options = tableOptions;
 
     const disabled = true;
@@ -153,7 +179,8 @@ class ClientTagList extends Component {
           <DataTable
             disableSearch={disabled}
             options={options}
-            data={tableData}
+            data={clientTags}
+            resolveData={data => data.filter(({ appliedOn }) => appliedOn < activeDateInMs)}
           />
         </div>
       </div>
