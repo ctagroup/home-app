@@ -19,6 +19,7 @@ export default class Question extends Item {
     this.handleRefuseChange = this.handleRefuseChange.bind(this);
     this.handleOtherFocus = this.handleOtherFocus.bind(this);
     this.handleOtherClick = this.handleOtherClick.bind(this);
+    this.handleButtonClick = this.handleButtonClick.bind(this);
     this.state = {
       otherSelected: false,
       error: null,
