@@ -135,20 +135,10 @@ export default class Question extends Item {
 
   handleButtonClick() {
     if (this.props.item.category === 'location') {
-      const addressFields = this.props.item.addressFields || [];
       const value = this.getAddressValue();
-      let addressType = 'address';
-      for (let i = 0; i < addressFields.length; i++) {
-        const addLwrCase = addressFields[i].toLowerCase();
-        // TODO: This basically means the address fields have to be exclusively
-        // Long/Lat or address. No combinations.
-        if (addLwrCase.includes('lat') || addLwrCase.includes('long')) {
-          addressType = 'coords';
-          break;
-        }
-      }
+
       if (value.length > 0) {
-        const url = createGeocodeUrl(value, addressType);
+        const url = createGeocodeUrl(value, this.props.item.longLatCheck);
         return new Promise((resolve) => {
           Meteor.call('surveys.getGeocodedLocation', url, (error, result) => {
             if (error) {
@@ -394,7 +384,6 @@ export default class Question extends Item {
     const { id } = this.props.item;
     const addressFields = this.props.item.addressFields || [];
     const autoLoc = this.props.item.autoLocation;
-    // const longLatCheck = this.props.item.longLatCheck;
     let location;
     if (autoLoc) {
       const latLongVal = getLatLongFromDevice();
