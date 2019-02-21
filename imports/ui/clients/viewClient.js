@@ -6,6 +6,8 @@ import Questions from '/imports/api/questions/questions';
 import Agencies from '/imports/api/agencies/agencies';
 import Projects from '/imports/api/projects/projects';
 import Responses from '/imports/api/responses/responses';
+import { Tags } from '/imports/api/tags/tags.js';
+import { ClientTags } from '/imports/api/tags/clientTags.js';
 import { logger } from '/imports/utils/logger';
 import ReferralStatusList from './referralStatusList';
 import HomeConfig from '/imports/config/homeConfig';
@@ -106,6 +108,10 @@ function getEnrollmentSurveyIdForProject(projectId, surveyType) {
 
 Template.viewClient.helpers(
   {
+    clientTagNames() {
+      const clientTagList = ClientTags.find().fetch();
+      return clientTagList.map(({ tagId }) => Tags.findOne(tagId).title).join(', ');
+    },
     formatSSN(ssn) {
       if (!ssn) return '';
       // XXX-XX-3210
