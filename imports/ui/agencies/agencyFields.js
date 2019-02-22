@@ -57,7 +57,7 @@ export function formSchema(doc = {}) {
       autoform: {
         type: 'select-checkbox',
         options: () => Projects.find().fetch().map(p => ({
-          label: p.projectName,
+          label: `${p.projectName} (${p.schema})`,
           value: p._id,
         })),
       },
