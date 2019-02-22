@@ -59,7 +59,7 @@ export default class QuestionItemForm extends React.Component {
         <AutoField name="text" />
         <AutoField name="category" disabled={isDisabled} />
         {isDisabled ? 'You cannot edit choices for this question' : choiceFields}
-		{locationFields}
+        {locationFields}
         {showMask &&
           <AutoField
             name="mask"
