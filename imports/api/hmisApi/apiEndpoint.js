@@ -36,7 +36,7 @@ export class ApiEndpoint {
   }
 
   doGet(url) {
-    const logGetRequests = false;
+    const logGetRequests = true;
     const headers = this.getRequestHeaders();
     const options = {
       headers,
@@ -52,7 +52,7 @@ export class ApiEndpoint {
     try {
       response = HTTP.get(url, options);
     } catch (err) {
-      this.throwApiError('get', url, headers, err, this.logGetDetails);
+      this.throwApiError('get', url, options, err, this.logGetDetails);
     }
     delete response.content;
     if (logGetRequests) {

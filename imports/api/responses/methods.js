@@ -362,3 +362,15 @@ Meteor.methods({
     return count();
   },
 });
+
+
+Meteor.injectedMethods({
+  'test.sentry'() {
+    return 123;
+  },
+  'responses.importFromHslynk'() {
+    const { hmisClient } = this.context;
+    const list = hmisClient.api('survey').getClientsSurveySubmissions();
+    return list;
+  },
+});

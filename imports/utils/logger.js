@@ -1,5 +1,6 @@
 import winston from 'winston';
-import Sentry from 'winston-sentry';
+import Sentry from '@sentry/node';
+// import Sentry from 'winston-sentry';
 import moment from 'moment';
 
 let log;
@@ -40,6 +41,10 @@ if (Meteor.isServer) {
   const { sentry } = Meteor.settings;
 
   if (sentry && sentry.dsn) {
+    Sentry.init({
+      dsn: sentry.dsn,
+    });
+    /*
     const sentryTransport = new Sentry({
       level: sentry.level || 'error',
       dsn: sentry.dsn,
@@ -47,9 +52,11 @@ if (Meteor.isServer) {
       release: moment(new Date()).format('YYYY-MM-DD'),
     });
     transports.push(sentryTransport);
+    */
   }
 
   log = new winston.Logger({ transports });
+  log.sentry = Sentry;
 }
 
 export function sanitize(obj, secrets = ['password', 'passwordConfirm',
