@@ -10,6 +10,7 @@ import {
   getValueByPath,
   castType,
   prepareEmails,
+  getQuestionItemOptions,
 } from './computations';
 
 describe('survey computations', function () {
@@ -597,6 +598,16 @@ describe('survey computations', function () {
         title: 'Hello John',
         body: 'Your score is 10',
       });
+    });
+  });
+
+  it('will get itemChoiceOptions as dict', function () {
+    const item1 = {
+      options: ['A|1', 'B|2'],
+    };
+    chai.assert.deepEqual(getQuestionItemOptions(item1), {
+      A: '1',
+      B: '2',
     });
   });
 });

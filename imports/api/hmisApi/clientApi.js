@@ -33,9 +33,18 @@ export class ClientApi extends ApiEndpoint {
     };
   }
 
-  getClients() {
-    const url = `${BASE_URL}/clients`;
-    return this.doGet(url).Clients.clients;
+  getClients(schema = null, start = 0, limit = 9999) {
+    const schemaPath = schema ? `/${schema}` : '';
+    const url = `${BASE_URL}${schemaPath}/clients?startIndex=${start}&limit=${limit}`;
+    const { clients, pagination } = this.doGet(url).Clients;
+    const remaining = limit - pagination.returned;
+    if (remaining > 0 && pagination.returned > 0) {
+      return [
+        ...clients,
+        ...this.getClients(schema, pagination.from + pagination.returned, remaining),
+      ];
+    }
+    return clients;
   }
 
   createClient(client, schema) {

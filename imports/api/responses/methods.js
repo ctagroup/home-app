@@ -9,6 +9,7 @@ import Responses, { ResponseStatus } from '/imports/api/responses/responses';
 import { prepareEmails } from '../surveys/computations';
 import { EnrollmentUploader } from './helpers';
 import Users from '/imports/api/users/users';
+import ResponseImporter from './ResponseImporter';
 
 function prepareValuesToUpload(values, definition, defaultSectionId) {
   const questionIds = Object.keys(values);
@@ -365,12 +366,21 @@ Meteor.methods({
 
 
 Meteor.injectedMethods({
-  'test.sentry'() {
-    return 123;
-  },
-  'responses.importFromHslynk'() {
+  async 'responses.importFromHslynk'(start = 0, limit = Number.MAX_SAFE_INTEGER) {
+    const schema = 'v2017';
     const { hmisClient } = this.context;
-    const list = hmisClient.api('survey').getClientsSurveySubmissions();
-    return list;
+    const clientIds = hmisClient.api('client')
+      .getClients(schema, 0, limit)
+      .map(c => c.clientId);
+
+    const importer = new ResponseImporter({
+      responsesCollection: Responses,
+      hmisClient,
+    });
+
+    clientIds.forEach(
+      clientId => importer.importResponsesForClient(clientId, schema, this.userId)
+    );
+    return { start, limit, clientIds };
   },
 });

@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "@babel/runtime": "^7.3.1",
-    "@sentry/node": "^4.6.3",
+    "@sentry/node": "^4.6.4",
     "async": "http://registry.npmjs.org/async/-/async-1.0.0.tgz",
     "awilix": "^4.0.1",
     "aws-sdk": "^2.221.1",

@@ -21,7 +21,7 @@ export function registerInjectedMeteorMethods(container) {
                 try {
                   logger.info(`METHOD ${name}[${this.userId}]: `, args);
                   const result = methods[name].call(this, ...args);
-                  logger.debug(`METHOD ${name}[${this.userId}] succeeded: `, result);
+                  logger.debug(`METHOD ${name}[${this.userId}] succeeded`);
                   resolve(result);
                 } catch (err) {
                   Sentry.captureException(err);
