@@ -367,6 +367,7 @@ Meteor.methods({
 
 Meteor.injectedMethods({
   async 'responses.importFromHslynk'(start = 0, limit = Number.MAX_SAFE_INTEGER) {
+    this.unblock();
     const schema = 'v2017';
     const { hmisClient } = this.context;
     const clientIds = hmisClient.api('client')
@@ -378,9 +379,14 @@ Meteor.injectedMethods({
       hmisClient,
     });
 
-    clientIds.forEach(
-      clientId => importer.importResponsesForClient(clientId, schema, this.userId)
-    );
-    return { start, limit, clientIds };
+    const results = [];
+    while (clientIds.length > 0) {
+      const clientId = clientIds.shift();
+      logger.info(`!!!!!!! importing responses for ${clientId}, ${clientIds.length} remaining`);
+      const result = await importer.importResponsesForClientAsync(clientId, schema, this.userId);
+      logger.info(`!!!!!!! done with ${clientId}, ${clientIds.length} remaining`);
+      results.push(result);
+    }
+    return results;
   },
 });

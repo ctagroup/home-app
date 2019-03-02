@@ -111,6 +111,10 @@ Responses.schema = new SimpleSchema({
     label: 'Submitted At',
     optional: true,
   },
+  extraData: {
+    type: String,
+    optional: true,
+  },
 });
 
 Responses.attachSchema(Responses.schema);

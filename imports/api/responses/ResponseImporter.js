@@ -1,4 +1,5 @@
 import { eachLimit } from 'async';
+import { escapeKeys } from '/imports/api/utils';
 import { itemsToArray, getQuestionItemOptions } from '/imports/api/surveys/computations';
 import { logger } from '/imports/utils/logger';
 
@@ -20,13 +21,20 @@ export default class ResponseImporter {
 
   submissionResponsesToValues(submissionResponses, surveyDefinitionItems, debugData) {
     return submissionResponses.reduce((all, response) => {
+      if (!response.questionId) {
+        logger.warn('response without questionId, skipping', response, debugData);
+        return all;
+      }
       const matchingItems = surveyDefinitionItems
         .filter(x => x.hmisId === response.questionId)
         .filter(x => hasValidResponse(x, response.responseText));
 
       if (matchingItems.length === 0) {
-        logger.warn('cannot match submission response with any item', debugData, response);
-        return all;
+        logger.warn('cannot match response with any item', response, debugData);
+        return {
+          ...all,
+          [`missing--question--${response.questionId}`]: response.responseText,
+        };
       }
       // we have at least one matching item in the survey
       return {
@@ -45,39 +53,58 @@ export default class ResponseImporter {
     return this.surveyCache[surveyId];
   }
 
-  importResponsesForClient(clientId, clientSchema, surveyorId) {
-    const submissions = this.hmisClient.api('survey').getClientsSurveySubmissions(clientId);
-    logger.info(`importing ${submissions.length} submissions for client ${clientId} ${clientSchema}`);
-    eachLimit(submissions, Meteor.settings.connectionLimit,
-      (submission, done) => {
-        const { surveyId, submissionId } = submission;
-        logger.debug(`importing submission ${submissionId} in survey ${surveyId}`);
-        const surveyDefinitionItems = this.getSurveyDefinitionItems(surveyId);
-        Meteor.defer(() => {
-          if (this.responsesCollection.findOne(submissionId)) {
-            logger.debug(`submission ${submissionId} skipped, already imported`);
-          } else {
-            const submissionResponses = this.hmisClient.api('survey')
-              .getSubmissionResponses(clientId, surveyId, submissionId);
-            const values = this.submissionResponsesToValues(
-              submissionResponses, surveyDefinitionItems, { clientId, submissionId, surveyId }
-            );
-            const doc = {
-              _id: submissionId,
-              clientId,
-              clientSchema,
-              status: 'completed',
-              surveyId,
-              surveyorId,
-              submissionId,
-              version: 2,
-              values,
-            };
-            this.responsesCollection.insert(doc);
-            logger.debug(`submission ${submissionId} imported`);
-          }
-          done();
+  async importResponsesForClientAsync(clientId, clientSchema, surveyorId) {
+    const submissions = this.hmisClient.api('survey').getClientSurveySubmissions(clientId);
+    logger.info(`importing ${submissions.length} submissions for client ${clientId} ${clientSchema}`); // eslint-disable-line
+
+    return new Promise((resolve) => {
+      const results = [];
+      eachLimit(submissions, 20,
+        (submission, callback) => {
+          Meteor.setTimeout(() => {
+            const { surveyId, submissionId } = submission;
+            const surveyDefinitionItems = this.getSurveyDefinitionItems(surveyId);
+            logger.debug(`importing submission ${submissionId} in survey ${surveyId}`);
+
+            try {
+              // Import submission
+              if (this.responsesCollection.findOne(submissionId)) {
+                logger.debug(`submission ${submissionId} skipped, already imported`);
+              } else {
+                logger.debug(`new submission to import ${submissionId}`);
+                const submissionResponses = this.hmisClient.api('survey')
+                  .getSubmissionResponses(clientId, surveyId, submissionId);
+                const values = this.submissionResponsesToValues(
+                  submissionResponses, surveyDefinitionItems, { clientId, submissionId, surveyId }
+                );
+                const doc = {
+                  _id: submissionId,
+                  clientId,
+                  clientSchema,
+                  status: 'completed',
+                  surveyId,
+                  surveyorId,
+                  submissionId,
+                  version: 2,
+                  values: escapeKeys(values),
+                  extraData: 'imported',
+                };
+                this.responsesCollection.insert(doc);
+                logger.debug(`imported submission ${submissionId}`);
+              }
+            } catch (err) {
+              // Log error, but continue
+              logger.error(`Error in submission import ${submissionId}`, err);
+            } finally {
+              results.push(submissionId);
+              logger.info(`*** import for client ${clientId} completed in ${results.length}/${submissions.length}`); // eslint-disable-line
+              callback();
+              if (results.length === submissions.length) {
+                resolve(results);
+              }
+            }
+          }, 1);
         });
-      });
+    });
   }
 }

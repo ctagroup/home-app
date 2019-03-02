@@ -1,7 +1,5 @@
 import winston from 'winston';
 import Sentry from '@sentry/node';
-// import Sentry from 'winston-sentry';
-import moment from 'moment';
 
 let log;
 
