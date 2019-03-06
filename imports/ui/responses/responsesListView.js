@@ -49,10 +49,13 @@ const tableOptions = {
     {
       data: 'surveyId',
       title: 'Survey',
-      render(value, type, doc) {
-        const survey = Surveys.findOne({ _id: value });
-        const url = Router.path('adminDashboardresponsesEdit', { _id: doc._id, surveyId: value });
-        const title = survey ? survey.title : value;
+      render(surveyId, type, response) {
+        const { survey } = response;
+        if (survey.error) {
+          return `${survey.error}<br />${surveyId}`;
+        }
+        const url = Router.path('adminDashboardresponsesEdit', { _id: response._id, surveyId });
+        const title = survey ? survey.surveyTitle : surveyId;
         return `<a href="${url}">${title}</a>`;
       },
       filterMethod(filter, row, column) {
@@ -68,32 +71,15 @@ const tableOptions = {
       data: 'clientId',
       title: 'Client',
       render(value, type, response) {
-        const clientData = Clients.findOne(response.clientId);
-        if (!clientData) {
-          Meteor.setTimeout(() => {
-            const clientDataReload = Clients.findOne(response.clientId);
-            if (!clientDataReload) {
-              Meteor.call('reloadClients', (err, res) => {
-                if (!err) { console.log('ClientsCache reloaded', res); }
-              });
-            }
-          }, 500);
-        }
-        // const clientDetails = response.clientDetails || { loading: true };
-        const clientDetails = clientData || { loading: true };
-
-        if (clientDetails.loading) {
-          return 'Loading...';
-        }
-        if (clientDetails.error) {
+        const { client } = response;
+        if (!client) return response.clientId;
+        if (client.error) {
           return `
-            ${clientDetails.error}<br />
+            ${client.error}<br />
             ID: ${response.clientId}<br />
             Schema: ${response.clientSchema}`;
         }
-
-        const displayName = fullName(clientDetails) || response.clientId;
-
+        const displayName = fullName(client);
         let url = Router.path('viewClient', { _id: response.clientId });
         if (response.clientSchema) {
           url = Router.path('viewClient',
@@ -198,7 +184,7 @@ Template.responsesListView.helpers({
     return tableOptions;
   },
   tableData() {
-    return () => Responses.find().fetch();
+    return [];
   },
   clientDoesNotExist() {
     return this.clientId && !this.client;
@@ -210,12 +196,13 @@ Template.responsesListView.helpers({
   },
   loadData() {
     return () => ((pageNumber, pageSize, sort, order, callback) => {
-      // console.log('callback', pageNumber, pageSize, sort, order, callback);
+      console.log('responses list is fetching data');
       const sortBy = Array.isArray(sort) ? sort[0] : sort;
       const orderBy = Array.isArray(order) ? order[0] : order;
       // return Meteor.subscribe('responses.page', pageNumber, pageSize, sortBy, orderBy);
-      return Meteor.call('getResponsesPage', pageNumber, pageSize, sortBy, orderBy,
+      return Meteor.call('responses.getPage', pageNumber, pageSize, sortBy, orderBy,
         (err, res) => {
+          console.log('page res', err, res);
           res.content.forEach(response => {
             // const schema = getClientSchemaFromLinks(response.links, 'v2015');
             // Object.assign(response.client, { schema });

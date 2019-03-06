@@ -179,6 +179,7 @@ Meteor.methods({
   },
 
   reloadClients() {
+    this.unblock();
     const hc = HmisClient.create(this.userId);
     const clients = hc.api('client').getAllClients() || [];
     const clientBasics = clients.map(filterClientForCache);

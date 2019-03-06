@@ -29,6 +29,7 @@ class ControlledTable extends Component {
   }
 
   fetchData(state /* , instance*/) {
+    console.log('controlled table is fetching data');
     this.setState({ loading: true });
     const columnsMap =
       this.state.columns.reduce((acc, value) => ({ ...acc, [value.id]: value }), {});

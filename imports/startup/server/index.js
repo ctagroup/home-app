@@ -90,5 +90,5 @@ Meteor.startup(() => {
   } else {
     logger.warn('S3 config is missing');
   }
-  SyncedCron.start();
+  // SyncedCron.start();
 });

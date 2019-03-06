@@ -8,6 +8,7 @@ import {
 } from '/imports/api/clients/helpers';
 
 Meteor.publish('responses.all', function publishResponses(ofClientId, schema) {
+  return [];
   logger.info(`PUB[${this.userId}]: responses.all`, ofClientId, schema);
   const self = this;
   let stopFunction = false;
