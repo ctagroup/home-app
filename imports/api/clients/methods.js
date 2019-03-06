@@ -1,7 +1,8 @@
 import { logger } from '/imports/utils/logger';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
+import { ClientsCache } from '/imports/api/clients/clientsCache';
 import { HmisClient } from '/imports/api/hmisApi';
-import { mergeByDedupId } from '/imports/api/clients/helpers';
+import { mergeByDedupId, filterClientForCache } from '/imports/api/clients/helpers';
 import eventPublisher, {
   ClientCreatedEvent,
   ClientUpdatedEvent,
@@ -73,18 +74,22 @@ Meteor.methods({
 
   async searchClient(query, options) {
     logger.info(`METHOD[${Meteor.userId()}]: searchClient(${query})`);
-    const optionz = options || {};
+    let { sort, order, limit } = options || {};
+    const { page, excludeLocalClients } = options || {};
+    sort = sort || 'firstName';
+    order = order || 'asc';
+    const startIndex = page * limit;
 
     // guard against client-side DOS: hard limit to 50
-    optionz.limit = Math.min(50, Math.abs(optionz.limit || 50));
+    limit = Math.min(50, Math.abs(limit || 50));
 
     const hc = HmisClient.create(Meteor.userId());
-    let hmisClients = hc.api('client').searchClient(query, optionz.limit);
+    let hmisClients = hc.api('client').searchClient(query, limit, startIndex, sort, order);
 
     hmisClients = hmisClients.filter(client => client.link);
 
     let localClients = [];
-    if (!optionz.excludeLocalClients) {
+    if (!excludeLocalClients) {
       try {
         localClients = PendingClients.aggregate([
           {
@@ -116,7 +121,7 @@ Meteor.methods({
             },
           },
           {
-            $limit: optionz.limit,
+            $limit: limit,
           },
         ], { explain: false });
       } catch (err) {
@@ -171,5 +176,12 @@ Meteor.methods({
       );
     }
     return mergedClients;
+  },
+
+  reloadClients() {
+    const hc = HmisClient.create(this.userId);
+    const clients = hc.api('client').getAllClients() || [];
+    const clientBasics = clients.map(filterClientForCache);
+    ClientsCache.rawCollection().insertMany(clientBasics, { ordered: false });
   },
 });

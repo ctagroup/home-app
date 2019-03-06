@@ -33,9 +33,32 @@ export class ClientApi extends ApiEndpoint {
     };
   }
 
-  getClients() {
-    const url = `${BASE_URL}/clients`;
-    return this.doGet(url).Clients.clients;
+  getClients(schema = DEFAULT_PROJECT_SCHEMA, start = 0, limit = 9999) {
+    const url =
+      `${BASE_URL}/${schema}/clients?startIndex=${start}&maxItems=${limit}`;
+    const { pagination, clients } = this.doGet(url).Clients;
+
+    const remaining = limit - pagination.returned;
+    if (remaining > 0 && pagination.returned > 0) {
+      return [
+        ...clients,
+        ...this.getClients(schema, pagination.from + pagination.returned, remaining),
+      ];
+    }
+    return clients;
+  }
+  getAllClients(start = 0, limit = 9999) {
+    const data =
+      ['v2014', 'v2015', 'v2016', 'v2017'].map((schema) => {
+        try {
+          return this.getClients(schema, start, limit);
+        } catch (e) {
+          // logger.warn(e);
+          console.log(e);
+          return [];
+        }
+      });
+    return _.flatten(data);
   }
 
   createClient(client, schema) {
@@ -112,12 +135,13 @@ export class ClientApi extends ApiEndpoint {
     return this.doGet(`https://www.hmislynk.com${apiUrl}`).client;
   }
 
-  searchClient(query, limit = 10) {
+  searchClient(query, limit = 50, startIndex = 0, sort = 'firstName', order = 'asc') {
     const params = {
       q: query,
       maxItems: limit,
-      sort: 'firstName',
-      order: 'asc',
+      sort,
+      startIndex,
+      order, // asc-desc
     };
     const url = `${BASE_URL}/search/client?${querystring.stringify(params)}`;
     return this.doGet(url).searchResults.items;

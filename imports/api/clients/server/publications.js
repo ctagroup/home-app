@@ -10,7 +10,9 @@ import {
   getGlobalHouseholds,
   getReferralStatusHistory,
   getHousingMatch,
+  filterClientForCache,
 } from '/imports/api/clients/helpers';
+import { ClientsCache } from '/imports/api/clients/clientsCache';
 
 Meteor.publish('clients.one',
 function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
@@ -25,10 +27,9 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
     stopFunction = true;
   });
 
-  let client = false;
-
   try {
     const hc = HmisClient.create(this.userId);
+    let client = false;
     client = hc.api('client').getClient(inputClientId, inputSchema);
     client.schema = inputSchema;
     client.isHMISClient = true;
@@ -37,7 +38,7 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
     // NOTE [PG]: it's currently not possible because not all clients have dedupId :(
     let clientVersions = [client];
     if (client.dedupClientId) {
-      clientVersions = hc.api('client').searchClient(client.dedupClientId, 50);
+      clientVersions = hc.api('client').searchClient(client.dedupClientId);
     }
 
     // const mergedClient = mergeClient(clientVersions, inputSchema);
@@ -161,4 +162,43 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
   } catch (e) {} // eslint-disable-line
 
   return null;
+});
+
+Meteor.publish('clients.all', function pubClients(force = false) {
+  logger.info(`PUB[${this.userId}]: clients.all`);
+
+  let stopFunction = false;
+  this.unblock();
+  this.onStop(() => {
+    stopFunction = true;
+  });
+
+  const hc = HmisClient.create(this.userId);
+  try {
+    const cachedClients = ClientsCache.find().fetch();
+    if (cachedClients.length && !force) {
+      cachedClients.forEach(client => { this.added('localClients', client.clientId, client); });
+    } else {
+      const clients = hc.api('client').getAllClients() || [];
+      const clientBasics = clients.map(client => {
+        if (stopFunction) return null;
+        this.added('localClients', client.clientId, client);
+        this.ready();
+        return filterClientForCache(client);
+        // return {
+        //   clientId: client.clientId,
+        //   dedupClientId: client.dedupClientId,
+        //   firstName: client.firstName,
+        //   middleName: client.middleName,
+        //   lastName: client.lastName,
+        //   dob: client.dob,
+        // };
+      }).filter(c => c);
+      // ClientsCache.updateMany({}, { upsert: true });
+      ClientsCache.rawCollection().insertMany(clientBasics, { ordered: false });
+    }
+  } catch (e) {
+    logger.warn(e);
+  }
+  return this.ready();
 });

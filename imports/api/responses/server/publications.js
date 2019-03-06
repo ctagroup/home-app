@@ -27,7 +27,7 @@ Meteor.publish('responses.all', function publishResponses(ofClientId, schema) {
       // schema
       clientsCache[ofClientId] = hc.api('client').getClient(ofClientId, schema);
       const client = clientsCache[ofClientId];
-      const clientVersions = hc.api('client').searchClient(client.dedupClientId, 50);
+      const clientVersions = hc.api('client').searchClient(client.dedupClientId);
       clientVersions.forEach(item => { clientsCache[item.id] = item; });
       const mergedClient = mergeClient(clientVersions, schema);
       clientIds = mergedClient.clientVersions.map(({ clientId }) => clientId);

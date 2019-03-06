@@ -30,6 +30,7 @@ Router.route('adminDashboardresponsesView', {
       Meteor.subscribe('responses.all', clientId, schema),
       Meteor.subscribe('surveys.all'),
       Meteor.subscribe('surveys.v1'),
+      Meteor.subscribe('clients.all'),
     ];
 
     if (clientId) {
@@ -63,17 +64,18 @@ Router.route('adminDashboardresponsesNew', {
     },
   },
   waitOn() {
-    const { clientId, schema } = this.params.query;
+    const { clientId, schema, surveyId } = this.params.query;
+    // TODO: subscribe to particular survey:
     if (schema) {
       return [
         Meteor.subscribe('clients.one', clientId, schema),
-        Meteor.subscribe('surveys.all'),
+        Meteor.subscribe('surveys.one', surveyId),
         // Meteor.subscribe('questions.all'),
       ];
     }
     return [
       Meteor.subscribe('pendingClients.one', clientId),
-      Meteor.subscribe('surveys.all'),
+      Meteor.subscribe('surveys.one', surveyId),
       // Meteor.subscribe('questions.all'),
     ];
   },
@@ -104,7 +106,7 @@ Router.route('adminDashboardresponsesEdit', {
     // TODO: subscribe client details
     return [
       Meteor.subscribe('responses.one', this.params._id),
-      Meteor.subscribe('surveys.all'), // TODO: we need survey id from response to sub just one
+      Meteor.subscribe('surveys.one', this.params.surveyId),
       Meteor.subscribe('questions.all'),
     ];
   },

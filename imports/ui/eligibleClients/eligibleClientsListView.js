@@ -1,5 +1,5 @@
 import EligibleClients from '/imports/api/eligibleClients/eligibleClients';
-import { fullName } from '/imports/api/utils';
+import { fullName, getClientSchemaFromLinks } from '/imports/api/utils';
 import { TableDom } from '/imports/ui/dataTable/helpers';
 import './eligibleClientsListView.html';
 
@@ -15,6 +15,18 @@ const tableOptions = {
           { query: `schema=${client.schema}` }
         );
         return `<a href="${url}">${fullName(client)}</a>`;
+      },
+      filterMethod(filter, eligibleClient /* , column*/) {
+        const { client } = eligibleClient;
+        const clientDetails = client || { loading: true };
+        // TODO: trigger client data load if no data coming from subscription
+        let value = '';
+        if (clientDetails.loading) {
+          value = 'Loading...';
+        } else {
+          value = fullName(clientDetails) || client.clientId;
+        }
+        return value.toLowerCase().includes(filter.value.toLowerCase());
       },
     },
     {
@@ -43,6 +55,7 @@ const tableOptions = {
     {
       title: 'Match Status',
       data: 'matched',
+      render(value) { return `${value}`; },
     },
   ],
   order: [
@@ -61,6 +74,25 @@ Template.eligibleClientsListView.helpers({
   },
   tableOptions() {
     return tableOptions;
+  },
+  loadData() {
+    return () => ((pageNumber, pageSize, sort, order, callback) => {
+      // console.log('callback', pageNumber, pageSize, sort, order, callback);
+      const sortBy = Array.isArray(sort) ? sort[0] : sort;
+      const orderBy = Array.isArray(order) ? order[0] : order;
+      // return Meteor.subscribe('eligibleClients.page', pageNumber, pageSize, sortBy, orderBy);
+      return Meteor.call('getEligibleClientsPage', pageNumber, pageSize, sortBy, orderBy,
+        (err, res) => {
+          res.content.forEach(eligibleClient => {
+            const schema = getClientSchemaFromLinks(eligibleClient.links, 'v2015');
+            Object.assign(eligibleClient.client, { schema });
+            EligibleClients._collection.update(eligibleClient._id || eligibleClient.clientId, eligibleClient, {upsert: true}); // eslint-disable-line
+          });
+          const data = EligibleClients.find({}).fetch();
+          const pages = res.page.totalPages;
+          if (callback) callback({ data, pages });
+        });
+    });
   },
 });
 
