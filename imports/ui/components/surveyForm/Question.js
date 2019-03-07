@@ -298,9 +298,8 @@ export default class Question extends Item {
         disabled={disabled}
         rows={5}
         onChange={this.handleChange}
-      >
-        {value}
-      </textarea>
+        value={value || ''}
+      ></textarea>
     );
   }
 

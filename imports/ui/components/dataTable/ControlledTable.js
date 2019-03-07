@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import { transformColumn, formatDate } from './helpers.jsx';
-import _ from 'lodash';
+import { transformColumn /* , formatDate */ } from './helpers.jsx';
+// import _ from 'lodash';
 
 class ControlledTable extends Component {
   constructor(props) {
@@ -29,10 +29,9 @@ class ControlledTable extends Component {
   }
 
   fetchData(state /* , instance*/) {
-    console.log('controlled table is fetching data');
     this.setState({ loading: true });
-    const columnsMap =
-      this.state.columns.reduce((acc, value) => ({ ...acc, [value.id]: value }), {});
+    // const columnsMap =
+    //   this.state.columns.reduce((acc, value) => ({ ...acc, [value.id]: value }), {});
 
     if (this.props.loadData) {
       this.props.loadData(
@@ -41,6 +40,12 @@ class ControlledTable extends Component {
         state.sorted,
         state.filtered,
         (res) => {
+          this.setState({
+            data: res.data,
+            pages: res.pages,
+            loading: false,
+          });
+          /*
           let filteredData = res.data;
           const { pageSize, page, sorted, filtered } = state;
           if (filtered.length) {
@@ -77,6 +82,7 @@ class ControlledTable extends Component {
             pages: res.pages,
             loading: false,
           });
+          */
         });
     }
   }

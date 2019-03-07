@@ -354,11 +354,12 @@ Meteor.methods({
   },
 
   'responses.getPage'(pageNumber = 0, pageSize = 50, sort = 'firstName', order = 'desc') {
-    // TODO [VK]: if client id is set..
     logger.info(`METHOD[${this.userId}]: responses.getPage(${pageNumber}, ${pageSize}, ${sort}, ${order})`); // eslint-disable-line max-len
     if (!this.userId) {
       throw new Meteor.Error(401, 'Unauthorized');
     }
+
+    console.log(sort, order);
 
     this.unblock();
     const responsesCount = Responses.find().count();
