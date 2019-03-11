@@ -59,6 +59,7 @@ const tableOptions = {
         return `<a href="${url}">${title}</a>`;
       },
       filterMethod(filter, row, column) {
+        console.log(filter, row, column);
         // row  || rows
         const value = row[column.id];
         const survey = Surveys.findOne({ _id: value });
@@ -195,27 +196,32 @@ Template.responsesListView.helpers({
     return Router.path('selectSurvey', { _id: clientId }, { query });
   },
   loadData() {
-    return () => ((pageNumber, pageSize, sort, order, callback) => {
-      const sortBy = Array.isArray(sort) ? sort[0] : sort;
-      const orderBy = Array.isArray(order) ? order[0] : order;
-      // return Meteor.subscribe('responses.page', pageNumber, pageSize, sortBy, orderBy);
-      return Meteor.call('responses.getPage', pageNumber, pageSize, sortBy, orderBy,
-        (err, res) => {
-          // PG: we cannot use Responses._collection.update here, because it's conflicting with
-          // subscriptions which add data to a collection
-          // (i.e. subscribe to response which has already been added to
-          // a collection via _collection.update)
+    return () => ((pageNumber, pageSize, sortBy, orderBy, callback) => {
+      const query = Router.current().params.query || {};
+      const options = {
+        clientId: query.clientId,
+        clientSchema: query.schema,
+        pageNumber,
+        pageSize,
+        sortBy,
+        orderBy,
+      };
+      return Meteor.call('responses.getPage', options, (err, res) => {
+        // PG: we cannot use Responses._collection.update here, because it's conflicting with
+        // subscriptions which add data to a collection
+        // (i.e. subscribe to response which has already been added to
+        // a collection via _collection.update)
 
-          // res.content.forEach(response => {
-          //   // const schema = getClientSchemaFromLinks(response.links, 'v2015');
-          //   // Object.assign(response.client, { schema });
-          //   Responses._collection.update(response._id, response, {upsert: true});
-          // });
-          // const data = Responses.find({}).fetch();
-          const data = res.content;
-          const pages = res.page.totalPages;
-          if (callback) callback({ data, pages });
-        });
+        // res.content.forEach(response => {
+        //   // const schema = getClientSchemaFromLinks(response.links, 'v2015');
+        //   // Object.assign(response.client, { schema });
+        //   Responses._collection.update(response._id, response, {upsert: true});
+        // });
+        // const data = Responses.find({}).fetch();
+        const data = res.content;
+        const pages = res.page.totalPages;
+        if (callback) callback({ data, pages });
+      });
     });
   },
 });
