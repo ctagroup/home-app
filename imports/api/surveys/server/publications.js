@@ -42,9 +42,9 @@ Meteor.publish('surveys.all', function publishAllSurveys(force = false) {
       });
     } else {
       const surveys = hc.api('survey2').getSurveys() || [];
-      surveys.forEach(s => {
+      surveys.filter(s => !!s.surveyDefinition).forEach(s => {
         if (!s.surveyDefinition) return;
-        const surveyData = {
+        const surveyData = updateDocFromDefinition({
           surveyId: s.surveyId,
           version: 2,
           title: s.surveyTitle,
@@ -55,7 +55,7 @@ Meteor.publish('surveys.all', function publishAllSurveys(force = false) {
           },
           numberOfResponses: Responses.find({ surveyId: s.surveyId }).count(),
           createdAt: '',
-        };
+        });
         this.added('surveys', s.surveyId, surveyData);
         surveysList.push(surveyData);
       });

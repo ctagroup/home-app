@@ -18,7 +18,3 @@ import '/imports/ui/dataTable/dataTable';
 import '/imports/ui/dataTable/controlledTable';
 
 import '/imports/startup/client/routes';
-
-Meteor.startup(() => {
-  Meteor.subscribe('diExample.publication', 123, 456);
-});

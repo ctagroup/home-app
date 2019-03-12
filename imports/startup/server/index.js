@@ -1,4 +1,4 @@
-import { SyncedCron } from 'meteor/littledata:synced-cron';
+// import { SyncedCron } from 'meteor/littledata:synced-cron';
 
 import './diContainer';
 
@@ -63,6 +63,7 @@ import '/imports/api/openingScript/methods';
 import '/imports/api/logger/methods';
 import '/imports/api/aws/server/aws';
 
+import '/imports/api/homeApi/methods';
 import '/imports/api/tags/methods';
 import '/imports/api/tags/server/publications';
 
@@ -89,5 +90,5 @@ Meteor.startup(() => {
   } else {
     logger.warn('S3 config is missing');
   }
-  SyncedCron.start();
+  // SyncedCron.start();
 });

@@ -8,6 +8,7 @@ import './housingMatch';
 import './questions';
 import './surveys';
 import './responses';
+import './rois';
 import './housingUnits';
 import './globalHouseholds';
 import './users';

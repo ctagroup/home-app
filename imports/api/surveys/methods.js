@@ -223,6 +223,7 @@ Meteor.methods({
   },
 
   reloadSurveys() {
+    this.unblock();
     const hc = HmisClient.create(this.userId);
     const surveys = hc.api('survey2').getSurveys() || [];
     const surveysList = surveys.map(s => ({

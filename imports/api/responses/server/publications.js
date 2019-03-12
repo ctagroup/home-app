@@ -8,6 +8,10 @@ import {
 } from '/imports/api/clients/helpers';
 
 Meteor.publish('responses.all', function publishResponses(ofClientId, schema) {
+  // FIXME:
+  // Due to the amount of responses in the system this subscription should not be used
+  // in favour of responses.getPage method or should support pagination
+  check(ofClientId, String);
   logger.info(`PUB[${this.userId}]: responses.all`, ofClientId, schema);
   const self = this;
   let stopFunction = false;
