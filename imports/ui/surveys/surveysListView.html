@@ -1,7 +1,8 @@
 <template name="surveysListView">
   <p><a href="{{pathFor 'surveysNew'}}" class="btn btn-primary"><i class="fa fa-plus"></i> New Survey</a></p>
   {{#if hasData}}
-    {{> ReactiveDatatable tableData=tableData options=tableOptions }}
+    <!-- { {> ReactiveDatatable tableData=tableData options=tableOptions }} -->
+    {{> dataTable tableData=tableData options=tableOptions class="table dataTable"}}
   {{else}}
     <div class="alert alert-info">
       <p>There are no surveys to show.</p>

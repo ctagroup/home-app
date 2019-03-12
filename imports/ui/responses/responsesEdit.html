@@ -1,19 +1,23 @@
 <template name="responsesEdit">
-  {{#if response}}
-    {{#if survey}}
-      <div>{{> React
-        component=component
-        definition=definition
-        initialValues=initialValues
-        client=client
-        response=response
-        surveyId=surveyId
-        debugMode=isAdmin
-      }}</div>
-    {{else}}
-      <p>Survey does not exists</p>
-    {{/if}}
+  {{#if loading}}
+  Loading...
   {{else}}
-    <p>Responses does not exist</p>
+    {{#if response}}
+      {{#if survey}}
+        <div>{{> React
+          component=component
+          definition=definition
+          initialValues=initialValues
+          client=client
+          response=response
+          surveyId=surveyId
+          debugMode=isAdmin
+        }}</div>
+      {{else}}
+        <p>Survey does not exists</p>
+      {{/if}}
+    {{else}}
+      <p>Responses does not exist</p>
+    {{/if}}
   {{/if}}
 </template>

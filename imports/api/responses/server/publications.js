@@ -8,6 +8,10 @@ import {
 } from '/imports/api/clients/helpers';
 
 Meteor.publish('responses.all', function publishResponses(ofClientId, schema) {
+  // FIXME:
+  // Due to the amount of responses in the system this subscription should not be used
+  // in favour of responses.getPage method or should support pagination
+  check(ofClientId, String);
   logger.info(`PUB[${this.userId}]: responses.all`, ofClientId, schema);
   const self = this;
   let stopFunction = false;
@@ -27,7 +31,7 @@ Meteor.publish('responses.all', function publishResponses(ofClientId, schema) {
       // schema
       clientsCache[ofClientId] = hc.api('client').getClient(ofClientId, schema);
       const client = clientsCache[ofClientId];
-      const clientVersions = hc.api('client').searchClient(client.dedupClientId, 50);
+      const clientVersions = hc.api('client').searchClient(client.dedupClientId);
       clientVersions.forEach(item => { clientsCache[item.id] = item; });
       const mergedClient = mergeClient(clientVersions, schema);
       clientIds = mergedClient.clientVersions.map(({ clientId }) => clientId);

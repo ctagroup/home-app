@@ -1,5 +1,6 @@
 import { logger } from '/imports/utils/logger';
 import Surveys from '/imports/api/surveys/surveys';
+import SurveyCaches from '/imports/api/surveys/surveyCaches';
 import Responses from '/imports/api/responses/responses';
 import { HmisClient } from '/imports/api/hmisApi';
 import SurveyQuestionsMaster from '/imports/api/surveys/surveyQuestionsMaster';
@@ -7,7 +8,6 @@ import { updateDocFromDefinition } from '/imports/api/surveys/helpers';
 import eventPublisher, {
   SurveyUpdatedEvent,
 } from '/imports/api/eventLog/events';
-
 
 function loadSurvey(surveyId, userId) {
   const hc = HmisClient.create(userId);
@@ -26,27 +26,41 @@ function loadSurvey(surveyId, userId) {
 }
 
 
-Meteor.publish('surveys.all', function publishAllSurveys(/* params = {} */) {
+// TODO [VK]: force reaload cache flag?
+Meteor.publish('surveys.all', function publishAllSurveys(force = false) {
   logger.info(`PUB[${this.userId}]: surveys.all`);
 
   const hc = HmisClient.create(this.userId);
   try {
-    const surveys = hc.api('survey2').getSurveys() || [];
     const localSurveys = Surveys.find({ version: 2 }).fetch();
-
-    surveys.filter(s => !!s.surveyDefinition).forEach(s => {
-      this.added('surveys', s.surveyId, updateDocFromDefinition({
-        version: 2,
-        title: s.surveyTitle,
-        definition: s.surveyDefinition,
-        hmis: {
+    const surveyCaches = SurveyCaches.find().fetch();
+    const surveysList = [];
+    if (surveyCaches.length && !force) {
+      surveyCaches.forEach((survey) => {
+        survey.numberOfResponses = Responses.find({ surveyId: survey.surveyId }).count(); // eslint-disable-line
+        this.added('surveys', survey.surveyId, survey);
+      });
+    } else {
+      const surveys = hc.api('survey2').getSurveys() || [];
+      surveys.filter(s => !!s.surveyDefinition).forEach(s => {
+        if (!s.surveyDefinition) return;
+        const surveyData = updateDocFromDefinition({
           surveyId: s.surveyId,
-          status: 'uploaded',
-        },
-        numberOfResponses: Responses.find({ surveyId: s.surveyId }).count(),
-        createdAt: '',
-      }));
-    });
+          version: 2,
+          title: s.surveyTitle,
+          definition: s.surveyDefinition,
+          hmis: {
+            surveyId: s.surveyId,
+            status: 'uploaded',
+          },
+          numberOfResponses: Responses.find({ surveyId: s.surveyId }).count(),
+          createdAt: '',
+        });
+        this.added('surveys', s.surveyId, surveyData);
+        surveysList.push(surveyData);
+      });
+      SurveyCaches.rawCollection().insertMany(surveysList, { ordered: false });
+    }
     localSurveys.map(s => this.added('surveys', s._id, {
       ...s,
       hmis: {
@@ -90,4 +104,3 @@ Meteor.publish('surveys.v1', function publishAllSurveys() {
     SurveyQuestionsMaster.find(),
   ];
 });
-

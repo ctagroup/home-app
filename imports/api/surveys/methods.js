@@ -2,9 +2,11 @@ import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
 import { getScoringVariables, iterateItems } from '/imports/api/surveys/computations';
 import Surveys from '/imports/api/surveys/surveys';
+import SurveyCaches from '/imports/api/surveys/surveyCaches';
 import {
   mapUploadedSurveySections,
-  updateDefinitionFromDoc, updateDocFromDefinition,
+  updateDefinitionFromDoc,
+  updateDocFromDefinition,
 } from '/imports/api/surveys/helpers';
 import eventPublisher, {
   SurveyUpdatedEvent,
@@ -219,6 +221,25 @@ Meteor.methods({
     Surveys.update(id, { $set: { hmis } });
     return surveyId;
   },
+
+  reloadSurveys() {
+    this.unblock();
+    const hc = HmisClient.create(this.userId);
+    const surveys = hc.api('survey2').getSurveys() || [];
+    const surveysList = surveys.map(s => ({
+      surveyId: s.surveyId,
+      version: 2,
+      title: s.surveyTitle,
+      definition: s.surveyDefinition,
+      hmis: {
+        surveyId: s.surveyId,
+        status: 'uploaded',
+      },
+      createdAt: '',
+    }));
+    SurveyCaches.rawCollection().insertMany(surveysList, { ordered: false });
+  },
+
   'surveys.getSurveySections'(surveyId) {
     logger.info(`METHOD[${this.userId}]: surveys.getSurveySections`, surveyId);
     check(surveyId, String);

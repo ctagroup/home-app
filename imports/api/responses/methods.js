@@ -9,6 +9,7 @@ import Responses, { ResponseStatus } from '/imports/api/responses/responses';
 import { prepareEmails } from '../surveys/computations';
 import { EnrollmentUploader } from './helpers';
 import Users from '/imports/api/users/users';
+import { HmisCache } from '/imports/api/cache/hmisCache';
 
 function prepareValuesToUpload(values, definition, defaultSectionId) {
   const questionIds = Object.keys(values);
@@ -350,6 +351,30 @@ Meteor.methods({
 
     logger.info('DONE!', submissionId);
     return submissionId;
+  },
+
+  'responses.getPage'(pageNumber = 0, pageSize = 50, sort = 'firstName', order = 'desc') {
+    logger.info(`METHOD[${this.userId}]: responses.getPage(${pageNumber}, ${pageSize}, ${sort}, ${order})`); // eslint-disable-line max-len
+    if (!this.userId) {
+      throw new Meteor.Error(401, 'Unauthorized');
+    }
+
+    console.log(sort, order);
+
+    this.unblock();
+    const responsesCount = Responses.find().count();
+    const pageData = Responses.find({}, { skip: pageNumber * pageSize, limit: pageSize }).fetch();
+
+    return {
+      content: pageData.map(r => ({
+        ...r,
+        client: HmisCache.getClient(r.clientId, r.clientSchema, this.userId),
+        survey: HmisCache.getSurvey(r.surveyId, this.userId),
+      })),
+      page: {
+        totalPages: Math.ceil(responsesCount / pageSize),
+      },
+    };
   },
   'responses.count'() {
     logger.info(`METHOD[${this.userId}]: responses.count`);

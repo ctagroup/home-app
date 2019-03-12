@@ -27,7 +27,6 @@ Router.route('adminDashboardresponsesView', {
     const { clientId, schema } = this.params.query;
 
     const subscriptions = [
-      Meteor.subscribe('responses.all', clientId, schema),
       Meteor.subscribe('surveys.all'),
       Meteor.subscribe('surveys.v1'),
     ];
@@ -63,17 +62,18 @@ Router.route('adminDashboardresponsesNew', {
     },
   },
   waitOn() {
-    const { clientId, schema } = this.params.query;
+    const { clientId, schema, surveyId } = this.params.query;
+    // TODO: subscribe to particular survey:
     if (schema) {
       return [
         Meteor.subscribe('clients.one', clientId, schema),
-        Meteor.subscribe('surveys.all'),
+        Meteor.subscribe('surveys.one', surveyId),
         // Meteor.subscribe('questions.all'),
       ];
     }
     return [
       Meteor.subscribe('pendingClients.one', clientId),
-      Meteor.subscribe('surveys.all'),
+      Meteor.subscribe('surveys.one', surveyId),
       // Meteor.subscribe('questions.all'),
     ];
   },
@@ -101,11 +101,10 @@ Router.route('adminDashboardresponsesEdit', {
     },
   },
   waitOn() {
-    // TODO: subscribe client details
     return [
       Meteor.subscribe('responses.one', this.params._id),
-      Meteor.subscribe('surveys.all'), // TODO: we need survey id from response to sub just one
-      Meteor.subscribe('questions.all'),
+      // Meteor.subscribe('surveys.all', this.params.surveyId),
+      // Meteor.subscribe('questions.all'),
     ];
   },
   onBeforeAction() {
@@ -120,34 +119,37 @@ Router.route('adminDashboardresponsesEdit', {
         Router.go('dashboard');
       }
     }
+    const response = Responses.findOne(this.params._id);
+    if (response.version < 2) {
+      Router.go('responsesArchive', { _id: this.params._id });
+      this.next();
+      return;
+    }
+
+    const { clientId, clientSchema, surveyId } = response;
+    this.clientSub = Meteor.subscribe('clients.one', clientId, clientSchema);
+    this.surveySub = Meteor.subscribe('surveys.one', surveyId);
     this.next();
   },
   data() {
+    const ready = (this.clientSub && this.surveySub) ?
+      (this.clientSub.ready() && this.surveySub.ready()) : false;
+
     const response = Responses.findOne(this.params._id);
     if (!response) return {};
 
     const { clientId, clientSchema } = response;
     const clientStub = {
-      // TODO: get client data via subscription
       _id: clientId,
       schema: clientSchema,
     };
 
-    if (clientSchema) {
-      Meteor.subscribe('clients.one', clientId, clientSchema);
-    }
-
-    if (response.version < 2) {
-      Router.go('responsesArchive', { _id: this.params._id });
-      return {};
-    }
-
-    const survey = Surveys.findOne(response.surveyId);
     return {
       title: 'Responses',
       subtitle: 'Edit',
+      loading: !ready,
       response,
-      survey,
+      survey: Surveys.findOne(response.surveyId),
       client: Clients.findOne(clientId) || clientStub,
     };
   },

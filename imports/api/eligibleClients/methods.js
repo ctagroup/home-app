@@ -12,6 +12,15 @@ Meteor.methods({
     const hc = HmisClient.create(Meteor.userId());
     return hc.api('house-matching').getEligibleClients();
   },
+  getEligibleClientsPage(pageNumber = 0, pageSize = 50, sort = 'firstName', order = 'desc') {
+    logger.info(`METHOD[${Meteor.userId()}]: getEligibleClientsPage(${pageNumber}, ${pageSize}, ${sort}, ${order})`); // eslint-disable-line max-len
+    if (!Meteor.userId()) {
+      throw new Meteor.Error(401, 'Unauthorized');
+    }
+
+    const hc = HmisClient.create(Meteor.userId());
+    return hc.api('house-matching-v2').getEligibleClientsPage(pageNumber, pageSize, sort, order);
+  },
 
   ignoreMatchProcess(inputClientId, ignoreMatchProcess, remarks = '') {
     logger.info(`METHOD[${Meteor.userId()}]: ignoreMatchProcess(${Array.isArray(inputClientId)}, ${inputClientId}, ${ignoreMatchProcess})`); // eslint-disable-line max-len

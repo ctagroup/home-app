@@ -347,7 +347,13 @@ export default class Question extends Item {
   renderTextarea(value, disabled) {
     const { id } = this.props.item;
     return (
-      <textarea id={id} disabled={disabled} rows={5}>{value}</textarea>
+      <textarea
+        id={id}
+        disabled={disabled}
+        rows={5}
+        onChange={this.handleChange}
+        value={value || ''}
+      ></textarea>
     );
   }
 

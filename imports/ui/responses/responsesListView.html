@@ -7,12 +7,6 @@
     {{#if clientId}}
       <p><a href="{{newResponsePath}}" class="btn btn-primary"><i class="fa fa-plus"></i> Survey client</a></p>
     {{/if}}
-    {{#if hasData}}
-      {{> ReactiveDatatable tableData=tableData options=tableOptions }}
-    {{else}}
-      <div class="alert alert-info">
-        <p>There are no responses to show.</p>
-      </div>
-    {{/if}}
+    {{> controlledTable tableData=tableData options=tableOptions class="table dataTable" loadData=loadData}}
   {{/if}}
 </template>

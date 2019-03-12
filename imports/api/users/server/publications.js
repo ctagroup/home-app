@@ -95,7 +95,11 @@ Meteor.publish(null, function publishCurrentUserData() { // eslint-disable-line
 Meteor.publish('users.hmisRoles', function publishHMISRoles() { // eslint-disable-line prefer-arrow-callback, max-len
   logger.info(`PUB[${this.userId}]: users.hmisRoles`);
   if (!this.userId) return this.ready();
-  const hmisRoles = HmisClient.create(this.userId).api('user-service').getRoles();
-  hmisRoles.forEach(r => this.added('hmisRoles', r.id, r));
+  try {
+    const hmisRoles = HmisClient.create(this.userId).api('user-service').getRoles();
+    hmisRoles.forEach(r => this.added('hmisRoles', r.id, r));
+  } catch (e) {
+    logger.error(`users.hmisRoles: failed to load HMIS roles for user ${this.userId}`, e);
+  }
   return this.ready();
 });

@@ -137,3 +137,16 @@ export const getHousingMatch = (hc, clientId) => {
   housingMatch.housingUnit = housingUnit;
   return housingMatch;
 };
+
+export const allowedClientCacheKeys = [
+  'clientId',
+  'dedupClientId',
+  'firstName',
+  'middleName',
+  'lastName',
+  'dob',
+  'schema',
+];
+
+export const filterClientForCache = (client) =>
+  allowedClientCacheKeys.reduce((acc, key) => { acc[key] = client[key]; return acc; }, {}); // eslint-disable-line

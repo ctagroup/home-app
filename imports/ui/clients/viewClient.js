@@ -15,6 +15,7 @@ import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 
 import './enrollmentsListView.js';
 import './clientDeleteReason.js';
+import './clientTagList.js';
 import './manageClientEnrollments.html';
 import './panelRois.js';
 import '../enrollments/enrollmentsNew';
@@ -57,22 +58,24 @@ const getLastStatus = (statusHistory) => statusHistory && statusHistory[statusHi
 
 const updateEligibility = (client) => {
   const currentClientId = client.clientId;
+  // const getEligibleClientKey = (clientId, schema) => `eligibleClient::${schema}::${clientId}`;
+  const getEligibleClient = (clientId, schema) => client[`eligibleClient::${schema}::${clientId}`];
   // drop not found:
   const clientVersions = client.clientVersions
     .filter(({ clientId, schema }) => {
-      const data = client[`eligibleClient::${schema}::${clientId}`];
+      const data = getEligibleClient(clientId, schema);
       return data && !data.error;
     });
   const ignored = clientVersions.find(({ clientId, schema }) => {
-    const data = client[`eligibleClient::${schema}::${clientId}`];
+    const data = getEligibleClient(clientId, schema);
     return data.ignoreMatchProcess;
   });
   const updateRequired = clientVersions.filter(({ clientId, schema }) => {
-    const data = client[`eligibleClient::${schema}::${clientId}`];
+    const data = getEligibleClient(clientId, schema);
     return (!data.updating) && !data.ignoreMatchProcess;
   });
   if (ignored && updateRequired.length) {
-    const remarks = client[`eligibleClient::${ignored.schema}::${ignored.clientId}`].remarks;
+    const remarks = getEligibleClient(ignored.clientId, ignored.schema).remarks;
     const clientIds = updateRequired.map(({ clientId }) => clientId);
     // mark updating client versions:
     const updating = updateRequired.reduce((acc, { clientId, schema }) =>

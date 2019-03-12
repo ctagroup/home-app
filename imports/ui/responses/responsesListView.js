@@ -3,6 +3,7 @@ import { deleteResponseButton, TableDom } from '/imports/ui/dataTable/helpers';
 import moment from 'moment';
 import Responses, { ResponseStatus } from '/imports/api/responses/responses';
 import Surveys from '/imports/api/surveys/surveys';
+import { Clients } from '/imports/api/clients/clients';
 import { fullName } from '/imports/api/utils';
 import './responsesListView.html';
 
@@ -48,31 +49,38 @@ const tableOptions = {
     {
       data: 'surveyId',
       title: 'Survey',
-      render(value, type, doc) {
-        const survey = Surveys.findOne({ _id: value });
-        const url = Router.path('adminDashboardresponsesEdit', { _id: doc._id });
-        const title = survey ? survey.title : value;
+      render(surveyId, type, response) {
+        const { survey } = response;
+        if (survey.error) {
+          return `${survey.error}<br />${surveyId}`;
+        }
+        const url = Router.path('adminDashboardresponsesEdit', { _id: response._id, surveyId });
+        const title = survey ? survey.surveyTitle : surveyId;
         return `<a href="${url}">${title}</a>`;
+      },
+      filterMethod(filter, row, column) {
+        console.log(filter, row, column);
+        // row  || rows
+        const value = row[column.id];
+        const survey = Surveys.findOne({ _id: value });
+        const title = survey ? survey.title : value;
+        return title.toLowerCase().includes(filter.value.toLowerCase());
+        // return false;
       },
     },
     {
       data: 'clientId',
       title: 'Client',
       render(value, type, response) {
-        const clientDetails = response.clientDetails || { loading: true };
-
-        if (clientDetails.loading) {
-          return 'Loading...';
-        }
-        if (clientDetails.error) {
+        const { client } = response;
+        if (!client) return response.clientId;
+        if (client.error) {
           return `
-            ${clientDetails.error}<br />
+            ${client.error}<br />
             ID: ${response.clientId}<br />
             Schema: ${response.clientSchema}`;
         }
-
-        const displayName = fullName(clientDetails) || response.clientId;
-
+        const displayName = fullName(client);
         let url = Router.path('viewClient', { _id: response.clientId });
         if (response.clientSchema) {
           url = Router.path('viewClient',
@@ -81,6 +89,20 @@ const tableOptions = {
           );
         }
         return `<a href="${url}">${displayName}</a>`;
+      },
+      filterMethod(filter, row /* , column*/) {
+        const response = row;
+        const clientData = Clients.findOne(response.clientId);
+        // const clientDetails = response.clientDetails || { loading: true };
+        const clientDetails = clientData || { loading: true };
+        // TODO: trigger client data load if no data coming from subscription
+        let value = '';
+        if (clientDetails.loading) {
+          value = 'Loading...';
+        } else {
+          value = fullName(clientDetails) || response.clientId;
+        }
+        return value.toLowerCase().includes(filter.value.toLowerCase());
       },
     },
     {
@@ -91,6 +113,12 @@ const tableOptions = {
           return value;
         }
         return moment(value).format('MM/DD/YYYY h:mm A');
+      },
+      sortMethod: (a, b) => {
+        const aM = moment(a).toDate();
+        const bM = moment(b).toDate();
+        if (aM === bM) return 0;
+        return aM > bM ? 1 : -1;
       },
     },
     {
@@ -107,6 +135,7 @@ const tableOptions = {
       data: 'status',
       title: 'Status',
       searchable: false,
+      filterable: false,
       render(value, type, response) {
         switch (value) {
           case ResponseStatus.PAUSED:
@@ -156,7 +185,7 @@ Template.responsesListView.helpers({
     return tableOptions;
   },
   tableData() {
-    return () => Responses.find().fetch();
+    return [];
   },
   clientDoesNotExist() {
     return this.clientId && !this.client;
@@ -166,6 +195,39 @@ Template.responsesListView.helpers({
     const query = schema ? { schema } : {};
     return Router.path('selectSurvey', { _id: clientId }, { query });
   },
+  loadData() {
+    return () => ((pageNumber, pageSize, sortBy, orderBy, callback) => {
+      const query = Router.current().params.query || {};
+      const options = {
+        clientId: query.clientId,
+        clientSchema: query.schema,
+        pageNumber,
+        pageSize,
+        sortBy,
+        orderBy,
+      };
+      return Meteor.call('responses.getPage', options, (err, res) => {
+        // PG: we cannot use Responses._collection.update here, because it's conflicting with
+        // subscriptions which add data to a collection
+        // (i.e. subscribe to response which has already been added to
+        // a collection via _collection.update)
+
+        // res.content.forEach(response => {
+        //   // const schema = getClientSchemaFromLinks(response.links, 'v2015');
+        //   // Object.assign(response.client, { schema });
+        //   Responses._collection.update(response._id, response, {upsert: true});
+        // });
+        // const data = Responses.find({}).fetch();
+        const data = res.content;
+        const pages = res.page.totalPages;
+        if (callback) callback({ data, pages });
+      });
+    });
+  },
+});
+
+Template.responsesListView.onCreated(function onCreated() {
+  this.data = [];
 });
 
 Template.responsesListView.events(

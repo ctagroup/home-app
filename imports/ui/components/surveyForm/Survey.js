@@ -204,6 +204,7 @@ export default class Survey extends React.Component {
     })
     .catch(err => {
       const correlationId = newlyCreatedResponseId || this.props.response._id;
+      const surveyId = this.props.response.surveyId;
       this.setState({ submitting: false });
       history.unshift('Failed to upload the response. Details:');
       history.push(`ResponseId: ${correlationId}`);
@@ -211,7 +212,7 @@ export default class Survey extends React.Component {
       alert(history.join('\n')); // eslint-disable-line no-alert
       logger.error(history);
       if (newlyCreatedResponseId) {
-        Router.go('adminDashboardresponsesEdit', { _id: newlyCreatedResponseId });
+        Router.go('adminDashboardresponsesEdit', { _id: newlyCreatedResponseId, surveyId });
       }
     });
   }

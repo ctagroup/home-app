@@ -154,7 +154,8 @@ Router.route(
 
         if (pausedResponse) {
           Bert.alert('Finish the response', 'success', 'growl-top-right');
-          Router.go('adminDashboardresponsesEdit', { _id: pausedResponse._id });
+          Router.go('adminDashboardresponsesEdit',
+            { _id: pausedResponse._id, surveyId: pausedResponse.surveyId });
         } else if (hasNoResponses) {
           Bert.alert('Create new response', 'success', 'growl-top-right');
           Router.go('selectSurvey', { _id: clientId }, { query });
