@@ -366,18 +366,23 @@ Meteor.methods({
 
       const hc = HmisClient.create(this.userId);
       const results = hc.api('survey').searchForClientSurveySubmissions(seachString);
-      const all = results.map(s => Responses.findOne(s.submissionId) || {
-        _id: s.submissionId,
-        client: s.client,
-        clientId: s.clientId,
-        status: 'not imported',
-        submissionId: s.submissionId,
-        survey: HmisCache.getSurvey(s.surveyId, this.userId),
-        surveyId: s.surveyId,
-        updatedAt: new Date(),
-        values: {},
-        version: 'n/a',
-      });
+      const all = results
+        .map(s => Responses.findOne(s.submissionId) || {
+          _id: s.submissionId,
+          client: s.client,
+          clientId: s.clientId,
+          status: 'not imported',
+          submissionId: s.submissionId,
+          surveyId: s.surveyId,
+          updatedAt: new Date(),
+          values: {},
+          version: 'n/a',
+        })
+        .map(s => ({
+          ...s,
+          client: s.client || HmisCache.getClient(s.clientId, s.clientSchema, this.userId),
+          survey: s.survey || HmisCache.getSurvey(s.surveyId, this.userId),
+        }));
 
       return {
         content: all.sort((a, b) => {
