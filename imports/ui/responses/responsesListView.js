@@ -2,7 +2,6 @@ import Alert from '/imports/ui/alert';
 import { deleteResponseButton, TableDom } from '/imports/ui/dataTable/helpers';
 import moment from 'moment';
 import Responses, { ResponseStatus } from '/imports/api/responses/responses';
-import Surveys from '/imports/api/surveys/surveys';
 import { Clients } from '/imports/api/clients/clients';
 import { fullName } from '/imports/api/utils';
 import './responsesListView.html';
@@ -58,6 +57,8 @@ const tableOptions = {
         const title = survey ? survey.surveyTitle : surveyId;
         return `<a href="${url}">${title}</a>`;
       },
+      filterable: false,
+      /*
       filterMethod(filter, row, column) {
         console.log(filter, row, column);
         // row  || rows
@@ -67,6 +68,7 @@ const tableOptions = {
         return title.toLowerCase().includes(filter.value.toLowerCase());
         // return false;
       },
+      */
     },
     {
       data: 'clientId',
@@ -114,6 +116,7 @@ const tableOptions = {
         }
         return moment(value).format('MM/DD/YYYY h:mm A');
       },
+      filterable: false,
       sortMethod: (a, b) => {
         const aM = moment(a).toDate();
         const bM = moment(b).toDate();
@@ -130,6 +133,7 @@ const tableOptions = {
         }
         return moment(value).format('MM/DD/YYYY h:mm A');
       },
+      filterable: false,
     },
     {
       data: 'status',
@@ -164,6 +168,7 @@ const tableOptions = {
     {
       data: 'version',
       title: 'Version',
+      filterable: false,
     },
     deleteResponseButton((response) => {
       Responses._collection.remove(response._id); // eslint-disable-line
@@ -196,7 +201,7 @@ Template.responsesListView.helpers({
     return Router.path('selectSurvey', { _id: clientId }, { query });
   },
   loadData() {
-    return () => ((pageNumber, pageSize, sortBy, orderBy, callback) => {
+    const searchFn = (pageNumber, pageSize, sortBy, filterBy, callback) => {
       const query = Router.current().params.query || {};
       const options = {
         clientId: query.clientId,
@@ -204,8 +209,9 @@ Template.responsesListView.helpers({
         pageNumber,
         pageSize,
         sortBy,
-        orderBy,
+        filterBy,
       };
+
       return Meteor.call('responses.getPage', options, (err, res) => {
         // PG: we cannot use Responses._collection.update here, because it's conflicting with
         // subscriptions which add data to a collection
@@ -218,11 +224,20 @@ Template.responsesListView.helpers({
         //   Responses._collection.update(response._id, response, {upsert: true});
         // });
         // const data = Responses.find({}).fetch();
-        const data = res.content;
-        const pages = res.page.totalPages;
-        if (callback) callback({ data, pages });
+        if (err) {
+          Alert.error(err);
+          if (callback) callback({ data: [], pages: 0 });
+        }
+        if (res) {
+          const data = res.content;
+          const pages = res.page.totalPages;
+          console.log(data);
+          if (callback) callback({ data, pages });
+        }
       });
-    });
+    };
+
+    return () => _.debounce(searchFn, 1000);
   },
 });
 

@@ -4,7 +4,7 @@ import Questions from '/imports/api/questions/questions';
 import { mapUploadedSurveySections } from '/imports/api/surveys/helpers';
 import { computeFormState, findItem, getScoringVariables } from '/imports/api/surveys/computations';
 import { logger } from '/imports/utils/logger';
-import { escapeKeys, unescapeKeys } from '/imports/api/utils';
+import { escapeKeys, unescapeKeys, fullName } from '/imports/api/utils';
 import Responses, { ResponseStatus } from '/imports/api/responses/responses';
 import { prepareEmails } from '../surveys/computations';
 import { EnrollmentUploader } from './helpers';
@@ -353,17 +353,70 @@ Meteor.methods({
     return submissionId;
   },
 
-  'responses.getPage'(pageNumber = 0, pageSize = 50, sort = 'firstName', order = 'desc') {
-    logger.info(`METHOD[${this.userId}]: responses.getPage(${pageNumber}, ${pageSize}, ${sort}, ${order})`); // eslint-disable-line max-len
+  'responses.getPage'({ pageNumber = 0, pageSize = 50, sortBy = [], filterBy = [] }) {
+    logger.info(`METHOD[${this.userId}]: responses.getPage(${pageNumber}, ${pageSize}, ${sortBy}, ${filterBy})`); // eslint-disable-line max-len
     if (!this.userId) {
       throw new Meteor.Error(401, 'Unauthorized');
     }
 
-    console.log(sort, order);
+    const clientFilter = filterBy.find(x => x.id === 'clientId');
+    if (clientFilter) {
+      // use HSLYNK to search for submissions
+      const seachString = clientFilter.value;
 
+      const hc = HmisClient.create(this.userId);
+      const results = hc.api('survey').searchForClientSurveySubmissions(seachString);
+      const all = results.map(s => Responses.findOne(s.submissionId) || {
+        _id: s.submissionId,
+        client: s.client,
+        clientId: s.clientId,
+        status: 'not imported',
+        submissionId: s.submissionId,
+        survey: HmisCache.getSurvey(s.surveyId, this.userId),
+        surveyId: s.surveyId,
+        updatedAt: new Date(),
+        values: {},
+        version: 'n/a',
+      });
+
+      return {
+        content: all.sort((a, b) => {
+          if (sortBy.length) {
+            const column = sortBy[0].id;
+            const direction = sortBy[0].desc ? -1 : 1;
+            switch (column) {
+              case 'surveyId':
+                return (a.survey.surveyTitle || '')
+                  .localeCompare(b.survey.surveyTitle || '') * direction;
+              case 'clientId':
+                return fullName(a.client).localeCompare(fullName(b.client)) * direction;
+              default:
+                return (a[column] - b[column]) * direction;
+            }
+          }
+          return 0;
+        }),
+        page: {
+          totalPages: 1,
+        },
+      };
+    }
+
+    // for now fetch all responses from Mongo
     this.unblock();
     const responsesCount = Responses.find().count();
-    const pageData = Responses.find({}, { skip: pageNumber * pageSize, limit: pageSize }).fetch();
+    const sort = {
+    };
+    if (sortBy.length) {
+      const column = sortBy[0].id;
+      const direction = sortBy[0].desc ? -1 : 1;
+      sort[column] = direction;
+    }
+    const pageData = Responses.find({}, {
+      sort,
+      skip: pageNumber * pageSize,
+      limit: pageSize,
+    }).fetch();
 
     return {
       content: pageData.map(r => ({
