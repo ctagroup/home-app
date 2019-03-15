@@ -44,7 +44,7 @@ if (featureDecisions.isSubmissionUploader()) {
     waitOn() {
       return [
         Meteor.subscribe('surveyConfigs.all'),
-        Meteor.subscribe('surveys.all'),
+        Meteor.subscribe('surveys.all', true),
       ];
     },
     data() {
