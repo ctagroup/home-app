@@ -45,6 +45,7 @@ Meteor.publish('surveys.all', function publishAllSurveys(force = false) {
       surveys.filter(s => !!s.surveyDefinition).forEach(s => {
         if (!s.surveyDefinition) return;
         const surveyData = updateDocFromDefinition({
+          _id: s.surveyId,
           surveyId: s.surveyId,
           version: 2,
           title: s.surveyTitle,
