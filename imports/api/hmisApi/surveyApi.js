@@ -160,8 +160,8 @@ export class SurveyApi extends ApiEndpoint {
     return this.doDel(url);
   }
 
-  getClientsSurveySubmissions() {
-    const url = `${BASE_URL}/clientsurveysubmissions`;
+  searchForClientSurveySubmissions(query) {
+    const url = `${BASE_URL}/clientsurveysubmissions?q=${query}`;
     // TODO: load all pages?
     return this.doGet(url).clientSurveySubmissions.clientSurveySubmissions;
   }

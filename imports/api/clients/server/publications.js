@@ -27,9 +27,9 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
     stopFunction = true;
   });
 
+  let client = false;
   try {
     const hc = HmisClient.create(this.userId);
-    let client = false;
     client = hc.api('client').getClient(inputClientId, inputSchema);
     client.schema = inputSchema;
     client.isHMISClient = true;
@@ -156,8 +156,19 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
   self.ready();
 
   try {
-    Meteor.call('s3bucket.get', inputClientId, 'photo', (err, res) =>
-      self.changed('localClients', inputClientId, { photo: res })
+    // try to load photo using dedup id
+    Meteor.call('s3bucket.get', client.dedupClientId, 'photo', (err, res) => {
+      if (err) {
+        Meteor.call('s3bucket.get', inputClientId, 'photo', (err2, res2) => {
+          // try to load photo using client id
+          if (res2) {
+            self.changed('localClients', inputClientId, { photo: res2 });
+          }
+        });
+      } else {
+        self.changed('localClients', inputClientId, { photo: res });
+      }
+    }
     );
   } catch (e) {} // eslint-disable-line
 

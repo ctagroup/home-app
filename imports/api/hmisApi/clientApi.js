@@ -88,8 +88,10 @@ export class ClientApi extends ApiEndpoint {
     };
 
     const url = `${BASE_URL}/${schema}/clients`;
+    const { clientId, dedupClientId } = this.doPost(url, body).client;
     return {
-      clientId: this.doPost(url, body).client.clientId,
+      clientId,
+      dedupClientId,
       schema,
     };
   }

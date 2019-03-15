@@ -27,7 +27,10 @@
           <div class="col-xs-12 col-sm-3"><div class="text-wrap">
             <span class="title">DOB</span><h4>{{formatDate dob}}</h4>
             <span class="title">SSN</span><h4>{{formatSSN ssn}}</h4>
-            <span class="title view-id">View: {{_id}}</span>
+            <div class="title view-id">
+              ClientId: {{_id}}<br />
+              DedupId: {{dedupClientId}}
+            </div>
           </div></div>
           <div class="col-xs-12 col-sm-3"><div class="text-wrap">
             <span class="title">EMAIL</span><h4>{{emailAddress}}</h4>
