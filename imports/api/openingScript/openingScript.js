@@ -45,7 +45,10 @@ class OpeningScriptClass {
   }
 
   showPreliminarySurvey() {
-    return !this.skipDvQuestion() || !this.skipHousingServiceQuestion();
+    const skipAll = this.skipDvQuestion()
+      && this.skipHousingServiceQuestion()
+      && this.skipReleaseOfInformation();
+    return !skipAll;
   }
 }
 

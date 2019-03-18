@@ -3,7 +3,6 @@ import SignaturePadConfig from '/imports/ui/signaturePadConfig';
 import './signaturePad.js';
 import './preliminarySurvey.html';
 
-
 Template.preliminarySurvey.helpers({
   skipDvQuestion() {
     return OpeningScript.skipDvQuestion();
@@ -23,18 +22,25 @@ Template.preliminarySurvey.helpers({
   releaseOfInformation() {
     return OpeningScript.releaseOfInformation();
   },
+  showPreliminarySurveyModal() {
+    return Template.instance().activeStep.get() === 0;
+  },
+  showReleaseOfInformationModal() {
+    return Template.instance().activeStep.get() === 1;
+  },
 });
 
 Template.preliminarySurvey.events(
   {
-    'click .js-close-preliminary-survey-modal': (event) => {
+    'click .close-cancel': (event) => {
       event.preventDefault();
-      $('#preliminarySurveyModal').modal('hide');
+      history.back();
     },
-    'click .js-goto-dashboard': (event) => {
+    'click .next-step': (event) => {
       event.preventDefault();
-      Router.go('dashboard');
-    },
+      console.log(this, Template.instance());
+    }
+    /*
     'click .js-open-release-of-info-modal': (event) => {
       event.preventDefault();
       if (!OpeningScript.skipReleaseOfInformation()) {
@@ -59,5 +65,16 @@ Template.preliminarySurvey.events(
       }
       return false;
     },
+    */
   }
 );
+
+Template.preliminarySurvey.onRendered(function onCreated() {
+  if (OpeningScript.showPreliminarySurveyModal()) {
+    this.activeStep = new ReactiveVar(0);
+  } else if (OpeningScript.showReleaseOfInformationModal()) {
+    this.activeStep = new ReactiveVar(1);
+  } else {
+    this.activeStep = new ReactiveVar(2);
+  }
+});
