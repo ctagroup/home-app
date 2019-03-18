@@ -6,7 +6,7 @@ Template.signaturePad.onRendered(() => {
   const canvas = wrapper.querySelector('canvas');
 
   window.onresize = SignaturePadConfig.resizeCanvas;
-  SignaturePadConfig.resizeCanvas();
+  Meteor.defer(() => SignaturePadConfig.resizeCanvas());
 
   const signaturePad = new SignaturePad(canvas);
 
