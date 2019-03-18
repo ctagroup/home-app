@@ -1,6 +1,5 @@
 import Alert from '/imports/ui/alert';
 import OpeningScript from '/imports/api/openingScript/openingScript';
-import SignaturePadConfig from '/imports/ui/signaturePadConfig';
 import './signaturePad.js';
 import './preliminarySurvey.html';
 
@@ -14,7 +13,7 @@ function nextStep(currentStep) {
     case DV_HS_STEP:
       return OpeningScript.skipReleaseOfInformation() ? ENDED_STEP : ROI_STEP;
     case ROI_STEP:
-      return ENDED_STEP
+      return ENDED_STEP;
     case ENDED_STEP:
       return ENDED_STEP;
     default:
@@ -22,7 +21,7 @@ function nextStep(currentStep) {
         return DV_HS_STEP;
       }
       if (!OpeningScript.skipReleaseOfInformation()) return ROI_STEP;
-      break;
+      return ENDED_STEP;
   }
 }
 
@@ -80,7 +79,7 @@ Template.preliminarySurvey.events(
       }
 
       Template.instance().activeStep.set(nextStep(currentStep));
-    }
+    },
   }
 );
 
