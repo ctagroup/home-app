@@ -9,7 +9,7 @@ import './dashboardMc211.html';
 
 const allWidgets = [
   {
-    name: 'Pending Clients',
+    name: 'Clients',
     id: 'clients',
     icon: 'fa-user',
     path: 'adminDashboardclientsView',

@@ -20,7 +20,7 @@ Router.route('adminDashboardhousingMatchView', {
   },
   data() {
     return {
-      title: 'Housing Match',
+      title: 'Match',
       subtitle: 'View',
     };
   },
