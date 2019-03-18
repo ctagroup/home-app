@@ -181,6 +181,7 @@ Router.route(
       return [
         Meteor.subscribe('pendingClients.one', id),
         Meteor.subscribe('responses.all', id),
+        Meteor.subscribe('projects.all'),
       ];
     },
     data() {

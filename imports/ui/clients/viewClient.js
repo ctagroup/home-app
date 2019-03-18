@@ -9,6 +9,7 @@ import Responses from '/imports/api/responses/responses';
 import { logger } from '/imports/utils/logger';
 import ReferralStatusList from './referralStatusList';
 import HomeConfig from '/imports/config/homeConfig';
+import Alert from '/imports/ui/alert';
 import { FilesAccessRoles, HouseholdAccessRoles } from '/imports/config/permissions';
 
 import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
@@ -417,6 +418,12 @@ Template.viewClient.helpers(
         'enrollmentInfo.dataCollectionStage': dataCollectionStages.EXIT,
       }).count() >= 1;
     },
+    hasData() {
+      return Projects.find().count() > 0;
+    },
+    ProjectsAll() {
+      return Projects.find().fetch();
+    },
   }
 );
 
@@ -514,6 +521,38 @@ Template.viewClient.events(
 
       Router.go('selectSurvey', { _id: tmpl.data.client._id }, query);
     },
+    'click .service_submit': (event, tmpl) => {
+      event.preventDefault();
+      const query = {};
+
+      if (Router.current().params.query.schema) {
+        query.query = {
+          schema: Router.current().params.query.schema,
+        };
+      }
+
+      const client = tmpl.data.client;
+      const clientId = client._id;
+      const schema = client.schema;
+      const data = {
+        project_id: tmpl.find('.service_project').value,
+        service: tmpl.find('.service_type').value,
+        service_date: tmpl.find('.serviceDate').value,
+        service_qty: tmpl.find('.serviceQty').value,
+        service_cost_currency: tmpl.find('.servicecostcurrency').value,
+        service_description: tmpl.find('.serviceDescription').value,
+      };
+
+      Meteor.call('clients.service', clientId, data, schema, (error) => {
+        if (error) {
+          Alert.error(error);
+        } else {
+          Alert.success('Service Created');
+          Router.go('viewClient', { _id: client._id }, { query });
+        }
+      });
+    },
+
     'click .js-close-referral-status-modal': () => {
       $('#referralStatusComments').summernote('code', '');
       $('#referral-status-step').val('');

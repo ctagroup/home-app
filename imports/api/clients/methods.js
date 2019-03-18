@@ -44,6 +44,22 @@ Meteor.methods({
     return client;
   },
 
+  'clients.service'(clientId, data, schema) {
+    logger.info(`METHOD[${Meteor.userId()}]: clients.service`, clientId, schema, data);
+    check(clientId, String);
+    check(schema, String);
+    const hc = HmisClient.create(Meteor.userId());
+    hc.api('client').updateClient(clientId, data, schema);
+
+    eventPublisher.publish(new ClientUpdatedEvent({
+      ...data,
+      clientId,
+      schema,
+    }, { userId: this.userId }));
+
+    return data;
+  },
+
   'clients.delete'(clientId, schema) { // eslint-disable-line
     logger.info(`METHOD[${Meteor.userId()}]: clients.delete`, clientId);
     check(clientId, String);

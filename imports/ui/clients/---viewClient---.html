@@ -1,0 +1,699 @@
+<template name="viewClient">
+  {{#with client}}
+  <div id="viewClient_content" class="col-xs-12">
+    <div class="row client-profile-container">
+      {{{alertMessages}}}
+      {{#if eligibleClient.ignoreMatchProcess }}
+        <div class="col-xs-12">
+          <div class="alert alert-danger">
+            Client has been Removed from Matching
+          </div>
+        </div>
+      {{/if}}
+
+      <div class="client-info">
+        <div class="row">
+          <div class="col-xs-12 col-sm-3">
+            {{#if photo}}
+              <img class="profile-img" alt="Profile img" src="{{photo}}" />
+            {{/if}}
+            <!-- <img src="./img/john-pic.jpg" class="profile-img" alt="Profile img"> -->
+          </div>
+          <div class="col-xs-12 col-sm-3"><div class="text-wrap">
+            <span class="title">FIRST NAME</span><h2>{{firstName}}</h2>
+            <span class="title">MIDDLE NAME</span><h2>{{middleName}}</h2>
+            <span class="title">LAST NAME</span><h2>{{lastName}}</h2>
+          </div></div>
+          <div class="col-xs-12 col-sm-3"><div class="text-wrap">
+            <span class="title">DOB</span><h4>{{formatDate dob}}</h4>
+            <span class="title">SSN</span><h4>{{formatSSN ssn}}</h4>
+            <span class="title view-id">View: {{_id}}</span>
+          </div></div>
+          <div class="col-xs-12 col-sm-3"><div class="text-wrap">
+            <span class="title">EMAIL</span><h4>{{emailAddress}}</h4>
+            <span class="title">PHONE NUMBER</span><h4>{{phoneNumber}}</h4>
+          </div></div>
+        </div>
+      </div>
+
+
+      <div class="tab-section">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs nav-justified">
+          <li class="nav-item">
+            <a class="nav-link {{#if isActive 'overview'}}active{{/if}}" data-toggle="tab" href="#panel-overview" role="tab">Overview</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {{#if isActive 'eligibility'}}active{{/if}}" data-toggle="tab" href="#panel-eligibility" role="tab">Eligibility</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {{#if isActive 'rois'}}active{{/if}}" data-toggle="tab" href="#panel-rois" role="tab">ROIs</a>
+          </li>
+          {{#if showReferralStatus}}
+            <li class="nav-item">
+              <a class="nav-link {{#if isActive 'referrals'}}active{{/if}}" data-toggle="tab" href="#panel-referrals" role="tab">Referrals</a>
+            </li>
+          {{/if}}
+          {{#if showEnrollments}}
+            <li class="nav-item">
+              <a class="nav-link {{#if isActive 'enrollments'}}active{{/if}}" data-toggle="tab" href="#panel-enrollments" role="tab">Enrollments</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {{#if isActive 'create-enrollment'}}active{{/if}}" data-toggle="tab" href="#panel-create-enrollment" role="tab">Create Enrollment</a>
+            </li>
+            {{#if updateEnrollment}}
+              <li class="nav-item">
+                <a class="nav-link {{#if isActive 'update-enrollment'}}active{{/if}}" data-toggle="tab" href="#panel-update-enrollment" role="tab">Update Enrollment</a>
+              </li>
+            {{/if}}
+            {{#if exitEnrollment}}
+              <li class="nav-item">
+                <a class="nav-link {{#if isActive 'exit-enrollment'}}active{{/if}}" data-toggle="tab" href="#panel-exit-enrollment" role="tab">Exit Enrollment</a>
+              </li>
+            {{/if}}
+          {{/if}}
+		  <li class="nav-item">
+            <a class="nav-link {{#if isActive 'services'}}active{{/if}}" data-toggle="tab" href="#panel-services" role="tab">Services</a>
+          </li>
+<!-- TODO: Implement other tabs -->
+<!--
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#panel-case-management" role="tab">Case Management</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#panel-responses" role="tab">Responses</a>
+          </li>
+-->
+        </ul>
+        <!-- Tab panels -->
+        <div class="tab-content card">
+          <!--Panel 1 Overview -->
+          <div class="tab-pane fade {{#if isActive 'overview'}}in show active {{else}}no-show{{/if}}" id="panel-overview" role="tabpanel">
+            <div class="info-container">
+              <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                  <div class="">
+                    <p class="clabel">Suffix</p>
+                    <p class="cvalue">{{suffix}}</p>
+                  </div>
+                  <div class="">
+                    <p class="clabel">SSN</p>
+                    <p class="cvalue">{{ssn}}</p>
+                  </div>
+                  <div class="">
+                    <p class="clabel">Date of Birth</p>
+                    <p class="cvalue dob">{{formatDate dob}}</p>
+                  </div>
+                  <div class="">
+                    <p class="clabel">Race</p>
+                    <p class="cvalue">{{getText 'race' race}}</p>
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                  <div class="">
+                    <p class="clabel">Ethnicity</p>
+                    <p class="cvalue">{{getText 'ethnicity' ethnicity}}</p>
+                  </div>
+                  <div class="">
+                    <p class="clabel">Gender</p>
+                    <p class="cvalue">{{getText 'gender' gender}}</p>
+                  </div>
+                  <div class="">
+                    <p class="clabel">Veteran Status</p>
+                    <p class="cvalue">{{getText 'veteranStatus' veteranStatus}}</p>
+                  </div>
+                  <div class="">
+                    <p class="clabel">Disabling Condition</p>
+                    <p class="cvalue">{{getText 'disablingcondition' disablingConditions}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          <!--/.Panel 1-->
+          <!--Panel 1.5 Eligibility -->
+          <div class="tab-pane fade {{#if isActive 'eligibility'}}in show active {{else}}no-show{{/if}}" id="panel-eligibility" role="tabpanel">
+            {{#with eligibleClient}}
+              {{#unless error}}
+                <div class="row margin-top-35">
+                  <div class="col-xs-12">
+                    {{#if ignoreMatchProcess}}
+                      <div class="form-group">
+                        <h3>Matching Eligibility Status</h3>
+                        <p><strong>Removal notes: </strong>{{remarks}}</p>
+                      </div>
+                      <input class="btn btn-warning addToHousingList" value="Add client to active list" type="button">
+                    {{else}}
+                      {{> clientDeleteReason client=../../client}}
+                    {{/if}}
+                  </div>
+                </div>
+              {{/unless}}
+            {{/with}}
+          </div>
+
+          <!--Panel ROIS -->
+          <div class="tab-pane fade {{#if isActive 'rois'}}in show active {{else}}no-show{{/if}}" id="panel-rois" role="tabpanel">
+            {{>panelRois client=currentClient}}
+          </div>
+		  
+		  <!-- /. Panel Services -->
+		  <div class="tab-pane fade {{#if isActive 'services'}}in show active {{else}}no-show{{/if}}" id="panel-services" role="tabpanel">
+    			<div class="row margin-top-35">
+    			   <div class="col-xs-12">
+    				    <h3>Add Services</h3>
+                <form class="form-horizontal" role='form'>
+          				<div class='form-group row'>
+          					<div class='col-md-2'>
+          						<label>select Project</label>
+          						<select name='class' class='service_project form-control' id='service_project'>
+          							<option value=''>Select Project</option>
+          							{{#if hasData}}
+                          {{#each ProjectsAll}}
+                            <option value="{{_id}}">{{projectName}}</option>
+                          {{/each}}
+                        {{/if}}
+          						</select>
+          					</div>
+          					<div class='col-md-2'>
+          						<label>select Service</label>
+          						<select name='class' class='service_type form-control' id='service_type'>
+          							<option value=''>Select Service</option>
+          							<option value='basic_needs'>Basic Needs</option>
+          							<option value='case_management'>Case Management</option>
+          							<option value='diversion'>Diversion</option>
+          							<option value='employment'>Employment</option>
+          							<option value='financial_assistance'>Financial Assistance</option>
+          							<option value='housing_vouchers'>Housing/Vouchers</option>
+          							<option value='mailboxes'>Mailboxes</option>
+          							<option value='transportation'>Transportation</option>
+          						</select>
+          					</div>
+          					<div class='col-md-2'>
+          						<label>Service Date</label>
+          						<div class="input-group js-datepicker">
+          							<span class="input-group-addon">
+          							  <i class="fa fa-calendar"></i>
+          							</span>
+          							<input id="serviceDate" class="serviceDate form-control" type="text">
+          						</div>
+          					</div>
+          					<div class='col-md-1'>
+          						<label>Service Qty</label>
+          						<div class="input-group">
+          							<!-- <span class="input-group-addon"> -->
+          							  <!-- <i class="fa fa-calendar"></i> -->
+          							<!-- </span> -->
+          							<input id="serviceQty" class="serviceQty form-control" type="text" style="width: 110px">
+          						</div>
+          					</div>
+          					<div class='col-md-1'>
+          						<label>Cost Currency</label>
+          						<div class="input-group">
+          							<!-- <span class="input-group-addon"> -->
+          							  <!-- <i class="fa fa-calendar"></i> -->
+          							<!-- </span> -->
+          							<input id="servicecostcurrency" class="servicecostcurrency form-control" type="text" style="width: 110px">
+          						</div>
+          					</div>
+          					<div class='col-md-3'>
+          					    <label>Description</label>
+          						<div class="input-group">
+          							<!-- <span class="input-group-addon"> -->
+          							  <!-- <i class="fa fa-calendar"></i> -->
+          							<!-- </span> -->
+          							<textarea class="serviceDescription form-control" style="width: 336px;height: 70px;"></textarea>
+          						</div>
+          					</div>
+        					<div class='col-md-1'>
+        						<label style="opacity: 0;">submit</label>
+        						<input type='submit' value='submit' id='service_submit' class="btn btn-success service_submit">
+        					</div>
+    				    </div>
+              </form>
+    			  </div>
+    			</div>
+      </div>
+
+          <!--/.Panel 1.5-->
+          <!--Panel 2 Case Management -->
+          <!-- <div class="tab-pane fade no-show" id="panel-case-management" role="tabpanel">
+              <div class="filters-area">
+                <h1>Case Notes</h1>
+                <button>Add New</button>
+                <div class="entries">
+                  <p class="entries-num">Showing 1 to 50 of 1,950 entries</p>
+                  <div class="show-select">
+                    <span>Show</span>
+                    <select name="show-entries">
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select>
+                    <span class="per-page">entries per page</span>
+                  </div>
+                  <div class="seach-entry">
+                    <form action="#" id="form-search">
+                      <input type="text" placeholder="Search">
+                      <input type="submit" value="Search">
+                    </form>
+                  </div>
+                  <div class="table-pagination">
+                    <span>Page</span>
+                    <ul class="pagination-list">
+                      <li><a href="#" class="previous arrow-pag"><img src="./img/page-prev-arrow.png" class="previous-link"></a></li>
+                      <li><a href="#" class="page-num active">1</a></li>
+                      <li><a href="#" class="page-num ">2</a></li>
+                      <li><a href="#" class="page-num ">5</a></li>
+                      <li><a href="#" class="page-num ">39</a></li>
+                        <li><a href="#" class="next arrow-pag"><img src="./img/page-next-arrow.png" class="next-link"></a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div class="table-area">
+                <table>
+                  <thead>
+                    <tr>
+                      <th class="col-sm-3"><span class="title">Case Note Type</span><a href="#"><img src="./img/table-order-desc-icon.png" class="order-asc order-arrow"></a></th>
+                      <th class="col-sm-2"><span class="title">Case Manager</span><a href="#"><img src="./img/table-order-icons.png" class="order-arrow"></a></th>
+                      <th class="col-sm-2"><span class="title">Date Updated</span><a href="#"><img src="./img/table-order-icons.png" class="order-arrow"></a></th>
+                      <th class="col-sm-2"><span class="title">Subject</span><a href="#"><img src="./img/table-order-icons.png" class="order-arrow"></a></th>
+                      <th class="col-sm-3"><span class="title">Status</span><a href="#"><img src="./img/table-order-icons.png" class="order-arrow"></a></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Lorem ipsum dolor sit amet</td>
+                      <td>Lorem Ipsum</td>
+                      <td>1/1/2018</td>
+                      <td>New Job Offer</td>
+                      <td>
+                        <span class="submitted">Submitted</span>
+                        <a href="#" class="upload">RE-upload to HMIS</a>
+
+                      </td>
+                      </tr>
+                      <tr>
+                      <td>Ipsum dolor sit amet</td>
+                      <td>Ipsum DOlor</td>
+                      <td>1/1/2018</td>
+                      <td>Attending Job Fair</td>
+                      <td>
+                        <span class="submitted">Submitted</span>
+                        <a href="#" class="upload">RE-upload to HMIS</a>
+
+                      </td>
+                      </tr>
+                      <tr>
+                      <td>Lorem ipsum dolor sit amet</td>
+                      <td>Lorem Ipsum</td>
+                      <td>1/1/2018</td>
+                      <td>New Job Offer</td>
+                      <td>
+                        <span class="submitted">Submitted</span>
+                        <a href="#" class="upload">RE-upload to HMIS</a>
+
+                      </td>
+                      </tr>
+                      <tr>
+                      <td>Ipsum dolor sit amet</td>
+                      <td>Ipsum DOlor</td>
+                      <td>1/1/2018</td>
+                      <td>Attending Job Fair</td>
+                      <td>
+                        <span class="submitted">Submitted</span>
+                        <a href="#" class="upload">RE-upload to HMIS</a>
+
+                      </td>
+                      </tr>
+                  </tbody>
+                </table>
+
+              </div>
+
+          </div> -->
+          <!--/.Panel 2-->
+
+          <!--Panel 3 Referrals -->
+          {{#if showReferralStatus}}
+            <div class="tab-pane fade {{#if isActive 'referrals'}}in show active {{else}}no-show{{/if}}" id="panel-referrals" role="tabpanel">
+
+              {{#if isUndefined referralStatusHistory}}
+                <p>Loading referral status history...</p>
+              {{else}}
+                <div class="row">
+                  <div class="col-xs-12">
+                    <h3>Referral Status</h3>
+                    <div class="row">
+                      <div class="col-xs-9 my-center-block">
+                        <div id="referral-timeline">
+                          <div class="navigation">
+                            {{#each getReferralStatusList}}
+                              <span class="css-tooltip-button-span" data-toggle="tooltip" data-html="true" title="{{getStatusTooltip step}}">
+                                <a id="js-btn-step-{{step}}" class="btn {{isReferralStatusActiveButton step}} btn-sm btn-arrow-right js-open-referral-status-modal js-tooltip"
+                                    href="#step{{step}}" data-toggle="tab" data-step="{{step}}">{{title}}</a>
+                              </span>
+                            {{/each}}
+                          </div>
+
+                          <div class="progress">
+                            <div class="progress-bar {{getProgressbarActiveStatus}} progress-bar-striped active"
+                              role="progressbar" aria-valuenow="{{getCurrentReferralStatus}}" aria-valuemin="1"
+                              aria-valuemax="{{HomeConfig.collections.clients.referralStatus.length}}"
+                              style="{{getProgressbarWidth}}">
+                              {{getCurrentReferralStatus}} / {{getReferralStatusList.length}}
+                            </div>
+                          </div>
+
+                          {{> referralStatusUpdateComments}}
+
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {{/if}}
+            </div>
+          {{/if}}
+          <!--/.Panel 3-->
+          <!--Panel 4 Responses -->
+          <div class="tab-pane fade no-show" id="panel-responses" role="tabpanel">
+              <br>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil odit magnam minima, soluta doloribus
+                  reiciendis molestiae placeat unde eos molestias. Quisquam aperiam, pariatur. Tempora, placeat ratione
+                  porro voluptate odit minima.</p>
+          </div>
+          <!--/.Panel 4-->
+          {{#if showEnrollments}}
+          <!--Panel 5 Enrollments -->
+          <div class="tab-pane fade {{#if isActive 'enrollments'}}in show active {{else}}no-show{{/if}}" id="panel-enrollments" role="tabpanel">
+
+            {{#if isUndefined enrollments}}<p>Loading enrollments...</p>{{/if}}
+            {{#if enrollments}}
+              <div class="row">
+                <div class="col-xs-12">
+                  <h3>Enrollments</h3>
+                  <div class="table-responsive enrollments-list">
+                    <table class="table table-hover table-striped">
+                      <thead>
+                        <tr>
+                          <th>Entry Date</th>
+                          <th>Project Name</th>
+                          <th>Entry Response</th>
+                          <th>Update Response</th>
+                          <th>Exit Response</th>
+                          <th>Date updated</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {{#each enrollment in enrollments}}
+                          <tr>
+                            <td>{{formatDate99 enrollment.entryDate}}</td>
+
+                            <td>
+                              {{#with enrollment.project}}
+                                <span class="js-tooltip" data-toggle="tooltip" title="{{projectCommonName}}">{{projectName}}</span>
+                              {{/with}}
+                            </td>
+                            <td>
+                                <ul>
+                                    <li><a href="{{viewEnrollmentPath enrollment 'entry'}}" class="btn btn-primary">
+                                  <i class="fa fa-eye"></i> View
+                                  </a></li>
+                                {{#each enrollmentResponses enrollment.enrollmentId dataCollectionStages.ENTRY}}
+                                  <li><i class="fal fa-poll-h"></i> <a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDateTime createdAt}}</a></li>
+                                {{/each}}
+                                </ul>
+                            </td>
+
+                            <td>
+                              <ul>
+                                <li><a href="{{viewEnrollmentPath enrollment 'update'}}" class="btn btn-primary">
+                                  <i class="fa fa-eye"></i> View
+                                </a></li>
+                                {{#each enrollmentResponses enrollment.enrollmentId dataCollectionStages.UPDATE}}
+                                  <li><i class="fal fa-poll-h"></i> <a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDateTime createdAt}}</a></li>
+                                {{/each}}
+                              </ul>
+                              <a id="u-{{enrollment.enrollmentId}}" class="updateLink update btn btn-default"><i class="fa fa-plus"></i> Update Enrollment</a>
+                              <a id="a-{{enrollment.enrollmentId}}" class="updateLink update btn btn-default"><i class="fa fa-plus"></i> Annual assessment</a>
+                            </td>
+
+                            <td>
+                              <ul>
+                                <li><a href="{{viewEnrollmentPath enrollment 'exit'}}" class="btn btn-primary">
+                                  <i class="fa fa-eye"></i> View
+                                </a></li>
+                                {{#each enrollmentResponses enrollment.enrollmentId dataCollectionStages.EXIT}}
+                                  <li><i class="fal fa-poll-h"></i> <a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDateTime createdAt}}</a></li>
+                                {{/each}}
+                              </ul>
+                              {{#unless enrollmentExited enrollment.enrollmentId}}
+                                <a id="e-{{enrollment.enrollmentId}}" class="updateLink btn btn-default"><i class="fa fa-plus"></i> Exit Enrollment</a>
+                              {{/unless}}
+                            </td>
+
+                            <td>{{formatDate enrollment.dateUpdated}}</td>
+
+                          </tr>
+                        {{/each}}
+                      </tbody>
+                      <tfoot>
+                      </tfoot>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              {{/if}}
+
+              </div>
+            {{/if}}
+            <!--/.Panel 5-->
+            <!--Panel 5.5 Start enrollment -->
+            <div class="tab-pane fade {{#if isActive 'create-enrollment'}}in show active {{else}}no-show{{/if}}" id="panel-enrollments" role="tabpanel">
+              <div class="row">
+                <div class="col-xs-12">
+                  <h3>Start enrollment</h3>
+                  <h4>for project: </h4>
+                  <!-- Select Project -->
+                  <div class="project-select">
+                    {{> dropdownHelper store=selectedProjectStore options=projects key='selectedProject' placeholder='Select project'}}
+                  </div>
+                  {{#if selectedProjectId}}
+                    <!-- Render Enrollment survey for Project: -->
+                    {{> enrollmentsNew
+                      client=currentClient
+                      projectId=selectedProjectId
+                      project=selectedProject
+                      surveyId=projectEntrySurveyId
+                      enrollmentInfo=enrollmentInfo
+                    }}
+                  {{/if}}
+                </div>
+              </div>
+            </div>
+            <!--/.Panel 5.5-->
+            {{#if updateEnrollment}}
+              <!--Panel 5.6 Update enrollment -->
+              <div class="tab-pane fade {{#if isActive 'update-enrollment'}}in show active {{else}}no-show{{/if}}" id="panel-update-enrollment" role="tabpanel">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <h3>Update enrollment</h3>
+                    <!-- updateEnrollment -->
+                    {{> enrollmentsUpdate
+                      client=currentClient
+                      projectId=updateEnrollmentProjectId
+                      project=updateEnrollmentProject
+                      surveyId=projectUpdateSurveyId
+                      enrollmentInfo=updateEnrollmentInfo
+                    }}
+                  </div>
+                </div>
+              </div>
+              <!--/.Panel 5.6-->
+            {{/if}}
+            {{#if annualEnrollment}}
+              <!--Panel 5.6 Update enrollment -->
+              <div class="tab-pane fade {{#if isActive 'annual-enrollment'}} in show active {{else}} no-show {{/if}}" id="panel-annual-enrollment" role="tabpanel">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <h3>Annual enrollment</h3>
+                    <!-- updateEnrollment -->
+                    {{> enrollmentsUpdate
+                      client=currentClient
+                      projectId=updateEnrollmentProjectId
+                      project=updateEnrollmentProject
+                      surveyId=projectUpdateSurveyId
+                      enrollmentInfo=updateEnrollmentInfo
+                    }}
+                  </div>
+                </div>
+              </div>
+              <!--/.Panel 5.6-->
+            {{/if}}
+            {{#if exitEnrollment}}
+              <!--Panel 5.7 Exit enrollment -->
+              <div class="tab-pane fade {{#if isActive 'exit-enrollment'}}in show active {{else}}no-show{{/if}}" id="panel-exit-enrollment" role="tabpanel">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <h3>Exit enrollment</h3>
+                    <!-- updateEnrollment -->
+                    {{> enrollmentsUpdate
+                      client=currentClient
+                      projectId=updateEnrollmentProjectId
+                      project=updateEnrollmentProject
+                      surveyId=projectUpdateSurveyId
+                      enrollmentInfo=updateEnrollmentInfo
+                    }}
+                  </div>
+                </div>
+              </div>
+              <!--/.Panel 5.7-->
+            {{/if}}
+
+          </div>
+
+        </div>
+
+      {{#if showGlobalHousehold}}
+        {{#if isUndefined globalHouseholds}}<p>Loading households...</p>{{/if}}
+        {{#if globalHouseholds}}
+          <div class="row">
+            <div class="col-xs-12">
+              <h3>
+                Households
+                <!--<a class="btn btn-sm btn-primary" href="{{getGlobalHouseholdNewPath}}">Create Global Household</a>-->
+              </h3>
+              <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                  <thead>
+                    <tr>
+                      <th>&nbsp;</th>
+                      <th>Household</th>
+                      <th>Head of Household</th>
+                      <th>Date Created</th>
+                      <th>Date Updated</th>
+                      <th>User</th>
+                      <th>Active?</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {{#each globalHouseholds}}
+                      <tr>
+                        <td>
+                          <a class="btn btn-primary btn-sm" href="{{getGlobalHouseholdEditPath genericHouseholdId}}">
+                            <i class="fa fa-pencil"></i>
+                          </a>
+                        </td>
+                        <td>
+                          {{genericHouseholdId}}
+                        </td>
+                        <td>
+                          <a href="{{getClientViewPath headOfHouseholdClient}}">
+                            {{headOfHouseholdClient.firstName}}
+                            {{headOfHouseholdClient.middleName}}
+                            {{headOfHouseholdClient.lastName}}
+                          </a>
+                        </td>
+                        <td>
+                          {{#if $and dateCreated.month dateCreated.dayOfMonth dateCreated.year}}
+                            {{dateCreated.month}}
+                            {{dateCreated.dayOfMonth}},
+                            {{dateCreated.year}}
+                          {{else}}
+                            -
+                          {{/if}}
+                        </td>
+                        <td>
+                          {{#if $and dateUpdated.month dateUpdated.dayOfMonth dateUpdated.year}}
+                            {{dateUpdated.month}}
+                            {{dateUpdated.dayOfMonth}},
+                            {{dateUpdated.year}}
+                          {{else}}
+                            -
+                          {{/if}}
+                        </td>
+                        <td>
+                          {{userDetails.firstName}}
+                          {{userDetails.lastName}}
+                        </td>
+                        <td>
+                          {{#unless inactive}}
+                            <i class="fa fa-check js-tooltip" data-toggle="tooltip" data-placement="right" title=""></i>
+                          {{/unless}}
+                        </td>
+                      </tr>
+                    {{/each}}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        {{/if}}
+      {{/if}}
+
+
+      <div class="row margin-top-35">
+        <!-- edit form column -->
+        <div class="col-xs-12">
+          <div class="form-group">
+            <div class="col-md-8">
+              <input class="btn btn-default back" value="Back" type="button">
+              {{#if ../showSurveyButton }}<input class="btn btn-success takeSurvey" value="Survey" type="button">{{/if}}
+              {{#unless isHMISClient}}
+                  {{#if ../showUploadButton }}<input class="btn btn-success add-to-hmis js-tooltip" data-toggle="tooltip" value="Upload" title="This action uploads the client information to HMIS data server." type="button" />{{/if}}
+              {{/unless}}
+              {{#if ../showEditButton }}<input class="btn btn-warning edit" value="Edit" type="button" />{{/if}}
+              {{#if ../showResponsesButton }}
+                <a href="{{clientResponsesPath}}" class="btn btn-success">Responses</a>
+              {{/if}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {{/with}}
+</template>
+
+<template name="referralStatusUpdateComments">
+  <div class="modal fade modal-fullscreen" id="referralStatusUpdateCommentsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title text-center">Update Referral Status</h1>
+        </div>
+        <form id="update-referral-status">
+        <div class="modal-body content">
+          <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 my-center-block">
+              <input type="hidden" name="referral-status-step" id="referral-status-step" value="" />
+              <div id="referralStatusComments" class="js-summernote"></div>
+            </div>
+          </div>
+          <div class="row margin-top-20">
+            <div class="col-xs-12 col-sm-6 col-md-6 my-center-block">
+              <label class="control-label">Recipients:</label> <input type="email" class="form-control" id="recipients" size="80" title="Comma separated email addresses." placeholder="Comma separated email addresses." multiple/>
+            </div>
+          </div>
+          <div class="row margin-top-35">
+            <div class="col-xs-7 col-md-6 col-lg-4 my-center-block">
+              <div class="row">
+                <div class="col-xs-6">
+                  <input type="submit" class="btn btn-lg btn-block js-update-referral-status btn-success" value="Submit" />
+                </div>
+                <div class="col-xs-6">
+                  <input type="button" class="btn btn-lg btn-block js-close-referral-status-modal btn-default" value="Cancel" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </form>
+        <div class="modal-footer"></div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</template>
