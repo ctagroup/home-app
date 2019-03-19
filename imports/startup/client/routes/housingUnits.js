@@ -18,7 +18,7 @@ Router.route('adminDashboardhousingUnitsView', {
   },
   data() {
     return {
-      title: 'Housing Units',
+      title: 'Inventory',
       subtitle: 'View',
     };
   },
@@ -38,7 +38,7 @@ Router.route('adminDashboardhousingUnitsNew', {
   },
   data() {
     return {
-      title: 'Housing Units',
+      title: 'Inventory',
       subtitle: 'New',
     };
   },
@@ -64,7 +64,7 @@ Router.route('adminDashboardhousingUnitsEdit', {
     const _id = this.params._id;
     const housingUnit = HousingUnits.findOne({ _id });
     return {
-      title: 'Housing Units',
+      title: 'Inventory',
       subtitle: 'Edit',
       housingUnit,
     };

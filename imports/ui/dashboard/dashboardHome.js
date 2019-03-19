@@ -13,7 +13,7 @@ import './dashboardHome.html';
 
 const allWidgets = [
   {
-    name: 'Pending Clients',
+    name: 'Clients',
     id: 'clients',
     icon: 'fa-user',
     path: 'adminDashboardclientsView',
@@ -27,7 +27,7 @@ const allWidgets = [
     roles: DefaultAdminAccessRoles,
   },
   {
-    name: 'Housing Match',
+    name: 'Match',
     id: 'housingMatch',
     icon: 'fa-bed',
     path: 'adminDashboardhousingMatchView',
@@ -62,7 +62,7 @@ const allWidgets = [
     roles: PendingClientsAccessRoles,
   },
   {
-    name: 'Housing Units',
+    name: 'Inventory',
     id: 'housingUnits',
     icon: 'fa-home',
     path: 'adminDashboardhousingUnitsView',

@@ -1,10 +1,35 @@
+import Alert from '/imports/ui/alert';
 import OpeningScript from '/imports/api/openingScript/openingScript';
-import SignaturePadConfig from '/imports/ui/signaturePadConfig';
 import './signaturePad.js';
 import './preliminarySurvey.html';
 
+const DV_HS_STEP = 0;
+const ROI_STEP = 1;
+const ENDED_STEP = 2;
+
+
+function nextStep(currentStep) {
+  switch (currentStep) {
+    case DV_HS_STEP:
+      return OpeningScript.skipReleaseOfInformation() ? ENDED_STEP : ROI_STEP;
+    case ROI_STEP:
+      return ENDED_STEP;
+    case ENDED_STEP:
+      return ENDED_STEP;
+    default:
+      if (!(OpeningScript.skipDvQuestion() && OpeningScript.skipHousingServiceQuestion())) {
+        return DV_HS_STEP;
+      }
+      if (!OpeningScript.skipReleaseOfInformation()) return ROI_STEP;
+      return ENDED_STEP;
+  }
+}
+
 
 Template.preliminarySurvey.helpers({
+  currentStep() {
+    return Template.instance().activeStep.get();
+  },
   skipDvQuestion() {
     return OpeningScript.skipDvQuestion();
   },
@@ -23,41 +48,53 @@ Template.preliminarySurvey.helpers({
   releaseOfInformation() {
     return OpeningScript.releaseOfInformation();
   },
+  showDvHsStep() {
+    return Template.instance().activeStep.get() === 0;
+  },
+  showRoiStep() {
+    return Template.instance().activeStep.get() === 1;
+  },
 });
 
 Template.preliminarySurvey.events(
   {
-    'click .js-close-preliminary-survey-modal': (event) => {
+    'click .close-cancel': (event) => {
       event.preventDefault();
-      $('#preliminarySurveyModal').modal('hide');
+      history.back();
     },
-    'click .js-goto-dashboard': (event) => {
+    'click .next-step': (event) => {
       event.preventDefault();
-      Router.go('dashboard');
-    },
-    'click .js-open-release-of-info-modal': (event) => {
-      event.preventDefault();
-      if (!OpeningScript.skipReleaseOfInformation()) {
-        $('#releaseOfInformationModal').modal(
-          {
-            keyboard: false,
-            backdrop: false,
-          }
-        );
-        SignaturePadConfig.resizeCanvas();
-      }
-    },
-    'submit #release-of-information': (event) => {
-      event.preventDefault();
+      const currentStep = Template.instance().activeStep.get();
+
       const signaturePad = Router.current().params.signaturePad;
-      if (signaturePad.isEmpty()) {
-        Bert.alert('Please provide signature first.', 'error', 'growl-top-right');
-      } else {
-        $('#create-client-form .signature').val(signaturePad.toDataURL());
-        $('#create-client-form .signature-img').attr('src', signaturePad.toDataURL());
-        $('#releaseOfInformationModal').modal('hide');
+      if (currentStep === ROI_STEP) {
+        if (signaturePad.isEmpty()) {
+          Alert.error('Please provide signature first');
+          return;
+        }
+        if (!$('#roiCheckbox')[0].checked) {
+          Alert.error('You must agree');
+          return;
+        }
       }
-      return false;
+
+      Template.instance().activeStep.set(nextStep(currentStep));
     },
   }
 );
+
+Template.preliminarySurvey.onCreated(function onCreated() {
+  this.activeStep = new ReactiveVar(nextStep());
+
+  this.autorun(() => {
+    if (this.activeStep.get() === ENDED_STEP) {
+      $('#preliminarySurveyModal').modal('hide');
+
+      const signaturePad = Router.current().params.signaturePad;
+      if (signaturePad) {
+        $('#create-client-form .signature').val(signaturePad.toDataURL());
+        $('#create-client-form .signature-img').attr('src', signaturePad.toDataURL());
+      }
+    }
+  });
+});

@@ -27,7 +27,7 @@ function loadSurvey(surveyId, userId) {
 
 
 // TODO [VK]: force reaload cache flag?
-Meteor.publish('surveys.all', function publishAllSurveys(force = false) {
+Meteor.publish('surveys.all', function publishAllSurveys(force = true) {
   logger.info(`PUB[${this.userId}]: surveys.all`);
 
   const hc = HmisClient.create(this.userId);

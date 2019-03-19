@@ -12,7 +12,7 @@ import './appSidebar.html';
 
 const homeMenuItems = [
   {
-    name: 'Pending Clients',
+    name: 'Clients',
     icon: 'fa-user',
     path: 'adminDashboardclientsView',
     roles: PendingClientsAccessRoles,
@@ -24,7 +24,7 @@ const homeMenuItems = [
     roles: DefaultAdminAccessRoles,
   },
   {
-    name: 'Housing Match',
+    name: 'Match',
     icon: 'fa-bed',
     path: 'adminDashboardhousingMatchView',
     roles: DefaultAdminAccessRoles,
@@ -48,7 +48,7 @@ const homeMenuItems = [
     roles: ResponsesAccessRoles,
   },
   {
-    name: 'Housing Units',
+    name: 'Inventory',
     icon: 'fa-home',
     path: 'adminDashboardhousingUnitsView',
     roles: HousingUnitsAccessRoles,
