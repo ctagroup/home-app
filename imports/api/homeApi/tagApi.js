@@ -20,6 +20,11 @@ class TagApiClient extends HomeApiClient {
     });
   }
 
+  deleteClientTag(clientTagId) {
+    const url = this.absoluteUrl(`/api/v1/clientTags/${clientTagId}/`);
+    return this.doDel(url);
+  }
+
   createTag({ name, score }) {
     const url = this.absoluteUrl('/api/v1/tags/');
     return this.doPost(url, {

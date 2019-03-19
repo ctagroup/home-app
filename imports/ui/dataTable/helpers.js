@@ -323,14 +323,13 @@ export function deleteProjectButton(onSuccessCallback) {
   };
 }
 
-export function removeClientTagButton(onSuccessCallback, dateFunc) {
-  const date = dateFunc();
+export function removeClientTagButton(onSuccessCallback) {
   const composeData = (_id, rowData) => (
     {
       _id,
-      message: `Are you sure you want to remove ${rowData}?`,
-      method: 'clientTags.delete',
-      args: [_id, date],
+      message: `Are you sure you want to remove client tag #${rowData.id} (${rowData.tag.name})?`,
+      method: 'tagApi',
+      args: ['deleteClientTag', _id],
       onSuccess() {
         if (onSuccessCallback) onSuccessCallback(rowData);
       },
@@ -342,7 +341,6 @@ export function removeClientTagButton(onSuccessCallback, dateFunc) {
     filterable: false,
     render() { return ''; },
     reactCreatedCell(node, _id, rowData) {
-      console.log('node, _id, rowData', node, _id, rowData, date);
       const templateData = composeData(_id, rowData);
       return blazeData('DataTableDeleteButton', templateData);
     },

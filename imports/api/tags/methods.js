@@ -37,30 +37,6 @@ Meteor.methods({
       if (err) console.log('deleteTag error');
       return true;
     });
-    // const hc = HmisClient.create(Meteor.userId());
-    // return hc.api('survey').deleteQuestion(groupId, questionId);
   },
 
-  'clientTags.create'(doc) {
-    logger.info(`METHOD[${Meteor.userId()}]: clientTags.create`, doc);
-    // TODO: permissions check
-    throw new Meteor.Error('Not yet implemented');
-  },
-
-  // 'clientTags.update'(id, doc) {
-  //   logger.info(`METHOD[${Meteor.userId()}]: clientTags.update`, doc);
-  //   check(id, String);
-  //   // TODO: permissions check
-  //   throw new Meteor.Error('Not yet implemented');
-  // },
-
-  'clientTags.delete'(tagId, date) {
-    logger.info(`METHOD[${Meteor.userId()}]: clientTags.delete`, tagId, date);
-    check(tagId, String);
-    check(date, Date);
-
-    throw new Meteor.Error('Not yet implemented');
-    // const hc = HmisClient.create(Meteor.userId());
-    // return hc.api('survey').deleteQuestion(groupId, questionId);
-  },
 });

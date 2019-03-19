@@ -17,15 +17,9 @@ Template.clientTagListView.helpers({
     return (data) =>
       Meteor.call('tagApi', 'createClientTag', { operation: 1, ...data }, (err, res) => {
         if (!err) ClientTags._collection.insert({ _id: res.id, ...res }); // eslint-disable-line
-        // console.log('clientTags.create', err, res);
       });
   },
   removeClientTagHandler() {
-    // return (tagId, date) =>
-    return (data) =>
-      Meteor.call('tagApi', 'createClientTag', { operation: 0, ...data }, (err, res) => {
-        if (!err) ClientTags._collection.insert({ _id: res.id, ...res }); // eslint-disable-line
-        // console.log('clientTags.delete', err, res);
-      });
+    return ({ _id }) => ClientTags._collection.remove({ _id }); // eslint-disable-line
   },
 });

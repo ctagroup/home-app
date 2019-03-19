@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
 // import ClientTagItem from './ClientTagItem';
-import DataTable from '/imports/ui/components/dataTable/DataTable';
+import DataTable2 from '/imports/ui/components/dataTable/DataTable2'; // FIXME
 import { removeClientTagButton } from '/imports/ui/dataTable/helpers.js';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+
+
+function dateOnly(m) {
+  const dateString = moment(m).format('YYYY-MM-DD');
+  return moment(dateString);
+}
+
 
 class ClientTagList extends Component {
   constructor() {
@@ -19,14 +26,15 @@ class ClientTagList extends Component {
   }
 
   getDate() {
-    return (this.state.date || { toDate() { return Date.now(); } }).toDate();
+    return dateOnly(this.state.date);
   }
 
   createNewTag() {
+    const appliedOn = moment(this.state.newTagDate || new Date()).format('YYYY-MM-DDT00:00');
     const newTagData = {
       clientId: this.props.clientId,
       tagId: this.state.newTagId.value,
-      appliedOn: (this.state.newTagDate || { toDate() { return Date.now(); } }).toDate(),
+      appliedOn,
       operation: this.state.newTagAction.value,
       note: this.state.note,
     };
@@ -94,18 +102,19 @@ class ClientTagList extends Component {
         <div className="form-group" style={{ minWidth: '12em', padding: '0 .25em' }}>
           <input
             type="text"
+            placeholder="note"
             className="form-control input-sm"
             onChange={(value) => this.handleInputChange('note', value)}
           />
         </div>
         <a
-          className="btn btn-default"
+          className="btn btn-primary"
           onClick={this.createNewTag} style={{ margin: '0 .25em' }}
         >
           Create
         </a>
         <a
-          className="btn btn-danger"
+          className="btn btn-default"
           onClick={this.toggleNewTag}
           style={{ margin: '0 .25em' }}
         >
@@ -119,28 +128,19 @@ class ClientTagList extends Component {
   render() {
     // TODO: needed columns: tagId, action, appliedOn, appliedBy, remove
 
-    // const { name: inputName, className, style, disabled } = this.props;
     const { clientTags } = this.props;
-    // const { tags, clientTags } = this.props;
-    // TODO: use collection instead?
-    // const tagMap = tags.reduce((acc, tag) => ({ ...acc, [tag.id]: tag }), {});
+    const activeDateInMs = this.getDate().valueOf();
 
-    const activeDate = this.getDate;
-    const activeDateInMs = activeDate().valueOf();
-    const activeTags = clientTags
-    .map((cTag) => ({ appliedOnMs: moment(cTag.appliedOn).valueOf(), ...cTag }))
-    .filter(({ appliedOnMs }) => appliedOnMs <= activeDateInMs)
-    // const activeTags = clientTags.filter(({ appliedOn }) => {
-    //   console.log('appliedOn < activeDateInMs', appliedOn < activeDateInMs);
-    //   return appliedOn < activeDateInMs; })
-    .sort((a, b) => {
-      if (a.appliedOnMs > b.appliedOnMs) return -1;
-      if (a.appliedOnMs < b.appliedOnMs) return 1;
-      return 0;
-    });
-    const uniqueTags = _.uniq(activeTags, true, (i) => i.tagId);
-
-    console.log('clientTags', clientTags, activeTags, moment(activeTags[0]).valueOf(), activeDateInMs, uniqueTags);
+    const tagsActivityMap = clientTags
+      .map(cTag => ({ appliedOnMs: dateOnly(cTag.appliedOn).valueOf(), ...cTag }))
+      .filter(({ appliedOnMs }) => appliedOnMs <= activeDateInMs)
+      .sort((a, b) => a.appliedOnMs - b.appliedOnMs)
+      .reduce((all, cTag) => ({
+        ...all,
+        [cTag.tag.name]: cTag.operation,
+      }), {})
+      ;
+    const activeTagNames = Object.keys(tagsActivityMap).filter(key => tagsActivityMap[key]);
 
     const tableOptions = {
       columns: [
@@ -149,7 +149,6 @@ class ClientTagList extends Component {
           data: 'name',
           render(value, op, doc) {
             return doc.tag.name;
-            // return moment(value).format('MM/DD/YYYY');
           },
         },
         {
@@ -166,18 +165,11 @@ class ClientTagList extends Component {
             return moment(value).format('MM/DD/YYYY');
           },
         },
-        // {
-        //   title: 'Applied By',
-        //   data: 'appliedBy',
-        //   render(value) {
-        //     const user Clients.find().fetch();
-        //     return moment(value).format('MM/DD/YYYY');
-        //   },
-        // },
         removeClientTagButton((clientTag) => {
-          console.log('removeClientTagButton', clientTag, activeDateInMs);
-          // Projects._collection.remove(project._id); // eslint-disable-line
-        }, activeDate),
+          if (this.props.removeClientTagHandler) {
+            this.props.removeClientTagHandler(clientTag);
+          }
+        }),
       ],
     };
 
@@ -188,19 +180,27 @@ class ClientTagList extends Component {
     // resolveData={data => data.filter(({ appliedOn }) => appliedOn < activeDateInMs)}
 
     // TODO: move padding to style
+
+    const listOfActiveTags = activeTagNames.length > 0 ?
+      activeTagNames.join(', ') : 'none';
+
     return (
       <div className="tag-list-wrapper">
         <div className="tag-filter" style={{ padding: '10px' }}>
+          Active tags by date:
           {this.renderDatePicker('date')}
+          <strong>{listOfActiveTags}</strong>
         </div>
+        <br />
+        <h4>Tags History</h4>
         {this.renderNewClientTag()}
         <div className="tag-list">
           {/* {tags.map((tag, index) =>
             (<ClientTagItem tag={tag} key={`client-tag-${index}`} />))} */}
-          <DataTable
+          <DataTable2
             disableSearch={disabled}
             options={options}
-            data={uniqueTags}
+            data={clientTags}
           />
         </div>
       </div>
