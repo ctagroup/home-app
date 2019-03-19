@@ -15,16 +15,17 @@ Template.clientTagListView.helpers({
   },
   newClientTagHandler() {
     return (data) =>
-      Meteor.call('clientTags.create', data, (err, res) => {
-        if (!err) ClientTags._collection.insert(res); // eslint-disable-line
+      Meteor.call('tagApi', 'createClientTag', { operation: 1, ...data }, (err, res) => {
+        if (!err) ClientTags._collection.insert({ _id: res.id, ...res }); // eslint-disable-line
         // console.log('clientTags.create', err, res);
       });
   },
   removeClientTagHandler() {
-    return (tagId, date) =>
-    Meteor.call('clientTags.delete', tagId, date, (err /* , res*/) => {
-      if (!err) ClientTags._collection.remove(tagId); // eslint-disable-line
-      // console.log('clientTags.delete', err, res);
-    });
+    // return (tagId, date) =>
+    return (data) =>
+      Meteor.call('tagApi', 'createClientTag', { operation: 0, ...data }, (err, res) => {
+        if (!err) ClientTags._collection.insert({ _id: res.id, ...res }); // eslint-disable-line
+        // console.log('clientTags.delete', err, res);
+      });
   },
 });

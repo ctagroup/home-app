@@ -12,16 +12,17 @@ Template.tagListView.helpers({
   },
 
   createNewTag() {
-    return (name) =>
-      Meteor.call('tags.create', name, (err, res) => {
+    return (name, score) =>
+      Meteor.call('tagApi', 'createTag', { name, score }, (err, res) => {
         // console.log('tags.create', name, err, res);
-        if (!err) Tags._collection.insert(res); // eslint-disable-line
+        if (!err) Tags._collection.insert({ _id: res.id, ...res }); // eslint-disable-line
       });
   },
 
   removeTag() {
     return (id) =>
-      Meteor.call('tags.delete', id, (err /* , res*/) => {
+      Meteor.call('tagApi', 'deleteTag', id, (err, res) => {
+        console.log('deleteTag', err, res);
         if (!err) Tags._collection.remove(id); // eslint-disable-line
         // console.log('tags.delete', id, err, res);
       });

@@ -24,9 +24,11 @@ class ClientTagList extends Component {
 
   createNewTag() {
     const newTagData = {
+      clientId: this.props.clientId,
       tagId: this.state.newTagId.value,
       appliedOn: (this.state.newTagDate || { toDate() { return Date.now(); } }).toDate(),
-      action: this.state.newTagAction.value,
+      operation: this.state.newTagAction.value,
+      note: this.state.note,
     };
     this.props.newClientTagHandler(newTagData);
   }
@@ -36,6 +38,11 @@ class ClientTagList extends Component {
   }
 
   handleChange(key, input) {
+    this.setState({ [key]: input });
+  }
+
+  handleInputChange(key, event) {
+    const input = event.target.value;
     this.setState({ [key]: input });
   }
 
@@ -54,7 +61,7 @@ class ClientTagList extends Component {
     const { tags } = this.props;
     const tagList = tags.map(({ tagId, title }) => ({ value: tagId, label: title }));
 
-    const actionsList = [{ value: 0, label: 'Removed' }, { value: 1, label: 'Added' }];
+    const actionsList = [{ value: 0, label: 'Disabled' }, { value: 1, label: 'Applied' }];
 
     return (<div style={{ padding: '10px' }} className="form form-inline">
       {!newTag && <a onClick={this.toggleNewTag}>Add new tag</a>}
@@ -84,6 +91,13 @@ class ClientTagList extends Component {
         <div className="form-group" style={{ minWidth: '12em', padding: '0 .25em' }}>
           {this.renderDatePicker('newTagDate')}
         </div>
+        <div className="form-group" style={{ minWidth: '12em', padding: '0 .25em' }}>
+          <input
+            type="text"
+            className="form-control input-sm"
+            onChange={(value) => this.handleInputChange('note', value)}
+          />
+        </div>
         <a
           className="btn btn-default"
           onClick={this.createNewTag} style={{ margin: '0 .25em' }}
@@ -108,15 +122,20 @@ class ClientTagList extends Component {
     // const { name: inputName, className, style, disabled } = this.props;
     const { tags, clientTags } = this.props;
     // TODO: use collection instead?
-    const tagMap = tags.reduce((acc, tag) => ({ ...acc, [tag.tagId]: tag }), {});
+    const tagMap = tags.reduce((acc, tag) => ({ ...acc, [tag.id]: tag }), {});
 
     const activeDate = this.getDate;
     const activeDateInMs = activeDate().valueOf();
-    // const activeTags = clientTags.filter(({ appliedOn }) => appliedOn < activeDateInMs);
-    const activeTags = clientTags.filter(({ appliedOn }) => {
-      console.log('appliedOn < activeDateInMs', appliedOn < activeDateInMs);
-      return appliedOn < activeDateInMs;
+    const activeTags = clientTags.filter(({ appliedOn }) => appliedOn < activeDateInMs)
+    // const activeTags = clientTags.filter(({ appliedOn }) => {
+    //   console.log('appliedOn < activeDateInMs', appliedOn < activeDateInMs);
+    //   return appliedOn < activeDateInMs; })
+    .sort((a, b) => {
+      if (a.appliedOn > b.appliedOn) return -1;
+      if (a.appliedOn < b.appliedOn) return 1;
+      return 0;
     });
+    const uniqueTags = _.uniq(activeTags, true, (i) => i.tagId);
 
     const tableOptions = {
       columns: [
@@ -157,15 +176,11 @@ class ClientTagList extends Component {
       ],
     };
 
-    const tableData = activeTags;
     const options = tableOptions;
 
     const disabled = true;
     // const { maskedValue } = this.state;
 
-
-            // value={filter}
-            // onChange={this.handleChange}
     // TODO: move padding to style
     return (
       <div className="tag-list-wrapper">
@@ -179,7 +194,7 @@ class ClientTagList extends Component {
           <DataTable
             disableSearch={disabled}
             options={options}
-            data={clientTags}
+            data={uniqueTags}
             resolveData={data => data.filter(({ appliedOn }) => appliedOn < activeDateInMs)}
           />
         </div>
