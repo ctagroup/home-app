@@ -8,13 +8,14 @@ class TagApiClient extends HomeApiClient {
     return this.doGet(url);
   }
 
-  createClientTag({ clientId, appliedOn, operation, tagId }) {
-    const url = this.absoluteUrl('/api/v1/tags/');
+  createClientTag({ clientId, appliedOn, operation, tagId, note }) {
+    const url = this.absoluteUrl('/api/v1/clientTags/');
     return this.doPost(url, {
       clientId,
       appliedOn,
       operation,
       tagId,
+      note,
       createdBy: Meteor.userId(),
     });
   }

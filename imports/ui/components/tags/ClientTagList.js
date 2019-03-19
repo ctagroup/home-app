@@ -59,7 +59,7 @@ class ClientTagList extends Component {
   renderNewClientTag() {
     const { newTag, newTagId, newTagAction } = this.state || {};
     const { tags } = this.props;
-    const tagList = tags.map(({ tagId, title }) => ({ value: tagId, label: title }));
+    const tagList = tags.map(({ id, name }) => ({ value: id, label: name }));
 
     const actionsList = [{ value: 0, label: 'Disabled' }, { value: 1, label: 'Applied' }];
 
@@ -117,7 +117,7 @@ class ClientTagList extends Component {
   }
 
   render() {
-    // TODO: needed columns: title, action, appliedOn, appliedBy, remove
+    // TODO: needed columns: tagId, action, appliedOn, appliedBy, remove
 
     // const { name: inputName, className, style, disabled } = this.props;
     const { tags, clientTags } = this.props;
@@ -141,9 +141,9 @@ class ClientTagList extends Component {
       columns: [
         {
           title: 'Tag Name',
-          data: 'title',
+          data: 'name',
           render(value, op, doc) {
-            return (tagMap[doc.tagId] || {}).title;
+            return (tagMap[doc.tagId] || {}).name;
             // return moment(value).format('MM/DD/YYYY');
           },
         },
