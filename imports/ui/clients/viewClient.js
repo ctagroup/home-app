@@ -11,6 +11,7 @@ import ReferralStatusList from './referralStatusList';
 import HomeConfig from '/imports/config/homeConfig';
 import Alert from '/imports/ui/alert';
 import { FilesAccessRoles, HouseholdAccessRoles } from '/imports/config/permissions';
+import { TableDom } from '/imports/ui/dataTable/helpers';
 
 import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 
@@ -105,6 +106,37 @@ function getEnrollmentSurveyIdForProject(projectId, surveyType) {
   }
   return false;
 }
+
+const dummydataforservice = [{ pname: 'Provider A', name: 'Basic Needs',
+des: 'for the testing purpose', qty: '10', currency: '100' },
+{ pname: 'Provider B', name: 'Case Management', des: 'for the testing purpose',
+qty: '14', currency: '140' }];
+
+const tableOptions = {
+  columns: [
+    {
+      title: 'Project Name',
+      data: 'pname',
+    },
+    {
+      title: 'Service Name',
+      data: 'name',
+    },
+    {
+      title: 'Service Qty',
+      data: 'qty',
+    },
+    {
+      title: 'Cost Currency',
+      data: 'currency',
+    },
+    {
+      title: 'Description',
+      data: 'des',
+    },
+  ],
+  dom: TableDom,
+};
 
 Template.viewClient.helpers(
   {
@@ -424,6 +456,13 @@ Template.viewClient.helpers(
     ProjectsAll() {
       return Projects.find().fetch();
     },
+    tableOptions() {
+      return tableOptions;
+    },
+    tableData() {
+      return dummydataforservice;
+    },
+
   }
 );
 

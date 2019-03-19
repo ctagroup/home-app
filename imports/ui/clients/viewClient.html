@@ -199,40 +199,53 @@
                                             <input id="serviceDate" class="serviceDate form-control" type="text">
                                         </div>
                                     </div>
-                                    <div class='col-md-1'>
+                                    <div class='col-md-2'>
                                         <label>Service Qty</label>
                                         <div class="input-group">
                                             <!-- <span class="input-group-addon"> -->
                                             <!-- <i class="fa fa-calendar"></i> -->
                                             <!-- </span> -->
-                                            <input id="serviceQty" class="serviceQty form-control" type="text" style="width: 110px">
+                                            <input id="serviceQty" class="serviceQty form-control" type="text" style="width: 220px">
                                         </div>
                                     </div>
-                                    <div class='col-md-1'>
+                                    <div class='col-md-2'>
                                         <label>Cost Currency</label>
                                         <div class="input-group">
                                             <!-- <span class="input-group-addon"> -->
                                             <!-- <i class="fa fa-calendar"></i> -->
                                             <!-- </span> -->
-                                            <input id="servicecostcurrency" class="servicecostcurrency form-control" type="text" style="width: 110px">
+                                            <input id="servicecostcurrency" class="servicecostcurrency form-control" type="text" style="width: 220px">
                                         </div>
                                     </div>
-                                    <div class='col-md-3'>
+                                </div>
+                                <div class="row form-group">
+                                    <div class='col-md-10'>
                                         <label>Description</label>
-                                        <div class="input-group">
+                                        <div class="input-group" style="width: 100%">
                                             <!-- <span class="input-group-addon"> -->
                                             <!-- <i class="fa fa-calendar"></i> -->
                                             <!-- </span> -->
-                                            <textarea class="serviceDescription form-control" style="width: 336px;height: 70px;"></textarea>
+                                            <textarea class="serviceDescription form-control"></textarea>
                                         </div>
                                     </div>
-                                    <div class='col-md-1'>
-                                        <label style="opacity: 0;">submit</label>
+                                </div>
+                                <div class="row">
+                                    <div class='col-md-3'>
                                         <input type='submit' value='submit' id='service_submit' class="btn btn-success service_submit">
                                     </div>
                                 </div>
                             </form>
                         </div>
+                    </div>
+
+                    <div class="row margin-top-35">
+                        {{#if hasData}}
+                            {{> dataTable tableData=tableData options=tableOptions }}
+                        {{else}}
+                            <div class="alert alert-info">
+                                <p>There are no visible items in this collection.</p>
+                            </div>
+                        {{/if}}
                     </div>
                 </div>
 
