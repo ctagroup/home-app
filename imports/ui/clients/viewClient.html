@@ -126,12 +126,15 @@
                     <p class="clabel">Veteran Status</p>
                     <p class="cvalue">{{getText 'veteranStatus' veteranStatus}}</p>
                   </div>
+                  <!--
                   <div class="">
                     <p class="clabel">Disabling Condition</p>
                     <p class="cvalue">{{getText 'disablingcondition' disablingConditions}}</p>
                   </div>
+                  -->
                 </div>
               </div>
+              {{#if ../showEditButton }}<input class="btn btn-warning edit" value="Edit client" type="button" />{{/if}}
             </div>
           </div>
         </div>
@@ -580,13 +583,12 @@
           <div class="form-group">
             <div class="col-md-8">
               <input class="btn btn-default back" value="Back" type="button">
-              {{#if ../showSurveyButton }}<input class="btn btn-success takeSurvey" value="Survey" type="button">{{/if}}
+              {{#if ../showSurveyButton }}<input class="btn btn-success takeSurvey" value="Survey client" type="button">{{/if}}
               {{#unless isHMISClient}}
                   {{#if ../showUploadButton }}<input class="btn btn-success add-to-hmis js-tooltip" data-toggle="tooltip" value="Upload" title="This action uploads the client information to HMIS data server." type="button" />{{/if}}
               {{/unless}}
-              {{#if ../showEditButton }}<input class="btn btn-warning edit" value="Edit" type="button" />{{/if}}
               {{#if ../showResponsesButton }}
-                <a href="{{clientResponsesPath}}" class="btn btn-success">Responses</a>
+                <a href="{{clientResponsesPath}}" class="btn btn-success">Client's Responses</a>
               {{/if}}
             </div>
           </div>
