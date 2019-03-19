@@ -129,7 +129,7 @@ class ClientTagList extends Component {
     const activeDateInMs = activeDate().valueOf();
     const activeTags = clientTags
     .map((cTag) => ({ appliedOnMs: moment(cTag.appliedOn).valueOf(), ...cTag }))
-    .filter(({ appliedOnMs }) => appliedOnMs >= activeDateInMs)
+    .filter(({ appliedOnMs }) => appliedOnMs <= activeDateInMs)
     // const activeTags = clientTags.filter(({ appliedOn }) => {
     //   console.log('appliedOn < activeDateInMs', appliedOn < activeDateInMs);
     //   return appliedOn < activeDateInMs; })
@@ -140,7 +140,7 @@ class ClientTagList extends Component {
     });
     const uniqueTags = _.uniq(activeTags, true, (i) => i.tagId);
 
-    console.log('clientTags', clientTags, activeTags, uniqueTags);
+    console.log('clientTags', clientTags, activeTags, moment(activeTags[0]).valueOf(), activeDateInMs, uniqueTags);
 
     const tableOptions = {
       columns: [
