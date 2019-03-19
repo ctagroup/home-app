@@ -63,7 +63,7 @@ Meteor.publish('clientTags.all', function publishAllClientTags(clientId) {
         console.log('getTagsForClient', err, res);
         if (!err) {
           if (stopFunction) return;
-          res.results.forEach((tag) => {
+          res.forEach((tag) => {
             this.added('clientTags', tag.id, { _id: tag.id, ...tag });
           });
           this.ready();

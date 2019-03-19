@@ -120,22 +120,27 @@ class ClientTagList extends Component {
     // TODO: needed columns: tagId, action, appliedOn, appliedBy, remove
 
     // const { name: inputName, className, style, disabled } = this.props;
-    const { tags, clientTags } = this.props;
+    const { clientTags } = this.props;
+    // const { tags, clientTags } = this.props;
     // TODO: use collection instead?
-    const tagMap = tags.reduce((acc, tag) => ({ ...acc, [tag.id]: tag }), {});
+    // const tagMap = tags.reduce((acc, tag) => ({ ...acc, [tag.id]: tag }), {});
 
     const activeDate = this.getDate;
     const activeDateInMs = activeDate().valueOf();
-    const activeTags = clientTags.filter(({ appliedOn }) => appliedOn < activeDateInMs)
+    const activeTags = clientTags
+    .map((cTag) => ({ appliedOnMs: moment(cTag.appliedOn).valueOf(), ...cTag }))
+    .filter(({ appliedOnMs }) => appliedOnMs >= activeDateInMs)
     // const activeTags = clientTags.filter(({ appliedOn }) => {
     //   console.log('appliedOn < activeDateInMs', appliedOn < activeDateInMs);
     //   return appliedOn < activeDateInMs; })
     .sort((a, b) => {
-      if (a.appliedOn > b.appliedOn) return -1;
-      if (a.appliedOn < b.appliedOn) return 1;
+      if (a.appliedOnMs > b.appliedOnMs) return -1;
+      if (a.appliedOnMs < b.appliedOnMs) return 1;
       return 0;
     });
     const uniqueTags = _.uniq(activeTags, true, (i) => i.tagId);
+
+    console.log('clientTags', clientTags, activeTags, uniqueTags);
 
     const tableOptions = {
       columns: [
@@ -143,13 +148,13 @@ class ClientTagList extends Component {
           title: 'Tag Name',
           data: 'name',
           render(value, op, doc) {
-            return (tagMap[doc.tagId] || {}).name;
+            return doc.tag.name;
             // return moment(value).format('MM/DD/YYYY');
           },
         },
         {
-          title: 'Action',
-          data: 'action',
+          title: 'Operation',
+          data: 'operation',
           render(value) {
             return value == 0 ? 'Removed' : 'Added'; // eslint-disable-line eqeqeq
           },
@@ -180,6 +185,7 @@ class ClientTagList extends Component {
 
     const disabled = true;
     // const { maskedValue } = this.state;
+    // resolveData={data => data.filter(({ appliedOn }) => appliedOn < activeDateInMs)}
 
     // TODO: move padding to style
     return (
@@ -195,7 +201,6 @@ class ClientTagList extends Component {
             disableSearch={disabled}
             options={options}
             data={uniqueTags}
-            resolveData={data => data.filter(({ appliedOn }) => appliedOn < activeDateInMs)}
           />
         </div>
       </div>
