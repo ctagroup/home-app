@@ -169,25 +169,23 @@
                                         <label>select Project</label>
                                         <select name='class' class='service_project form-control' id='service_project'>
                                             <option value=''>Select Project</option>
-                                            {{#if hasData}}
                                             {{#each ProjectsAll}}
                                             <option value="{{_id}}">{{projectName}}</option>
                                             {{/each}}
-                                            {{/if}}
                                         </select>
                                     </div>
                                     <div class='col-md-2'>
                                         <label>select Service</label>
                                         <select name='class' class='service_type form-control' id='service_type'>
                                             <option value=''>Select Service</option>
-                                            <option value='basic_needs'>Basic Needs</option>
-                                            <option value='case_management'>Case Management</option>
-                                            <option value='diversion'>Diversion</option>
-                                            <option value='employment'>Employment</option>
-                                            <option value='financial_assistance'>Financial Assistance</option>
-                                            <option value='housing_vouchers'>Housing/Vouchers</option>
-                                            <option value='mailboxes'>Mailboxes</option>
-                                            <option value='transportation'>Transportation</option>
+                                            <option value='Basic Needs'>Basic Needs</option>
+                                            <option value='Case Management'>Case Management</option>
+                                            <option value='Diversion'>Diversion</option>
+                                            <option value='Employment'>Employment</option>
+                                            <option value='Financial Assistance'>Financial Assistance</option>
+                                            <option value='Housing Vouchers'>Housing/Vouchers</option>
+                                            <option value='Mailboxes'>Mailboxes</option>
+                                            <option value='Transportation'>Transportation</option>
                                         </select>
                                     </div>
                                     <div class='col-md-2'>
@@ -231,7 +229,7 @@
                                 </div>
                                 <div class="row">
                                     <div class='col-md-3'>
-                                        <input type='submit' value='submit' id='service_submit' class="btn btn-success service_submit">
+                                        <input type='submit' value='Add service' id='service_submit' class="btn btn-primary service_submit">
                                     </div>
                                 </div>
                             </form>
@@ -239,12 +237,8 @@
                     </div>
 
                     <div class="row margin-top-35">
-                        {{#if hasData}}
-                            {{> dataTable tableData=tableData options=tableOptions }}
-                        {{else}}
-                            <div class="alert alert-info">
-                                <p>There are no visible items in this collection.</p>
-                            </div>
+                        {{#if serviceHasData}}
+                            {{> dataTable tableData=serviceTableData options=serviceTableOptions }}
                         {{/if}}
                     </div>
                 </div>
@@ -284,7 +278,7 @@
                         </div>
                       </div>
                     </div>
-      
+
                     <div class="table-area">
                       <table>
                         <thead>
@@ -305,7 +299,7 @@
                             <td>
                               <span class="submitted">Submitted</span>
                               <a href="#" class="upload">RE-upload to HMIS</a>
-      
+
                             </td>
                             </tr>
                             <tr>
@@ -316,7 +310,7 @@
                             <td>
                               <span class="submitted">Submitted</span>
                               <a href="#" class="upload">RE-upload to HMIS</a>
-      
+
                             </td>
                             </tr>
                             <tr>
@@ -327,7 +321,7 @@
                             <td>
                               <span class="submitted">Submitted</span>
                               <a href="#" class="upload">RE-upload to HMIS</a>
-      
+
                             </td>
                             </tr>
                             <tr>
@@ -338,14 +332,14 @@
                             <td>
                               <span class="submitted">Submitted</span>
                               <a href="#" class="upload">RE-upload to HMIS</a>
-      
+
                             </td>
                             </tr>
                         </tbody>
                       </table>
-      
+
                     </div>
-      
+
                 </div> -->
                 <!--/.Panel 2-->
 

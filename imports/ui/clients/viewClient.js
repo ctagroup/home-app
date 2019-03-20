@@ -6,13 +6,13 @@ import Questions from '/imports/api/questions/questions';
 import Agencies from '/imports/api/agencies/agencies';
 import Projects from '/imports/api/projects/projects';
 import Responses from '/imports/api/responses/responses';
+import Services from '/imports/api/services/services';
 import { logger } from '/imports/utils/logger';
 import ReferralStatusList from './referralStatusList';
 import HomeConfig from '/imports/config/homeConfig';
 import Alert from '/imports/ui/alert';
 import { FilesAccessRoles, HouseholdAccessRoles } from '/imports/config/permissions';
 import { TableDom } from '/imports/ui/dataTable/helpers';
-
 import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 
 import './enrollmentsListView.js';
@@ -107,20 +107,18 @@ function getEnrollmentSurveyIdForProject(projectId, surveyType) {
   return false;
 }
 
-const dummydataforservice = [{ pname: 'Provider A', name: 'Basic Needs',
-des: 'for the testing purpose', qty: '10', currency: '100' },
-{ pname: 'Provider B', name: 'Case Management', des: 'for the testing purpose',
-qty: '14', currency: '140' }];
-
-const tableOptions = {
+const serviceTableOptions = {
   columns: [
     {
       title: 'Project Name',
-      data: 'pname',
+      data: 'projectId',
+      render(value, op, doc) {
+        return Projects.findOne(value).projectName;
+      },
     },
     {
       title: 'Service Name',
-      data: 'name',
+      data: 'serviceName',
     },
     {
       title: 'Service Qty',
@@ -128,11 +126,11 @@ const tableOptions = {
     },
     {
       title: 'Cost Currency',
-      data: 'currency',
+      data: 'costCurrency',
     },
     {
       title: 'Description',
-      data: 'des',
+      data: 'description',
     },
   ],
   dom: TableDom,
@@ -450,17 +448,19 @@ Template.viewClient.helpers(
         'enrollmentInfo.dataCollectionStage': dataCollectionStages.EXIT,
       }).count() >= 1;
     },
-    hasData() {
-      return Projects.find().count() > 0;
+    serviceHasData() {
+      return Services.find().count() > 0;
     },
     ProjectsAll() {
+      console.log('pp', Projects.find().fetch());
       return Projects.find().fetch();
     },
-    tableOptions() {
-      return tableOptions;
+    serviceTableOptions() {
+      return serviceTableOptions;
     },
-    tableData() {
-      return dummydataforservice;
+    serviceTableData() {
+      console.log('xxx', Services.find().fetch());
+      return Services.find().fetch();
     },
 
   }
@@ -562,32 +562,29 @@ Template.viewClient.events(
     },
     'click .service_submit': (event, tmpl) => {
       event.preventDefault();
-      const query = {};
-
-      if (Router.current().params.query.schema) {
-        query.query = {
-          schema: Router.current().params.query.schema,
-        };
-      }
 
       const client = tmpl.data.client;
       const clientId = client._id;
-      const schema = client.schema;
       const data = {
-        project_id: tmpl.find('.service_project').value,
-        service: tmpl.find('.service_type').value,
-        service_date: tmpl.find('.serviceDate').value,
-        service_qty: tmpl.find('.serviceQty').value,
-        service_cost_currency: tmpl.find('.servicecostcurrency').value,
-        service_description: tmpl.find('.serviceDescription').value,
+        clientId,
+        clientSchema: client.schema,
+        dedupClientId: client.dedupClientId,
+        projectId: tmpl.find('.service_project').value,
+        serviceName: tmpl.find('.service_type').value,
+        serviceDate: tmpl.find('.serviceDate').value,
+        qty: tmpl.find('.serviceQty').value,
+        costCurrency: tmpl.find('.servicecostcurrency').value,
+        description: tmpl.find('.serviceDescription').value,
       };
 
-      Meteor.call('clients.service', clientId, data, schema, (error) => {
+      Meteor.call('services.create', data, (error) => {
         if (error) {
           Alert.error(error);
         } else {
-          Alert.success('Service Created');
-          Router.go('viewClient', { _id: client._id }, { query });
+          Alert.success('Service created');
+          $(event.target).closest('form')
+            .find('input[type=text],select,textarea')
+            .val('');
         }
       });
     },

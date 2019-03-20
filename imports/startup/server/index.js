@@ -38,6 +38,9 @@ import '/imports/api/surveys/server/publications';
 import '/imports/api/responses/methods';
 import '/imports/api/responses/server/publications';
 
+import '/imports/api/services/methods';
+import '/imports/api/services/server/publications';
+
 import '/imports/api/housingUnits/methods';
 import '/imports/api/housingUnits/server/publications';
 
