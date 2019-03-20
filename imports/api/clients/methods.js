@@ -10,15 +10,16 @@ import eventPublisher, {
 
 Meteor.methods({
   'clients.create'(client, schema = 'v2017', clientVersion = false) {
-    logger.info(`METHOD[${Meteor.userId()}]: clients.create`, client);
+    const clientData = _.omit(client, 'photo', 'signature');
+    logger.info(`METHOD[${Meteor.userId()}]: clients.create`, clientData);
     const hc = HmisClient.create(Meteor.userId());
-    const result = hc.api('client').createClient(client, schema);
+    const result = hc.api('client').createClient(clientData, schema);
 
     if (clientVersion) return result;
 
     try {
-      Meteor.call('s3bucket.put', result.clientId, 'photo', client.photo);
-      Meteor.call('s3bucket.put', result.clientId, 'signature', client.signature);
+      Meteor.call('s3bucket.put', result.dedupClientId, 'photo', client.photo);
+      Meteor.call('s3bucket.put', result.dedupClientId, 'signature', client.signature);
     } catch (err) {
       logger.error('Failed to upload photo/signature to s3', err);
     }

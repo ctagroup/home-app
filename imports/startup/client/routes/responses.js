@@ -27,7 +27,7 @@ Router.route('adminDashboardresponsesView', {
     const { clientId, schema } = this.params.query;
 
     const subscriptions = [
-      Meteor.subscribe('surveys.all'),
+      Meteor.subscribe('surveys.all', false),
       Meteor.subscribe('surveys.v1'),
     ];
 

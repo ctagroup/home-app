@@ -117,8 +117,8 @@ Meteor.methods({
     logger.info(`client ${clientId} is now known in HMIS as ${response.clientId}`);
 
     try {
-      Meteor.call('s3bucket.put', response.clientId, 'photo', client.photo);
-      Meteor.call('s3bucket.put', response.clientId, 'signature', client.signature);
+      Meteor.call('s3bucket.put', response.dedupClientId, 'photo', client.photo);
+      Meteor.call('s3bucket.put', response.dedupClientId, 'signature', client.signature);
     } catch (err) {
       logger.error('Failed to upload photo/signature to s3', err);
     }

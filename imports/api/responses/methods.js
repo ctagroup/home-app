@@ -367,7 +367,7 @@ Meteor.methods({
       const hc = HmisClient.create(this.userId);
       const results = hc.api('survey').searchForClientSurveySubmissions(seachString);
       const all = results
-        .map(s => Responses.findOne(s.submissionId) || {
+        .map(s => Responses.findOne({ submissionId: s.submissionId }) || {
           _id: s.submissionId,
           client: s.client,
           clientId: s.clientId,

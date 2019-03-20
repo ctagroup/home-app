@@ -149,6 +149,24 @@ export default class HomeApiClient {
     return response.data;
   }
 
+  doDel(url, data) {
+    const options = {
+      headers: this.getRequestHeaders(),
+      data,
+      correlationId: getCorrelationId(),
+    };
+    this.logger.debug(`HOME API:del#${options.correlationId} ${url}`, options);
+    let response = false;
+    try {
+      response = HTTP.del(url, options);
+    } catch (err) {
+      this.throwApiError('del', url, options, err);
+    }
+    delete response.content;
+    this.logger.debug(`HOME API:del#${options.correlationId} res (${url})`, response);
+    return response.statusCode === 204;
+  }
+
   updateUserHmisCredentials() {
     const url = this.absoluteUrl('/api/v1/auth/updateCredentials/');
     const user = this.usersCollection.findOne(this.userId);

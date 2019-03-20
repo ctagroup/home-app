@@ -3,14 +3,18 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { transformColumn, formatDate } from './helpers.jsx';
 
-class DataTable extends Component {
+// FIXME: we should unify DataTable and DataTable2
+// DataTable is using state.data to display rows in React table
+// DataTable2 is using props.data to display rows in React table
+// VK: please make sure that merging DataTables won't break old things (i.e. responses list)
+
+class DataTable2 extends Component {
   // Universal search/filter
   constructor(props) {
     super(props);
     const columns = (props || {}).options.columns.map(transformColumn);
     this.state = {
       filter: '',
-      data: (props || {}).data,
       columns,
     };
     this.handleChange = this.handleChange.bind(this);
@@ -51,7 +55,8 @@ class DataTable extends Component {
   }
 
   render() {
-    const { data, columns, filter } = this.state;
+    const { data } = this.props;
+    const { columns, filter } = this.state;
     const filteredData = this.filterColumns(data, columns, filter);
     const { disableSearch } = this.props;
     const searchable = !disableSearch;
@@ -85,4 +90,4 @@ class DataTable extends Component {
   }
 }
 
-export default DataTable;
+export default DataTable2;

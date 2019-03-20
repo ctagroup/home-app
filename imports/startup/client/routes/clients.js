@@ -177,6 +177,8 @@ Router.route(
           Meteor.subscribe('clients.one', id, this.params.query.schema),
           Meteor.subscribe('responses.all', id, this.params.query.schema),
           Meteor.subscribe('services.perClient', id),
+          Meteor.subscribe('tags.all'),
+          Meteor.subscribe('clientTags.all', id),
         ];
       }
       return [
@@ -184,6 +186,8 @@ Router.route(
         Meteor.subscribe('responses.all', id),
         Meteor.subscribe('projects.all'),
         Meteor.subscribe('services.perClient', id),
+        Meteor.subscribe('tags.all'),
+        Meteor.subscribe('clientTags.all', id),
       ];
     },
     data() {

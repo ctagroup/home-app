@@ -1,10 +1,17 @@
+import moment from 'moment';
 import { logger } from '/imports/utils/logger';
 import { HmisClient } from '/imports/api/hmisApi';
+
+const ERROR_EXPIRY_IN_MINUTES = 10;
+const EXPIRY_IN_MINUTES = 60 * 24;
 
 class HmisCacheCollection extends Mongo.Collection {
   getClient(clientId, schema, userId) {
     const _id = `client::${clientId}::${schema}`;
-    const entry = super.findOne(_id) || {};
+    const entry = super.findOne({
+      _id,
+      expiresAt: { $gte: new Date() },
+    }) || {};
     let data = entry.data;
 
     if (data) {
@@ -21,11 +28,14 @@ class HmisCacheCollection extends Mongo.Collection {
         error: err.reason || 'Error',
       };
     } finally {
-      super.insert({
-        _id,
+      super.upsert(_id, {
         data,
         type: 'client',
         createdAt: new Date(),
+        expiresAt: moment(new Date()).add(
+            !!data.error ? ERROR_EXPIRY_IN_MINUTES : EXPIRY_IN_MINUTES, 'm'
+          )
+          .toDate(),
         userId,
       });
     }
@@ -34,7 +44,10 @@ class HmisCacheCollection extends Mongo.Collection {
 
   getSurvey(surveyId, userId) {
     const _id = `survey::${surveyId}`;
-    const entry = super.findOne(_id) || {};
+    const entry = super.findOne({
+      _id,
+      expiresAt: { $gte: new Date() },
+    }) || {};
     let data = entry.data;
 
     if (data) {
@@ -51,11 +64,14 @@ class HmisCacheCollection extends Mongo.Collection {
         error: err.reason || 'Error',
       };
     } finally {
-      super.insert({
-        _id,
+      super.upsert(_id, {
         data,
         type: 'survey',
         createdAt: new Date(),
+        expiresAt: moment(new Date()).add(
+            !!data.error ? ERROR_EXPIRY_IN_MINUTES : EXPIRY_IN_MINUTES, 'm'
+          )
+          .toDate(),
         userId,
       });
     }
