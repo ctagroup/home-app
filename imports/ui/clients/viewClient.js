@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Clients } from '/imports/api/clients/clients';
 import Users from '/imports/api/users/users';
@@ -7,7 +8,6 @@ import Agencies from '/imports/api/agencies/agencies';
 import Projects from '/imports/api/projects/projects';
 import Responses from '/imports/api/responses/responses';
 import Services from '/imports/api/services/services';
-import { Tags } from '/imports/api/tags/tags.js';
 import { ClientTags } from '/imports/api/tags/clientTags.js';
 import { logger } from '/imports/utils/logger';
 import ReferralStatusList from './referralStatusList';
@@ -16,6 +16,7 @@ import Alert from '/imports/ui/alert';
 import { FilesAccessRoles, HouseholdAccessRoles } from '/imports/config/permissions';
 import { TableDom } from '/imports/ui/dataTable/helpers';
 import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
+import { getActiveTagNamesForDate } from '/imports/api/tags/tags';
 
 import './enrollmentsListView.js';
 import './clientDeleteReason.js';
@@ -141,8 +142,10 @@ const serviceTableOptions = {
 Template.viewClient.helpers(
   {
     clientTagNames() {
-      const clientTagList = ClientTags.find().fetch();
-      return clientTagList.map(({ tagId }) => Tags.findOne(tagId).title).join(', ');
+      const clientTags = ClientTags.find().fetch();
+      const now = moment().format('YYYY-MM-DD');
+      const activeTags = getActiveTagNamesForDate(clientTags, now);
+      return activeTags.join(', ');
     },
     formatSSN(ssn) {
       if (!ssn) return '';

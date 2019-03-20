@@ -1,16 +1,11 @@
+import moment from 'moment';
 import React, { Component } from 'react';
 import Select from 'react-select';
+import DatePicker from 'react-datepicker';
 // import ClientTagItem from './ClientTagItem';
 import DataTable2 from '/imports/ui/components/dataTable/DataTable2'; // FIXME
 import { removeClientTagButton } from '/imports/ui/dataTable/helpers.js';
-import DatePicker from 'react-datepicker';
-import moment from 'moment';
-
-
-function dateOnly(m) {
-  const dateString = moment(m).format('YYYY-MM-DD');
-  return moment(dateString);
-}
+import { getActiveTagNamesForDate, dateOnly } from '/imports/api/tags/tags';
 
 
 class ClientTagList extends Component {
@@ -129,18 +124,8 @@ class ClientTagList extends Component {
     // TODO: needed columns: tagId, action, appliedOn, appliedBy, remove
 
     const { clientTags } = this.props;
-    const activeDateInMs = this.getDate().valueOf();
-
-    const tagsActivityMap = clientTags
-      .map(cTag => ({ appliedOnMs: dateOnly(cTag.appliedOn).valueOf(), ...cTag }))
-      .filter(({ appliedOnMs }) => appliedOnMs <= activeDateInMs)
-      .sort((a, b) => a.appliedOnMs - b.appliedOnMs)
-      .reduce((all, cTag) => ({
-        ...all,
-        [cTag.tag.name]: cTag.operation,
-      }), {})
-      ;
-    const activeTagNames = Object.keys(tagsActivityMap).filter(key => tagsActivityMap[key]);
+    const selectedDate = this.getDate();
+    const activeTagNames = getActiveTagNamesForDate(clientTags, selectedDate);
 
     const tableOptions = {
       columns: [
