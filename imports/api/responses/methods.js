@@ -353,10 +353,17 @@ Meteor.methods({
     return submissionId;
   },
 
-  'responses.getPage'({ pageNumber = 0, pageSize = 50, sortBy = [], filterBy = [] }) {
+  'responses.getPage'({ clientId, pageNumber = 0, pageSize = 50, sortBy = [], filterBy = [] }) {
     logger.info(`METHOD[${this.userId}]: responses.getPage(${pageNumber}, ${pageSize}, ${sortBy}, ${filterBy})`); // eslint-disable-line max-len
     if (!this.userId) {
       throw new Meteor.Error(401, 'Unauthorized');
+    }
+
+    if (clientId) {
+      filterBy.push({
+        id: 'clientId',
+        value: clientId,
+      });
     }
 
     const clientFilter = filterBy.find(x => x.id === 'clientId');
