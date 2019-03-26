@@ -57,13 +57,17 @@ const tableOptions = {
 
 
 const debouncedSearch = _.debounce((query, options, callback) => {
+  let resp = [];
   Meteor.call('searchClient', query, options, (err, res) => {
     if (err) {
       Alert.error(err);
     } else {
-      const clients = res.map(r => ({
+      resp = (res.length >= 10) ? res.slice(0, 9) : res;
+      const clients = resp.map((r, index) => ({
         ...r,
         fullName: fullName(r),
+        viewAll: (index > 7),
+        searchStr: query,
       }));
       callback(clients);
     }

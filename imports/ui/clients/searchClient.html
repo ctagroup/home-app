@@ -80,4 +80,9 @@
       DOB: {{formatDate dob}}
     </div>
   {{/if}}
+  {{#if viewAll}}
+   <div class="text-muted">
+    <a href="{{pathFor 'adminDashboardsearchClientsView' searchKey=searchStr}}" class="btn btn-sm btn-block btn-primary text-center">View All</a>
+   </div>
+   {{/if}}
 </template>
