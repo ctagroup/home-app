@@ -2,11 +2,17 @@ import Files from '/imports/api/files/files';
 import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
 import { fullName } from '/imports/api/utils';
+import { FilesAccessRoles } from '/imports/config/permissions';
 
 
 Meteor.methods({
   'mc211.approveClientFiles'(client) {
-    logger.info(`METHOD[${Meteor.userId()}]: mc211.approveClientFiles`, client);
+    logger.info(`METHOD[${this.userId}]: mc211.approveClientFiles`, client);
+    check(client.clientId, String);
+    if (!Roles.userIsInRole(this.userId, FilesAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
+
     Files.update({ clientId: client.clientId }, { $set: { status: 'approved' } }, { multi: true });
     const hc = HmisClient.create(Meteor.userId());
     try {
@@ -42,7 +48,12 @@ Meteor.methods({
     }
   },
   'mc211.rejectClientFiles'(client) {
-    logger.info(`METHOD[${Meteor.userId()}]: mc211.rejectClientFiles`, client);
+    logger.info(`METHOD[${this.userId}]: mc211.rejectClientFiles`, client);
+    check(client.clientId, String);
+    if (!Roles.userIsInRole(this.userId, FilesAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
+
     Files.update({ clientId: client.clientId }, { $set: { status: 'rejected' } }, { multi: true });
     const hc = HmisClient.create(Meteor.userId());
     try {

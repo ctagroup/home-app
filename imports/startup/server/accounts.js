@@ -8,7 +8,7 @@ function sendUserHmisCredentialsToApi(user) {
     const client = HomeApiClient.create(user._id);
     client.updateUserHmisCredentials();
   } catch (err) {
-    logger.debug('Falied to send user credentials to api', err);
+    logger.debug('Falied to send user credentials to api');
   }
 }
 

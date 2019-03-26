@@ -13,8 +13,9 @@ import { logger } from '/imports/utils/logger';
 import ReferralStatusList from './referralStatusList';
 import HomeConfig from '/imports/config/homeConfig';
 import Alert from '/imports/ui/alert';
-import { FilesAccessRoles, HouseholdAccessRoles } from '/imports/config/permissions';
 import { TableDom } from '/imports/ui/dataTable/helpers';
+import { FilesAccessRoles, GlobalHouseholdsAccessRoles } from '/imports/config/permissions';
+
 import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 import { getActiveTagNamesForDate } from '/imports/api/tags/tags';
 
@@ -419,7 +420,7 @@ Template.viewClient.helpers(
     },
 
     showGlobalHousehold() {
-      const hasPermission = Roles.userIsInRole(Meteor.userId(), HouseholdAccessRoles);
+      const hasPermission = Roles.userIsInRole(Meteor.userId(), GlobalHouseholdsAccessRoles);
       return hasPermission && this && this.clientId;
     },
 
@@ -650,7 +651,7 @@ Template.viewClient.events(
       }
 
       Meteor.call(
-       'updateClientMatchStatus',
+       'clients.updateMatchStatus',
         clientId,
         status,
         $('#referralStatusComments').summernote('code'),

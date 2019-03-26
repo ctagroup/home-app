@@ -1,6 +1,6 @@
 import { check, Match } from 'meteor/check';
-
 import { logger } from '/imports/utils/logger';
+import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import Users, { ChangePasswordSchema, UserCreateFormSchema } from '/imports/api/users/users';
 import Agencies from '/imports/api/agencies/agencies';
 import { HmisClient } from '/imports/api/hmisApi';
@@ -9,9 +9,11 @@ import { ensureRolesFormat } from './helpers';
 
 Meteor.methods({
   'users.create'(insertDoc) {
-    logger.info(`METHOD[${Meteor.userId()}]: users.create`, insertDoc);
+    logger.info(`METHOD[${this.userId}]: users.create`, insertDoc);
     check(insertDoc, UserCreateFormSchema);
-    // TODO: check permissions
+    if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
 
     try {
       const hc = HmisClient.create(this.userId);
@@ -56,9 +58,13 @@ Meteor.methods({
   },
 
   'users.update'(userId, doc) {
-    logger.info(`METHOD[${Meteor.userId()}]: users.update`, userId, doc);
-
+    logger.info(`METHOD[${this.userId}]: users.update`, userId, doc);
+    check(userId, String);
     // TODO: doc should be validated by SimpleSchema
+    if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
+
     const roles = (doc.roles && doc.roles[Roles.GLOBAL_GROUP]) || [];
     logger.info(`Setting roles of user ${userId} to`, roles);
     Roles.setUserRoles(userId, roles, Roles.GLOBAL_GROUP);
@@ -71,7 +77,6 @@ Meteor.methods({
       'services.HMIS.emailAddress': doc.services.HMIS.emailAddress,
     } });
 
-    // TODO: permissions, only admin can do it
     Users.update(userId, { $set: {
       projectsLinked: doc.projectsLinked || [],
     } });
@@ -99,10 +104,14 @@ Meteor.methods({
 
     // TODO: change HMIS password
   },
+
   'users.delete'(userId) {
-    logger.info(`METHOD[${Meteor.userId()}]: users.delete`, userId);
+    logger.info(`METHOD[${this.userId}]: users.delete`, userId);
     check(userId, String);
-    // TODO: permissions
+    if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
+
     const user = Users.findOne(userId);
     const hmisId = user.services && user.services.HMIS && user.services.HMIS.accountId;
     if (hmisId) {
@@ -110,20 +119,30 @@ Meteor.methods({
     }
     Users.remove(userId);
   },
+
   'users.changeOwnPassword'(passwordChange) {
+    logger.info(`METHOD[${this.userId}]: users.changeOwnPassword`);
     check(passwordChange, ChangePasswordSchema);
+    if (!this.userId) {
+      throw new Meteor.Error(403, 'Unauthorized');
+    }
+
     const { currentPassword, newPassword, confirmNewPassword } = passwordChange;
     const api = HmisClient.create(this.userId).api('user-service');
     const result = api.changeOwnPassword(currentPassword, newPassword, confirmNewPassword);
     return result;
   },
+
   'users.hmisRoles'() {
-    // TODO: permissions
-    return this.userId && HmisClient.create(this.userId).api('user-service').getRoles();
+    if (!this.userId) {
+      throw new Meteor.Error(403, 'Unauthorized');
+    }
+    return HmisClient.create(this.userId).api('user-service').getRoles();
   },
+
   'users.projects.all'() {
     if (!this.userId) {
-      throw new Meteor.Error('403', 'Forbidden');
+      throw new Meteor.Error(401, 'Unauthorized');
     }
     const projects = HmisClient.create(this.userId).api('client').getProjects();
     return projects.map(p => ({
@@ -131,11 +150,12 @@ Meteor.methods({
       projectName: p.projectName,
     }));
   },
+
   'users.projects.setActive'(projectId) {
-    logger.info(`METHOD[${Meteor.userId()}]: users.projects.setActive`, projectId);
+    logger.info(`METHOD[${this.userId}]: users.projects.setActive`, projectId);
     Match.test(projectId, Match.OneOf(String, null)); // eslint-disable-line
     if (!this.userId) {
-      throw new Meteor.Error('403', 'Forbidden');
+      throw new Meteor.Error(401, 'Unauthorized');
     }
 
     const query = {
@@ -147,7 +167,7 @@ Meteor.methods({
       },
     };
     if (projectId && Agencies.find(query).count() === 0) {
-      throw new Meteor.Error(403, 'Not authorized');
+      throw new Meteor.Error(403, 'Forbidden');
     }
 
     Users.update(this.userId, { $set: {
@@ -184,192 +204,11 @@ Meteor.methods({
   },
 
   'users.loginToHomeApi'() {
+    logger.info(`METHOD[${this.userId}]: users.loginToHomeApi`);
+    if (!this.userId) {
+      throw new Meteor.Error(401, 'Unauthorized');
+    }
     const client = HomeApiClient.create(this.userId);
     return client.updateUserHmisCredentials();
   },
-
-  addUserLocation(userID, timestamp, position) {
-    // TODO: unused code
-    logger.info(userID);
-    logger.info(timestamp);
-    logger.info(position);
-
-    const user = Meteor.users.findOne({ _id: userID });
-
-    if (user) {
-      const locationHistory = user.locationHistory;
-
-      if (locationHistory !== undefined && locationHistory.length >= 1) {
-        const sorted = locationHistory.sort((a, b) => {
-          if (a.timestamp < b.timestamp) {
-            return 1;
-          }
-
-          if (a.timestamp > b.timestamp) {
-            return -1;
-          }
-
-          return 0;
-        });
-
-        const lastPosition = sorted[0].position;
-
-        logger.info(JSON.stringify(lastPosition));
-        logger.info(JSON.stringify(position));
-
-        if (lastPosition.lat === position.lat && lastPosition.long === position.long) {
-          // No action. no need to update. device has not moved.
-        } else {
-          Meteor.users.update(
-            { _id: userID },
-            {
-              $pull: {
-                locationHistory: {
-                  timestamp: {
-                    $lt: new Date(new Date().getTime() - (24 * 60 * 60 * 1000)),
-                  },
-                },
-              },
-            }
-          );
-
-          return Meteor.users.update(
-            { _id: userID },
-            {
-              $push: {
-                locationHistory: { timestamp, position },
-              },
-            }
-          );
-        }
-      } else {
-        return Meteor.users.update(
-          { _id: userID },
-          {
-            $push: {
-              locationHistory: { timestamp, position },
-            },
-          }
-        );
-      }
-    }
-    return 'No action taken';
-  },
-
-/*
-    createHMISUser(userObj) {
-      const user = HMISAPI.createUser(userObj);
-
-      if (user) {
-        const _id = Users.insert(
-          {
-            createdAt: new Date(),
-            services: {
-              HMIS: {
-                accountId: user.account.accountId,
-                id: user.account.accountId,
-                emailAddress: userObj.emailAddress,
-                email: userObj.emailAddress,
-                firstName: userObj.firstName,
-                lastName: userObj.lastName,
-              },
-            },
-            emails: [
-              {
-                address: userObj.emailAddress,
-                verified: false,
-              },
-            ],
-          }
-        );
-        logger.info(_id);
-      }
-
-      return user;
-    },
-    changeHMISPassword(currentPassword, newPassword, confirmNewPassword) {
-      try {
-        return HMISAPI.changePassword(currentPassword, newPassword, confirmNewPassword);
-      } catch (err) {
-        throw new Meteor.Error(err.error);
-      }
-    },
-    updateLinkedProjects(userId, projectsLinked) {
-      const _id = Users.update(userId, {
-        $set: {
-          projectsLinked,
-        },
-      });
-      return _id;
-    },
-    updateHMISUserRoles(userId, oldRoles, newRoles) {
-      const oldRoleIds = oldRoles.map(item => item.id);
-
-      const newRoleIds = newRoles.map(item => item.id);
-
-      const intersection = oldRoleIds.filter(item => newRoleIds.indexOf(item) !== -1);
-
-      const localUser = Users.findOne({ _id: userId });
-
-      HMISAPI.updateUserRoles(localUser.services.HMIS.accountId, newRoles);
-
-      for (let i = 0; i < oldRoles.length; i += 1) {
-        if (intersection.indexOf(oldRoles[i].id) === -1) {
-          HMISAPI.deleteUserRole(localUser.services.HMIS.accountId, oldRoles[i].id);
-        }
-      }
-    },
-    adminNewUser(doc) {
-      let emails = [];
-      if (Roles.userIsInRole(this.userId, ['create_user'])) {
-        emails = doc.email.split(',');
-        _.each(emails, (email) => {
-          const user = {};
-          user.email = email;
-          if (!doc.chooseOwnPassword) {
-            user.password = doc.password;
-          }
-          const _id = Accounts.createUser(user);
-          if (doc.sendPassword && (HomeConfig.fromEmail != null)) {
-            Email.send({
-              to: user.email,
-              from: HomeConfig.fromEmail,
-              subject: 'Your account has been created',
-              html: `You've just had an account
-              created for ${Meteor.absoluteUrl()} with password ${doc.password}`,
-            });
-          }
-          if (!doc.sendPassword) {
-            Accounts.sendEnrollmentEmail(_id);
-          }
-        });
-      }
-    },
-    adminUpdateUser(modifier, _id) {
-      let result = false;
-      if (Roles.userIsInRole(this.userId, ['edit_user'])) {
-        this.unblock();
-        logger.info(modifier);
-        result = Meteor.users.update({ _id }, modifier);
-      }
-      return result;
-    },
-    adminSendResetPasswordEmail(doc) {
-      if (Roles.userIsInRole(this.userId, ['reset_user_password'])) {
-        logger.info(`Changing password for user ${doc._id}`);
-        return Accounts.sendResetPasswordEmail(doc._id);
-      }
-      return false;
-    },
-    adminChangePassword(doc) {
-      if (Roles.userIsInRole(this.userId, ['reset_user_password'])) {
-        logger.info(`Changing password for user ${doc._id}`);
-        Accounts.setPassword(doc._id, doc.password);
-        return {
-          label: 'Email user their new password',
-        };
-      }
-      return false;
-    },
-*/
 });

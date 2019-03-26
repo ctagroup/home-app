@@ -77,7 +77,6 @@ eventPublisher.addListener(ClientCreatedEvent, (event) => {
   EventLog.addEvent(event);
 });
 eventPublisher.addListener(ClientUpdatedEvent, (event) => {
-  console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX cud');
   EventLog.addEvent(event);
 });
 

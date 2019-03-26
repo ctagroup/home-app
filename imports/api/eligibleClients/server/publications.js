@@ -1,9 +1,14 @@
 import { getClientSchemaFromLinks } from '/imports/api/utils';
+import { ClientsAccessRoles } from '/imports/config/permissions';
 import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
 
 Meteor.publish('eligibleClients.list', function publishEligibleClients() {
   logger.info(`PUB[${this.userId}]: eligibleClients.list()`);
+  if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
+    return [];
+  }
+
   const self = this;
   let stopFunction = false;
   self.unblock();

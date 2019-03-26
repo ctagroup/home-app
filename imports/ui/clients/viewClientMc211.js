@@ -227,7 +227,7 @@ Template.viewClientMc211.events(
       }
 
       Meteor.call(
-       'updateClientMatchStatus',
+       'clients.updateMatchStatus',
         clientId,
         status,
         $('#referralStatusComments').summernote('code'),

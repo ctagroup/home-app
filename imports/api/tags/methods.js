@@ -7,12 +7,12 @@ Meteor.methods({
   'tags.create'(name, score) {
     logger.info(`METHOD[${Meteor.userId()}]: tags.create`, name, score);
 
-    Meteor.call('tagApi', 'createTag', { name, score }, (err, res) => {
+    Meteor.call('tagApi', 'createTag', { name, score }, (err/* , res*/) => {
       if (err) {
         // Alert.error(err);
         // template.errors.set(err.details && err.details.data);
       } else {
-        return res;
+        // return res;
         // Alert.success('ROI Signed');
         // window.history.back();
       }

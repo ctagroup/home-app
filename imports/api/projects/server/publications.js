@@ -1,9 +1,11 @@
 import { logger } from '/imports/utils/logger';
 import { HmisClient } from '/imports/api/hmisApi';
+import { DefaultAdminAccessRoles } from '/imports/config/permissions';
+
 
 Meteor.publish('projects.all', function publishAllProjects() {
   logger.info(`PUB[${this.userId}]: projects.all`);
-  if (!this.userId) {
+  if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
     return [];
   }
 
@@ -26,7 +28,9 @@ Meteor.publish('projects.all', function publishAllProjects() {
 
 Meteor.publish('projects.one', function publishOneProject(id, schema) {
   logger.info(`PUB[${this.userId}]: projects.one`, id, schema);
-  if (!this.userId) {
+  check(id, String);
+  check(schema, String);
+  if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
     return [];
   }
   const project = HmisClient.create(this.userId).api('client').getProject(id, schema);

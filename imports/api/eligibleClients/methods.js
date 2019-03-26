@@ -1,12 +1,13 @@
 import { eachLimit } from 'async';
 import { logger } from '/imports/utils/logger';
+import { ClientsAccessRoles } from '/imports/config/permissions';
 import { HmisClient } from '../hmisApi';
 
 Meteor.methods({
   getEligibleClients() {
-    logger.info(`METHOD[${Meteor.userId()}]: getEligibleClients()`);
-    if (!Meteor.userId()) {
-      throw new Meteor.Error(401, 'Unauthorized');
+    logger.info(`METHOD[${this.userId}]: getEligibleClients()`);
+    if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
     }
 
     const hc = HmisClient.create(Meteor.userId());
@@ -23,47 +24,52 @@ Meteor.methods({
   },
 
   ignoreMatchProcess(inputClientId, ignoreMatchProcess, remarks = '') {
-    logger.info(`METHOD[${Meteor.userId()}]: ignoreMatchProcess(${Array.isArray(inputClientId)}, ${inputClientId}, ${ignoreMatchProcess})`); // eslint-disable-line max-len
+    logger.info(`METHOD[${this.userId}]: ignoreMatchProcess(${Array.isArray(inputClientId)}, ${inputClientId}, ${ignoreMatchProcess})`); // eslint-disable-line max-len
+
     check(inputClientId, Match.OneOf(String, [String])); // eslint-disable-line new-cap
     check(ignoreMatchProcess, Boolean);
     check(remarks, String);
+    if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
 
     let eligibleClientOutput;
-    if (Meteor.userId()) {
-      const hc = HmisClient.create(Meteor.userId());
+    const hc = HmisClient.create(Meteor.userId());
 
-      const clientIds = Array.isArray(inputClientId) ? inputClientId : [inputClientId];
-      eachLimit(clientIds, Meteor.settings.connectionLimit,
-        (clientId, callback) => {
-          Meteor.defer(() => {
-            // fetch client status
-            try {
-              // get client details
-              const eligibleClient = hc.api('house-matching').getEligibleClient(clientId);
+    const clientIds = Array.isArray(inputClientId) ? inputClientId : [inputClientId];
+    eachLimit(clientIds, Meteor.settings.connectionLimit,
+      (clientId, callback) => {
+        Meteor.defer(() => {
+          // fetch client status
+          try {
+            // get client details
+            const eligibleClient = hc.api('house-matching').getEligibleClient(clientId);
 
-              // update the client status
-              eligibleClient.ignoreMatchProcess = ignoreMatchProcess;
-              eligibleClient.remarks = remarks;
-              delete eligibleClient.links;
-              hc.api('house-matching').updateEligibleClient(eligibleClient);
+            // update the client status
+            eligibleClient.ignoreMatchProcess = ignoreMatchProcess;
+            eligibleClient.remarks = remarks;
+            delete eligibleClient.links;
+            hc.api('house-matching').updateEligibleClient(eligibleClient);
 
-              // return updated eligible client object to the client
-              eligibleClientOutput = eligibleClient;
-            } catch (e) {
-              logger.warn(e);
-            }
-            callback();
-          });
+            // return updated eligible client object to the client
+            eligibleClientOutput = eligibleClient;
+          } catch (e) {
+            logger.warn(e);
+          }
+          callback();
         });
-    } else {
-      throw new Meteor.Error('403', 'You are not authorized to perform this action');
-    }
+      });
+
     return eligibleClientOutput;
   },
 
   postHousingMatchScores() {
     logger.info(`METHOD[${Meteor.userId()}]: postHousingMatchScores()`);
-    const hc = HmisClient.create(Meteor.userId());
+    if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
+
+    const hc = HmisClient.create(this.userId);
     return hc.api('house-matching').postHousingMatchScores();
   },
 });

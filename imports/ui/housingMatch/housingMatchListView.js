@@ -142,7 +142,7 @@ Template.housingMatchListView.events({
       const recipients = Users.find({ projectsLinked: projectId }).fetch();
       if (recipients.length > 0) {
         const data = { toRecipients: recipients.map(item => item.emails[0].address) };
-        Meteor.call('updateClientMatchStatus',
+        Meteor.call('clients.updateMatchStatus',
           housingMatch.eligibleClients.clientId,
           1, // Agency Contact Status.
           'Notified from HOME App Matching List',

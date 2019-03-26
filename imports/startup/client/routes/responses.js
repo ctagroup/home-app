@@ -4,7 +4,7 @@ import Responses from '/imports/api/responses/responses';
 import Surveys from '/imports/api/surveys/surveys';
 import {
   ResponsesAccessRoles,
-  PendingClientsAccessRoles,
+  ClientsAccessRoles,
 } from '/imports/config/permissions';
 import { fullName } from '/imports/api/utils';
 import { AppController } from './controllers';
@@ -58,7 +58,7 @@ Router.route('adminDashboardresponsesNew', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), PendingClientsAccessRoles);
+      return Roles.userIsInRole(Meteor.userId(), ClientsAccessRoles);
     },
   },
   waitOn() {
@@ -97,7 +97,7 @@ Router.route('adminDashboardresponsesEdit', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), PendingClientsAccessRoles);
+      return Roles.userIsInRole(Meteor.userId(), ClientsAccessRoles);
     },
   },
   waitOn() {

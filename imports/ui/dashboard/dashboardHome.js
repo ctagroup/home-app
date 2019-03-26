@@ -4,7 +4,7 @@ import {
   DefaultAdminAccessRoles,
   GlobalHouseholdsAccessRoles,
   HousingUnitsAccessRoles,
-  PendingClientsAccessRoles,
+  ClientsAccessRoles,
   ResponsesAccessRoles,
 } from '/imports/config/permissions';
 import './widget.html';
@@ -17,7 +17,7 @@ const allWidgets = [
     id: 'clients',
     icon: 'fa-user',
     path: 'adminDashboardclientsView',
-    roles: PendingClientsAccessRoles,
+    roles: ClientsAccessRoles,
   },
   {
     name: 'Active List',
@@ -59,7 +59,7 @@ const allWidgets = [
     id: 'surveyed',
     icon: 'fa-user',
     path: 'adminDashboardclientsView',
-    roles: PendingClientsAccessRoles,
+    roles: ClientsAccessRoles,
   },
   {
     name: 'Inventory',

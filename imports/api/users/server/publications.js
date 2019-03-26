@@ -2,6 +2,7 @@ import { eachLimit } from 'async';
 import Users from '/imports/api/users/users';
 import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
+import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 
 const transformRoles = (roles) => roles.map(r => r.id);
 
@@ -37,8 +38,13 @@ const fields = {
   activeProjectId: 1,
 };
 
+
 Meteor.publish('users.all', function publishAllUsers() {
-  logger.debug(`Publishing users.all to ${this.userId}`);
+  logger.info(`PUB[${this.userId}] users.all`);
+  if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
+    return [];
+  }
+
   const cursor = Users.find({}, { fields });
   const api = HmisClient.create(this.userId).api('user-service');
   Meteor.defer(() => {
@@ -61,9 +67,9 @@ Meteor.publish('users.all', function publishAllUsers() {
 });
 
 Meteor.publish('users.one', function publishSingleHmisUser(userId) { // eslint-disable-line prefer-arrow-callback, max-len
-  logger.debug(`Publishing users.one(${userId}) to ${this.userId}`);
-  // TODO: permissions
-  if (!this.userId) {
+  logger.info(`PUB[${this.userId}] users.one`, userId);
+  check(userId, String);
+  if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles) && this.userId !== userId) {
     return [];
   }
 
@@ -94,7 +100,8 @@ Meteor.publish(null, function publishCurrentUserData() { // eslint-disable-line
 
 Meteor.publish('users.hmisRoles', function publishHMISRoles() { // eslint-disable-line prefer-arrow-callback, max-len
   logger.info(`PUB[${this.userId}]: users.hmisRoles`);
-  if (!this.userId) return this.ready();
+  if (!this.userId) return [];
+
   try {
     const hmisRoles = HmisClient.create(this.userId).api('user-service').getRoles();
     hmisRoles.forEach(r => this.added('hmisRoles', r.id, r));

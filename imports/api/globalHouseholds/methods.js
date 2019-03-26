@@ -1,10 +1,16 @@
 import { logger } from '/imports/utils/logger';
 import { HmisClient } from '/imports/api/hmisApi';
+import { GlobalHouseholdsAccessRoles } from '/imports/config/permissions';
 
 Meteor.methods({
   createGlobalHousehold(globalHouseholdMembers, globalHouseholdObject) {
-    logger.info(`METHOD[${Meteor.userId()}]: createGlobalHousehold`, globalHouseholdMembers, globalHouseholdObject); // eslint-disable-line max-len
-    const hc = HmisClient.create(Meteor.userId());
+    logger.info(`METHOD[${this.userId}]: createGlobalHousehold`, globalHouseholdMembers, globalHouseholdObject); // eslint-disable-line max-len
+
+    if (!Roles.userIsInRole(this.userId, GlobalHouseholdsAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
+
+    const hc = HmisClient.create(this.userId);
     return hc.api('global-household').createGlobalHousehold(
       globalHouseholdMembers,
       globalHouseholdObject
@@ -12,15 +18,20 @@ Meteor.methods({
   },
 
   updateGlobalHousehold(householdId, oldMembers, newMembers, doc) {
-    logger.info(`METHOD[${Meteor.userId()}]: updateGlobalHousehold`, householdId);
+    logger.info(`METHOD[${this.userId}]: updateGlobalHousehold`, householdId);
 
-    const currentUser = Meteor.users.findOne(Meteor.userId());
+    check(householdId, String);
+    if (!Roles.userIsInRole(this.userId, GlobalHouseholdsAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
+
+    const currentUser = Meteor.users.findOne(this.userId);
     const householdObject = Object.assign({}, doc, {
       // userCreate: globalHousehold.userCreate,
       userUpdate: currentUser.services.HMIS.accountId,
     });
 
-    const hc = HmisClient.create(Meteor.userId());
+    const hc = HmisClient.create(this.userId);
     hc.api('global-household').updateGlobalHousehold(householdId, householdObject);
 
     const oldIds = oldMembers.map(item => item.globalClientId);
@@ -64,8 +75,14 @@ Meteor.methods({
   },
 
   deleteHousehold(genericHouseholdId) {
-    logger.info(`METHOD[${Meteor.userId()}]: deleteHousehold`, genericHouseholdId);
-    const hc = HmisClient.create(Meteor.userId());
+    logger.info(`METHOD[${this.userId}]: deleteHousehold`, genericHouseholdId);
+
+    check(genericHouseholdId, String);
+    if (!Roles.userIsInRole(this.userId, GlobalHouseholdsAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
+
+    const hc = HmisClient.create(this.userId);
     return hc.api('global-household').deleteGlobalHousehold(genericHouseholdId);
   },
 

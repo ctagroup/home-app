@@ -14,7 +14,6 @@ Router.route('adminDashboardhousingMatchView', {
   waitOn() {
     return [
       Meteor.subscribe('housingUnits.list', false),
-      // Meteor.subscribe('projects.all'),
       Meteor.subscribe('housingMatch.list'),
     ];
   },
