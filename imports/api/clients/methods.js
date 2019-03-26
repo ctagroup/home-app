@@ -37,7 +37,8 @@ Meteor.methods({
   },
 
   'clients.update'(clientId, client, schema) {
-    logger.info(`METHOD[${this.userId}]: clients.update`, clientId, schema, client);
+    const clientData = _.omit(client, 'photo', 'signature');
+    logger.info(`METHOD[${this.userId}]: clients.update`, clientId, schema, clientData);
 
     check(clientId, String);
     check(schema, String);
@@ -46,10 +47,22 @@ Meteor.methods({
     }
 
     const hc = HmisClient.create(this.userId);
-    hc.api('client').updateClient(clientId, client, schema);
+    hc.api('client').updateClient(clientId, clientData, schema);
+
+    try {
+      const { dedupClientId } = hc.api('client').getClient(clientId, schema);
+      if (client.photo) {
+        Meteor.call('s3bucket.put', dedupClientId, 'photo', client.photo);
+      }
+      if (client.signature) {
+        Meteor.call('s3bucket.put', dedupClientId, 'signature', client.signature);
+      }
+    } catch (err) {
+      logger.error('Failed to upload photo/signature to s3', err);
+    }
 
     eventPublisher.publish(new ClientUpdatedEvent({
-      ...client,
+      ...clientData,
       clientId,
       schema,
     }, { userId: this.userId }));

@@ -48,6 +48,7 @@ function utf8ArrayToStr(array) {
 
 Meteor.methods({
   's3bucket.get'(clientId, resource) {
+    logger.info(`METHOD[${this.userId}]: s3bucket.get`, clientId, resource);
     // TODO: permission check
     return new Promise((resolve, reject) => {
       s3.getObject({
@@ -63,6 +64,7 @@ Meteor.methods({
     .await();
   },
   's3bucket.put'(clientId, resource, data) {
+    logger.info(`METHOD[${this.userId}]: s3bucket.put`, clientId, resource, data.length);
     // TODO: permission check
     return new Promise((resolve, reject) => {
       s3.upload({
