@@ -2,6 +2,7 @@ import { eachLimit } from 'async';
 import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
 import { HousingUnitsAccessRoles } from '/imports/config/permissions';
+import { getSchemaFromLink } from '/imports/api/utils';
 
 
 Meteor.publish('housingUnits.list',
@@ -26,11 +27,8 @@ Meteor.publish('housingUnits.list',
     for (let i = 0; i < housingUnits.length && !stopFunction; i += 1) {
       if (fetchProjectsDetails && housingUnits[i].projectId) {
         housingUnits[i].project = { loading: true };
-        let schema = 'v2015';
-        if (housingUnits[i].links && housingUnits[i].links.length > 0
-          && housingUnits[i].links[0].rel.indexOf('v2014') !== -1) {
-          schema = 'v2014';
-        }
+        const projectLink = (housingUnits[i].links.find(x => x.rel === 'project') || {}).href;
+        const schema = getSchemaFromLink(projectLink, 'v2014');
         queue.push({
           i,
           projectId: housingUnits[i].projectId,
