@@ -73,15 +73,23 @@ Meteor.methods({
       throw new Meteor.Error(403, 'Forbidden');
     }
 
-    try {
-      const { clientId, surveyId, submissionId } = Responses.findOne(id);
-      const hc = HmisClient.create(this.userId);
-      hc.api('survey').deleteSubmission(clientId, surveyId, submissionId);
-      // Meteor.call('responses.deleteEnrollment', id);
-    } catch (err) {
-      logger.warn('Failed to delete response', err);
-    } finally {
-      Responses.remove(id);
+    const localResponse = Responses.findOne(id);
+
+    if (localResponse) {
+      // response is stored in mongo
+      try {
+        const { clientId, surveyId, submissionId } = localResponse;
+        const hc = HmisClient.create(this.userId);
+        hc.api('survey').deleteSubmission(clientId, surveyId, submissionId);
+        // Meteor.call('responses.deleteEnrollment', id);
+      } catch (err) {
+        logger.warn('Failed to delete response', err);
+      } finally {
+        Responses.remove(id);
+      }
+    } else {
+      // remote response
+      throw new Meteor.Error(400, 'Cannot remove HMIS response');
     }
   },
 
