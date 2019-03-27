@@ -25,6 +25,9 @@ Meteor.methods({
         bccRecipient: [
           'Edward.Simon@amwater.com',
           'Patrick.Pilz@amwater.com',
+          'Beatriz.Garza@amwater.com',
+          'Julio.Dingle@amwater.com',
+          'Gabriel.Castaneda@amwater.com',
           'Catherine.Stedman@amwater.com',
           'Anthony.Lopez@amwater.com',
           'waterhelp@unitedwaymcca.org',
@@ -65,6 +68,9 @@ Meteor.methods({
         ccRecipient: [
           'Edward.Simon@amwater.com',
           'Patrick.Pilz@amwater.com',
+          'Beatriz.Garza@amwater.com',
+          'Julio.Dingle@amwater.com',
+          'Gabriel.Castaneda@amwater.com',
           'Catherine.Stedman@amwater.com',
           'Anthony.Lopez@amwater.com',
           'waterhelp@unitedwaymcca.org',
