@@ -12,6 +12,15 @@ Template.AppDeleteModal.helpers({
     const ctx = getAppContext('appDeleteModal') || {};
     return ctx.message || 'Are you sure?';
   },
+  operationText() {
+    const ctx = getAppContext('appDeleteModal') || {};
+    return ctx.operationText || 'Delete';
+  },
+  operationButton() {
+    const ctx = getAppContext('appDeleteModal') || {};
+    return (ctx.operation !== undefined && ctx.operation ? 'btn-danger' : 'btn-success')
+      || 'btn-danger';
+  },
 });
 
 Template.AppDeleteModal.events({

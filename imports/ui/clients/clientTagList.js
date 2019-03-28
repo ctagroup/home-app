@@ -20,6 +20,6 @@ Template.clientTagListView.helpers({
       });
   },
   removeClientTagHandler() {
-    return ({ _id }) => ClientTags._collection.remove({ _id }); // eslint-disable-line
+    return (res) => ClientTags._collection.insert({ _id: res.id, ...res }); // eslint-disable-line
   },
 });

@@ -1,5 +1,6 @@
 import '/imports/ui/dataTable/dataTableEditButton';
 import '/imports/ui/dataTable/dataTableDeleteButton';
+import '/imports/ui/dataTable/dataTableTextButton';
 import { fullName } from '/imports/api/utils';
 import BlazeTemplate from '/imports/ui/components/BlazeComponent';
 import React from 'react';
@@ -324,17 +325,23 @@ export function deleteProjectButton(onSuccessCallback) {
 }
 
 export function removeClientTagButton(onSuccessCallback) {
-  const composeData = (_id, rowData) => (
-    {
+  const composeData = (_id, rowData) => {
+    const removed = rowData.operation;
+    const inverseOperation = rowData.operation ? 0 : 1;
+    return {
       _id,
-      message: `Are you sure you want to remove client tag #${rowData.id} (${rowData.tag.name})?`,
+      operation: rowData.operation,
+      operationText: removed ? 'Remove' : 'Add',
+      title: `Confirm ${removed ? 'removal' : 'adding'}`,
+      message: `Are you sure you want to ${removed ? 'remove' : 'add'
+        } client tag #${rowData.id} (${rowData.tag.name})?`,
       method: 'tagApi',
-      args: ['deleteClientTag', _id],
-      onSuccess() {
-        if (onSuccessCallback) onSuccessCallback(rowData);
+      args: ['createClientTag', { ...rowData, operation: inverseOperation }],
+      onSuccess(result) {
+        if (onSuccessCallback) onSuccessCallback(result);
       },
-    }
-  );
+    };
+  };
   return {
     data: '_id',
     title: 'Delete',
@@ -342,7 +349,7 @@ export function removeClientTagButton(onSuccessCallback) {
     render() { return ''; },
     reactCreatedCell(node, _id, rowData) {
       const templateData = composeData(_id, rowData);
-      return blazeData('DataTableDeleteButton', templateData);
+      return blazeData('DataTableTextButton', templateData);
     },
     width: '45px',
     orderable: false,

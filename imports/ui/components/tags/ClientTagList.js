@@ -5,7 +5,7 @@ import DatePicker from 'react-datepicker';
 // import ClientTagItem from './ClientTagItem';
 import DataTable2 from '/imports/ui/components/dataTable/DataTable2'; // FIXME
 import { removeClientTagButton } from '/imports/ui/dataTable/helpers.js';
-import { getActiveTagNamesForDate, dateOnly } from '/imports/api/tags/tags';
+import { getActiveTagsForDate, getActiveTagNamesForDate, dateOnly } from '/imports/api/tags/tags';
 
 
 class ClientTagList extends Component {
@@ -127,6 +127,9 @@ class ClientTagList extends Component {
     const selectedDate = this.getDate();
     const activeTagNames = getActiveTagNamesForDate(clientTags, selectedDate);
 
+    const filteredTags = _.uniq(getActiveTagsForDate(clientTags, selectedDate),
+      ({ tagId }) => tagId);
+
     const tableOptions = {
       columns: [
         {
@@ -136,6 +139,10 @@ class ClientTagList extends Component {
             return doc.tag.name;
           },
         },
+        // {
+        //   title: 'Notes',
+        //   data: 'note',
+        // },
         {
           title: 'Operation',
           data: 'operation',
@@ -172,7 +179,7 @@ class ClientTagList extends Component {
     return (
       <div className="tag-list-wrapper">
         <div className="tag-filter" style={{ padding: '10px' }}>
-          Active tags by date:
+          <strong>Active tags by date:</strong>
           {this.renderDatePicker('date')}
           <strong>{listOfActiveTags}</strong>
         </div>
@@ -185,7 +192,7 @@ class ClientTagList extends Component {
           <DataTable2
             disableSearch={disabled}
             options={options}
-            data={clientTags}
+            data={filteredTags}
           />
         </div>
       </div>
