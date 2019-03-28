@@ -366,7 +366,7 @@ Meteor.methods({
 
 
 Meteor.injectedMethods({
-  async 'responses.importFromHslynk'(start = 0, limit = Number.MAX_SAFE_INTEGER) {
+  async 'responses.importAllSubmissionsFromHslynk'(start = 0, limit = Number.MAX_SAFE_INTEGER) {
     this.unblock();
     const schema = 'v2017';
     const { hmisClient } = this.context;
@@ -388,5 +388,26 @@ Meteor.injectedMethods({
       results.push(result);
     }
     return results;
+  },
+
+  'responses.importSubmissionFromHslynk'(clientId, clientSchema, surveyId, submissionId) {
+    /*
+    test with
+    clientId: 56cdee0f-7219-44bf-93fa-d1caf1eb63de (schema=v2017)
+    surveyId: 9fa355a4-7194-4ec1-821c-c5d7e72d93d5
+    submissionId: df0c0e51-9ee7-4ed5-8d46-791b53137df1
+    Meteor.call('responses.importSubmissionFromHslynk', '56cdee0f-7219-44bf-93fa-d1caf1eb63de',
+      'v2017', '9fa355a4-7194-4ec1-821c-c5d7e72d93d5', 'df0c0e51-9ee7-4ed5-8d46-791b53137df1',
+      (err,res) => console.log(err,res))
+    */
+    const { hmisClient, logger } = this.context; // eslint-disable-line no-shadow
+    logger.info(`METHOD[${this.userId}]: responses.importSubmissionFromHslynk`, submissionId);
+
+    const importer = new ResponseImporter({
+      responsesCollection: Responses,
+      hmisClient,
+    });
+    return importer.importResposeFromSubmission(
+      clientId, clientSchema, surveyId, submissionId, 'import');
   },
 });

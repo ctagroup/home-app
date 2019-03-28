@@ -47,24 +47,6 @@ Responses.schema = new SimpleSchema({
     blackbox: true,
     optional: true,
   },
-  // enrollmentId: {
-  //   type: String,
-  //   optional: true,
-  // },
-  // projectId: {
-  //   type: String,
-  //   optional: true,
-  // },
-  // enrollmentSchema: {
-  //   type: String,
-  //   allowedValues: ['v2017'],
-  //   optional: true,
-  // },
-  // enrollmentStep: {
-  //   type: String,
-  //   allowedValues: ['entry', 'update', 'exit'],
-  //   optional: true,
-  // },
   enrollment: {
     type: Object,
     blackbox: true,
@@ -83,6 +65,7 @@ Responses.schema = new SimpleSchema({
     label: 'Created At',
     optional: true,
     autoValue() {
+      if (this.isSet) return this.value;
       let val;
       if (this.isInsert) {
         val = new Date();

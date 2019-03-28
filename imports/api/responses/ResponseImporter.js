@@ -53,6 +53,51 @@ export default class ResponseImporter {
     return this.surveyCache[surveyId];
   }
 
+  importResposeFromSubmission(clientId, clientSchema, surveyId, submissionId, surveyorId) {
+    const surveyDefinitionItems = this.getSurveyDefinitionItems(surveyId);
+    logger.debug(`importing submission ${submissionId} in survey ${surveyId}`);
+
+    // Import submission
+    if (this.responsesCollection.findOne(submissionId)) {
+      logger.debug(`submission ${submissionId} skipped, already imported`);
+      return false;
+    }
+
+    logger.debug(`new submission to import ${submissionId}`);
+    const submissionResponses = this.hmisClient.api('survey')
+      .getSubmissionResponses(clientId, surveyId, submissionId);
+
+    const responseSubmissionDates = submissionResponses
+      .map(x => x.effectiveDate)
+      .filter(x => !!x)
+      .map(x => new Date(x));
+
+    const submissionDate = responseSubmissionDates.length ?
+      Math.max(...responseSubmissionDates) : new Date();
+
+    const values = this.submissionResponsesToValues(
+      submissionResponses, surveyDefinitionItems, { clientId, submissionId, surveyId }
+    );
+
+    const doc = {
+      _id: submissionId,
+      clientId,
+      clientSchema,
+      status: 'completed',
+      surveyId,
+      surveyorId,
+      submissionId,
+      version: 2,
+      values: escapeKeys(values),
+      extraData: 'imported',
+      createdAt: submissionDate,
+    };
+    logger.debug(doc);
+    this.responsesCollection.insert(doc);
+
+    return doc;
+  }
+
   async importResponsesForClientAsync(clientId, clientSchema, surveyorId) {
     const submissions = this.hmisClient.api('survey').getClientSurveySubmissions(clientId);
     logger.info(`importing ${submissions.length} submissions for client ${clientId} ${clientSchema}`); // eslint-disable-line
@@ -63,35 +108,13 @@ export default class ResponseImporter {
         (submission, callback) => {
           Meteor.setTimeout(() => {
             const { surveyId, submissionId } = submission;
-            const surveyDefinitionItems = this.getSurveyDefinitionItems(surveyId);
             logger.debug(`importing submission ${submissionId} in survey ${surveyId}`);
 
             try {
               // Import submission
-              if (this.responsesCollection.findOne(submissionId)) {
-                logger.debug(`submission ${submissionId} skipped, already imported`);
-              } else {
-                logger.debug(`new submission to import ${submissionId}`);
-                const submissionResponses = this.hmisClient.api('survey')
-                  .getSubmissionResponses(clientId, surveyId, submissionId);
-                const values = this.submissionResponsesToValues(
-                  submissionResponses, surveyDefinitionItems, { clientId, submissionId, surveyId }
-                );
-                const doc = {
-                  _id: submissionId,
-                  clientId,
-                  clientSchema,
-                  status: 'completed',
-                  surveyId,
-                  surveyorId,
-                  submissionId,
-                  version: 2,
-                  values: escapeKeys(values),
-                  extraData: 'imported',
-                };
-                this.responsesCollection.insert(doc);
-                logger.debug(`imported submission ${submissionId}`);
-              }
+              this.importResposeFromSubmission(
+                clientId, clientSchema, surveyId, submissionId, surveyorId
+              );
             } catch (err) {
               // Log error, but continue
               logger.error(`Error in submission import ${submissionId}`, err);

@@ -57,10 +57,10 @@ if (Meteor.isServer) {
   log.sentry = Sentry;
 }
 
-export function sanitize(obj, secrets = ['password', 'passwordConfirm',
+function trySanitize(obj, secrets = ['password', 'passwordConfirm',
   'confirmPassword', 'secret', 'appSecret']) {
   if (Array.isArray(obj)) {
-    return obj.map(x => sanitize(x, secrets));
+    return obj.map(x => trySanitize(x, secrets));
   }
   if (typeof obj === 'object' && obj !== null) {
     return Object.keys(obj).reduce((o, key) => {
@@ -73,12 +73,23 @@ export function sanitize(obj, secrets = ['password', 'passwordConfirm',
       }
       return {
         ...o,
-        [key]: sanitize(o[key]),
+        [key]: trySanitize(o[key]),
       };
     }, obj);
   }
   return obj;
 }
+
+
+export function sanitize(obj, secrets = ['password', 'passwordConfirm',
+'confirmPassword', 'secret', 'appSecret']) {
+  try {
+    return trySanitize(obj, secrets);
+  } catch (err) {
+    return obj;
+  }
+}
+
 
 export const logger = {
   log(...params) {
