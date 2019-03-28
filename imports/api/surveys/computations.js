@@ -445,3 +445,23 @@ export function prepareEmails(definition, formState) {
     })
     .filter(email => email !== null);
 }
+
+export function getQuestionItemOptions(item) {
+  const options = item.options || {};
+  if (Array.isArray(options)) {
+    return options.filter(o => !!o).reduce((all, o) => {
+      if (typeof o === 'string') {
+        const label = o.split('|').pop();
+        const value = o.split('|').shift();
+        return {
+          ...all,
+          [value]: label,
+        };
+      }
+      return {
+        ...all,
+      };
+    }, {});
+  }
+  return options;
+}

@@ -11,6 +11,7 @@ import { EnrollmentUploader } from './helpers';
 import Users from '/imports/api/users/users';
 import { HmisCache } from '/imports/api/cache/hmisCache';
 import { prepareEmails } from '../surveys/computations';
+import ResponseImporter from './ResponseImporter';
 
 function prepareValuesToUpload(values, definition, defaultSectionId) {
   const questionIds = Object.keys(values);
@@ -473,5 +474,53 @@ Meteor.methods({
     }
 
     return count();
+  },
+});
+
+
+Meteor.injectedMethods({
+  async 'responses.importAllSubmissionsFromHslynk'(start = 0, limit = Number.MAX_SAFE_INTEGER) {
+    this.unblock();
+    const schema = 'v2017';
+    const { hmisClient } = this.context;
+    const clientIds = hmisClient.api('client')
+      .getClients(schema, 0, limit)
+      .map(c => c.clientId);
+
+    const importer = new ResponseImporter({
+      responsesCollection: Responses,
+      hmisClient,
+    });
+
+    const results = [];
+    while (clientIds.length > 0) {
+      const clientId = clientIds.shift();
+      logger.info(`!!!!!!! importing responses for ${clientId}, ${clientIds.length} remaining`);
+      const result = await importer.importResponsesForClientAsync(clientId, schema, this.userId);
+      logger.info(`!!!!!!! done with ${clientId}, ${clientIds.length} remaining`);
+      results.push(result);
+    }
+    return results;
+  },
+
+  'responses.importSubmissionFromHslynk'(clientId, clientSchema, surveyId, submissionId) {
+    /*
+    test with
+    clientId: 56cdee0f-7219-44bf-93fa-d1caf1eb63de (schema=v2017)
+    surveyId: 9fa355a4-7194-4ec1-821c-c5d7e72d93d5
+    submissionId: df0c0e51-9ee7-4ed5-8d46-791b53137df1
+    Meteor.call('responses.importSubmissionFromHslynk', '56cdee0f-7219-44bf-93fa-d1caf1eb63de',
+      'v2017', '9fa355a4-7194-4ec1-821c-c5d7e72d93d5', 'df0c0e51-9ee7-4ed5-8d46-791b53137df1',
+      (err,res) => console.log(err,res))
+    */
+    const { hmisClient, logger } = this.context; // eslint-disable-line no-shadow
+    logger.info(`METHOD[${this.userId}]: responses.importSubmissionFromHslynk`, submissionId);
+
+    const importer = new ResponseImporter({
+      responsesCollection: Responses,
+      hmisClient,
+    });
+    return importer.importResposeFromSubmission(
+      clientId, clientSchema, surveyId, submissionId, 'import');
   },
 });

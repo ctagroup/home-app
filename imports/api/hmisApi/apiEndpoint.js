@@ -36,7 +36,7 @@ export class ApiEndpoint {
   }
 
   doGet(url) {
-    const logGetRequests = false;
+    const logGetRequests = true;
     const headers = this.getRequestHeaders();
     const options = {
       headers,

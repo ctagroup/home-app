@@ -34,10 +34,9 @@ export class ClientApi extends ApiEndpoint {
   }
 
   getClients(schema = DEFAULT_PROJECT_SCHEMA, start = 0, limit = 9999) {
-    const url =
-      `${BASE_URL}/${schema}/clients?startIndex=${start}&maxItems=${limit}`;
-    const { pagination, clients } = this.doGet(url).Clients;
-
+    const schemaPath = schema ? `/${schema}` : '';
+    const url = `${BASE_URL}${schemaPath}/clients?startIndex=${start}&limit=${limit}`;
+    const { clients, pagination } = this.doGet(url).Clients;
     const remaining = limit - pagination.returned;
     if (remaining > 0 && pagination.returned > 0) {
       return [
@@ -47,14 +46,13 @@ export class ClientApi extends ApiEndpoint {
     }
     return clients;
   }
+
   getAllClients(start = 0, limit = 9999) {
     const data =
       ['v2014', 'v2015', 'v2016', 'v2017'].map((schema) => {
         try {
           return this.getClients(schema, start, limit);
         } catch (e) {
-          // logger.warn(e);
-          console.log(e);
           return [];
         }
       });

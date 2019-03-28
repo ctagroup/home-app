@@ -1,4 +1,6 @@
 import awilix from 'awilix';
+import { logger } from '/imports/utils/logger';
+import Sentry from '@sentry/node';
 
 
 export function registerInjectedMeteorMethods(container) {
@@ -7,15 +9,34 @@ export function registerInjectedMeteorMethods(container) {
       return {
         ...all,
         [name](...args) {
-          const scope = container.createScope();
-          const builder = (ctx) => () => {
-            this.context = ctx;
-            return methods[name].call(this, ...args);
+          const methodWrapper = (ctx) => () => {
+            const promise = new Promise((resolve, reject) => {
+              Sentry.configureScope((scope) => {
+                this.context = ctx;
+                this.sentryScope = scope;
+                scope.setUser({
+                  id: this.userId,
+                });
+                scope.setTag('type', 'method');
+                try {
+                  logger.info(`METHOD ${name}[${this.userId}]: `, args);
+                  const result = methods[name].call(this, ...args);
+                  logger.debug(`METHOD ${name}[${this.userId}] succeeded`);
+                  resolve(result);
+                } catch (err) {
+                  Sentry.captureException(err);
+                  logger.error(`METHOD ${name}[${this.userId}] failed: `, err);
+                  reject(err);
+                }
+              });
+            });
+            return promise;
           };
+          const scope = container.createScope();
           scope.register({
             userId: awilix.asValue(this.userId),
             ...(registerScopeCallback ? registerScopeCallback() : {}),
-            __injected_fcn__: awilix.asFunction(builder),
+            __injected_fcn__: awilix.asFunction(methodWrapper),
           });
           try {
             return scope.resolve('__injected_fcn__').call(this, ...args);
@@ -33,7 +54,7 @@ export function registerInjectedMeteorMethods(container) {
 export function registerInjectedMeteorPublish(container) {
   Meteor.injectedPublish = (name, publishFcn, registerScopeCallback = null) => { // eslint-disable-line
     return Meteor.publish(name, function (...args) { // eslint-disable-line
-      const builder = (ctx) => {
+      const publicationWrapper = (ctx) => {
         this.context = ctx;
         return publishFcn.bind(this);
       };
@@ -41,7 +62,7 @@ export function registerInjectedMeteorPublish(container) {
       scope.register({
         userId: awilix.asValue(this.userId),
         ...(registerScopeCallback ? registerScopeCallback() : {}),
-        __injected_fcn__: awilix.asFunction(builder),
+        __injected_fcn__: awilix.asFunction(publicationWrapper),
       });
       try {
         return scope.resolve('__injected_fcn__')(...args);

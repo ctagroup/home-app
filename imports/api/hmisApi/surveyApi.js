@@ -137,7 +137,7 @@ export class SurveyApi extends ApiEndpoint {
     const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/submissions/${submissionId}?startIndex=${start}&limit=${limit}`; // eslint-disable-line
     const { pagination, responses } = this.doGet(url).responses;
     const remaining = limit - pagination.returned;
-    if (remaining > 0 && pagination.returned > 0) {
+    if (remaining > 0 && pagination.returned > 0 && pagination.returned === pagination.maximum) {
       return [
         ...responses,
         ...this.getSubmissionResponses(clientId,
@@ -168,8 +168,7 @@ export class SurveyApi extends ApiEndpoint {
 
   getClientSurveySubmissions(clientId, start = 0, limit = 9999) {
     const url = `${BASE_URL}/clientsurveysubmissions/${clientId}?startIndex=${start}&limit=${limit}`; // eslint-disable-line max-len
-
-    const { pagination, clientSurveySubmissions } = this.doGet(url).surveys;
+    const { pagination, clientSurveySubmissions } = this.doGet(url).clientSurveySubmissions;
     const remaining = limit - pagination.returned;
     if (remaining > 0 && pagination.returned > 0) {
       return [

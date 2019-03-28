@@ -1,6 +1,5 @@
 import winston from 'winston';
-import Sentry from 'winston-sentry';
-import moment from 'moment';
+import Sentry from '@sentry/node';
 
 let log;
 
@@ -40,6 +39,10 @@ if (Meteor.isServer) {
   const { sentry } = Meteor.settings;
 
   if (sentry && sentry.dsn) {
+    Sentry.init({
+      dsn: sentry.dsn,
+    });
+    /*
     const sentryTransport = new Sentry({
       level: sentry.level || 'error',
       dsn: sentry.dsn,
@@ -47,15 +50,17 @@ if (Meteor.isServer) {
       release: moment(new Date()).format('YYYY-MM-DD'),
     });
     transports.push(sentryTransport);
+    */
   }
 
   log = new winston.Logger({ transports });
+  log.sentry = Sentry;
 }
 
-export function sanitize(obj, secrets = ['password', 'passwordConfirm',
+function trySanitize(obj, secrets = ['password', 'passwordConfirm',
   'confirmPassword', 'secret', 'appSecret']) {
   if (Array.isArray(obj)) {
-    return obj.map(x => sanitize(x, secrets));
+    return obj.map(x => trySanitize(x, secrets));
   }
   if (typeof obj === 'object' && obj !== null) {
     return Object.keys(obj).reduce((o, key) => {
@@ -68,12 +73,23 @@ export function sanitize(obj, secrets = ['password', 'passwordConfirm',
       }
       return {
         ...o,
-        [key]: sanitize(o[key]),
+        [key]: trySanitize(o[key]),
       };
     }, obj);
   }
   return obj;
 }
+
+
+export function sanitize(obj, secrets = ['password', 'passwordConfirm',
+'confirmPassword', 'secret', 'appSecret']) {
+  try {
+    return trySanitize(obj, secrets);
+  } catch (err) {
+    return obj;
+  }
+}
+
 
 export const logger = {
   log(...params) {
