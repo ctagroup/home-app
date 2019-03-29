@@ -31,7 +31,7 @@ let tableData = [];
 Template.viewAllClients.onCreated(function () {
   const searchKey = Router.current().params.searchKey || '';
   this.records = new ReactiveVar(0);
-  Meteor.call('searchClient', searchKey, { limit: 0 }, (err, res) => {
+  Meteor.call('searchClient', searchKey, { limit: 1000 }, (err, res) => {
     if (err) {
       tableData = [];
     } else {

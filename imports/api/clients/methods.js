@@ -1,7 +1,9 @@
 import { logger } from '/imports/utils/logger';
+import { ClientsAccessRoles } from '/imports/config/permissions';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
+import { ClientsCache } from '/imports/api/clients/clientsCache';
 import { HmisClient } from '/imports/api/hmisApi';
-import { mergeByDedupId } from '/imports/api/clients/helpers';
+import { mergeByDedupId, filterClientForCache } from '/imports/api/clients/helpers';
 import eventPublisher, {
   ClientCreatedEvent,
   ClientUpdatedEvent,
@@ -9,15 +11,22 @@ import eventPublisher, {
 
 Meteor.methods({
   'clients.create'(client, schema = 'v2017', clientVersion = false) {
-    logger.info(`METHOD[${Meteor.userId()}]: clients.create`, client);
-    const hc = HmisClient.create(Meteor.userId());
-    const result = hc.api('client').createClient(client, schema);
+    const clientData = _.omit(client, 'photo', 'signature');
+
+    logger.info(`METHOD[${this.userId}]: clients.create`, clientData);
+
+    if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
+
+    const hc = HmisClient.create(this.userId);
+    const result = hc.api('client').createClient(clientData, schema);
 
     if (clientVersion) return result;
 
     try {
-      Meteor.call('s3bucket.put', result.clientId, 'photo', client.photo);
-      Meteor.call('s3bucket.put', result.clientId, 'signature', client.signature);
+      Meteor.call('s3bucket.put', result.dedupClientId, 'photo', client.photo);
+      Meteor.call('s3bucket.put', result.dedupClientId, 'signature', client.signature);
     } catch (err) {
       logger.error('Failed to upload photo/signature to s3', err);
     }
@@ -28,14 +37,32 @@ Meteor.methods({
   },
 
   'clients.update'(clientId, client, schema) {
-    logger.info(`METHOD[${Meteor.userId()}]: clients.update`, clientId, schema, client);
+    const clientData = _.omit(client, 'photo', 'signature');
+    logger.info(`METHOD[${this.userId}]: clients.update`, clientId, schema, clientData);
+
     check(clientId, String);
     check(schema, String);
-    const hc = HmisClient.create(Meteor.userId());
-    hc.api('client').updateClient(clientId, client, schema);
+    if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
+
+    const hc = HmisClient.create(this.userId);
+    hc.api('client').updateClient(clientId, clientData, schema);
+
+    try {
+      const { dedupClientId } = hc.api('client').getClient(clientId, schema);
+      if (client.photo) {
+        Meteor.call('s3bucket.put', dedupClientId, 'photo', client.photo);
+      }
+      if (client.signature) {
+        Meteor.call('s3bucket.put', dedupClientId, 'signature', client.signature);
+      }
+    } catch (err) {
+      logger.error('Failed to upload photo/signature to s3', err);
+    }
 
     eventPublisher.publish(new ClientUpdatedEvent({
-      ...client,
+      ...clientData,
       clientId,
       schema,
     }, { userId: this.userId }));
@@ -43,48 +70,71 @@ Meteor.methods({
     return client;
   },
 
-  'clients.delete'(clientId, schema) { // eslint-disable-line
-    logger.info(`METHOD[${Meteor.userId()}]: clients.delete`, clientId);
+  'clients.service'(clientId, data, schema) {
+    logger.info(`METHOD[${Meteor.userId()}]: clients.service`, clientId, schema, data);
     check(clientId, String);
     check(schema, String);
+    const hc = HmisClient.create(Meteor.userId());
+    hc.api('client').updateClient(clientId, data, schema);
+
+    eventPublisher.publish(new ClientUpdatedEvent({
+      ...data,
+      clientId,
+      schema,
+    }, { userId: this.userId }));
+
+    return data;
+  },
+
+  'clients.delete'(clientId, schema) { // eslint-disable-line
+    logger.info(`METHOD[${Meteor.userId()}]: clients.delete`, clientId);
+
+    check(clientId, String);
+    check(schema, String);
+    if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
+
     const hc = HmisClient.create(Meteor.userId());
     hc.api('client').deleteClient(clientId, schema);
   },
 
-  updateClientMatchStatus(clientId, statusCode, comments, recipients) {
-    const hc = HmisClient.create(Meteor.userId());
+  'clients.updateMatchStatus'(clientId, statusCode, comments, recipients) {
+    logger.info(`METHOD[${this.userId}]: clients.updateMatchStatus`,
+      clientId, statusCode, comments, recipients
+    );
+
+    check(clientId, String);
+    if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
+
+    const hc = HmisClient.create(this.userId);
     return hc.api('house-matching').updateClientMatchStatus(
       clientId, statusCode, comments, recipients
     );
   },
 
-  saveToSchema(client, inputSchema) {
-    // Creates a client version if it doesn't exist for this version
-    const { clientVersions } = client;
-    // Check if exists:
-    const clientVersion = clientVersions.find(({ schema }) => schema === inputSchema);
-    if (clientVersion) return clientVersion;
+  async searchClient(query, options = {}) {
+    logger.info(`METHOD[${this.userId}]: searchClient(${query})`);
+    if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
 
-    const hc = HmisClient.create(Meteor.userId());
-    return hc.api('client').createClient({
-      ...client, suffix: client.nameSuffix || '',
-    }, inputSchema); // { clientId, schema }
-  },
+    const { page, excludeLocalClients } = options || {};
+    let { sort, order, limit } = options || {};
+    sort = sort || 'firstName';
+    order = order || 'asc';
+    limit = Math.min(limit, 50);
 
-  async searchClient(query, options) {
-    logger.info(`METHOD[${Meteor.userId()}]: searchClient(${query})`);
-    const optionz = options || {};
-
-    // guard against client-side DOS: hard limit to 50
-    optionz.limit = Math.min(50, Math.abs(optionz.limit || 50));
-
-    const hc = HmisClient.create(Meteor.userId());
-    let hmisClients = hc.api('client').searchClient(query, optionz.limit);
+    const startIndex = page * limit;
+    const hc = HmisClient.create(this.userId);
+    let hmisClients = hc.api('client').searchClient(query, limit, startIndex, sort, order);
 
     hmisClients = hmisClients.filter(client => client.link);
 
     let localClients = [];
-    if (!optionz.excludeLocalClients) {
+    if (!excludeLocalClients) {
       try {
         localClients = PendingClients.aggregate([
           {
@@ -116,7 +166,7 @@ Meteor.methods({
             },
           },
           {
-            $limit: optionz.limit,
+            $limit: limit,
           },
         ], { explain: false });
       } catch (err) {
@@ -131,7 +181,6 @@ Meteor.methods({
           if (localClients[i].personalId === hmisClients[j].clientId) {
             // Remove.
             localClients.splice(i, 1);
-            logger.info('Element Removed');
             break;
           }
         }
@@ -171,5 +220,13 @@ Meteor.methods({
       );
     }
     return mergedClients;
+  },
+
+  reloadClients() {
+    this.unblock();
+    const hc = HmisClient.create(this.userId);
+    const clients = hc.api('client').getAllClients() || [];
+    const clientBasics = clients.map(filterClientForCache);
+    ClientsCache.rawCollection().insertMany(clientBasics, { ordered: false });
   },
 });
