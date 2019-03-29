@@ -12,6 +12,7 @@ import '/imports/ui/responses/responsesListView';
 import '/imports/ui/responses/responsesNew';
 import '/imports/ui/responses/responsesEdit';
 import '/imports/ui/responses/responsesArchive';
+import '/imports/ui/responses/responsesImport';
 
 
 Router.route('adminDashboardresponsesView', {
@@ -119,7 +120,7 @@ Router.route('adminDashboardresponsesEdit', {
         Router.go('dashboard');
       }
     }
-    const response = Responses.findOne(this.params._id);
+    const response = Responses.findOne(this.params._id) || {};
     if (response.version < 2) {
       Router.go('responsesArchive', { _id: this.params._id });
       this.next();
@@ -188,6 +189,49 @@ Router.route('responsesArchive', {
         _id: response.clientId,
         schema: response.clientSchema,
       },
+    };
+  },
+});
+
+Router.route('adminDashboardresponsesImport', {
+  path: '/responses/:_id/import',
+  template: Template.responsesImport,
+  controller: AppController,
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), ClientsAccessRoles);
+    },
+  },
+  waitOn() {
+    this.errorMessage = new ReactiveVar('');
+    this.responseSub = Meteor.subscribe('responses.one', this.params._id);
+    return [
+      this.responseSub,
+    ];
+  },
+  onBeforeAction() {
+    const { clientId, clientSchema, surveyId } = this.params.query;
+    if (!Responses.findOne(this.params._id)) {
+      Meteor.call('responses.importSubmissionFromHslynk',
+        clientId, clientSchema, surveyId, this.params._id,
+        (err) => {
+          if (err) {
+            this.errorMessage.set(`${err}`);
+          } else {
+            Meteor.subscribe('responses.one', this.params._id, () => {
+              Router.go('adminDashboardresponsesEdit', { _id: this.params._id });
+            });
+          }
+        }
+      );
+    }
+    this.next();
+  },
+  data() {
+    return {
+      title: 'Responses',
+      subtitle: 'Import',
+      error: this.errorMessage.get(),
     };
   },
 });

@@ -513,6 +513,18 @@ Meteor.injectedMethods({
       'v2017', '9fa355a4-7194-4ec1-821c-c5d7e72d93d5', 'df0c0e51-9ee7-4ed5-8d46-791b53137df1',
       (err,res) => console.log(err,res))
     */
+    check(clientId, String);
+    check(clientSchema, Match.OneOf(String, null)); // eslint-disable-line new-cap
+    check(surveyId, String);
+    check(submissionId, String);
+
+    let foundSchema = null;
+    if (!clientSchema) {
+      foundSchema = ['v2014', 'v2015', 'v2016', 'v2017'].find(
+        schema => !HmisCache.getClient(clientId, schema, this.userId).error
+      );
+    }
+
     const { hmisClient, logger } = this.context; // eslint-disable-line no-shadow
     logger.info(`METHOD[${this.userId}]: responses.importSubmissionFromHslynk`, submissionId);
 
@@ -521,6 +533,6 @@ Meteor.injectedMethods({
       hmisClient,
     });
     return importer.importResposeFromSubmission(
-      clientId, clientSchema, surveyId, submissionId, 'import');
+      clientId, clientSchema || foundSchema, surveyId, submissionId, 'import');
   },
 });

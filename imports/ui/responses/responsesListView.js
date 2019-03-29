@@ -53,6 +53,19 @@ const tableOptions = {
         if (survey.error) {
           return `${survey.error}<br />${surveyId}`;
         }
+        if (response.status === 'not imported') {
+          const url = Router.path('adminDashboardresponsesImport',
+            { _id: response._id }, {
+              query: {
+                clientId: response.client.id,
+                clientSchema: null,
+                surveyId: response.surveyId,
+              },
+            }
+          );
+          const title = survey ? survey.surveyTitle : surveyId;
+          return `<a href="${url}">${title}</a>`;
+        }
         const url = Router.path('adminDashboardresponsesEdit', { _id: response._id, surveyId });
         const title = survey ? survey.surveyTitle : surveyId;
         return `<a href="${url}">${title}</a>`;
