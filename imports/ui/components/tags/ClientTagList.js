@@ -4,14 +4,17 @@ import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 // import ClientTagItem from './ClientTagItem';
 import DataTable2 from '/imports/ui/components/dataTable/DataTable2'; // FIXME
-import { removeClientTagButton } from '/imports/ui/dataTable/helpers.js';
+import { blazeData, removeClientTagButton } from '/imports/ui/dataTable/helpers.js';
 import { getActiveTagsForDate, getActiveTagNamesForDate, dateOnly } from '/imports/api/tags/tags';
 
 
 class ClientTagList extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      newTagId: {},
+      newTagAction: {},
+    };
     this.handleChange = this.handleChange.bind(this);
     this.renderDatePicker = this.renderDatePicker.bind(this);
     this.toggleNewTag = this.toggleNewTag.bind(this);
@@ -25,15 +28,35 @@ class ClientTagList extends Component {
   }
 
   createNewTag() {
+    const { tags, newClientTagHandler } = this.props;
+    const tagHash = tags.reduce((acc, tag) => ({ ...acc, [tag.id]: tag }), {});
     const appliedOn = moment(this.state.newTagDate || new Date()).format('YYYY-MM-DDT00:00');
     const newTagData = {
       clientId: this.props.clientId,
       tagId: this.state.newTagId.value,
+      tag: tagHash[this.state.newTagId.value] || {},
       appliedOn,
       operation: this.state.newTagAction.value,
       note: this.state.note,
     };
-    this.props.newClientTagHandler(newTagData);
+
+    // this.props.newClientTagHandler(newTagData);
+    const rowData = newTagData;
+    const data = {
+      simple: true,
+      operation: rowData.operation,
+      operationText: 'Add',
+      title: 'Confirm adding',
+      message: `Are you sure you want to add client tag ${rowData.tag.name}?`,
+      method: 'tagApi',
+      args: ['createClientTag', rowData],
+      onSuccess(result) {
+        newClientTagHandler(result);
+        // if (onSuccessCallback) onSuccessCallback(result);
+      },
+    };
+    return data;
+    // this.props.setAppContext('appDeleteModal', data);
   }
 
   toggleNewTag() {
@@ -65,6 +88,8 @@ class ClientTagList extends Component {
     const tagList = tags.map(({ id, name }) => ({ value: id, label: name }));
 
     const actionsList = [{ value: 0, label: 'Disabled' }, { value: 1, label: 'Applied' }];
+
+    const templateData = this.createNewTag();
 
     return (<div style={{ padding: '10px' }} className="form form-inline">
       {!newTag && <a onClick={this.toggleNewTag}>Add new tag</a>}
@@ -102,14 +127,17 @@ class ClientTagList extends Component {
             onChange={(value) => this.handleInputChange('note', value)}
           />
         </div>
-        <a
+        {/* <a
           className="btn btn-primary"
           onClick={this.createNewTag} style={{ margin: '0 .25em' }}
         >
           Create
-        </a>
+        </a> */}
+        {blazeData('CreateButton', templateData, 'form-group')}
         <a
           className="btn btn-default"
+          data-toggle="modal" doc="{{_id}}"
+          href="#app-delete-modal"
           onClick={this.toggleNewTag}
           style={{ margin: '0 .25em' }}
         >
@@ -136,7 +164,7 @@ class ClientTagList extends Component {
           title: 'Tag Name',
           data: 'name',
           render(value, op, doc) {
-            return doc.tag.name;
+            return `<a href="#">${doc.tag.name}</a>`; // tag history link
           },
         },
         // {

@@ -1,6 +1,7 @@
 import '/imports/ui/dataTable/dataTableEditButton';
 import '/imports/ui/dataTable/dataTableDeleteButton';
 import '/imports/ui/dataTable/dataTableTextButton';
+import '/imports/ui/dataTable/createButton';
 import { fullName } from '/imports/api/utils';
 import BlazeTemplate from '/imports/ui/components/BlazeComponent';
 import React from 'react';
@@ -9,7 +10,8 @@ import React from 'react';
 export const TableDom = '<"box"<"box-header"<"box-toolbar"<"clearfix"ri><"pull-left"<lf>><"pull-right"p>>><"box-body table-responsive"t>>'; // eslint-disable-line max-len
 
 // eslint-disable-next-line react/react-in-jsx-scope
-const blazeData = (name, data) => (<BlazeTemplate name={name} data={data} />);
+export const blazeData = (name, data, classes) =>
+  (<BlazeTemplate name={name} data={data} classes={classes} />);
 
 export function editButton(path, options) {
   return Object.assign({

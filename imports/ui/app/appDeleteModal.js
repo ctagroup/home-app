@@ -18,6 +18,7 @@ Template.AppDeleteModal.helpers({
   },
   operationButton() {
     const ctx = getAppContext('appDeleteModal') || {};
+    if (ctx.simple) return 'btn-primary';
     return (ctx.operation !== undefined && ctx.operation ? 'btn-danger' : 'btn-success')
       || 'btn-danger';
   },
@@ -30,14 +31,14 @@ Template.AppDeleteModal.events({
     Meteor.apply(ctx.method, ctx.args, (error, result) => {
       $(event.target).removeClass('disabled');
       if (error) {
-        Bert.alert(error.reason || error.message, 'danger', 'growl-top-right');
+        if (!ctx.simple) Bert.alert(error.reason || error.message, 'danger', 'growl-top-right');
         logger.error(ctx.method, ctx.args, error);
         if (ctx.onError) {
           ctx.onError(error);
         }
       } else {
         logger.info(ctx.method, ctx.args);
-        Bert.alert('Deleted!', 'success', 'growl-top-right');
+        if (!ctx.simple) Bert.alert('Deleted!', 'success', 'growl-top-right');
         if (ctx.onSuccess) {
           ctx.onSuccess(result);
         }
