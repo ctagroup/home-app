@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 // import ClientTagItem from './ClientTagItem';
-import DataTable2 from '/imports/ui/components/dataTable/DataTable2'; // FIXME
+import DataTable from '/imports/ui/components/dataTable/DataTable';
 import { blazeData, removeClientTagButton } from '/imports/ui/dataTable/helpers.js';
 import { getActiveTagsForDate, getActiveTagNamesForDate, dateOnly } from '/imports/api/tags/tags';
 
@@ -217,7 +217,7 @@ class ClientTagList extends Component {
         <div className="tag-list">
           {/* {tags.map((tag, index) =>
             (<ClientTagItem tag={tag} key={`client-tag-${index}`} />))} */}
-          <DataTable2
+          <DataTable
             disableSearch={disabled}
             options={options}
             data={filteredTags}

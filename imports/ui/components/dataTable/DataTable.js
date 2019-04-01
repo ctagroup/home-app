@@ -10,7 +10,6 @@ class DataTable extends Component {
     const columns = (props || {}).options.columns.map(transformColumn);
     this.state = {
       filter: '',
-      data: (props || {}).data,
       columns,
     };
     this.handleChange = this.handleChange.bind(this);
@@ -51,7 +50,8 @@ class DataTable extends Component {
   }
 
   render() {
-    const { data, columns, filter } = this.state;
+    const { data } = this.props;
+    const { columns, filter } = this.state;
     const filteredData = this.filterColumns(data, columns, filter);
     const { disableSearch } = this.props;
     const searchable = !disableSearch;
