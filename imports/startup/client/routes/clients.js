@@ -43,6 +43,26 @@ Router.route('adminDashboardclientsView', {
   },
 });
 
+Router.route('', {
+  path: '/clientr',
+  template: '',
+  controller: '',
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), ClientsAccessRoles);
+    },
+  },
+  waitOn() {
+    return Meteor.subscribe('pendingClients.all');
+  },
+  data() {
+    return {
+      title: 'Clients',
+      subtitle: 'Search',
+    };
+  },
+});
+
 Router.route('adminDashboardclientsNew', {
   path: '/clients/new',
   template: 'createClient',
