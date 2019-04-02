@@ -3,8 +3,8 @@ export default class ClientProfile extends React.Component {
   render() {
     return (
       <ul className="nav nav-tabs nav-justified">
-        <li className="nav-item">
-          <a className="nav-link active" data-toggle="tab" href="#panel-overview" role="tab">
+        <li className="nav-item active">
+          <a className="nav-link" data-toggle="tab" href="#panel-overview" role="tab">
           Overview</a>
         </li>
         <li className="nav-item">

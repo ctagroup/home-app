@@ -27,7 +27,7 @@ import { getRace, getGender, getEthnicity, getYesNo } from '../../../imports/ui/
 
   render() {
     //console.log(this.props.loading);
-    console.log(this.props.client);
+    //console.log(this.props.client);
     const { dob, ssn, race, ethnicity, gender, veteranStatus, suffix } = this.props.loading ? {} : this.props.client;
     return (
       <div className="tab-pane fade in show active" id="panel-overview" role="tabpanel">

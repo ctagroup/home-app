@@ -21,7 +21,7 @@ export default class ClientProfile extends React.Component {
                 </div>
                 <br />
                 <h4>Tags History</h4>
-                <div className="form form-inline" ><a>Add new tag</a></div>
+                <div className="form form-inline" ><a class='tags_form'>Add new tag</a></div>
                 <div className="tag-list">
                   <div>
                     <div className="ReactTable -highlight">

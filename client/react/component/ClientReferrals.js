@@ -1,5 +1,54 @@
 import React from 'react';
-export default class ClientProfile extends React.Component {
+import ReferralStatusList from '../../../imports/ui/clients/referralStatusList';
+import { createContainer } from 'meteor/react-meteor-data';
+import { Clients } from '../../../imports/api/clients/clients';
+
+//console.log(ReferralStatusList);
+
+class ClientProfile extends React.Component {
+  getLastStatus(){
+    if(this.props.loading){
+      return '';
+    }
+    const client = this.props.client;
+    console.log(client);
+    console.log("client information");
+    if(client.referralStatusHistory){
+      return client.referralStatusHistory[client.referralStatusHistory.length - 1];
+    }else{
+      return 0;
+    }
+  }
+
+  getStatusTooltip(step) {
+    if(this.props.loading){
+      return '';
+    }
+    const client = this.props.client;
+    let history = ReferralStatusList[step].desc;
+    (client.referralStatusHistory || []).forEach((item) => {
+      if (item.status === step) {
+        const txt = item.statusDescription || item.comments;
+        history = `${history}<br />${item.dateUpdated} - ${txt}`;
+      }
+    });
+    return history;
+  }
+
+  isReferralStatusActiveButton(step) {
+    if(this.props.loading){
+      return '';
+    }
+    const client = this.props.client;
+    const lastStatus = this.getLastStatus(client.referralStatusHistory);
+    if (lastStatus) {
+      if (step <= lastStatus.status) return 'btn btn-sm btn-arrow-right js-open-referral-status-modal js-tooltip btn-'+ReferralStatusList[step].cssClass;
+    } else if (client.matchingScore && step <= 0) {
+      return 'btn btn-sm btn-arrow-right js-open-referral-status-modal js-tooltip btn-'+ReferralStatusList[step].cssClass;
+    }
+    return 'btn btn-sm btn-arrow-right js-open-referral-status-modal js-tooltip btn-default';
+  }
+
   render() {
     return (
       <div className="tab-pane fade show" id="panel-referrals" role="tabpanel">
@@ -10,116 +59,18 @@ export default class ClientProfile extends React.Component {
               <div className="col-xs-9 my-center-block">
                 <div id="referral-timeline">
                   <div className="navigation">
-                    <span
-                      className="css-tooltip-button-span" data-toggle="tooltip" data-html="true"
-                      title="Client is surveyed"
-                    >
-                      <a
-                        id="js-btn-step-0" className="btn btn-default btn-sm btn-arrow-right
-                        js-open-referral-status-modal js-tooltip" href="#step0" data-toggle="tab"
-                        data-step="0" aria-expanded="true"
-                      >Survey</a>
-                    </span>
-                    <span
-                      className="css-tooltip-button-span" data-toggle="tooltip" data-html="true"
-                      title="" data-original-title="Email sent to Referral Agency"
-                    >
-                      <a
-                        id="js-btn-step-1" className="btn btn-default btn-sm btn-arrow-right
-                        js-open-referral-status-modal js-tooltip" href="#step1" data-toggle="tab"
-                        data-step="1" aria-expanded="true"
-                      >Agency Email</a>
-                    </span>
-                    <span
-                      className="css-tooltip-button-span" data-toggle="tooltip" data-html="true"
-                      title="Client is contacted by Agency"
-                    >
-                      <a
-                        id="js-btn-step-2" className="btn btn-default btn-sm btn-arrow-right
-                        js-open-referral-status-modal js-tooltip" href="#step2" data-toggle="tab"
-                        data-step="2" aria-expanded="true"
-                      >Contact</a>
-                    </span>
-                    <span
-                      className="css-tooltip-button-span" data-toggle="tooltip" data-html="true"
-                      title="Agency scheduled appointment with Client"
-                    >
-                      <a
-                        id="js-btn-step-3" className="btn btn-default btn-sm btn-arrow-right
-                        js-open-referral-status-modal js-tooltip" href="#step3" data-toggle="tab"
-                        data-step="3" aria-expanded="true"
-                      >Appointment</a>
-                    </span>
-                    <span
-                      className="css-tooltip-button-span" data-toggle="tooltip" data-html="true"
-                      title="Client missed 1st appointment"
-                    >
-                      <a
-                        id="js-btn-step-4" className="btn btn-default btn-sm btn-arrow-right
-                        js-open-referral-status-modal js-tooltip" href="#step4" data-toggle="tab"
-                        data-step="4" aria-expanded="true"
-                      >Appointment Miss 1</a>
-                    </span>
-                    <span
-                      className="css-tooltip-button-span" data-toggle="tooltip" data-html="true"
-                      title="Client missed 2nd appointment"
-                    >
-                      <a
-                        id="js-btn-step-5" className="btn btn-default btn-sm btn-arrow-right
-                        js-open-referral-status-modal js-tooltip" href="#step5" data-toggle="tab"
-                        data-step="5" aria-expanded="true"
-                      >Appointment Miss 2</a>
-                    </span>
-                    <span
-                      className="css-tooltip-button-span" data-toggle="tooltip" data-html="true"
-                      title="Paperwork initiated by Agency"
-                    >
-                      <a
-                        id="js-btn-step-6" className="btn btn-default btn-sm btn-arrow-right
-                        js-open-referral-status-modal js-tooltip" href="#step6" data-toggle="tab"
-                        data-step="6" aria-expanded="true"
-                      >Paperwork</a>
-                    </span>
-                    <span
-                      className="css-tooltip-button-span" data-toggle="tooltip" data-html="true"
-                      title="Client accepted referral"
-                    >
-                      <a
-                        id="js-btn-step-7" className="btn btn-default btn-sm btn-arrow-right
-                        js-open-referral-status-modal js-tooltip" href="#step7" data-toggle="tab"
-                        data-step="7" aria-expanded="true"
-                      >Acceptance</a>
-                    </span>
-                    <span
-                      className="css-tooltip-button-span" data-toggle="tooltip" data-html="true"
-                      title="Move-in Preparation initiated by Agency"
-                    >
-                      <a
-                        id="js-btn-step-8" className="btn btn-default btn-sm btn-arrow-right
-                        js-open-referral-status-modal js-tooltip" href="#step8" data-toggle="tab"
-                        data-step="8" aria-expanded="true"
-                      >Move-in Prep</a>
-                    </span>
-                    <span
-                      className="css-tooltip-button-span" data-toggle="tooltip" data-html="true"
-                      title="Client moved in"
-                    >
-                      <a
-                        id="js-btn-step-9" className="btn btn-default btn-sm btn-arrow-right
-                        js-open-referral-status-modal js-tooltip" href="#step9" data-toggle="tab"
-                        data-step="9" aria-expanded="true"
-                      >Move-in</a>
-                    </span>
-                    <span
-                      className="css-tooltip-button-span" data-toggle="tooltip" data-html="true"
-                      title="Referral is rejected"
-                    >
-                      <a
-                        id="js-btn-step-10" className="btn btn-default btn-sm btn-arrow-right
-                        js-open-referral-status-modal js-tooltip" href="#step10" data-toggle="tab"
-                        data-step="10" aria-expanded="true"
-                      >Rejection</a>
-                    </span>
+                    {ReferralStatusList.map((referral, index) => (
+                      <span
+                        className="css-tooltip-button-span" data-toggle="tooltip" data-html="true"
+                        title={this.getStatusTooltip(referral.step)}
+                      >
+                        <a
+                          id={'js-btn-step-'+index} className={this.isReferralStatusActiveButton(referral.step)}
+                          href={'#step'+referral.step} data-toggle="tab"
+                          data-step={referral.step} aria-expanded="true"
+                        >{referral.title}</a>
+                      </span>
+                    ))} 
                   </div>
                   <div className="progress">
                     <div
@@ -1556,3 +1507,13 @@ export default class ClientProfile extends React.Component {
     );
   }
 }
+
+export default createContainer((props) => {
+    const {clientId} = props.clientId;
+    const handle = Meteor.subscribe('clients.one', clientId);
+    
+    return {
+        loading: !handle.ready(),
+        client: Clients.findOne({ _id: clientId })
+    }
+}, ClientProfile)

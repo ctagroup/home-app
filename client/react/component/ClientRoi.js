@@ -1,12 +1,16 @@
 import React from 'react';
-export default class ClientProfile extends React.Component {
+import { createContainer } from 'meteor/react-meteor-data';
+import { Clients } from '../../../imports/api/clients/clients';
+
+class ClientProfile extends React.Component {
   render() {
+    const { dedupClientId } = this.props.loading ? {} : this.props.client;
+    const reflink='/rois/new?dedupClientId='+dedupClientId;
     return (
       <div className="tab-pane fade show" id="panel-rois" role="tabpanel">
         <div className="row margin-top-35">
           <div className="col-xs-12">
-            <p className="alert alert-error">Error: Internal server error [500]</p>
-            <a href="" className="btn btn-primary">
+            <a href={reflink} className="btn btn-primary">
               <i className="fa fa-plus"></i> New ROI
             </a>
           </div>
@@ -15,3 +19,13 @@ export default class ClientProfile extends React.Component {
     );
   }
 }
+
+export default createContainer((props) => {
+    const {clientId} = props.clientId;
+    const handle = Meteor.subscribe('clients.one', clientId);
+    
+    return {
+        loading: !handle.ready(),
+        client: Clients.findOne({ _id: clientId }),
+    }
+}, ClientProfile)

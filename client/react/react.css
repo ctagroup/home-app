@@ -2,3 +2,76 @@ body {
   padding: 10px;
   font-family: sans-serif;
 }
+input#removalDate {
+    width: fit-content;
+}
+.custom_select .select2{
+	width: 100% !important;
+}
+.custom_select .select2-container--default .select2-selection--single{
+	border: 1px solid #ccc !important;
+}
+span.input-group-addon {
+    cursor: pointer;
+}
+.tab-section .nav-tabs.nav-justified > li.active > a{
+    background: #fff;
+    color: #337ab7;
+    font-weight: 700;
+    border: none;
+}
+.tab-section .nav-tabs.nav-justified > li.active > a:hover {
+    border: none;
+}
+.css-10nd86i {
+    position: relative;
+    box-sizing: border-box;
+}
+.css-vj8t7z {
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background-color: hsl(0,0%,100%);
+    border-color: hsl(0,0%,80%);
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    cursor: default;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    min-height: 38px;
+    outline: 0 !important;
+    position: relative;
+    -webkit-transition: all 100ms;
+    transition: all 100ms;
+    box-sizing: border-box;
+}
+.css-1492t68 {
+    color: hsl(0,0%,50%);
+    margin-left: 2px;
+    margin-right: 2px;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    box-sizing: border-box;
+}
+.css-1g6gooi {
+    margin: 2px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+    visibility: visible;
+    color: hsl(0,0%,20%);
+    box-sizing: border-box;
+}

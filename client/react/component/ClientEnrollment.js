@@ -2,7 +2,7 @@ import React from 'react';
 export default class ClientProfile extends React.Component {
   render() {
     return (
-      <div className="tab-pane fade show" id="panel-enrollments" role="tabpanel">
+      <div className="tab-pane fade show" id="panel-create-enrollment" role="tabpanel">
         <div className="row">
           <div className="col-xs-12">
             <h3>Start enrollment</h3>
