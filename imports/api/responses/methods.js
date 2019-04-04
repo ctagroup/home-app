@@ -196,7 +196,7 @@ Meteor.methods({
   },
 
   'responses.deleteEnrollment'(id) {
-    logger.info(`METHOD[${this.userId}]: responses.uploadEnrollment`, id);
+    logger.info(`METHOD[${this.userId}]: responses.deleteEnrollment`, id);
     const response = Responses.findOne(id);
     if (response.enrollment) {
       Object.values(response.enrollment).forEach(entry => {
