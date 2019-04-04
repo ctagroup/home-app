@@ -323,6 +323,11 @@ Template.viewClient.helpers(
       const query = { clientId, schema };
       return Router.path('adminDashboardresponsesView', {}, { query });
     },
+    currentProjectHasEnrollment(enrollmentSurveyType) {
+      const projectId = Meteor.user().activeProjectId;
+      const surveyId = getEnrollmentSurveyIdForProject(projectId, enrollmentSurveyType);
+      return !!surveyId;
+    },
     viewEnrollmentPath(enrollment, enrollmentSurveyType) {
       const { _id } = Router.current().params;
       const { schema } = Router.current().params.query;

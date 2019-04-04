@@ -248,46 +248,59 @@
 
                               <td>
                                 {{#with enrollment.project}}
+                                  {{log this}}
                                   <span class="js-tooltip" data-toggle="tooltip" title="{{projectCommonName}}">{{projectName}}</span>
                                 {{/with}}
                               </td>
 
                               <td>
-                                <ul>
-                                  <li><a href="{{viewEnrollmentPath enrollment 'entry'}}" class="btn btn-primary">
-                                    <i class="fa fa-eye"></i> View
-                                  </a></li>
-                                  {{#each enrollmentResponses enrollment.enrollmentId dataCollectionStages.ENTRY}}
-                                    <li><i class="fal fa-poll-h"></i> <a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDateTime createdAt}}</a></li>
-                                  {{/each}}
-                                </ul>
+                                {{#if currentProjectHasEnrollment 'entry'}}
+                                  <ul>
+                                    <li><a href="{{viewEnrollmentPath enrollment 'entry'}}" class="btn btn-primary">
+                                      <i class="fa fa-eye"></i> View
+                                    </a></li>
+                                    {{#each enrollmentResponses enrollment.enrollmentId dataCollectionStages.ENTRY}}
+                                      <li><i class="fal fa-poll-h"></i> <a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDateTime createdAt}}</a></li>
+                                    {{/each}}
+                                  </ul>
+                                {{else}}
+                                  No entry survey for active project
+                                {{/if}}
                               </td>
 
                               <td>
-                                <ul>
-                                  <li><a href="{{viewEnrollmentPath enrollment 'update'}}" class="btn btn-primary">
-                                    <i class="fa fa-eye"></i> View
-                                  </a></li>
-                                  {{#each enrollmentResponses enrollment.enrollmentId dataCollectionStages.UPDATE}}
-                                    <li><i class="fal fa-poll-h"></i> <a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDateTime createdAt}}</a></li>
-                                  {{/each}}
-                                </ul>
-                                <a id="u-{{enrollment.enrollmentId}}" class="updateLink update btn btn-default"><i class="fa fa-plus"></i> Update Enrollment</a>
-                                <a id="a-{{enrollment.enrollmentId}}" class="updateLink update btn btn-default"><i class="fa fa-plus"></i> Annual assessment</a>
+                                {{#if currentProjectHasEnrollment 'update'}}
+                                  <ul>
+                                    <li><a href="{{viewEnrollmentPath enrollment 'update'}}" class="btn btn-primary">
+                                      <i class="fa fa-eye"></i> View
+                                    </a></li>
+                                    {{#each enrollmentResponses enrollment.enrollmentId dataCollectionStages.UPDATE}}
+                                      <li><i class="fal fa-poll-h"></i> <a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDateTime createdAt}}</a></li>
+                                    {{/each}}
+                                  </ul>
+                                  <a id="u-{{enrollment.enrollmentId}}" class="updateLink update btn btn-default"><i class="fa fa-plus"></i> Update Enrollment</a>
+                                  <a id="a-{{enrollment.enrollmentId}}" class="updateLink update btn btn-default"><i class="fa fa-plus"></i> Annual assessment</a>
+                                {{else}}
+                                  No update survey for active project
+                                {{/if}}
                               </td>
 
                               <td>
-                                <ul>
-                                  <li><a href="{{viewEnrollmentPath enrollment 'exit'}}" class="btn btn-primary">
-                                    <i class="fa fa-eye"></i> View
-                                  </a></li>
-                                  {{#each enrollmentResponses enrollment.enrollmentId dataCollectionStages.EXIT}}
-                                    <li><i class="fal fa-poll-h"></i> <a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDateTime createdAt}}</a></li>
-                                  {{/each}}
-                                </ul>
-                                {{#unless enrollmentExited enrollment.enrollmentId}}
-                                  <a id="e-{{enrollment.enrollmentId}}" class="updateLink btn btn-default"><i class="fa fa-plus"></i> Exit Enrollment</a>
-                                {{/unless}}
+                                {{#if currentProjectHasEnrollment 'exit'}}
+                                  <ul>
+                                    <li><a href="{{viewEnrollmentPath enrollment 'exit'}}" class="btn btn-primary">
+                                      <i class="fa fa-eye"></i> View
+                                    </a></li>
+                                    {{#each enrollmentResponses enrollment.enrollmentId dataCollectionStages.EXIT}}
+                                      <li><i class="fal fa-poll-h"></i> <a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDateTime createdAt}}</a></li>
+                                    {{/each}}
+                                  </ul>
+                                  {{#unless enrollmentExited enrollment.enrollmentId}}
+                                    <a id="e-{{enrollment.enrollmentId}}" class="updateLink btn btn-default"><i class="fa fa-plus"></i> Exit Enrollment</a>
+                                  {{/unless}}
+                                {{else}}
+                                  No exit survey for active project
+                                {{/if}}
                               </td>
 
                               <td>{{formatDate enrollment.dateUpdated}}</td>
