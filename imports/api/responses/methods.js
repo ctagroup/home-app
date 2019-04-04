@@ -95,7 +95,7 @@ Meteor.methods({
   },
 
   'responses.sendEmails'(responseId) {
-    logger.info(`METHOD[${Meteor.userId()}]: responses.emails`, responseId);
+    logger.info(`METHOD[${this.userId}]: responses.emails`, responseId);
     check(responseId, String);
     if (!Roles.userIsInRole(this.userId, ResponsesAccessRoles)) {
       throw new Meteor.Error(403, 'Forbidden');
@@ -111,7 +111,7 @@ Meteor.methods({
 
     const definition = JSON.parse(survey.definition);
 
-    const hc = HmisClient.create(Meteor.userId());
+    const hc = HmisClient.create(this.userId);
 
     const client = hc.api('client').getClient(clientId, clientSchema);
     const formState = computeFormState(definition, values, {}, { client });
@@ -206,7 +206,7 @@ Meteor.methods({
   },
 
   'responses.uploadToHmis'(id) {
-    logger.info(`METHOD[${Meteor.userId()}]: responses.uploadToHmis`, id);
+    logger.info(`METHOD[${this.userId}]: responses.uploadToHmis`, id);
     check(id, String);
 
     // TODO: check permissions
@@ -217,7 +217,7 @@ Meteor.methods({
     const { clientId, surveyId } = response;
     const values = unescapeKeys(response.values);
 
-    const hc = HmisClient.create(Meteor.userId());
+    const hc = HmisClient.create(this.userId);
 
     // check if survey exists in hslynk
     let survey;

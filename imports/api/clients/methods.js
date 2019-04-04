@@ -71,10 +71,11 @@ Meteor.methods({
   },
 
   'clients.service'(clientId, data, schema) {
-    logger.info(`METHOD[${Meteor.userId()}]: clients.service`, clientId, schema, data);
+    logger.info(`METHOD[${this.userId}]: clients.service`, clientId, schema, data);
     check(clientId, String);
     check(schema, String);
-    const hc = HmisClient.create(Meteor.userId());
+    const hc = HmisClient.create(this.userId);
+    // TODO: security add role check
     hc.api('client').updateClient(clientId, data, schema);
 
     eventPublisher.publish(new ClientUpdatedEvent({
@@ -87,7 +88,7 @@ Meteor.methods({
   },
 
   'clients.delete'(clientId, schema) { // eslint-disable-line
-    logger.info(`METHOD[${Meteor.userId()}]: clients.delete`, clientId);
+    logger.info(`METHOD[${this.userId}]: clients.delete`, clientId);
 
     check(clientId, String);
     check(schema, String);
@@ -95,7 +96,7 @@ Meteor.methods({
       throw new Meteor.Error(403, 'Forbidden');
     }
 
-    const hc = HmisClient.create(Meteor.userId());
+    const hc = HmisClient.create(this.userId);
     hc.api('client').deleteClient(clientId, schema);
   },
 

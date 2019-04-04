@@ -10,16 +10,16 @@ Meteor.methods({
       throw new Meteor.Error(403, 'Forbidden');
     }
 
-    const hc = HmisClient.create(Meteor.userId());
+    const hc = HmisClient.create(this.userId);
     return hc.api('house-matching').getEligibleClients();
   },
   getEligibleClientsPage(pageNumber = 0, pageSize = 50, sort = 'firstName', order = 'desc') {
-    logger.info(`METHOD[${Meteor.userId()}]: getEligibleClientsPage(${pageNumber}, ${pageSize}, ${sort}, ${order})`); // eslint-disable-line max-len
-    if (!Meteor.userId()) {
+    logger.info(`METHOD[${this.userId}]: getEligibleClientsPage(${pageNumber}, ${pageSize}, ${sort}, ${order})`); // eslint-disable-line max-len
+    if (!this.userId) {
       throw new Meteor.Error(401, 'Unauthorized');
     }
 
-    const hc = HmisClient.create(Meteor.userId());
+    const hc = HmisClient.create(this.userId);
     return hc.api('house-matching-v2').getEligibleClientsPage(pageNumber, pageSize, sort, order);
   },
 
@@ -34,7 +34,7 @@ Meteor.methods({
     }
 
     let eligibleClientOutput;
-    const hc = HmisClient.create(Meteor.userId());
+    const hc = HmisClient.create(this.userId);
 
     const clientIds = Array.isArray(inputClientId) ? inputClientId : [inputClientId];
     eachLimit(clientIds, Meteor.settings.connectionLimit,
@@ -64,7 +64,7 @@ Meteor.methods({
   },
 
   postHousingMatchScores() {
-    logger.info(`METHOD[${Meteor.userId()}]: postHousingMatchScores()`);
+    logger.info(`METHOD[${this.userId}]: postHousingMatchScores()`);
     if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
       throw new Meteor.Error(403, 'Forbidden');
     }

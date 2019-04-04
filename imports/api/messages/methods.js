@@ -4,7 +4,7 @@ import Messages from '/imports/api/messages/messages';
 Meteor.methods(
   {
     addMessage(message) {
-      logger.info(`METHOD[${Meteor.userId()}]: addMessage`, message);
+      logger.info(`METHOD[${this.userId}]: addMessage`, message);
       Messages.insert(message);
     },
   }
