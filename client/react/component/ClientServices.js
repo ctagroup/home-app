@@ -1,5 +1,5 @@
 import React from 'react';
-export default class ClientProfile extends React.Component {
+export default class ClientServices extends React.Component {
   render() {
     return (
       <div className="tab-pane fade show" id="panel-services" role="tabpanel">

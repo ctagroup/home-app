@@ -1,6 +1,199 @@
+import moment from 'moment';
 import React from 'react';
-export default class ClientProfile extends React.Component {
+import { createContainer } from 'meteor/react-meteor-data';
+import { Clients } from '../../../imports/api/clients/clients';
+import Select from 'react-select';
+import DatePicker from 'react-datepicker';
+// import ClientTagItem from './ClientTagItem';
+import DataTable2 from '../../../imports/ui/components/dataTable/DataTable2'; // FIXME
+import { removeClientTagButton } from '../../../imports/ui/dataTable/helpers.js';
+import { getActiveTagNamesForDate, dateOnly } from '../../../imports/api/tags/tags';
+import ClientTagList from '../../../imports/ui/components/tags/ClientTagList.js';
+import { Tags } from '../../../imports/api/tags/tags.js';
+import { ClientTags } from '../../../imports/api/tags/clientTags.js';
+
+
+export default class ClientsTags extends React.Component {
+
+  constructor() {
+    super();
+    this.state = {};
+    this.handleChange = this.handleChange.bind(this);
+    this.renderDatePicker = this.renderDatePicker.bind(this);
+    this.toggleNewTag = this.toggleNewTag.bind(this);
+    this.renderNewClientTag = this.renderNewClientTag.bind(this);
+    this.createNewTag = this.createNewTag.bind(this);
+    this.getDate = this.getDate.bind(this);
+  }
+
+  getDate() {
+    return dateOnly(this.state.date);
+  }
+
+  createNewTag() {
+    console.log(this.state);
+    console.log("-- testong --");
+    const appliedOn = moment(this.state.newTagDate || new Date()).format('YYYY-MM-DDT00:00');
+    const newTagData = {
+      clientId: this.props.clientId,
+      tagId: this.state.newTagId.value,
+      appliedOn,
+      operation: this.state.newTagAction.value,
+      note: this.state.note,
+    };
+    this.newClientTagHandler(newTagData);
+  }
+
+  toggleNewTag() {
+    this.setState({ newTag: !this.state.newTag });
+  }
+
+  handleChange(key, input) {
+    this.setState({ [key]: input });
+  }
+
+  handleInputChange(key, event) {
+    const input = event.target.value;
+    this.setState({ [key]: input });
+  }
+
+  renderDatePicker(key) {
+    const dateValue = this.state && this.state[key];
+    return (<DatePicker
+      className="form-control"
+      selected={dateValue ? moment(dateValue) : moment(Date.now())}
+      onChange={(value) => this.handleChange(key, value)}
+      placeholderText="MM/DD/YYYY"
+    />);
+  }
+
+  component() {
+    return ClientTagList;
+  }
+
+  tags() {
+    return Tags.find().fetch();
+  }
+
+  clientTags() {
+    return ClientTags.find().fetch();
+  }
+  newClientTagHandler(data) {
+    console.log(data);
+    return Meteor.call('tagApi', 'createClientTag', { operation: 1, ...data }, (err, res) => {
+        if (!err) ClientTags._collection.insert({ _id: res.id, ...res }); // eslint-disable-line
+      });
+  }
+
+  removeClientTagHandler() {
+    return ({ _id }) => ClientTags._collection.remove({ _id }); // eslint-disable-line
+  }
+
+  renderNewClientTag() {
+    const { newTag, newTagId, newTagAction } = this.state || {};
+    const { tags } = this.props;
+    const tagList = [{}]; //tags.map(({ id, name }) => ({ value: id, label: name }));
+
+    const actionsList = [{ value: 0, label: 'Disabled' }, { value: 1, label: 'Applied' }];
+
+    return (<div style={{ padding: '10px' }} className="form form-inline">
+      {!newTag && <a onClick={this.toggleNewTag}>Add new tag</a>}
+      {newTag && <div>
+        <label>Add new tag:
+        </label>
+        <div className="form-group" style={{ minWidth: '12em', padding: '0 .25em' }}>
+          <Select
+            value={newTagId}
+            onChange={(option) => this.handleChange('newTagId', option)}
+            options={tagList}
+            placeholder="Select tag:"
+          />
+        </div>
+        <div className="form-group" style={{ minWidth: '12em', padding: '0 .25em' }}>
+          <Select
+            value={newTagAction}
+            onChange={(option) => this.handleChange('newTagAction', option)}
+            options={actionsList}
+            placeholder="Select action:"
+          />
+        </div>
+        <div className="form-group" style={{ minWidth: '12em', padding: '0 .25em' }}>
+          {this.renderDatePicker('newTagDate')}
+        </div>
+        <div className="form-group" style={{ minWidth: '12em', padding: '0 .25em' }}>
+          <input
+            type="text"
+            placeholder="note"
+            className="form-control input-sm"
+            onChange={(value) => this.handleInputChange('note', value)}
+          />
+        </div>
+        <a
+          className="btn btn-primary"
+          onClick={this.createNewTag} style={{ margin: '0 .25em' }}
+        >
+          Create
+        </a>
+        <a
+          className="btn btn-default"
+          onClick={this.toggleNewTag}
+          style={{ margin: '0 .25em' }}
+        >
+          Cancel
+        </a>
+      </div>
+      }
+    </div>);
+  }
+
   render() {
+    // TODO: needed columns: tagId, action, appliedOn, appliedBy, remove
+
+    const { clientTags } = this.props;
+    const selectedDate = this.getDate();
+    const activeTagNames = [{}]; //getActiveTagNamesForDate(clientTags, selectedDate);
+
+    const tableOptions = {
+      columns: [
+        {
+          title: 'Tag Name',
+          data: 'name',
+          render(value, op, doc) {
+            return doc.tag.name;
+          },
+        },
+        {
+          title: 'Operation',
+          data: 'operation',
+          render(value) {
+            return value == 0 ? 'Removed' : 'Added'; // eslint-disable-line eqeqeq
+          },
+        },
+        {
+          title: 'Applied On',
+          data: 'appliedOn',
+          render(value) {
+            return moment(value).format('MM/DD/YYYY');
+          },
+        },
+        // removeClientTagButton((clientTag) => {
+        //   if (this.props.removeClientTagHandler) {
+        //     this.props.removeClientTagHandler(clientTag);
+        //   }
+        // }),
+      ],
+    };
+
+    const options = tableOptions;
+
+    const disabled = true;
+    // const { maskedValue } = this.state;
+    // resolveData={data => data.filter(({ appliedOn }) => appliedOn < activeDateInMs)}
+
+    // TODO: move padding to style
+
+    const listOfActiveTags = 'none'; //activeTagNames.length > 0 ?  activeTagNames.join(', ') : 'none';
+
     return (
       <div className="tab-pane fade show" id="panel-client-tags" role="tabpanel">
         <div className="row">
@@ -8,127 +201,15 @@ export default class ClientProfile extends React.Component {
             <h3>Tags</h3>
             <div className="client-tags-list-wrapper">
               <div className="tag-list-wrapper">
-                <div className="tag-filter">
+                <div className="tag-filter" style={{ padding: '10px' }}>
                   Active tags by date:
-                  <div>
-                    <div className="react-datepicker-wrapper">
-                      <div className="react-datepicker__input-container">
-                        <input type="text" className="form-control" value="" />
-                      </div>
-                    </div>
-                  </div>
-                  <strong>none</strong>
+                  {this.renderDatePicker('date')}
+                  <strong>{listOfActiveTags}</strong>
                 </div>
                 <br />
                 <h4>Tags History</h4>
-                <div className="form form-inline" ><a class='tags_form'>Add new tag</a></div>
+                {this.renderNewClientTag()}
                 <div className="tag-list">
-                  <div>
-                    <div className="ReactTable -highlight">
-                      <div className="rt-table" role="grid">
-                        <div className="rt-thead -header">
-                          <div className="rt-tr" role="row">
-                            <div
-                              className="rt-th  -cursor-pointer" role="columnheader" tabIndex="-1"
-                            >
-                              <div className="">Tag Name</div>
-                            </div>
-                            <div
-                              className="rt-th  -cursor-pointer" role="columnheader" tabIndex="-1"
-                            >
-                              <div className="">Operation</div>
-                            </div>
-                            <div
-                              className="rt-th  -cursor-pointer" role="columnheader" tabIndex="-1"
-                            >
-                              <div className="">Applied On</div>
-                            </div>
-                            <div
-                              className="rt-th  -cursor-pointer" role="columnheader" tabIndex="-1"
-                            >
-                              <div className="">Delete</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="rt-tbody">
-                          <div className="rt-tr-group" role="rowgroup">
-                            <div className="rt-tr -padRow -odd" role="row">
-                              <div className="rt-td" role="gridcell"><span>&nbsp;</span></div>
-                              <div className="rt-td" role="gridcell"><span>&nbsp;</span></div>
-                              <div className="rt-td" role="gridcell"><span>&nbsp;</span></div>
-                              <div className="rt-td" role="gridcell"><span>&nbsp;</span></div>
-                            </div>
-                          </div>
-                          <div className="rt-tr-group" role="rowgroup">
-                            <div className="rt-tr -padRow -even" role="row">
-                              <div className="rt-td" role="gridcell"><span>&nbsp;</span></div>
-                              <div className="rt-td" role="gridcell"><span>&nbsp;</span></div>
-                              <div className="rt-td" role="gridcell"><span>&nbsp;</span></div>
-                              <div className="rt-td" role="gridcell"><span>&nbsp;</span></div>
-                            </div>
-                          </div>
-                          <div className="rt-tr-group" role="rowgroup">
-                            <div className="rt-tr -padRow -odd" role="row">
-                              <div className="rt-td" role="gridcell"><span>&nbsp;</span></div>
-                              <div className="rt-td" role="gridcell"><span>&nbsp;</span></div>
-                              <div className="rt-td" role="gridcell"><span>&nbsp;</span></div>
-                              <div className="rt-td" role="gridcell"><span>&nbsp;</span></div>
-                            </div>
-                          </div>
-                          <div className="rt-tr-group" role="rowgroup">
-                            <div className="rt-tr -padRow -even" role="row">
-                              <div className="rt-td" role="gridcell"><span>&nbsp;</span></div>
-                              <div className="rt-td" role="gridcell"><span>&nbsp;</span></div>
-                              <div className="rt-td" role="gridcell"><span>&nbsp;</span></div>
-                              <div className="rt-td" role="gridcell"><span>&nbsp;</span></div>
-                            </div>
-                          </div>
-                          <div className="rt-tr-group" role="rowgroup">
-                            <div className="rt-tr -padRow -odd" role="row">
-                              <div className="rt-td" role="gridcell"><span>&nbsp;</span></div>
-                              <div className="rt-td" role="gridcell"><span>&nbsp;</span></div>
-                              <div className="rt-td" role="gridcell"><span>&nbsp;</span></div>
-                              <div className="rt-td" role="gridcell"><span>&nbsp;</span></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="pagination-bottom">
-                        <div className="-pagination">
-                          <div className="-previous">
-                            <button type="button" disabled="" className="-btn">Previous</button>
-                          </div>
-                          <div className="-center">
-                            <span className="-pageInfo">
-                              Page
-                              <div className="-pageJump">
-                                <input aria-label="jump to page" type="number" value="1" />
-                              </div>
-                              of
-                              <span className="-totalPages">1</span>
-                            </span>
-                            <span className="select-wrap -pageSizeOptions">
-                              <select aria-label="rows per page">
-                                <option value="5">5 rows</option>
-                                <option value="10">10 rows</option>
-                                <option value="20">20 rows</option>
-                                <option value="25">25 rows</option>
-                                <option value="50">50 rows</option>
-                                <option value="100">100 rows</option>
-                              </select>
-                            </span>
-                          </div>
-                          <div className="-next">
-                            <button type="button" disabled="" className="-btn">Next</button>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="rt-noData">No rows found</div>
-                      <div className="-loading">
-                        <div className="-loading-inner">Loading...</div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>

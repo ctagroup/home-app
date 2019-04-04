@@ -1,5 +1,5 @@
 import React from 'react';
-export default class ClientProfile extends React.Component {
+export default class ClientTabs extends React.Component {
   render() {
     return (
       <ul className="nav nav-tabs nav-justified">

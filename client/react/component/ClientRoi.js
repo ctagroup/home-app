@@ -2,7 +2,7 @@ import React from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Clients } from '../../../imports/api/clients/clients';
 
-class ClientProfile extends React.Component {
+class ClientRoi extends React.Component {
   render() {
     const { dedupClientId } = this.props.loading ? {} : this.props.client;
     const reflink='/rois/new?dedupClientId='+dedupClientId;
@@ -28,4 +28,4 @@ export default createContainer((props) => {
         loading: !handle.ready(),
         client: Clients.findOne({ _id: clientId }),
     }
-}, ClientProfile)
+}, ClientRoi)

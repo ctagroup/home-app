@@ -5,7 +5,7 @@ import { Clients } from '../../../imports/api/clients/clients';
 import { Questions } from '../../../imports/api/questions/questions';
 import { getRace, getGender, getEthnicity, getYesNo } from '../../../imports/ui/clients/textHelpers.js';
 
- class ClientProfile extends React.Component {
+ class ClientOverviewTab extends React.Component {
   getText(text, code) {
     const definition = code === undefined ? '?' : code;
     // const question = this.props.Questions.findOne({ name: text });
@@ -81,4 +81,4 @@ export default createContainer((props) => {
         loading: !handle.ready(),
         client: Clients.findOne({ _id: clientId }),
     }
-}, ClientProfile)
+}, ClientOverviewTab)
