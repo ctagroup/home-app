@@ -206,7 +206,7 @@ Meteor.methods({
   },
 
   'responses.uploadToHmis'(id) {
-    logger.info(`METHOD[${Meteor.userId()}]: responses.uploadToHmis`, id);
+    logger.info(`METHOD[${this.userId}]: responses.uploadToHmis`, id);
     check(id, String);
 
     // TODO: check permissions
@@ -217,7 +217,7 @@ Meteor.methods({
     const { clientId, surveyId } = response;
     const values = unescapeKeys(response.values);
 
-    const hc = HmisClient.create(Meteor.userId());
+    const hc = HmisClient.create(this.userId);
 
     // check if survey exists in hslynk
     let survey;
@@ -285,6 +285,10 @@ Meteor.methods({
           status: ResponseStatus.COMPLETED,
           submittedAt: new Date(),
         } });
+
+        if (response.enrollmentInfo) {
+          Meteor.call('responses.uploadEnrollment', id);
+        }
       }
     } catch (e) {
       logger.error(`Response upload ${e}`, e.stack);
