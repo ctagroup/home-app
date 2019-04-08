@@ -5,7 +5,7 @@ import { Clients } from '../../../imports/api/clients/clients';
 class ClientRoi extends React.Component {
   render() {
     const { dedupClientId } = this.props.loading ? {} : this.props.client;
-    const reflink='/rois/new?dedupClientId='+dedupClientId;
+    const reflink = '/rois/new?dedupClientId=' + dedupClientId;
     return (
       <div className="tab-pane fade show" id="panel-rois" role="tabpanel">
         <div className="row margin-top-35">
@@ -21,11 +21,11 @@ class ClientRoi extends React.Component {
 }
 
 export default createContainer((props) => {
-    const {clientId} = props.clientId;
-    const handle = Meteor.subscribe('clients.one', clientId);
-    
-    return {
-        loading: !handle.ready(),
-        client: Clients.findOne({ _id: clientId }),
-    }
-}, ClientRoi)
+  const { clientId } = props.clientId;
+  const handle = Meteor.subscribe('clients.one', clientId);
+
+  return {
+    loading: !handle.ready(),
+    client: Clients.findOne({ _id: clientId }),
+  };
+}, ClientRoi);

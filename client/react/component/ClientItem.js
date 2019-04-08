@@ -1,5 +1,4 @@
 import React from 'react';
-import { Clients } from '../../../imports/api/clients/clients';
 import ClientProfile from './ClientProfile.js';
 import ClientTabs from './ClientTabs.js';
 import ClientOverviewTab from './ClientOverviewTab.js';
@@ -12,7 +11,6 @@ import ClientServices from './ClientServices.js';
 
 
 export default class ClientItem extends React.Component {
-	
   render() {
     const { clientId } = this.props.match.params;
     return (

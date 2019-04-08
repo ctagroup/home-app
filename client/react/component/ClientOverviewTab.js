@@ -2,10 +2,17 @@ import moment from 'moment';
 import React from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Clients } from '../../../imports/api/clients/clients';
-import { Questions } from '../../../imports/api/questions/questions';
-import { getRace, getGender, getEthnicity, getYesNo } from '../../../imports/ui/clients/textHelpers.js';
+// import { Questions } from '../../../imports/api/questions/questions';
+import { getRace, getGender, getEthnicity, getYesNo } from
+'../../../imports/ui/clients/textHelpers.js';
 
- class ClientOverviewTab extends React.Component {
+class ClientOverviewTab extends React.Component {
+  constructor() {
+    super();
+    this.state = {};
+    this.edit = this.edit.bind(this);
+  }
+
   getText(text, code) {
     const definition = code === undefined ? '?' : code;
     // const question = this.props.Questions.findOne({ name: text });
@@ -25,10 +32,18 @@ import { getRace, getGender, getEthnicity, getYesNo } from '../../../imports/ui/
     }
   }
 
+  edit() {
+    const query = {};
+    const client = this.props.client;
+    if (client.schema) query.query = `schema=${client.schema}`;
+    Router.go('adminDashboardclientsEdit', { _id: client._id }, query);
+  }
+
   render() {
-    //console.log(this.props.loading);
-    //console.log(this.props.client);
-    const { dob, ssn, race, ethnicity, gender, veteranStatus, suffix } = this.props.loading ? {} : this.props.client;
+    // console.log(this.props.loading);
+    // console.log(this.props.client);
+    const { dob, ssn, race, ethnicity, gender, veteranStatus, suffix } = this.props.loading ?
+      {} : this.props.client;
     return (
       <div className="tab-pane fade in show active" id="panel-overview" role="tabpanel">
         <div className="info-container">
@@ -66,7 +81,11 @@ import { getRace, getGender, getEthnicity, getYesNo } from '../../../imports/ui/
               </div>
             </div>
           </div>
-          <input className="btn btn-warning edit" type="button" value="Edit client" />
+          <input
+            className="btn btn-warning edit"
+            type="button" value="Edit client"
+            onClick={this.edit}
+          />
         </div>
       </div>
     );
@@ -74,11 +93,10 @@ import { getRace, getGender, getEthnicity, getYesNo } from '../../../imports/ui/
 }
 
 export default createContainer((props) => {
-    const {clientId} = props.clientId;
-    const handle = Meteor.subscribe('clients.one', clientId);
-    
-    return {
-        loading: !handle.ready(),
-        client: Clients.findOne({ _id: clientId }),
-    }
-}, ClientOverviewTab)
+  const { clientId } = props.clientId;
+  const handle = Meteor.subscribe('clients.one', clientId);
+  return {
+    loading: !handle.ready(),
+    client: Clients.findOne({ _id: clientId }),
+  };
+}, ClientOverviewTab);

@@ -4,7 +4,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 import { Clients } from '../../../imports/api/clients/clients';
 import { logger } from '/imports/utils/logger';
 
-//console.log(ReferralStatusList);
+// console.log(ReferralStatusList);
 
 class ClientReferrals extends React.Component {
   constructor(props) {
@@ -14,18 +14,106 @@ class ClientReferrals extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
+  getLastStatus() {
+    if (this.props.loading) {
+      return '';
+    }
+    const client = this.props.client;
+    // console.log(client);
+    // console.log("client information");
+    if (client.referralStatusHistory) {
+      return client.referralStatusHistory[client.referralStatusHistory.length - 1];
+    }
+    else {
+      return 0;
+    }
+  }
+
+  getStatusTooltip(step) {
+    if (this.props.loading) {
+      return '';
+    }
+    const client = this.props.client;
+    let history = ReferralStatusList[step].desc;
+    (client.referralStatusHistory || []).forEach((item) => {
+      if (item.status === step) {
+        const txt = item.statusDescription || item.comments;
+        history = `${history}<br />${item.dateUpdated} - ${txt}`;
+      }
+    });
+    return history;
+  }
+
+  getProgressbarActiveStatus() {
+    if (this.props.loading) {
+      return '';
+    }
+    const client = this.props.client;
+    const lastStatus = this.getLastStatus(client.referralStatusHistory);
+    let cssClass = 'default';
+    if (lastStatus) {
+      cssClass = ReferralStatusList[lastStatus.status].cssClass;
+    } else if (client.matchingScore) {
+      cssClass = ReferralStatusList[0].cssClass;
+    }
+    return 'progress-bar progress-bar-striped active progress-bar-' + cssClass;
+  }
+
+  getCurrentReferralStatus() {
+    if (this.props.loading) {
+      return '';
+    }
+    const client = this.props.client;
+    const lastStatus = this.getLastStatus(client.referralStatusHistory);
+    if (lastStatus) return lastStatus.status + 1;
+    if (client.matchingScore) return 1;
+    return 0;
+  }
+
+  getProgressbarWidth() {
+    if (this.props.loading) {
+      return '';
+    }
+    const client = this.props.client;
+    const total = ReferralStatusList.length;
+    const lastStatus = this.getLastStatus(client.referralStatusHistory);
+    let status = -1;
+    if (lastStatus) {
+      status = lastStatus.status;
+    } else if (client.matchingScore) {
+      status = 0;
+    }
+    const sty = ((status + 1) / total) * 100;
+    return sty + '%';
+  }
+
+  isReferralStatusActiveButton(step) {
+    if (this.props.loading) {
+      return '';
+    }
+    const client = this.props.client;
+    const lastStatus = this.getLastStatus(client.referralStatusHistory);
+    if (lastStatus) {
+      if (step <= lastStatus.status)
+        return 'btn btn-sm btn-arrow-right js-open-referral-status-modal js-tooltip btn-' + ReferralStatusList[step].cssClass;
+    } else if (client.matchingScore && step <= 0) {
+      return 'btn btn-sm btn-arrow-right js-open-referral-status-modal js-tooltip btn-' + ReferralStatusList[step].cssClass;
+    }
+    return 'btn btn-sm btn-arrow-right js-open-referral-status-modal js-tooltip btn-default';
+  }
+
   handleClick(event) {
     event.preventDefault();
-    console.log(ReferralStatusList);
-    if(this.props.loading){
+    // console.log(ReferralStatusList);
+    if (this.props.loading) {
       return '';
     }
     const step = $('#referral-status-step').val();
     const index = parseInt(step, 10);
     const total = ReferralStatusList.length;
     const percent = ((index + 1) / total) * 100;
-    
-    const cssClass = 'primary'; //ReferralStatusList[index].cssClass;
+
+    const cssClass = 'primary'; // ReferralStatusList[index].cssClass;
     const client = this.props.client;
     logger.log(`clicked status update${step}`);
     const status = step;
@@ -79,92 +167,7 @@ class ClientReferrals extends React.Component {
         }
       }
     );
-  }
-
-  getLastStatus(){
-    if(this.props.loading){
-      return '';
-    }
-    const client = this.props.client;
-    //console.log(client);
-    //console.log("client information");
-    if(client.referralStatusHistory){
-      return client.referralStatusHistory[client.referralStatusHistory.length - 1];
-    }else{
-      return 0;
-    }
-  }
-
-  getStatusTooltip(step) {
-    if(this.props.loading){
-      return '';
-    }
-    const client = this.props.client;
-    let history = ReferralStatusList[step].desc;
-    (client.referralStatusHistory || []).forEach((item) => {
-      if (item.status === step) {
-        const txt = item.statusDescription || item.comments;
-        history = `${history}<br />${item.dateUpdated} - ${txt}`;
-      }
-    });
-    return history;
-  }
-
-  isReferralStatusActiveButton(step) {
-    if(this.props.loading){
-      return '';
-    }
-    const client = this.props.client;
-    const lastStatus = this.getLastStatus(client.referralStatusHistory);
-    if (lastStatus) {
-      if (step <= lastStatus.status) return 'btn btn-sm btn-arrow-right js-open-referral-status-modal js-tooltip btn-'+ReferralStatusList[step].cssClass;
-    } else if (client.matchingScore && step <= 0) {
-      return 'btn btn-sm btn-arrow-right js-open-referral-status-modal js-tooltip btn-'+ReferralStatusList[step].cssClass;
-    }
-    return 'btn btn-sm btn-arrow-right js-open-referral-status-modal js-tooltip btn-default';
-  }
-
-  getProgressbarActiveStatus() {
-    if(this.props.loading){
-      return '';
-    }
-    const client = this.props.client;
-    const lastStatus = this.getLastStatus(client.referralStatusHistory);
-    let cssClass = 'default';
-    if (lastStatus) {
-      cssClass = ReferralStatusList[lastStatus.status].cssClass;
-    } else if (client.matchingScore) {
-      cssClass = ReferralStatusList[0].cssClass;
-    }
-    return 'progress-bar progress-bar-striped active progress-bar-'+cssClass;
-  }
-
-  getCurrentReferralStatus() {
-    if(this.props.loading){
-      return '';
-    }
-    const client = this.props.client;
-    const lastStatus = this.getLastStatus(client.referralStatusHistory);
-    if (lastStatus) return lastStatus.status + 1;
-    if (client.matchingScore) return 1;
-    return 0;
-  }
-
-  getProgressbarWidth() {
-    if(this.props.loading){
-      return '';
-    }
-    const client = this.props.client;
-    const total = ReferralStatusList.length;
-    const lastStatus = this.getLastStatus(client.referralStatusHistory);
-    let status = -1;
-    if (lastStatus) {
-      status = lastStatus.status;
-    } else if (client.matchingScore) {
-      status = 0;
-    }
-    const sty = ((status + 1) / total) * 100;
-    return sty+'%';
+    return '';
   }
 
   render() {
@@ -183,19 +186,21 @@ class ClientReferrals extends React.Component {
                         title={this.getStatusTooltip(referral.step)}
                       >
                         <a
-                          id={'js-btn-step-'+index} className={this.isReferralStatusActiveButton(referral.step)}
-                          href={'#step'+referral.step} data-toggle="tab"
+                          id={'js-btn-step-' + index}
+                          className={this.isReferralStatusActiveButton(referral.step)}
+                          href={'#step' + referral.step} data-toggle="tab"
                           data-step={referral.step} aria-expanded="true"
                         >{referral.title}</a>
                       </span>
-                    ))} 
+                    ))}
                   </div>
                   <div className="progress">
                     <div
                       className={this.getProgressbarActiveStatus()}
-                      role="progressbar" aria-valuenow={this.getCurrentReferralStatus()} aria-valuemin="1"
+                      role="progressbar" aria-valuenow={this.getCurrentReferralStatus()}
+                      aria-valuemin="1"
                       aria-valuemax={ReferralStatusList.length}
-                      style={{width: this.getProgressbarWidth()}}
+                      style={{ width: this.getProgressbarWidth() }}
                     >{this.getCurrentReferralStatus()} / {ReferralStatusList.length}</div>
                   </div>
                   <div
@@ -215,7 +220,8 @@ class ClientReferrals extends React.Component {
                                   type="hidden" name="referral-status-step"
                                   id="referral-status-step" value=""
                                 />
-                                <div id="referralStatusComments" class="custom-js-summernote"></div>
+                                <div id="referralStatusComments" classNmae="custom-js-summernote">
+                                </div>
                               </div>
                             </div>
                             <div className="row margin-top-20">
@@ -266,11 +272,11 @@ class ClientReferrals extends React.Component {
 }
 
 export default createContainer((props) => {
-    const {clientId} = props.clientId;
-    const handle = Meteor.subscribe('clients.one', clientId);
-    
-    return {
-        loading: !handle.ready(),
-        client: Clients.findOne({ _id: clientId })
-    }
-}, ClientReferrals)
+  const { clientId } = props.clientId;
+  const handle = Meteor.subscribe('clients.one', clientId);
+
+  return {
+    loading: !handle.ready(),
+    client: Clients.findOne({ _id: clientId }),
+  };
+}, ClientReferrals);

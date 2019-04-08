@@ -5,9 +5,10 @@ import { Clients } from '../../../imports/api/clients/clients';
 
 class ClientProfile extends React.Component {
   render() {
-    //console.log(this.props.loading);
-    //console.log(this.props.client);
-    const { firstName, lastName, middleName, dob, ssn, clientId, dedupClientId, emailAddress, phoneNumber } = this.props.loading ? {} : this.props.client;
+    // console.log(this.props.loading);
+    // console.log(this.props.client);
+    const { firstName, lastName, middleName, dob, ssn, clientId, dedupClientId, emailAddress,
+      phoneNumber } = this.props.loading ? {} : this.props.client;
     return (
       <div className="client-info">
         <div className="row">
@@ -42,11 +43,11 @@ class ClientProfile extends React.Component {
 
 
 export default createContainer((props) => {
-    const {clientId} = props.clientId;
-    const handle = Meteor.subscribe('clients.one', clientId);
-    
-    return {
-        loading: !handle.ready(),
-        client: Clients.findOne({ _id: clientId })
-    }
-}, ClientProfile)
+  const { clientId } = props.clientId;
+  const handle = Meteor.subscribe('clients.one', clientId);
+
+  return {
+    loading: !handle.ready(),
+    client: Clients.findOne({ _id: clientId }),
+  };
+}, ClientProfile);

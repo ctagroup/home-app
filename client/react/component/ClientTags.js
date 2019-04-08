@@ -1,7 +1,7 @@
 import moment from 'moment';
 import React from 'react';
-import { createContainer } from 'meteor/react-meteor-data';
-import { Clients } from '../../../imports/api/clients/clients';
+// import { createContainer } from 'meteor/react-meteor-data';
+// import { Clients } from '../../../imports/api/clients/clients';
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 // import ClientTagItem from './ClientTagItem';
@@ -9,7 +9,7 @@ import DataTable2 from '../../../imports/ui/components/dataTable/DataTable2'; //
 import { removeClientTagButton } from '../../../imports/ui/dataTable/helpers.js';
 import { getActiveTagNamesForDate, dateOnly } from '../../../imports/api/tags/tags';
 import ClientTagList from '../../../imports/ui/components/tags/ClientTagList.js';
-import { Tags } from '../../../imports/api/tags/tags.js';
+// import { Tags } from '../../../imports/api/tags/tags.js';
 import { ClientTags } from '../../../imports/api/tags/clientTags.js';
 
 
@@ -31,8 +31,8 @@ export default class ClientsTags extends React.Component {
   }
 
   createNewTag() {
-    console.log(this.state);
-    console.log("-- testong --");
+    // console.log(this.state);
+    // console.log('-- testing --');
     const appliedOn = moment(this.state.newTagDate || new Date()).format('YYYY-MM-DDT00:00');
     const newTagData = {
       clientId: this.props.clientId,
@@ -57,16 +57,6 @@ export default class ClientsTags extends React.Component {
     this.setState({ [key]: input });
   }
 
-  renderDatePicker(key) {
-    const dateValue = this.state && this.state[key];
-    return (<DatePicker
-      className="form-control"
-      selected={dateValue ? moment(dateValue) : moment(Date.now())}
-      onChange={(value) => this.handleChange(key, value)}
-      placeholderText="MM/DD/YYYY"
-    />);
-  }
-
   component() {
     return ClientTagList;
   }
@@ -82,17 +72,30 @@ export default class ClientsTags extends React.Component {
     console.log(data);
     return Meteor.call('tagApi', 'createClientTag', { operation: 1, ...data }, (err, res) => {
         if (!err) ClientTags._collection.insert({ _id: res.id, ...res }); // eslint-disable-line
-      });
+    });
   }
 
   removeClientTagHandler() {
     return ({ _id }) => ClientTags._collection.remove({ _id }); // eslint-disable-line
   }
 
+  renderDatePicker(key) {
+    const dateValue = this.state && this.state[key];
+    return (<DatePicker
+      className="form-control"
+      selected={dateValue ? moment(dateValue) : moment(Date.now())}
+      onChange={(value) => this.handleChange(key, value)}
+      placeholderText="MM/DD/YYYY"
+    />);
+  }
+
   renderNewClientTag() {
+    // console.log('-- This --');
+    // console.log(this.tags());
+    // console.log('-- This --');
     const { newTag, newTagId, newTagAction } = this.state || {};
     const { tags } = this.props;
-    const tagList = [{}]; //tags.map(({ id, name }) => ({ value: id, label: name }));
+    const tagList = [{}]; // tags.map(({ id, name }) => ({ value: id, label: name }));
 
     const actionsList = [{ value: 0, label: 'Disabled' }, { value: 1, label: 'Applied' }];
 
@@ -149,9 +152,9 @@ export default class ClientsTags extends React.Component {
   render() {
     // TODO: needed columns: tagId, action, appliedOn, appliedBy, remove
 
-    const { clientTags } = this.props;
-    const selectedDate = this.getDate();
-    const activeTagNames = [{}]; //getActiveTagNamesForDate(clientTags, selectedDate);
+    const clientTags = [{}]; // this.props;
+    const selectedDate = '';// this.getDate();
+    const activeTagNames = [{}]; // getActiveTagNamesForDate(clientTags, selectedDate);
 
     const tableOptions = {
       columns: [
@@ -159,7 +162,7 @@ export default class ClientsTags extends React.Component {
           title: 'Tag Name',
           data: 'name',
           render(value, op, doc) {
-            return doc.tag.name;
+            return ''; // doc.tag.name;
           },
         },
         {
@@ -173,7 +176,7 @@ export default class ClientsTags extends React.Component {
           title: 'Applied On',
           data: 'appliedOn',
           render(value) {
-            return moment(value).format('MM/DD/YYYY');
+            return ''; // moment(value).format('MM/DD/YYYY');
           },
         },
         // removeClientTagButton((clientTag) => {
@@ -192,7 +195,7 @@ export default class ClientsTags extends React.Component {
 
     // TODO: move padding to style
 
-    const listOfActiveTags = 'none'; //activeTagNames.length > 0 ?  activeTagNames.join(', ') : 'none';
+    const listOfActiveTags = 'none'; // activeTagNames.length > 0 ?  activeTagNames.join(', ') : 'none';
 
     return (
       <div className="tab-pane fade show" id="panel-client-tags" role="tabpanel">
@@ -210,6 +213,11 @@ export default class ClientsTags extends React.Component {
                 <h4>Tags History</h4>
                 {this.renderNewClientTag()}
                 <div className="tag-list">
+                  <DataTable2
+                    disableSearch={disabled}
+                    options={options}
+                    data={clientTags}
+                  />
                 </div>
               </div>
             </div>

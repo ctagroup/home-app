@@ -41,6 +41,9 @@ import '/imports/api/responses/server/publications';
 import '/imports/api/services/methods';
 import '/imports/api/services/server/publications';
 
+import '/imports/api/userServices/methods';
+import '/imports/api/userServices/server/publications';
+
 import '/imports/api/housingUnits/methods';
 import '/imports/api/housingUnits/server/publications';
 
