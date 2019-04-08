@@ -5,6 +5,15 @@ class HmisCounts {
     this.userId = userId;
   }
 
+  getClientsCount() {
+    const hc = HmisClient.create(this.userId);
+    const schemas = ['v2017', 'v2016', 'v2015', 'v2014'];
+    return schemas.reduce(
+      (count, schema) => count + hc.api('client').getClients(schema).length,
+      0
+    );
+  }
+
   getEligibleClientsCount() {
     const hc = HmisClient.create(this.userId);
     return hc.api('house-matching').getEligibleClients().length;

@@ -12,7 +12,7 @@ Router.route('dashboard', {
   controller: AppController,
   onBeforeAction: ['authenticate'],
   waitOn() {
-    return Meteor.subscribe('collectionsCount');
+    return Meteor.subscribe('collectionsCount', false);
   },
   data() {
     return {

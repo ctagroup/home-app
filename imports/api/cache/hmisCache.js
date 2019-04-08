@@ -19,7 +19,6 @@ class HmisCacheCollection extends Mongo.Collection {
     }
 
     try {
-      logger.debug('caching ', _id);
       const hc = HmisClient.create(userId);
       data = hc.api('client').getClient(clientId, schema);
     } catch (err) {
@@ -55,7 +54,6 @@ class HmisCacheCollection extends Mongo.Collection {
     }
 
     try {
-      logger.debug('caching ', _id);
       const hc = HmisClient.create(userId);
       data = hc.api('survey2').getSurvey(surveyId);
     } catch (err) {
@@ -75,6 +73,55 @@ class HmisCacheCollection extends Mongo.Collection {
         userId,
       });
     }
+    return data;
+  }
+
+  getData(cacheKey, userId, noDataCallback, forceReload = false) {
+    const _id = `data::${cacheKey}`;
+    if (!forceReload) {
+      const entry = super.findOne({
+        _id,
+        expiresAt: { $gte: new Date() },
+      }) || {};
+
+      if (entry.data !== undefined) {
+        return entry.data;
+      }
+      if (entry.error !== undefined) {
+        throw new Error(`${entry.error} (cached)`);
+      }
+    }
+
+    logger.debug('caching ', cacheKey);
+
+    let data;
+    let error;
+    let originalError = false;
+
+    try {
+      data = noDataCallback();
+    } catch (err) {
+      logger.warn('cache', err);
+      originalError = err;
+      error = err.reason || 'Error';
+    } finally {
+      super.upsert(_id, {
+        data,
+        error,
+        type: 'data',
+        createdAt: new Date(),
+        expiresAt: moment(new Date()).add(
+            !!originalError ? ERROR_EXPIRY_IN_MINUTES : EXPIRY_IN_MINUTES, 'm'
+          )
+          .toDate(),
+        userId,
+      });
+    }
+
+    if (originalError) {
+      throw originalError;
+    }
+
     return data;
   }
 }
