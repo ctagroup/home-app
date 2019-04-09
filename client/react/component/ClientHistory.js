@@ -1,21 +1,7 @@
 import React from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Clients } from '../../../imports/api/clients/clients';
-
-
-const reasons = [
-    { required: true, text: 'Housed by CARS (include agency/program)' },
-    { required: false, text: 'Housed externally' },
-    { required: false, text: 'Unreachable' },
-    { required: false, text: 'Insufficient contact information' },
-    { required: false, text: 'Client maxed out referral offers' },
-    { required: false, text: 'Client no longer interested in services' },
-    { required: true, text: 'Other (specify)' },
-  ].map(({ text, required }) => ({
-    id: text.replace(/\s+/g, '_').toLowerCase(),
-    text,
-    required,
-  }));
+import reasons from '../helpers/reasons';
 
 const reasonsHash = reasons.reduce((acc, reason) => ({ ...acc, [reason.id]: reason }), {});
 
@@ -121,30 +107,6 @@ class ClientHistory extends React.Component {
     });
   }
 
- //  eligibleClient() {
- //  	if(this.props.loading){
- //      return '';
- //    }
- //    // TODO [VK]: check by updated at instead of schema version
- //    const client = this.props.client;
- //    if (!client) return null;
- //    const versions = this.flattenKeyVersions(client, 'eligibleClient');
- //    const nonError = versions.filter(({ error }) => !error);
- //    if (nonError.length) {
- //      this.updateEligibility();
- //      return nonError[nonError.length - 1];
- //    }
- //    return versions[versions.length - 1];
- //  }
-
- //  flattenKeyVersions(client, key){
-	//   const keyVersions = client.clientVersions
-	//     .map(({ clientId, schema }) => client[`${key}::${schema}::${clientId}`])
-	//     .filter((value) => !!value);
-	//   const mongoKey = client[key] || [];
-	//   return _.flatten([keyVersions, mongoKey]);
-	// }
-
 	getEligibleClient(clientId, schema){
 		const client = this.props.client;
 		return client[`eligibleClient::${schema}::${clientId}`];
@@ -158,7 +120,7 @@ class ClientHistory extends React.Component {
 		const clientVersions = client.clientVersions
 	    .filter(({ clientId, schema }) => {
 	      const data = this.getEligibleClient(clientId, schema);
-	      if(!!(data)){
+	      if(data){
 		      return data.ignoreMatchProcess;
 		    }
 	    });
@@ -183,49 +145,10 @@ class ClientHistory extends React.Component {
 	    return data.ignoreMatchProcess;
 	  });
     
-    if(!!(ignored)){
+    if(ignored){
 	  	return this.getEligibleClient(ignored.clientId, ignored.schema).remarks;
 	  }
   }
-
-	// updateEligibility(){
-	// 	const client = this.props.client;
-	//   const currentClientId = client._id;
-	  
-	//   // drop not found:
-	//   const clientVersions = client.clientVersions
-	//     .filter(({ clientId, schema }) => {
-	//       const data = this.getEligibleClient(clientId, schema);
-	//       return data && !data.error;
-	//     });
-	//   const ignored = clientVersions.find(({ clientId, schema }) => {
-	//     const data = this.getEligibleClient(clientId, schema);
-	//     return data.ignoreMatchProcess;
-	//   });
-	//   const updateRequired = clientVersions.filter(({ clientId, schema }) => {
-	//     const data = this.getEligibleClient(clientId, schema);
-	//     return (!data.updating) && !data.ignoreMatchProcess;
-	//   });
-	//   if (ignored && updateRequired.length) {
-	//     const remarks = this.getEligibleClient(ignored.clientId, ignored.schema).remarks;
-	//     const clientIds = updateRequired.map(({ clientId }) => clientId);
-	//     // mark updating client versions:
-	//     const updating = updateRequired.reduce((acc, { clientId, schema }) =>
-	//       ({ ...acc, [`eligibleClient::${schema}::${clientId}.updating`]: true }), {});
-	//     Clients._collection.update(currentClientId, { $set: updating});  // eslint-disable-line
-	//     Meteor.call('ignoreMatchProcess', clientIds, true, remarks, (err) => {
-	//       if (!err) {
-	//         const changes = updateRequired.reduce((acc, { clientId, schema }) => ({
-	//           ...acc,
-	//           [`eligibleClient::${schema}::${clientId}.ignoreMatchProcess`]: true,
-	//           [`eligibleClient::${schema}::${clientId}.remarks`]: remarks,
-	//           [`eligibleClient::${schema}::${clientId}.updating`]: false,
-	//         }), {});
-	//         Clients._collection.update(currentClientId, { $set: changes});  // eslint-disable-line
-	//       }
-	//     });
-	//   }
-	// }
 
   render() {
     return (

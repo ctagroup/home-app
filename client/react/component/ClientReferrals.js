@@ -3,8 +3,7 @@ import ReferralStatusList from '../../../imports/ui/clients/referralStatusList';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Clients } from '../../../imports/api/clients/clients';
 import { logger } from '/imports/utils/logger';
-
-// console.log(ReferralStatusList);
+import  { ReferralStatusClass, ProgressbarStatusClass } from '../helpers/classHelpers';
 
 class ClientReferrals extends React.Component {
   constructor(props) {
@@ -56,7 +55,7 @@ class ClientReferrals extends React.Component {
     } else if (client.matchingScore) {
       cssClass = ReferralStatusList[0].cssClass;
     }
-    return 'progress-bar progress-bar-striped active progress-bar-' + cssClass;
+    return ProgressbarStatusClass + ' bar-' + cssClass;
   }
 
   getCurrentReferralStatus() {
@@ -95,11 +94,11 @@ class ClientReferrals extends React.Component {
     const lastStatus = this.getLastStatus(client.referralStatusHistory);
     if (lastStatus) {
       if (step <= lastStatus.status)
-        return 'btn btn-sm btn-arrow-right js-open-referral-status-modal js-tooltip btn-' + ReferralStatusList[step].cssClass;
+        return ReferralStatusClass + ' btn-' + ReferralStatusList[step].cssClass;
     } else if (client.matchingScore && step <= 0) {
-      return 'btn btn-sm btn-arrow-right js-open-referral-status-modal js-tooltip btn-' + ReferralStatusList[step].cssClass;
+      return ReferralStatusClass + ' btn-' + ReferralStatusList[step].cssClass;
     }
-    return 'btn btn-sm btn-arrow-right js-open-referral-status-modal js-tooltip btn-default';
+    return ReferralStatusClass + ' btn-default';
   }
 
   handleClick(event) {

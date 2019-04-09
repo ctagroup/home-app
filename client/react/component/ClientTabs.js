@@ -1,35 +1,15 @@
 import React from 'react';
+import Tabs from '../helpers/tabs';
+
 export default class ClientTabs extends React.Component {
   render() {
     return (
       <ul className="nav nav-tabs nav-justified">
-        <li className="nav-item active">
-          <a className="nav-link" data-toggle="tab" href="#panel-overview" role="tab">
-          Overview</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" data-toggle="tab" href="#panel-eligibility" role="tab">History</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" data-toggle="tab" href="#panel-rois" role="tab">ROIs</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" data-toggle="tab" href="#panel-referrals" role="tab">Referrals</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" data-toggle="tab" href="#panel-enrollments" role="tab">
-          Enrollments</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" data-toggle="tab" href="#panel-create-enrollment" role="tab">
-          Create Enrollment</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" data-toggle="tab" href="#panel-client-tags" role="tab">Tags</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" data-toggle="tab" href="#panel-services" role="tab">Services</a>
-        </li>
+        {Tabs.map((tab) => (
+            <li className={tab.cssClass}>
+              <a className="nav-link" data-toggle="tab" href={tab.id} role="tab">{tab.text}</a>
+            </li>
+          ))} 
       </ul>
     );
   }

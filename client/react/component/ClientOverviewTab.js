@@ -2,34 +2,13 @@ import moment from 'moment';
 import React from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Clients } from '../../../imports/api/clients/clients';
-// import { Questions } from '../../../imports/api/questions/questions';
-import { getRace, getGender, getEthnicity, getYesNo } from
-'../../../imports/ui/clients/textHelpers.js';
+import { getText } from '../helpers/functionHelpers.js';
 
 class ClientOverviewTab extends React.Component {
   constructor() {
     super();
     this.state = {};
     this.edit = this.edit.bind(this);
-  }
-
-  getText(text, code) {
-    const definition = code === undefined ? '?' : code;
-    // const question = this.props.Questions.findOne({ name: text });
-    const intCode = parseInt(code, 10);
-    // if (question && question.options) {
-    //   const foundQuestion = question.options.find(
-    //     (option) => parseInt(option.value, 10) === intCode);
-    //   return foundQuestion ? foundQuestion.description : definition;
-    // }
-    switch (text) {
-      case 'race': return getRace(intCode, definition);
-      case 'ethnicity': return getEthnicity(intCode, definition);
-      case 'gender': return getGender(intCode, definition);
-      case 'veteranStatus':
-      case 'disablingcondition': return getYesNo(intCode, definition);
-      default: return definition;
-    }
   }
 
   edit() {
@@ -63,21 +42,21 @@ class ClientOverviewTab extends React.Component {
               </div>
               <div className="">
                 <p className="clabel">Race</p>
-                <p className="cvalue">{this.getText('race', race)}</p>
+                <p className="cvalue">{getText('race', race)}</p>
               </div>
             </div>
             <div className="col-xs-12 col-sm-6 col-md-6">
               <div className="">
                 <p className="clabel">Ethnicity</p>
-                <p className="cvalue">{this.getText('ethnicity', ethnicity)}</p>
+                <p className="cvalue">{getText('ethnicity', ethnicity)}</p>
               </div>
               <div className="">
                 <p className="clabel">Gender</p>
-                <p className="cvalue">{this.getText('gender', gender)}</p>
+                <p className="cvalue">{getText('gender', gender)}</p>
               </div>
               <div className="">
                 <p className="clabel">Veteran Status</p>
-                <p className="cvalue">{this.getText('veteranStatus', veteranStatus)}</p>
+                <p className="cvalue">{getText('veteranStatus', veteranStatus)}</p>
               </div>
             </div>
           </div>
