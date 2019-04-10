@@ -6,11 +6,30 @@ import { logger } from '/imports/utils/logger';
 import  { ReferralStatusClass, ProgressbarStatusClass } from '../helpers/classHelpers';
 
 class ClientReferrals extends React.Component {
+  state = {
+    recipents: '',
+    referralstatus: '',
+    show: false,
+  }
+
   constructor(props) {
     super(props);
 
     // This binding is necessary to make `this` work in the callback
     this.handleClick = this.handleClick.bind(this);
+    this.handleRecipents = this.handleRecipents.bind(this);
+    this.handleReferralstatus = this.handleReferralstatus.bind(this);
+
+    this.handleShow = this.handleShow.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+  }
+
+  handleClose() {
+    this.setState({ show: false });
+  }
+
+  handleShow() {
+    this.setState({ show: true });
   }
 
   getLastStatus() {
@@ -101,13 +120,21 @@ class ClientReferrals extends React.Component {
     return ReferralStatusClass + ' btn-default';
   }
 
+  handleRecipents(event){
+    this.setState({recipents: event.target.value});
+  }
+
+  handleReferralstatus(event){
+    this.setState({referralstatus: event.target.value});
+  }
+
   handleClick(event) {
     event.preventDefault();
     // console.log(ReferralStatusList);
     if (this.props.loading) {
       return '';
     }
-    const step = $('#referral-status-step').val();
+    const step = this.state.referralstatus;
     const index = parseInt(step, 10);
     const total = ReferralStatusList.length;
     const percent = ((index + 1) / total) * 100;
@@ -124,7 +151,8 @@ class ClientReferrals extends React.Component {
       recipients.toRecipients = [user.emails[0].address];
     }
 
-    const emails = $('#recipients').val();
+    const emails = this.state.recipents;
+
     if (emails) {
       recipients.toRecipients = recipients.toRecipients.concat(emails.split(','));
     }
@@ -218,6 +246,8 @@ class ClientReferrals extends React.Component {
                                 <input
                                   type="hidden" name="referral-status-step"
                                   id="referral-status-step" value=""
+                                  value={this.state.referralstatus}
+                                  onChange={this.handleReferralstatus}
                                 />
                                 <div id="referralStatusComments" classNmae="custom-js-summernote">
                                 </div>
@@ -227,10 +257,13 @@ class ClientReferrals extends React.Component {
                               <div className="col-xs-12 col-sm-6 col-md-6 my-center-block">
                                 <label className="control-label">Recipients:</label>
                                 <input
+                                  name='recipents'
                                   type="email" className="form-control" id="recipients"
                                   size="80"
                                   title="Comma separated email addresses."
                                   placeholder="Comma separated email addresses." multiple=""
+                                  value={event.target.recipents}
+                                  onChange={this.handleRecipents}
                                 />
                               </div>
                             </div>

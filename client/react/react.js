@@ -7,17 +7,6 @@ import HomeConfig from '/imports/config/homeConfig';
 Meteor.startup(() => {
   render(renderRoutes(), document.getElementById('app'));
 
-  $('#removalReason').select2();
-
-  $('.custom-datepicker, .react-datepicker__input-container input, input#serviceDate')
-    .datetimepicker({
-      format: 'MM-DD-YYYY',
-    });
-
-  $('body').on('click', '.tag_form_cancel', function () {
-    $('.form.form-inline').html('<a class="tags_form">Add new tag</a>');
-  });
-
   $('body').on('click', '.js-open-referral-status-modal', function (event) {
     $('#referral-status-step').val($(event.currentTarget).data('step'));
     $('#referralStatusUpdateCommentsModal').modal(
@@ -37,13 +26,5 @@ Meteor.startup(() => {
   $('.custom-js-summernote').summernote({
     minHeight: 100,
     fontNames: HomeConfig.fontFamilies,
-  });
-
-  $('body').on('change', '#removalReason', function () {
-    if ($(this).val() === 'housed_by_cars_(include_agency/program)') {
-      $('#removalRemarks').parent('.form-group').show();
-    } else {
-      $('#removalRemarks').parent('.form-group').hide();
-    }
   });
 });

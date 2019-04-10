@@ -2,12 +2,17 @@ import React from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Clients } from '../../../imports/api/clients/clients';
 import reasons from '../helpers/reasons';
+import DatePicker from 'react-datepicker';
 
 const reasonsHash = reasons.reduce((acc, reason) => ({ ...acc, [reason.id]: reason }), {});
 
 class ClientHistory extends React.Component {
   state = {
-		showform: true
+		showform: true,
+    removalRemarks: '',
+    removalDate: '',
+    removalReason: '',
+    showReason: true,
 	}
 
   constructor(props) {
@@ -19,6 +24,27 @@ class ClientHistory extends React.Component {
     this.getEligibleClient = this.getEligibleClient.bind(this);
     this.ignoreMatchProcess = this.ignoreMatchProcess.bind(this);
     this.addToHousingList = this.addToHousingList.bind(this);
+    this.handleRemovalRemarks = this.handleRemovalRemarks.bind(this);
+    this.handleRemovalDate = this.handleRemovalDate.bind(this);
+    this.handleRemovalReason = this.handleRemovalReason.bind(this);
+  }
+
+  handleRemovalRemarks(e){
+    this.setState({removalRemarks: e.target.value});
+  }
+
+  handleRemovalDate(date){
+    this.setState({removalDate: date});
+  }
+
+  handleRemovalReason(e){
+    this.setState({removalReason: e.target.value});
+
+    if( e.target.value == 'housed_by_cars_(include_agency/program)' || e.target.value == 'other_(specify)'){
+      this.setState({showReason: true});
+    } else {
+      this.setState({showReason: false});
+    }
   }
 
   removeFromHousingList(evt) {
@@ -27,7 +53,6 @@ class ClientHistory extends React.Component {
       return '';
     }
     const client = this.props.client;
-    console.log(client);
     // drop not found:
     const clientVersions = client.clientVersions
       .filter(({ clientId, schema }) => {
@@ -36,16 +61,16 @@ class ClientHistory extends React.Component {
       });
     const clientIds = clientVersions.map(({ clientId }) => clientId);
 
-    const remarks = $('#removalRemarks').val();
-    const date = $('#removalDate').val();
-    const reasonId = $('#removalReason').val();
+    const remarks = this.state.removalRemarks;
+    const date = this.state.removalDate;
+    const reasonId = this.state.removalReason;
 
     if (reasonsHash[reasonId].required && remarks.trim().length === 0) {
       Bert.alert('Remarks are required', 'danger', 'growl-top-right');
       $('#removalRemarks').focus();
       return;
     }
-    if (date.trim().length === 0) {
+    if (date.length === 0) {
       Bert.alert('Removal Date required', 'danger', 'growl-top-right');
       $('#removalDate').focus();
       return;
@@ -169,30 +194,35 @@ class ClientHistory extends React.Component {
               ) : ( 
               <div>
 	              <h3>Matching Eligibility Status</h3>
-	              <div className="input-group custom-datepicker">
-		              <span className="input-group-addon">
-		                <i className="fa fa-calendar"></i>
-		              </span>
-		              <input id="removalDate" className="set-removal-date form-control" type="text" />
-		            </div>
+                <DatePicker
+                  selected={this.state.removalDate}
+                  onChange={this.handleRemovalDate}
+                  onSelect={this.handleRemovalDate}
+                />
+	              
 		            <div className="form-group custom_select">
 		              <label>Choose a reason to delete: </label>
 		              <select
 		                className="removalReason form-control"
 		                name="removalReason" id="removalReason" tabIndex="-1" aria-hidden="true"
+                    onChange={this.handleRemovalReason}
 		              >
 		                  {reasons.map((reason) => (
 		                      <option value={reason.id}>{reason.text}</option>
 		                  ))}      
 		              </select>
 		            </div>
-		            <div className="form-group">
-		              <label> Additional notes </label>
-		              <input
-		                id="removalRemarks" className="form-control" type="text"
-		                name="removalRemarks" placeholder="Removal notes"
-		              />
-		            </div>
+                {this.state.showReason ? (
+  		            <div className="form-group">
+  		              <label> Additional notes </label>
+  		              <input
+  		                id="removalRemarks" className="form-control" type="text"
+  		                name="removalRemarks" placeholder="Removal notes"
+                      onChange={this.handleRemovalRemarks}
+  		              />
+  		            </div>
+                  ) : ''
+                }
 		            <input
 		              className="btn btn-danger removeFromHousingList"
 		              value="Remove client from active list" type="button"
