@@ -1,6 +1,7 @@
 import { eachLimit } from 'async';
 import moment from 'moment';
 import { HmisClient } from '/imports/api/hmisApi';
+import { HmisCache } from '/imports/api/cache/hmisCache';
 import { logger } from '/imports/utils/logger';
 import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 
@@ -53,7 +54,7 @@ Meteor.publish(
           const eligibleClients = housingMatches[i].eligibleClients;
           // fetch client details
           try {
-            const details = hc.api('client').getClient(clientId, schema);
+            const details = HmisCache.getClient(clientId, schema, this.userId);
             eligibleClients.clientDetails = details;
             eligibleClients.clientDetails.schema = schema;
           } catch (e) {

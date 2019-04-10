@@ -26,7 +26,7 @@ const tableOptions = {
     },
     {
       title: 'Client',
-      data: 'reservationId', // note: access nested data like this
+      data: 'client', // note: access nested data like this
       render(value, type, doc) {
         const clientId = doc.eligibleClients.clientId;
         const clientDetails = doc.eligibleClients.clientDetails;
@@ -61,10 +61,6 @@ const tableOptions = {
       data: 'matchDate',
     },
     {
-      title: 'User ID',
-      data: 'userId',
-    },
-    {
       title: 'Match Status',
       data: 'eligibleClients', // note: access nested data like this
       render(value) {
@@ -76,7 +72,7 @@ const tableOptions = {
     },
     {
       title: 'Ref',
-      data: 'reservationId',
+      data: 'ref',
       render(value, type, doc) {
         const status = doc.eligibleClients.referralStatus;
         if (status.loading) {
