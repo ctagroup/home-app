@@ -1,4 +1,6 @@
 import { HmisClient } from '/imports/api/hmisApi';
+import { ALL_CLIENT_SCHEMAS } from '/imports/api/hmisApi/clientApi';
+
 
 class HmisCounts {
   constructor(userId) {
@@ -7,9 +9,8 @@ class HmisCounts {
 
   getClientsCount() {
     const hc = HmisClient.create(this.userId);
-    const schemas = ['v2017', 'v2016', 'v2015', 'v2014'];
-    return schemas.reduce(
-      (count, schema) => count + hc.api('client').getClients(schema).length,
+    return ALL_CLIENT_SCHEMAS.reduce(
+      (count, schema) => count + hc.api('client').getNumberOfClients(schema),
       0
     );
   }

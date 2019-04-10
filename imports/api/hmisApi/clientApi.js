@@ -6,6 +6,8 @@ import { ApiEndpoint } from './apiEndpoint';
 const BASE_URL = 'https://www.hmislynk.com/hmis-clientapi/rest';
 const DEFAULT_PROJECT_SCHEMA = 'v2017';
 
+export const ALL_CLIENT_SCHEMAS = ['v2014', 'v2015', 'v2016', 'v2017'];
+
 export class ClientApi extends ApiEndpoint {
   postData(relativeUrl, data) {
     const url = relativeUrl.startsWith('/') ?
@@ -49,7 +51,7 @@ export class ClientApi extends ApiEndpoint {
 
   getAllClients(start = 0, limit = 9999) {
     const data =
-      ['v2014', 'v2015', 'v2016', 'v2017'].map((schema) => {
+      ALL_CLIENT_SCHEMAS.map((schema) => {
         try {
           return this.getClients(schema, start, limit);
         } catch (e) {
@@ -57,6 +59,12 @@ export class ClientApi extends ApiEndpoint {
         }
       });
     return _.flatten(data);
+  }
+
+  getNumberOfClients(schema) {
+    const url = `${BASE_URL}/${schema}/clients?startIndex=0&limit=1`;
+    const { pagination } = this.doGet(url).Clients;
+    return pagination.total;
   }
 
   createClient(client, schema) {

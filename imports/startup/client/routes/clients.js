@@ -162,7 +162,6 @@ Router.route(
         } else {
           if (hmisClient) {
             Bert.alert('This client has already been surveyed', 'danger', 'growl-top-right');
-            // XXXX
             Router.go('adminDashboardclientsView');
           } else {
             Bert.alert('Please upload the client', 'warning', 'growl-top-right');

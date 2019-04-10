@@ -36,7 +36,7 @@ Meteor.publish('collectionsCount', function publishCollectionCount(forceReload =
   const counter = new HmisCounts(this.userId);
 
   _.map({
-    clients: counter.getEligibleClientsCount,
+    clients: counter.getClientsCount,
     eligibleClients: counter.getEligibleClientsCount,
     housingMatch: counter.getHousingMatchCount,
     housingUnits: counter.getHousingUnitsCount,
