@@ -19,7 +19,7 @@ Meteor.publish('projects.all', function publishAllProjects(forceReload = true) {
         .getProjects(schema)
         .map(p => ({ ...p, schema }));
       return projectsWithSchema;
-    });
+    }, forceReload);
     projectsForSchema.forEach(project => {
       this.added('localProjects', project.projectId, project);
       this.ready();

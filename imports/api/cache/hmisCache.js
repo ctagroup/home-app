@@ -87,9 +87,10 @@ class HmisCacheCollection extends Mongo.Collection {
       if (entry.data !== undefined) {
         return entry.data;
       }
-      if (entry.error !== undefined) {
-        throw new Error(`${entry.error} (cached)`);
-      }
+      // For now, do not cache errors
+      // if (entry.error !== undefined) {
+      //   throw new Error(`${entry.error} (cached)`);
+      // }
     }
 
     logger.debug('caching ', cacheKey);
