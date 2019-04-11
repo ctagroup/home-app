@@ -1,4 +1,4 @@
-// import { HmisClient } from '/imports/api/hmisApi';
+import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
 // import Questions from '/imports/api/questions/questions';
 
@@ -56,9 +56,14 @@ Meteor.publish('clientTags.all', function publishAllClientTags(clientId) {
     stopFunction = true;
   });
 
-//   const graphQL = GraphQL.create(this.userId);
+  const hc = HmisClient.create(this.userId);
+  const clientVersions = hc.api('client').searchClient(clientId);
+  if (!clientVersions.length) return this.ready();
+
+  const { dedupClientId } = clientVersions[0];
+
   try {
-    Meteor.call('tagApi', 'getTagsForClient', clientId,
+    Meteor.call('tagApi', 'getTagsForClient', dedupClientId,
       (err, res) => {
         console.log('getTagsForClient', err, res);
         if (!err) {

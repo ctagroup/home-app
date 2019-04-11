@@ -10,6 +10,27 @@ export function dateOnly(m) {
   return moment(dateString);
 }
 
+export function getActiveTagsForDate(clientTags, dateStr) {
+  const activeDateInMs = moment(dateStr).valueOf();
+  return clientTags
+    .map(cTag => ({ appliedOnMs: dateOnly(cTag.appliedOn).valueOf(), ...cTag }))
+    .filter(({ appliedOnMs }) => appliedOnMs <= activeDateInMs)
+    .sort((a, b) => b.appliedOnMs - a.appliedOnMs);
+
+  // const tagsActivityMap = clientTags
+  //   .map(cTag => ({ appliedOnMs: dateOnly(cTag.appliedOn).valueOf(), ...cTag }))
+  //   .filter(({ appliedOnMs }) => appliedOnMs <= activeDateInMs)
+  //   .sort((a, b) => a.appliedOnMs - b.appliedOnMs)
+  //   .reduce((all, cTag) => ({
+  //     ...all,
+  //     [cTag.tag.name]: cTag.operation,
+  //   }), {})
+  //   ;
+
+  // const activeTagNames = Object.keys(tagsActivityMap).filter(key => tagsActivityMap[key]);
+  // return activeTagNames;
+}
+
 
 export function getActiveTagNamesForDate(clientTags, dateStr) {
   const activeDateInMs = moment(dateStr).valueOf();
