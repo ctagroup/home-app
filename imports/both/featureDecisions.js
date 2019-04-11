@@ -11,6 +11,10 @@ export default class FeatureDecisions {
     return this.features.appProfile === 'mc211';
   }
 
+  isSkidrowApp() {
+    return this.features.appProfile === 'skidrow';
+  }
+
   static createFromMeteorSettings() {
     return new FeatureDecisions(Meteor.settings.public.features || []);
   }

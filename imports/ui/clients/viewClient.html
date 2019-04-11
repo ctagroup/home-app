@@ -76,12 +76,14 @@
                 </li>
               {{/if}}
             {{/if}}
+            {{#unless isSkidrowApp}}
             <li class="nav-item">
               <a class="nav-link {{#if isActive 'client-tags'}}active{{/if}}" data-toggle="tab" href="#panel-client-tags" role="tab">Tags</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{#if isActive 'services'}}active{{/if}}" data-toggle="tab" href="#panel-services" role="tab">Services</a>
             </li>
+            {{/unless}}
 
   <!-- TODO: Implement other tabs -->
   <!--

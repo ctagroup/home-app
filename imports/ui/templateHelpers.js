@@ -1,6 +1,7 @@
 import moment from 'moment';
-
+import FeatureDecisions from '/imports/both/featureDecisions';
 import { userName, userEmails } from '/imports/api/users/helpers';
+
 
 Template.registerHelper('formatDate',
   date => (date ? moment.utc(date).format('MM/DD/YYYY') : '')
@@ -24,6 +25,9 @@ UI.registerHelper('log', (value, name = '') => {
 UI.registerHelper('isiOS', () => is.ios());
 UI.registerHelper('isAndroid', () => is.android());
 UI.registerHelper('isCordova', () => Meteor.isCordova);
+UI.registerHelper('isSkidrowApp', () =>
+  FeatureDecisions.createFromMeteorSettings().isSkidrowApp()
+);
 
 UI.registerHelper('isUndefined', (v) => v === undefined);
 
