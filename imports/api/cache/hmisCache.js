@@ -77,7 +77,7 @@ class HmisCacheCollection extends Mongo.Collection {
   }
 
   getData(cacheKey, userId, noDataCallback, forceReload = false) {
-    const _id = `data::${cacheKey}`;
+    const _id = `data::${cacheKey}::${userId}`;
     if (!forceReload) {
       const entry = super.findOne({
         _id,
