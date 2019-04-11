@@ -55,7 +55,9 @@ export default class ResponseImporter {
 
   importResposeFromSubmission(clientId, clientSchema, surveyId, submissionId, surveyorId) {
     const surveyDefinitionItems = this.getSurveyDefinitionItems(surveyId);
-    logger.debug(`importing submission ${submissionId} in survey ${surveyId}`);
+    logger.debug(`importing submission ${submissionId} in survey ${surveyId}`,
+      clientId, clientSchema
+    );
 
     // Import submission
     if (this.responsesCollection.findOne(submissionId)) {
