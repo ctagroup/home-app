@@ -16,7 +16,7 @@ Template.AppDeleteModal.helpers({
     const ctx = getAppContext('appDeleteModal') || {};
     return ctx.operationText || 'Delete';
   },
-  operationButton() {
+  operationButtonClass() {
     const ctx = getAppContext('appDeleteModal') || {};
     if (ctx.simple) return 'btn-primary';
     return (ctx.operation !== undefined && ctx.operation ? 'btn-danger' : 'btn-success')
