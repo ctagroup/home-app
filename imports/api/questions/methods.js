@@ -4,24 +4,24 @@ import { HmisClient } from '/imports/api/hmisApi';
 
 Meteor.methods({
   'questions.create'(doc) {
-    logger.info(`METHOD[${Meteor.userId()}]: questions.create`, doc);
+    logger.info(`METHOD[${this.userId}]: questions.create`, doc);
     // TODO: permissions check
     throw new Meteor.Error('Not yet implemented');
   },
 
   'questions.update'(id, doc) {
-    logger.info(`METHOD[${Meteor.userId()}]: questions.update`, doc);
+    logger.info(`METHOD[${this.userId}]: questions.update`, doc);
     check(id, String);
     // TODO: permissions check
     throw new Meteor.Error('Not yet implemented');
   },
 
   'questions.delete'(groupId, questionId) {
-    logger.info(`METHOD[${Meteor.userId()}]: questions.delete`, groupId, questionId);
+    logger.info(`METHOD[${this.userId}]: questions.delete`, groupId, questionId);
     check(groupId, String);
     check(questionId, String);
 
-    const hc = HmisClient.create(Meteor.userId());
+    const hc = HmisClient.create(this.userId);
     return hc.api('survey').deleteQuestion(groupId, questionId);
   },
 

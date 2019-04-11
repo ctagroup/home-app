@@ -10,7 +10,7 @@ Meteor.methods({
       throw new Meteor.Error(403, 'Forbidden');
     }
 
-    const hc = HmisClient.create(Meteor.userId());
+    const hc = HmisClient.create(this.userId);
     return hc.api('house-matching').postHousingMatch();
   },
 });

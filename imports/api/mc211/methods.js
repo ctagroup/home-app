@@ -14,7 +14,7 @@ Meteor.methods({
     }
 
     Files.update({ clientId: client.clientId }, { $set: { status: 'approved' } }, { multi: true });
-    const hc = HmisClient.create(Meteor.userId());
+    const hc = HmisClient.create(this.userId);
     try {
       const email = {
         title: 'Application Approval, Cal Am Water Hardship Benefit Program',
@@ -55,7 +55,7 @@ Meteor.methods({
     }
 
     Files.update({ clientId: client.clientId }, { $set: { status: 'rejected' } }, { multi: true });
-    const hc = HmisClient.create(Meteor.userId());
+    const hc = HmisClient.create(this.userId);
     try {
       const email = {
         title: 'Ineligible for Cal Am Water Hardship Benefit Program',

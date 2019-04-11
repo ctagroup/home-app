@@ -5,7 +5,7 @@ import { logger } from '/imports/utils/logger';
 
 Meteor.methods({
   'tags.create'(name, score) {
-    logger.info(`METHOD[${Meteor.userId()}]: tags.create`, name, score);
+    logger.info(`METHOD[${this.userId}]: tags.create`, name, score);
 
     Meteor.call('tagApi', 'createTag', { name, score }, (err/* , res*/) => {
       if (err) {
@@ -22,14 +22,14 @@ Meteor.methods({
   },
 
   'tags.update'(id, doc) {
-    logger.info(`METHOD[${Meteor.userId()}]: tags.update`, doc);
+    logger.info(`METHOD[${this.userId}]: tags.update`, doc);
     check(id, String);
     // TODO: permissions check
     throw new Meteor.Error('Not yet implemented');
   },
 
   'tags.delete'(tagId) {
-    logger.info(`METHOD[${Meteor.userId()}]: tags.delete`, tagId);
+    logger.info(`METHOD[${this.userId}]: tags.delete`, tagId);
     check(tagId, String);
 
     // throw new Meteor.Error('Not yet implemented');

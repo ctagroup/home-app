@@ -58,7 +58,7 @@ const allWidgets = [
     name: 'Surveyed Clients',
     id: 'surveyed',
     icon: 'fa-user',
-    path: 'adminDashboardclientsView',
+    path: 'clientsSurveyed',
     roles: ClientsAccessRoles,
   },
   {

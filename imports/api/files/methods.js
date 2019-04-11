@@ -4,7 +4,7 @@ import { FilesAccessRoles } from '/imports/config/permissions';
 
 Meteor.methods({
   'files.create'(doc) {
-    logger.info(`METHOD[${Meteor.userId()}]: files.create`, doc);
+    logger.info(`METHOD[${this.userId}]: files.create`, doc);
     check(doc, Files.schema);
     if (!Roles.userIsInRole(this.userId, FilesAccessRoles)) {
       throw new Meteor.Error(403, 'Forbidden');
@@ -13,7 +13,7 @@ Meteor.methods({
   },
 
   'files.delete'(id) {
-    logger.info(`METHOD[${Meteor.userId()}]: files.delete`, id);
+    logger.info(`METHOD[${this.userId}]: files.delete`, id);
     check(id, String);
     if (!Roles.userIsInRole(this.userId, FilesAccessRoles)) {
       throw new Meteor.Error(403, 'Forbidden');

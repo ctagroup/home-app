@@ -1,28 +1,31 @@
 import { logger } from '/imports/utils/logger';
 import { HmisClient } from '/imports/api/hmisApi';
 import { DefaultAdminAccessRoles } from '/imports/config/permissions';
+import { HmisCache } from '/imports/api/cache/hmisCache';
 
 
-Meteor.publish('projects.all', function publishAllProjects() {
+Meteor.publish('projects.all', function publishAllProjects(forceReload = true) {
   logger.info(`PUB[${this.userId}]: projects.all`);
   if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
     return [];
   }
 
-  const hc = HmisClient.create(this.userId);
-  const api = hc.api('client');
   const schemas = ['v2017', 'v2016', 'v2015', 'v2014'];
   schemas.forEach(schema => {
-    try {
-      const projectsWithSchema = api.getProjects(schema).map(p => ({ ...p, schema }));
-      projectsWithSchema.forEach(project => {
-        this.added('localProjects', project.projectId, project);
-      });
+    const projectsForSchema = HmisCache.getData(`projects.all.${schema}`, this.userId, () => {
+      const hc = HmisClient.create(this.userId);
+      const api = hc.api('client');
+      const projectsWithSchema = api
+        .getProjects(schema)
+        .map(p => ({ ...p, schema }));
+      return projectsWithSchema;
+    });
+    projectsForSchema.forEach(project => {
+      this.added('localProjects', project.projectId, project);
       this.ready();
-    } catch (err) {
-      logger.warn('cannot get projects for schema', schema);
-    }
-  });
+    });
+  }, forceReload);
+
   return this.ready();
 });
 

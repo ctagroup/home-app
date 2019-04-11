@@ -1,7 +1,7 @@
 import HmisCounts from './hmisCounts';
-import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import Surveys from '/imports/api/surveys/surveys';
 import Responses from '/imports/api/responses/responses';
+import { HmisCache } from '/imports/api/cache/hmisCache';
 
 
 function publishCounts(collection, collectionName, publication) {
@@ -21,21 +21,22 @@ function publishCounts(collection, collectionName, publication) {
   return handle;
 }
 
-Meteor.publish('collectionsCount', function publishCollectionCount() {
+Meteor.publish('collectionsCount', function publishCollectionCount(forceReload = true) {
   if (!this.userId) {
     return [];
   }
 
-  const handles = [];
+  const handles = [
+    publishCounts(Surveys, 'surveys', this),
+    publishCounts(Responses, 'responses', this),
+    publishCounts(Meteor.users, 'users', this),
+  ];
+
   const self = this;
-
-  handles.push(publishCounts(PendingClients, 'clients', this));
-  handles.push(publishCounts(Surveys, 'surveys', this));
-  handles.push(publishCounts(Responses, 'responses', this));
-  handles.push(publishCounts(Meteor.users, 'users', this));
-
   const counter = new HmisCounts(this.userId);
+
   _.map({
+    clients: counter.getClientsCount,
     eligibleClients: counter.getEligibleClientsCount,
     housingMatch: counter.getHousingMatchCount,
     housingUnits: counter.getHousingUnitsCount,
@@ -44,7 +45,9 @@ Meteor.publish('collectionsCount', function publishCollectionCount() {
   }, (fn, name) => {
     self.added('collectionsCount', name, { count: 0, loading: true });
     Meteor.defer(() => {
-      const count = fn.bind(counter)();
+      const count = HmisCache.getData(
+        `collectionsCount.${name}`, this.userId, fn.bind(counter), forceReload
+      );
       self.changed('collectionsCount', name, { count, loading: false });
     });
   });

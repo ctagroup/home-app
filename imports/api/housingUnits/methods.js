@@ -9,7 +9,7 @@ Meteor.methods({
       throw new Meteor.Error(403, 'Forbidden');
     }
 
-    const hc = HmisClient.create(Meteor.userId());
+    const hc = HmisClient.create(this.userId);
     return hc.api('housing').createHousingUnit(_.extend(housingObject, {
       userId: Meteor.users.findOne(this.userId).services.HMIS.accountId,
     }));
