@@ -8,9 +8,6 @@ const tableOptions = {
     {
       data: 'projectName',
       title: 'Project Name',
-      render(value, op, doc) {
-        return `<a href="${Router.path('projectsEdit', doc)}">${value}</a>`;
-      },
     },
     {
       data: 'projectCommonName',
@@ -27,11 +24,12 @@ const tableOptions = {
     {
       data: 'dateCreated',
       title: 'Created At',
-      render(value, type) {
-        if (type === 'sort') {
-          return value;
-        }
-        return moment(value).format('MM/DD/YYYY h:mm A');
+    },
+    {
+      data: 'Edit',
+      title: 'Edit',
+      render(value, op, doc) {
+        return `<a href="${Router.path('projectsEdit', doc)}" class="btn btn-xs btn-primary"><i class="fa fa-pencil"></i></a>`;
       },
     },
     deleteProjectButton((project) => {
