@@ -13,6 +13,7 @@ class BlazeTemplate extends React.Component {
       );
     super(props);
     this.myRef = props.ref || uuidv4();
+    this.classes = props.classes || '';
   }
 
   componentDidMount() {
@@ -39,5 +40,5 @@ class BlazeTemplate extends React.Component {
     Blaze.remove(this.blazeView);
   }
 
-  render() { return <div ref={this.myRef} />; }
+  render() { return <div className={this.classes} ref={this.myRef} />; }
 }
