@@ -1,3 +1,4 @@
+import Alert from '/imports/ui/alert';
 import { trimText } from '/imports/api/utils';
 import Questions from '/imports/api/questions/questions';
 import { populateOptions, resetQuestionModal, setFields } from '/imports/ui/questions/helpers';
@@ -37,20 +38,39 @@ const tableOptions = {
 
 
 Template.questionsListView.helpers({
-  hasData() {
-    return Questions.find().count() > 0;
-  },
   tableData() {
-    return () => Questions.find().fetch();
+    return [];
   },
   tableOptions() {
     return tableOptions;
   },
+  loadData() {
+    const searchFn = (pageNumber, pageSize, sortBy, filterBy, callback) => {
+      const query = Router.current().params.query || {};
+      const options = {
+        clientId: query.clientId,
+        clientSchema: query.schema,
+        pageNumber,
+        pageSize,
+        sortBy,
+        filterBy,
+      };
 
-  questionList() {
-    return Questions.find({}).fetch();
+      return Meteor.call('questions.getPage', options, (err, res) => {
+        if (err) {
+          Alert.error(err);
+          if (callback) callback({ data: [], pages: 0 });
+        }
+        if (res) {
+          const data = res.content;
+          const pages = res.page.totalPages;
+          console.log(data);
+          if (callback) callback({ data, pages });
+        }
+      });
+    };
+    return () => _.debounce(searchFn, 1000);
   },
-
 });
 
 Template.questionsListView.events(

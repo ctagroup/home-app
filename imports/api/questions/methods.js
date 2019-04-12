@@ -9,6 +9,23 @@ Meteor.methods({
     throw new Meteor.Error('Not yet implemented');
   },
 
+  'questions.getPage'({ pageNumber = 0, pageSize = 50, sortBy = [], filterBy = [] }) {
+    logger.info(`METHOD[${this.userId}]: questions.getPage(${pageNumber}, ${pageSize}, ${sortBy}, ${filterBy})`); // eslint-disable-line max-len
+    if (!this.userId) {
+      throw new Meteor.Error(401, 'Unauthorized');
+    }
+
+    const questions = [];
+    const questionsCount = 10;
+
+    return {
+      content: questions,
+      page: {
+        totalPages: Math.ceil(questionsCount / pageSize),
+      },
+    };
+  },
+
   'questions.update'(id, doc) {
     logger.info(`METHOD[${this.userId}]: questions.update`, doc);
     check(id, String);

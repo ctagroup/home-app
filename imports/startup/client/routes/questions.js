@@ -13,9 +13,6 @@ Router.route('questionsView', {
       return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
     },
   },
-  waitOn() {
-    return Meteor.subscribe('questions.all');
-  },
   data() {
     return {
       title: 'Questions',
