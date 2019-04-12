@@ -549,4 +549,32 @@ Meteor.injectedMethods({
     return importer.importResposeFromSubmission(
       clientId, foundSchema, surveyId, submissionId, 'import');
   },
+
+  'responses.recentlySurveyedClients'() {
+    logger.info(`METHOD[${this.userId}]: responses.recentlySurveyedClients`);
+    if (!Roles.userIsInRole(this.userId, ResponsesAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
+
+    const responses = Responses.find().fetch();
+    const clientsWithGroupedResponses = responses.reduce((clients, r) => {
+      // skip response if client already exists
+      if (clients[r.clientId]) return clients;
+
+      const { clientId, clientSchema, surveyId } = r;
+      const client = HmisCache.getClient(clientId, clientSchema, this.userId);
+      const survey = HmisCache.getSurvey(surveyId, this.userId);
+      const surveyedClient = {
+        clientId,
+        clientSchema,
+        client,
+        survey,
+      };
+      return {
+        ...clients,
+        [r.clientId]: surveyedClient,
+      };
+    }, {});
+    return Object.values(clientsWithGroupedResponses);
+  },
 });

@@ -15,6 +15,8 @@ import '/imports/ui/clients/createClient';
 import '/imports/ui/clients/editClient';
 import '/imports/ui/clients/viewClient';
 import '/imports/ui/clients/viewClientMc211';
+import '/imports/ui/clients/viewSurveyedClients';
+
 import { AppController } from './controllers';
 
 
@@ -126,6 +128,23 @@ Router.route('/clients/:_id/enrollments/:enrollmentId', {
       client,
       survey,
       enrollment,
+    };
+  },
+});
+
+Router.route('clientsSurveyed', {
+  path: '/clients/surveyed',
+  template: 'viewSurveyedClients',
+  controller: AppController,
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), ClientsAccessRoles);
+    },
+  },
+  data() {
+    return {
+      title: 'Surveyed Clients',
+      subtitle: 'View',
     };
   },
 });
