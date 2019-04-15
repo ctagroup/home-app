@@ -36,7 +36,7 @@ Router.route(
     onBeforeAction() {
       AccountsTemplates.logout();
       this.next();
-      Session.set('recentClients', '');
+      Session.set('recentClients', []);
     },
   }
 );
