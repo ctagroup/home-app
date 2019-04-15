@@ -2,9 +2,10 @@ import moment from 'moment';
 import FeatureDecisions from '/imports/both/featureDecisions';
 import { userName, userEmails } from '/imports/api/users/helpers';
 
+export const formatDateFunction = date => (date ? moment.utc(date).format('MM/DD/YYYY') : '');
 
 Template.registerHelper('formatDate',
-  date => (date ? moment.utc(date).format('MM/DD/YYYY') : '')
+  formatDateFunction
 );
 
 Template.registerHelper('formatDate99', date => {

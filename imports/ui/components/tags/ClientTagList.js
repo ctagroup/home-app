@@ -73,10 +73,11 @@ class ClientTagList extends Component {
   }
 
   renderDatePicker(key) {
-    const dateValue = this.state && this.state[key];
+    const dateValue =
+      this.state && this.state[key] && moment(this.state[key]).toDate() || Date.now();
     return (<DatePicker
       className="form-control"
-      selected={dateValue ? moment(dateValue) : moment(Date.now())}
+      selected={dateValue}
       onChange={(value) => this.handleChange(key, value)}
       placeholderText="MM/DD/YYYY"
     />);

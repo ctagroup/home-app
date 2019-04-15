@@ -1,16 +1,17 @@
 <template name="viewClient">
     {{#with client}}
+    {{{alertMessages}}}
+    <!-- <div>
+      { {> React
+        component=component
+        client=../client
+        eligibleClient=eligibleClient
+        permissions=permissions
+        selectedTab=selectedTab
+      } }
+    </div> -->
     <div id="viewClient_content" class="col-xs-12">
       <div class="row client-profile-container">
-        {{{alertMessages}}}
-        {{#if eligibleClient.ignoreMatchProcess }}
-          <div class="col-xs-12">
-            <div class="alert alert-danger">
-              Client has been Removed from Matching
-            </div>
-          </div>
-        {{/if}}
-
         <div class="client-info">
           <div class="row">
             <div class="col-xs-12 col-sm-3">
@@ -42,109 +43,8 @@
 
 
         <div class="tab-section">
-          <!-- Nav tabs -->
-          <ul class="nav nav-tabs nav-justified">
-            <li class="nav-item">
-              <a class="nav-link {{#if isActive 'overview'}}active{{/if}}" data-toggle="tab" href="#panel-overview" role="tab">Overview</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link {{#if isActive 'eligibility'}}active{{/if}}" data-toggle="tab" href="#panel-eligibility" role="tab">History</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link {{#if isActive 'rois'}}active{{/if}}" data-toggle="tab" href="#panel-rois" role="tab">ROIs</a>
-            </li>
-            {{#if showReferralStatus}}
-              <li class="nav-item">
-                <a class="nav-link {{#if isActive 'referrals'}}active{{/if}}" data-toggle="tab" href="#panel-referrals" role="tab">Referrals</a>
-              </li>
-            {{/if}}
-            {{#if showEnrollments}}
-              <li class="nav-item">
-                <a class="nav-link {{#if isActive 'enrollments'}}active{{/if}}" data-toggle="tab" href="#panel-enrollments" role="tab">Enrollments</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {{#if isActive 'create-enrollment'}}active{{/if}}" data-toggle="tab" href="#panel-create-enrollment" role="tab">Create Enrollment</a>
-              </li>
-              {{#if updateEnrollment}}
-                <li class="nav-item">
-                  <a class="nav-link {{#if isActive 'update-enrollment'}}active{{/if}}" data-toggle="tab" href="#panel-update-enrollment" role="tab">Update Enrollment</a>
-                </li>
-              {{/if}}
-              {{#if exitEnrollment}}
-                <li class="nav-item">
-                  <a class="nav-link {{#if isActive 'exit-enrollment'}}active{{/if}}" data-toggle="tab" href="#panel-exit-enrollment" role="tab">Exit Enrollment</a>
-                </li>
-              {{/if}}
-            {{/if}}
-            {{#unless isSkidrowApp}}
-            <li class="nav-item">
-              <a class="nav-link {{#if isActive 'client-tags'}}active{{/if}}" data-toggle="tab" href="#panel-client-tags" role="tab">Tags</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{#if isActive 'services'}}active{{/if}}" data-toggle="tab" href="#panel-services" role="tab">Services</a>
-            </li>
-            {{/unless}}
 
-  <!-- TODO: Implement other tabs -->
-  <!--
-            <li class="nav-item">
-              <a class="nav-link active" data-toggle="tab" href="#panel-case-management" role="tab">Case Management</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#panel-responses" role="tab">Responses</a>
-            </li>
-  -->
-          </ul>
-          <!-- Tab panels -->
           <div class="tab-content card">
-            <!--Panel 1 Overview -->
-            <div class="tab-pane fade {{#if isActive 'overview'}}in show active {{else}}no-show{{/if}}" id="panel-overview" role="tabpanel">
-              <div class="info-container">
-                <div class="row">
-                  <div class="col-xs-12 col-sm-6 col-md-6">
-                    <div class="">
-                      <p class="clabel">Suffix</p>
-                      <p class="cvalue">{{suffix}}</p>
-                    </div>
-                    <div class="">
-                      <p class="clabel">SSN</p>
-                      <p class="cvalue">{{ssn}}</p>
-                    </div>
-                    <div class="">
-                      <p class="clabel">Date of Birth</p>
-                      <p class="cvalue dob">{{formatDate dob}}</p>
-                    </div>
-                    <div class="">
-                      <p class="clabel">Race</p>
-                      <p class="cvalue">{{getText 'race' race}}</p>
-                    </div>
-                  </div>
-                  <div class="col-xs-12 col-sm-6 col-md-6">
-                    <div class="">
-                      <p class="clabel">Ethnicity</p>
-                      <p class="cvalue">{{getText 'ethnicity' ethnicity}}</p>
-                    </div>
-                    <div class="">
-                      <p class="clabel">Gender</p>
-                      <p class="cvalue">{{getText 'gender' gender}}</p>
-                    </div>
-                    <div class="">
-                      <p class="clabel">Veteran Status</p>
-                      <p class="cvalue">{{getText 'veteranStatus' veteranStatus}}</p>
-                    </div>
-                    <!--
-                    <div class="">
-                      <p class="clabel">Disabling Condition</p>
-                      <p class="cvalue">{{getText 'disablingcondition' disablingConditions}}</p>
-                    </div>
-                    -->
-                  </div>
-                </div>
-                {{#if ../showEditButton }}<input class="btn btn-warning edit" value="Edit client" type="button" />{{/if}}
-              </div>
-            </div>
-          </div>
-            <!--/.Panel 1-->
             <!--Panel 1.5 Eligibility -->
             <div class="tab-pane fade {{#if isActive 'eligibility'}}in show active {{else}}no-show{{/if}}" id="panel-eligibility" role="tabpanel">
               {{#with eligibleClient}}
@@ -168,7 +68,7 @@
 
             <!--Panel ROIS -->
             <div class="tab-pane fade {{#if isActive 'rois'}}in show active {{else}}no-show{{/if}}" id="panel-rois" role="tabpanel">
-              {{>panelRois client=currentClient}}
+              {{> panelRois client=currentClient}}
             </div>
 
             <!--Panel 3 Referrals -->
@@ -501,6 +401,7 @@
                   </div>
               </div>
 
+            </div>
 
             </div>
           </div>

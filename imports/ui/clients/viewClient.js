@@ -14,6 +14,10 @@ import ReferralStatusList from './referralStatusList';
 import HomeConfig from '/imports/config/homeConfig';
 import Alert from '/imports/ui/alert';
 import { TableDom } from '/imports/ui/dataTable/helpers';
+
+import FeatureDecisions from '/imports/both/featureDecisions';
+import ClientContainer from '/imports/ui/components/client/ClientContainer';
+
 import { FilesAccessRoles, GlobalHouseholdsAccessRoles } from '/imports/config/permissions';
 
 import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
@@ -37,20 +41,17 @@ const dataCollectionStages = {
   ANNUAL: 5, // Annual Assessments
 };
 
-const extendQueryWithParam = (query, param, value) => {
+const changeQueryWithParam = (query, param, add, value) => {
   if (query === '') return `?${param}=${value}`;
   const paramsString = query.startsWith('?') ? query.slice(1) : query;
   const searchParams = new URLSearchParams(paramsString);
-  searchParams.set(param, value);
+  if (add) { searchParams.set(param, value); } else { searchParams.delete(param); }
   return `?${searchParams.toString()}`;
 };
-const removeQueryFromParam = (query, param) => {
-  if (query === '') return '';
-  const paramsString = query.startsWith('?') ? query.slice(1) : query;
-  const searchParams = new URLSearchParams(paramsString);
-  searchParams.delete(param);
-  return `?${searchParams.toString()}`;
-};
+
+const extendQueryWithParam = (query, param, value) =>
+  changeQueryWithParam(query, param, true, value);
+const removeQueryFromParam = (query, param) => changeQueryWithParam(query, param, false);
 const pushToURI = (name, url) => history.replaceState(history.state, name, url);
 
 const flattenKeyVersions = (client, key) => {
@@ -142,6 +143,38 @@ const serviceTableOptions = {
 
 Template.viewClient.helpers(
   {
+    component() {
+      return ClientContainer;
+    },
+
+    permissions() {
+      const hasPermission = Roles.userIsInRole(Meteor.userId(), FilesAccessRoles);
+
+      const showEnrollments = this && this.clientId;
+
+      const getEnrollmentType = (stage) => {
+        const enrollmentId = Template.instance().selectedEnrollment.get();
+        const dataCollectionStage = Template.instance().dataCollectionStage.get();
+        return dataCollectionStage / 1 === dataCollectionStages[stage] && enrollmentId;
+      };
+      return {
+        showReferralStatus: hasPermission && this && this.clientId,
+        showEnrollments,
+        updateEnrollment: getEnrollmentType('UPDATE'),
+        annualEnrollment: getEnrollmentType('ANNUAL'),
+        exitEnrollment: getEnrollmentType('EXIT'),
+        showEditButton: Template.instance() && Template.instance().data.showEditButton,
+        isSkidrowApp: FeatureDecisions.createFromMeteorSettings().isSkidrowApp(),
+      };
+    },
+    selectedTab() {
+      if (Template.instance() && Template.instance().selectedTab) {
+        const selectedTab = Template.instance().selectedTab.get();
+        return selectedTab.slice(6);
+      }
+      return 'false';
+    },
+
     clientTagNames() {
       const clientTags = ClientTags.find().fetch();
       const now = moment().format('YYYY-MM-DD');
@@ -450,11 +483,9 @@ Template.viewClient.helpers(
 
     enrollmentResponses(enrollmentId, dataCollectionStage) {
       const options = { 'enrollmentInfo.dataCollectionStage': dataCollectionStage };
-      if (dataCollectionStage === dataCollectionStages.ENTRY) {
-        options['enrollment.enrollment-0.id'] = enrollmentId;
-      } else {
-        options['enrollmentInfo.enrollmentId'] = enrollmentId;
-      }
+      const optionKey = dataCollectionStage === dataCollectionStages.ENTRY ?
+      'enrollment.enrollment-0.id' : 'enrollmentInfo.enrollmentId';
+      options[optionKey] = enrollmentId;
       return Responses.find(options).fetch();
     },
     enrollmentExited(enrollmentId) {
