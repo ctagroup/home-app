@@ -12,7 +12,7 @@ Template.housingUnitCreateView.events(
       const inactive = tmpl.find('input[name="inactive"]:checked').value;
       const inService = tmpl.find('input[name="in_service"]:checked').value;
       const vacant = tmpl.find('input[name="vacant"]:checked').value;
-      const housingObject = {
+      const housingObject = [{
         inactive,
         bedsCurrent,
         projectId,
@@ -21,7 +21,7 @@ Template.housingUnitCreateView.events(
         inService,
         vacant,
         aliasName,
-      };
+      }];
       Meteor.call('housingUnits.create', housingObject,
         (err) => {
           if (err) {
