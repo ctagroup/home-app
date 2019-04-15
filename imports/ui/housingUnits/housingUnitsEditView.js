@@ -13,7 +13,7 @@ Template.housingUnitEditView.events({
     const inactive = tmpl.find('input[name="inactive"]:checked').value;
     const inService = tmpl.find('input[name="in_service"]:checked').value;
     const vacant = tmpl.find('input[name="vacant"]:checked').value;
-    const housingObject = {
+    const housingObject = [{
       inactive,
       bedsCurrent,
       projectId,
@@ -22,7 +22,7 @@ Template.housingUnitEditView.events({
       inService,
       vacant,
       aliasName,
-    };
+    }];
     Meteor.call('housingUnits.update', id, housingObject, (err) => {
       if (err) {
         Bert.alert(err.reason || err.error, 'danger', 'growl-top-right');
