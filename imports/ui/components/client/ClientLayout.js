@@ -19,7 +19,7 @@ function ClientLayout(props) {
   const tabsList = [
     { id: 'overview', enabled: true, title: 'Overview' },
     { id: 'eligibility', enabled: true, title: 'History' },
-    { id: 'rois', enabled: true, title: 'ROIs' },
+    { id: 'rois', enabled: !isSkidrowApp, title: 'ROIs' },
     { id: 'referrals', enabled: showReferralStatus, title: 'Referrals' },
     { id: 'enrollments', enabled: showEnrollments, title: 'Enrollments' },
     { id: 'create-enrollment', enabled: showEnrollments, title: 'Create Enrollment' },
