@@ -19,7 +19,8 @@ export const RecentClients = Meteor.isClient ? {
       name: fullName(client),
       url: client.url,
     };
-    Session.set('recentClients', [data, ...recentClients]);
+    const updated = [data, ...recentClients];
+    Session.set('recentClients', _.uniq(updated, ({ _id }) => _id));
   },
 
   remove(clientId) {
@@ -46,7 +47,7 @@ export const RecentClients = Meteor.isClient ? {
       }
       return c;
     });
-    Session.set('recentClients', updated);
+    Session.set('recentClients', _.uniq(updated, ({ _id }) => _id));
   },
 } : undefined;
 

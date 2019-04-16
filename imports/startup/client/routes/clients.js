@@ -287,7 +287,7 @@ Router.onBeforeAction(
     if (!client) {
       this.render('clientNotFound');
     } else {
-      if (this.params.query && this.params.query.schema) {
+      if (this.params.query && this.params.query.schema && !client.isLocalClient) {
         client.personalId = client.clientId;
         client.isHMISClient = true;
         client.schema = client.schema || this.params.query.schema;
