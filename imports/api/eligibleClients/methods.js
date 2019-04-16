@@ -23,6 +23,21 @@ Meteor.methods({
     return hc.api('house-matching-v2').getEligibleClientsPage(pageNumber, pageSize, sort, order);
   },
 
+  updateBonusScore(clientId, bonusScore) {
+    logger.info(`METHOD[${this.userId}]: updateScores(${Array.isArray(clientId)}, ${clientId})`); // eslint-disable-line max-len
+    check(clientId, Match.OneOf(String, [String])); // eslint-disable-line new-cap
+    if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
+
+    const hc = HmisClient.create(this.userId);
+    // get client details
+    const eligibleClient = hc.api('house-matching').getEligibleClient(clientId);
+    eligibleClient.bonusScore = bonusScore;
+    eligibleClient.totalScore = eligibleClient.bonusScore + eligibleClient.surveyScore / 1;
+    hc.api('house-matching').updateEligibleClient(eligibleClient);
+  },
+
   ignoreMatchProcess(inputClientId, ignoreMatchProcess, remarks = '') {
     logger.info(`METHOD[${this.userId}]: ignoreMatchProcess(${Array.isArray(inputClientId)}, ${inputClientId}, ${ignoreMatchProcess})`); // eslint-disable-line max-len
 
