@@ -1,33 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import ReactTable from 'react-table';
-import { fullName } from '/imports/api/utils';
+import Alert from '/imports/ui/alert';
+import { ClientCell } from '/imports/ui/components/Cells';
+import { formatDateTime } from '/imports/both/helpers';
 
 
 const SurveyedClientsList = () => {
   const columns = [{
     Header: 'Client',
-    Cell: props => fullName(props.original.client) || props.original.clientId,
+    accessor: 'client',
+    Cell: props => {
+      const { client } = props.original;
+      const { clientId, schema } = client;
+      const href = Router.path('viewClient',
+        { _id: clientId },
+        { query: { schema },
+      });
+      return <ClientCell client={client} href={href} />;
+    },
   }, {
     Header: 'Survey',
-    Cell: props => props.original.survey.surveyTitle,
+    accessor: 'surveyTitle',
   }, {
-    Header: 'Survey Date',
-    acessor: 'xyz',
+    Header: 'Response Date',
+    accessor: 'responseDate',
+    Cell: props => formatDateTime(props.original.responseDate),
   }];
 
   const [data, setData] = useState([]);
 
   useEffect(() => {
     Meteor.call('responses.recentlySurveyedClients', (err, res) => {
-      console.log(err, res);
-      setData(res);
+      if (err) {
+        Alert.error(err);
+      } else {
+        setData(res);
+      }
     });
   }, []);
 
 
   return (
-
-    <ReactTable columns={columns} data={data} xx={console.log(data)} />
+    <ReactTable
+      columns={columns}
+      data={data}
+      defaultSorted={[{ id: 'responseDate', desc: true }]}
+    />
   );
 };
 

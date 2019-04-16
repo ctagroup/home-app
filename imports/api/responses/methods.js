@@ -556,7 +556,7 @@ Meteor.injectedMethods({
       throw new Meteor.Error(403, 'Forbidden');
     }
 
-    const responses = Responses.find().fetch();
+    const responses = Responses.find({}, { sort: { createdAt: 1 } }).fetch();
     const clientsWithGroupedResponses = responses.reduce((clients, r) => {
       // skip response if client already exists
       if (clients[r.clientId]) return clients;
@@ -566,9 +566,10 @@ Meteor.injectedMethods({
       const survey = HmisCache.getSurvey(surveyId, this.userId);
       const surveyedClient = {
         clientId,
-        clientSchema,
+        schema: clientSchema,
         client,
-        survey,
+        surveyTitle: survey.surveyTitle,
+        responseDate: r.createdAt,
       };
       return {
         ...clients,
