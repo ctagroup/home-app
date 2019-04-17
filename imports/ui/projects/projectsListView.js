@@ -1,4 +1,3 @@
-import moment from 'moment';
 import Projects from '/imports/api/projects/projects';
 import { TableDom, deleteProjectButton } from '/imports/ui/dataTable/helpers';
 import './projectsListView.html';
@@ -29,7 +28,7 @@ const tableOptions = {
       data: 'Edit',
       title: 'Edit',
       render(value, op, doc) {
-        return `<a href="${Router.path('projectsEdit', doc)}" class="btn btn-xs btn-primary"><i class="fa fa-pencil"></i></a>`;
+        return `<a href="${Router.path('projectsEdit', doc)}" class="btn btn-xs btn-primary"><i class="fa fa-pencil"></i></a>`; // eslint-disable-line
       },
     },
     deleteProjectButton((project) => {
