@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactTable from 'react-table';
 import Alert from '/imports/ui/alert';
-import { ClientCell } from '/imports/ui/components/Cells';
+import { Link, ClientName, ErrorLabel } from '/imports/ui/components/generic';
 import { formatDateTime } from '/imports/both/helpers';
 
 
@@ -12,11 +12,21 @@ const SurveyedClientsList = () => {
     Cell: props => {
       const { client } = props.original;
       const { clientId, schema } = client;
-      const href = Router.path('viewClient',
-        { _id: clientId },
-        { query: { schema },
-      });
-      return <ClientCell client={client} href={href} />;
+      const errorLabel = client.error ?
+        <ErrorLabel hint={client.error.message} text={client.error.statusCode} />
+        : null;
+
+      if (errorLabel) {
+        return (
+          <span><ClientName client={client} /> {errorLabel}</span>
+        );
+      }
+
+      return (
+        <Link route="viewClient" params={{ _id: clientId }} query={{ schema }}>
+          <ClientName client={client} />
+        </Link>
+      );
     },
   }, {
     Header: 'Survey',
