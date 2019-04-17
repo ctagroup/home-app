@@ -5,7 +5,8 @@ import CurrencyInput from '/imports/ui/components/CurrencyInput';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import Item from './Item';
-import { isNumeric } from '/imports/api/utils';
+import { isNumeric, getLatLongFromDevice, createGeocodeUrl } from '/imports/api/utils';
+import { logger } from '/imports/utils/logger';
 
 const DEFAULT_OTHER_VALUE = 'Other';
 
@@ -18,6 +19,7 @@ export default class Question extends Item {
     this.handleRefuseChange = this.handleRefuseChange.bind(this);
     this.handleOtherFocus = this.handleOtherFocus.bind(this);
     this.handleOtherClick = this.handleOtherClick.bind(this);
+    this.handleButtonClick = this.handleButtonClick.bind(this);
     this.state = {
       otherSelected: false,
       error: null,
@@ -55,6 +57,12 @@ export default class Question extends Item {
     }
     const refuseValue = typeof(refusable) === 'boolean' ? 'Refused' : refusable;
     return refuseValue;
+  }
+
+  getAddressValue() {
+    const fields = document.getElementsByName('addressInput');
+    const values = Array.prototype.map.call(fields, f => f.value);
+    return values.join(',');
   }
 
   handleChange(event, date) {
@@ -125,6 +133,48 @@ export default class Question extends Item {
     return true;
   }
 
+  handleButtonClick() {
+    if (this.props.item.category === 'location') {
+      const value = this.getAddressValue();
+
+      if (value.length > 0) {
+        const url = createGeocodeUrl(value);
+        return new Promise((resolve) => {
+          Meteor.call('surveys.getGeocodedLocation', url, (error, result) => {
+            if (error) {
+              const msg = 'Location could not be validated due the API call returning an error.';
+              this.setState({ error: null, message: msg });
+              logger.info(msg);
+              resolve(false);
+            } else {
+              // We're assuming the location is valid if the geocoding API result isn't empty
+              // In the future we may want to populate address fields based on the result
+              if (result.results && result.results.length > 0) {
+                const msg = `\"${value}\" validated successfully.`;
+                this.setState({ error: null, message: msg });
+                logger.info(msg);
+                resolve(true);
+              } else {
+                const msg = `\"${value}\" did not validate successfully.`;
+                this.setState({ error: null, message: msg });
+                logger.info(msg);
+                resolve(false);
+              }
+              if (result.rate) {
+                // Log remaining requests, OpenCage Geocoder API allows 2500/day
+                const geoLimitMsg =
+                  `You have ${result.rate.remaining}/${result.rate.limit} remaining ` +
+                  'requests to OpenCage Geocoder API today.';
+                logger.info(geoLimitMsg);
+              }
+            }
+          });
+        });
+      }
+    }
+    return false;
+  }
+
   isRefused() {
     return this.props.formState.values[this.props.item.id] === this.getRefuseValue();
   }
@@ -135,6 +185,8 @@ export default class Question extends Item {
         return this.renderChoice(value, disabled);
       case 'currency':
         return this.renderCurrencyInput(value, disabled);
+      case 'location':
+        return this.renderLocationInput(value, disabled);
       case 'date':
         return this.renderDatePicker(value, disabled);
       case 'number':
@@ -172,17 +224,19 @@ export default class Question extends Item {
             disabled={this.isRefused() || disabled}
             checked={!this.isRefused() && v.value == value} // eslint-disable-line
             onChange={this.handleChange}
-          /> {v.label}
+          />
+          {'\xa0'}
+          {v.label}
         </label>
       </div>
     ));
     if (other) {
-      const optionsWithOther = [
-        ...options,
-        { value: 'Other', label: value },
-      ];
-      const otherValue = optionsWithOther.some(o => o.value === value) ? '' : value;
-      const otherPlaceholder = typeof(other) === 'boolean' ? 'please specify' : `${other}`;
+      const optionsWithOther = [...options, { value: 'Other', label: value }];
+      const otherValue = optionsWithOther.some(o => o.value === value)
+        ? ''
+        : value;
+      const otherPlaceholder =
+        typeof other === 'boolean' ? 'please specify' : `${other}`;
       const checked = !this.isRefused() && this.state.otherSelected;
       choices.push(
         <div key={`choice-${id}-other`}>
@@ -194,7 +248,9 @@ export default class Question extends Item {
               checked={checked}
               value={DEFAULT_OTHER_VALUE}
               onChange={this.handleOtherClick}
-            /> <span>Other: </span>
+            />
+            {'\xa0'}
+            <span>Other: </span>
             <input
               type="text"
               name={id}
@@ -203,17 +259,15 @@ export default class Question extends Item {
               value={otherValue || ''}
               onChange={this.handleChange}
               onFocus={this.handleOtherFocus}
-              ref={(input) => { this.otherInput = input; }}
+              ref={input => {
+                this.otherInput = input;
+              }}
             />
           </label>
         </div>
       );
     }
-    return (
-      <div>
-        {choices}
-      </div>
-    );
+    return <div>{choices}</div>;
   }
 
   renderSelect(value, disabled) {
@@ -306,12 +360,16 @@ export default class Question extends Item {
   renderCurrencyInput(value, disabled) {
     const { id } = this.props.item;
 
-    return (<CurrencyInput
-      id={id}
-      value={value === undefined ? '0' : value}
-      onChange={(x, number) => this.props.onChange(this.props.item.id, number)}
-      disabled={this.isRefused() || disabled}
-    />);
+    return (
+      <CurrencyInput
+        id={id}
+        value={value === undefined ? '0' : value}
+        onChange={(x, number) =>
+          this.props.onChange(this.props.item.id, number)
+        }
+        disabled={this.isRefused() || disabled}
+      />
+    );
   }
 
   renderNumberInput(value, disabled) {
@@ -327,6 +385,62 @@ export default class Question extends Item {
         disabled={this.isRefused() || disabled}
       />
     );
+  }
+
+  renderLocationInput(value, disabled) {
+    const { id } = this.props.item;
+    const addressFields = this.props.item.addressFields || [];
+    const autoLoc = this.props.item.autoLocation;
+    let location;
+    if (autoLoc) {
+      const latLongVal = getLatLongFromDevice();
+      location = (
+        <table>
+          <tr>
+            <td>Latitude: </td>
+            <td> </td>
+            <td>{latLongVal[0]}</td>
+          </tr>
+          <tr>
+            <td>Longitude: </td>
+            <td> </td>
+            <td>{latLongVal[1]}</td>
+          </tr>
+        </table>
+      );
+    } else {
+      let tempLoc = addressFields.map((v, i) => (
+        <tr>
+          <td>{v} </td>
+          <td>
+            <input
+              id={`address-${i}`}
+              type="text"
+              name="addressInput"
+              disabled={this.isRefused() || disabled}
+              onChange={this.handleChange}
+            />
+          </td>
+        </tr>
+      ));
+      location = (
+        <table>
+          {tempLoc}
+          <tr>
+            <button
+              id="addressValidation"
+              className="btn btn-default"
+              type="button"
+              onClick={this.handleButtonClick}
+              disabled={this.isRefused() || disabled}
+            >
+              Validate Address
+            </button>
+          </tr>
+        </table>
+      );
+    }
+    return <div key={`location-${id}`}>{location}</div>;
   }
 
   renderRefuseCheckbox(disabled) {
@@ -352,27 +466,53 @@ export default class Question extends Item {
   }
 
   renderTitle() {
-    const icon = this.props.item.hmisId ?
-      null : MISSING_HMIS_ID_ICON;
+    const icon = this.props.item.hmisId ? null : MISSING_HMIS_ID_ICON;
     const title = `${this.props.item.title}`;
     switch (this.props.level) {
       case 1:
-        return <h1 className="title">{title} {icon}</h1>;
+        return (
+          <h1 className="title">
+            {title} {icon}
+          </h1>
+        );
       case 2:
-        return <h2 className="title">{title} {icon}</h2>;
+        return (
+          <h2 className="title">
+            {title} {icon}
+          </h2>
+        );
       case 3:
-        return <h3 className="title">{title} {icon}</h3>;
+        return (
+          <h3 className="title">
+            {title} {icon}
+          </h3>
+        );
       case 4:
-        return <h4 className="title">{title} {icon}</h4>;
+        return (
+          <h4 className="title">
+            {title} {icon}
+          </h4>
+        );
       case 5:
-        return <h5 className="title">{title} {icon}</h5>;
+        return (
+          <h5 className="title">
+            {title} {icon}
+          </h5>
+        );
       case 6:
-        return <h6 className="title">{title} {icon}</h6>;
+        return (
+          <h6 className="title">
+            {title} {icon}
+          </h6>
+        );
       default:
-        return <div className="title">{title} {icon}</div>;
+        return (
+          <div className="title">
+            {title} {icon}
+          </div>
+        );
     }
   }
-
 
   render() {
     const { id, text } = this.props.item;
@@ -386,7 +526,11 @@ export default class Question extends Item {
     }
 
     return (
-      <div className={`question item ${hasError ? 'error' : ''} ${disabled ? 'disabled' : ''}`}>
+      <div
+        className={`question item ${hasError ? 'error' : ''} ${
+          disabled ? 'disabled' : ''
+        }`}
+      >
         {this.renderTitle()}
         <div className="text">{text}</div>
         {this.renderQuestionCategory(this.isRefused() ? '' : value, disabled)}
