@@ -116,7 +116,7 @@ logger.info(`PUB[${this.userId}]: name`, params);
 logger.info(`METHOD[${this.userId}]: name`, params);
 ```
 
-Each method call should use Bert to report succes/error as below. `err` can be a string or an exception.
+Each method call should use Alert to report succes/error as below. `err` can be a string or an exception.
 
 ```
 import Alert from '/imports/ui/alert';
@@ -124,6 +124,23 @@ import Alert from '/imports/ui/alert';
 Alert.error(err);
 Alert.success('Question updated');
 ```
+
+### Reading data from API
+
+Conform to the following schema when returning data from HSLYNK.
+
+```
+clientDetails = {
+  clientId: '1234',
+  schema: 'v2017',
+  firstName: 'John',
+  error: {
+    message: 'Client not found',
+    statusCode: 404
+  }
+}
+```
+
 
 If you make a call to edit/remove HMIS item you need to update local (client side) collection to reflect the
 changes. Ie.

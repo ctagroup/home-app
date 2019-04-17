@@ -28,7 +28,6 @@ class DataTable extends Component {
 
   filterColumns(input, columns, filter) {
     if (!filter || filter === '') return input;
-
     const matchColumns = columns.filter(({ data }) => data !== '_id');
     const lowerCaseFilter = filter.toLowerCase();
     return input.filter(item => {
