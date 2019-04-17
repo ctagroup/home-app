@@ -11,14 +11,14 @@ const SurveyedClientsList = () => {
     accessor: 'client',
     Cell: props => {
       const { client } = props.original;
-      const { clientId, schema } = client;
-      const errorLabel = client.error ?
-        <ErrorLabel hint={client.error.message} text={client.error.statusCode} />
+      const { clientId, schema, error } = client;
+      const errorLabel = error ?
+        <ErrorLabel hint={error.message} text={error.statusCode} />
         : null;
 
       if (errorLabel) {
         return (
-          <span><ClientName client={client} /> {errorLabel}</span>
+          <span>{errorLabel} <ClientName client={client} /></span>
         );
       }
 
@@ -30,7 +30,15 @@ const SurveyedClientsList = () => {
     },
   }, {
     Header: 'Survey',
-    accessor: 'surveyTitle',
+    accessor: 'survey',
+    Cell: props => {
+      const { survey } = props.original;
+      const { surveyTitle, surveyId, error } = survey;
+      const errorLabel = error ?
+        <ErrorLabel hint={error.message} text={error.statusCode} />
+        : null;
+      return <span>{errorLabel} {surveyTitle || surveyId}</span>;
+    },
   }, {
     Header: 'Response Date',
     accessor: 'responseDate',

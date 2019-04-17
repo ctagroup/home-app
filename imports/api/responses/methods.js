@@ -568,7 +568,7 @@ Meteor.injectedMethods({
         clientId,
         schema: clientSchema,
         client,
-        surveyTitle: survey.surveyTitle,
+        survey,
         responseDate: r.createdAt,
       };
       return {
@@ -576,6 +576,7 @@ Meteor.injectedMethods({
         [r.clientId]: surveyedClient,
       };
     }, {});
+    console.log(clientsWithGroupedResponses);
     return Object.values(clientsWithGroupedResponses);
   },
 });

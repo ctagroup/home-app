@@ -85,7 +85,19 @@ class HmisCacheCollection extends Mongo.Collection {
         userId,
       });
     }
-    return data;
+
+    const result = {
+      surveyId,
+      ...data,
+    };
+
+    if (error) {
+      result.error = {
+        message: error.message,
+        statusCode: error.details.code,
+      };
+    }
+    return result;
   }
 
   getData(cacheKey, userId, noDataCallback, forceReload = false) {
