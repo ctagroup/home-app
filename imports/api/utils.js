@@ -79,13 +79,14 @@ export function stringContains(str, query = '') {
 export const removeEmpty = obj =>
   Object.keys(obj)
     .filter(k => obj[k] !== null && obj[k] !== undefined && obj[k] !== '')
-    .reduce(
-      (newObj, k) =>
-        typeof obj[k] === 'object'
-          ? Object.assign(newObj, { [k]: removeEmpty(obj[k]) }) // Recurse.
-          : Object.assign(newObj, { [k]: obj[k] }), // Copy value.
-      {}
-    );
+    .reduce((newObj, k) => {
+      if (typeof obj[k] === 'object') {
+        Object.assign(newObj, { [k]: removeEmpty(obj[k]) }); // Recurse.
+      } else {
+        Object.assign(newObj, { [k]: obj[k] }); // Copy value.
+      }
+      return newObj;
+    }, {});
 
 export function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
