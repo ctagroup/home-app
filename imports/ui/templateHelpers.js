@@ -3,21 +3,19 @@ import FeatureDecisions from '/imports/both/featureDecisions';
 import { userName, userEmails } from '/imports/api/users/helpers';
 
 export const formatDateFunction = date => (date ? moment.utc(date).format('MM/DD/YYYY') : '');
-
-Template.registerHelper('formatDate',
-  formatDateFunction
-);
-
-Template.registerHelper('formatDate99', date => {
+export const formatDateTimeFunction = date =>
+  (date ? moment.utc(date).format('MM/DD/YYYY hh:mm:ss A') : '');
+export const formatDate99Function = date => {
   if (!date) return '';
   if (date === 99) return 'dnc';
   return moment.utc(date).format('MM/DD/YYYY');
-});
+};
 
+Template.registerHelper('formatDate', formatDateFunction);
 
-Template.registerHelper('formatDateTime',
-  date => (date ? moment.utc(date).format('MM/DD/YYYY hh:mm:ss A') : '')
-);
+Template.registerHelper('formatDate99', formatDate99Function);
+
+Template.registerHelper('formatDateTime', formatDateTimeFunction);
 
 UI.registerHelper('log', (value, name = '') => {
   console.log(`Template ${name}`, value); // eslint-disable-line no-console
@@ -34,9 +32,7 @@ UI.registerHelper('isUndefined', (v) => v === undefined);
 
 UI.registerHelper('currentUserGravatar', () => {
   const user = Meteor.user();
-  if (!user) {
-    return '';
-  }
+  if (!user) return '';
   const url = Gravatar.imageUrl(userEmails(user)[0], { secure: true });
   return `<img class="avatar small" src="${url}" />`;
 });

@@ -1,15 +1,16 @@
 <template name="viewClient">
     {{#with client}}
     {{{alertMessages}}}
-    <!-- <div>
-      { {> React
+    <div>
+      {{> React
         component=component
         client=../client
         eligibleClient=eligibleClient
         permissions=permissions
         selectedTab=selectedTab
-      } }
-    </div> -->
+        data=data
+      }}
+    </div>
     <div id="viewClient_content" class="col-xs-12">
       <div class="row client-profile-container">
         <div class="client-info">
@@ -46,6 +47,7 @@
 
           <div class="tab-content card">
             <!--Panel 1.5 Eligibility -->
+            <!--
             <div class="tab-pane fade {{#if isActive 'eligibility'}}in show active {{else}}no-show{{/if}}" id="panel-eligibility" role="tabpanel">
               {{#with eligibleClient}}
                 {{#unless error}}
@@ -65,6 +67,7 @@
                 {{/unless}}
               {{/with}}
             </div>
+          -->
 
             <!--Panel ROIS -->
             <div class="tab-pane fade {{#if isActive 'rois'}}in show active {{else}}no-show{{/if}}" id="panel-rois" role="tabpanel">
@@ -115,12 +118,14 @@
             {{/if}}
             <!--/.Panel 3-->
             <!--Panel 4 Responses -->
+            <!--
             <div class="tab-pane fade no-show" id="panel-responses" role="tabpanel">
                 <br>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil odit magnam minima, soluta doloribus
                     reiciendis molestiae placeat unde eos molestias. Quisquam aperiam, pariatur. Tempora, placeat ratione
                     porro voluptate odit minima.</p>
             </div>
+            -->
             <!--/.Panel 4-->
             {{#if showEnrollments}}
             <!--Panel 5 Enrollments -->
@@ -333,7 +338,7 @@
                                       </select>
                                   </div>
                                   <div class='col-md-2'>
-                                      <label>select Service</label>
+                                      <label>Select Service</label>
                                       <select name='class' class='service_type form-control' id='service_type'>
                                           <option value=''>Select Service</option>
                                           <option value='Basic Needs'>Basic Needs</option>

@@ -22,6 +22,7 @@ import { FilesAccessRoles, GlobalHouseholdsAccessRoles } from '/imports/config/p
 
 import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 import { getActiveTagNamesForDate } from '/imports/api/tags/tags';
+import { dataCollectionStages } from '/imports/both/helpers';
 
 import './enrollmentsListView.js';
 import './clientDeleteReason.js';
@@ -32,14 +33,6 @@ import '../enrollments/enrollmentsNew';
 import '../enrollments/enrollmentsUpdate';
 import '../enrollments/dropdownHelper.js';
 import './viewClient.html';
-
-// TODO: move to global import
-const dataCollectionStages = {
-  ENTRY: 1,
-  UPDATE: 2,
-  EXIT: 3,
-  ANNUAL: 5, // Annual Assessments
-};
 
 const changeQueryWithParam = (query, param, add, value) => {
   if (query === '') return `?${param}=${value}`;
@@ -165,6 +158,63 @@ Template.viewClient.helpers(
         exitEnrollment: getEnrollmentType('EXIT'),
         showEditButton: Template.instance() && Template.instance().data.showEditButton,
         isSkidrowApp: FeatureDecisions.createFromMeteorSettings().isSkidrowApp(),
+      };
+    },
+    data() {
+      return {
+        enrollments() {
+          const currentClientId = Router.current().params._id;
+          const client = Clients.findOne(currentClientId);
+          const enrollments = flattenKeyVersions(client, 'enrollments')
+            .sort((a, b) => {
+              if (a.entryDate === b.entryDate) return a.dateUpdated - b.dateUpdated;
+              return a.entryDate - b.entryDate;
+            });
+          return enrollments;
+        },
+      };
+    },
+    helpers() {
+      return {
+        enrollments: {
+          viewEnrollmentPath(enrollment, enrollmentSurveyType) {
+            const { _id } = Router.current().params;
+            const { schema } = Router.current().params.query;
+            const { enrollmentId } = enrollment;
+            const projectId = Meteor.user().activeProjectId;
+            const surveyId = getEnrollmentSurveyIdForProject(projectId, enrollmentSurveyType);
+
+            const enrollmentSurveyTypeMap = {
+              entry: dataCollectionStages.ENTRY,
+              update: dataCollectionStages.UPDATE,
+              exit: dataCollectionStages.EXIT,
+            };
+            const dataCollectionStage = enrollmentSurveyTypeMap[enrollmentSurveyType];
+
+            return Router.path('viewEnrollmentAsResponse',
+              { _id, enrollmentId },
+              { query: { schema, surveyId, dataCollectionStage } }
+            );
+          },
+          currentProjectHasEnrollment(enrollmentSurveyType) {
+            const projectId = Meteor.user().activeProjectId;
+            const surveyId = getEnrollmentSurveyIdForProject(projectId, enrollmentSurveyType);
+            return !!surveyId;
+          },
+          enrollmentResponses(enrollmentId, dataCollectionStage) {
+            const options = { 'enrollmentInfo.dataCollectionStage': dataCollectionStage };
+            const optionKey = dataCollectionStage === dataCollectionStages.ENTRY ?
+            'enrollment.enrollment-0.id' : 'enrollmentInfo.enrollmentId';
+            options[optionKey] = enrollmentId;
+            return Responses.find(options).fetch();
+          },
+          enrollmentExited(enrollmentId) {
+            return Responses.find({
+              'enrollmentInfo.enrollmentId': enrollmentId,
+              'enrollmentInfo.dataCollectionStage': dataCollectionStages.EXIT,
+            }).count() >= 1;
+          },
+        },
       };
     },
     selectedTab() {
@@ -332,9 +382,7 @@ Template.viewClient.helpers(
       return enrollments
       // .filter(withResponse)
       .sort((a, b) => {
-        if (a.entryDate === b.entryDate) {
-          return a.dateUpdated - b.dateUpdated;
-        }
+        if (a.entryDate === b.entryDate) return a.dateUpdated - b.dateUpdated;
         return a.entryDate - b.entryDate;
       });
     },

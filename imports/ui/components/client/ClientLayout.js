@@ -3,9 +3,10 @@ import ClientTabSelector from './ClientTabSelector';
 import ClientGeneralInfo from './ClientGeneralInfo';
 import ClientOverview from './ClientOverview';
 import ClientTab from './ClientTab';
+import ClientEnrollments from './ClientEnrollments';
 
 function ClientLayout(props) {
-  const { client, permissions, eligibleClient } = props;
+  const { client, permissions, eligibleClient, data, helpers } = props;
   const {
     showReferralStatus,
     showEnrollments,
@@ -57,6 +58,13 @@ function ClientLayout(props) {
           <div className="tab-content card">
             <ClientTab selectedTab={selectedTab} id={'overview'} >
               <ClientOverview client={client} permissions={{ showEditButton }} />
+            </ClientTab>
+            <ClientTab selectedTab={selectedTab} id={'enrollments'} >
+              <ClientEnrollments
+                client={client} permissions={{ showEditButton }}
+                enrollments={data.enrollments()}
+                helpers={helpers.enrollments}
+              />
             </ClientTab>
           </div>
         </div>
