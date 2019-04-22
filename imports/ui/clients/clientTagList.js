@@ -6,11 +6,26 @@ import { setAppContext } from '/imports/ui/app/appContext';
 import { getActiveTagsForDate } from '/imports/api/tags/tags';
 
 const getBonusScore = () => {
+  // const tags = Tags.find().fetch();
+  const mfTag = Tags.findOne({ name: 'Medically Frail' });
+  const wpcOneTag = Tags.findOne({ name: 'MC-WPC' });
+  const wpcTwoTag = Tags.findOne({ name: 'SBC-WPC' });
+  const uniqTagIds = [mfTag.id, wpcOneTag.id, wpcTwoTag.id];
+
   const clientTags = ClientTags.find().fetch();
   const now = moment().format('YYYY-MM-DD');
-  const activeTags = getActiveTagsForDate(clientTags, now);
-  const activeTagScores = activeTags.map((tag) => tag.score);
-  return _.max(activeTagScores);
+  let uniqTagFlag = false;
+  const activeTags = getActiveTagsForDate(clientTags, now)
+    .reduce((acc, tag) => {
+      if (uniqTagIds.includes(tag.id)) {
+        uniqTagFlag = true;
+        return acc;
+      }
+      return [...acc, tag];
+    }, []);
+  const activeTagScores = activeTags.reduce((acc, tag) => acc + tag.score, 0);
+  if (uniqTagFlag) return activeTagScores + mfTag.score;
+  return activeTagScores;
 };
 
 Template.clientTagListView.helpers({
