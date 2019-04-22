@@ -3,6 +3,7 @@ import '/imports/ui/dataTable/dataTableDeleteButton';
 import { fullName } from '/imports/api/utils';
 import BlazeTemplate from '/imports/ui/components/BlazeComponent';
 import React from 'react';
+import Users from '/imports/api/users/users';
 
 
 export const TableDom = '<"box"<"box-header"<"box-toolbar"<"clearfix"ri><"pull-left"<lf>><"pull-right"p>>><"box-body table-responsive"t>>'; // eslint-disable-line max-len
@@ -202,10 +203,11 @@ export function deleteUserButton() {
     filterable: false,
     render() { return ''; },
     createdCell(node, _id) {
-      const name = '';
+      const user = Users.findOne(_id);
+      const name = fullName(user.services.HMIS || {});
       const templateData = {
         _id,
-        message: `Are you sure you want to delete user ${name} (${_id})?`,
+        message: `Are you sure you want to delete user ${name}?`,
         method: 'users.delete',
         args: [_id],
         onSuccess() {
@@ -215,10 +217,11 @@ export function deleteUserButton() {
       Blaze.renderWithData(Template.DataTableDeleteButton, templateData, node);
     },
     reactCreatedCell(node, _id) {
-      const name = '';
+      const user = Users.findOne(_id);
+      const name = fullName(user.services.HMIS || {});
       const templateData = {
         _id,
-        message: `Are you sure you want to delete user ${name} (${_id})?`,
+        message: `Are you sure you want to delete user ${name}?`,
         method: 'users.delete',
         args: [_id],
         onSuccess() {
