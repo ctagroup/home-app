@@ -23,7 +23,7 @@ Meteor.methods({
     return hc.api('house-matching-v2').getEligibleClientsPage(pageNumber, pageSize, sort, order);
   },
 
-  updateBonusScore(clientId, bonusScore) {
+  'eligibleClients.updateBonusScore'(clientId, bonusScore) {
     logger.info(`METHOD[${this.userId}]: updateScores(${Array.isArray(clientId)}, ${clientId})`); // eslint-disable-line max-len
     check(clientId, Match.OneOf(String, [String])); // eslint-disable-line new-cap
     if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {

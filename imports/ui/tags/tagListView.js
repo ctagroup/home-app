@@ -27,4 +27,12 @@ Template.tagListView.helpers({
         // console.log('tags.delete', id, err, res);
       });
   },
+  updateTag() {
+    return (id, name, score) =>
+      Meteor.call('tagApi', 'updateTag', id, { name, score }, (err, res) => {
+        console.log('updateTag', err, res);
+        if (!err) Tags._collection.upsert(id, {$set: res}); // eslint-disable-line
+        // console.log('tags.delete', id, err, res);
+      });
+  },
 });

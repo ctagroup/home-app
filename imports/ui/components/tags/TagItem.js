@@ -6,14 +6,28 @@ class TagItem extends Component {
   //   // this.trigger = this.perPage.bind(this);
     this.state = {
       edit: false,
-      tempName: this.props.name,
+      name: this.props.data.name,
+      score: this.props.data.score,
     };
     this.editableField = this.editableField.bind(this);
     this.removeTag = this.removeTag.bind(this);
+    this.editTag = this.editTag.bind(this);
+    this.editButton = this.editButton.bind(this);
+    this.saveTag = this.saveTag.bind(this);
+  }
+
+  editTag() {
+    this.setState({ edit: !this.state.edit });
+  }
+
+  saveTag() {
+    const { name, score } = this.state;
+    this.props.updateTagHandler(this.props.data.id, name, score);
+    this.editTag();
   }
 
   removeTag() {
-    return () => this.props.removeTagHandler(this.props.data.id);
+    return this.props.removeTagHandler(this.props.data.id);
   }
 
   handleChange(key, event) {
@@ -22,21 +36,35 @@ class TagItem extends Component {
   }
 
   editableField() {
-    return (<div>
+    return (<span className="form form-inline">
       <input
+        className="form-control"
         type="text"
         onChange={(value) => this.handleChange('name', value)}
+        defaultValue={this.state.name}
+        placeholder="Tag name"
       />
       <input
-        type="text"
+        className="form-control"
+        type="number"
         onChange={(value) => this.handleChange('score', value)}
+        defaultValue={this.state.score}
+        placeholder="Tag score"
       />
-    </div>);
+      <a style={{ margin: '5px' }}><i className="fa fa-save" onClick={this.saveTag}></i></a>
+      {/* this.editButton() */}
+    </span>);
   }
   readOnlyField() {
     const { data: { name, score } } = this.props;
 
-    return (<div>{name}:&nbsp;{score}</div>);
+    return (<span>{name}:&nbsp;{score}</span>);
+  }
+
+  editButton() {
+    return (<a style={{ margin: '5px' }}>
+      <i className="fa fa-pencil" onClick={this.editTag}></i>
+    </a>);
   }
 
   render() {
@@ -44,11 +72,16 @@ class TagItem extends Component {
     const removable = true;
     const { edit } = this.state;
 
+
     return (
-      <span className="btn btn-default btn-sm" style={{ margin: '5px' }}>
+      <span
+        className="btn btn-default btn-sm"
+        style={{ margin: '5px' }}
+      >
         {edit ? this.editableField() : this.readOnlyField()}
-        {editable && <a><i className="fa fa-pencil"></i></a>}
-        {removable && <a><i className="fa fa-times" onClick={this.removeTag()}></i></a>}
+        {editable && this.editButton()}
+        {removable && <a style={{ margin: '5px' }}>
+          <i className="fa fa-times" onClick={this.removeTag}></i></a>}
       </span>
     );
   }

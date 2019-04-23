@@ -40,7 +40,7 @@ Template.clientTagListView.helpers({
   newClientTagHandler() {
     return (res) => {
       ClientTags._collection.insert({ _id: res.id, ...res }); // eslint-disable-line
-      Meteor.call('updateBonusScore', res.clientId, getBonusScore());
+      Meteor.call('eligibleClients.updateBonusScore', res.clientId, getBonusScore());
     };
     // return (data) =>
     //   Meteor.call('tagApi', 'createClientTag', { operation: 1, ...data }, (err, res) => {
@@ -50,7 +50,7 @@ Template.clientTagListView.helpers({
   removeClientTagHandler() {
     return (res) => {
       ClientTags._collection.insert({ _id: res.id, ...res }); // eslint-disable-line
-      Meteor.call('updateBonusScore', res.clientId, getBonusScore());
+      Meteor.call('eligibleClients.updateBonusScore', res.clientId, getBonusScore());
     };
   },
   setAppContext() {
