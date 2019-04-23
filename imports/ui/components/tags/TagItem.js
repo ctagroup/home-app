@@ -40,7 +40,7 @@ class TagItem extends Component {
   }
 
   render() {
-    const editable = false;
+    const editable = true;
     const removable = true;
     const { edit } = this.state;
 

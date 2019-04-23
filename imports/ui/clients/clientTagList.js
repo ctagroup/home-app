@@ -7,10 +7,9 @@ import { getActiveTagsForDate } from '/imports/api/tags/tags';
 
 const getBonusScore = () => {
   // const tags = Tags.find().fetch();
-  const mfTag = Tags.findOne({ name: 'Medically Frail' });
-  const wpcOneTag = Tags.findOne({ name: 'MC-WPC' });
-  const wpcTwoTag = Tags.findOne({ name: 'SBC-WPC' });
-  const uniqTagIds = [mfTag.id, wpcOneTag.id, wpcTwoTag.id];
+  const uniqTagNames = ['Medically Frail', 'MC-WPC', 'SBC-WPC'];
+  const uniqTags = uniqTagNames.map((name) => Tags.findOne({ name }));
+  const uniqTagIds = uniqTags.map((tag) => tag && tag.id);
 
   const clientTags = ClientTags.find().fetch();
   const now = moment().format('YYYY-MM-DD');
@@ -24,7 +23,7 @@ const getBonusScore = () => {
       return [...acc, tag];
     }, []);
   const activeTagScores = activeTags.reduce((acc, tag) => acc + tag.score, 0);
-  if (uniqTagFlag) return activeTagScores + mfTag.score;
+  if (uniqTagFlag) return activeTagScores + uniqTags[0].score;
   return activeTagScores;
 };
 
