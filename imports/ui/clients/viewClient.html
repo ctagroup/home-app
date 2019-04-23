@@ -9,39 +9,11 @@
         permissions=permissions
         selectedTab=selectedTab
         data=data
+        helpers=helpers
       }}
     </div>
     <div id="viewClient_content" class="col-xs-12">
       <div class="row client-profile-container">
-        <div class="client-info">
-          <div class="row">
-            <div class="col-xs-12 col-sm-3">
-              {{#if photo}}
-                <img class="profile-img" alt="Profile img" src="{{photo}}" />
-              {{/if}}
-              <!-- <img src="./img/john-pic.jpg" class="profile-img" alt="Profile img"> -->
-            </div>
-            <div class="col-xs-12 col-sm-3"><div class="text-wrap">
-              <span class="title">FIRST NAME</span><h2>{{firstName}}</h2>
-              <span class="title">MIDDLE NAME</span><h2>{{middleName}}</h2>
-              <span class="title">LAST NAME</span><h2>{{lastName}}</h2>
-            </div></div>
-            <div class="col-xs-12 col-sm-3"><div class="text-wrap">
-              <span class="title">DOB</span><h4>{{formatDate dob}}</h4>
-              <span class="title">SSN</span><h4>{{formatSSN ssn}}</h4>
-              <div class="title view-id">
-                ClientId: {{_id}}<br />
-                DedupId: {{dedupClientId}}
-              </div>
-            </div></div>
-            <div class="col-xs-12 col-sm-3"><div class="text-wrap">
-              <span class="title">EMAIL</span><h4>{{emailAddress}}</h4>
-              <span class="title">PHONE NUMBER</span><h4>{{phoneNumber}}</h4>
-              <span class="title">Active Tags</span><h4>{{clientTagNames}}</h4>
-            </div></div>
-          </div>
-        </div>
-
 
         <div class="tab-section">
 

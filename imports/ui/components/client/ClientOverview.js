@@ -5,10 +5,17 @@ import { formatSSN } from './helpers';
 function ClientOverview(props) {
   const {
     permissions: { showEditButton },
+    helpers: {
+      getText,
+    },
     client: {
       suffix,
       ssn,
       dob,
+      race,
+      ethnicity,
+      gender,
+      veteranStatus,
     } } = props;
   return (
     <div className="info-container">
@@ -28,26 +35,26 @@ function ClientOverview(props) {
           </div>
           <div className="">
             <p className="clabel">Race</p>
-            <p className="cvalue">[[getText 'race' race}}</p>
+            <p className="cvalue">{getText('race', race)}</p>
           </div>
         </div>
         <div className="col-xs-12 col-sm-6 col-md-6">
           <div className="">
             <p className="clabel">Ethnicity</p>
-            <p className="cvalue">[[getText 'ethnicity' ethnicity}}</p>
+            <p className="cvalue">{getText('ethnicity', ethnicity)}</p>
           </div>
           <div className="">
             <p className="clabel">Gender</p>
-            <p className="cvalue">[[getText 'gender' gender}}</p>
+            <p className="cvalue">{getText('gender', gender)}</p>
           </div>
           <div className="">
             <p className="clabel">Veteran Status</p>
-            <p className="cvalue">[[getText 'veteranStatus' veteranStatus}}</p>
+            <p className="cvalue">{getText('veteranStatus', veteranStatus)}</p>
           </div>
           {/*
           <div className="">
             <p className="clabel">Disabling Condition</p>
-            <p className="cvalue">[[getText 'disablingcondition' disablingConditions}}</p>
+            <p className="cvalue">{getText('disablingcondition' disablingConditions)}</p>
           </div>
           */}
         </div>

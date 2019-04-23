@@ -162,6 +162,19 @@ Template.viewClient.helpers(
     },
     data() {
       return {
+        eligibleClient() {
+          // TODO [VK]: check by updated at instead of schema version
+          const currentClientId = Router.current().params._id;
+          const client = Clients.findOne(currentClientId);
+          if (!client) return null;
+          const versions = flattenKeyVersions(client, 'eligibleClient');
+          const nonError = versions.filter(({ error }) => !error);
+          if (nonError.length) {
+            updateEligibility(client);
+            return nonError[nonError.length - 1];
+          }
+          return versions[versions.length - 1];
+        },
         enrollments() {
           const currentClientId = Router.current().params._id;
           const client = Clients.findOne(currentClientId);
@@ -176,6 +189,26 @@ Template.viewClient.helpers(
     },
     helpers() {
       return {
+        overview: {
+          getText(text, code) {
+            const definition = code === undefined ? '?' : code;
+            const question = Questions.findOne({ name: text });
+            const intCode = parseInt(code, 10);
+            if (question && question.options) {
+              const foundQuestion = question.options.find(
+                (option) => parseInt(option.value, 10) === intCode);
+              return foundQuestion ? foundQuestion.description : definition;
+            }
+            switch (text) {
+              case 'race': return getRace(intCode, definition);
+              case 'ethnicity': return getEthnicity(intCode, definition);
+              case 'gender': return getGender(intCode, definition);
+              case 'veteranStatus':
+              case 'disablingcondition': return getYesNo(intCode, definition);
+              default: return definition;
+            }
+          },
+        },
         enrollments: {
           viewEnrollmentPath(enrollment, enrollmentSurveyType) {
             const { _id } = Router.current().params;
@@ -508,25 +541,6 @@ Template.viewClient.helpers(
     showGlobalHousehold() {
       const hasPermission = Roles.userIsInRole(Meteor.userId(), GlobalHouseholdsAccessRoles);
       return hasPermission && this && this.clientId;
-    },
-
-    getText(text, code) {
-      const definition = code === undefined ? '?' : code;
-      const question = Questions.findOne({ name: text });
-      const intCode = parseInt(code, 10);
-      if (question && question.options) {
-        const foundQuestion = question.options.find(
-          (option) => parseInt(option.value, 10) === intCode);
-        return foundQuestion ? foundQuestion.description : definition;
-      }
-      switch (text) {
-        case 'race': return getRace(intCode, definition);
-        case 'ethnicity': return getEthnicity(intCode, definition);
-        case 'gender': return getGender(intCode, definition);
-        case 'veteranStatus':
-        case 'disablingcondition': return getYesNo(intCode, definition);
-        default: return definition;
-      }
     },
 
     enrollmentResponses(enrollmentId, dataCollectionStage) {

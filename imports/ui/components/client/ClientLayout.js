@@ -4,6 +4,7 @@ import ClientGeneralInfo from './ClientGeneralInfo';
 import ClientOverview from './ClientOverview';
 import ClientTab from './ClientTab';
 import ClientEnrollments from './ClientEnrollments';
+import ClientEligibility from './ClientEligibility';
 
 function ClientLayout(props) {
   const { client, permissions, eligibleClient, data, helpers } = props;
@@ -57,7 +58,15 @@ function ClientLayout(props) {
 
           <div className="tab-content card">
             <ClientTab selectedTab={selectedTab} id={'overview'} >
-              <ClientOverview client={client} permissions={{ showEditButton }} />
+              <ClientOverview
+                client={client} permissions={{ showEditButton }} helpers={helpers.overview}
+              />
+            </ClientTab>
+            <ClientTab selectedTab={selectedTab} id={'eligibility'} >
+              <ClientEligibility
+                eligibleClient={data.eligibleClient()}
+                client={client} permissions={{ showEditButton }} helpers={helpers.overview}
+              />
             </ClientTab>
             <ClientTab selectedTab={selectedTab} id={'enrollments'} >
               <ClientEnrollments

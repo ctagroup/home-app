@@ -20,18 +20,19 @@ const reasonsHash = reasons.reduce((acc, reason) => ({ ...acc, [reason.id]: reas
 const reasonsList = reasons;
 
 function ClientEligibility(props) {
-  const [removalDate, changeDate] = useState(Date.now());
+  const [removalDate, changeDate] = useState(new Date());
   const [removalRemarks, changeRemarks] = useState('');
   const [removalReason, changeReason] = useState('');
 
-  const { eligibleClient } = props;
+  let { eligibleClient } = props;
+  if (!eligibleClient) eligibleClient = {};
 
   const addToActiveList = () => console.log('implement this function (addToActiveList)');
   const removeFromActiveList = () => {
     console.log('implement this function (removeFromActiveList)');
     return { removalDate, removalReason, removalRemarks };
   };
-  if (eligibleClient.error) return null;
+  if (eligibleClient && eligibleClient.error) return null;
   // return (<div className="row margin-top-35">{client.id}</div>);
   return (
     <div className="row margin-top-35">
@@ -71,7 +72,7 @@ function ClientEligibility(props) {
             </div>
             {/** {#if showRemovalDetails} */}
             {/* if details required for selected option: */}
-            {reasonsHash[removalReason].required &&
+            {reasonsHash[removalReason] && reasonsHash[removalReason].required &&
               <div className="form-group">
                 <label htmlFor="removalRemarks"> Additional notes </label>
                 <input

@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { dataCollectionStages, dataCollectionStageNames,
-  getStageId, getStageName } from '/imports/both/helpers';
+  // getStageId, getStageName
+} from '/imports/both/helpers';
 
 import {
   formatDateTimeFunction as formatDateTime,
@@ -76,12 +77,14 @@ function ClientEnrollments(props) {
                   </td>
 
                   <td>
-                    {!currentProjectHasEnrollment(dataCollectionStages.ENTRY) && noSurveyText(dataCollectionStages.ENTRY)}
+                    {!currentProjectHasEnrollment(dataCollectionStages.ENTRY) &&
+                      noSurveyText(dataCollectionStages.ENTRY)}
                     {responsesForStage(enrollment, dataCollectionStages.ENTRY)}
                   </td>
 
                   <td>
-                    {!currentProjectHasEnrollment(dataCollectionStages.UPDATE) && noSurveyText(dataCollectionStages.UPDATE)}
+                    {!currentProjectHasEnrollment(dataCollectionStages.UPDATE) &&
+                      noSurveyText(dataCollectionStages.UPDATE)}
                     {responsesForStage(enrollment, dataCollectionStages.UPDATE)}
                     {currentProjectHasEnrollment(dataCollectionStages.UPDATE) &&
                       <a
