@@ -151,6 +151,8 @@ Meteor.methods({
 
     hmisClients = hmisClients.filter(client => client.link);
 
+    logger.debug('search results', hmisClients.length);
+
     let localClients = [];
     if (!excludeLocalClients) {
       try {

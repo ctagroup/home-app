@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { TableDom } from '/imports/ui/dataTable/helpers';
 import { ReactiveVar } from 'meteor/reactive-var';
+import { fullName } from '/imports/api/utils';
 import './viewAllClients.html';
 
 const tableOptions = {
@@ -12,7 +13,7 @@ const tableOptions = {
           { _id: row.clientId },
           { query: `schema=${row.schema}` }
         );
-        return `<a href="${url}">${row.firstName.trim()} ${row.lastName.trim()}</a>`;
+        return `<a href="${url}">${fullName(row)}</a>`;
       },
     },
     {
@@ -28,7 +29,7 @@ const tableOptions = {
 
 let tableData = [];
 
-Template.viewAllClients.onCreated(function () {
+Template.viewAllClients.onCreated(function onCreated() {
   const searchKey = Router.current().params.searchKey || '';
   this.records = new ReactiveVar(0);
   Meteor.call('searchClient', searchKey, { limit: 1000 }, (err, res) => {
