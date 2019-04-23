@@ -20,12 +20,12 @@ Template.tagListView.helpers({
   },
 
   removeTag() {
-    return (id) =>
-      Meteor.call('tagApi', 'deleteTag', id, (err, res) => {
-        console.log('deleteTag', err, res);
-        if (!err) Tags._collection.remove(id); // eslint-disable-line
-        // console.log('tags.delete', id, err, res);
-      });
+    return (id) => Tags._collection.remove(id); // eslint-disable-line
+      // Meteor.call('tagApi', 'deleteTag', id, (err, res) => {
+      //   console.log('deleteTag', err, res);
+      //   if (!err) Tags._collection.remove(id); // eslint-disable-line
+      //   // console.log('tags.delete', id, err, res);
+      // });
   },
   updateTag() {
     return (id, name, score) =>
