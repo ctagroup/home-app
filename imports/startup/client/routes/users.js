@@ -69,6 +69,9 @@ Router.route('adminDashboardusersEdit', {
     const userId = Meteor.userId();
     const user = Users.findOne(this.params._id);
     const data = user && user.services && user.services.HMIS || {};
+    if (user && user.services) {
+      user.HMIS = user.services.HMIS;
+    }
     return {
       title: 'Users',
       subtitle: user ? `Edit ${fullName(data)} (${data.status})` : 'Not found',

@@ -62,13 +62,12 @@ Meteor.methods({
     const roles = (doc.roles && doc.roles[Roles.GLOBAL_GROUP]) || [];
     logger.info(`Setting roles of user ${userId} to`, roles);
     Roles.setUserRoles(userId, roles, Roles.GLOBAL_GROUP);
-
     Users.update(userId, { $set: {
-      'services.HMIS.firstName': doc.services.HMIS.firstName,
-      'services.HMIS.middleName': doc.services.HMIS.middleName,
-      'services.HMIS.lastName': doc.services.HMIS.lastName,
-      'services.HMIS.gender': doc.services.HMIS.gender,
-      'services.HMIS.emailAddress': doc.services.HMIS.emailAddress,
+      'services.HMIS.firstName': doc.HMIS.firstName,
+      'services.HMIS.middleName': doc.HMIS.middleName,
+      'services.HMIS.lastName': doc.HMIS.lastName,
+      'services.HMIS.gender': doc.HMIS.gender,
+      'services.HMIS.emailAddress': doc.HMIS.emailAddress,
     } });
 
     // TODO: permissions, only admin can do it
@@ -81,14 +80,14 @@ Meteor.methods({
     const api = HmisClient.create(this.userId).api('user-service');
 
     api.updateUser(hmisId, {
-      firstName: doc.services.HMIS.firstName,
-      middleName: doc.services.HMIS.middleName,
-      lastName: doc.services.HMIS.lastName,
-      gender: doc.services.HMIS.gender,
-      emailAddress: doc.services.HMIS.emailAddress,
+      firstName: doc.HMIS.firstName,
+      middleName: doc.HMIS.middleName,
+      lastName: doc.HMIS.lastName,
+      gender: doc.HMIS.gender,
+      emailAddress: doc.HMIS.emailAddress,
     });
 
-    const newRoles = ensureRolesFormat(doc.services.HMIS.roles);
+    const newRoles = ensureRolesFormat(doc.HMIS.roles);
     const oldRoles = ensureRolesFormat(currentHMISData.roles);
     const oldRoleIds = oldRoles.map(item => item.id);
     const newRoleIds = newRoles.map(item => item.id);
