@@ -29,6 +29,7 @@ Template.preliminarySurvey.events(
   {
     'click .js-close-preliminary-survey-modal': (event) => {
       event.preventDefault();
+      $('body').removeClass('modal-open');
       $('#preliminarySurveyModal').modal('hide');
     },
     'click .js-goto-dashboard': (event) => {
