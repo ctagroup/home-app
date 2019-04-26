@@ -10,28 +10,33 @@ class TagItem extends Component {
       name: this.props.data.name,
       score: this.props.data.score,
     };
-    this.editableField = this.editableField.bind(this);
-    this.removeButton = this.removeButton.bind(this);
-    this.editTag = this.editTag.bind(this);
-    this.editButton = this.editButton.bind(this);
+    this.renderEditableField = this.renderEditableField.bind(this);
+    this.renderRemoveButton = this.renderRemoveButton.bind(this);
+    this.toggleEditTag = this.toggleEditTag.bind(this);
+    this.renderEditButton = this.renderEditButton.bind(this);
     this.saveTag = this.saveTag.bind(this);
   }
 
-  editTag() {
+  toggleEditTag() {
     this.setState({ edit: !this.state.edit });
   }
 
   saveTag() {
     const { name, score } = this.state;
     this.props.updateTagHandler(this.props.data.id, name, score);
-    this.editTag();
+    this.toggleEditTag();
   }
 
   // removeTag() {
   //   return this.props.removeTagHandler(this.props.data.id);
   // }
 
-  removeButton() {
+  handleChange(key, event) {
+    const input = event.target.value;
+    this.setState({ [key]: input });
+  }
+
+  renderRemoveButton() {
     const _id = this.props.data.id;
     const rowData = this.props.data;
     const onSuccessCallback = this.props.removeTagHandler;
@@ -50,12 +55,7 @@ class TagItem extends Component {
     return blazeData('DataTableTextButton', templateData);
   }
 
-  handleChange(key, event) {
-    const input = event.target.value;
-    this.setState({ [key]: input });
-  }
-
-  editableField() {
+  renderEditableField() {
     return (<span className="form form-inline">
       <input
         className="form-control"
@@ -72,18 +72,18 @@ class TagItem extends Component {
         placeholder="Tag score"
       />
       <a style={{ margin: '5px' }}><i className="fa fa-save" onClick={this.saveTag}></i></a>
-      {/* this.editButton() */}
     </span>);
   }
-  readOnlyField() {
+
+  renderReadOnlyField() {
     const { data: { name, score } } = this.props;
 
     return (<span>{name}:&nbsp;{score}</span>);
   }
 
-  editButton() {
+  renderEditButton() {
     return (<a style={{ margin: '5px' }}>
-      <i className="fa fa-pencil" onClick={this.editTag}></i>
+      <i className="fa fa-pencil" onClick={this.toggleEditTag}></i>
     </a>);
   }
 
@@ -97,9 +97,9 @@ class TagItem extends Component {
         className="btn btn-default btn-sm"
         style={{ margin: '5px' }}
       >
-        {edit ? this.editableField() : this.readOnlyField()}
-        {editable && this.editButton()}
-        {this.removeButton()}
+        {edit ? this.renderEditableField() : this.renderReadOnlyField()}
+        {editable && this.renderEditButton()}
+        {this.renderRemoveButton()}
         {/** removable && <a style={{ margin: '5px' }}>
           <i className="fa fa-times" onClick={this.removeTag}></i></a> */}
       </span>
