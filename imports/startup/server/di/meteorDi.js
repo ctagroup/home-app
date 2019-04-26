@@ -1,6 +1,7 @@
 // import { logger } from '/imports/utils/logger';
 import awilix from 'awilix';
 import Sentry from '@sentry/node';
+import Future from 'fibers/future';
 import { setupEndpointDependencies } from './diSetup';
 
 
@@ -60,24 +61,50 @@ export function registerInjectedMeteorMethods(container) {
 }
 
 export function registerInjectedMeteorPublish(container) {
-  Meteor.injectedPublish = (name, publishFcn, registerScopeCallback = null) => { // eslint-disable-line
+  Meteor.injectedPublish = (name, publishFcn, setupDependenciesCallback = setupEndpointDependencies) => { // eslint-disable-line
     return Meteor.publish(name, function (...args) { // eslint-disable-line
       const publicationWrapper = (ctx) => {
         this.context = ctx;
         return publishFcn.bind(this);
       };
-      const scope = container.createScope();
-      scope.register({
-        userId: awilix.asValue(this.userId),
-        ...(registerScopeCallback ? registerScopeCallback() : {}),
-        __injected_fcn__: awilix.asFunction(publicationWrapper),
+
+      const future = new Future();
+
+      Sentry.withScope((sentryScope) => {
+        // configure sentry scope
+        sentryScope.setUser({
+          id: this.userId,
+        });
+        sentryScope.setTags({
+          type: 'publication',
+          name,
+        });
+
+        sentryScope.addBreadcrumb({ message: `calling ${name}` });
+
+        // configure DI
+        const containerScope = container.createScope();
+        containerScope.register({
+          userId: awilix.asValue(this.userId),
+          sentryScope: awilix.asValue(sentryScope),
+          __injected_fcn__: awilix.asFunction(publicationWrapper),
+        });
+
+        if (typeof(setupDependenciesCallback) === 'function') {
+          setupDependenciesCallback(`publication.${name}`, containerScope);
+        }
+
+        // call publication with injected dependencies
+        try {
+          const result = containerScope.resolve('__injected_fcn__')(...args);
+          future.return(result);
+        } catch (err) {
+          Sentry.captureException(err);
+          future.throw(err);
+        }
       });
-      try {
-        return scope.resolve('__injected_fcn__')(...args);
-      } catch (err) {
-        console.error(err); // eslint-disable-line
-        throw err;
-      }
+
+      return future.wait();
     });
   };
 }

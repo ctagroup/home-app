@@ -19,7 +19,7 @@ export function setupInitialDependencies(container) {
 }
 
 export function setupEndpointDependencies(endpointName, container) {
-  if (endpointName.startsWith('method')) {
+  if (endpointName.startsWith('method') || endpointName.startsWith('publication')) {
     container.register({
       endpointName: awilix.asValue(endpointName),
     });
