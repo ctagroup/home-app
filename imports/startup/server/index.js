@@ -1,6 +1,6 @@
 // import { SyncedCron } from 'meteor/littledata:synced-cron';
 
-import './diContainer';
+import '/imports/startup/server/di/diContainer.js';
 
 import { logger } from '/imports/utils/logger';
 
@@ -74,7 +74,6 @@ import '/imports/startup/server/migrations';
 import '/imports/startup/server/accounts';
 import '/imports/startup/server/admins';
 import '/imports/startup/server/mergeAccountsPatch';
-import '/imports/startup/server/diContainer';
 
 import '/imports/api/mc211/methods';
 
