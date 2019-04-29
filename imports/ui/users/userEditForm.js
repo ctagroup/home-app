@@ -41,7 +41,7 @@ Template.userEditForm.helpers({
       };
     }
     const schemaOptions = {
-      'services.HMIS': {
+      HMIS: {
         type: new SimpleSchema(typeOptions),
       },
       projectsLinked: {
