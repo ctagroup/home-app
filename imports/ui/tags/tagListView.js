@@ -20,10 +20,18 @@ Template.tagListView.helpers({
   },
 
   removeTag() {
-    return (id) =>
-      Meteor.call('tagApi', 'deleteTag', id, (err, res) => {
-        console.log('deleteTag', err, res);
-        if (!err) Tags._collection.remove(id); // eslint-disable-line
+    return (id) => Tags._collection.remove(id); // eslint-disable-line
+      // Meteor.call('tagApi', 'deleteTag', id, (err, res) => {
+      //   console.log('deleteTag', err, res);
+      //   if (!err) Tags._collection.remove(id); // eslint-disable-line
+      //   // console.log('tags.delete', id, err, res);
+      // });
+  },
+  updateTag() {
+    return (id, name, score) =>
+      Meteor.call('tagApi', 'updateTag', id, { name, score }, (err, res) => {
+        console.log('updateTag', err, res);
+        if (!err) Tags._collection.upsert(id, {$set: res}); // eslint-disable-line
         // console.log('tags.delete', id, err, res);
       });
   },

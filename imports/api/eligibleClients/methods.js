@@ -23,6 +23,37 @@ Meteor.methods({
     return hc.api('house-matching-v2').getEligibleClientsPage(pageNumber, pageSize, sort, order);
   },
 
+  'eligibleClients.updateBonusScore'(inputClientId, bonusScore) {
+    logger.info(`METHOD[${this.userId}]: updateScores(${Array.isArray(inputClientId)}, ${inputClientId})`); // eslint-disable-line max-len
+    check(inputClientId, Match.OneOf(String, [String])); // eslint-disable-line new-cap
+    if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
+
+    let eligibleClientOutput;
+    const clientIds = Array.isArray(inputClientId) ? inputClientId : [inputClientId];
+    eachLimit(clientIds, Meteor.settings.connectionLimit,
+      (clientId, callback) => {
+        Meteor.defer(() => {
+          // fetch client status
+          try {
+            const hc = HmisClient.create(this.userId);
+            // get client details
+            const eligibleClient = hc.api('house-matching').getEligibleClient(clientId);
+            eligibleClient.bonusScore = bonusScore;
+            eligibleClient.totalScore = eligibleClient.bonusScore + eligibleClient.surveyScore / 1;
+            hc.api('house-matching').updateEligibleClient(eligibleClient);
+            // return updated eligible client object to the client
+            eligibleClientOutput = eligibleClient;
+          } catch (e) {
+            logger.warn(e);
+          }
+          callback();
+        });
+      });
+    return eligibleClientOutput;
+  },
+
   ignoreMatchProcess(inputClientId, ignoreMatchProcess, remarks = '') {
     logger.info(`METHOD[${this.userId}]: ignoreMatchProcess(${Array.isArray(inputClientId)}, ${inputClientId}, ${ignoreMatchProcess})`); // eslint-disable-line max-len
 

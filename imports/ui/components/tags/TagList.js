@@ -36,7 +36,7 @@ class TagList extends Component {
           />
           <input
             className="form-control"
-            type="text"
+            type="number"
             placeholder="Tag Score.."
             onChange={(value) => this.handleChange('score', value)}
           />
@@ -47,6 +47,7 @@ class TagList extends Component {
             key={`tag-${tag._id}`}
             data={tag}
             removeTagHandler={this.props.removeTagHandler}
+            updateTagHandler={this.props.updateTagHandler}
           />))}
         </div>
       </div>
