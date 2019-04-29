@@ -59,6 +59,7 @@ Template.preliminarySurvey.helpers({
 Template.preliminarySurvey.events(
   {
     'click .close-cancel': (event) => {
+      $('body').removeClass('modal-open');
       event.preventDefault();
       history.back();
     },
