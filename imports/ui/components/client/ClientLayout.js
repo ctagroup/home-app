@@ -39,7 +39,7 @@ function ClientLayout(props) {
 
   const [selectedTab, selectTab] = useState(props.selectedTab || tabsList[0].id);
 
-  console.log('selectedTab', selectedTab);
+  // console.log('selectedTab', selectedTab);
 
   return (
     <div id="viewClient_content" className="col-xs-12">
@@ -65,7 +65,7 @@ function ClientLayout(props) {
             <ClientTab selectedTab={selectedTab} id={'eligibility'} >
               <ClientEligibility
                 eligibleClient={data.eligibleClient()}
-                client={client} permissions={{ showEditButton }} helpers={helpers.overview}
+                client={client} permissions={{ showEditButton }} helpers={helpers.eligibility}
               />
             </ClientTab>
             <ClientTab selectedTab={selectedTab} id={'enrollments'} >

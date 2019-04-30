@@ -22,7 +22,7 @@ import { FilesAccessRoles, GlobalHouseholdsAccessRoles } from '/imports/config/p
 
 import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 import { getActiveTagNamesForDate } from '/imports/api/tags/tags';
-import { dataCollectionStages } from '/imports/both/helpers';
+import { dataCollectionStages, formatDate } from '/imports/both/helpers';
 
 import './enrollmentsListView.js';
 import './clientDeleteReason.js';
@@ -246,6 +246,52 @@ Template.viewClient.helpers(
               'enrollmentInfo.enrollmentId': enrollmentId,
               'enrollmentInfo.dataCollectionStage': dataCollectionStages.EXIT,
             }).count() >= 1;
+          },
+        },
+        eligibility: {
+          removeFromActiveList(reason, date, remarks) {
+            const dateString = formatDate(date);
+            const currentClientId = Router.current().params._id;
+            const client = Clients.findOne(currentClientId);
+            // drop not found:
+            const clientVersions = client.clientVersions
+              .filter(({ clientId, schema }) => {
+                const data = client[`eligibleClient::${schema}::${clientId}`];
+                return data && !data.error;
+              });
+            const clientIds = clientVersions.map(({ clientId }) => clientId);
+
+            if (reason.required && remarks.trim().length === 0) {
+              Bert.alert('Remarks are required', 'danger', 'growl-top-right');
+              $('#removalRemarks').focus();
+              return;
+            }
+            if (dateString.trim().length === 0) {
+              Bert.alert('Removal Date required', 'danger', 'growl-top-right');
+              $('#removalDate').focus();
+              return;
+            }
+            let removeReasons = reason.text;
+            if (reason.required) removeReasons = `${removeReasons} | ${remarks}`;
+            removeReasons = `${removeReasons} | ${dateString}`;
+
+            // Optimistic UI approach:
+            const changes = clientVersions.reduce((acc, { clientId, schema }) => ({
+              ...acc,
+              [`eligibleClient::${schema}::${clientId}.ignoreMatchProcess`]: true,
+              [`eligibleClient::${schema}::${clientId}.remarks`]: removeReasons,
+            }), {});
+
+            Meteor.call('ignoreMatchProcess', clientIds, true, removeReasons, (err) => {
+              if (err) {
+                Bert.alert(err.reason || err.error, 'danger', 'growl-top-right');
+              } else {
+                Bert.alert('Client removed for the matching process', 'success', 'growl-top-right');
+                // We simulate update in client-side collection
+                // Sadly, this cannot be done in meteor call (isSimulation)
+                Clients._collection.update(client._id, { $set: changes }); // eslint-disable-line
+              }
+            });
           },
         },
       };
@@ -611,6 +657,7 @@ Template.viewClient.events(
       tmpl.selectedTab.set(tab);
     },
     'click .nav-link': (evt, tmpl) => {
+      // FIXME: move to React!
       const tab = evt.target.hash.slice(1);
       tmpl.selectedTab.set(tab);
       const { _id } = Router.current().params;
@@ -779,6 +826,7 @@ Template.viewClient.events(
     },
 
     'click .addToHousingList'(evt, tmpl) {
+      // FIXME: move to React
       const client = tmpl.data.client;
       const currentClientId = tmpl.data.client._id;
       // drop not found:

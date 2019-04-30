@@ -25,13 +25,17 @@ function ClientEligibility(props) {
   const [removalReason, changeReason] = useState('');
 
   let { eligibleClient } = props;
+  const { helpers: { removeFromActiveList } } = props;
   if (!eligibleClient) eligibleClient = {};
 
-  const addToActiveList = () => console.log('implement this function (addToActiveList)');
-  const removeFromActiveList = () => {
-    console.log('implement this function (removeFromActiveList)');
-    return { removalDate, removalReason, removalRemarks };
+  const addToActiveList = () => ({ removalDate, removalReason, removalRemarks });
+    // console.log('implement this function (addToActiveList)',
+    //   { removalDate, removalReason, removalRemarks });
+  const removeFromActiveListHandler = () => {
+    removeFromActiveList(reasonsHash[removalReason], removalDate, removalRemarks);
   };
+
+  // console.log('eligibleClient', eligibleClient);
   if (eligibleClient && eligibleClient.error) return null;
   // return (<div className="row margin-top-35">{client.id}</div>);
   return (
@@ -64,10 +68,12 @@ function ClientEligibility(props) {
                 className="removalReason form-control"
                 name="removalReason"
                 id="removalReason"
-                onChange={changeReason}
+                onChange={(e) => changeReason(e.target.value)}
               >
                 {reasonsList.map(({ id, text }) =>
-                  (<option value={id} selected={id === removalReason}>{text}</option>))}
+                  (<option
+                    value={id} selected={id === removalReason} key={`option-${id}`}
+                  >{text}</option>))}
               </select>
             </div>
             {/** {#if showRemovalDetails} */}
@@ -81,14 +87,14 @@ function ClientEligibility(props) {
                   type="text"
                   name="removalRemarks"
                   placeholder="Removal notes"
-                  onChange={changeRemarks}
+                  onChange={(e) => changeRemarks(e.target.value)}
                 />
               </div>}
             <input
               className="btn btn-danger removeFromHousingList"
               value="Remove client from active list"
               type="button"
-              onClick={removeFromActiveList}
+              onClick={removeFromActiveListHandler}
             />
           </div>
         }

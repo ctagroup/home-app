@@ -62,11 +62,12 @@ const debouncedSearch = _.debounce((query, options, callback) => {
     if (err) {
       Alert.error(err);
     } else {
-      resp = (res.length >= 10) ? res.slice(0, 9) : res;
+      const maxResults = 10;
+      resp = (res.length >= maxResults) ? res.slice(0, maxResults) : res;
       const clients = resp.map((r, index) => ({
         ...r,
         fullName: fullName(r),
-        viewAll: (index > 7),
+        viewAll: (index >= maxResults - 1),
         searchStr: query,
       }));
       callback(clients);
@@ -93,7 +94,7 @@ Template.searchClient.helpers(
     },
     searchClient(query, sync, callback) {
       const options = {
-        limit: 10,
+        limit: 50,
       };
       const route = Router.current().location.get().path.split('/')[1];
       if (route === 'globalHouseholds') {

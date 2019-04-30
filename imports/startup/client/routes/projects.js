@@ -40,11 +40,6 @@ Router.route(
         return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
       },
     },
-    waitOn() {
-      return [
-        Meteor.subscribe('projects.all'),
-      ];
-    },
     data() {
       return {
         title: 'Projects',

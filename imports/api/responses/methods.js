@@ -401,6 +401,7 @@ Meteor.methods({
 
       const hc = HmisClient.create(this.userId);
       const results = hc.api('survey').searchForClientSurveySubmissions(seachString);
+
       const all = results
         .map(s => Responses.findOne({ submissionId: s.submissionId }) || {
           _id: s.submissionId,
@@ -413,11 +414,18 @@ Meteor.methods({
           values: {},
           version: 'n/a',
         })
-        .map(s => ({
-          ...s,
-          client: s.client || HmisCache.getClient(s.clientId, s.clientSchema, this.userId),
-          survey: s.survey || HmisCache.getSurvey(s.surveyId, this.userId),
-        }));
+        .map(s => {
+          // TODO - schema should come from searchForClientSurveySubmissions response
+          // awaiting https://github.com/hmis-api/survey-service-api/issues/6 to be resolved
+          const clientSchema = s.clientSchema || 'v2017';
+          const client = HmisCache.getClient(s.clientId, s.clientSchema, this.userId);
+          return {
+            ...s,
+            clientSchema,
+            client: s.client || client,
+            survey: s.survey || HmisCache.getSurvey(s.surveyId, this.userId),
+          };
+        });
 
       return {
         content: all.sort((a, b) => {
@@ -522,21 +530,53 @@ Meteor.injectedMethods({
     check(surveyId, String);
     check(submissionId, String);
 
-    let foundSchema = null;
-    if (!clientSchema) {
+    let foundSchema = clientSchema;
+    if (foundSchema === null) {
       foundSchema = ['v2014', 'v2015', 'v2016', 'v2017'].find(
         schema => !HmisCache.getClient(clientId, schema, this.userId).error
       );
     }
 
     const { hmisClient, logger } = this.context; // eslint-disable-line no-shadow
-    logger.info(`METHOD[${this.userId}]: responses.importSubmissionFromHslynk`, submissionId);
+    logger.info(`METHOD[${this.userId}]: responses.importSubmissionFromHslynk`,
+      submissionId, clientId, foundSchema
+    );
 
     const importer = new ResponseImporter({
       responsesCollection: Responses,
       hmisClient,
     });
     return importer.importResposeFromSubmission(
-      clientId, clientSchema || foundSchema, surveyId, submissionId, 'import');
+      clientId, foundSchema, surveyId, submissionId, 'import');
+  },
+
+  'responses.recentlySurveyedClients'() {
+    logger.info(`METHOD[${this.userId}]: responses.recentlySurveyedClients`);
+    if (!Roles.userIsInRole(this.userId, ResponsesAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
+
+    const responses = Responses.find({}, { sort: { createdAt: 1 } }).fetch();
+    const clientsWithGroupedResponses = responses.reduce((clients, r) => {
+      // skip response if client already exists
+      if (clients[r.clientId]) return clients;
+
+      const { clientId, clientSchema, surveyId } = r;
+      const client = HmisCache.getClient(clientId, clientSchema, this.userId);
+      const survey = HmisCache.getSurvey(surveyId, this.userId);
+      const surveyedClient = {
+        clientId,
+        schema: clientSchema,
+        client,
+        survey,
+        responseDate: r.createdAt,
+      };
+      return {
+        ...clients,
+        [r.clientId]: surveyedClient,
+      };
+    }, {});
+    console.log(clientsWithGroupedResponses);
+    return Object.values(clientsWithGroupedResponses);
   },
 });

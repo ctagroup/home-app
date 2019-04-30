@@ -2,9 +2,14 @@ import moment from 'moment';
 import FeatureDecisions from '/imports/both/featureDecisions';
 import { userName, userEmails } from '/imports/api/users/helpers';
 
-export const formatDateFunction = date => (date ? moment.utc(date).format('MM/DD/YYYY') : '');
-export const formatDateTimeFunction = date =>
-  (date ? moment.utc(date).format('MM/DD/YYYY hh:mm:ss A') : '');
+import { formatDate, formatDateTime } from '/imports/both/helpers';
+
+// FIXME: merge helper functions
+export const formatDateFunction = date => formatDate(date);
+export const formatDateTimeFunction = date => (date ? formatDateTime(date) : '');
+// export const formatDateFunction = date => (date ? moment.utc(date).format('MM/DD/YYYY') : '');
+// export const formatDateTimeFunction = date =>
+//   (date ? moment.utc(date).format('MM/DD/YYYY hh:mm:ss A') : '');
 export const formatDate99Function = date => {
   if (!date) return '';
   if (date === 99) return 'dnc';

@@ -6,7 +6,7 @@ function ClientTabSelector(props) {
     const linkClasses = `nav-link ${isActive(data.id)}`;
     const href = `#panel-${data.id}`;
     return (
-      <li className="nav-item">
+      <li className="nav-item" key={`nav-${data.id}`}>
         <a
           className={linkClasses}
           data-toggle="tab"

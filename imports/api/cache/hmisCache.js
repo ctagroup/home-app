@@ -12,33 +12,45 @@ class HmisCacheCollection extends Mongo.Collection {
       _id,
       expiresAt: { $gte: new Date() },
     }) || {};
-    let data = entry.data;
 
-    if (data) {
-      return data;
+    if (entry.data) {
+      return entry.data;
     }
 
+    let data;
+    let error;
     try {
       const hc = HmisClient.create(userId);
       data = hc.api('client').getClient(clientId, schema);
     } catch (err) {
       logger.warn('cache', err);
-      data = {
-        error: err.reason || 'Error',
-      };
+      error = err;
     } finally {
       super.upsert(_id, {
         data,
+        error,
         type: 'client',
         createdAt: new Date(),
         expiresAt: moment(new Date()).add(
-            !!data.error ? ERROR_EXPIRY_IN_MINUTES : EXPIRY_IN_MINUTES, 'm'
+            !!error ? ERROR_EXPIRY_IN_MINUTES : EXPIRY_IN_MINUTES, 'm'
           )
           .toDate(),
         userId,
       });
     }
-    return data;
+    const result = {
+      clientId,
+      schema,
+      ...data,
+    };
+
+    if (error) {
+      result.error = {
+        message: error.message,
+        statusCode: error.details.code,
+      };
+    }
+    return result;
   }
 
   getSurvey(surveyId, userId) {
@@ -47,33 +59,45 @@ class HmisCacheCollection extends Mongo.Collection {
       _id,
       expiresAt: { $gte: new Date() },
     }) || {};
-    let data = entry.data;
 
-    if (data) {
-      return data;
+    if (entry.data) {
+      return entry.data;
     }
 
+    let data;
+    let error;
     try {
       const hc = HmisClient.create(userId);
       data = hc.api('survey2').getSurvey(surveyId);
     } catch (err) {
       logger.warn('cache', err);
-      data = {
-        error: err.reason || 'Error',
-      };
+      error = err;
     } finally {
       super.upsert(_id, {
         data,
+        error,
         type: 'survey',
         createdAt: new Date(),
         expiresAt: moment(new Date()).add(
-            !!data.error ? ERROR_EXPIRY_IN_MINUTES : EXPIRY_IN_MINUTES, 'm'
+            !!error ? ERROR_EXPIRY_IN_MINUTES : EXPIRY_IN_MINUTES, 'm'
           )
           .toDate(),
         userId,
       });
     }
-    return data;
+
+    const result = {
+      surveyId,
+      ...data,
+    };
+
+    if (error) {
+      result.error = {
+        message: error.message,
+        statusCode: error.details.code,
+      };
+    }
+    return result;
   }
 
   getData(cacheKey, userId, noDataCallback, forceReload = false) {
@@ -104,7 +128,7 @@ class HmisCacheCollection extends Mongo.Collection {
     } catch (err) {
       logger.warn('cache', err);
       originalError = err;
-      error = err.reason || 'Error';
+      error = err;
     } finally {
       super.upsert(_id, {
         data,

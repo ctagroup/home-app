@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { logger } from '/imports/utils/logger';
 import { ClientsAccessRoles } from '/imports/config/permissions';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
@@ -8,6 +9,7 @@ import eventPublisher, {
   ClientCreatedEvent,
   ClientUpdatedEvent,
 } from '/imports/api/eventLog/events';
+
 
 Meteor.methods({
   'clients.create'(client, schema = 'v2017', clientVersion = false) {
@@ -29,6 +31,21 @@ Meteor.methods({
       Meteor.call('s3bucket.put', result.dedupClientId, 'signature', client.signature);
     } catch (err) {
       logger.error('Failed to upload photo/signature to s3', err);
+    }
+
+    if (client.signature) {
+      try {
+        const data = {
+          clientId: result.dedupClientId,
+          startDate: moment().format('YYYY-MM-DD'),
+          endDate: moment().add(1, 'years').format('YYYY-MM-DD'),
+          notes: 'client created',
+          signature: client.signature,
+        };
+        Meteor.call('roiApi', 'createRoi', data);
+      } catch (err) {
+        logger.error('Failed to create ROI for client', err);
+      }
     }
 
     eventPublisher.publish(new ClientCreatedEvent(result, { userId: this.userId }));
@@ -133,6 +150,8 @@ Meteor.methods({
     let hmisClients = hc.api('client').searchClient(query, limit, startIndex, sort, order);
 
     hmisClients = hmisClients.filter(client => client.link);
+
+    logger.debug('search results', hmisClients.length);
 
     let localClients = [];
     if (!excludeLocalClients) {

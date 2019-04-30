@@ -1,3 +1,6 @@
+import moment from 'moment';
+
+
 export function translateString(str, translations) {
   if (typeof str !== 'string') return str;
   return Object.keys(translations).reduce((translated, key) => {
@@ -19,3 +22,5 @@ export const dataCollectionStageNames =
 
 export const getStageId = (name) => dataCollectionStages[name.toUpperCase()];
 export const getStageName = (id) => dataCollectionStageNames[id];
+export const formatDate = (date) => (date ? moment(date).format('MM/DD/YYYY') : '');
+export const formatDateTime = (date) => moment(date).format('MM/DD/YYYY h:mm A');

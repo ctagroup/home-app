@@ -15,6 +15,8 @@ import '/imports/ui/clients/createClient';
 import '/imports/ui/clients/editClient';
 import '/imports/ui/clients/viewClient';
 import '/imports/ui/clients/viewClientMc211';
+import '/imports/ui/clients/viewSurveyedClients';
+
 import { AppController } from './controllers';
 
 
@@ -126,6 +128,23 @@ Router.route('/clients/:_id/enrollments/:enrollmentId', {
       client,
       survey,
       enrollment,
+    };
+  },
+});
+
+Router.route('clientsSurveyed', {
+  path: '/clients/surveyed',
+  template: 'viewSurveyedClients',
+  controller: AppController,
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), ClientsAccessRoles);
+    },
+  },
+  data() {
+    return {
+      title: 'Surveyed Clients',
+      subtitle: 'View',
     };
   },
 });
@@ -287,7 +306,7 @@ Router.onBeforeAction(
     if (!client) {
       this.render('clientNotFound');
     } else {
-      if (this.params.query && this.params.query.schema) {
+      if (this.params.query && this.params.query.schema && !client.isLocalClient) {
         client.personalId = client.clientId;
         client.isHMISClient = true;
         client.schema = client.schema || this.params.query.schema;

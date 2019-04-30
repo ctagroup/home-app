@@ -285,4 +285,10 @@ Meteor.methods({
     }), {});
     return { sections, sectionQuestions };
   },
+
+  'surveys.getGeocodedLocation'(url) {
+    logger.info(`METHOD[${this.userId}]: surveys.getGeocodedLocation`);
+    const hc = HmisClient.create(this.userId);
+    return hc.api('survey2').getGeocodedLocation(url);
+  },
 });

@@ -73,19 +73,37 @@ export function stringContains(str, query = '') {
   return strLower.indexOf(queryLower) !== -1;
 }
 
-
 // Remove undef., null and empty string.
 // Via: https://stackoverflow.com/questions/286141/remove-blank-attributes-from-an-object-in-javascript
 // extended with empty string comparasion
-export const removeEmpty = (obj) =>
-Object.keys(obj)
-.filter(k => obj[k] !== null && obj[k] !== undefined && obj[k] !== '')
-.reduce((newObj, k) => (
-  typeof obj[k] === 'object' ?
-    Object.assign(newObj, { [k]: removeEmpty(obj[k]) }) :  // Recurse.
-    Object.assign(newObj, { [k]: obj[k] })),  // Copy value.
-  {});
+export const removeEmpty = obj =>
+  Object.keys(obj)
+    .filter(k => obj[k] !== null && obj[k] !== undefined && obj[k] !== '')
+    .reduce((newObj, k) => {
+      if (typeof obj[k] === 'object') {
+        Object.assign(newObj, { [k]: removeEmpty(obj[k]) }); // Recurse.
+      } else {
+        Object.assign(newObj, { [k]: obj[k] }); // Copy value.
+      }
+      return newObj;
+    }, {});
 
 export function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+export function getLatLongFromDevice() {
+  const latLng = [];
+  const location = Geolocation.currentLocation(); // eslint-disable-line no-undef
+  if (location !== null && location.coords) {
+    latLng[0] = location.coords.latitude;
+    latLng[1] = location.coords.longitude;
+  }
+  return latLng;
+}
+
+export function createGeocodeUrl(location) {
+  const apiKey = '88e54b6832d340aba770a6449045c79d'; // Max. 2500 requests/day
+  const baseUrl = `https://api.opencagedata.com/geocode/v1/json?key=${apiKey}`;
+  return `${baseUrl}&q=${encodeURIComponent(location)}`;
 }

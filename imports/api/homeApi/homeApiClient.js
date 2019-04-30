@@ -74,7 +74,7 @@ export default class HomeApiClient {
 
     throw new Meteor.Error('home.api', `${message} (${code})`, {
       code,
-      data: httpError.response.data,
+      data: httpError.response ? httpError.response.data : null,
     });
   }
 

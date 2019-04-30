@@ -58,7 +58,7 @@ const tableOptions = {
             { _id: response._id }, {
               query: {
                 clientId: response.client.id,
-                clientSchema: null,
+                // TODO: add client schema when will be available in HSLYNK API
                 surveyId: response.surveyId,
               },
             }
