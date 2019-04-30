@@ -96,7 +96,6 @@ class ControlledTable extends Component {
     const matchColumns = columns.filter(({ data }) => data !== '_id');
     const lowerCaseFilter = filter.toLowerCase();
 
-    console.log('input, columns, filter, matchColumns', input, columns, filter, matchColumns);
     return input.filter(item => {
       const out = matchColumns.map((column) =>
           ({ filterMethod: column.filterMethod, column }))
@@ -104,7 +103,6 @@ class ControlledTable extends Component {
           let data = item[column.data];
           if (filterMethod) {
             if (column.dataAccessor) data = column.dataAccessor(item);
-            console.log('filtering:', data, filterMethod({ value: lowerCaseFilter }, item, column));
             return data !== undefined && filterMethod({ value: lowerCaseFilter }, item, column);
           }
           if (data instanceof Date) {
