@@ -12,8 +12,7 @@ Meteor.injectedPublish('projects.all', function publishAllProjects(forceReload =
   const schemas = ['v2017', 'v2016', 'v2015', 'v2014'];
   schemas.forEach(schema => {
     const projectsForSchema = HmisCache.getData(`projects.all.${schema}`, this.userId, () => {
-      const hc = hmisClient.create(this.userId);
-      const api = hc.api('client');
+      const api = hmisClient.api('client');
       const projectsWithSchema = api
         .getProjects(schema)
         .map(p => ({ ...p, schema }));
@@ -36,7 +35,7 @@ Meteor.injectedPublish('projects.one', function publishOneProject(id, schema) {
   if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
     return [];
   }
-  const project = hmisClient.create(this.userId).api('client').getProject(id, schema);
+  const project = hmisClient.api('client').getProject(id, schema);
   this.added('localProjects', project.projectId, {
     ...project,
     schema,
