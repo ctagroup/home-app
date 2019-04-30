@@ -1,10 +1,9 @@
-import { logger } from '/imports/utils/logger';
-import { HmisClient } from '/imports/api/hmisApi';
 import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import { HmisCache } from '/imports/api/cache/hmisCache';
 
 
-Meteor.publish('projects.all', function publishAllProjects(forceReload = true) {
+Meteor.injectedPublish('projects.all', function publishAllProjects(forceReload = true) {
+  const { logger, hmisClient } = this.context;
   logger.info(`PUB[${this.userId}]: projects.all`);
   if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
     return [];
@@ -13,7 +12,7 @@ Meteor.publish('projects.all', function publishAllProjects(forceReload = true) {
   const schemas = ['v2017', 'v2016', 'v2015', 'v2014'];
   schemas.forEach(schema => {
     const projectsForSchema = HmisCache.getData(`projects.all.${schema}`, this.userId, () => {
-      const hc = HmisClient.create(this.userId);
+      const hc = hmisClient.create(this.userId);
       const api = hc.api('client');
       const projectsWithSchema = api
         .getProjects(schema)
@@ -29,14 +28,15 @@ Meteor.publish('projects.all', function publishAllProjects(forceReload = true) {
   return this.ready();
 });
 
-Meteor.publish('projects.one', function publishOneProject(id, schema) {
+Meteor.injectedPublish('projects.one', function publishOneProject(id, schema) {
+  const { logger, hmisClient } = this.context;
   logger.info(`PUB[${this.userId}]: projects.one`, id, schema);
   check(id, String);
   check(schema, String);
   if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
     return [];
   }
-  const project = HmisClient.create(this.userId).api('client').getProject(id, schema);
+  const project = hmisClient.create(this.userId).api('client').getProject(id, schema);
   this.added('localProjects', project.projectId, {
     ...project,
     schema,

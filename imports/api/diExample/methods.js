@@ -5,13 +5,13 @@ Meteor.injectedMethods({
     logger.debug('got results', results);
     return results;
   },
-  'diExample.test'(...args) {
-    // logger.debug('got args', args);
+  'diExample.testError'() {
     const { sentryScope, logger } = this.context;
     sentryScope.addBreadcrumb({ message: 'this is a sample message' });
-    console.log('aaa', Object.keys(this.context), this.context.endpointName);
-    throw new Error('abcd');
-    return [args, logger];
+    logger.debug('this is debug');
+    logger.info('this is info', Object.keys(this.context));
+    logger.warn('this is warn');
+    logger.error('this is error');
+    throw new Error('Failing on purpose');
   },
-
 });

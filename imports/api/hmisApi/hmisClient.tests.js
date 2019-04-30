@@ -43,7 +43,12 @@ describe('hmisApi', function () {
         appId: 'appId',
         appSecret: 'secret',
       };
-      const client = new HmisClient('userId', config, registry, fakeCollection);
+      const client = new HmisClient({
+        userId: 'userId',
+        serviceConfig: config,
+        hmisApiRegistry: registry,
+        usersCollection: fakeCollection,
+      });
       client.authData = { expiresAt: new Date().getTime() + 10 * 60 * 1000 };
       const api = client.api('dummy');
       chai.assert.equal(api.bar(), 'baz');
@@ -55,7 +60,12 @@ describe('hmisApi', function () {
         appId: 'appId',
         appSecret: 'secret',
       };
-      const client = new HmisClient('userId', config, emptyRegistry, Meteor.users);
+      const client = new HmisClient({
+        userId: 'userId',
+        serviceConfig: config,
+        hmisApiRegistry: emptyRegistry,
+        usersCollection: Meteor.users,
+      });
       chai.assert.throws(() => client.api('non-existent').bar(), Error);
     });
   });

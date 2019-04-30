@@ -1,5 +1,3 @@
-import { logger } from '/imports/utils/logger';
-
 const DETAILED_GET_LOGS = false;
 
 let counter = 0;
@@ -9,11 +7,12 @@ function getCorrelationId() {
 }
 
 export class ApiEndpoint {
-  constructor(appId, accessToken) {
+  constructor(appId, accessToken, logger) {
     this.appId = appId;
     this.accessToken = accessToken;
     this.logGetDetails = DETAILED_GET_LOGS;
     this.disabledErrors = {};
+    this.logger = logger;
   }
 
   debug(value = true) {
@@ -43,7 +42,7 @@ export class ApiEndpoint {
       correlationId: getCorrelationId(),
     };
     if (logGetRequests) {
-      logger.debug(`HMIS API:get#${options.correlationId} (${url})`,
+      this.logger.debug(`HMIS API:get#${options.correlationId} (${url})`,
         this.logGetDetails ? options : ''
       );
     }
@@ -56,7 +55,7 @@ export class ApiEndpoint {
     }
     delete response.content;
     if (logGetRequests) {
-      logger.debug(`HMIS API:get#${options.correlationId} res (${url})`,
+      this.logger.debug(`HMIS API:get#${options.correlationId} res (${url})`,
         this.logGetDetails ? response : response.statusCode
       );
     }
@@ -69,7 +68,7 @@ export class ApiEndpoint {
       data,
       correlationId: getCorrelationId(),
     };
-    logger.debug(`HMIS API:post#${options.correlationId} ${url}`, options);
+    this.logger.debug(`HMIS API:post#${options.correlationId} ${url}`, options);
     let response = false;
     try {
       response = HTTP.post(url, options);
@@ -77,7 +76,7 @@ export class ApiEndpoint {
       this.throwApiError('post', url, options, err);
     }
     delete response.content;
-    logger.debug(`HMIS API:post#${options.correlationId} res (${url})`, response);
+    this.logger.debug(`HMIS API:post#${options.correlationId} res (${url})`, response);
     return response.data;
   }
 
@@ -87,7 +86,7 @@ export class ApiEndpoint {
       data,
       correlationId: getCorrelationId(),
     };
-    logger.debug(`HMIS API:put#${options.correlationId} (${url})`, options);
+    this.logger.debug(`HMIS API:put#${options.correlationId} (${url})`, options);
     let response = false;
     try {
       response = HTTP.put(url, options);
@@ -95,7 +94,7 @@ export class ApiEndpoint {
       this.throwApiError('put', url, options, err);
     }
     delete response.content;
-    logger.debug(`HMIS API:put#${options.correlationId} res (${url})`, response);
+    this.logger.debug(`HMIS API:put#${options.correlationId} res (${url})`, response);
     return response.data;
   }
 
@@ -104,7 +103,7 @@ export class ApiEndpoint {
       headers: this.getRequestHeaders(),
       correlationId: getCorrelationId(),
     };
-    logger.debug(`HMIS API:del#${options.correlationId} (${url})`, options);
+    this.logger.debug(`HMIS API:del#${options.correlationId} (${url})`, options);
     let response = false;
     try {
       response = HTTP.del(url, options);
@@ -112,13 +111,13 @@ export class ApiEndpoint {
       this.throwApiError('del', url, options, err);
     }
     delete response.content;
-    logger.debug(`HMIS API:del#${options.correlationId} res (${url})`, response);
+    this.logger.debug(`HMIS API:del#${options.correlationId} res (${url})`, response);
     return response.data;
   }
 
   throwApiError(op, url, options, httpError, logDetails = true) {
     if (logDetails) {
-      logger.error(`HMIS API:${op}#${options.correlationId} res(${url})`, {
+      this.logger.error(`HMIS API:${op}#${options.correlationId} res(${url})`, {
         options,
         httpError,
       });
@@ -127,10 +126,10 @@ export class ApiEndpoint {
       if (this.disabledErrors[code] !== true) {
         switch (code) {
           case 404:
-            logger.warn(`HMIS API:${op}#${options.correlationId} res(${url})`, code);
+            this.logger.warn(`HMIS API:${op}#${options.correlationId} res(${url})`, code);
             break;
           default:
-            logger.error(`HMIS API:${op}#${options.correlationId} res(${url})`, code);
+            this.logger.error(`HMIS API:${op}#${options.correlationId} res(${url})`, code);
         }
       }
     }
