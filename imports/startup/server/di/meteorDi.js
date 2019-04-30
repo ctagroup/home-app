@@ -46,6 +46,11 @@ export function registerInjectedMeteorMethods(container) {
                 const result = containerScope.resolve('__injected_fcn__').call(this, ...args);
                 resolve(result);
               } catch (err) {
+                sentryScope.addBreadcrumb({
+                  category: 'stack trace',
+                  message: err.stack,
+                  level: Sentry.Severity.Error,
+                });
                 Sentry.captureException(err);
                 reject(err);
               }
