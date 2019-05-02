@@ -14,10 +14,15 @@ import ReferralStatusList from './referralStatusList';
 import HomeConfig from '/imports/config/homeConfig';
 import Alert from '/imports/ui/alert';
 import { TableDom } from '/imports/ui/dataTable/helpers';
+
+import FeatureDecisions from '/imports/both/featureDecisions';
+import ClientContainer from '/imports/ui/components/client/ClientContainer';
+
 import { FilesAccessRoles, GlobalHouseholdsAccessRoles } from '/imports/config/permissions';
 
 import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 import { getActiveTagNamesForDate } from '/imports/api/tags/tags';
+import { dataCollectionStages, formatDate } from '/imports/both/helpers';
 
 import './enrollmentsListView.js';
 import './clientDeleteReason.js';
@@ -29,28 +34,17 @@ import '../enrollments/enrollmentsUpdate';
 import '../enrollments/dropdownHelper.js';
 import './viewClient.html';
 
-// TODO: move to global import
-const dataCollectionStages = {
-  ENTRY: 1,
-  UPDATE: 2,
-  EXIT: 3,
-  ANNUAL: 5, // Annual Assessments
-};
-
-const extendQueryWithParam = (query, param, value) => {
+const changeQueryWithParam = (query, param, add, value) => {
   if (query === '') return `?${param}=${value}`;
   const paramsString = query.startsWith('?') ? query.slice(1) : query;
   const searchParams = new URLSearchParams(paramsString);
-  searchParams.set(param, value);
+  if (add) { searchParams.set(param, value); } else { searchParams.delete(param); }
   return `?${searchParams.toString()}`;
 };
-const removeQueryFromParam = (query, param) => {
-  if (query === '') return '';
-  const paramsString = query.startsWith('?') ? query.slice(1) : query;
-  const searchParams = new URLSearchParams(paramsString);
-  searchParams.delete(param);
-  return `?${searchParams.toString()}`;
-};
+
+const extendQueryWithParam = (query, param, value) =>
+  changeQueryWithParam(query, param, true, value);
+const removeQueryFromParam = (query, param) => changeQueryWithParam(query, param, false);
 const pushToURI = (name, url) => history.replaceState(history.state, name, url);
 
 const flattenKeyVersions = (client, key) => {
@@ -142,6 +136,174 @@ const serviceTableOptions = {
 
 Template.viewClient.helpers(
   {
+    component() {
+      return ClientContainer;
+    },
+
+    permissions() {
+      const hasPermission = Roles.userIsInRole(Meteor.userId(), FilesAccessRoles);
+
+      const showEnrollments = this && this.clientId;
+
+      const getEnrollmentType = (stage) => {
+        const enrollmentId = Template.instance().selectedEnrollment.get();
+        const dataCollectionStage = Template.instance().dataCollectionStage.get();
+        return dataCollectionStage / 1 === dataCollectionStages[stage] && enrollmentId;
+      };
+      return {
+        showReferralStatus: hasPermission && this && this.clientId,
+        showEnrollments,
+        updateEnrollment: getEnrollmentType('UPDATE'),
+        annualEnrollment: getEnrollmentType('ANNUAL'),
+        exitEnrollment: getEnrollmentType('EXIT'),
+        showEditButton: Template.instance() && Template.instance().data.showEditButton,
+        isSkidrowApp: FeatureDecisions.createFromMeteorSettings().isSkidrowApp(),
+      };
+    },
+    data() {
+      return {
+        eligibleClient() {
+          // TODO [VK]: check by updated at instead of schema version
+          const currentClientId = Router.current().params._id;
+          const client = Clients.findOne(currentClientId);
+          if (!client) return null;
+          const versions = flattenKeyVersions(client, 'eligibleClient');
+          const nonError = versions.filter(({ error }) => !error);
+          if (nonError.length) {
+            updateEligibility(client);
+            return nonError[nonError.length - 1];
+          }
+          return versions[versions.length - 1];
+        },
+        enrollments() {
+          const currentClientId = Router.current().params._id;
+          const client = Clients.findOne(currentClientId);
+          const enrollments = flattenKeyVersions(client, 'enrollments')
+            .sort((a, b) => {
+              if (a.entryDate === b.entryDate) return a.dateUpdated - b.dateUpdated;
+              return a.entryDate - b.entryDate;
+            });
+          return enrollments;
+        },
+      };
+    },
+    helpers() {
+      return {
+        overview: {
+          getText(text, code) {
+            const definition = code === undefined ? '?' : code;
+            const question = Questions.findOne({ name: text });
+            const intCode = parseInt(code, 10);
+            if (question && question.options) {
+              const foundQuestion = question.options.find(
+                (option) => parseInt(option.value, 10) === intCode);
+              return foundQuestion ? foundQuestion.description : definition;
+            }
+            switch (text) {
+              case 'race': return getRace(intCode, definition);
+              case 'ethnicity': return getEthnicity(intCode, definition);
+              case 'gender': return getGender(intCode, definition);
+              case 'veteranStatus':
+              case 'disablingcondition': return getYesNo(intCode, definition);
+              default: return definition;
+            }
+          },
+        },
+        enrollments: {
+          viewEnrollmentPath(enrollment, enrollmentSurveyType) {
+            const { _id } = Router.current().params;
+            const { schema } = Router.current().params.query;
+            const { enrollmentId } = enrollment;
+            const projectId = Meteor.user().activeProjectId;
+            const surveyId = getEnrollmentSurveyIdForProject(projectId, enrollmentSurveyType);
+
+            const enrollmentSurveyTypeMap = {
+              entry: dataCollectionStages.ENTRY,
+              update: dataCollectionStages.UPDATE,
+              exit: dataCollectionStages.EXIT,
+            };
+            const dataCollectionStage = enrollmentSurveyTypeMap[enrollmentSurveyType];
+
+            return Router.path('viewEnrollmentAsResponse',
+              { _id, enrollmentId },
+              { query: { schema, surveyId, dataCollectionStage } }
+            );
+          },
+          currentProjectHasEnrollment(enrollmentSurveyType) {
+            const projectId = Meteor.user().activeProjectId;
+            const surveyId = getEnrollmentSurveyIdForProject(projectId, enrollmentSurveyType);
+            return !!surveyId;
+          },
+          enrollmentResponses(enrollmentId, dataCollectionStage) {
+            const options = { 'enrollmentInfo.dataCollectionStage': dataCollectionStage };
+            const optionKey = dataCollectionStage === dataCollectionStages.ENTRY ?
+            'enrollment.enrollment-0.id' : 'enrollmentInfo.enrollmentId';
+            options[optionKey] = enrollmentId;
+            return Responses.find(options).fetch();
+          },
+          enrollmentExited(enrollmentId) {
+            return Responses.find({
+              'enrollmentInfo.enrollmentId': enrollmentId,
+              'enrollmentInfo.dataCollectionStage': dataCollectionStages.EXIT,
+            }).count() >= 1;
+          },
+        },
+        eligibility: {
+          removeFromActiveList(reason, date, remarks) {
+            const dateString = formatDate(date);
+            const currentClientId = Router.current().params._id;
+            const client = Clients.findOne(currentClientId);
+            // drop not found:
+            const clientVersions = client.clientVersions
+              .filter(({ clientId, schema }) => {
+                const data = client[`eligibleClient::${schema}::${clientId}`];
+                return data && !data.error;
+              });
+            const clientIds = clientVersions.map(({ clientId }) => clientId);
+
+            if (reason.required && remarks.trim().length === 0) {
+              Bert.alert('Remarks are required', 'danger', 'growl-top-right');
+              $('#removalRemarks').focus();
+              return;
+            }
+            if (dateString.trim().length === 0) {
+              Bert.alert('Removal Date required', 'danger', 'growl-top-right');
+              $('#removalDate').focus();
+              return;
+            }
+            let removeReasons = reason.text;
+            if (reason.required) removeReasons = `${removeReasons} | ${remarks}`;
+            removeReasons = `${removeReasons} | ${dateString}`;
+
+            // Optimistic UI approach:
+            const changes = clientVersions.reduce((acc, { clientId, schema }) => ({
+              ...acc,
+              [`eligibleClient::${schema}::${clientId}.ignoreMatchProcess`]: true,
+              [`eligibleClient::${schema}::${clientId}.remarks`]: removeReasons,
+            }), {});
+
+            Meteor.call('ignoreMatchProcess', clientIds, true, removeReasons, (err) => {
+              if (err) {
+                Bert.alert(err.reason || err.error, 'danger', 'growl-top-right');
+              } else {
+                Bert.alert('Client removed for the matching process', 'success', 'growl-top-right');
+                // We simulate update in client-side collection
+                // Sadly, this cannot be done in meteor call (isSimulation)
+                Clients._collection.update(client._id, { $set: changes }); // eslint-disable-line
+              }
+            });
+          },
+        },
+      };
+    },
+    selectedTab() {
+      if (Template.instance() && Template.instance().selectedTab) {
+        const selectedTab = Template.instance().selectedTab.get();
+        return selectedTab.slice(6);
+      }
+      return 'false';
+    },
+
     clientTagNames() {
       const clientTags = ClientTags.find().fetch();
       const now = moment().format('YYYY-MM-DD');
@@ -299,9 +461,7 @@ Template.viewClient.helpers(
       return enrollments
       // .filter(withResponse)
       .sort((a, b) => {
-        if (a.entryDate === b.entryDate) {
-          return a.dateUpdated - b.dateUpdated;
-        }
+        if (a.entryDate === b.entryDate) return a.dateUpdated - b.dateUpdated;
         return a.entryDate - b.entryDate;
       });
     },
@@ -429,32 +589,11 @@ Template.viewClient.helpers(
       return hasPermission && this && this.clientId;
     },
 
-    getText(text, code) {
-      const definition = code === undefined ? '?' : code;
-      const question = Questions.findOne({ name: text });
-      const intCode = parseInt(code, 10);
-      if (question && question.options) {
-        const foundQuestion = question.options.find(
-          (option) => parseInt(option.value, 10) === intCode);
-        return foundQuestion ? foundQuestion.description : definition;
-      }
-      switch (text) {
-        case 'race': return getRace(intCode, definition);
-        case 'ethnicity': return getEthnicity(intCode, definition);
-        case 'gender': return getGender(intCode, definition);
-        case 'veteranStatus':
-        case 'disablingcondition': return getYesNo(intCode, definition);
-        default: return definition;
-      }
-    },
-
     enrollmentResponses(enrollmentId, dataCollectionStage) {
       const options = { 'enrollmentInfo.dataCollectionStage': dataCollectionStage };
-      if (dataCollectionStage === dataCollectionStages.ENTRY) {
-        options['enrollment.enrollment-0.id'] = enrollmentId;
-      } else {
-        options['enrollmentInfo.enrollmentId'] = enrollmentId;
-      }
+      const optionKey = dataCollectionStage === dataCollectionStages.ENTRY ?
+      'enrollment.enrollment-0.id' : 'enrollmentInfo.enrollmentId';
+      options[optionKey] = enrollmentId;
       return Responses.find(options).fetch();
     },
     enrollmentExited(enrollmentId) {
@@ -518,6 +657,7 @@ Template.viewClient.events(
       tmpl.selectedTab.set(tab);
     },
     'click .nav-link': (evt, tmpl) => {
+      // FIXME: move to React!
       const tab = evt.target.hash.slice(1);
       tmpl.selectedTab.set(tab);
       const { _id } = Router.current().params;
@@ -686,6 +826,7 @@ Template.viewClient.events(
     },
 
     'click .addToHousingList'(evt, tmpl) {
+      // FIXME: move to React
       const client = tmpl.data.client;
       const currentClientId = tmpl.data.client._id;
       // drop not found:

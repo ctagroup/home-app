@@ -1,153 +1,24 @@
 <template name="viewClient">
     {{#with client}}
+    {{{alertMessages}}}
+    <div>
+      {{> React
+        component=component
+        client=../client
+        eligibleClient=eligibleClient
+        permissions=permissions
+        selectedTab=selectedTab
+        data=data
+        helpers=helpers
+      }}
+    </div>
     <div id="viewClient_content" class="col-xs-12">
       <div class="row client-profile-container">
-        {{{alertMessages}}}
-        {{#if eligibleClient.ignoreMatchProcess }}
-          <div class="col-xs-12">
-            <div class="alert alert-danger">
-              Client has been Removed from Matching
-            </div>
-          </div>
-        {{/if}}
-
-        <div class="client-info">
-          <div class="row">
-            <div class="col-xs-12 col-sm-3">
-              {{#if photo}}
-                <img class="profile-img" alt="Profile img" src="{{photo}}" />
-              {{/if}}
-              <!-- <img src="./img/john-pic.jpg" class="profile-img" alt="Profile img"> -->
-            </div>
-            <div class="col-xs-12 col-sm-3"><div class="text-wrap">
-              <span class="title">FIRST NAME</span><h2>{{firstName}}</h2>
-              <span class="title">MIDDLE NAME</span><h2>{{middleName}}</h2>
-              <span class="title">LAST NAME</span><h2>{{lastName}}</h2>
-            </div></div>
-            <div class="col-xs-12 col-sm-3"><div class="text-wrap">
-              <span class="title">DOB</span><h4>{{formatDate dob}}</h4>
-              <span class="title">SSN</span><h4>{{formatSSN ssn}}</h4>
-              <div class="title view-id">
-                ClientId: {{_id}}<br />
-                DedupId: {{dedupClientId}}
-              </div>
-            </div></div>
-            <div class="col-xs-12 col-sm-3"><div class="text-wrap">
-              <span class="title">EMAIL</span><h4>{{emailAddress}}</h4>
-              <span class="title">PHONE NUMBER</span><h4>{{phoneNumber}}</h4>
-              <span class="title">Active Tags</span><h4>{{clientTagNames}}</h4>
-            </div></div>
-          </div>
-        </div>
-
 
         <div class="tab-section">
-          <!-- Nav tabs -->
-          <ul class="nav nav-tabs nav-justified">
-            <li class="nav-item">
-              <a class="nav-link {{#if isActive 'overview'}}active{{/if}}" data-toggle="tab" href="#panel-overview" role="tab">Overview</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link {{#if isActive 'eligibility'}}active{{/if}}" data-toggle="tab" href="#panel-eligibility" role="tab">History</a>
-            </li>
-            {{#unless isSkidrowApp}}
-              <li class="nav-item">
-                <a class="nav-link {{#if isActive 'rois'}}active{{/if}}" data-toggle="tab" href="#panel-rois" role="tab">ROIs</a>
-              </li>
-            {{/unless}}
-            {{#if showReferralStatus}}
-              <li class="nav-item">
-                <a class="nav-link {{#if isActive 'referrals'}}active{{/if}}" data-toggle="tab" href="#panel-referrals" role="tab">Referrals</a>
-              </li>
-            {{/if}}
-            {{#if showEnrollments}}
-              <li class="nav-item">
-                <a class="nav-link {{#if isActive 'enrollments'}}active{{/if}}" data-toggle="tab" href="#panel-enrollments" role="tab">Enrollments</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {{#if isActive 'create-enrollment'}}active{{/if}}" data-toggle="tab" href="#panel-create-enrollment" role="tab">Create Enrollment</a>
-              </li>
-              {{#if updateEnrollment}}
-                <li class="nav-item">
-                  <a class="nav-link {{#if isActive 'update-enrollment'}}active{{/if}}" data-toggle="tab" href="#panel-update-enrollment" role="tab">Update Enrollment</a>
-                </li>
-              {{/if}}
-              {{#if exitEnrollment}}
-                <li class="nav-item">
-                  <a class="nav-link {{#if isActive 'exit-enrollment'}}active{{/if}}" data-toggle="tab" href="#panel-exit-enrollment" role="tab">Exit Enrollment</a>
-                </li>
-              {{/if}}
-            {{/if}}
-            {{#unless isSkidrowApp}}
-              <li class="nav-item">
-                <a class="nav-link {{#if isActive 'client-tags'}}active{{/if}}" data-toggle="tab" href="#panel-client-tags" role="tab">Tags</a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link {{#if isActive 'services'}}active{{/if}}" data-toggle="tab" href="#panel-services" role="tab">Services</a>
-              </li>
-            {{/unless}}
-
-  <!-- TODO: Implement other tabs -->
-  <!--
-            <li class="nav-item">
-              <a class="nav-link active" data-toggle="tab" href="#panel-case-management" role="tab">Case Management</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#panel-responses" role="tab">Responses</a>
-            </li>
-  -->
-          </ul>
-          <!-- Tab panels -->
           <div class="tab-content card">
-            <!--Panel 1 Overview -->
-            <div class="tab-pane fade {{#if isActive 'overview'}}in show active {{else}}no-show{{/if}}" id="panel-overview" role="tabpanel">
-              <div class="info-container">
-                <div class="row">
-                  <div class="col-xs-12 col-sm-6 col-md-6">
-                    <div class="">
-                      <p class="clabel">Suffix</p>
-                      <p class="cvalue">{{suffix}}</p>
-                    </div>
-                    <div class="">
-                      <p class="clabel">SSN</p>
-                      <p class="cvalue">{{ssn}}</p>
-                    </div>
-                    <div class="">
-                      <p class="clabel">Date of Birth</p>
-                      <p class="cvalue dob">{{formatDate dob}}</p>
-                    </div>
-                    <div class="">
-                      <p class="clabel">Race</p>
-                      <p class="cvalue">{{getText 'race' race}}</p>
-                    </div>
-                  </div>
-                  <div class="col-xs-12 col-sm-6 col-md-6">
-                    <div class="">
-                      <p class="clabel">Ethnicity</p>
-                      <p class="cvalue">{{getText 'ethnicity' ethnicity}}</p>
-                    </div>
-                    <div class="">
-                      <p class="clabel">Gender</p>
-                      <p class="cvalue">{{getText 'gender' gender}}</p>
-                    </div>
-                    <div class="">
-                      <p class="clabel">Veteran Status</p>
-                      <p class="cvalue">{{getText 'veteranStatus' veteranStatus}}</p>
-                    </div>
-                    <!--
-                    <div class="">
-                      <p class="clabel">Disabling Condition</p>
-                      <p class="cvalue">{{getText 'disablingcondition' disablingConditions}}</p>
-                    </div>
-                    -->
-                  </div>
-                </div>
-                {{#if ../showEditButton }}<input class="btn btn-warning edit" value="Edit client" type="button" />{{/if}}
-              </div>
-            </div>
-          </div>
-            <!--/.Panel 1-->
             <!--Panel 1.5 Eligibility -->
+            <!--
             <div class="tab-pane fade {{#if isActive 'eligibility'}}in show active {{else}}no-show{{/if}}" id="panel-eligibility" role="tabpanel">
               {{#with eligibleClient}}
                 {{#unless error}}
@@ -167,10 +38,11 @@
                 {{/unless}}
               {{/with}}
             </div>
+          -->
 
             <!--Panel ROIS -->
             <div class="tab-pane fade {{#if isActive 'rois'}}in show active {{else}}no-show{{/if}}" id="panel-rois" role="tabpanel">
-              {{>panelRois client=currentClient}}
+              {{> panelRois client=currentClient}}
             </div>
 
             <!--Panel 3 Referrals -->
@@ -217,12 +89,14 @@
             {{/if}}
             <!--/.Panel 3-->
             <!--Panel 4 Responses -->
+            <!--
             <div class="tab-pane fade no-show" id="panel-responses" role="tabpanel">
                 <br>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil odit magnam minima, soluta doloribus
                     reiciendis molestiae placeat unde eos molestias. Quisquam aperiam, pariatur. Tempora, placeat ratione
                     porro voluptate odit minima.</p>
             </div>
+            -->
             <!--/.Panel 4-->
             {{#if showEnrollments}}
             <!--Panel 5 Enrollments -->
@@ -435,7 +309,7 @@
                                       </select>
                                   </div>
                                   <div class='col-md-2'>
-                                      <label>select Service</label>
+                                      <label>Select Service</label>
                                       <select name='class' class='service_type form-control' id='service_type'>
                                           <option value=''>Select Service</option>
                                           <option value='Basic Needs'>Basic Needs</option>
@@ -503,6 +377,7 @@
                   </div>
               </div>
 
+            </div>
 
             </div>
           </div>
