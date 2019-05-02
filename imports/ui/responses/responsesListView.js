@@ -2,7 +2,6 @@ import Alert from '/imports/ui/alert';
 import { deleteResponseButton, TableDom } from '/imports/ui/dataTable/helpers';
 import moment from 'moment';
 import Responses, { ResponseStatus } from '/imports/api/responses/responses';
-import { Clients } from '/imports/api/clients/clients';
 import { fullName } from '/imports/api/utils';
 import './responsesListView.html';
 
@@ -107,9 +106,10 @@ const tableOptions = {
       },
       filterMethod(filter, row /* , column*/) {
         const response = row;
-        const clientData = Clients.findOne(response.clientId);
+        const { client } = response;
+        if (!client) return response.clientId;
         // const clientDetails = response.clientDetails || { loading: true };
-        const clientDetails = clientData || { loading: true };
+        const clientDetails = client || { loading: true };
         // TODO: trigger client data load if no data coming from subscription
         let value = '';
         if (clientDetails.loading) {

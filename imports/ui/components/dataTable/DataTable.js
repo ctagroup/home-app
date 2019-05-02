@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import { transformColumn, formatDate } from './helpers.jsx';
+import { transformColumn } from './helpers.jsx';
+import { formatDate } from '/imports/both/helpers';
 
 class DataTable extends Component {
   // Universal search/filter
