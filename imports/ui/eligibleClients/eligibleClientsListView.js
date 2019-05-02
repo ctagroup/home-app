@@ -9,6 +9,7 @@ const tableOptions = {
     {
       data: 'client',
       title: 'Client',
+      minWidth: 160,
       render(client) {
         const url = Router.path('viewClient',
           { _id: client.id },
@@ -32,6 +33,7 @@ const tableOptions = {
     {
       title: 'Score',
       data: 'surveyScore',
+      minWidth: 80,
       render(value, type, doc) {
         const client = doc.client;
         // console.log(client);
@@ -51,6 +53,7 @@ const tableOptions = {
     {
       title: 'Survey Date',
       data: 'surveyDate',
+      minWidth: 150,
     },
     {
       title: 'Match Status',

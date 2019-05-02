@@ -48,6 +48,7 @@ const tableOptions = {
     {
       data: 'surveyId',
       title: 'Survey',
+      minWidth: 300,
       render(surveyId, type, response) {
         const { survey } = response;
         if (survey.error) {
@@ -86,6 +87,7 @@ const tableOptions = {
     {
       data: 'clientId',
       title: 'Client',
+      minWidth: 150,
       render(value, type, response) {
         const { client } = response;
         if (!client) return response.clientId;
@@ -123,6 +125,7 @@ const tableOptions = {
     {
       data: 'createdAt',
       title: 'Date Created',
+      minWidth: 150,
       render(value, type) {
         if (type === 'sort') {
           return value;
@@ -140,6 +143,7 @@ const tableOptions = {
     {
       data: 'updatedAt',
       title: 'Date Updated',
+      minWidth: 150,
       render(value, type) {
         if (type === 'sort') {
           return value;
@@ -151,6 +155,7 @@ const tableOptions = {
     {
       data: 'status',
       title: 'Status',
+      minWidth: 100,
       searchable: false,
       filterable: false,
       render(value, type, response) {
@@ -182,6 +187,7 @@ const tableOptions = {
       data: 'version',
       title: 'Version',
       filterable: false,
+      minWidth: 80,
     },
     deleteResponseButton((response) => {
       Responses._collection.remove(response._id); // eslint-disable-line

@@ -9,10 +9,12 @@ const tableOptions = {
     {
       title: 'Global Household ID',
       data: 'genericHouseholdId', // note: access nested data like this
+      minWidth: 150,
     },
     {
       title: 'Head of HouseHold',
       data: 'genericHouseholdId', // note: access nested data like this
+      minWidth: 150,
       render(val, type, doc) {
         const client = doc.headOfHouseholdClient;
         if (client.loading) {
@@ -32,6 +34,7 @@ const tableOptions = {
     {
       title: 'Date Created',
       data: 'dateCreated', // note: access nested data like this
+      minWidth: 120,
       render(val) {
         if (val && val.month && val.dayOfMonth && val.year) {
           return `${val.month} ${val.dayOfMonth}, ${val.year}`;
@@ -42,6 +45,7 @@ const tableOptions = {
     {
       title: 'Date Updated',
       data: 'dateUpdated', // note: access nested data like this
+      minWidth: 120,
       render(val) {
         if (val && val.month && val.dayOfMonth && val.year) {
           return `${val.month} ${val.dayOfMonth}, ${val.year}`;
@@ -52,6 +56,7 @@ const tableOptions = {
     {
       title: 'User',
       data: 'genericHouseholdId', // note: access nested data like this
+      minWidth: 180,
       render(val, type, doc) {
         const user = doc.userDetails;
         if (user.loading) {
@@ -66,6 +71,7 @@ const tableOptions = {
     {
       title: 'Active?',
       data: 'inactive',
+      minWidth: 80,
       orderable: false,
       render(value) {
         return value ? '' : '<i class="fa fa-check js-tooltip" data-toggle="tooltip" data-placement="right" title=""></i>'; // eslint-disable-line max-len

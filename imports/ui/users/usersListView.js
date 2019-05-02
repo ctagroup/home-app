@@ -8,6 +8,7 @@ const tableOptions = {
     {
       title: 'Name',
       data: 'services.HMIS.name',
+      minWidth: 160,
       render(value, _, rowData) {
         return fullName(rowData.services.HMIS);
       },
@@ -20,6 +21,7 @@ const tableOptions = {
     {
       title: 'Email',
       data: 'services.HMIS.emailAddress',
+      minWidth: 250,
       render(value, _, rowData) {
         if (!value) {
           value = rowData.services.HMIS.emailAddress; // eslint-disable-line
@@ -40,6 +42,7 @@ const tableOptions = {
       title: 'Mail',
       data: 'services.HMIS.emailAddress',
       _id: 'htmlEmailAddress',
+      minWidth: 60,
       render(value, _, rowData) {
         if (!value) {
           value = rowData.services.HMIS.emailAddress; // eslint-disable-line
@@ -53,6 +56,7 @@ const tableOptions = {
     {
       title: 'Joined',
       data: 'createdAt',
+      minWidth: 100,
       render(value) {
         return moment(value).format('MM/DD/YYYY');
       },
@@ -62,10 +66,12 @@ const tableOptions = {
       title: 'Status',
       data: 'services.HMIS.status',
       searchable: false,
+      minWidth: 100,
     },
     {
       title: 'Project Group',
       data: 'services.HMIS.projectGroup.projectGroupName',
+      minWidth: 250,
     },
     editButton('adminDashboardusersEdit'),
     deleteUserButton(),

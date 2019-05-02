@@ -7,22 +7,27 @@ const tableOptions = {
     {
       data: 'projectName',
       title: 'Project Name',
+      minWidth: 280,
     },
     {
       data: 'projectCommonName',
       title: 'Common Name',
+      minWidth: 300,
     },
     {
       data: 'projectGroup',
       title: 'Project Group',
+      minWidth: 120,
     },
     {
       data: 'schema',
       title: 'Schema',
+      minWidth: 100,
     },
     {
       data: 'dateCreated',
       title: 'Created At',
+      minWidth: 100,
     },
     {
       data: 'Edit',
