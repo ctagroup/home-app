@@ -1,16 +1,17 @@
 import querystring from 'querystring';
-
+import { logger as globalLogger } from '/imports/utils/logger';
 import { HmisApiRegistry } from './apiRegistry';
 
 const OAUTH_BASE_URL = 'https://www.hmislynk.com/hmis-authorization-service/rest';
 
 export class HmisClient {
-  constructor(userId, serviceConfig, registry, usersCollection) {
+  constructor({ userId, serviceConfig, hmisApiRegistry, usersCollection, logger }) {
     this.userId = userId;
     this.serviceConfig = serviceConfig;
-    this.registry = registry;
+    this.registry = hmisApiRegistry;
     this.usersCollection = usersCollection;
     this.authData = undefined;
+    this.logger = logger || globalLogger;
   }
 
   api(name) {
@@ -18,7 +19,7 @@ export class HmisClient {
     if (!this.hasValidAccessToken()) {
       this.renewAccessToken();
     }
-    return new Cls(this.serviceConfig.appId, this.getAccessToken());
+    return new Cls(this.serviceConfig.appId, this.getAccessToken(), this.logger);
   }
 
   getAccessToken() {
@@ -107,10 +108,20 @@ export class HmisClient {
   }
 
   static create(userId) {
+    globalLogger.warn(`
+      creating HMIS client via create() is deprecated.
+      Use method/publication context instead
+    `);
     const serviceConfig = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (!serviceConfig.appId || !serviceConfig.appSecret) {
       throw new ServiceConfiguration.ConfigError();
     }
-    return new HmisClient(userId, serviceConfig, HmisApiRegistry, Meteor.users);
+    return new HmisClient({
+      userId,
+      serviceConfig,
+      hmisApiRegistry: HmisApiRegistry,
+      usersCollection: Meteor.users,
+      logger: globalLogger,
+    });
   }
 }
