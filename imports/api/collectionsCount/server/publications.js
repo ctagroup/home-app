@@ -28,7 +28,7 @@ Meteor.publish('collectionsCount', function publishCollectionCount(forceReload =
 
   const handles = [
     publishCounts(Surveys, 'surveys', this),
-    publishCounts(Responses, 'responses', this),
+    // publishCounts(Responses, 'responses', this),
     publishCounts(Meteor.users, 'users', this),
   ];
 
