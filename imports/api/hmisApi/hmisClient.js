@@ -108,10 +108,10 @@ export class HmisClient {
   }
 
   static create(userId) {
-    globalLogger.warn(`
-      creating HMIS client via create() is deprecated.
-      Use method/publication context instead
-    `);
+    // globalLogger.warn(`
+    //   creating HMIS client via create() is deprecated.
+    //   Use method/publication context instead
+    // `);
     const serviceConfig = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
     if (!serviceConfig.appId || !serviceConfig.appSecret) {
       throw new ServiceConfiguration.ConfigError();

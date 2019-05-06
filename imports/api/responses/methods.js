@@ -491,13 +491,23 @@ Meteor.methods({
 
 
 Meteor.injectedMethods({
-  async 'responses.importAllSubmissionsFromHslynk'(start = 0, limit = Number.MAX_SAFE_INTEGER) {
+  async 'responses.importAllSubmissionsFromHslynk'(start = 0, limit = Number.MAX_SAFE_INTEGER, firstClientId) {
     this.unblock();
     const schema = 'v2017';
     const { hmisClient } = this.context;
-    const clientIds = hmisClient.api('client')
+
+    let clientIds = hmisClient.api('client')
       .getClients(schema, 0, limit)
       .map(c => c.clientId);
+
+    if (firstClientId) {
+      const pos = clientIds.indexOf(firstClientId);
+      logger.info('starting from clientId', firstClientId, pos);
+      if (pos > 0) {
+        clientIds = clientIds.slice(pos);
+      }
+      logger.debug('#clients', clientIds.length);
+    }
 
     const importer = new ResponseImporter({
       responsesCollection: Responses,
