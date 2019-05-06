@@ -3,7 +3,7 @@ import Surveys from '/imports/api/surveys/surveys';
 import Questions from '/imports/api/questions/questions';
 import { mapUploadedSurveySections } from '/imports/api/surveys/helpers';
 import { computeFormState, findItem, getScoringVariables } from '/imports/api/surveys/computations';
-import { logger } from '/imports/utils/logger';
+import { logger as globalLogger } from '/imports/utils/logger';
 import { escapeKeys, unescapeKeys, fullName } from '/imports/api/utils';
 import Responses, { ResponseStatus } from '/imports/api/responses/responses';
 import { ResponsesAccessRoles } from '/imports/config/permissions';
@@ -15,7 +15,7 @@ import ResponseImporter from './ResponseImporter';
 
 function prepareValuesToUpload(values, definition, defaultSectionId) {
   const questionIds = Object.keys(values);
-  logger.debug('prepareValuesToUpload', values);
+  globalLogger.debug('prepareValuesToUpload', values);
   return questionIds.map(id => {
     const question = findItem(id, definition);
     return {
@@ -29,7 +29,7 @@ function prepareValuesToUpload(values, definition, defaultSectionId) {
 
 Meteor.methods({
   'responses.create'(doc) {
-    logger.info(`METHOD[${this.userId}]: responses.create`, doc);
+    globalLogger.info(`METHOD[${this.userId}]: responses.create`, doc);
     check(doc, Object);
     if (!Roles.userIsInRole(this.userId, ResponsesAccessRoles)) {
       throw new Meteor.Error(403, 'Forbidden');
@@ -48,7 +48,7 @@ Meteor.methods({
   },
 
   'responses.update'(id, doc) {
-    logger.info(`METHOD[${this.userId}]: responses.update`, id, doc);
+    globalLogger.info(`METHOD[${this.userId}]: responses.update`, id, doc);
     check(id, String);
     check(doc, Object);
     if (!Roles.userIsInRole(this.userId, ResponsesAccessRoles)) {
@@ -68,7 +68,7 @@ Meteor.methods({
   },
 
   'responses.delete'(id) {
-    logger.info(`METHOD[${this.userId}]: responses.delete`, id);
+    globalLogger.info(`METHOD[${this.userId}]: responses.delete`, id);
     check(id, String);
     if (!Roles.userIsInRole(this.userId, ResponsesAccessRoles)) {
       throw new Meteor.Error(403, 'Forbidden');
@@ -84,7 +84,7 @@ Meteor.methods({
         hc.api('survey').deleteSubmission(clientId, surveyId, submissionId);
         // Meteor.call('responses.deleteEnrollment', id);
       } catch (err) {
-        logger.warn('Failed to delete response', err);
+        globalLogger.warn('Failed to delete response', err);
       } finally {
         Responses.remove(id);
       }
@@ -95,7 +95,7 @@ Meteor.methods({
   },
 
   'responses.sendEmails'(responseId) {
-    logger.info(`METHOD[${this.userId}]: responses.emails`, responseId);
+    globalLogger.info(`METHOD[${this.userId}]: responses.emails`, responseId);
     check(responseId, String);
     if (!Roles.userIsInRole(this.userId, ResponsesAccessRoles)) {
       throw new Meteor.Error(403, 'Forbidden');
@@ -117,7 +117,7 @@ Meteor.methods({
     const formState = computeFormState(definition, values, {}, { client });
     const emails = prepareEmails(definition, formState);
 
-    logger.debug(`sending ${emails.length} emails`);
+    globalLogger.debug(`sending ${emails.length} emails`);
     emails.forEach(email => {
       try {
         const additionalInfo = {
@@ -127,13 +127,13 @@ Meteor.methods({
         };
         hc.api('global').sendEmailNotification(email, additionalInfo);
       } catch (e) {
-        logger.error(e);
+        globalLogger.error(e);
       }
     });
   },
 
   'responses.uploadEnrollment'(id) {
-    logger.info(`METHOD[${this.userId}]: responses.uploadEnrollment`, id);
+    globalLogger.info(`METHOD[${this.userId}]: responses.uploadEnrollment`, id);
     check(id, String);
     if (!Roles.userIsInRole(this.userId, ResponsesAccessRoles)) {
       throw new Meteor.Error(403, 'Forbidden');
@@ -164,7 +164,7 @@ Meteor.methods({
       survey = hc.api('survey2').getSurvey(surveyId);
     } catch (err) {
       Responses.update(id, { $set: { status: ResponseStatus.UPLOAD_ERROR } });
-      logger.error(err);
+      globalLogger.error(err);
       throw new Meteor.Error('error', `Survey ${surveyId} not uploaded.`);
     }
 
@@ -179,10 +179,10 @@ Meteor.methods({
       dataCollectionStage
     );
     const sortedData = enrollmentUploader.dataOrderedByUrlVariables(dataToSend);
-    logger.debug('sorted', sortedData);
+    globalLogger.debug('sorted', sortedData);
     const result = enrollmentUploader.upload(sortedData, hc.api('client'));
 
-    logger.debug('enrollment upload result', result);
+    globalLogger.debug('enrollment upload result', result);
     if (Object.keys(result).length > 0) {
       // new enrollment has been crated
       Responses.update(id, {
@@ -196,7 +196,7 @@ Meteor.methods({
   },
 
   'responses.deleteEnrollment'(id) {
-    logger.info(`METHOD[${this.userId}]: responses.deleteEnrollment`, id);
+    globalLogger.info(`METHOD[${this.userId}]: responses.deleteEnrollment`, id);
     const response = Responses.findOne(id);
     if (response.enrollment) {
       Object.values(response.enrollment).forEach(entry => {
@@ -206,7 +206,7 @@ Meteor.methods({
   },
 
   'responses.uploadToHmis'(id) {
-    logger.info(`METHOD[${this.userId}]: responses.uploadToHmis`, id);
+    globalLogger.info(`METHOD[${this.userId}]: responses.uploadToHmis`, id);
     check(id, String);
 
     // TODO: check permissions
@@ -225,7 +225,7 @@ Meteor.methods({
       survey = hc.api('survey2').getSurvey(surveyId);
     } catch (err) {
       Responses.update(id, { $set: { status: ResponseStatus.UPLOAD_ERROR } });
-      logger.error(err);
+      globalLogger.error(err);
       throw new Meteor.Error('error', `Survey ${surveyId} not uploaded.`);
     }
 
@@ -235,7 +235,7 @@ Meteor.methods({
     const client = hc.api('client').getClient(response.clientId, response.clientSchema);
     const formState = computeFormState(definition, values, {}, { client });
     const scores = getScoringVariables(formState); // each score is { name, value } object
-    logger.debug('scores to upload', scores);
+    globalLogger.debug('scores to upload', scores);
 
     // get existing (in HMIS) sections for this survey
     // there are 2 types of sections:
@@ -243,7 +243,7 @@ Meteor.methods({
     // any number of score sections (for storing each value with name score.*)
     const existingSectionsData = hc.api('survey').getSurveySections(surveyId);
     const existingSections = mapUploadedSurveySections(existingSectionsData);
-    logger.debug('existing sections', existingSections);
+    globalLogger.debug('existing sections', existingSections);
 
     // discover sectionId of default section (which will be used to upload question values)
     const defaultSectionId = existingSections.find(s => s.type === 'default').hmisId;
@@ -256,7 +256,7 @@ Meteor.methods({
     try {
       if (submissionId) {
         // if this response has already been submitted
-        logger.info(`Updating existing submission, doc id ${id}`);
+        globalLogger.info(`Updating existing submission, doc id ${id}`);
         const submissionResponses = hc.api('survey').getSubmissionResponses(
           clientId, surveyId, submissionId
         );
@@ -274,7 +274,7 @@ Meteor.methods({
           status: ResponseStatus.COMPLETED,
         } });
       } else {
-        logger.info(`Sending new submission, response doc ${id}`);
+        globalLogger.info(`Sending new submission, response doc ${id}`);
         // create new submission - send all question values in one call
         submissionId = hc.api('survey').createSubmission(
           clientId, surveyId, questionVaules
@@ -291,14 +291,14 @@ Meteor.methods({
         }
       }
     } catch (e) {
-      logger.error(`Response upload ${e}`, e.stack);
+      globalLogger.error(`Response upload ${e}`, e.stack);
       Responses.update(id, { $set: { status: ResponseStatus.UPLOAD_ERROR } });
       throw new Meteor.Error('responses', `${e}`);
     }
 
     try {
       scores.forEach(score => {
-        logger.info('Submitting score', score);
+        globalLogger.info('Submitting score', score);
         const scoreSection = existingSections.filter(s => s.id === score.name)[0];
         if (!scoreSection) {
           throw new Meteor.Error('responses',
@@ -310,7 +310,7 @@ Meteor.methods({
         });
       });
     } catch (e) {
-      logger.error(`Score upload ${e}`, e.stack);
+      globalLogger.error(`Score upload ${e}`, e.stack);
       Responses.update(id, { $set: { status: ResponseStatus.UPLOAD_ERROR } });
       throw new Meteor.Error('responses', `Response submitted but failed to upload scores: ${e}`);
     }
@@ -320,7 +320,7 @@ Meteor.methods({
   },
 
   'responses.uploadV1ToHmis'(id, defaultSectionId = '7db10270-ec7f-4b11-8d26-48e334c97b95') {
-    logger.info(`METHOD[${this.userId}]: responses.uploadV1ToHmis`, id);
+    globalLogger.info(`METHOD[${this.userId}]: responses.uploadV1ToHmis`, id);
 
     function assertEqual(a, b, msg = '') {
       if (a !== b) throw new Error(`${a} !== ${b} ${msg}`);
@@ -333,11 +333,11 @@ Meteor.methods({
     assertEqual(response.status, 'Paused', 'expected Paused status');
     assertEqual(!!response.submissionId, false, 'Expected not submitted response');
 
-    logger.debug('RESPONSE', response);
+    globalLogger.debug('RESPONSE', response);
 
     const survey = Surveys.findOne(response.surveyId);
 
-    logger.debug('SURVEY', survey);
+    globalLogger.debug('SURVEY', survey);
 
     const questionResponses = response.section.reduce((all, s) => ([
       ...all,
@@ -360,7 +360,7 @@ Meteor.methods({
     const clientId = response.clientId;
     const surveyId = survey.apiSurveyServiceId;
 
-    logger.debug({ clientId, surveyId, questionValues });
+    globalLogger.debug({ clientId, surveyId, questionValues });
 
     const { submissionId } = hc.api('survey').createSubmission(
       clientId, surveyId, questionValues
@@ -377,12 +377,12 @@ Meteor.methods({
       },
     }, { bypassCollection2: true });
 
-    logger.info('DONE!', submissionId);
+    globalLogger.info('DONE!', submissionId);
     return submissionId;
   },
 
   'responses.getPage'({ clientId, pageNumber = 0, pageSize = 50, sortBy = [], filterBy = [] }) {
-    logger.info(`METHOD[${this.userId}]: responses.getPage(${pageNumber}, ${pageSize}, ${sortBy}, ${filterBy})`); // eslint-disable-line max-len
+    globalLogger.info(`METHOD[${this.userId}]: responses.getPage(${pageNumber}, ${pageSize}, ${sortBy}, ${filterBy})`); // eslint-disable-line max-len
     if (!this.userId) {
       throw new Meteor.Error(401, 'Unauthorized');
     }
@@ -478,7 +478,7 @@ Meteor.methods({
     };
   },
   'responses.count'() {
-    logger.info(`METHOD[${this.userId}]: responses.count`);
+    globalLogger.info(`METHOD[${this.userId}]: responses.count`);
 
     function count() {
       return Responses._collection // eslint-disable-line
@@ -507,9 +507,11 @@ Meteor.injectedMethods({
     const results = [];
     while (clientIds.length > 0) {
       const clientId = clientIds.shift();
-      logger.info(`!!!!!!! importing responses for ${clientId}, ${clientIds.length} remaining`);
+      globalLogger.info(`!!!!!!! importing responses for ${clientId},
+        ${clientIds.length} remaining`
+      );
       const result = await importer.importResponsesForClientAsync(clientId, schema, this.userId);
-      logger.info(`!!!!!!! done with ${clientId}, ${clientIds.length} remaining`);
+      globalLogger.info(`!!!!!!! done with ${clientId}, ${clientIds.length} remaining`);
       results.push(result);
     }
     return results;
@@ -551,7 +553,7 @@ Meteor.injectedMethods({
   },
 
   'responses.recentlySurveyedClients'() {
-    logger.info(`METHOD[${this.userId}]: responses.recentlySurveyedClients`);
+    globalLogger.info(`METHOD[${this.userId}]: responses.recentlySurveyedClients`);
     if (!Roles.userIsInRole(this.userId, ResponsesAccessRoles)) {
       throw new Meteor.Error(403, 'Forbidden');
     }
@@ -576,7 +578,6 @@ Meteor.injectedMethods({
         [r.clientId]: surveyedClient,
       };
     }, {});
-    console.log(clientsWithGroupedResponses);
     return Object.values(clientsWithGroupedResponses);
   },
 });
