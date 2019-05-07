@@ -89,7 +89,7 @@ export default class Question extends Item {
           }
           break;
         case 'date':
-          value = date ? date.format('YYYY-MM-DD') : '';
+          value = date ? moment(date).format('YYYY-MM-DD') : '';
           break;
         default:
           value = event.target.value;
@@ -200,10 +200,14 @@ export default class Question extends Item {
     }
   }
 
-  renderDatePicker(value, disabled) {
+  renderDatePicker(dateStr, disabled) {
+    let dateObject = null;
+    if (dateStr) {
+      dateObject = moment(dateStr, 'YYYY-MM-DD').toDate();
+    }
     return (
       <DatePicker
-        selected={value ? moment(value) : ''}
+        selected={dateObject}
         onChange={(v, e) => this.handleChange(e, v)}
         placeholderText="MM/DD/YYYY"
         disabled={this.isRefused() || disabled}
