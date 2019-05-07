@@ -1,3 +1,4 @@
+import moment from 'moment';
 import './clientTagList.html';
 import ClientTagList from '/imports/ui/components/tags/ClientTagList.js';
 import { Tags } from '/imports/api/tags/tags.js';
