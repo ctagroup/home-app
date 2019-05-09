@@ -491,10 +491,11 @@ Meteor.methods({
 
 
 Meteor.injectedMethods({
-  async 'responses.importAllSubmissionsFromHslynk'(start = 0, limit = Number.MAX_SAFE_INTEGER, firstClientId) {
+  async 'responses.importAllSubmissionsFromHslynk'(start = 0,
+      limit = Number.MAX_SAFE_INTEGER, firstClientId) {
     this.unblock();
     const schema = 'v2017';
-    const { hmisClient } = this.context;
+    const { hmisClient, logger } = this.context;
 
     let clientIds = hmisClient.api('client')
       .getClients(schema, 0, limit)
