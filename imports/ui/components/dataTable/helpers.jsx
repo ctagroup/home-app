@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 
 export const transformColumn = (column) => {
   let accessor;
@@ -33,5 +32,3 @@ export const transformColumn = (column) => {
   delete columnData.width;
   return columnData;
 };
-
-export const formatDate = (date) => moment(date).format('MM/DD/YYYY h:mm A');
