@@ -104,8 +104,11 @@ export default class ResponseImporter {
     const submissions = this.hmisClient.api('survey').getClientSurveySubmissions(clientId);
     logger.info(`importing ${submissions.length} submissions for client ${clientId} ${clientSchema}`); // eslint-disable-line
 
+
     return new Promise((resolve) => {
       const results = [];
+      if (submissions.length === 0) resolve(results);
+
       eachLimit(submissions, 20,
         (submission, callback) => {
           Meteor.setTimeout(() => {
