@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 export const transformColumn = (column) => {
   let accessor;
   if (column.render) {
