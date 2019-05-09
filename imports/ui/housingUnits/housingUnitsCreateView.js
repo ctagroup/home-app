@@ -28,7 +28,7 @@ Template.housingUnitCreateView.events(
             Bert.alert(err.reason || err.error, 'danger', 'growl-top-right');
           } else {
             Bert.alert('Housing unit created!', 'success', 'growl-top-right');
-            // Router.go('/housingUnits');
+            Router.go('/housingUnits');
           }
         }
       );
