@@ -31,6 +31,7 @@ Meteor.methods({
           'Catherine.Stedman@amwater.com',
           'Anthony.Lopez@amwater.com',
           'waterhelp@unitedwaymcca.org',
+          'Joe.DiMaggio@amwater.com',
         ].join(','),
       };
       const additionalInfo = {
@@ -74,6 +75,7 @@ Meteor.methods({
           'Catherine.Stedman@amwater.com',
           'Anthony.Lopez@amwater.com',
           'waterhelp@unitedwaymcca.org',
+          'Joe.DiMaggio@amwater.com',
         ].join(','),
       };
       const additionalInfo = {
