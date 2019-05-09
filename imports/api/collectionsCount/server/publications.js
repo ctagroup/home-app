@@ -10,7 +10,6 @@ function publishCounts(collection, collectionName, publication) {
 
   const handle = collection.find().observeChanges({
     added() {
-      count += 1;
       publication.changed('collectionsCount', collectionName, { count });
     },
     removed() {
@@ -28,7 +27,6 @@ Meteor.publish('collectionsCount', function publishCollectionCount(forceReload =
 
   const handles = [
     publishCounts(Surveys, 'surveys', this),
-    // publishCounts(Responses, 'responses', this),
     publishCounts(Meteor.users, 'users', this),
   ];
 
@@ -53,8 +51,15 @@ Meteor.publish('collectionsCount', function publishCollectionCount(forceReload =
   });
   self.ready();
 
-  self.onStop(
-    () => _.each(handles, handle => handle.stop())
-  );
+  self.added('collectionsCount', 'responses', { count: Responses.find().count(), loading: false });
+  const responsesCounter = Meteor.setInterval(() => {
+    const count = Responses.find().count();
+    self.changed('collectionsCount', 'responses', { count });
+  }, 1000);
+
+  self.onStop(() => {
+    Meteor.clearInterval(responsesCounter);
+    _.each(handles, handle => handle.stop());
+  });
   return self.ready();
 });
