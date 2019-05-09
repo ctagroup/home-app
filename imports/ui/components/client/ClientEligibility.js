@@ -69,10 +69,13 @@ function ClientEligibility(props) {
                 name="removalReason"
                 id="removalReason"
                 onChange={(e) => changeReason(e.target.value)}
+                defaultValue={removalReason}
               >
+                {/** selected={id === removalReason} */}
                 {reasonsList.map(({ id, text }) =>
                   (<option
-                    value={id} selected={id === removalReason} key={`option-${id}`}
+                    value={id}
+                    key={`option-${id}`}
                   >{text}</option>))}
               </select>
             </div>

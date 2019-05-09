@@ -14,6 +14,7 @@ class ClientTagList extends Component {
     this.state = {
       newTagId: {},
       newTagAction: {},
+      date: new Date,
     };
     this.handleChange = this.handleChange.bind(this);
     this.renderDatePicker = this.renderDatePicker.bind(this);
@@ -74,7 +75,7 @@ class ClientTagList extends Component {
 
   renderDatePicker(key) {
     const dateValue =
-      this.state && this.state[key] && moment(this.state[key]).toDate() || Date.now();
+      this.state && this.state[key] && moment(this.state[key]).toDate() || new Date;
     return (<DatePicker
       className="form-control"
       selected={dateValue}
@@ -121,8 +122,8 @@ class ClientTagList extends Component {
           {this.renderDatePicker('newTagDate')}
         </div>
         <div className="form-group" style={{ minWidth: '12em', padding: '0 .25em' }}>
-          <input
-            type="text"
+          <textarea
+            rows="3"
             placeholder="note"
             className="form-control input-sm"
             onChange={(value) => this.handleInputChange('note', value)}
@@ -158,6 +159,8 @@ class ClientTagList extends Component {
 
     const filteredTags = _.uniq(getActiveTagsForDate(clientTags, selectedDate),
       ({ tagId }) => tagId);
+    // FIXME: remove data extension workaround
+    const extendedTags = filteredTags.map((tag) => ({ ...tag, date: this.state.date }));
 
     const tableOptions = {
       columns: [
@@ -221,7 +224,7 @@ class ClientTagList extends Component {
           <DataTable
             disableSearch={disabled}
             options={options}
-            data={filteredTags}
+            data={extendedTags}
           />
         </div>
       </div>

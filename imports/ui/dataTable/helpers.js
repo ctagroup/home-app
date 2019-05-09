@@ -3,6 +3,7 @@ import '/imports/ui/dataTable/dataTableDeleteButton';
 import '/imports/ui/dataTable/dataTableTextButton';
 import '/imports/ui/dataTable/createButton';
 import { fullName } from '/imports/api/utils';
+import { formatDate } from '/imports/both/helpers';
 import BlazeTemplate from '/imports/ui/components/BlazeComponent';
 import React from 'react';
 import Users from '/imports/api/users/users';
@@ -339,9 +340,10 @@ export function removeClientTagButton(onSuccessCallback) {
       operationText: removed ? 'Remove' : 'Add',
       title: `Confirm ${removed ? 'removal' : 'adding'}`,
       message: `Are you sure you want to ${removed ? 'remove' : 'add'
-        } client tag #${rowData.id} (${rowData.tag.name})?`,
+        } client tag #${rowData.id} (${rowData.tag.name}) as of ${formatDate(rowData.date)}?`,
       method: 'tagApi',
-      args: ['createClientTag', { ...rowData, operation: inverseOperation }],
+      args: ['createClientTag',
+        { ...rowData, operation: inverseOperation, appliedOn: rowData.date }],
       onSuccess(result) {
         if (onSuccessCallback) onSuccessCallback(result);
       },
