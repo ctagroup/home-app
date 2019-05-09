@@ -72,7 +72,7 @@ const updateEligibility = (client) => {
   });
   const updateRequired = clientVersions.filter(({ clientId, schema }) => {
     const data = getEligibleClient(clientId, schema);
-    return (!data.updating) && !data.ignoreMatchProcess;
+    return (!data.updating) && data.ignoreMatchProcess === false;
   });
   if (ignored && updateRequired.length) {
     const remarks = getEligibleClient(ignored.clientId, ignored.schema).remarks;
@@ -446,7 +446,13 @@ Template.viewClient.helpers(
       const client = Clients.findOne(currentClientId);
       if (!client) return null;
       const versions = flattenKeyVersions(client, 'eligibleClient');
-      const nonError = versions.filter(({ error }) => !error);
+      const nonError = versions.filter(({ error }) => !error).sort((a, b) => {
+        if (a.ignoreMatchProcess === null) {
+          if (b.ignoreMatchProcess === null) return 0;
+          return -1;
+        }
+        return 1;
+      });
       if (nonError.length) {
         updateEligibility(client);
         return nonError[nonError.length - 1];
