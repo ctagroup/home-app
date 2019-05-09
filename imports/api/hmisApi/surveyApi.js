@@ -22,6 +22,12 @@ export class SurveyApi extends ApiEndpoint {
     return this.doPut(url, body);
   }
 
+  getNumberOfSurveys() {
+    const url = `${BASE_URL}/surveys`;
+    const { pagination } = this.doGet(url).surveys;
+    return pagination.total;
+  }
+
   createQuestion(question, groupId = DEFAULT_GROUP_ID) {
     const url = `${BASE_URL}/questiongroups/${groupId}/questions`;
     const body = { question };

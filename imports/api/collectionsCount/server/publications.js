@@ -1,34 +1,12 @@
 import HmisCounts from './hmisCounts';
-import Surveys from '/imports/api/surveys/surveys';
 import Responses from '/imports/api/responses/responses';
 import { HmisCache } from '/imports/api/cache/hmisCache';
 
-
-function publishCounts(collection, collectionName, publication) {
-  let count = 0;
-  publication.added('collectionsCount', collectionName, { count });
-
-  const handle = collection.find().observeChanges({
-    added() {
-      publication.changed('collectionsCount', collectionName, { count });
-    },
-    removed() {
-      count -= 1;
-      publication.changed('collectionsCount', collectionName, { count });
-    },
-  });
-  return handle;
-}
 
 Meteor.publish('collectionsCount', function publishCollectionCount(forceReload = true) {
   if (!this.userId) {
     return [];
   }
-
-  const handles = [
-    publishCounts(Surveys, 'surveys', this),
-    publishCounts(Meteor.users, 'users', this),
-  ];
 
   const self = this;
   const counter = new HmisCounts(this.userId);
@@ -40,6 +18,8 @@ Meteor.publish('collectionsCount', function publishCollectionCount(forceReload =
     housingUnits: counter.getHousingUnitsCount,
     globalHouseholds: counter.getGlobalHouseholdsCount,
     questions: counter.getQuestionsCount,
+    surveys: counter.getSurveysCount,
+    users: counter.getUsersCount,
   }, (fn, name) => {
     self.added('collectionsCount', name, { count: 0, loading: true });
     Meteor.defer(() => {
@@ -51,15 +31,15 @@ Meteor.publish('collectionsCount', function publishCollectionCount(forceReload =
   });
   self.ready();
 
+  // for now make responses counter reactive
   self.added('collectionsCount', 'responses', { count: Responses.find().count(), loading: false });
   const responsesCounter = Meteor.setInterval(() => {
     const count = Responses.find().count();
     self.changed('collectionsCount', 'responses', { count });
-  }, 1000);
+  }, 3000);
 
   self.onStop(() => {
     Meteor.clearInterval(responsesCounter);
-    _.each(handles, handle => handle.stop());
   });
   return self.ready();
 });

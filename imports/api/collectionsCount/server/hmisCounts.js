@@ -44,6 +44,15 @@ class HmisCounts {
       return prev + count;
     }, 0);
   }
+
+  getSurveysCount() {
+    const hc = HmisClient.create(this.userId);
+    return hc.api('survey').getNumberOfSurveys();
+  }
+
+  getUsersCount() {
+    return Meteor.users.find().count();
+  }
 }
 
 export default HmisCounts;
