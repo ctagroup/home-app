@@ -23,10 +23,12 @@ const tableOptions = {
     {
       title: 'Reservation ID',
       data: 'reservationId',
+      minWidth: 300,
     },
     {
       title: 'Client',
       data: 'client', // note: access nested data like this
+      minWidth: 180,
       render(value, type, doc) {
         const clientId = doc.eligibleClients.clientId;
         const clientDetails = doc.eligibleClients.clientDetails;
@@ -51,6 +53,7 @@ const tableOptions = {
     {
       title: 'Housing Unit ID',
       data: 'housingUnitId',
+      minWidth: 300,
       render(value, type, doc) {
         const aliasName = doc.housingUnit.aliasName || value;
         return `<a href="/housingUnits/${value}/edit">${aliasName}</a>`;
@@ -59,10 +62,12 @@ const tableOptions = {
     {
       title: 'Match Date',
       data: 'matchDate',
+      minWidth: 130,
     },
     {
       title: 'Match Status',
       data: 'eligibleClients', // note: access nested data like this
+      minWidth: 100,
       render(value) {
         if (value.matched) {
           return 'Matched';
@@ -73,6 +78,7 @@ const tableOptions = {
     {
       title: 'Ref',
       data: 'ref',
+      minWidth: 160,
       render(value, type, doc) {
         const status = doc.eligibleClients.referralStatus;
         if (status.loading) {

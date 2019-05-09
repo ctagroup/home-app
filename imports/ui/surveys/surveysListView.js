@@ -8,6 +8,7 @@ const tableOptions = {
     {
       data: 'title',
       title: 'Survey',
+      minWidth: 200,
       render(value, op, doc) {
         return `<a href="${Router.path('surveysPreview', { _id: doc._id })}">${value}</a>`;
       },
@@ -15,10 +16,12 @@ const tableOptions = {
     {
       data: 'numberOfResponses',
       title: 'Responses',
+      minWidth: 120,
     },
     {
       data: 'hudSurvey',
       title: 'Type',
+      minWidth: 100,
       render(value, op, doc) {
         return value ? `HUD ${doc.surveyVersion}` : '';
       },
@@ -26,6 +29,7 @@ const tableOptions = {
     {
       data: 'hmis',
       title: 'Status',
+      minWidth: 100,
       render(value) {
         if (value && value.status) {
           return value.status;
@@ -36,6 +40,7 @@ const tableOptions = {
     {
       data: 'locked',
       title: 'Locked',
+      minWidth: 100,
       render(value, type) {
         if (type === 'sort') {
           return value;
@@ -46,6 +51,7 @@ const tableOptions = {
     {
       data: 'createdAt',
       title: 'Created At',
+      minWidth: 150,
       render(value, type) {
         if (type === 'sort') {
           return value;

@@ -7,6 +7,7 @@ const tableOptions = {
     {
       title: 'Name',
       data: 'aliasName',
+      minWidth: 280,
       render(value, _, rowData) {
         return value || rowData._id;
       },
@@ -14,6 +15,7 @@ const tableOptions = {
     {
       title: 'Project',
       data: 'project',
+      minWidth: 280,
       render(value) {
         if (value.loading) {
           return 'Loading...';
@@ -27,6 +29,7 @@ const tableOptions = {
     {
       title: 'Vacant?',
       data: 'vacant',
+      minWidth: 80,
       render(value) {
         return value ? '<i class="fa fa-check js-tooltip" data-toggle="tooltip" data-placement="right" title=""></i>' : ''; // eslint-disable-line max-len
       },
@@ -34,6 +37,7 @@ const tableOptions = {
     {
       title: 'In service?',
       data: 'inService',
+      minWidth: 90,
       render(value) {
         return value ? '<i class="fa fa-check js-tooltip" data-toggle="tooltip" data-placement="right" title=""></i>' : ''; // eslint-disable-line max-len
       },

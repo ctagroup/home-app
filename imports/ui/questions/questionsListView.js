@@ -10,6 +10,7 @@ const tableOptions = {
     {
       title: 'Text',
       data: 'displayText',
+      minWidth: 400,
       render(value) {
         return trimText(value, 200);
       },
@@ -17,14 +18,17 @@ const tableOptions = {
     {
       title: 'Category',
       data: 'category',
+      minWidth: 180,
     },
     {
       title: 'Type',
       data: 'questionType',
+      minWidth: 100,
     },
     {
       title: 'Question Group',
       data: 'questionGroup.questionGroupName',
+      minWidth: 150,
     },
     editButton('questionsEdit'),
     deleteQuestionButton((question) => {
