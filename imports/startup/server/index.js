@@ -26,6 +26,8 @@ import '/imports/api/enrollments/server/publications';
 import '/imports/api/files/methods';
 import '/imports/api/files/server/publications';
 
+import '/imports/api/hmisApi/methods';
+
 import '/imports/api/submissionUploader/methods';
 import '/imports/api/submissionUploader/server/publications';
 
