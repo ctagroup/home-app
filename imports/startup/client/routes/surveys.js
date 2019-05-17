@@ -33,9 +33,9 @@ Router.route('surveysNew', {
   path: '/surveys/new',
   template: Template.surveyForm,
   controller: AppController,
-  waitOn() {
-    return Meteor.subscribe('questions.all');
-  },
+  // waitOn() {
+  //   return Meteor.subscribe('questions.all');
+  // },
   data() {
     const definition = {
       variables: {},
@@ -65,7 +65,7 @@ Router.route('surveysEdit', {
     const id = Router.current().params._id;
     return [
       Meteor.subscribe('surveys.one', id),
-      Meteor.subscribe('questions.all'),
+      // <Meteor.subscribe('questions.all'),
     ];
   },
   data() {
