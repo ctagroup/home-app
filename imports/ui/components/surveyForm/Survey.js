@@ -1,5 +1,5 @@
 import React from 'react';
-import { computeFormState } from '/imports/api/surveys/computations';
+import { computeFormState, evaluateOperand } from '/imports/api/surveys/computations';
 import Section from '/imports/ui/components/surveyForm/Section';
 import { ResponseStatus } from '/imports/api/responses/responses';
 import Alert from '/imports/ui/alert';
@@ -11,21 +11,36 @@ import { RecentClients } from '/imports/api/recent-clients';
 export default class Survey extends React.Component {
   constructor(props) {
     super(props);
-    const initialValues = props.initialValues || {};
+    const precomputedInitialValues = props.initialValues || {};
     this.handleValueChange = this.handleValueChange.bind(this);
     this.handlePropsChange = this.handlePropsChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleToggleDebugWindow = this.handleToggleDebugWindow.bind(this);
+
+    const otherData = {
+      client: props.client,
+      user: props.user,
+      project: props.project || {},
+      enrollmentInfo: props.enrollmentInfo || {},
+    };
+
+    const initialValues = Object.keys(precomputedInitialValues).reduce((all, key) => {
+      const v = precomputedInitialValues[key];
+      const initialState = {
+        ...otherData,
+      };
+      return {
+        ...all,
+        [key]: evaluateOperand(v, initialState),
+      };
+    }, {});
+
     this.state = {
       ...computeFormState(
         this.props.definition,
         initialValues,
         {},
-        {
-          client: props.client,
-          project: props.project || {},
-          enrollmentInfo: props.enrollmentInfo || {},
-        }
+        otherData,
       ),
       errors: {},
     };

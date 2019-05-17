@@ -225,6 +225,10 @@ export function applyResults(results, formState, currentId) {
         value = evaluateOperand(args[1], formState);
         Object.assign(formState.props, { [args[0]]: value });
         break;
+      case 'rset':
+        value = evaluateOperand(args[1], formState);
+        Object.assign(formState.values, { [args[0]]: value });
+        break;
       case 'add':
         current = formState.variables[args[0]] || 0;
         value = evaluateOperand(args[1], formState);
@@ -237,9 +241,7 @@ export function applyResults(results, formState, currentId) {
         current = 0;
         for (let i = 0; i < args.length; i++) {
           value = evaluateOperand(args[i], formState);
-          if (typeof(value) === 'number') {
-            current += value;
-          }
+          current += parseFloat(value) || 0;
         }
         Object.assign(formState.variables, { [args[0]]: current });
         break;

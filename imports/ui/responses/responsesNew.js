@@ -18,6 +18,21 @@ Template.responsesNew.helpers({
   surveyId() {
     return this.survey._id;
   },
+  initialValues() {
+    const definition = JSON.parse(this.survey.definition);
+    return definition.initialValues;
+  },
+  user() {
+    const user = Meteor.user();
+    const data = user && user.services && user.services.HMIS || {};
+    return {
+      userId: user._id,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      fullName: `${data.firstName} ${data.lastName}`,
+      emailAddress: data.emailAddress,
+    };
+  },
   isAdmin() {
     return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
   },
