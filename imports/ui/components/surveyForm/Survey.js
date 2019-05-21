@@ -1,11 +1,25 @@
 import React from 'react';
-import { computeFormState, evaluateOperand } from '/imports/api/surveys/computations';
+import {
+  computeFormState,
+  itemsToArray,
+  evaluateOperand,
+} from '/imports/api/surveys/computations';
 import Section from '/imports/ui/components/surveyForm/Section';
 import { ResponseStatus } from '/imports/api/responses/responses';
 import Alert from '/imports/ui/alert';
 import { fullName } from '/imports/api/utils';
 import { logger } from '/imports/utils/logger';
 import { RecentClients } from '/imports/api/recent-clients';
+
+
+function getRequiredQuestions(definition, formState) {
+  const requiredQuestions = itemsToArray(definition)
+    .filter(item => item.type === 'question' && item.required);
+  return requiredQuestions.map(q => ({
+    question: q,
+    value: formState.values[q.id],
+  }));
+}
 
 
 export default class Survey extends React.Component {
@@ -44,7 +58,6 @@ export default class Survey extends React.Component {
       ),
       errors: {},
     };
-    console.log(this.state);
   }
 
   handleValueChange(name, value, isValid = true) {
@@ -290,14 +303,14 @@ export default class Survey extends React.Component {
     );
   }
 
-  renderSubmitButtons() {
+  renderSubmitButtons(canSubmit) {
     const submissionId = this.props.response && this.props.response.submissionId;
     const client = this.props.client;
     const hasErrors = Object.keys(this.state.errors).length > 0;
     const disabled = !client
       || this.state.submitting
-      || hasErrors;
-      // || status === ResponseStatus.COMPLETED;
+      || hasErrors
+      || !canSubmit;      // || status === ResponseStatus.COMPLETED;
     const uploadClient = client && !client.schema;
 
     let uploadButtonText = 'Upload client and survey';
@@ -342,6 +355,13 @@ export default class Survey extends React.Component {
     const client = this.props.client || {};
     const status = this.props.response ? this.props.response.status : 'new';
     const clientName = fullName(client) || client._id || 'n/a';
+
+    const requiredQuestions = getRequiredQuestions(root, formState);
+    const emptyRequiredQuestions = requiredQuestions.filter(q => !q.value);
+    const emptyRequiredLabels = emptyRequiredQuestions.map(q => q.question.title);
+
+    const canSubmit = emptyRequiredQuestions.length === 0;
+
     return (
       <div className="survey">
         <p><strong>Client:</strong> {clientName}</p>
@@ -354,7 +374,10 @@ export default class Survey extends React.Component {
           level={1}
           debugMode={this.props.debugMode}
         />
-        {this.renderSubmitButtons()}
+        {this.renderSubmitButtons(canSubmit)}
+        {emptyRequiredLabels.length ?
+          `The following fields are required: ${emptyRequiredLabels.join(', ')}` : null
+        }
         {this.props.debugMode && this.renderDebugWindow()}
       </div>
     );

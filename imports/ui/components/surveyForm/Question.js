@@ -414,7 +414,7 @@ export default class Question extends Item {
       );
     } else {
       let tempLoc = addressFields.map((v, i) => (
-        <tr>
+        <tr key={`loc-${i}`}>
           <td>{v} </td>
           <td>
             <input
@@ -472,54 +472,56 @@ export default class Question extends Item {
   renderTitle() {
     const icon = this.props.item.hmisId ? null : MISSING_HMIS_ID_ICON;
     const title = `${this.props.item.title}`;
+    const isRequired = this.props.item.required;
+    const requiredMark = isRequired ? (<span style={{ color: 'red' }}>(*)</span>) : null;
     switch (this.props.level) {
       case 1:
         return (
           <h1 className="title">
-            {title} {icon}
+            {title} {icon} {requiredMark}
           </h1>
         );
       case 2:
         return (
           <h2 className="title">
-            {title} {icon}
+            {title} {icon} {requiredMark}
           </h2>
         );
       case 3:
         return (
           <h3 className="title">
-            {title} {icon}
+            {title} {icon} {requiredMark}
           </h3>
         );
       case 4:
         return (
           <h4 className="title">
-            {title} {icon}
+            {title} {icon} {requiredMark}
           </h4>
         );
       case 5:
         return (
           <h5 className="title">
-            {title} {icon}
+            {title} {icon} {requiredMark}
           </h5>
         );
       case 6:
         return (
           <h6 className="title">
-            {title} {icon}
+            {title} {icon} {requiredMark}
           </h6>
         );
       default:
         return (
           <div className="title">
-            {title} {icon}
+            {title} {icon} {requiredMark}
           </div>
         );
     }
   }
 
   render() {
-    const { id, text } = this.props.item;
+    const { id, text, required } = this.props.item;
     const value = this.props.formState.values[id];
     const disabled = this.props.formState.props[`${id}.skip`];
     const hasError = !!this.state.error;
@@ -540,6 +542,7 @@ export default class Question extends Item {
         {this.renderQuestionCategory(this.isRefused() ? '' : value, disabled)}
         {this.renderRefuseCheckbox(disabled)}
         {hasError && <div className="error-message">{this.state.error}</div>}
+        {required && !value && <div className="error-message">This filed is required</div>}
       </div>
     );
   }
