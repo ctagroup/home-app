@@ -14,6 +14,7 @@ const clientEndpoints = [
 ];
 
 const apis = {
+  '': [],
   'https://www.hslynk.com/hmis-clientapi/rest/v2017': clientEndpoints,
   'https://www.hslynk.com/hmis-clientapi/rest/v2016': clientEndpoints,
   'https://www.hslynk.com/hmis-clientapi/rest/v2015': clientEndpoints,
