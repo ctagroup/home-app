@@ -75,12 +75,18 @@ export const getClientEnrollments = (hc, clientId, schema, stopFunction) => {
     const exits = hc.api('client').getClientsEnrollmentExits(
       clientId, enrollments[i].enrollmentId, schema
     );
+    // FIXME: update to projectId if HSLYNK updates the API
+    const projectId = enrollments[i].projectid;
     if (exits.length > 0) {
       enrollments[i].exits = exits[0];
     } else {
       enrollments[i].exits = false;
     }
-    enrollments[i].project = hc.api('client').getProject(enrollments[i].projectId, schema);
+    try {
+      enrollments[i].project = hc.api('client').getProject(projectId, schema);
+    } catch (err) {
+      enrollments[i].project = { projectId, error: `${err}` };
+    }
   }
   return enrollments;
 };
