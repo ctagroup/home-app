@@ -131,10 +131,10 @@ class ControlledTable extends Component {
     const { filter } = this.state;
     const filteredData = this.filterColumns(data, columns, filter);
     return (
-      <div style={{ padding: '0', margin: '0' }}>
+      <div style={{ padding: '10px', margin: '0' }}>
         {globalFilter && <div
           id="DataTables_Table_0_filter" className="dataTables_filter"
-          style={{ display: 'inline-block', padding: '10px' }}
+          style={{ display: 'inline-block', padding: '0' }}
         >
           <label>Search:<input
             type="search" className="form-control input-sm"
