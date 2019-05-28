@@ -152,6 +152,7 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
     }
   } catch (err) {
     logger.error('publish singleHMISClient', err);
+    return this.error(err);
   }
 
   self.ready();

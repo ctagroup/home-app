@@ -109,8 +109,13 @@ Router.route('/clients/:_id/enrollments/:enrollmentId', {
   waitOn() {
     const { _id, enrollmentId } = this.params;
     const { schema, surveyId, dataCollectionStage } = this.params.query;
+    const callbacks = {
+      onError: (error) => {
+        console.error(error);
+      },
+    };
     return [
-      Meteor.subscribe('clients.one', _id, schema),
+      Meteor.subscribe('clients.one', _id, schema, callbacks),
       Meteor.subscribe('surveys.one', surveyId),
       Meteor.subscribe('enrollments.one', _id, schema, enrollmentId,
         parseInt(dataCollectionStage, 10)
@@ -190,10 +195,16 @@ Router.route(
       this.next();
     },
     waitOn() {
+      const callbacks = {
+        onError: (error) => {
+          alert(error); // eslint-disable line
+          Router.go('/');
+        },
+      };
       const id = Router.current().params._id;
       if (this.params.query.schema) {
         return [
-          Meteor.subscribe('clients.one', id, this.params.query.schema),
+          Meteor.subscribe('clients.one', id, this.params.query.schema, callbacks),
           Meteor.subscribe('responses.all', id, this.params.query.schema),
           Meteor.subscribe('services.perClient', id),
           Meteor.subscribe('tags.all'),
