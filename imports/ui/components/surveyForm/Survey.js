@@ -226,7 +226,7 @@ export default class Survey extends React.Component {
       if (Roles.userIsInRole(Meteor.userId(), 'External Surveyor')) {
         Router.go('dashboard');
       } else {
-        Router.go('adminDashboardresponsesView');
+        Router.go('adminDashboardresponsesView', {}, Router.current().params);
       }
       this.setState({ submitting: false });
     })
