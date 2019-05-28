@@ -404,7 +404,7 @@ Meteor.methods({
       const hc = HmisClient.create(this.userId);
       const results = hc.api('survey').searchForClientSurveySubmissions(seachString);
 
-      const all = results
+      const uploaded = results
         .map(s => Responses.findOne({ submissionId: s.submissionId }) || {
           _id: s.submissionId,
           client: s.client,
@@ -415,19 +415,25 @@ Meteor.methods({
           updatedAt: new Date(),
           values: {},
           version: 'n/a',
-        })
-        .map(s => {
-          // TODO - schema should come from searchForClientSurveySubmissions response
-          // awaiting https://github.com/hmis-api/survey-service-api/issues/6 to be resolved
-          const clientSchema = s.clientSchema || 'v2017';
-          const client = HmisCache.getClient(s.clientId, s.clientSchema, this.userId);
-          return {
-            ...s,
-            clientSchema,
-            client: s.client || client,
-            survey: s.survey || HmisCache.getSurvey(s.surveyId, this.userId),
-          };
         });
+
+      const paused = Responses.find({ clientId, status: 'paused' }).fetch();
+
+      const all = [
+        ...uploaded,
+        ...paused,
+      ].map(s => {
+        // TODO - schema should come from searchForClientSurveySubmissions response
+        // awaiting https://github.com/hmis-api/survey-service-api/issues/6 to be resolved
+        const clientSchema = s.clientSchema || 'v2017';
+        const client = HmisCache.getClient(s.clientId, s.clientSchema, this.userId);
+        return {
+          ...s,
+          clientSchema,
+          client: s.client || client,
+          survey: s.survey || HmisCache.getSurvey(s.surveyId, this.userId),
+        };
+      });
 
       return {
         content: all.sort((a, b) => {
