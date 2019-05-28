@@ -4,7 +4,7 @@ import Questions from '/imports/api/questions/questions';
 import { mapUploadedSurveySections } from '/imports/api/surveys/helpers';
 import { computeFormState, findItem, getScoringVariables } from '/imports/api/surveys/computations';
 import { logger as globalLogger } from '/imports/utils/logger';
-import { escapeKeys, unescapeKeys, fullName } from '/imports/api/utils';
+import { assertExists, escapeKeys, unescapeKeys, fullName } from '/imports/api/utils';
 import Responses, { ResponseStatus } from '/imports/api/responses/responses';
 import { ResponsesAccessRoles } from '/imports/config/permissions';
 import { EnrollmentUploader } from './helpers';
@@ -261,6 +261,7 @@ Meteor.methods({
           clientId, surveyId, submissionId
         );
         const updatedResponses = submissionResponses.map(r => {
+          assertExists(r.questionId, 'HLSYNK data error');
           const newValue = questionVaules.find(qv => r.questionId === qv.questionId);
           return {
             ...r,
@@ -386,6 +387,7 @@ Meteor.methods({
     if (!this.userId) {
       throw new Meteor.Error(401, 'Unauthorized');
     }
+
 
     if (clientId) {
       filterBy.push({

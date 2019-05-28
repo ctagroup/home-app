@@ -1,3 +1,8 @@
+export function assertExists(value, message = 'Asserion failed') {
+  if (!!value) return;
+  throw new Error(message);
+}
+
 export function fullName(user) {
   if (!user) {
     return undefined;
@@ -104,6 +109,6 @@ export function getLatLongFromDevice() {
 
 export function createGeocodeUrl(location) {
   const apiKey = '88e54b6832d340aba770a6449045c79d'; // Max. 2500 requests/day
-  const baseUrl = `https://api.opencagedata.com/geocode/v1/json?key=${apiKey}`;
+  const baseUrl = `https://api.opencagedata.com/geocode/v1/json?key=${apiKey}&countrycode=us`;
   return `${baseUrl}&q=${encodeURIComponent(location)}`;
 }
