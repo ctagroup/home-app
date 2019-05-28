@@ -7,7 +7,10 @@ import './selectSurvey.html';
 Template.selectSurvey.helpers(
   {
     getSurveys() {
-      const surveys = Surveys.find({ 'hmis.surveyId': { $exists: true } }).fetch();
+      const surveys = Surveys.find(
+        { 'hmis.surveyId': { $exists: true } },
+        { sort: { title: 1 } }
+      ).fetch();
       return surveys;
       // return Surveys.find({ 'hmis.surveyId': { $exists: true } }).fetch();
     },
