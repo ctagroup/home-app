@@ -143,7 +143,7 @@ Meteor.methods({
     let { sort, order, limit } = options || {};
     sort = sort || 'firstName';
     order = order || 'asc';
-    limit = Math.min(limit, 50);
+    limit = Math.min(limit, 500);
 
     const startIndex = page * limit;
     const hc = HmisClient.create(this.userId);
