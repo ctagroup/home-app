@@ -1,4 +1,5 @@
 import Alert from '/imports/ui/alert';
+import ResponsesList from '/imports/ui/components/responses/ResponsesList';
 import { deleteResponseButton, TableDom } from '/imports/ui/dataTable/helpers';
 import moment from 'moment';
 import Responses, { ResponseStatus } from '/imports/api/responses/responses';
@@ -202,6 +203,11 @@ const tableOptions = {
 };
 
 Template.responsesListView.helpers({
+  component() {
+    return ResponsesList;
+  },
+
+
   hasData() {
     return Responses.find().count() > 0;
   },
@@ -264,49 +270,50 @@ Template.responsesListView.onCreated(function onCreated() {
   this.data = [];
 });
 
-Template.responsesListView.events(
-  {
-    'click .UploadResponses': (evt/* , tmpl*/) => {
-      evt.preventDefault();
-      const responseId = $(evt.currentTarget).attr('id');
-      const parent = $(`#${responseId}`).closest('td');
-      const originalHtml = parent.html();
-      parent.html(uploadingHtml);
+// Template.responsesListView.events(
+//   {
+//     'click .UploadResponses': (evt/* , tmpl*/) => {
+//       evt.preventDefault();
+//       const responseId = $(evt.currentTarget).attr('id');
+//       const parent = $(`#${responseId}`).closest('td');
+//       const originalHtml = parent.html();
+//       parent.html(uploadingHtml);
 
-      Meteor.call('responses.uploadToHmis', responseId, (err, invalidResponses) => {
-        if (err) {
-          Alert.error(err);
-          parent.html(originalHtml);
-        } else {
-          if (invalidResponses.length > 0) {
-            const list = invalidResponses.map(r => r.id).join(', ');
-            Alert.warning(`Success but ${invalidResponses.length} responses not uploaded: ${list}`);
-            parent.html(completedHtml(Responses.findOne(responseId), 'warning'));
-          } else {
-            Alert.success('Response uploaded');
-            parent.html(completedHtml(Responses.findOne(responseId)));
-          }
-        }
-      });
-    },
-    'click .UploadEnrollment': (evt/* , tmpl*/) => {
-      evt.preventDefault();
-      const responseId = $(evt.currentTarget).attr('data-id');
-      const parent = $(`#${responseId}`).closest('td');
-      const originalHtml = parent.html();
-      parent.html(uploadingHtml);
-      Meteor.call('responses.uploadEnrollment', responseId, (err, res) => {
-        if (err) {
-          Alert.error(err);
-          parent.html(originalHtml);
-        } else {
-          Alert.success('Enrollment uploaded');
-          parent.html(completedHtml({
-            ...Responses.findOne(responseId),
-            enrollment: res,
-          }));
-        }
-      });
-    },
-  }
-);
+//       Meteor.call('responses.uploadToHmis', responseId, (err, invalidResponses) => {
+//         if (err) {
+//           Alert.error(err);
+//           parent.html(originalHtml);
+//         } else {
+//           if (invalidResponses.length > 0) {
+//             const list = invalidResponses.map(r => r.id).join(', ');
+//             Alert.warning(
+//                `Success but ${invalidResponses.length} responses not uploaded: ${list}`);
+//             parent.html(completedHtml(Responses.findOne(responseId), 'warning'));
+//           } else {
+//             Alert.success('Response uploaded');
+//             parent.html(completedHtml(Responses.findOne(responseId)));
+//           }
+//         }
+//       });
+//     },
+//     'click .UploadEnrollment': (/*evt , tmpl*/) => {
+//       evt.preventDefault();
+//       const responseId = $(evt.currentTarget).attr('data-id');
+//       const parent = $(`#${responseId}`).closest('td');
+//       const originalHtml = parent.html();
+//       parent.html(uploadingHtml);
+//       Meteor.call('responses.uploadEnrollment', responseId, (err, res) => {
+//         if (err) {
+//           Alert.error(err);
+//           parent.html(originalHtml);
+//         } else {
+//           Alert.success('Enrollment uploaded');
+//           parent.html(completedHtml({
+//             ...Responses.findOne(responseId),
+//             enrollment: res,
+//           }));
+//         }
+//       });
+//     },
+//   }
+// );

@@ -1,4 +1,7 @@
 <template name="responsesListView">
+  <div>{{> React component=component data=this}}</div>
+
+{{!--
   {{#if clientDoesNotExist}}
     <div class="alert alert-info">
       <p>Client <b>{{clientId}}</b> does not exist.</p>
@@ -9,4 +12,5 @@
     {{/if}}
     {{> controlledTable tableData=tableData options=tableOptions class="table dataTable" loadData=loadData globalFilter="true"}}
   {{/if}}
+--}}
 </template>
