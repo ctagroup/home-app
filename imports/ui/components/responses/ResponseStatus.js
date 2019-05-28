@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Alert from '/imports/ui/alert';
 import { ResponseStatus } from '/imports/api/responses/responses';
 import { formatDateTime } from '/imports/both/helpers';
 
 
 const EnrollmentExtraInfo = ({ response }) => {
-  const [uploading] = useState(false);
+  const { uploading } = response;
 
   if (response.surveyType !== 'enrollment') return null;
 
@@ -23,28 +23,28 @@ const EnrollmentExtraInfo = ({ response }) => {
 
 
 export const ResponseStatusCell = ({ response }) => {
-  const { _id, status, submittedAt } = response;
-  const [responseStatus, setResponseStatus] = useState(status);
-  const [uploadResult, setUploadResult] = useState(false);
+  const { _id, status, submittedAt, uploadResult } = response;
+  // const [responseStatus, setResponseStatus] = useState(status);
+  // const [uploadResult, setUploadResult] = useState(false);
 
   function uploadResponse() {
-    setResponseStatus(ResponseStatus.UPLOADING);
+    // setResponseStatus(ResponseStatus.UPLOADING);
     Meteor.call('responses.uploadToHmis', _id, (err, invalidResponses) => {
       if (err) {
         Alert.error(err);
-        setResponseStatus(ResponseStatus.UPLOAD_ERROR);
-        setUploadResult(<p className="text-danger">{`${err.message}`}</p>);
+        // setResponseStatus(ResponseStatus.UPLOAD_ERROR);
+        // setUploadResult(<p className="text-danger">{`${err.message}`}</p>);
       } else {
-        setResponseStatus(ResponseStatus.COMPLETED);
+        // setResponseStatus(ResponseStatus.COMPLETED);
         if (invalidResponses.length > 0) {
           const list = invalidResponses.map(r => r.id).join(', ');
           Alert.warning(`Success but ${invalidResponses.length} answers not uploaded: ${list}`);
-          setUploadResult(
-            <p className="text-warning">{`${invalidResponses.length} answers not uploaded`}</p>
-          );
+          // setUploadResult(
+          //   <p className="text-warning">{`${invalidResponses.length} answers not uploaded`}</p>
+          // );
         } else {
           Alert.success('Response uploaded');
-          setUploadResult(<p className="text-success">ok</p>);
+          // setUploadResult(<p className="text-success">ok</p>);
         }
       }
     });
@@ -55,7 +55,7 @@ export const ResponseStatusCell = ({ response }) => {
       (Re-Upload to HMIS)
     </a>);
 
-  switch (responseStatus) {
+  switch (status) {
     case ResponseStatus.PAUSED:
       return <span className="text-muted"><i className="fa fa-pause"></i> Paused</span>;
 
