@@ -239,6 +239,7 @@ Router.route(
 );
 
 Router.route('adminDashboardclientsEdit', {
+  name: 'editClient',
   path: '/clients/:_id/edit',
   template: 'editClient',
   controller: AppController,

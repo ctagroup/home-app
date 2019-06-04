@@ -60,7 +60,7 @@ Template.createClient.events({
       const { id, schema, message } = result;
       Alert.success(message);
       const query = schema ? { query: { schema } } : {};
-      Router.go('viewClient', { _id: id }, query);
+      Router.go('editClient', { _id: id }, query);
     })
     .catch(err => Alert.error(err));
   },
