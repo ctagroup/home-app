@@ -7,6 +7,7 @@ export const ResponseStatus = {
   UPLOADING: 'uploading',
   COMPLETED: 'completed',
   UPLOAD_ERROR: 'upload error',
+  NOT_IMPORTED: 'not imported',
 };
 
 Responses.schema = new SimpleSchema({

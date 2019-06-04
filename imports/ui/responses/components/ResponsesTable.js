@@ -5,6 +5,7 @@ import { Link, ClientName, ErrorLabel } from '/imports/ui/components/generic';
 import { fullName } from '/imports/api/utils';
 import { formatDateTime } from '/imports/both/helpers';
 import { ResponseStatusCell } from './ResponseStatus';
+import { ResponseActionsCell } from './ResponseActionsCell';
 
 
 const columns = [{
@@ -52,11 +53,11 @@ const columns = [{
 }, {
   Header: 'Date Created',
   accessor: 'createdAt',
-  Cell: props => formatDateTime(props.original.responseDate),
+  Cell: props => formatDateTime(props.original.createdAt),
 }, {
   Header: 'Date Updated',
   accessor: 'updatedAt',
-  Cell: props => formatDateTime(props.original.responseDate),
+  Cell: props => formatDateTime(props.original.updatedAt),
 }, {
   Header: 'Status',
   accessor: 'submittedAt',
@@ -67,12 +68,15 @@ const columns = [{
   Header: 'Version',
   accessor: 'version',
 }, {
-  Header: 'Delete',
-  accessor: 'delete',
+  Header: 'Actions',
+  accessor: 'actions',
+  Cell: props => (
+    <ResponseActionsCell response={props.original} />
+  ),
 }];
 
 
-const ResponsesTable = () => {
+const ResponsesTable = ({ enableSearch }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [totalPages, setTotalPages] = useState(-1);
@@ -111,17 +115,19 @@ const ResponsesTable = () => {
 
   return (
     <div>
-      <div className="form-inline" style={{ paddingBottom: 10 }}>
-        <div className="form-group">
-          <label>Search: </label>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="client name"
-            onChange={(e) => setFilter(e.target.value)}
-          />
+      {enableSearch &&
+        <div className="form-inline" style={{ paddingBottom: 10 }}>
+          <div className="form-group">
+            <label>Search: </label>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="client name"
+              onChange={(e) => setFilter(e.target.value)}
+            />
+          </div>
         </div>
-      </div>
+      }
       <ReactTable
         columns={columns}
         data={filteredData}

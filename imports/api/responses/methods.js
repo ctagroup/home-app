@@ -18,6 +18,7 @@ function prepareValuesToUpload(values, definition, defaultSectionId) {
   globalLogger.debug('prepareValuesToUpload', values);
   return questionIds.map(id => {
     const question = findItem(id, definition);
+    assertExists(question.hmisId, `Survey error - hmisId missing in ${id}`);
     return {
       id,
       questionId: question.hmisId,
@@ -101,17 +102,14 @@ Meteor.methods({
       throw new Meteor.Error(403, 'Forbidden');
     }
 
+    const hc = HmisClient.create(this.userId);
+
     const response = Responses.findOne(responseId);
     const { clientId, clientSchema, surveyId } = response;
     const values = unescapeKeys(response.values);
-    const survey = Surveys.findOne(surveyId);
 
-    // FIXME: survey may not be in Mongo but in HSLYNK
-    // TODO: fetch survey from HSLYNK as a fallback
-
-    const definition = JSON.parse(survey.definition);
-
-    const hc = HmisClient.create(this.userId);
+    const survey = hc.api('survey2').getSurvey(surveyId);
+    const definition = JSON.parse(survey.surveyDefinition);
 
     const client = hc.api('client').getClient(clientId, clientSchema);
     const formState = computeFormState(definition, values, {}, { client });

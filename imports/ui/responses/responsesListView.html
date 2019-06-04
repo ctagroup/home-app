@@ -1,16 +1,3 @@
 <template name="responsesListView">
   <div>{{> React component=component data=this}}</div>
-
-{{!--
-  {{#if clientDoesNotExist}}
-    <div class="alert alert-info">
-      <p>Client <b>{{clientId}}</b> does not exist.</p>
-    </div>
-  {{else}}
-    {{#if clientId}}
-      <p><a href="{{newResponsePath}}" class="btn btn-primary"><i class="fa fa-plus"></i> Survey client</a></p>
-    {{/if}}
-    {{> controlledTable tableData=tableData options=tableOptions class="table dataTable" loadData=loadData globalFilter="true"}}
-  {{/if}}
---}}
 </template>
