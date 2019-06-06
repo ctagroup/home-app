@@ -1,20 +1,29 @@
-// import React, { useState } from 'react';
 import React from 'react';
 import { formatDateFunction } from '/imports/ui/templateHelpers';
 import { formatSSN } from './helpers';
+// import { Link } from '/imports/ui/components/generic/Link';
+
+
+const ClientVersionsList = ({ client }) => {
+  const { clientVersions, clientId } = client;
+  return (
+    <div>{clientVersions.map(v => {
+      const className = v.clientId === clientId ? 'badge badge-primary' : 'badge';
+      return (
+        <span
+          style={{ marginRight: 4 }}
+          key={v.clientId}
+          className={className}
+          title={v.clientId}
+        >
+          {v.schema}
+        </span>
+      );
+    })}</div>
+  );
+};
 
 function ClientGeneralInfo(props) {
-  // const [count, setCount] = useState(0);
-  // return (
-  //   <div>
-  //     <p>You clicked {count} times</p>
-  //     <button onClick={() => setCount(count + 1)}>
-  //       Click me
-  //     </button>
-
-  //   </div>
-  // );
-
   const { client } = props;
   const {
     firstName,
@@ -33,7 +42,7 @@ function ClientGeneralInfo(props) {
     <div className="client-info">
       <div className="row">
         <div className="col-xs-12 col-sm-3">
-          {photo && <img className="profile-img" alt="Profile img" src="{photo}" />}
+          {photo && <img className="profile-img" alt="client profile" src={photo} />}
         </div>
         <div className="col-xs-12 col-sm-3"><div className="text-wrap">
           <span className="title">FIRST NAME</span><h2>{firstName}</h2>
@@ -46,6 +55,7 @@ function ClientGeneralInfo(props) {
           <div className="title view-id">
             ClientId: {_id}<br />
             DedupId: {dedupClientId}
+            <ClientVersionsList client={client} />
           </div>
         </div></div>
         <div className="col-xs-12 col-sm-3"><div className="text-wrap">
