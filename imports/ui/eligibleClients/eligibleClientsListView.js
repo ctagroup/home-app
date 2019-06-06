@@ -31,9 +31,8 @@ const tableOptions = {
       },
     },
     {
-      title: 'Score',
+      title: 'Survey Score',
       data: 'surveyScore',
-      minWidth: 80,
       render(value, type, doc) {
         const client = doc.client;
         // console.log(client);
@@ -51,9 +50,16 @@ const tableOptions = {
       },
     },
     {
+      title: 'Bonus Score',
+      data: 'bonusScore',
+    },
+    {
+      title: 'Total Score',
+      data: 'totalScore',
+    },
+    {
       title: 'Survey Date',
       data: 'surveyDate',
-      minWidth: 150,
     },
     {
       title: 'Match Status',
