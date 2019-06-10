@@ -394,12 +394,13 @@ Meteor.methods({
       });
     }
 
+    const hc = HmisClient.create(this.userId);
+
     const clientFilter = filterBy.find(x => x.id === 'clientId');
     if (clientFilter) {
       // use HSLYNK to search for submissions
       const seachString = clientFilter.value;
 
-      const hc = HmisClient.create(this.userId);
       const results = hc.api('survey').searchForClientSurveySubmissions(seachString);
 
       const uploaded = results
@@ -457,8 +458,18 @@ Meteor.methods({
     }
 
     // for now fetch all responses from Mongo
+    let mongoQuery = {};
+    const clientNameFilter = filterBy.find(x => x.id === 'clientName');
+    if (clientNameFilter) {
+      const searchResults = hc.api('client').searchClient(clientNameFilter.value);
+      const clientIds = searchResults.map(r => r.clientId);
+      mongoQuery = {
+        clientId: { $in: clientIds },
+      };
+    }
+
     this.unblock();
-    const responsesCount = Responses.find().count();
+    const responsesCount = Responses.find(mongoQuery).count();
     const sort = {
     };
     if (sortBy.length) {
@@ -466,7 +477,7 @@ Meteor.methods({
       const direction = sortBy[0].desc ? -1 : 1;
       sort[column] = direction;
     }
-    const pageData = Responses.find({}, {
+    const pageData = Responses.find(mongoQuery, {
       sort,
       skip: pageNumber * pageSize,
       limit: pageSize,

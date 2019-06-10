@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import ReactTable from 'react-table';
 import Alert from '/imports/ui/alert';
 import { Link, ClientName, ErrorLabel } from '/imports/ui/components/generic';
-import { fullName } from '/imports/api/utils';
 import { formatDateTime } from '/imports/both/helpers';
 import { ResponseStatusCell } from './ResponseStatus';
 import { ResponseActionsCell } from './ResponseActionsCell';
@@ -82,7 +81,7 @@ const ResponsesTable = ({ enableSearch }) => {
   const [totalPages, setTotalPages] = useState(-1);
   const [filter, setFilter] = useState('');
 
-  function loadData(state = {}) {
+  function loadData(state, component, globalFilter) {
     const query = Router.current().params.query || {};
     const methodOptions = {
       clientId: query.clientId,
@@ -90,6 +89,7 @@ const ResponsesTable = ({ enableSearch }) => {
       pageNumber: state.page,
       pageSize: state.pageSize,
       sortBy: state.sorted,
+      filterBy: !!globalFilter ? [{ id: 'clientName', value: globalFilter }] : [],
     };
 
     setLoading(true);
@@ -104,14 +104,11 @@ const ResponsesTable = ({ enableSearch }) => {
     });
   }
 
-  useEffect(() => {
-    loadData();
-  }, []);
+  const loadDataDebounced = useCallback(_.debounce(loadData, 1000), []);
 
-  const filteredData = data.filter(row => {
-    const clientFullName = fullName(row.client);
-    return clientFullName.toLowerCase().includes(filter);
-  });
+  useEffect(() => {
+    loadDataDebounced({}, null, filter);
+  }, [filter]);
 
   return (
     <div>
@@ -130,7 +127,7 @@ const ResponsesTable = ({ enableSearch }) => {
       }
       <ReactTable
         columns={columns}
-        data={filteredData}
+        data={data}
         defaultSorted={[{ id: 'dateCreated', desc: true }]}
         manual
         loading={loading}
