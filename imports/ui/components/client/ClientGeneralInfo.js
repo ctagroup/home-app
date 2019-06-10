@@ -55,7 +55,7 @@ function ClientGeneralInfo(props) {
           <div className="title view-id">
             ClientId: {_id}<br />
             DedupId: {dedupClientId}
-            <ClientVersionsList client={client} />
+            {false && <ClientVersionsList client={client} />}
           </div>
         </div></div>
         <div className="col-xs-12 col-sm-3"><div className="text-wrap">
