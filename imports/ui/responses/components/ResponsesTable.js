@@ -75,7 +75,7 @@ const columns = [{
 }];
 
 
-const ResponsesTable = ({ enableSearch }) => {
+const ResponsesTable = ({ clientId, enableSearch }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [totalPages, setTotalPages] = useState(-1);
@@ -108,7 +108,7 @@ const ResponsesTable = ({ enableSearch }) => {
 
   useEffect(() => {
     loadDataDebounced({}, null, filter);
-  }, [filter]);
+  }, [filter, clientId]);
 
   return (
     <div>

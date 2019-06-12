@@ -57,17 +57,19 @@ const actions = {
 
 const ResponsesList = ({ data }) => (
   <StateProvider initialState={initialState} reducer={reducer} actions={actions}>
-    {data.clientId &&
-      <Link
-        style={{ marginBottom: 20 }}
-        route="adminDashboardresponsesNew"
-        className="btn btn-primary"
-        query={{ clientId: data.clientId, schema: data.client.schema }}
-      >
-        Survey client
-      </Link>
-    }
-    <ResponsesTable enableSearch={!data.clientId || true} />
+    <div>
+      {data.clientId &&
+        <Link
+          style={{ marginBottom: 20 }}
+          route="adminDashboardresponsesNew"
+          className="btn btn-primary"
+          query={{ clientId: data.clientId, schema: data.client.schema }}
+        >
+          Survey client
+        </Link>
+      }
+      <ResponsesTable clientId={data.clientId} enableSearch={!data.clientId || true} />
+    </div>
   </StateProvider>
 );
 
