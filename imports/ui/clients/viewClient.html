@@ -10,8 +10,12 @@
         selectedTab=selectedTab
         data=data
         helpers=helpers
+        activeProjectId=activeProjectId
       }}
     </div>
+
+    <div>.</div>
+
     <div id="viewClient_content" class="col-xs-12">
       <div class="row client-profile-container">
 
@@ -87,115 +91,7 @@
                 {{/if}}
               </div>
             {{/if}}
-            <!--/.Panel 3-->
-            <!--Panel 4 Responses -->
-            <!--
-            <div class="tab-pane fade no-show" id="panel-responses" role="tabpanel">
-                <br>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil odit magnam minima, soluta doloribus
-                    reiciendis molestiae placeat unde eos molestias. Quisquam aperiam, pariatur. Tempora, placeat ratione
-                    porro voluptate odit minima.</p>
-            </div>
-            -->
-            <!--/.Panel 4-->
-            {{#if showEnrollments}}
-            <!--Panel 5 Enrollments -->
-            <div class="tab-pane fade {{#if isActive 'enrollments'}}in show active {{else}}no-show{{/if}}" id="panel-enrollments" role="tabpanel">
 
-              {{#if isUndefined enrollments}}<p>Loading enrollments...</p>{{/if}}
-              {{#if enrollments}}
-                <div class="row">
-                  <div class="col-xs-12">
-                    <h3>Enrollments</h3>
-                    <div class="table-responsive enrollments-list">
-                      <table class="table table-hover table-striped">
-                        <thead>
-                          <tr>
-                            <th>Entry Date</th>
-                            <th>Project Name</th>
-                            <th>Entry Response</th>
-                            <th>Update Response</th>
-                            <th>Exit Response</th>
-                            <th>Date updated</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {{#each enrollment in enrollments}}
-                            <tr>
-                              <td>{{formatDate99 enrollment.entryDate}}</td>
-
-                              <td>
-                                {{#with enrollment.project}}
-                                  {{log this}}
-                                  <span class="js-tooltip" data-toggle="tooltip" title="{{projectCommonName}}">{{projectName}}</span>
-                                {{/with}}
-                              </td>
-
-                              <td>
-                                {{#if currentProjectHasEnrollment 'entry'}}
-                                  <ul>
-                                    <li><a href="{{viewEnrollmentPath enrollment 'entry'}}" class="btn btn-primary">
-                                      <i class="fa fa-eye"></i> View
-                                    </a></li>
-                                    {{#each enrollmentResponses enrollment.enrollmentId dataCollectionStages.ENTRY}}
-                                      <li><i class="fal fa-poll-h"></i> <a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDateTime createdAt}}</a></li>
-                                    {{/each}}
-                                  </ul>
-                                {{else}}
-                                  No entry survey for active project
-                                {{/if}}
-                              </td>
-
-                              <td>
-                                {{#if currentProjectHasEnrollment 'update'}}
-                                  <ul>
-                                    <li><a href="{{viewEnrollmentPath enrollment 'update'}}" class="btn btn-primary">
-                                      <i class="fa fa-eye"></i> View
-                                    </a></li>
-                                    {{#each enrollmentResponses enrollment.enrollmentId dataCollectionStages.UPDATE}}
-                                      <li><i class="fal fa-poll-h"></i> <a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDateTime createdAt}}</a></li>
-                                    {{/each}}
-                                  </ul>
-                                  <a id="u-{{enrollment.enrollmentId}}" class="updateLink update btn btn-default"><i class="fa fa-plus"></i> Update Enrollment</a>
-                                  <a id="a-{{enrollment.enrollmentId}}" class="updateLink update btn btn-default"><i class="fa fa-plus"></i> Annual assessment</a>
-                                {{else}}
-                                  No update survey for active project
-                                {{/if}}
-                              </td>
-
-                              <td>
-                                {{#if currentProjectHasEnrollment 'exit'}}
-                                  <ul>
-                                    <li><a href="{{viewEnrollmentPath enrollment 'exit'}}" class="btn btn-primary">
-                                      <i class="fa fa-eye"></i> View
-                                    </a></li>
-                                    {{#each enrollmentResponses enrollment.enrollmentId dataCollectionStages.EXIT}}
-                                      <li><i class="fal fa-poll-h"></i> <a href="{{pathFor 'adminDashboardresponsesEdit'}}">{{formatDateTime createdAt}}</a></li>
-                                    {{/each}}
-                                  </ul>
-                                  {{#unless enrollmentExited enrollment.enrollmentId}}
-                                    <a id="e-{{enrollment.enrollmentId}}" class="updateLink btn btn-default"><i class="fa fa-plus"></i> Exit Enrollment</a>
-                                  {{/unless}}
-                                {{else}}
-                                  No exit survey for active project
-                                {{/if}}
-                              </td>
-
-                              <td>{{formatDate enrollment.dateUpdated}}</td>
-
-                            </tr>
-                          {{/each}}
-                        </tbody>
-                        <tfoot>
-                        </tfoot>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-                {{/if}}
-
-                </div>
-              {{/if}}
               <!--/.Panel 5-->
               <!--Panel 5.5 Start enrollment -->
               <div class="tab-pane fade {{#if isActive 'create-enrollment'}}in show active {{else}}no-show{{/if}}" id="panel-enrollments" role="tabpanel">

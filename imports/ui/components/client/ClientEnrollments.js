@@ -1,26 +1,119 @@
-import React from 'react';
-
-import { dataCollectionStages, dataCollectionStageNames,
-  // getStageId, getStageName
-} from '/imports/both/helpers';
-
+import React, { useState } from 'react';
+import { Link, ErrorLabel, Warning } from '/imports/ui/components/generic';
+import Survey from '/imports/ui/components/surveyForm/Survey';
+import { getEnrollmentSurveyIdForProject } from '/imports/ui/clients/helpers';
 import {
-  formatDateTimeFunction as formatDateTime,
+  // formatDateTimeFunction as formatDateTime,
   formatDate99Function as formatDate99,
   formatDateFunction as formatDate,
 } from '/imports/ui/templateHelpers';
+import { SurveyLoader } from '../surveyForm/SurveyLoader';
+
+
+const EditMode = Object.freeze({
+  NONE: null,
+  CREATE_ENROLLMENT: 'CREATE_ENROLLMENT',
+  UPDATE_ENROLLMENT: 'UPDATE_ENROLLMENT',
+  EXIT_ENROLLMENT: 'EXIT_ENROLLMENT',
+  ANNUAL_ENROLLMENT: 'ANNUAL_ENROLLMENT',
+});
+
+const ProjectNameCell = ({ project }) => {
+  const { projectId, projectName, error } = project;
+  const errorLabel = error ?
+    <ErrorLabel hint={error.message} text={error.statusCode} />
+    : null;
+
+  return (
+    <span>
+      {errorLabel} <span title={projectId}>
+        {projectName || projectId}
+      </span>
+    </span>
+  );
+};
+
+
+const ProjectEnrollmentCell = ({ client, enrollmentId, surveyId, dataCollectionStage,
+  children }) => {
+  const { clientId, schema } = client;
+  return (
+    <div>
+      <Link
+        className="btn btn-primary"
+        route="viewEnrollmentAsResponse"
+        params={{ _id: clientId, enrollmentId }}
+        query={{ schema, surveyId, dataCollectionStage }}
+      >
+        <i className="fa fa-eye"></i> View
+      </Link>
+      {children}
+    </div>
+  );
+};
+
+
+const EnrollmentRow = ({ enrollment, client }) => {
+  const { projectId, enrollmentId } = enrollment;
+  const entrySurveyId = getEnrollmentSurveyIdForProject(projectId, 'entry');
+  const updateSurveyId = !!getEnrollmentSurveyIdForProject(projectId, 'update');
+  const exitSurveyId = !!getEnrollmentSurveyIdForProject(projectId, 'exit');
+
+  const entryCell = entrySurveyId ?
+    <ProjectEnrollmentCell
+      client={client}
+      enrollmentId={enrollmentId}
+      surveyId={entrySurveyId}
+      dataCollectionStage={1}
+    />
+    : <Warning>Entry survey not set</Warning>;
+
+  const updateCell = updateSurveyId ?
+    <ProjectEnrollmentCell
+      client={client}
+      enrollmentId={enrollmentId}
+      surveyId={entrySurveyId}
+      dataCollectionStage={2}
+    >
+      <a className="updateLink update btn btn-default">
+        <i className="fa fa-plus" /> Update Enrollment
+      </a>
+      <a className="updateLink update btn btn-default">
+        <i className="fa fa-plus" /> Annual Assessment
+      </a>
+    </ProjectEnrollmentCell>
+  : <Warning>Update survey not set</Warning>;
+
+  const exitCell = exitSurveyId ?
+    <ProjectEnrollmentCell
+      client={client}
+      enrollmentId={enrollmentId}
+      surveyId={entrySurveyId}
+      dataCollectionStage={3}
+    >
+      <a className="updateLink update btn btn-default">
+        <i className="fa fa-plus" /> Exit Enrollment
+      </a>
+    </ProjectEnrollmentCell>
+  : <Warning>Exit survey not set</Warning>;
+
+  return (
+    <tr key={enrollment.enrollmentId}>
+      <td>{formatDate99(enrollment.entryDate)}</td>
+      <td><ProjectNameCell project={enrollment.project} /></td>
+      <td>{entryCell}</td>
+      <td>{updateCell}</td>
+      <td>{exitCell}</td>
+      <td>{formatDate(enrollment.dateUpdated)}</td>
+    </tr>
+  );
+};
 
 
 function ClientEnrollments(props) {
-  const { enrollments, helpers } = props;
-  const {
-    viewEnrollmentPath,
-    currentProjectHasEnrollment,
-    enrollmentResponses,
-    enrollmentExited,
-  } = helpers;
-
-  if (!enrollments) return (<p>Loading enrollments...</p>);
+  const { client, enrollments } = props;
+  const [editMode, setEditMode] = useState({ mode: EditMode.NONE });
+  if (enrollments.length === 0) return (<p>Loading enrollments...</p>);
 
   const columnNames = [
     'Entry Date',
@@ -30,97 +123,92 @@ function ClientEnrollments(props) {
     'Exit Response',
     'Date updated',
   ];
-  const noSurveyText = (stage) =>
-    (<span>No {dataCollectionStageNames[stage]} survey for active project</span>);
 
-  const responsesForStage = (enrollment, stage) => {
-    if (!currentProjectHasEnrollment(stage)) return null;
-    return (
-      <ul>
-        <li><a href={viewEnrollmentPath(enrollment, stage)} className="btn btn-primary">
-          <i className="fa fa-eye"></i> View
-        </a></li>
-        {enrollmentResponses(enrollment.enrollmentId, stage)
-          .map((enrollmentResponse) => (
-            <li>
-              <i className="fal fa-poll-h"></i>&nbsp;
-              <a href="{{pathFor 'adminDashboardresponsesEdit'}}">{
-                formatDateTime(enrollmentResponse.createdAt)}</a>
-            </li>)
-        )}
-      </ul>
-    );
-  };
+  /*
+                      {{> enrollmentsUpdate
+                        client=currentClient
+                        projectId=updateEnrollmentProjectId
+                        project=updateEnrollmentProject
+                        surveyId=projectUpdateSurveyId
+                        enrollmentInfo=updateEnrollmentInfo
+                      }}
+  */
+
+  let editComponent = null;
+  const debugMode = true;
+  const definition = {};
+  const surveyId = null;
+
+  switch (editMode.mode) {
+    case EditMode.CREATE_ENROLLMENT:
+      editComponent = (
+        <SurveyLoader />
+      );
+      // for edit, see: /imports/ui/enrollments/viewEnrollmentAsResponse.js
+      break;
+    default:
+      editComponent = (
+        <button
+          className="btn btn-primary"
+          onClick={() => setEditMode({
+            mode: EditMode.CREATE_ENROLLMENT,
+            projectId: null,
+          })}
+        >
+          <i className="fa fa-plus" /> Create Enrollment
+        </button>
+      );
+  }
+
+
+
   return (
     <div className="row">
       <div className="col-xs-12">
-        <h3>Enrollments</h3>
+        <h3>{enrollments.length} Enrollments</h3>
         <div className="table-responsive enrollments-list">
           <table className="table table-hover table-striped">
             <thead>
               <tr>
-                {columnNames.map((name) => (<th>{name}</th>))}
+                {columnNames.map((name, i) => (<th key={i}>{name}</th>))}
               </tr>
             </thead>
             <tbody>
-              {enrollments.map((enrollment) => (
-                <tr>
-                  <td>{formatDate99(enrollment.entryDate)}</td>
-
-                  <td>
-                    <span
-                      className="js-tooltip"
-                      data-toggle="tooltip" title={enrollment.project.projectCommonName}
-                    >
-                      {enrollment.project.projectName}
-                    </span>
-                  </td>
-
-                  <td>
-                    {!currentProjectHasEnrollment(dataCollectionStages.ENTRY) &&
-                      noSurveyText(dataCollectionStages.ENTRY)}
-                    {responsesForStage(enrollment, dataCollectionStages.ENTRY)}
-                  </td>
-
-                  <td>
-                    {!currentProjectHasEnrollment(dataCollectionStages.UPDATE) &&
-                      noSurveyText(dataCollectionStages.UPDATE)}
-                    {responsesForStage(enrollment, dataCollectionStages.UPDATE)}
-                    {currentProjectHasEnrollment(dataCollectionStages.UPDATE) &&
-                      <a
-                        id={`u-${enrollment.enrollmentId}`}
-                        className="updateLink update btn btn-default"
-                      ><i className="fa fa-plus"></i> Update Enrollment</a>}
-                    {currentProjectHasEnrollment(dataCollectionStages.UPDATE) &&
-                      <a
-                        id={`a-${enrollment.enrollmentId}`}
-                        className="updateLink update btn btn-default"
-                      ><i className="fa fa-plus"></i> Annual assessment</a>
-                    }
-                  </td>
-
-                  <td>
-                    {!currentProjectHasEnrollment(dataCollectionStages.EXIT) &&
-                      noSurveyText(dataCollectionStages.EXIT)}
-                    {responsesForStage(enrollment, dataCollectionStages.EXIT)}
-                    {currentProjectHasEnrollment(dataCollectionStages.EXIT) &&
-                      !enrollmentExited(enrollment.enrollmentId) &&
-                      <a
-                        id={`e-${enrollment.enrollmentId}`}
-                        className="updateLink btn btn-default"
-                      ><i className="fa fa-plus"></i> Exit Enrollment</a>
-                    }
-                  </td>
-
-                  <td>{formatDate(enrollment.dateUpdated)}</td>
-
-                </tr>
+              {enrollments.map(enrollment => (
+                <EnrollmentRow
+                  key={enrollment.enrollmentId}
+                  enrollment={enrollment}
+                  client={client}
+                />
               ))}
             </tbody>
             <tfoot>
             </tfoot>
           </table>
         </div>
+        {editMode === EditMode.NONE ?
+          <button
+            className="btn btn-primary"
+            onClick={() => setEditMode({
+              mode: EditMode.CREATE_ENROLLMENT,
+              projectId : null,
+            })}
+          >
+            <i className="fa fa-plus" /> Create Enrollment
+          </button>
+        : null}
+        {editMode === EditMode.CREATE_ENROLLMENT ?
+          <p>TODO: create enrollment survey</p>
+        : null}
+        {editMode === EditMode.UPDATE_ENROLLMENT ?
+          <p>TODO: update enrollment survey</p>
+        : null}
+        {editMode === EditMode.EXIT_ENROLLMENT ?
+          <p>TODO: exit enrollment survey</p>
+        : null}
+        {editMode === EditMode.ANNUAL_ENROLLMENT ?
+          <p>TODO: annual enrollment survey</p>
+        : null}
       </div>
     </div>
   );

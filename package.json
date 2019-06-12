@@ -23,6 +23,7 @@
     "react-dom": "^16.8.6",
     "react-input-mask": "^1.2.2",
     "react-json-tree": "^0.11.2",
+    "react-meteor-hooks": "^0.3.1",
     "react-modal": "^3.3.2",
     "react-quill": "^1.2.7",
     "react-select": "^2.3.0",

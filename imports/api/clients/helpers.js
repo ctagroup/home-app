@@ -64,7 +64,10 @@ export const getEligibleClient = (hc, clientId) => {
   try {
     eligibleClient = hc.api('house-matching').getEligibleClient(clientId);
   } catch (e) {
-    eligibleClient = { error: e.reason };
+    eligibleClient = { error: {
+      message: e.message,
+      statusCode: e.details ? e.details.code : 500,
+    } };
   }
   return eligibleClient;
 };
@@ -75,8 +78,7 @@ export const getClientEnrollments = (hc, clientId, schema, stopFunction) => {
     const exits = hc.api('client').getClientsEnrollmentExits(
       clientId, enrollments[i].enrollmentId, schema
     );
-    // FIXME: update to projectId if HSLYNK updates the API
-    const projectId = enrollments[i].projectid;
+    const projectId = enrollments[i].projectId;
     if (exits.length > 0) {
       enrollments[i].exits = exits[0];
     } else {
@@ -85,7 +87,13 @@ export const getClientEnrollments = (hc, clientId, schema, stopFunction) => {
     try {
       enrollments[i].project = hc.api('client').getProject(projectId, schema);
     } catch (err) {
-      enrollments[i].project = { projectId, error: `${err}` };
+      enrollments[i].project = {
+        projectId,
+        error: {
+          message: err.message,
+          statusCode: err.details ? err.details.code : 500,
+        },
+      };
     }
   }
   return enrollments;

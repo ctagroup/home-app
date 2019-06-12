@@ -59,18 +59,24 @@ function ClientLayout(props) {
           <div className="tab-content card">
             <ClientTab selectedTab={selectedTab} id={'overview'} >
               <ClientOverview
-                client={client} permissions={{ showEditButton }} helpers={helpers.overview}
+                client={client}
+                permissions={{ showEditButton }}
+                helpers={helpers.overview}
               />
             </ClientTab>
             <ClientTab selectedTab={selectedTab} id={'eligibility'} >
               <ClientEligibility
                 eligibleClient={data.eligibleClient()}
-                client={client} permissions={{ showEditButton }} helpers={helpers.eligibility}
+                client={client}
+                permissions={{ showEditButton }}
+                helpers={helpers.eligibility}
               />
             </ClientTab>
             <ClientTab selectedTab={selectedTab} id={'enrollments'} >
               <ClientEnrollments
-                client={client} permissions={{ showEditButton }}
+                activeProjectId={Meteor.user().activeProjectId}
+                client={client}
+                permissions={{ showEditButton }}
                 enrollments={data.enrollments()}
                 helpers={helpers.enrollments}
               />

@@ -140,6 +140,11 @@ Template.viewClient.helpers(
       return ClientContainer;
     },
 
+    activeProjectId() {
+      const user = Meteor.user();
+      return user && user.activeProjectId;
+    },
+
     permissions() {
       const hasPermission = Roles.userIsInRole(Meteor.userId(), FilesAccessRoles);
 
@@ -179,10 +184,10 @@ Template.viewClient.helpers(
           const currentClientId = Router.current().params._id;
           const client = Clients.findOne(currentClientId);
           const enrollments = flattenKeyVersions(client, 'enrollments')
-            .sort((a, b) => {
-              if (a.entryDate === b.entryDate) return a.dateUpdated - b.dateUpdated;
-              return a.entryDate - b.entryDate;
-            });
+          .sort((a, b) => {
+            if (a.entryDate === b.entryDate) return a.dateUpdated - b.dateUpdated;
+            return a.entryDate - b.entryDate;
+          });
           return enrollments;
         },
       };
@@ -612,14 +617,12 @@ Template.viewClient.helpers(
       return Services.find().count() > 0;
     },
     ProjectsAll() {
-      console.log('pp', Projects.find().fetch());
       return Projects.find().fetch();
     },
     serviceTableOptions() {
       return serviceTableOptions;
     },
     serviceTableData() {
-      console.log('xxx', Services.find().fetch());
       return Services.find().fetch();
     },
 
