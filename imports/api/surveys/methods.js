@@ -1,5 +1,5 @@
 import { HmisClient } from '/imports/api/hmisApi';
-import { logger } from '/imports/utils/logger';
+import { logger as globalLogger } from '/imports/utils/logger';
 import { getScoringVariables, iterateItems } from '/imports/api/surveys/computations';
 import Surveys from '/imports/api/surveys/surveys';
 import SurveyCaches from '/imports/api/surveys/surveyCaches';
@@ -15,7 +15,7 @@ import eventPublisher, {
 
 Meteor.methods({
   'surveys.create'(doc) {
-    logger.info(`METHOD[${this.userId}]: surveys.create`, doc);
+    globalLogger.info(`METHOD[${this.userId}]: surveys.create`, doc);
     check(doc, Surveys.schema);
     if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
       throw new Meteor.Error(403, 'Forbidden');
@@ -28,14 +28,14 @@ Meteor.methods({
       // remove local survey uplon successful upload
       Surveys.remove(id);
     } catch (e) {
-      logger.error(`Failed to upload survey ${e}`);
+      globalLogger.error(`Failed to upload survey ${e}`);
       throw new Meteor.Error('hmis.api', `Survey created, failed to upload! ${e}`);
     }
     return id;
   },
 
   'surveys.update'(id, doc) {
-    logger.info(`METHOD[${this.userId}]: surveys.update`, id, doc);
+    globalLogger.info(`METHOD[${this.userId}]: surveys.update`, id, doc);
 
     check(id, String);
     if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
@@ -86,7 +86,7 @@ Meteor.methods({
       Surveys.remove(id);
       eventPublisher.publish(new SurveyUpdatedEvent(hmisSurveyId, { userId: this.userId }));
     } catch (e) {
-      logger.error(`Failed to upload survey ${e}`);
+      globalLogger.error(`Failed to upload survey ${e}`);
       throw new Meteor.Error('hmis.api', `Survey created, failed to upload! ${e}`);
     } finally {
       // remove temp survey
@@ -96,7 +96,7 @@ Meteor.methods({
   },
 
   'surveys.delete'(id) {
-    logger.info(`METHOD[${this.userId}]: surveys.delete`, id);
+    globalLogger.info(`METHOD[${this.userId}]: surveys.delete`, id);
     check(id, String);
     if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
       throw new Meteor.Error(403, 'Forbidden');
@@ -111,7 +111,7 @@ Meteor.methods({
   },
 
   'surveys.uploadQuestions'(id) {
-    logger.info(`METHOD[${this.userId}]: surveys.uploadQuestions`, id);
+    globalLogger.info(`METHOD[${this.userId}]: surveys.uploadQuestions`, id);
     check(id, String);
     if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
       throw new Meteor.Error(403, 'Forbidden');
@@ -128,7 +128,7 @@ Meteor.methods({
       groupId = hc.api('survey').createQuestionGroup('default');
     } else {
       groupId = groups[0].questionGroupId;
-      logger.debug('uploading questions to group', groupId);
+      globalLogger.debug('uploading questions to group', groupId);
     }
 
     const results = {
@@ -165,13 +165,13 @@ Meteor.methods({
         }
       }
     });
-    logger.debug('question upload results', results);
+    globalLogger.debug('question upload results', results);
     Surveys.update(id, { $set: { definition: JSON.stringify(definition) } });
     return results;
   },
 
   'surveys.upload'(id) {
-    logger.info(`METHOD[${this.userId}]: surveys.upload`, id);
+    globalLogger.info(`METHOD[${this.userId}]: surveys.upload`, id);
     check(id, String);
     if (!Roles.userIsInRole(this.userId, DefaultAdminAccessRoles)) {
       throw new Meteor.Error(403, 'Forbidden');
@@ -186,11 +186,11 @@ Meteor.methods({
     // upload survey to hmis
     if (survey.hmis && survey.hmis.surveyId) {
       surveyId = survey.hmis.surveyId;
-      logger.info(`Uploading existing survey ${survey.title} (${surveyId})`);
+      globalLogger.info(`Uploading existing survey ${survey.title} (${surveyId})`);
       hc.api('survey2').updateSurvey(surveyId, survey);
       hmis = survey.hmis;
     } else {
-      logger.info(`Uploading survey ${survey.title} (${id}) for the first time`);
+      globalLogger.info(`Uploading survey ${survey.title} (${id}) for the first time`);
       surveyId = hc.api('survey2').createSurvey(survey).surveyId;
       hmis = Object.assign({}, survey.hmis, {
         surveyId,
@@ -200,25 +200,25 @@ Meteor.methods({
     // create survey section for each scoring variable
     const surveySectionsResponse = hc.api('survey').getSurveySections(surveyId);
     const existingSections = mapUploadedSurveySections(surveySectionsResponse);
-    logger.debug('existing sections', existingSections);
+    globalLogger.debug('existing sections', existingSections);
 
     const uploadedScoringVariables = new Set(
       existingSections.filter(s => s.type === 'score').map(s => s.id)
     );
     const defaultSection = existingSections.filter(s => s.type === 'default')[0];
 
-    logger.debug('default section', defaultSection);
+    globalLogger.debug('default section', defaultSection);
 
-    logger.debug('all scoring variables', getScoringVariables(definition));
+    globalLogger.debug('all scoring variables', getScoringVariables(definition));
 
     const allScoringVariables = getScoringVariables(definition).map(v => v.name);
     const newScoringVariables = allScoringVariables.filter(v => !uploadedScoringVariables.has(v));
 
-    logger.debug(`${newScoringVariables.length} new scoring variables`, newScoringVariables);
+    globalLogger.debug(`${newScoringVariables.length} new scoring variables`, newScoringVariables);
 
     if (!defaultSection) {
       // add a default section
-      logger.info('creating default section');
+      globalLogger.info('creating default section');
       hc.api('survey').createSurveySection(surveyId, {
         sectionText: 'default',
         sectionDetail: 'default section for question responses',
@@ -227,7 +227,7 @@ Meteor.methods({
       });
     }
     newScoringVariables.forEach((v) => {
-      logger.info('creating section for variable', v);
+      globalLogger.info('creating section for variable', v);
       hc.api('survey').createSurveySection(surveyId, {
         sectionText: 'score',
         sectionDetail: v,
@@ -236,7 +236,7 @@ Meteor.methods({
       });
     });
     hmis.status = 'uploaded';
-    logger.debug('updating survey HMIS data', hmis);
+    globalLogger.debug('updating survey HMIS data', hmis);
     Surveys.update(id, { $set: { hmis } });
     return surveyId;
   },
@@ -260,7 +260,7 @@ Meteor.methods({
   },
 
   'surveys.getSurveySections'(surveyId) {
-    logger.info(`METHOD[${this.userId}]: surveys.getSurveySections`, surveyId);
+    globalLogger.info(`METHOD[${this.userId}]: surveys.getSurveySections`, surveyId);
     check(surveyId, String);
     if (!this.userId) {
       throw new Meteor.Error(401, 'Unathorized');
@@ -271,7 +271,7 @@ Meteor.methods({
   },
 
   'surveys.getSurveySectionQuestions'(surveyId) {
-    logger.info(`METHOD[${this.userId}]: surveys.getSurveySectionQuestions`, surveyId);
+    globalLogger.info(`METHOD[${this.userId}]: surveys.getSurveySectionQuestions`, surveyId);
     check(surveyId, String);
     if (!this.userId) {
       throw new Meteor.Error(401, 'Unathorized');
@@ -287,8 +287,26 @@ Meteor.methods({
   },
 
   'surveys.getGeocodedLocation'(url) {
-    logger.info(`METHOD[${this.userId}]: surveys.getGeocodedLocation`);
+    globalLogger.info(`METHOD[${this.userId}]: surveys.getGeocodedLocation`);
     const hc = HmisClient.create(this.userId);
     return hc.api('survey2').getGeocodedLocation(url);
+  },
+});
+
+Meteor.injectedMethods({
+  'surveys.get'(surveyId) {
+    const { hmisClient, logger } = this.context;
+    logger.info('surveys.get', surveyId);
+
+    const survey = hmisClient.api('survey2').getSurvey(surveyId);
+    const definition = JSON.parse(survey.surveyDefinition);
+    delete survey.surveyDefinition;
+    return {
+      ...survey,
+      definition: {
+        ...definition,
+        title: definition.title || survey.surveyTitle,
+      },
+    };
   },
 });

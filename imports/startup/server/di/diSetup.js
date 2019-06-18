@@ -3,7 +3,9 @@ import { logger as globalLogger } from '/imports/utils/logger';
 import SentryLogger from '/imports/utils/sentryLogger';
 import { HmisClient } from '/imports/api/hmisApi';
 import { HmisApiRegistry } from '/imports/api/hmisApi/apiRegistry';
+import ClientsRepository from '/imports/api/clients/clientsRepository';
 import EnrollmentsRepository from '/imports/api/enrollments/enrollmentsRepository';
+
 import EnrollmentsTranslationService from '/imports/api/enrollments/enrollmentsTranslationService';
 
 
@@ -32,6 +34,7 @@ export function setupEndpointDependencies(endpointName, container) {
       loggerName: awilix.asValue(endpointName),
       logger: awilix.asClass(SentryLogger),
       hmisClient: awilix.asClass(HmisClient),
+      clientsRepository: awilix.asClass(ClientsRepository),
       enrollmentsRepository: awilix.asClass(EnrollmentsRepository),
       enrollmentsTranslationService: awilix.asClass(EnrollmentsTranslationService),
     });

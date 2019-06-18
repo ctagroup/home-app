@@ -111,9 +111,18 @@ const EnrollmentRow = ({ enrollment, client }) => {
 
 
 function ClientEnrollments(props) {
-  const { client, enrollments } = props;
+  const { activeProjectId, client, enrollments } = props;
   const [editMode, setEditMode] = useState({ mode: EditMode.NONE });
   if (enrollments.length === 0) return (<p>Loading enrollments...</p>);
+
+  function handleSurveySubmit() {
+    setEditMode({ mode: EditMode.NONE });
+    // TODO: refresh enrollments view
+  }
+
+  function handleSurveyCancel() {
+    setEditMode({ mode: EditMode.NONE });
+  }
 
   const columnNames = [
     'Entry Date',
@@ -135,32 +144,81 @@ function ClientEnrollments(props) {
   */
 
   let editComponent = null;
+  let surveyId;
   const debugMode = true;
   const definition = {};
-  const surveyId = null;
+
+
+
 
   switch (editMode.mode) {
     case EditMode.CREATE_ENROLLMENT:
+      surveyId = getEnrollmentSurveyIdForProject(activeProjectId, 'entry');
+      console.log(editMode.mode, props, surveyId);
       editComponent = (
-        <SurveyLoader />
+        <div style={{ border: 1 }}>
+          <SurveyLoader
+            client={client}
+            surveyId={surveyId}
+            projectId={activeProjectId}
+            onSubmit={handleSurveySubmit}
+          />
+          <button
+            className="btn btn-default"
+            onClick={handleSurveyCancel}
+          >
+            Cancel
+          </button>
+        </div>
       );
       // for edit, see: /imports/ui/enrollments/viewEnrollmentAsResponse.js
       break;
     default:
+      surveyId = getEnrollmentSurveyIdForProject(activeProjectId, 'entry');
       editComponent = (
-        <button
-          className="btn btn-primary"
-          onClick={() => setEditMode({
-            mode: EditMode.CREATE_ENROLLMENT,
-            projectId: null,
-          })}
-        >
-          <i className="fa fa-plus" /> Create Enrollment
-        </button>
+        <div>
+          <button
+            disabled={!surveyId}
+            className="btn btn-primary"
+            onClick={() => setEditMode({
+              mode: EditMode.CREATE_ENROLLMENT,
+              projectId: null,
+            })}
+          >
+            <i className="fa fa-plus" /> Create Enrollment
+          </button>
+          {surveyId ? null : <p>Entry enrollment survey is not set for active project</p>}
+        </div>
       );
   }
 
+  /*
+        /*
+        {editMode === EditMode.NONE ?
+          <button
+            className="btn btn-primary"
+            onClick={() => setEditMode({
+              mode: EditMode.CREATE_ENROLLMENT,
+              projectId: null,
+            })}
+          >
+            <i className="fa fa-plus" /> Create Enrollment
+          </button>
+        : null}
+        {editMode === EditMode.CREATE_ENROLLMENT ?
+          <p>TODO: create enrollment survey</p>
+        : null}
+        {editMode === EditMode.UPDATE_ENROLLMENT ?
+          <p>TODO: update enrollment survey</p>
+        : null}
+        {editMode === EditMode.EXIT_ENROLLMENT ?
+          <p>TODO: exit enrollment survey</p>
+        : null}
+        {editMode === EditMode.ANNUAL_ENROLLMENT ?
+          <p>TODO: annual enrollment survey</p>
+        : null}
 
+  */
 
   return (
     <div className="row">
@@ -186,29 +244,7 @@ function ClientEnrollments(props) {
             </tfoot>
           </table>
         </div>
-        {editMode === EditMode.NONE ?
-          <button
-            className="btn btn-primary"
-            onClick={() => setEditMode({
-              mode: EditMode.CREATE_ENROLLMENT,
-              projectId : null,
-            })}
-          >
-            <i className="fa fa-plus" /> Create Enrollment
-          </button>
-        : null}
-        {editMode === EditMode.CREATE_ENROLLMENT ?
-          <p>TODO: create enrollment survey</p>
-        : null}
-        {editMode === EditMode.UPDATE_ENROLLMENT ?
-          <p>TODO: update enrollment survey</p>
-        : null}
-        {editMode === EditMode.EXIT_ENROLLMENT ?
-          <p>TODO: exit enrollment survey</p>
-        : null}
-        {editMode === EditMode.ANNUAL_ENROLLMENT ?
-          <p>TODO: annual enrollment survey</p>
-        : null}
+        {editComponent}
       </div>
     </div>
   );

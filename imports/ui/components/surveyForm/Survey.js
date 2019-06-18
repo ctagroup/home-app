@@ -222,13 +222,18 @@ export default class Survey extends React.Component {
       } else {
         Alert.success('Success. Response uploaded');
       }
-      // TODO: upload enrollment if any:
-      if (Roles.userIsInRole(Meteor.userId(), 'External Surveyor')) {
-        Router.go('dashboard');
-      } else {
-        Router.go('adminDashboardresponsesView', {}, Router.current().params);
-      }
       this.setState({ submitting: false });
+
+      const surveyId = this.props.response.surveyId;
+      if (this.props.onSubmit) {
+        // // TODO: upload enrollment if any:
+        // if (Roles.userIsInRole(Meteor.userId(), 'External Surveyor')) {
+        //   Router.go('dashboard');
+        // } else {
+        //   Router.go('adminDashboardresponsesView', {}, Router.current().params);
+        // }
+        this.props.onSubmit(null, surveyId);
+      }
     })
     .catch(err => {
       const correlationId = newlyCreatedResponseId || this.props.response._id;
@@ -239,8 +244,11 @@ export default class Survey extends React.Component {
       Alert.error(err, history.join('<br>'));
       alert(history.join('\n')); // eslint-disable-line no-alert
       logger.error(history);
-      if (newlyCreatedResponseId) {
-        Router.go('adminDashboardresponsesEdit', { _id: newlyCreatedResponseId, surveyId });
+      if (this.props.onSubmit) {
+        // if (newlyCreatedResponseId) {
+        //   Router.go('adminDashboardresponsesEdit', { _id: newlyCreatedResponseId, surveyId });
+        // }
+        this.props.onSubmit(err, surveyId, newlyCreatedResponseId);
       }
     });
   }
@@ -350,6 +358,7 @@ export default class Survey extends React.Component {
   }
 
   render() {
+    const { project } = this.props;
     const root = this.props.definition;
     const formState = this.state;
     const client = this.props.client || {};
@@ -365,6 +374,7 @@ export default class Survey extends React.Component {
     return (
       <div className="survey">
         <p><strong>Client:</strong> {clientName}</p>
+        {project && <p><strong>Project:</strong> {project.projectName}</p>}
         <p><strong>Response status:</strong> {status}</p>
         <Section
           item={root}

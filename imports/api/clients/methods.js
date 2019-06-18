@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { logger } from '/imports/utils/logger';
+import { logger as globalLogger } from '/imports/utils/logger';
 import { ClientsAccessRoles } from '/imports/config/permissions';
 import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import { ClientsCache } from '/imports/api/clients/clientsCache';
@@ -15,7 +15,7 @@ Meteor.methods({
   'clients.create'(client, schema = 'v2017', clientVersion = false) {
     const clientData = _.omit(client, 'photo', 'signature');
 
-    logger.info(`METHOD[${this.userId}]: clients.create`, clientData);
+    globalLogger.info(`METHOD[${this.userId}]: clients.create`, clientData);
 
     if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
       throw new Meteor.Error(403, 'Forbidden');
@@ -30,7 +30,7 @@ Meteor.methods({
       Meteor.call('s3bucket.put', result.dedupClientId, 'photo', client.photo);
       Meteor.call('s3bucket.put', result.dedupClientId, 'signature', client.signature);
     } catch (err) {
-      logger.error('Failed to upload photo/signature to s3', err);
+      globalLogger.error('Failed to upload photo/signature to s3', err);
     }
 
     if (client.signature) {
@@ -44,7 +44,7 @@ Meteor.methods({
         };
         Meteor.call('roiApi', 'createRoi', data);
       } catch (err) {
-        logger.error('Failed to create ROI for client', err);
+        globalLogger.error('Failed to create ROI for client', err);
       }
     }
 
@@ -55,7 +55,7 @@ Meteor.methods({
 
   'clients.update'(clientId, client, schema) {
     const clientData = _.omit(client, 'photo', 'signature');
-    logger.info(`METHOD[${this.userId}]: clients.update`, clientId, schema, clientData);
+    globalLogger.info(`METHOD[${this.userId}]: clients.update`, clientId, schema, clientData);
 
     check(clientId, String);
     check(schema, String);
@@ -75,7 +75,7 @@ Meteor.methods({
         Meteor.call('s3bucket.put', dedupClientId, 'signature', client.signature);
       }
     } catch (err) {
-      logger.error('Failed to upload photo/signature to s3', err);
+      globalLogger.error('Failed to upload photo/signature to s3', err);
     }
 
     eventPublisher.publish(new ClientUpdatedEvent({
@@ -88,7 +88,7 @@ Meteor.methods({
   },
 
   'clients.service'(clientId, data, schema) {
-    logger.info(`METHOD[${this.userId}]: clients.service`, clientId, schema, data);
+    globalLogger.info(`METHOD[${this.userId}]: clients.service`, clientId, schema, data);
     check(clientId, String);
     check(schema, String);
     const hc = HmisClient.create(this.userId);
@@ -105,7 +105,7 @@ Meteor.methods({
   },
 
   'clients.delete'(clientId, schema) { // eslint-disable-line
-    logger.info(`METHOD[${this.userId}]: clients.delete`, clientId);
+    globalLogger.info(`METHOD[${this.userId}]: clients.delete`, clientId);
 
     check(clientId, String);
     check(schema, String);
@@ -118,7 +118,7 @@ Meteor.methods({
   },
 
   'clients.updateMatchStatus'(clientId, statusCode, comments, recipients) {
-    logger.info(`METHOD[${this.userId}]: clients.updateMatchStatus`,
+    globalLogger.info(`METHOD[${this.userId}]: clients.updateMatchStatus`,
       clientId, statusCode, comments, recipients
     );
 
@@ -134,7 +134,7 @@ Meteor.methods({
   },
 
   async searchClient(query, options = {}) {
-    logger.info(`METHOD[${this.userId}]: searchClient(${query})`);
+    globalLogger.info(`METHOD[${this.userId}]: searchClient(${query})`);
     if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
       throw new Meteor.Error(403, 'Forbidden');
     }
@@ -151,7 +151,7 @@ Meteor.methods({
 
     hmisClients = hmisClients.filter(client => client.link);
 
-    logger.debug('search results', hmisClients.length);
+    globalLogger.debug('search results', hmisClients.length);
 
     let localClients = [];
     if (!excludeLocalClients) {
@@ -190,7 +190,7 @@ Meteor.methods({
           },
         ], { explain: false });
       } catch (err) {
-        logger.warn(err);
+        globalLogger.warn(err);
       }
 
       localClients = await localClients.toArray();
@@ -250,3 +250,18 @@ Meteor.methods({
     ClientsCache.rawCollection().insertMany(clientBasics, { ordered: false });
   },
 });
+
+Meteor.injectedMethods({
+  'clients.get'(clientId, schema) {
+    const { clientsRepository, logger } = this.context;
+    logger.info(`PUB[${this.userId}]: clients.get(${clientId}, ${schema})`);
+
+    check(clientId, String);
+    check(schema, String);
+    if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
+    return clientsRepository.getClientByIdAndSchema(clientId, schema);
+  },
+});
+
