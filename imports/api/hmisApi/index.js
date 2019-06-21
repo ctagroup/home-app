@@ -9,6 +9,7 @@ import './housingApi';
 import './globalApi';
 import './surveyApi';
 import './surveyApi2';
+import './surveyApi3';
 import './userServiceApi';
 
 export { HmisClient } from './hmisClient';

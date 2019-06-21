@@ -197,9 +197,16 @@ export class SurveyApi extends ApiEndpoint {
     const body = { sectionScore };
     return this.doPost(url, body);
   }
+
   getSectionScores(clientId, surveyId, sectionId) {
     const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/sections/${sectionId}/scores`;
     return this.doGet(url);
+  }
+
+  getSurveySubmissions(dedupClientId) {
+    const url = `${BASE_URL}/clientsurveysubmissions/${dedupClientId}`;
+    // TODO: add pagination
+    return this.doGet(url).clientSurveySubmissions.clientSurveySubmissions;
   }
 
 }

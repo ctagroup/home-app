@@ -380,120 +380,6 @@ Meteor.methods({
     return submissionId;
   },
 
-  'responses.getPage'({ clientId, pageNumber = 0, pageSize = 50, sortBy = [], filterBy = [] }) {
-    globalLogger.info(`METHOD[${this.userId}]: responses.getPage(${pageNumber}, ${pageSize}, ${sortBy}, ${filterBy})`); // eslint-disable-line max-len
-    if (!this.userId) {
-      throw new Meteor.Error(401, 'Unauthorized');
-    }
-
-
-    if (clientId) {
-      filterBy.push({
-        id: 'clientId',
-        value: clientId,
-      });
-    }
-
-    const hc = HmisClient.create(this.userId);
-
-    const clientFilter = filterBy.find(x => x.id === 'clientId');
-    if (clientFilter) {
-      // use HSLYNK to search for submissions
-      const seachString = clientFilter.value;
-
-      const results = hc.api('survey').searchForClientSurveySubmissions(seachString);
-
-      const uploaded = results
-        .map(s => Responses.findOne({ submissionId: s.submissionId }) || {
-          _id: s.submissionId,
-          client: s.client,
-          clientId: s.clientId,
-          status: 'not imported',
-          submissionId: s.submissionId,
-          surveyId: s.surveyId,
-          updatedAt: new Date(),
-          values: {},
-          version: 'n/a',
-        });
-
-      const paused = Responses.find({ clientId, status: 'paused' }).fetch();
-
-      const all = [
-        ...uploaded,
-        ...paused,
-      ].map(s => {
-        // TODO - schema should come from searchForClientSurveySubmissions response
-        // awaiting https://github.com/hmis-api/survey-service-api/issues/6 to be resolved
-        const clientSchema = s.clientSchema || 'v2017';
-        const client = HmisCache.getClient(s.clientId, s.clientSchema, this.userId);
-        return {
-          ...s,
-          clientSchema,
-          client: s.client || client,
-          survey: s.survey || HmisCache.getSurvey(s.surveyId, this.userId),
-        };
-      });
-
-      return {
-        content: all.sort((a, b) => {
-          if (sortBy.length) {
-            const column = sortBy[0].id;
-            const direction = sortBy[0].desc ? -1 : 1;
-            switch (column) {
-              case 'surveyId':
-                return (a.survey.surveyTitle || '')
-                  .localeCompare(b.survey.surveyTitle || '') * direction;
-              case 'clientId':
-                return fullName(a.client).localeCompare(fullName(b.client)) * direction;
-              default:
-                return (a[column] - b[column]) * direction;
-            }
-          }
-          return 0;
-        }),
-        page: {
-          totalPages: 1,
-        },
-      };
-    }
-
-    // for now fetch all responses from Mongo
-    let mongoQuery = {};
-    const clientNameFilter = filterBy.find(x => x.id === 'clientName');
-    if (clientNameFilter) {
-      const searchResults = hc.api('client').searchClient(clientNameFilter.value);
-      const clientIds = searchResults.map(r => r.clientId);
-      mongoQuery = {
-        clientId: { $in: clientIds },
-      };
-    }
-
-    this.unblock();
-    const responsesCount = Responses.find(mongoQuery).count();
-    const sort = {
-    };
-    if (sortBy.length) {
-      const column = sortBy[0].id;
-      const direction = sortBy[0].desc ? -1 : 1;
-      sort[column] = direction;
-    }
-    const pageData = Responses.find(mongoQuery, {
-      sort,
-      skip: pageNumber * pageSize,
-      limit: pageSize,
-    }).fetch();
-
-    return {
-      content: pageData.map(r => ({
-        ...r,
-        client: HmisCache.getClient(r.clientId, r.clientSchema, this.userId),
-        survey: HmisCache.getSurvey(r.surveyId, this.userId),
-      })),
-      page: {
-        totalPages: Math.ceil(responsesCount / pageSize),
-      },
-    };
-  },
   'responses.count'() {
     globalLogger.info(`METHOD[${this.userId}]: responses.count`);
 
@@ -607,5 +493,87 @@ Meteor.injectedMethods({
       };
     }, {});
     return Object.values(clientsWithGroupedResponses);
+  },
+
+  'responses.getPage'({ clientId, pageNumber = 0, pageSize = 50, sortBy = [], filterBy = [] }) {
+    const { logger, hmisClient, responsesRepository } = this.context;
+    logger.info(`METHOD[${this.userId}]: responses.getPage(${pageNumber}, ${pageSize}, ${sortBy}, ${filterBy})`); // eslint-disable-line max-len
+
+    if (!this.userId) {
+      throw new Meteor.Error(401, 'Unauthorized');
+    }
+
+
+    if (clientId) {
+      filterBy.push({
+        id: 'clientId',
+        value: clientId,
+      });
+    }
+
+    const clientFilter = filterBy.find(x => x.id === 'clientId');
+    if (clientFilter) {
+      const all = responsesRepository.getSurveySubmissionsByClientId(clientFilter.value);
+      const sortedResponses = all.sort((a, b) => {
+        if (sortBy.length) {
+          const column = sortBy[0].id;
+          const direction = sortBy[0].desc ? -1 : 1;
+          switch (column) {
+            case 'surveyId':
+              return (a.survey.surveyTitle || '')
+                .localeCompare(b.survey.surveyTitle || '') * direction;
+            case 'clientId':
+              return fullName(a.client).localeCompare(fullName(b.client)) * direction;
+            default:
+              return (a[column] - b[column]) * direction;
+          }
+        }
+        return 0;
+      });
+
+      return {
+        content: sortedResponses,
+        page: {
+          totalPages: 1,
+        },
+      };
+    }
+
+    // for now fetch all responses from Mongo
+    let mongoQuery = {};
+    const clientNameFilter = filterBy.find(x => x.id === 'clientName');
+    if (clientNameFilter) {
+      const searchResults = hmisClient.api('client').searchClient(clientNameFilter.value);
+      const clientIds = searchResults.map(r => r.clientId);
+      mongoQuery = {
+        clientId: { $in: clientIds },
+      };
+    }
+
+    this.unblock();
+    const responsesCount = Responses.find(mongoQuery).count();
+    const sort = {
+    };
+    if (sortBy.length) {
+      const column = sortBy[0].id;
+      const direction = sortBy[0].desc ? -1 : 1;
+      sort[column] = direction;
+    }
+    const pageData = Responses.find(mongoQuery, {
+      sort,
+      skip: pageNumber * pageSize,
+      limit: pageSize,
+    }).fetch();
+
+    return {
+      content: pageData.map(r => ({
+        ...r,
+        client: HmisCache.getClient(r.clientId, r.clientSchema, this.userId),
+        survey: HmisCache.getSurvey(r.surveyId, this.userId),
+      })),
+      page: {
+        totalPages: Math.ceil(responsesCount / pageSize),
+      },
+    };
   },
 });

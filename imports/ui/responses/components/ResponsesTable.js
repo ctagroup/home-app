@@ -21,8 +21,11 @@ const columns = [{
       return (<span>{errorLabel} {surveyId}</span>);
     }
 
+    const routeName = props.original.status === 'not imported' ?
+      'adminDashboardresponsesImport' : 'adminDashboardresponsesEdit';
+
     return (
-      <Link route="adminDashboardresponsesEdit" params={{ _id: props.original._id }}>
+      <Link route={routeName} params={{ _id: props.original._id }}>
         {surveyTitle || surveyId}
       </Link>
     );
@@ -52,11 +55,11 @@ const columns = [{
 }, {
   Header: 'Date Created',
   accessor: 'createdAt',
-  Cell: props => formatDateTime(props.original.createdAt),
+  Cell: props => props.original.createdAt ? formatDateTime(props.original.createdAt) : 'n/a',
 }, {
   Header: 'Date Updated',
   accessor: 'updatedAt',
-  Cell: props => formatDateTime(props.original.updatedAt),
+  Cell: props => props.original.updatedAt ? formatDateTime(props.original.updatedAt) : 'n/a',
 }, {
   Header: 'Status',
   accessor: 'submittedAt',

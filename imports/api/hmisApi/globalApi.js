@@ -7,6 +7,15 @@ import { ApiEndpoint } from './apiEndpoint';
 const BASE_URL = 'https://www.hmislynk.com/hmis-globalapi/rest';
 
 export class GlobalApi extends ApiEndpoint {
+  getClientVersions(dedupClientId) {
+    const url = `${BASE_URL}/clients/${dedupClientId}`;
+    const { clients } = this.doGet(url).clients;
+    return clients.map(client => ({
+      ...client,
+      schema: client.link.split('/')[3],
+    }));
+  }
+
   getClientEnrollments(dedupClientId, start = 0, limit = 9999) {
     const options = `?startIndex=${start}&limit=${limit}`;
     const url = `${BASE_URL}/clients/${dedupClientId}/global-enrollments${options}`;
