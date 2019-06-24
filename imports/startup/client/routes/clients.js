@@ -313,25 +313,9 @@ Router.onBeforeAction(
 
     const client = PendingClients.findOne(clientId) || Clients.findOne(clientId);
 
-    const viewClientRoute = Router.routes.viewClient;
     if (!client) {
       this.render('clientNotFound');
     } else {
-      if (this.params.query && this.params.query.schema && !client.isLocalClient) {
-        client.personalId = client.clientId;
-        client.isHMISClient = true;
-        client.schema = client.schema || this.params.query.schema;
-        client.url = viewClientRoute.path(
-          { _id: client.clientId },
-          { query: `schema=${client.schema}` }
-        );
-      } else {
-        const routeOptions = client.schema ? { query: `schema=${client.schema}` } : {};
-        client.url = viewClientRoute.path(
-          { _id: client._id },
-          routeOptions
-        );
-      }
       RecentClients.upsert(client);
       this.next();
     }

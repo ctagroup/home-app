@@ -704,7 +704,7 @@ Template.viewClient.events(
         if (error) {
           Bert.alert(error.reason || error.error, 'danger', 'growl-top-right');
         } else {
-          RecentClients.remove(client._id);
+          RecentClients.remove(client);
           Bert.alert('Client uploaded to HMIS', 'success', 'growl-top-right');
           Router.go('viewClient', { _id: result.clientId }, { query: { schema: result.schema } });
         }

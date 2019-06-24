@@ -180,7 +180,8 @@ export default class Survey extends React.Component {
               history.push(`Failed to upload client: ${err}`);
               reject(err);
             } else {
-              RecentClients.updateId(clientId, hmisClient);
+              RecentClients.remove(clientId);
+              RecentClients.upsert(hmisClient);
               history.push(`Client uploaded as ${JSON.stringify(hmisClient)}`);
               resolve(responseId);
             }

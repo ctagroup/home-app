@@ -49,7 +49,7 @@ Template.editClient.events(
           Alert.error(error);
         } else {
           Alert.success('Client deleted');
-          RecentClients.remove(client._id);
+          RecentClients.remove(client);
           Router.go('adminDashboardclientsView');
         }
       });

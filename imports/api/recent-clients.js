@@ -6,48 +6,34 @@ import { fullName } from '/imports/api/utils';
 
 export const RecentClients = Meteor.isClient ? {
   upsert(client) {
-    const recentClients = Session.get('recentClients') || [];
-    const ids = _.pluck(recentClients, '_id');
-    const idx = ids.indexOf(client._id);
-
-    if (idx !== -1) {
-      recentClients.splice(idx, 1);
+    const { _id, dedupClientId, schema } = client;
+    let url;
+    if (client.schema) {
+      const query = {
+        schema,
+      };
+      url = Router.path('viewClient', { _id }, { query });
+    } else {
+      url = Router.path('viewClient', { _id });
     }
+
+    const recentClients = Session.get('recentClients') || [];
+    const otherClients = recentClients.filter(r => r.dedupClientId !== dedupClientId);
 
     const data = {
-      _id: client._id,
+      _id,
+      dedupClientId,
       name: fullName(client),
-      url: client.url,
+      url,
     };
-    const updated = [data, ...recentClients];
-    Session.set('recentClients', _.uniq(updated, ({ _id }) => _id));
+    Session.set('recentClients', [data, ...otherClients]);
+    return data;
   },
 
-  remove(clientId) {
+  remove(client) {
+    const { _id } = client;
     const recentClients = Session.get('recentClients') || [];
-    const ids = _.pluck(recentClients, '_id');
-    const idx = ids.indexOf(clientId);
-
-    if (idx !== -1) {
-      recentClients.splice(idx, 1);
-    }
-    Session.set('recentClients', recentClients);
-  },
-
-  updateId(oldClientId, newClient) {
-    const { clientId, schema } = newClient;
-    const recentClients = Session.get('recentClients') || [];
-    const updated = recentClients.map(c => {
-      if (c._id === oldClientId) {
-        return {
-          ...c,
-          _id: clientId,
-          url: Router.path('viewClient', { _id: clientId }, { query: { schema } }),
-        };
-      }
-      return c;
-    });
-    Session.set('recentClients', _.uniq(updated, ({ _id }) => _id));
+    Session.set('recentClients', recentClients.filter(r => r._id !== _id));
   },
 } : undefined;
 
