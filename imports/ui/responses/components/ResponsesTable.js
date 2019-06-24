@@ -11,7 +11,7 @@ const columns = [{
   Header: 'Survey',
   accessor: 'surveyId',
   Cell: props => {
-    const { survey } = props.original;
+    const { survey, clientId, clientSchema } = props.original;
     const { surveyTitle, surveyId, error } = survey;
     const errorLabel = error ?
       <ErrorLabel hint={error.message} text={error.statusCode} />
@@ -21,11 +21,20 @@ const columns = [{
       return (<span>{errorLabel} {surveyId}</span>);
     }
 
-    const routeName = props.original.status === 'not imported' ?
-      'adminDashboardresponsesImport' : 'adminDashboardresponsesEdit';
+    let routeName = 'adminDashboardresponsesEdit';
+    let query = null;
+
+    if (props.original.status === 'not imported') {
+      routeName = 'adminDashboardresponsesImport';
+      query = {
+        clientId,
+        clientSchema,
+        surveyId,
+      };
+    }
 
     return (
-      <Link route={routeName} params={{ _id: props.original._id }}>
+      <Link route={routeName} params={{ _id: props.original._id }} query={query}>
         {surveyTitle || surveyId}
       </Link>
     );
@@ -55,11 +64,11 @@ const columns = [{
 }, {
   Header: 'Date Created',
   accessor: 'createdAt',
-  Cell: props => props.original.createdAt ? formatDateTime(props.original.createdAt) : 'n/a',
+  Cell: props => (props.original.createdAt ? formatDateTime(props.original.createdAt) : 'n/a'),
 }, {
   Header: 'Date Updated',
   accessor: 'updatedAt',
-  Cell: props => props.original.updatedAt ? formatDateTime(props.original.updatedAt) : 'n/a',
+  Cell: props => (props.original.updatedAt ? formatDateTime(props.original.updatedAt) : 'n/a'),
 }, {
   Header: 'Status',
   accessor: 'submittedAt',
