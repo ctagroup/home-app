@@ -59,8 +59,8 @@ class ResponsesRepository {
       .find({ clientId: { $in: clientIds } })
       .map(r => ({
         ...r,
-        client: this.hmisCache.getClient(r.clientId, r.clientSchema, this.userId),
-        survey: this.hmisCache.getSurvey(r.surveyId, this.userId),
+        client: this.hmisCache.getClient(r.clientId, r.clientSchema),
+        survey: this.hmisCache.getSurvey(r.surveyId),
       }));
   }
 }

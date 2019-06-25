@@ -11,7 +11,8 @@ Meteor.injectedPublish('projects.all', function publishAllProjects(forceReload =
 
   const schemas = ['v2017', 'v2016', 'v2015', 'v2014'];
   schemas.forEach(schema => {
-    const projectsForSchema = HmisCache.getData(`projects.all.${schema}`, this.userId, () => {
+    const projectsForSchema = HmisCache.create(this.userId)
+    .getData(`projects.all.${schema}`, () => {
       const api = hmisClient.api('client');
       const projectsWithSchema = api
         .getProjects(schema)

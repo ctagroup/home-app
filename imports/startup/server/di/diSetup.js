@@ -2,7 +2,7 @@ import awilix from 'awilix';
 import { logger as globalLogger } from '/imports/utils/logger';
 import SentryLogger from '/imports/utils/sentryLogger';
 import { HmisClient } from '/imports/api/hmisApi';
-import { HmisCache } from '/imports/api/cache/hmisCache';
+import { HmisCache, HmisCacheCollection } from '/imports/api/cache/hmisCache';
 import { HmisApiRegistry } from '/imports/api/hmisApi/apiRegistry';
 import EnrollmentsRepository from '/imports/api/enrollments/enrollmentsRepository';
 import EnrollmentsTranslationService from '/imports/api/enrollments/enrollmentsTranslationService';
@@ -21,7 +21,7 @@ function getServiceConfiguration() {
 export function setupInitialDependencies(container) {
   container.register({
     hmisApiRegistry: awilix.asValue(HmisApiRegistry),
-    hmisCache: awilix.asValue(HmisCache),
+    hmisCacheCollection: awilix.asValue(HmisCacheCollection),
     hmisClient: awilix.asFunction(createHmisClient),
     logger: awilix.asValue(globalLogger),
     responsesCollection: awilix.asValue(Responses),
@@ -36,6 +36,7 @@ export function setupEndpointDependencies(endpointName, container) {
       endpointName: awilix.asValue(endpointName),
       enrollmentsRepository: awilix.asClass(EnrollmentsRepository),
       enrollmentsTranslationService: awilix.asClass(EnrollmentsTranslationService),
+      hmisCache: awilix.asClass(HmisCache),
       hmisClient: awilix.asClass(HmisClient),
       loggerName: awilix.asValue(endpointName),
       logger: awilix.asClass(SentryLogger),

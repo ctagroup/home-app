@@ -1,14 +1,24 @@
 import moment from 'moment';
-import { logger } from '/imports/utils/logger';
+import { logger as globalLogger } from '/imports/utils/logger';
 import { HmisClient } from '/imports/api/hmisApi';
 
 const ERROR_EXPIRY_IN_MINUTES = 10;
 const EXPIRY_IN_MINUTES = 60 * 24;
 
-class HmisCacheCollection extends Mongo.Collection {
-  getClient(clientId, schema, userId) {
-    const _id = `client::${clientId}::${schema}`;
-    const entry = super.findOne({
+export const HmisCacheCollection = new Mongo.Collection('cache');
+
+export class HmisCache {
+  constructor({ hmisClient, userId, logger, hmisCacheCollection }) {
+    this.userId = userId;
+    this.hmisClient = hmisClient;
+    this.logger = logger;
+    this.collection = hmisCacheCollection;
+  }
+
+  getClient(clientId, schema) {
+    const _id = `client::${clientId}::${schema}::${this.userId}`;
+
+    const entry = this.collection.findOne({
       _id,
       expiresAt: { $gte: new Date() },
     }) || {};
@@ -17,16 +27,17 @@ class HmisCacheCollection extends Mongo.Collection {
       return entry.data;
     }
 
+    this.logger.debug('caching ', _id);
+
     let data;
     let error;
     try {
-      const hc = HmisClient.create(userId);
-      data = hc.api('client').getClient(clientId, schema);
+      data = this.hmisClient.api('client').getClient(clientId, schema);
     } catch (err) {
-      logger.warn('cache', err);
+      this.logger.warn('cache', err);
       error = err;
     } finally {
-      super.upsert(_id, {
+      this.collection.upsert(_id, {
         data,
         error,
         type: 'client',
@@ -35,7 +46,7 @@ class HmisCacheCollection extends Mongo.Collection {
             !!error ? ERROR_EXPIRY_IN_MINUTES : EXPIRY_IN_MINUTES, 'm'
           )
           .toDate(),
-        userId,
+        userId: this.userId,
       });
     }
     const result = {
@@ -53,9 +64,9 @@ class HmisCacheCollection extends Mongo.Collection {
     return result;
   }
 
-  getSurvey(surveyId, userId) {
-    const _id = `survey::${surveyId}`;
-    const entry = super.findOne({
+  getSurvey(surveyId) {
+    const _id = `survey::${surveyId}::${this.userId}`;
+    const entry = this.collection.findOne({
       _id,
       expiresAt: { $gte: new Date() },
     }) || {};
@@ -64,16 +75,17 @@ class HmisCacheCollection extends Mongo.Collection {
       return entry.data;
     }
 
+    this.logger.debug('caching ', _id);
+
     let data;
     let error;
     try {
-      const hc = HmisClient.create(userId);
-      data = hc.api('survey2').getSurvey(surveyId);
+      data = this.hmisClient.api('survey2').getSurvey(surveyId);
     } catch (err) {
-      logger.warn('cache', err);
+      this.logger.warn('cache', err);
       error = err;
     } finally {
-      super.upsert(_id, {
+      this.collection.upsert(_id, {
         data,
         error,
         type: 'survey',
@@ -82,7 +94,7 @@ class HmisCacheCollection extends Mongo.Collection {
             !!error ? ERROR_EXPIRY_IN_MINUTES : EXPIRY_IN_MINUTES, 'm'
           )
           .toDate(),
-        userId,
+        userId: this.userId,
       });
     }
 
@@ -100,10 +112,10 @@ class HmisCacheCollection extends Mongo.Collection {
     return result;
   }
 
-  getData(cacheKey, userId, noDataCallback, forceReload = false) {
-    const _id = `data::${cacheKey}::${userId}`;
+  getData(cacheKey, noDataCallback, forceReload = false) {
+    const _id = `data::${cacheKey}::${this.userId}`;
     if (!forceReload) {
-      const entry = super.findOne({
+      const entry = this.collection.findOne({
         _id,
         expiresAt: { $gte: new Date() },
       }) || {};
@@ -117,7 +129,7 @@ class HmisCacheCollection extends Mongo.Collection {
       // }
     }
 
-    logger.debug('caching ', cacheKey);
+    this.logger.debug('caching ', cacheKey, this.userId);
 
     let data;
     let error;
@@ -126,11 +138,11 @@ class HmisCacheCollection extends Mongo.Collection {
     try {
       data = noDataCallback();
     } catch (err) {
-      logger.warn('cache', err);
+      this.logger.warn('cache', err);
       originalError = err;
       error = err;
     } finally {
-      super.upsert(_id, {
+      this.collection.upsert(_id, {
         data,
         error,
         type: 'data',
@@ -139,7 +151,7 @@ class HmisCacheCollection extends Mongo.Collection {
             !!originalError ? ERROR_EXPIRY_IN_MINUTES : EXPIRY_IN_MINUTES, 'm'
           )
           .toDate(),
-        userId,
+        userId: this.userId,
       });
     }
 
@@ -149,6 +161,19 @@ class HmisCacheCollection extends Mongo.Collection {
 
     return data;
   }
+
+
+  static create(userId) {
+    // use this function when cache cannot be injected via DI
+    // remove in the future
+    const hmisClient = HmisClient.create(userId);
+    const logger = globalLogger;
+    return new HmisCache({
+      hmisClient,
+      userId,
+      logger,
+      hmisCacheCollection: HmisCacheCollection,
+    });
+  }
 }
 
-export const HmisCache = new HmisCacheCollection('cache');

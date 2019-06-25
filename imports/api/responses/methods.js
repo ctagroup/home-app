@@ -449,7 +449,7 @@ Meteor.injectedMethods({
     let foundSchema = clientSchema;
     if (foundSchema === null) {
       foundSchema = ['v2014', 'v2015', 'v2016', 'v2017'].find(
-        schema => !HmisCache.getClient(clientId, schema, this.userId).error
+        schema => !HmisCache.create(this.userId).getClient(clientId, schema).error
       );
     }
 
@@ -478,8 +478,8 @@ Meteor.injectedMethods({
       if (clients[r.clientId]) return clients;
 
       const { clientId, clientSchema, surveyId } = r;
-      const client = HmisCache.getClient(clientId, clientSchema, this.userId);
-      const survey = HmisCache.getSurvey(surveyId, this.userId);
+      const client = HmisCache.create(this.userId).getClient(clientId, clientSchema);
+      const survey = HmisCache.create(this.userId).getSurvey(surveyId);
       const surveyedClient = {
         clientId,
         schema: clientSchema,
@@ -568,8 +568,8 @@ Meteor.injectedMethods({
     return {
       content: pageData.map(r => ({
         ...r,
-        client: HmisCache.getClient(r.clientId, r.clientSchema, this.userId),
-        survey: HmisCache.getSurvey(r.surveyId, this.userId),
+        client: HmisCache.create(this.userId).getClient(r.clientId, r.clientSchema),
+        survey: HmisCache.create(this.userId).getSurvey(r.surveyId),
       })),
       page: {
         totalPages: Math.ceil(responsesCount / pageSize),

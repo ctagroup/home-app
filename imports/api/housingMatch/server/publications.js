@@ -54,7 +54,7 @@ Meteor.publish(
           const eligibleClients = housingMatches[i].eligibleClients;
           // fetch client details
           try {
-            const details = HmisCache.getClient(clientId, schema, this.userId);
+            const details = HmisCache.create(this.userId).getClient(clientId, schema);
             eligibleClients.clientDetails = details;
             eligibleClients.clientDetails.schema = schema;
           } catch (e) {

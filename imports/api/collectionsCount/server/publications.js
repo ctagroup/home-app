@@ -23,8 +23,8 @@ Meteor.publish('collectionsCount', function publishCollectionCount(forceReload =
   }, (fn, name) => {
     self.added('collectionsCount', name, { count: 0, loading: true });
     Meteor.defer(() => {
-      const count = HmisCache.getData(
-        `collectionsCount.${name}`, this.userId, fn.bind(counter), forceReload
+      const count = HmisCache.create(this.userId).getData(
+        `collectionsCount.${name}`, fn.bind(counter), forceReload
       );
       self.changed('collectionsCount', name, { count, loading: false });
     });
