@@ -1,5 +1,4 @@
 import { Mongo } from 'meteor/mongo';
-import { logger } from '/imports/utils/logger';
 
 
 class EventLogClass extends Mongo.Collection {
@@ -11,7 +10,10 @@ class EventLogClass extends Mongo.Collection {
       createdBy: event.userId,
       data: event.data,
     };
-    logger.info('New event', doc);
+    super.insert(doc);
+  }
+
+  addRawEvent(doc) {
     super.insert(doc);
   }
 

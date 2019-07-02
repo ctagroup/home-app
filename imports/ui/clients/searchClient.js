@@ -70,6 +70,7 @@ const debouncedSearch = _.debounce((query, options, callback) => {
         viewAll: (index >= maxResults - 1),
         searchStr: query,
       }));
+      console.log(clients);
       callback(clients);
     }
   });

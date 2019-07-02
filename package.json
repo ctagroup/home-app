@@ -1,8 +1,9 @@
 {
   "dependencies": {
     "@babel/runtime": "^7.3.1",
+    "@rematch/core": "^1.1.0",
     "@sentry/node": "^5.1.0",
-    "async": "http://registry.npmjs.org/async/-/async-1.0.0.tgz",
+    "async": "^2.6.3",
     "awilix": "^4.0.1",
     "aws-sdk": "^2.471.0",
     "babel-runtime": "^6.26.0",
@@ -11,6 +12,7 @@
     "datatables.net-bs": "^1.10.16",
     "eventemitter2": "^5.0.1",
     "fibers": "^3.1.1",
+    "install": "^0.13.0",
     "jquery": "^1.11.10",
     "js-yaml": "^3.13.1",
     "meteor-node-stubs": "^0.2.11",
@@ -23,14 +25,18 @@
     "react-dom": "^16.8.6",
     "react-input-mask": "^1.2.2",
     "react-json-tree": "^0.11.2",
+    "react-meteor-hooks": "^0.3.1",
     "react-modal": "^3.3.2",
     "react-quill": "^1.2.7",
+    "react-redux": "^7.1.0",
     "react-select": "^2.3.0",
     "react-sortable-tree": "^1.8.1",
     "react-table": "^6.9.2",
+    "reactstrap": "^8.0.1",
     "underscore": "^1.9.1",
     "uniforms": "^1.23.2",
     "uniforms-bootstrap3": "^1.23.2",
+    "uuid": "^3.3.2",
     "winston": "^2.4.1"
   },
   "devDependencies": {
@@ -41,7 +47,7 @@
     "eslint-plugin-jsx-a11y": "^1.5.1",
     "eslint-plugin-react": "^5.2.2",
     "mup-git": "^1.0.1",
-    "npm": "^5.8.0",
+    "npm": "^5.10.0",
     "sinon": "^5.1.1"
   },
   "scripts": {

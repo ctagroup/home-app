@@ -2,7 +2,7 @@ import moment from 'moment';
 
 import { removeEmpty, getSchemaFromLink } from '/imports/api/utils';
 
-const getVersions = (schemas) => _.map(schemas,
+export const getVersions = (schemas) => _.map(schemas,
   (version) => ({ schema: version.schema, clientId: version.clientId }));
 
 export const mergeClient = (clientVersionsList, schema) => {

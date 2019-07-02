@@ -1,29 +1,29 @@
 import React from 'react';
 import { formatDateFunction } from '/imports/ui/templateHelpers';
 import { formatSSN } from './helpers';
+import { getRace, getGender, getEthnicity, getYesNo } from '/imports/ui/clients/textHelpers';
 
-function ClientOverview(props) {
+
+function ClientOverview({ client, permissions }) {
   const {
-    permissions: { showEditButton },
-    helpers: {
-      getText,
-    },
-    client: {
-      suffix,
-      ssn,
-      dob,
-      race,
-      ethnicity,
-      gender,
-      veteranStatus,
-    } } = props;
+    suffix,
+    ssn,
+    dob,
+    race,
+    ethnicity,
+    gender,
+    veteranStatus,
+  } = client;
+
+  const { showEditButton } = permissions;
+
   return (
     <div className="info-container">
       <div className="row">
         <div className="col-xs-12 col-sm-6 col-md-6">
           <div className="">
             <p className="clabel">Suffix</p>
-            <p className="cvalue">{suffix}</p>
+            <p className="cvalue">{suffix || ''}</p>
           </div>
           <div className="">
             <p className="clabel">SSN</p>
@@ -35,21 +35,21 @@ function ClientOverview(props) {
           </div>
           <div className="">
             <p className="clabel">Race</p>
-            <p className="cvalue">{getText('race', race)}</p>
+            <p className="cvalue">{getRace(race)}</p>
           </div>
         </div>
         <div className="col-xs-12 col-sm-6 col-md-6">
           <div className="">
             <p className="clabel">Ethnicity</p>
-            <p className="cvalue">{getText('ethnicity', ethnicity)}</p>
+            <p className="cvalue">{getEthnicity(ethnicity)}</p>
           </div>
           <div className="">
             <p className="clabel">Gender</p>
-            <p className="cvalue">{getText('gender', gender)}</p>
+            <p className="cvalue">{getGender(gender)}</p>
           </div>
           <div className="">
             <p className="clabel">Veteran Status</p>
-            <p className="cvalue">{getText('veteranStatus', veteranStatus)}</p>
+            <p className="cvalue">{getYesNo(veteranStatus)}</p>
           </div>
           {/*
           <div className="">

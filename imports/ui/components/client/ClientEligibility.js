@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-
 import DatePicker from 'react-datepicker';
+import { useDispatch } from 'react-redux';
 
 const reasons = [
   { required: true, text: 'Housed by CARS (include agency/program)' },
@@ -11,96 +11,111 @@ const reasons = [
   { required: false, text: 'Client no longer interested in services' },
   { required: true, text: 'Other (specify)' },
 ].map(({ text, required }) => ({
-  id: text.replace(/\s+/g, '_').toLowerCase(),
   text,
   required,
 }));
 
-const reasonsHash = reasons.reduce((acc, reason) => ({ ...acc, [reason.id]: reason }), {});
-const reasonsList = reasons;
 
 function ClientEligibility(props) {
-  const [removalDate, changeDate] = useState(new Date());
-  const [removalRemarks, changeRemarks] = useState('');
-  const [removalReason, changeReason] = useState('');
+  const [removalDate, setDate] = useState(new Date());
+  const [selectedReasonIdx, setSelectedReasonIdx] = useState(0);
+  const [removalRemarks, setRemarks] = useState('');
+  const dispatch = useDispatch().clientPage;
 
-  let { eligibleClient } = props;
-  const { helpers: { removeFromActiveList } } = props;
-  if (!eligibleClient) eligibleClient = {};
+  const eligibleClient = props.eligibleClient || {};
+  if (!eligibleClient || eligibleClient.error) return null;
+  const { dedupClientId } = eligibleClient;
 
-  const addToActiveList = () => ({ removalDate, removalReason, removalRemarks });
-    // console.log('implement this function (addToActiveList)',
-    //   { removalDate, removalReason, removalRemarks });
-  const removeFromActiveListHandler = () => {
-    removeFromActiveList(reasonsHash[removalReason], removalDate, removalRemarks);
-  };
 
-  // console.log('eligibleClient', eligibleClient);
-  if (eligibleClient && eligibleClient.error) return null;
-  // return (<div className="row margin-top-35">{client.id}</div>);
-  return (
-    <div className="row margin-top-35">
-      <div className="col-xs-12">
-        {eligibleClient.ignoreMatchProcess &&
+  function renderEligibilityStatus() {
+    if (!eligibleClient.ignoreMatchProcess) return null;
+    return (
+      <div className="form-group">
+        <h3>Matching Eligibility Status</h3>
+        <p><strong>Removal notes: </strong>{eligibleClient.remarks}</p>
+      </div>
+    );
+  }
+
+  function renderAddToActiveListForm() {
+    return (
+      <div>
+        <p><strong>Add to active list</strong></p>
+        <input
+          className="btn btn-warning"
+          value="Add client to active list"
+          type="button"
+          onClick={() => dispatch.addToActiveList({
+            dedupClientId,
+          })}
+        />
+      </div>
+    );
+  }
+
+  function renderRemoveFromActiveListForm() {
+    return (
+      <div>
+        <p><strong>Remove from active list</strong></p>
+        <label>Removal date: </label>
+        <DatePicker
+          selected={removalDate}
+          defaultValue={removalDate}
+          onChange={setDate}
+          placeholderText="MM/DD/YYYY"
+        />
+        <div className="form-group">
+          <label htmlFor="removalReason">Choose a reason to delete: </label>
+          <select
+            className="form-control"
+            value={selectedReasonIdx || ''}
+            onChange={(e) => setSelectedReasonIdx(e.target.value)}
+          >
+            {reasons.map(({ text }, idx) =>
+              (<option
+                value={idx}
+                key={`option-${idx}`}
+              >{text}</option>))}
+          </select>
+        </div>
+        {reasons[selectedReasonIdx].required &&
           <div className="form-group">
-            <h3>Matching Eligibility Status</h3>
-            <p><strong>Removal notes: </strong>{eligibleClient.remarks}</p>
-          </div>
-        }
-        {eligibleClient.ignoreMatchProcess &&
-          <input
-            className="btn btn-warning addToHousingList"
-            value="Add client to active list"
-            type="button"
-            onClick={addToActiveList}
-          />
-        }
-        {!eligibleClient.ignoreMatchProcess &&
-          <div>
-            <DatePicker
-              selected={removalDate}
-              onChange={changeDate}
-              placeholderText="MM/DD/YYYY"
-            />
-            <div className="form-group">
-              <label htmlFor="removalReason">Choose a reason to delete: </label>
-              <select
-                className="removalReason form-control"
-                name="removalReason"
-                id="removalReason"
-                onChange={(e) => changeReason(e.target.value)}
-                defaultValue={removalReason}
-              >
-                {/** selected={id === removalReason} */}
-                {reasonsList.map(({ id, text }) =>
-                  (<option
-                    value={id}
-                    key={`option-${id}`}
-                  >{text}</option>))}
-              </select>
-            </div>
-            {/** {#if showRemovalDetails} */}
-            {/* if details required for selected option: */}
-            {reasonsHash[removalReason] && reasonsHash[removalReason].required &&
-              <div className="form-group">
-                <label htmlFor="removalRemarks"> Additional notes </label>
-                <input
-                  id="removalRemarks"
-                  className="form-control"
-                  type="text"
-                  name="removalRemarks"
-                  placeholder="Removal notes"
-                  onChange={(e) => changeRemarks(e.target.value)}
-                />
-              </div>}
+            <label htmlFor="removalRemarks"> Additional notes </label>
             <input
-              className="btn btn-danger removeFromHousingList"
-              value="Remove client from active list"
-              type="button"
-              onClick={removeFromActiveListHandler}
+              className="form-control"
+              type="text"
+              name="removalRemarks"
+              placeholder="Removal notes"
+              value={removalRemarks || ''}
+              onChange={(e) => setRemarks(e.target.value)}
             />
           </div>
         }
+        <input
+          className="btn btn-danger"
+          value="Remove client from active list"
+          type="button"
+          onClick={() => dispatch.removeFromActiveList({
+            dedupClientId,
+            removalDate,
+            removalReason: reasons[selectedReasonIdx].text,
+            removalRemarks: reasons[selectedReasonIdx].required ? removalRemarks : '',
+          })}
+        />
+      </div>
+    );
+  }
+
+
+  return (
+    <div className="info-container">
+      <div className="row">
+        <div className="col-xs-12">
+        {renderEligibilityStatus()}
+        {eligibleClient.ignoreMatchProcess ?
+          renderAddToActiveListForm() : renderRemoveFromActiveListForm()
+        }
+        </div>
       </div>
     </div>
   );

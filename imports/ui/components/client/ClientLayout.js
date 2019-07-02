@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTracker } from 'react-meteor-hooks';
 import ClientTabSelector from './ClientTabSelector';
 import ClientGeneralInfo from './ClientGeneralInfo';
 import ClientOverview from './ClientOverview';
@@ -7,7 +8,7 @@ import ClientEnrollments from './ClientEnrollments';
 import ClientEligibility from './ClientEligibility';
 
 function ClientLayout(props) {
-  const { client, permissions, eligibleClient, data, helpers } = props;
+  const { client, eligibleClient, permissions } = props;
   const {
     showReferralStatus,
     showEnrollments,
@@ -19,8 +20,30 @@ function ClientLayout(props) {
   } = permissions;
 
   const tabsList = [
-    { id: 'overview', enabled: true, title: 'Overview' },
-    { id: 'eligibility', enabled: true, title: 'History' },
+    {
+      id: 'overview',
+      enabled: true,
+      title: 'Overview',
+      component: (
+        <ClientOverview
+          client={client}
+          permissions={{ showEditButton }}
+        />
+      ),
+    },
+    {
+      id: 'eligibility',
+      enabled: true,
+      title: 'History',
+      component: (
+        <ClientEligibility
+          eligibleClient={eligibleClient}
+          client={client}
+          permissions={{ showEditButton }}
+        />
+      ),
+    },
+    /*
     { id: 'rois', enabled: !isSkidrowApp, title: 'ROIs' },
     { id: 'referrals', enabled: showReferralStatus, title: 'Referrals' },
     { id: 'enrollments', enabled: showEnrollments, title: 'Enrollments' },
@@ -35,46 +58,65 @@ function ClientLayout(props) {
     { id: 'services', enabled: !isSkidrowApp, title: 'Services' },
     // { id: 'case-management', enabled: false, title: 'Case Management' },
     // { id: 'responses', enabled: false, title: 'Responses' },
+    */
   ].filter((t) => t.enabled);
 
-  const [selectedTab, selectTab] = useState(props.selectedTab || tabsList[0].id);
+  const [selectedTab, selectTab] = useState(tabsList[0].id);
 
-  // console.log('selectedTab', selectedTab);
+  // useTracker(() => {
+  //   const query = Router.current().params.query || {};
+  //   if (selectedTab !== query.selectedTab) {
+  //     selectTab(query.selectedTab);
+  //   }
+  // }, []);
+
+  const showRemovedFromMatchingWarning = eligibleClient && eligibleClient.ignoreMatchProcess;
+
+  const activeTab = tabsList.find(tab => tab.id === selectedTab) || tabsList[0];
 
   return (
     <div id="viewClient_content" className="col-xs-12">
-      {eligibleClient && eligibleClient.ignoreMatchProcess &&
-        <div className="col-xs-12">
-          <div className="alert alert-danger">
-            Client has been Removed from Matching
+      {showRemovedFromMatchingWarning &&
+        <div className="row">
+          <div className="col-xs-12">
+            <div className="alert alert-danger">
+              Client has been Removed from Matching
+            </div>
           </div>
         </div>
       }
+
       <div className="row client-profile-container">
         <ClientGeneralInfo client={client} />
+      </div>
 
+      <div className="row">
         <div className="tab-section">
-          <ClientTabSelector tabs={tabsList} tab={selectedTab} selectTab={selectTab} />
+          <ClientTabSelector tabs={tabsList} selectedTab={selectedTab} selectTab={selectTab} />
 
           <div className="tab-content card">
+            {activeTab.component}
+
+            {/*
             <ClientTab selectedTab={selectedTab} id={'overview'} >
               <ClientOverview
-                client={client} permissions={{ showEditButton }} helpers={helpers.overview}
+                client={client}
+                permissions={{ showEditButton }}
               />
             </ClientTab>
+                {/*
             <ClientTab selectedTab={selectedTab} id={'eligibility'} >
-              <ClientEligibility
-                eligibleClient={data.eligibleClient()}
-                client={client} permissions={{ showEditButton }} helpers={helpers.eligibility}
-              />
             </ClientTab>
             <ClientTab selectedTab={selectedTab} id={'enrollments'} >
               <ClientEnrollments
-                client={client} permissions={{ showEditButton }}
+                activeProjectId={Meteor.user().activeProjectId}
+                client={client}
+                permissions={{ showEditButton }}
                 enrollments={data.enrollments()}
                 helpers={helpers.enrollments}
               />
             </ClientTab>
+          */}
           </div>
         </div>
       </div>

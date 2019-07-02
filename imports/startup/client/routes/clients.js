@@ -14,6 +14,7 @@ import '/imports/ui/clients/searchClient';
 import '/imports/ui/clients/createClient';
 import '/imports/ui/clients/editClient';
 import '/imports/ui/clients/viewClient';
+import '/imports/ui/clients/viewDedupClient';
 import '/imports/ui/clients/viewClientMc211';
 import '/imports/ui/clients/viewSurveyedClients';
 
@@ -150,6 +151,26 @@ Router.route('clientsSurveyed', {
     return {
       title: 'Surveyed Clients',
       subtitle: 'View',
+    };
+  },
+});
+
+Router.route('/dedupClients/:dedupClientId', {
+  name: 'viewDedupClient',
+  template: 'viewDedupClient',
+  controller: AppController,
+  authorize: {
+    allow() {
+      return Roles.userIsInRole(Meteor.userId(), ClientsAccessRoles);
+    },
+  },
+  onBeforeAction() {
+    // TODO: add external surveyor logic
+    this.next();
+  },
+  data() {
+    return {
+      dedupClientId: Router.current().params.dedupClientId,
     };
   },
 });
@@ -313,9 +334,25 @@ Router.onBeforeAction(
 
     const client = PendingClients.findOne(clientId) || Clients.findOne(clientId);
 
+    const viewClientRoute = Router.routes.viewClient;
     if (!client) {
       this.render('clientNotFound');
     } else {
+      if (this.params.query && this.params.query.schema && !client.isLocalClient) {
+        client.personalId = client.clientId;
+        client.isHMISClient = true;
+        client.schema = client.schema || this.params.query.schema;
+        client.url = viewClientRoute.path(
+          { _id: client.clientId },
+          { query: `schema=${client.schema}` }
+        );
+      } else {
+        const routeOptions = client.schema ? { query: `schema=${client.schema}` } : {};
+        client.url = viewClientRoute.path(
+          { _id: client._id },
+          routeOptions
+        );
+      }
       RecentClients.upsert(client);
       this.next();
     }
