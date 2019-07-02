@@ -1,23 +1,39 @@
-import React from 'react';
-// import React, { Component, useState } from 'react';
-// import DataTable from '/imports/ui/components/dataTable/DataTable';
-// import { removeClientTagButton } from '/imports/ui/dataTable/helpers.js';
+import React, { useEffect } from 'react';
 import ClientLayout from './ClientLayout';
-
+import { useGlobalStore } from '/imports/ui/components/store';
 
 const ClientContainer = (props) => {
   const permissions = {
-
+    showReferralStatus: true,
+    showEnrollments: true,
+    updateEnrollment: true,
+    annualEnrollment: true,
+    exitEnrollment: true,
+    isSkidrowApp: true,
+    showEditButton: true,
   };
 
+  const [store, actions] = useGlobalStore();
+
+  useEffect(() => {
+    // handle data coming from Meteor publication
+
+    console.log(props);
+
+    // const { client, eligibleClient } = props;
+    // actions.setClient(client);
+    // actions.setEligibleClient({
+    //   ...eligibleClient,
+    //   dedupClientId: client.dedupClientId,
+    // });
+  }, []);
 
   return (
     <div>
       <ClientLayout
-        activeProjectId
-        client
-        eligibleClient
-        selectedTab
+        activeProjectId={props.activeProjectId}
+        client={store.client}
+        eligibleClient={store.eligibleClient}
         permissions={permissions}
       />
     </div>

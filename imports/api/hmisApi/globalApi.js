@@ -22,6 +22,13 @@ export class GlobalApi extends ApiEndpoint {
     return globalEnrollments;
   }
 
+  getClientVersions(dedupClientId) {
+    const url = `${BASE_URL}/clients/${dedupClientId}`;
+    const { clients } = this.doGet(url).clients;
+    // TODO: add pagination support
+    return clients;
+  }
+
   getClientEnrollment(dedupClientId, globalEnrollmentId) {
     const url = `${BASE_URL}/clients/${dedupClientId}/global-enrollments/${globalEnrollmentId}`;
     return this.doGet(url).globalEnrollment;

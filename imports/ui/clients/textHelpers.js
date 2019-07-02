@@ -35,3 +35,17 @@ export const getYesNo = (code, definition) => {
     default: return definition;
   }
 };
+
+export function getText(text, code) {
+  const defaultValue = code === undefined ? '?' : code;
+  const intCode = parseInt(code, 10);
+  switch (text) {
+    case 'race': return getRace(intCode, defaultValue);
+    case 'ethnicity': return getEthnicity(intCode, defaultValue);
+    case 'gender': return getGender(intCode, defaultValue);
+    case 'veteranStatus':
+    case 'disablingcondition': return getYesNo(intCode, defaultValue);
+    default: return defaultValue;
+  }
+}
+

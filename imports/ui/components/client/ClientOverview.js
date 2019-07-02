@@ -1,13 +1,12 @@
 import React from 'react';
 import { formatDateFunction } from '/imports/ui/templateHelpers';
 import { formatSSN } from './helpers';
+import { getText } from '/imports/ui/clients/textHelpers';
+
 
 function ClientOverview(props) {
   const {
     permissions: { showEditButton },
-    helpers: {
-      getText,
-    },
     client: {
       suffix,
       ssn,
@@ -16,7 +15,8 @@ function ClientOverview(props) {
       ethnicity,
       gender,
       veteranStatus,
-    } } = props;
+    },
+  } = props;
   return (
     <div className="info-container">
       <div className="row">

@@ -1,7 +1,6 @@
 import React from 'react';
 import { formatDateFunction } from '/imports/ui/templateHelpers';
 import { formatSSN } from './helpers';
-// import { Link } from '/imports/ui/components/generic/Link';
 
 
 const ClientVersionsList = ({ client }) => {

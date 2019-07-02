@@ -2,9 +2,9 @@ import React from 'react';
 
 function ClientTabSelector(props) {
   const generateTab = (data) => {
-    const isActive = (tab) => (props.selectedTab === tab ? 'active' : '');
+    const isActive = (tabId) => (props.selectedTab === tabId ? 'active' : '');
     const linkClasses = `nav-link ${isActive(data.id)}`;
-    const href = `#panel-${data.id}`;
+    const href = `#${data.id}`;
     return (
       <li className="nav-item" key={`nav-${data.id}`}>
         <a
