@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactTable from 'react-table';
 import Alert from '/imports/ui/alert';
 import { Link, ClientName } from '/imports/ui/components/generic';
-import { formatDateTime } from '/imports/both/helpers';
 
 
 const columns = [{
@@ -48,13 +47,15 @@ const columns = [{
 }];
 
 
-const SubmissionsTable = ({ }) => {
+const SubmissionsTable = ({ dedupClientId }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [totalPages, setTotalPages] = useState(-1);
-  const [filter, setFilter] = useState('');
+  const [tableState, setTableState] = useState({ page: 0, pageSize: 20, sorted: [] });
 
-  function loadData(state, component) {
+  function loadData(state) {
+    setTableState(state);
+
     const pageNumber = state.page;
     const pageSize = state.pageSize;
 
@@ -66,8 +67,7 @@ const SubmissionsTable = ({ }) => {
     };
 
     setLoading(true);
-    Meteor.call('submissions.getPage', pageNumber, pageSize, sort, (err, res) => {
-      console.log(res);
+    Meteor.call('submissions.getPage', dedupClientId, pageNumber, pageSize, sort, (err, res) => {
       setLoading(false);
       if (err) {
         Alert.error(err);
@@ -78,62 +78,20 @@ const SubmissionsTable = ({ }) => {
     });
   }
 
-  const debouncedFetch = useMemo(() => _.debounce((state, component) => {
-    loadData(state, component);
-  }, 1000), []);
-
-  // const debouncedFetch = useCallback(() => {
-  //   console.log('aaa', debounceFn);
-  //   // const fn = _.debounce(() => {
-  //   //   console.log('debounced');
-  //   // }, 1000);
-  //   // return fn;
-  // }, []);
-
-  function onFetchData(...args) {
-    debouncedFetch(...args);
-  }
-
-  function onFilteredChange(filters) {
-    console.log(filters);
-  }
-
-
-
-
-  // const loadDataDebounced = useCallback(_.debounce(loadData, 1000), []);
-
-  // useEffect(() => {
-  //   loadDataDebounced({});
-  // }, []);
+  useEffect(() => {
+    loadData(tableState);
+  }, [dedupClientId]);
 
   return (
-    <div>
-      {/* enableSearch &&
-        <div className="form-inline" style={{ paddingBottom: 10 }}>
-          <div className="form-group">
-            <label>Search: </label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="client name"
-              onChange={(e) => setFilter(e.target.value)}
-            />
-          </div>
-        </div>
-      */}
-      <ReactTable
-        columns={columns}
-        data={data}
-        manual
-        filterable
-        loading={loading}
-        resizable
-        pages={totalPages}
-        onFetchData={loadData}
-        onFilteredChange={onFilteredChange}
-      />
-    </div>
+    <ReactTable
+      columns={columns}
+      data={data}
+      manual
+      loading={loading}
+      resizable
+      pages={totalPages}
+      onFetchData={loadData}
+    />
   );
 };
 

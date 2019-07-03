@@ -203,17 +203,8 @@ export class SurveyApi extends ApiEndpoint {
     return this.doGet(url);
   }
 
-  getSurveySubmissionsPage(pageNumber = 0, pageSize = 100, sort = {}) {
-    const startIndex = pageNumber * pageSize;
-    const query = {
-      startIndex,
-      limit: pageSize,
-      sort: sort.by,
-      order: sort.order,
-    };
-    console.log('zzzz', sort, query);
+  getSurveySubmissionsPage(query = {}) {
     const url = `${BASE_URL}/clientsurveysubmissions`;
-    // TODO: add pagination
     return this.doGet(url, query).clientSurveySubmissions;
   }
 

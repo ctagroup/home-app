@@ -1,10 +1,18 @@
 Meteor.injectedMethods({
-  'submissions.getPage'(pageNumber = 0, pageSize = 50, sort = null) {
+  'submissions.getPage'(dedupClientId, pageNumber = 0, pageSize = 50, sort = null) {
     const { logger, submissionsRepository } = this.context;
+    logger.info('submissions.getPage', dedupClientId, pageNumber, pageSize, sort);
 
-    logger.info('submissions.getPage', pageNumber, pageSize, sort, 123);
+    check(dedupClientId, Match.OneOf(String, null)); // eslint-disable-line new-cap
+    check(pageNumber, Number);
+    check(pageSize, Number);
 
-    const result = submissionsRepository.getSurveySubmissionsPage(pageNumber, pageSize, sort);
+    const result = dedupClientId ?
+      submissionsRepository.getSurveySubmissionsPageForClient(
+        dedupClientId, pageNumber, pageSize, sort)
+      :
+      submissionsRepository.getSurveySubmissionsPage(
+        pageNumber, pageSize, sort);
     const { items, pagination } = result;
     return {
       content: items,
