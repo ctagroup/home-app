@@ -1,3 +1,5 @@
+import { URLSearchParams } from 'url';
+
 const DETAILED_GET_LOGS = false;
 
 let counter = 0;
@@ -34,28 +36,33 @@ export class ApiEndpoint {
     };
   }
 
-  doGet(url) {
+  doGet(url, query = {}) {
     const logGetRequests = true;
     const headers = this.getRequestHeaders();
     const options = {
       headers,
       correlationId: getCorrelationId(),
     };
+
+    Object.keys(query).forEach(key => query[key] === undefined && delete query[key]); // eslint-disable-line
+    const queryString = (new URLSearchParams(query)).toString();
+
+    const finalUrl = queryString ? `${url}?${queryString}` : url;
     if (logGetRequests) {
-      this.logger.debug(`HMIS API:get#${options.correlationId} (${url})`,
+      this.logger.debug(`HMIS API:get#${options.correlationId} (${finalUrl})`,
         this.logGetDetails ? options : ''
       );
     }
 
     let response = false;
     try {
-      response = HTTP.get(url, options);
+      response = HTTP.get(finalUrl, options);
     } catch (err) {
-      this.throwApiError('get', url, options, err, this.logGetDetails);
+      this.throwApiError('get', finalUrl, options, err, this.logGetDetails);
     }
     delete response.content;
     if (logGetRequests) {
-      this.logger.debug(`HMIS API:get#${options.correlationId} res (${url})`,
+      this.logger.debug(`HMIS API:get#${options.correlationId} res (${finalUrl})`,
         this.logGetDetails ? response : response.statusCode
       );
     }

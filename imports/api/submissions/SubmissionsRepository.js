@@ -3,8 +3,11 @@ class SubmissionsRepository {
     this.hc = hmisClient;
   }
 
-  getSurveySubmissionsPage(pageNumber, pageSize) {
-    const result = this.hc.api('survey').getSurveySubmissionsPage(pageNumber, pageSize);
+  getSurveySubmissionsPage(pageNumber, pageSize, sort) {
+    const result = this.hc.api('survey').getSurveySubmissionsPage(pageNumber, pageSize, sort);
+    // ACL:
+    // change client.id to client.clientId
+    // add client.schema
     const items = result.clientSurveySubmissions.slice(0, pageSize).map(x => ({
       ...x,
       client: _.omit({

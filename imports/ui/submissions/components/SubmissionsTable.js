@@ -58,9 +58,15 @@ const SubmissionsTable = ({ }) => {
     const pageNumber = state.page;
     const pageSize = state.pageSize;
 
-    console.log('ld', state, state.sorted);
+    const sorted = state.sorted[0] || {};
+
+    const sort = {
+      by: sorted.id,
+      order: sorted.desc ? 'desc' : 'asc',
+    };
+
     setLoading(true);
-    Meteor.call('submissions.getPage', pageNumber, pageSize, (err, res) => {
+    Meteor.call('submissions.getPage', pageNumber, pageSize, sort, (err, res) => {
       console.log(res);
       setLoading(false);
       if (err) {

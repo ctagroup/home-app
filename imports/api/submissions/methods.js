@@ -1,10 +1,10 @@
 Meteor.injectedMethods({
-  'submissions.getPage'(pageNumber = 0, pageSize = 50) {
+  'submissions.getPage'(pageNumber = 0, pageSize = 50, sort = null) {
     const { logger, submissionsRepository } = this.context;
 
-    logger.info('submissions.getPage', pageNumber, pageSize);
+    logger.info('submissions.getPage', pageNumber, pageSize, sort, 123);
 
-    const result = submissionsRepository.getSurveySubmissionsPage(pageNumber, pageSize);
+    const result = submissionsRepository.getSurveySubmissionsPage(pageNumber, pageSize, sort);
     const { items, pagination } = result;
     return {
       content: items,
