@@ -2,13 +2,22 @@ import React, { useState, useEffect } from 'react';
 import ReactTable from 'react-table';
 import Alert from '/imports/ui/alert';
 import { Link, ClientName } from '/imports/ui/components/generic';
+import { formatDateTime } from '/imports/both/helpers';
 
 
 const columns = [{
   Header: 'Survey',
   accessor: 'surveyTitle',
   Cell: props => {
-    const { clientId, survey, surveyId, submissionId } = props.original;
+    const { clientId, survey, surveyId, submissionId, type, mongoId } = props.original;
+
+    if (type.startsWith('local')) {
+      return (
+        <Link route="adminDashboardresponsesEdit" params={{ _id: mongoId }}>
+          {survey.surveyTitle || surveyId}
+        </Link>
+      );
+    }
 
     const routeParams = {
       clientId,
@@ -38,6 +47,11 @@ const columns = [{
 }, {
   Header: 'Submission Date',
   accessor: 'submissionDate',
+  Cell: props => (props.original.submissionDate ?
+    formatDateTime(props.original.submissionDate) : ''),
+}, {
+  Header: 'Type',
+  accessor: 'type',
 }, {
   Header: 'Actions',
   accessor: 'actions',
