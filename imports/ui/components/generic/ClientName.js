@@ -4,14 +4,14 @@ import { fullName } from '/imports/api/utils';
 
 
 export const ClientName = ({ client }) => {
-  const { clientId } = client;
-  const name = fullName(client) || clientId;
+  const { dedupClientId } = client;
+  const name = fullName(client).trim() || dedupClientId;
   return <span>{name}</span>;
 };
 
 ClientName.propTypes = {
   client: PropTypes.shape({
-    clientId: PropTypes.string,
+    clientId: PropTypes.string, // FIXME - dedup client id should be enough
     schema: PropTypes.string,
   }),
 };

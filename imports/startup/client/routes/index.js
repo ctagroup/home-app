@@ -10,6 +10,7 @@ import './housingMatch';
 import './questions';
 import './surveys';
 import './responses';
+import './submissions';
 import './rois';
 import './housingUnits';
 import './globalHouseholds';
