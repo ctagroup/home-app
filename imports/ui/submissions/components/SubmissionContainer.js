@@ -23,9 +23,8 @@ const SubmissionContainer = ({ clientId, surveyId, submissionId }) => {
   const { response, invalidResponses, survey, client } = data;
   const isAdmin = true;
 
-  console.log(response, invalidResponses);
-
   function renderInvalidResponses() {
+    if (invalidResponses.length === 0) return null;
     return (
       <div className="alert alert-warning">
         <p>This survey has following errors:</p>

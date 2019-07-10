@@ -96,4 +96,9 @@ export default class SubmissionsRepository {
       pagination,
     };
   }
+
+  deleteSubmission(clientId, surveyId, submissionId) {
+    this.hc.api('survey').deleteSubmission(clientId, surveyId, submissionId);
+    this.responsesCollection.remove({ submissionId });
+  }
 }

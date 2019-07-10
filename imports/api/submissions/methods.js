@@ -58,4 +58,13 @@ Meteor.injectedMethods({
       client: null,
     };
   },
+  'submissions.delete'(clientId, surveyId, submissionId) {
+    const { logger, submissionsRepository } = this.context;
+    logger.info('submissions.delete', submissionId);
+
+    check(clientId, String);
+    check(surveyId, String);
+    check(submissionId, String);
+    submissionsRepository.deleteSubmission(clientId, surveyId, submissionId);
+  },
 });
