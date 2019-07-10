@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useCurrentUser } from 'react-meteor-hooks';
+import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import Survey from '/imports/ui/components/surveyForm/Survey';
 
 
 const SubmissionContainer = ({ clientId, surveyId, submissionId }) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
+  const currentUser = useCurrentUser();
 
   useEffect(() => {
     Meteor.call('submissions.view', clientId, surveyId, submissionId, (err, res) => {
@@ -21,7 +24,7 @@ const SubmissionContainer = ({ clientId, surveyId, submissionId }) => {
   if (!data) return 'Loading...';
 
   const { response, invalidResponses, survey, client } = data;
-  const isAdmin = true;
+  const isAdmin = Roles.userIsInRole(currentUser, DefaultAdminAccessRoles);
 
   function renderInvalidResponses() {
     if (invalidResponses.length === 0) return null;
