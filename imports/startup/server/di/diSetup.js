@@ -9,7 +9,8 @@ import EnrollmentsTranslationService from '/imports/api/enrollments/enrollmentsT
 import Responses from '/imports/api/responses/responses';
 import ResponsesRepository from '/imports/api/responses/ResponsesRepository';
 import SubmissionsRepository from '/imports/api/submissions/SubmissionsRepository';
-
+import SurveysRepository from '/imports/api/surveys/SurveysRepository';
+import SubmissionsService from '/imports/api/submissions/SubmissionsService';
 
 function createHmisClient({ userId }) {
   return HmisClient.create(userId);
@@ -43,6 +44,8 @@ export function setupEndpointDependencies(endpointName, container) {
       logger: awilix.asClass(SentryLogger),
       responsesRepository: awilix.asClass(ResponsesRepository),
       submissionsRepository: awilix.asClass(SubmissionsRepository),
+      surveysRepository: awilix.asClass(SurveysRepository),
+      submissionsService: awilix.asClass(SubmissionsService),
     });
   }
 

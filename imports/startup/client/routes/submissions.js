@@ -1,4 +1,5 @@
 import { AppController } from './controllers';
+import '/imports/ui/submissions/editSubmission';
 import '/imports/ui/submissions/submissionsListView';
 import {
   ResponsesAccessRoles,
@@ -12,28 +13,29 @@ Router.route('submissions', {
     allow() {
       return Roles.userIsInRole(Meteor.userId(), ResponsesAccessRoles);
     },
-    data() {
-      return {
-        title: 'Submissions',
-        subtitle: 'all submissions',
-      };
-    },
+  },
+  data() {
+    return {
+      title: 'Submissions',
+      subtitle: 'all submissions',
+    };
   },
 });
 
 Router.route('editSubmission', {
   path: '/submissions/edit/:clientId/:surveyId/:submissionId',
-  template: Template.submissionsListView,
+  template: Template.editSubmission,
   controller: AppController,
   authorize: {
     allow() {
       return Roles.userIsInRole(Meteor.userId(), ResponsesAccessRoles);
     },
-    data() {
-      return {
-        title: 'Submissions',
-        subtitle: 'view',
-      };
-    },
+  },
+  data() {
+    return {
+      title: 'Submissions',
+      subtitle: 'view',
+      ...this.params,
+    };
   },
 });

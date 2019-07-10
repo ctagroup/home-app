@@ -1,6 +1,7 @@
-class SubmissionsRepository {
-  constructor({ hmisClient, responsesCollection }) {
+export default class SubmissionsRepository {
+  constructor({ hmisClient, responsesCollection, surveysRepository }) {
     this.hc = hmisClient;
+    this.surveysRepository = surveysRepository;
     this.responsesCollection = responsesCollection;
   }
 
@@ -57,7 +58,14 @@ class SubmissionsRepository {
     return items;
   }
 
+  getSubmissionResponses(clientId, surveyId, submissionId) {
+    const submissionResponses = this.hc.api('survey')
+      .getSubmissionResponses(clientId, surveyId, submissionId);
+    return submissionResponses;
+  }
+
   getSurveySubmissionsPageForClient(dedupClientId, pageNumber, pageSize, sort) {
+    // gets client submissions using pager
     const query = {
       q: dedupClientId,
       startIndex: pageNumber * pageSize,
@@ -74,6 +82,7 @@ class SubmissionsRepository {
   }
 
   getSurveySubmissionsPage(pageNumber, pageSize, sort) {
+    // gets all submissions using pager
     const query = {
       startIndex: pageNumber * pageSize,
       limit: pageSize,
@@ -88,5 +97,3 @@ class SubmissionsRepository {
     };
   }
 }
-
-export default SubmissionsRepository;
