@@ -38,8 +38,6 @@ Meteor.injectedMethods({
     const client = clientsRepository.findClientById(clientId);
     const survey = surveysRepository.getSurvey(surveyId);
 
-    console.log(client);
-
     const submissionResponses = submissionsRepository
       .getSubmissionResponses(clientId, surveyId, submissionId);
 
