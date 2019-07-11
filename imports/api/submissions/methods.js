@@ -22,14 +22,23 @@ Meteor.injectedMethods({
     };
   },
   'submissions.view'(clientId, surveyId, submissionId) {
-    const { logger, submissionsService, submissionsRepository, surveysRepository } = this.context;
+    const {
+      clientsRepository,
+      logger,
+      submissionsService,
+      submissionsRepository,
+      surveysRepository,
+    } = this.context;
     logger.info('submissions.view', clientId, surveyId, submissionId);
 
     check(clientId, String);
     check(surveyId, String);
     check(submissionId, String);
 
+    const client = clientsRepository.findClientById(clientId);
     const survey = surveysRepository.getSurvey(surveyId);
+
+    console.log(client);
 
     const submissionResponses = submissionsRepository
       .getSubmissionResponses(clientId, surveyId, submissionId);
@@ -40,7 +49,7 @@ Meteor.injectedMethods({
     // simulate Mongo response
     const mongoResponse = {
       clientId,
-      clientSchema: null,
+      clientSchema: client.schema,
       status: 'completed',
       surveyId,
       surveyorId: null,
@@ -55,7 +64,7 @@ Meteor.injectedMethods({
       invalidResponses: invalid,
       response: mongoResponse,
       survey,
-      client: null,
+      client,
     };
   },
   'submissions.delete'(clientId, surveyId, submissionId) {

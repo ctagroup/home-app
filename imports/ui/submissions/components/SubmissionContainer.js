@@ -50,6 +50,7 @@ const SubmissionContainer = ({ clientId, surveyId, submissionId }) => {
       <Survey
         definition={survey.definition}
         client={client}
+        response={response}
         initialValues={response.values}
         surveyId={surveyId}
         debugMode={isAdmin}
