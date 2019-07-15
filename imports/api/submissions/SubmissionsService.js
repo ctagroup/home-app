@@ -15,7 +15,7 @@ export default class SubmissionsService {
   }
 
   importSubmissionAsResponse(submissionResponses, survey) {
-    const surveyItems = itemsToArray(survey.definition);
+    const surveyItems = survey.definition ? itemsToArray(survey.definition) : [];
     const responses = this.matchSubmissionResponsesToSurveyItems(
       submissionResponses, surveyItems);
     return responses;

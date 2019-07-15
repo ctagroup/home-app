@@ -44,9 +44,15 @@ const SubmissionContainer = ({ clientId, surveyId, submissionId }) => {
     );
   }
 
-  return (
-    <div>
-      {renderInvalidResponses()}
+  function renderSurvey() {
+    if (!survey.definition) {
+      return (
+        <div className="alert alert-error">
+          Survey {survey.surveyId} does not have a definition
+        </div>
+      );
+    }
+    return (
       <Survey
         definition={survey.definition}
         client={client}
@@ -55,6 +61,13 @@ const SubmissionContainer = ({ clientId, surveyId, submissionId }) => {
         surveyId={surveyId}
         debugMode={isAdmin}
       />
+    );
+  }
+
+  return (
+    <div>
+      {renderInvalidResponses()}
+      {renderSurvey()}
     </div>
   );
 };

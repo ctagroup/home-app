@@ -6,7 +6,7 @@ class SurveysRepository {
 
   getSurvey(surveyId) {
     const theirSurvey = this.hc.api('survey2').getSurvey(surveyId);
-    const definition = JSON.parse(theirSurvey.surveyDefinition);
+    const definition = JSON.parse(theirSurvey.surveyDefinition || 'null');
 
     const ourSurvey = _.omit({
       ...theirSurvey,
