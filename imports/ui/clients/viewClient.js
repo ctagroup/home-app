@@ -209,6 +209,14 @@ Template.viewClient.helpers(
             }
           },
         },
+        generalInfo: {
+          getClientTagNames() {
+            const clientTags = ClientTags.find().fetch();
+            const now = moment().format('YYYY-MM-DD');
+            const activeTags = getActiveTagNamesForDate(clientTags, now);
+            return activeTags.join(', ');
+          },
+        },
         enrollments: {
           viewEnrollmentPath(enrollment, enrollmentSurveyType) {
             const { _id } = Router.current().params;
