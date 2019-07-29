@@ -11,6 +11,7 @@ import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 
 import './clientDeleteReason.js';
 import './viewClient.html';
+import { ClientFlags } from '/imports/api/clientFlags/clientFlags';
 
 const flattenKeyVersions = (client, key) => {
   const keyVersions = client.clientVersions
@@ -60,6 +61,11 @@ const updateEligibility = (client) => {
 
 Template.viewClient.helpers(
   {
+    isHSPClient() {
+      const flag = ClientFlags.findOne({ key: 'hsp' });
+      if (!flag) return null;
+      return flag.value ? 'checked' : null;
+    },
     eligibleClient() {
       // TODO [VK]: check by updated at instead of schema version
       const currentClientId = Router.current().params._id;
@@ -194,6 +200,15 @@ Template.viewClient.helpers(
 
 Template.viewClient.events(
   {
+    'click #check-hsp-client, click .onoffswitch-label': () => {
+      const client = Router.current().data().client;
+      const flag = ClientFlags.findOne({ key: 'hsp' });
+      const newValue = !flag || !flag.value;
+
+      Meteor.call('clientFlags.create', client.dedupClientId, 'hsp', newValue, () => {});
+      if (flag) ClientFlags._collection.update(flag._id, { $set: { value: newValue } }); //eslint-disable-line
+      return null;
+    },
     'click .edit': (evt, tmpl) => {
       const query = {};
       const client = tmpl.data.client;
@@ -339,6 +354,9 @@ Template.viewClient.events(
     },
   }
 );
+Template.viewClient.onCreated(function () {
+  this.subscribe('clientFlags.all', this.data.client.dedupClientId);
+});
 
 Template.viewClient.onRendered(() => {
   $('body').addClass('sidebar-collapse');

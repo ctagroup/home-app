@@ -10,6 +10,9 @@ import '/imports/api/collectionsCount/server/publications';
 import '/imports/api/clients/methods';
 import '/imports/api/clients/server/publications';
 
+import '/imports/api/clientFlags/methods';
+import '/imports/api/clientFlags/server/publications';
+
 import '/imports/api/pendingClients/methods';
 import '/imports/api/pendingClients/server/publications';
 
