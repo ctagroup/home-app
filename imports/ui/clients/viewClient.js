@@ -24,6 +24,7 @@ import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 import { getActiveTagNamesForDate } from '/imports/api/tags/tags';
 import { dataCollectionStages, formatDate } from '/imports/both/helpers';
 
+import './clientHouseMatching.js';
 import './enrollmentsListView.js';
 import './clientDeleteReason.js';
 import './clientTagList.js';
