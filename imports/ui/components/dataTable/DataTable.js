@@ -50,7 +50,7 @@ class DataTable extends Component {
   }
 
   render() {
-    const { data } = this.props;
+    const { data, defaultSorted } = this.props;
     const { columns, filter } = this.state;
     const filteredData = this.filterColumns(data, columns, filter);
     const { disableSearch } = this.props;
@@ -78,6 +78,7 @@ class DataTable extends Component {
           data={filteredData}
           columns={columns}
           defaultPageSize={defaultPageSize}
+          defaultSorted={defaultSorted || []}
           className="-highlight"
         />
       </div>
