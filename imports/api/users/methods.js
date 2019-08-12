@@ -201,13 +201,4 @@ Meteor.methods({
       refreshToken: refreshToken.substr(0, 8),
     };
   },
-
-  'users.loginToHomeApi'() {
-    logger.info(`METHOD[${this.userId}]: users.loginToHomeApi`);
-    if (!this.userId) {
-      throw new Meteor.Error(401, 'Unauthorized');
-    }
-    const client = HomeApiClient.create(this.userId);
-    return client.updateUserHmisCredentials();
-  },
 });

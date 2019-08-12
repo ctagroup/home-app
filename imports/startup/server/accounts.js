@@ -3,14 +3,19 @@ import { userEmails } from '/imports/api/users/helpers';
 import HomeApiClient from '/imports/api/homeApi/homeApiClient';
 
 
-function sendUserHmisCredentialsToApi(user) {
+function sendUserHmisCredentialsToApi(userId) {
   try {
-    const client = HomeApiClient.create(user._id);
+    const client = HomeApiClient.create(userId);
     client.updateUserHmisCredentials();
   } catch (err) {
-    logger.debug('Falied to send user credentials to api');
+    logger.debug('Falied to send user credentials to api', err);
   }
 }
+
+const sendUserHmisCredentialsToApiDebounced = _.debounce(Meteor.bindEnvironment(
+  userId => sendUserHmisCredentialsToApi(userId)
+), 100);
+
 
 Accounts.onLogin(({ user }) => {
   const adminEmails = Meteor.settings.admins || [];
@@ -21,7 +26,7 @@ Accounts.onLogin(({ user }) => {
   }
 
   if (Meteor.settings.homeApi) {
-    sendUserHmisCredentialsToApi(user);
+    sendUserHmisCredentialsToApiDebounced(user._id);
   }
 });
 
@@ -62,5 +67,21 @@ Meteor.startup(() => {
     );
   } else {
     throw new Error('Configuration error: appId and appSecret must exist in Meteor.settings');
+  }
+
+
+  if (Meteor.settings.homeApi) {
+    Meteor.users.find().observeChanges({
+      changed(userId, fields) {
+        try {
+          if (fields.services.HMIS.accessToken) {
+            logger.info('updating credentials for user', userId);
+            sendUserHmisCredentialsToApiDebounced(userId);
+          }
+        } catch (err) {
+          // no-op
+        }
+      },
+    });
   }
 });
