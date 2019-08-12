@@ -24,7 +24,8 @@ const ClientVersionsList = ({ client }) => {
 };
 
 function ClientGeneralInfo(props) {
-  const { client } = props;
+  const { client, helpers } = props;
+  const { getClientTagNames } = helpers;
   const {
     firstName,
     middleName,
@@ -36,7 +37,7 @@ function ClientGeneralInfo(props) {
     photo,
     emailAddress,
     phoneNumber,
-    clientTagNames, //FIXME: make helper function
+    // clientTagNames, //FIXME: make helper function
   } = client;
   return (
     <div className="client-info">
@@ -61,7 +62,7 @@ function ClientGeneralInfo(props) {
         <div className="col-xs-12 col-sm-3"><div className="text-wrap">
           <span className="title">EMAIL</span><h4>{emailAddress}</h4>
           <span className="title">PHONE NUMBER</span><h4>{phoneNumber}</h4>
-          <span className="title">Active Tags</span><h4>{clientTagNames}</h4>
+          <span className="title">Active Tags</span><h4>{getClientTagNames()}</h4>
         </div></div>
       </div>
     </div>

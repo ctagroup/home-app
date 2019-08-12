@@ -51,7 +51,7 @@ function ClientLayout(props) {
         </div>
       }
       <div className="row client-profile-container">
-        <ClientGeneralInfo client={client} />
+        <ClientGeneralInfo client={client} helpers={helpers.generalInfo} />
 
         <div className="tab-section">
           <ClientTabSelector tabs={tabsList} tab={selectedTab} selectTab={selectTab} />
