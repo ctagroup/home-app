@@ -41,9 +41,10 @@ function mergeClientVersions(sortedClientVersions) {
 
 
 class ClientsRepository {
-  constructor({ hmisClient, auditLog, logger }) {
+  constructor({ hmisClient, auditLog, logger, meteorSettings }) {
     this.hc = hmisClient;
     this.logger = logger;
+    this.settings = meteorSettings;
     this.auditLog = auditLog;
   }
 
@@ -83,7 +84,7 @@ class ClientsRepository {
 
   async getElibibleClientVersionsAsync(clientIds) {
     // returns eligible client data for given clientIds
-    const limit = Meteor.settings.connectionLimit;
+    const limit = this.settings.connectionLimit;
 
     const iteratee = (clientId, callback) => {
       Meteor.defer(() => {
@@ -174,8 +175,14 @@ class ClientsRepository {
     this.logger.debug(results);
   }
 
-  removeFromActiveList(dedupClientId, removalDate, remarks) {
-    this.auditLog.addMessage(`Client ${dedupClientId} removed from active list`);
+  async removeFromActiveList(dedupClientId, remarks) {
+    const dedupClient = this.getClientByDedupId(dedupClientId);
+    const clientIds = dedupClient.clientVersions.map(v => v.clientId);
+    const eligibleClientVersions = await this.getElibibleClientVersionsAsync(clientIds);
+
+    const result = eligibleClientVersions.map(eligibleClient => {
+      console.log(eligibleClient);
+    });
   }
 }
 

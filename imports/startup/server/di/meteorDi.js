@@ -1,4 +1,3 @@
-// import { logger } from '/imports/utils/logger';
 import awilix from 'awilix';
 import Sentry from '@sentry/node';
 import Future from 'fibers/future';
@@ -29,6 +28,7 @@ export function registerInjectedMeteorMethods(container) {
 
               sentryScope.addBreadcrumb({ message: `calling ${name}` });
 
+
               // configure DI
               const containerScope = container.createScope();
               containerScope.register({
@@ -41,11 +41,16 @@ export function registerInjectedMeteorMethods(container) {
                 setupDependenciesCallback(`method.${name}`, containerScope);
               }
 
+              const logger = containerScope.resolve('logger');
+
               // call method with injected dependencies
               try {
+                logger.info(`method ${name} starts`);
                 const result = containerScope.resolve('__injected_fcn__').call(this, ...args);
+                logger.info(`method ${name} ends`, result);
                 resolve(result);
               } catch (err) {
+                logger.error(`method ${name} fails`);
                 sentryScope.addBreadcrumb({
                   category: 'stack trace',
                   message: err.stack,

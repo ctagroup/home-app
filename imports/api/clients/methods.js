@@ -258,11 +258,14 @@ Meteor.injectedMethods({
       throw new Meteor.Error(403, 'Forbidden');
     }
 
+
     const { clientsRepository } = this.context;
     const client = clientsRepository.getClientByDedupId(dedupClientId);
     const clientIds = client.clientVersions.map(v => v.clientId);
+    console.log('aaaa');
     const eligibleClient = await clientsRepository
       .getEligibleClientByClientVersionsAsync(clientIds);
+    console.log('bbb');
     return {
       client,
       eligibleClient,
@@ -276,9 +279,15 @@ Meteor.injectedMethods({
   },
 
   'clients.removeFromActiveList'(dedupClientId, removalDate, removalReason, additionalNotes) {
-    const { clientsRepository } = this.context;
-    const remarks = [removalReason, additionalNotes].filter(x => !!x).join(' ');
-    const result = clientsRepository.removeFromActiveList(dedupClientId, removalDate, remarks);
+    const { auditLog, clientsRepository, logger } = this.context;
+    logger.info(`METHOD[${this.userId}]: clients.removeFromActiveList`, dedupClientId, removalDate, removalReason, additionalNotes);
+    check(dedupClientId, String);
+    check(removalDate, Date);
+    check(removalReason, String);
+    const remarks = [removalReason, additionalNotes, removalDate].filter(x => !!x).join(' | ');
+    const result = clientsRepository.removeFromActiveList(dedupClientId, remarks);
+    auditLog.addMessage(`Client ${dedupClientId} removed from active list`, {
+      dedupClientId, removalDate, removalReason, additionalNotes });
     return result;
   },
 

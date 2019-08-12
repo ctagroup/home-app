@@ -29,6 +29,7 @@ export function setupInitialDependencies(container) {
     logger: awilix.asValue(globalLogger),
     responsesCollection: awilix.asValue(Responses),
     serviceConfig: awilix.asFunction(getServiceConfiguration),
+    meteorSettings: awilix.asValue(Meteor.settings),
     usersCollection: awilix.asValue(Meteor.users),
   });
 }

@@ -1,4 +1,4 @@
-import { rejects } from "assert";
+import Alert from '/imports/ui/alert';
 
 const clientPage = {
   state: {
@@ -32,11 +32,15 @@ const clientPage = {
 
   effects: (dispatch) => ({
     loadClient(dedupClientId) {
+      console.log('lc');
       return new Promise((resolve, reject) => {
+        console.log('lc2');
         Meteor.call('clients.getClientPageViewModel', dedupClientId, (err, res) => {
+          console.log(err,res);
           if (err) {
             reject(err);
           } else {
+            console.log('aaa', res);
             dispatch.clientPage.setClient(res.client);
             dispatch.clientPage.setEligibleClient(res.eligibleClient);
             resolve(res);
@@ -63,7 +67,7 @@ const clientPage = {
       Meteor.call('clients.removeFromActiveList', dedupClientId, removalDate,
         removalReason, removalRemarks, (err, res) => {
           if (err) {
-            dispatch.clientPage.setEligibleClient({})
+            Alert.error(err);
           }
 
         });

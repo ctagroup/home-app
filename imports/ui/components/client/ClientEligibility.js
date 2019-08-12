@@ -26,6 +26,8 @@ function ClientEligibility(props) {
   if (!eligibleClient || eligibleClient.error) return null;
   const { dedupClientId } = eligibleClient;
 
+  console.log('ec', eligibleClient, dedupClientId);
+
 
   function renderEligibilityStatus() {
     if (!eligibleClient.ignoreMatchProcess) return null;
