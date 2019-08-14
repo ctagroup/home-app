@@ -46,13 +46,23 @@ export function getClientSchemaFromLinks(links, defaultValue = '') {
   }
 }
 
-export function escapeKeys(obj) {
-  const newObj = {};
-  _.each(obj, (value, key) => {
-    const key2 = key.replace(/\./g, '::');
-    newObj[key2] = value;
-  });
-  return newObj;
+export function escapeKeys(obj, symbol = '::') {
+  if (!obj) return obj;
+
+  if (Array.isArray(obj)) {
+    const res = obj.map(escapeKeys);
+    return res;
+  }
+
+  if (typeof obj === 'object') {
+    const newObj = {};
+    _.each(obj, (value, key) => {
+      const key2 = key.replace(/\./g, symbol);
+      newObj[key2] = escapeKeys(value);
+    });
+    return newObj;
+  }
+  return obj;
 }
 
 export function unescapeKeys(obj) {

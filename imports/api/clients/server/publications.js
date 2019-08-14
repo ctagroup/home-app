@@ -2,6 +2,7 @@ import { eachLimit } from 'async';
 import { ClientsAccessRoles } from '/imports/config/permissions';
 import { HmisClient } from '/imports/api/hmisApi';
 import { logger } from '/imports/utils/logger';
+import { escapeKeys } from '/imports/api/utils';
 import {
   sortByTime,
   mergeClientExtended,
@@ -47,7 +48,7 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
 
     const mergedClient = mergeClientExtended(
       _.uniq([client].concat(clientVersions), (i) => i.clientId), inputSchema);
-    self.added('localClients', inputClientId, mergedClient);
+    self.added('localClients', inputClientId, escapeKeys(mergedClient));
     self.ready();
 
     logger.debug(mergedClient);
@@ -63,7 +64,7 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
           Meteor.defer(() => {
             const eligibleClient = getEligibleClient(hc, clientId);
             const key = `eligibleClient::${schema}::${clientId}`;
-            self.changed('localClients', inputClientId, { [key]: eligibleClient });
+            self.changed('localClients', inputClientId, { [key]: escapeKeys(eligibleClient) });
             callback();
           });
         });
@@ -76,7 +77,7 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
               const enrollments =
                 getClientEnrollments(hc, clientId, schema, stopFunction);
               const key = `enrollments::${schema}::${clientId}`;
-              self.changed('localClients', inputClientId, { [key]: enrollments });
+              self.changed('localClients', inputClientId, { [key]: escapeKeys(enrollments) });
             } catch (e) {
               logger.warn(e);
             }
@@ -91,7 +92,7 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
             const globalHouseholds =
               getGlobalHouseholds(hc, clientId, schema, stopFunction);
             const key = `globalHouseholds::${schema}::${clientId}`;
-            self.changed('localClients', inputClientId, { [key]: globalHouseholds });
+            self.changed('localClients', inputClientId, { [key]: escapeKeys(globalHouseholds) });
             callback();
           });
         });
@@ -104,11 +105,13 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
             try {
               const referralStatusHistory = getReferralStatusHistory(hc, clientId);
               const key = `referralStatusHistory::${schema}::${clientId}`;
-              self.changed('localClients', inputClientId, { [key]: referralStatusHistory });
+              self.changed('localClients', inputClientId,
+                { [key]: escapeKeys(referralStatusHistory) }
+              );
               mergedReferralStatusHistory =
                 mergedReferralStatusHistory.concat(referralStatusHistory);
               self.changed('localClients', inputClientId, { referralStatusHistory:
-                sortByTime(mergedReferralStatusHistory) });
+                escapeKeys(sortByTime(mergedReferralStatusHistory)) });
             } catch (e) {
               logger.warn(e);
             }
@@ -123,9 +126,11 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
             try {
               const housingMatch = getHousingMatch(hc, clientId);
               const key = `housingMatch::${schema}::${clientId}`;
-              self.changed('localClients', inputClientId, { [key]: housingMatch });
+              self.changed('localClients', inputClientId, { [key]: escapeKeys(housingMatch) });
               mergedHousingMatch = Object.assign(mergedHousingMatch, housingMatch);
-              self.changed('localClients', inputClientId, { housingMatch: mergedHousingMatch });
+              self.changed('localClients', inputClientId,
+                { housingMatch: escapeKeys(mergedHousingMatch) }
+              );
             } catch (e) {
               logger.warn(e);
             }
@@ -140,9 +145,11 @@ function pubClient(inputClientId, inputSchema = 'v2015', loadDetails = true) {
             try {
               const matchingScore = hc.api('house-matching').getClientScore(clientId);
               const key = `matchingScore::${schema}::${clientId}`;
-              self.changed('localClients', inputClientId, { [key]: matchingScore });
+              self.changed('localClients', inputClientId, { [key]: escapeKeys(matchingScore) });
               mergedMatchingScore = Math.max(mergedMatchingScore, matchingScore);
-              self.changed('localClients', inputClientId, { matchingScore: mergedMatchingScore });
+              self.changed('localClients', inputClientId,
+                { matchingScore: escapeKeys(mergedMatchingScore) }
+              );
             } catch (e) {
               logger.warn(e);
             }
