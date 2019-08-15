@@ -1,21 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 
 import RecepientsList from './RecepientsList';
 
 function MatchingLayout(props) {
-  const projectList = [];
+  const projectList = props.projectList || [];
+  const [values, setValues] = useState({});
+  const [recepients, setRecepients] = useState([]);
+
+  const handleChange = (key, value) => setValues({ ...values, [key]: value });
 
   const renderDatePicker = (key) => {
     const dateValue =
-      this.state && this.state[key] && moment(this.state[key]).toDate() || new Date;
+      values[key] && moment(values[key]).toDate() || new Date;
     return (<DatePicker
       id={`${key}-date`}
       inline
       className="form-control"
       selected={dateValue}
-      onChange={(value) => this.handleChange(key, value)}
+      onChange={(value) => handleChange(key, value)}
       placeholderText="MM/DD/YYYY"
     />);
   };
@@ -33,7 +37,7 @@ function MatchingLayout(props) {
         <div className="form-group">
           <Select
             // value={newTagId}
-            onChange={(option) => this.handleChange('newTagId', option)}
+            onChange={(option) => handleChange('projectId', option)}
             options={projectList}
             placeholder="Select Project:"
           />
@@ -53,23 +57,23 @@ function MatchingLayout(props) {
       </div>
       <div className="col-xs-12">
         <div className="form-group">
-          <label htmlFor="removalRemarks"> Subject </label>
+          <label htmlFor="subject"> Subject </label>
           <input
-            id="removalRemarks"
+            id="subject"
             className="form-control"
             type="text"
-            name="removalRemarks"
-            placeholder="Removal notes"
-            onChange={(e) => this.handleChange(e.target.value)}
+            name="subject"
+            placeholder="Subject"
+            onChange={(e) => handleChange('subject', e.target.value)}
           />
         </div>
         <div className="form-group">
           <label htmlFor="removalRemarks"> Body </label>
           <textarea
             rows="3"
-            placeholder="note"
+            placeholder="Email text"
             className="form-control input-sm"
-            onChange={(value) => this.handleChange('note', value)}
+            onChange={(value) => this.handleChange('body', value)}
           />
         </div>
       </div>
@@ -84,7 +88,7 @@ function MatchingLayout(props) {
         </label>
       </div>
       <div className="col-xs-12 col-md-6">
-        <RecepientsList />
+        <RecepientsList recepients={recepients} setRecepients={setRecepients} />
       </div>
     </div>
   );

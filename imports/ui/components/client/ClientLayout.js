@@ -5,6 +5,7 @@ import ClientOverview from './ClientOverview';
 import ClientTab from './ClientTab';
 import ClientEnrollments from './ClientEnrollments';
 import ClientEligibility from './ClientEligibility';
+import MatchingContainer from '/imports/ui/components/matching/MatchingContainer';
 
 function ClientLayout(props) {
   const { client, permissions, eligibleClient, data, helpers } = props;
@@ -35,6 +36,8 @@ function ClientLayout(props) {
     { id: 'services', enabled: !isSkidrowApp, title: 'Services' },
     // { id: 'case-management', enabled: false, title: 'Case Management' },
     // { id: 'responses', enabled: false, title: 'Responses' },
+    { id: 'matching', enabled: showReferralStatus, title: 'New Referral' },
+
   ].filter((t) => t.enabled);
 
   const [selectedTab, selectTab] = useState(props.selectedTab || tabsList[0].id);
@@ -73,6 +76,13 @@ function ClientLayout(props) {
                 client={client} permissions={{ showEditButton }}
                 enrollments={data.enrollments()}
                 helpers={helpers.enrollments}
+              />
+            </ClientTab>
+            <ClientTab selectedTab={selectedTab} id={'matching'} >
+              <MatchingContainer
+                // client={client} permissions={{ showEditButton }}
+                // enrollments={data.enrollments()}
+                // helpers={helpers.enrollments}
               />
             </ClientTab>
           </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import DataTable from '/imports/ui/components/dataTable/DataTable';
+import { removeReferralButton } from '/imports/ui/components/dataTable/helpers';
 
 function PastReferralsList() {
   const options = {
@@ -7,6 +8,10 @@ function PastReferralsList() {
       {
         title: 'Project Name',
         data: 'projectName',
+        // render(value, op, doc) {
+        //   Projects.find(doc.projectId).name
+        // },
+
       },
       {
         title: 'Outcome',
@@ -14,16 +19,21 @@ function PastReferralsList() {
       },
       {
         title: 'Date Created',
-        data: 'createdAt',
+        data: 'created',
       },
       {
         title: 'Last Update',
-        data: 'updatedAt',
+        data: 'modified',
       },
       {
-        title: 'Actions',
-        data: 'projectId',
+        title: 'Edit',
+        data: 'id',
       },
+      removeReferralButton((referral) => {
+        console.log('removed', referral);
+        return null;
+        // Referrals._collection.remove(project._id); // eslint-disable-line
+      }),
     ],
   };
   const data = [];
@@ -35,7 +45,7 @@ function PastReferralsList() {
       data={data}
       defaultSorted={[
         {
-          id: 'updatedAt',
+          id: 'modified',
           desc: true,
         },
       ]}

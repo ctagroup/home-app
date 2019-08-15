@@ -338,12 +338,41 @@ export function removeClientTagButton(onSuccessCallback) {
       _id,
       operation: rowData.operation,
       operationText: removed ? 'Remove' : 'Add',
-      title: `Confirm ${removed ? 'removal' : 'adding'}`,
+      title: `Confirm ${removed ? 'removal' : 'addition'}`,
       message: `Are you sure you want to ${removed ? 'remove' : 'add'
         } client tag #${rowData.id} (${rowData.tag.name}) as of ${formatDate(rowData.date)}?`,
       method: 'tagApi',
       args: ['createClientTag',
         { ...rowData, operation: inverseOperation, appliedOn: rowData.date }],
+      onSuccess(result) {
+        if (onSuccessCallback) onSuccessCallback(result);
+      },
+    };
+  };
+  return {
+    data: '_id',
+    title: 'Delete',
+    filterable: false,
+    render() { return ''; },
+    reactCreatedCell(node, _id, rowData) {
+      const templateData = composeData(_id, rowData);
+      return blazeData('DataTableTextButton', templateData);
+    },
+    width: '45px',
+    orderable: false,
+  };
+}
+
+export function removeReferralButton(onSuccessCallback) {
+  const composeData = (_id, rowData) => {
+    return {
+      _id,
+      operation: 0,
+      operationText: 'Remove',
+      title: 'Confirm removal',
+      message: `Are you sure you want to remove Referral #${rowData.id}?`,
+      method: 'tagApi',
+      args: ['removeReferral', rowData],
       onSuccess(result) {
         if (onSuccessCallback) onSuccessCallback(result);
       },

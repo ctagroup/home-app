@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 function RecepientsList(props) {
-  const [recepients, setRecepients] = useState([]);
+  const { recepients, setRecepients } = props;
   const [newRecepient, setNewRecepient] = useState('');
 
   const removeRecepient = (email) => {
@@ -67,5 +68,10 @@ function RecepientsList(props) {
     </div>
   );
 }
+
+RecepientsList.propTypes = {
+  recepients: PropTypes.arrayOf(PropTypes.string),
+  setRecepients: PropTypes.func,
+};
 
 export default RecepientsList;
