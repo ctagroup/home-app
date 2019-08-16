@@ -5,6 +5,7 @@ import ClientOverview from './ClientOverview';
 import ClientTab from './ClientTab';
 import ClientEnrollments from './ClientEnrollments';
 import ClientEligibility from './ClientEligibility';
+import ClientMatchNotes from './ClientMatchNotes';
 
 function ClientLayout(props) {
   const { client, permissions, eligibleClient, data, helpers } = props;
@@ -43,6 +44,8 @@ function ClientLayout(props) {
 
   return (
     <div id="viewClient_content" className="col-xs-12">
+      <ClientMatchNotes matchId="1" step="1" />
+
       {eligibleClient && eligibleClient.ignoreMatchProcess &&
         <div className="col-xs-12">
           <div className="alert alert-danger">

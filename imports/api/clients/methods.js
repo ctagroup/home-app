@@ -250,3 +250,42 @@ Meteor.methods({
     ClientsCache.rawCollection().insertMany(clientBasics, { ordered: false });
   },
 });
+
+// FIXME: Vladi, move those methods to the appropriate file with matching methods
+Meteor.injectedMethods({
+  'matching.sendNoteByEmail'(title, body, recipients) {
+    const { hmisClient } = this.context;
+
+    check(title, String);
+    check(body, String);
+    check(recipients, [String]);
+
+    if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
+      throw new Meteor.Error(403, 'Forbidden');
+    }
+
+    recipients.forEach(recipient => {
+      const email = {
+        title,
+        body,
+        recipient,
+      };
+      const additionalInfo = {
+        messageType: 'mathing note',
+        recipientType: '',
+        recipientId: '',
+      };
+      hmisClient.api('global').sendEmailNotification(email, additionalInfo);
+    });
+  },
+
+  'matching.createNote'(matchId, step, note) {
+    const { matchApiClient } = this.context;
+    return matchApiClient.createNote(matchId, step, note);
+  },
+
+  'matching.deleteNote'(noteId) {
+    const { matchApiClient } = this.context;
+    return matchApiClient.deleteNote(noteId);
+  },
+});

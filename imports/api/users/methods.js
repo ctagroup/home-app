@@ -4,7 +4,6 @@ import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import Users, { ChangePasswordSchema, UserCreateFormSchema } from '/imports/api/users/users';
 import Agencies from '/imports/api/agencies/agencies';
 import { HmisClient } from '/imports/api/hmisApi';
-import HomeApiClient from '/imports/api/homeApi/homeApiClient';
 import { ensureRolesFormat } from './helpers';
 
 Meteor.methods({
