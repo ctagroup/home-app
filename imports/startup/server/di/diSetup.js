@@ -8,6 +8,7 @@ import EnrollmentsRepository from '/imports/api/enrollments/enrollmentsRepositor
 import EnrollmentsTranslationService from '/imports/api/enrollments/enrollmentsTranslationService';
 import Responses from '/imports/api/responses/responses';
 import ResponsesRepository from '/imports/api/responses/ResponsesRepository';
+import MatchApiClient from '../../../api/homeApi/matchApi';
 
 
 function createHmisClient({ userId }) {
@@ -24,6 +25,7 @@ export function setupInitialDependencies(container) {
     hmisCacheCollection: awilix.asValue(HmisCacheCollection),
     hmisClient: awilix.asFunction(createHmisClient),
     logger: awilix.asValue(globalLogger),
+    meteorSettings: awilix.asValue(Meteor.settings),
     responsesCollection: awilix.asValue(Responses),
     serviceConfig: awilix.asFunction(getServiceConfiguration),
     usersCollection: awilix.asValue(Meteor.users),
@@ -48,6 +50,12 @@ export function setupEndpointDependencies(endpointName, container) {
     container.register({
       enrollmentsRepository: awilix.asClass(EnrollmentsRepository),
       enrollmentsTranslationService: awilix.asClass(EnrollmentsTranslationService),
+    });
+  }
+
+  if (endpointName.startsWith('method.matching')) {
+    container.register({
+      matchApiClient: awilix.asClass(MatchApiClient),
     });
   }
 }

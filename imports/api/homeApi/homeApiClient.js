@@ -1,4 +1,4 @@
-import { logger } from '/imports/utils/logger';
+import { logger as globalLogger } from '/imports/utils/logger';
 
 let counter = 0;
 function getCorrelationId() {
@@ -7,12 +7,12 @@ function getCorrelationId() {
 }
 
 export default class HomeApiClient {
-  constructor(userId, appId, usersCollection, settings, loggerInstance) {
+  constructor({ userId, usersCollection, meteorSettings, logger }) {
     this.userId = userId;
-    this.appId = appId;
+    this.appId = meteorSettings.appId;
     this.usersCollection = usersCollection;
-    this.settings = settings;
-    this.logger = loggerInstance;
+    this.settings = meteorSettings.homeApi;
+    this.logger = logger;
   }
 
   absoluteUrl(relativeUrl) {
@@ -169,18 +169,19 @@ export default class HomeApiClient {
 
   updateUserHmisCredentials() {
     const url = this.absoluteUrl('/api/v1/auth/updateCredentials/');
-    const user = this.usersCollection.findOne(this.userId);
-    const { accessToken, refreshToken, expiresAt } = user.services.HMIS || {};
+    const user = this.usersCollection.findOne({ _id: this.userId });
+    const { expiresAt } = user.services.HMIS || {};
     return this.doPost(url, {
-      userId: this.userId,
-      sessionToken: accessToken,
-      refreshToken,
       expiresAt: Math.floor(expiresAt / 1000),
     });
   }
 
   static create(userId) {
-    return new this(userId,
-      Meteor.settings.appId, Meteor.users, Meteor.settings.homeApi, logger);
+    return new this({
+      userId,
+      usersCollection: Meteor.users,
+      meteorSettings: Meteor.settings,
+      logger: globalLogger,
+    });
   }
 }

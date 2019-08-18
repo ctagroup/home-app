@@ -4,7 +4,6 @@ import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import Users, { ChangePasswordSchema, UserCreateFormSchema } from '/imports/api/users/users';
 import Agencies from '/imports/api/agencies/agencies';
 import { HmisClient } from '/imports/api/hmisApi';
-import HomeApiClient from '/imports/api/homeApi/homeApiClient';
 import { ensureRolesFormat } from './helpers';
 
 Meteor.methods({
@@ -200,14 +199,5 @@ Meteor.methods({
       accessToken: accessToken.substr(0, 8),
       refreshToken: refreshToken.substr(0, 8),
     };
-  },
-
-  'users.loginToHomeApi'() {
-    logger.info(`METHOD[${this.userId}]: users.loginToHomeApi`);
-    if (!this.userId) {
-      throw new Meteor.Error(401, 'Unauthorized');
-    }
-    const client = HomeApiClient.create(this.userId);
-    return client.updateUserHmisCredentials();
   },
 });
