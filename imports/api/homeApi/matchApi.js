@@ -96,7 +96,6 @@ class MatchApiClient extends HomeApiClient {
       outcome,
     });
   }
-  }
 }
 
 export default MatchApiClient;
