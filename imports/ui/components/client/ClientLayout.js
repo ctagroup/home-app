@@ -5,8 +5,8 @@ import ClientOverview from './ClientOverview';
 import ClientTab from './ClientTab';
 import ClientEnrollments from './ClientEnrollments';
 import ClientEligibility from './ClientEligibility';
+import ClientReferrals from './ClientReferrals';
 import MatchingContainer from '/imports/ui/components/matching/MatchingContainer';
-import ClientMatchNotes from './ClientMatchNotes';
 
 function ClientLayout(props) {
   const { client, permissions, eligibleClient, data, helpers } = props;
@@ -47,7 +47,6 @@ function ClientLayout(props) {
 
   return (
     <div id="viewClient_content" className="col-xs-12">
-      <ClientMatchNotes matchId="1" step="1" />
 
       {eligibleClient && eligibleClient.ignoreMatchProcess &&
         <div className="col-xs-12">
@@ -68,6 +67,12 @@ function ClientLayout(props) {
                 client={client} permissions={{ showEditButton }} helpers={helpers.overview}
               />
             </ClientTab>
+            <ClientTab selectedTab={selectedTab} id={'referrals'} >
+              <ClientReferrals
+                eligibleClient={data.eligibleClient()}
+                client={client} permissions={{ showEditButton }} helpers={helpers.referrals}
+              />
+            </ClientTab>
             <ClientTab selectedTab={selectedTab} id={'eligibility'} >
               <ClientEligibility
                 eligibleClient={data.eligibleClient()}
@@ -82,11 +87,11 @@ function ClientLayout(props) {
               />
             </ClientTab>
             <ClientTab selectedTab={selectedTab} id={'matching'} >
-              <MatchingContainer
+              <MatchingContainer />
+              {/*
                 // client={client} permissions={{ showEditButton }}
                 // enrollments={data.enrollments()}
-                // helpers={helpers.enrollments}
-              />
+                // helpers={helpers.enrollments} */}
             </ClientTab>
           </div>
         </div>

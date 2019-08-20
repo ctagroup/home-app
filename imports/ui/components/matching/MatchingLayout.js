@@ -3,6 +3,7 @@ import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 
 import RecepientsList from './RecepientsList';
+import ReferralSteps from '../referrals/Steps';
 
 function MatchingLayout(props) {
   const projectList = props.projectList || [];
@@ -32,6 +33,7 @@ function MatchingLayout(props) {
 
   return (
     <div className="container">
+      <ReferralSteps />
       <div className="col-md-4">
         <label htmlFor="projectId"> Select Project </label>
         <div className="form-group">

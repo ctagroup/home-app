@@ -22,7 +22,6 @@ class MatchApiClient extends HomeApiClient {
     return this.doDel(url);
   }
 
-
   createMatch({ name, score }) {
     const url = this.absoluteUrl('/api/v1/matching/');
     return this.doPost(url, {
