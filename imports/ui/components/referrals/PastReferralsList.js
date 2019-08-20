@@ -1,48 +1,64 @@
 import React from 'react';
 import DataTable from '/imports/ui/components/dataTable/DataTable';
-import { removeReferralButton } from '/imports/ui/components/dataTable/helpers';
+import { formatDateTime } from '/imports/both/helpers';
+import Projects from '/imports/api/projects/projects';
+// import { removeReferralButton } from '/imports/ui/components/dataTable/helpers';
 
-function PastReferralsList() {
+function PastReferralsList({ referrals }) {
   const options = {
     columns: [
       {
         title: 'Project Name',
-        data: 'projectName',
-        // render(value, op, doc) {
-        //   Projects.find(doc.projectId).name
-        // },
-
+        data: 'projectId',
+        render(value) {
+          const project = Projects.findOne(value);
+          return project ? project.projectName : value;
+        },
+      },
+      {
+        title: 'Date Created',
+        data: 'created',
+        render(value, op, doc) {
+          const { history } = doc;
+          if (history.length) {
+            return formatDateTime(history[0].created);
+          }
+          return '';
+        },
+      },
+      {
+        title: 'Last Update',
+        data: 'modified',
+        render(value, op, doc) {
+          const { history } = doc;
+          if (history.length) {
+            return formatDateTime(history[history.length - 1].modified);
+          }
+          return '';
+        },
       },
       {
         title: 'Outcome',
         data: 'outcome',
       },
-      {
-        title: 'Date Created',
-        data: 'created',
-      },
-      {
-        title: 'Last Update',
-        data: 'modified',
-      },
+      /*
       {
         title: 'Edit',
         data: 'id',
       },
-      // removeReferralButton((referral) => {
-      //   console.log('removed', referral);
-      //   return null;
-      //   // Referrals._collection.remove(project._id); // eslint-disable-line
-      // }),
+      removeReferralButton((referral) => {
+        console.log('removed', referral);
+        return null;
+        // Referrals._collection.remove(project._id); // eslint-disable-line
+      }),
+      */
     ],
   };
-  const data = [];
-
   return (
     <DataTable
       disableSearch
       options={options}
-      data={data}
+      data={referrals}
       defaultSorted={[
         {
           id: 'modified',

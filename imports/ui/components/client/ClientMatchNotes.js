@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Alert from '/imports/ui/alert';
 
 function CreateNoteForm({ onCreateNote }) {
-  const [note, setNote] = useState('a note');
-  const [emailTitle, setEmailTitle] = useState('test email');
-  const [emailRecipients, setEmailRecipients] = useState('przemyslaw@toptal.com');
-  const [sendByEmail, setSendByEmail] = useState(true);
+  const [note, setNote] = useState('');
+  const [emailTitle, setEmailTitle] = useState('');
+  const [emailRecipients, setEmailRecipients] = useState('');
+  const [sendByEmail, setSendByEmail] = useState(false);
 
   function handleSendByEmail() {
     setSendByEmail(!sendByEmail);
@@ -15,7 +15,6 @@ function CreateNoteForm({ onCreateNote }) {
     <form>
       <p><strong>New Note</strong></p>
       <div className="form-group">
-        <label>Note</label>
         <textarea
           className="form-control"
           onChange={e => setNote(e.target.value)}
@@ -26,7 +25,7 @@ function CreateNoteForm({ onCreateNote }) {
             <input
               type="checkbox"
               checked={sendByEmail}
-              onClick={() => handleSendByEmail()}
+              onChange={() => handleSendByEmail()}
             /> Send note by email
           </label>
         </div>
@@ -122,19 +121,21 @@ export default function ClientMatchNotes({ matchId, step }) {
   }
 
   function renderNotes() {
-    return notes
-      .filter(n => n.step == step) // eslint-disable-line
-      .map(n => (
-        <li key={n.id}>
-          {n.note} (<a href="#" onClick={() => handleDeleteNote(n.id)}>Delete</a>)
-        </li>
-      ));
+    const notesForThisStep = notes.filter(n => n.step == step); // eslint-disable-line
+    if (notesForThisStep.length === 0) {
+      return <p><em>No notes for this step</em></p>;
+    }
+    const items = notesForThisStep.map(n => (
+      <li key={n.id}>
+        {n.note} (<a href="#" onClick={() => handleDeleteNote(n.id)}>Delete</a>)
+      </li>
+    ));
+    return <ul>{items}</ul>;
   }
 
   return (
     <div>
-      <p>Notes for matchId {matchId} and step {step}:</p>
-      <ul>Notes</ul>
+      <div><strong>Notes</strong></div>
       {renderNotes()}
       <br />
       <CreateNoteForm onCreateNote={handleCreateNote} />

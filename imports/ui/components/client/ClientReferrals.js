@@ -1,63 +1,101 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReferralSteps from '/imports/ui/components/referrals/Steps';
 import PastReferralsList from '/imports/ui/components/referrals/PastReferralsList';
 import MatchingContainer from '/imports/ui/components/matching/MatchingContainer';
+
+function isMatchCompleted(match) {
+  // for now lets assume that completed match has end date set
+  return !!match.endDate;
+}
+// const getOngoingReferral = (referrals) => {
+//   const now = new Date();
+//   return referrals
+//     .find((referral) =>
+//       now >= referral.startDate && (!referral.endDate ||
+//         (now <= referral.endDate && !referral.outcome)));
+// };
+
 
 function ClientReferrals(props) {
   console.log('ClientReferrals', props);
   const { client: { dedupClientId }, helpers } = props;
   const [lastDataFetch, setLastDataFetch] = useState(new Date());
-  const [matches, setMatches] = useState([]);
   const projects = helpers.getProjects();
-  console.log('projects');
+  console.log('projects', projects);
+  const [clientMatches, setClientMatches] = useState([]);
+  // const [lastDataFetch, setLastDataFetch] = useState(null);
+
+  const ongoingReferral = clientMatches.find(m => !isMatchCompleted(m));
+  const pastReferrals = clientMatches.filter(isMatchCompleted);
+
+  function updateClientMatches() {
+    setLastDataFetch(new Date());
+  }
 
   useEffect(() => {
     Meteor.call('matchApi', 'getClientMatches', dedupClientId, (err, res) => {
       if (err) {
-        console.log('Error at getClientMatches', err);
-      //   setNotes([{
-      //     id: '0',
-      //     text: `An error has occurred ${err}`,
-      //   }]);
+        setClientMatches([]);
+        console.error('Failed to load client matches', err);
       } else {
-        setMatches(res.matches);
-        // setNotes(res.notes);
+        setClientMatches(res);
+        console.log('new data', res);
       }
     });
   }, [lastDataFetch]);
 
-  const getActiveReferral = (referrals) => {
-    const now = new Date();
-    return referrals
-      .find((referral) =>
-        now >= referral.startDate && now <= referral.endDate && !referral.outcome);
-  };
-  const activeReferral = getActiveReferral(matches || []);
-  const isActive = !!activeReferral;
+
+  const isActive = !!ongoingReferral;
   const renderActiveReferral = () => (
     <div>
       <span>
-        Referred on: {activeReferral.startDate}
+        Referred on: {ongoingReferral.startDate}
       </span>
       <span>
-        Referred to: {activeReferral.projectId}
+        Referred to: {ongoingReferral.projectId}
       </span>
       <span>
-        Referred by: {activeReferral.userId}
+        Referred by: {ongoingReferral.userId}
       </span>
     </div>
   );
-  return (
-    <div className="col-xs-12">
-      {isActive && <div>
+
+  function renderSelectedReferral() {
+    if (!ongoingReferral) {
+      return (
+        <p>
+          No ongoing referrals.
+          Switch to <strong>New Referral</strong> tab to create a new referral.
+        </p>
+      );
+    }
+
+    console.log('history', ongoingReferral.history);
+
+    const lastStepId = ongoingReferral.history.length ?
+      ongoingReferral.history[ongoingReferral.history.length - 1].step
+      : null;
+
+    return (
+      <div>
         <h3>Current Referral</h3>
         {renderActiveReferral()}
         <h3>Referral Status</h3>
-        <ReferralSteps />
-      </div>}
+        <ReferralSteps
+          matchId={ongoingReferral.id}
+          lastStepId={lastStepId}
+          handleDataReload={updateClientMatches}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="col-xs-12">
+      {isActive && renderSelectedReferral()}
       {!isActive && <MatchingContainer />}
       <h3>Past Referrals</h3>
-      <PastReferralsList />
+      <PastReferralsList referrals={pastReferrals} />
     </div>
   );
 }

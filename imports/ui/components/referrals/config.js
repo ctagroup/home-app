@@ -38,7 +38,6 @@ const defaultConfig = {
       options: ['Accepted', 'Denied'],
       notes: true,
       skip: false,
-      end: true,
       steps: [],
     },
     {
@@ -66,6 +65,8 @@ const defaultConfig = {
       ],
       notes: true,
       skip: false,
+      end: true,
+      lastStep: true,
       steps: [],
     },
   ],

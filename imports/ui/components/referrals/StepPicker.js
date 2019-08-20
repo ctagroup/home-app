@@ -9,9 +9,9 @@ const ReferralStepPicker = (props) => {
   return (
     <span>
       {steps.map((step) => {
-        const futureStep = futureStepObj.data[step.id];
+        const futureStep = false; //futureStepObj.data[step.id];
         return (
-          <span className="css-tooltip-button-span">
+          <span className="css-tooltip-button-span" key={step.id}>
             <a
               disabled={futureStep}
               className={
@@ -47,10 +47,7 @@ ReferralStepPicker.propTypes = {
     ]),
     title: PropTypes.string,
   })),
-  isSubstep: PropTypes.oneOfType([
-    PropTypes.boolean,
-    PropTypes.string,
-  ]),
+  isSubstep: PropTypes.bool,
   selectedStepId: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.string,

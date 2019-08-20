@@ -5,8 +5,6 @@ import StepContainer from './StepContainer';
 
 
 import config from './config';
-const currentStepId = 2;
-const matchId = 2;
 
 
 const StepProgress = ({ stepNumber, steps }) => (
@@ -23,8 +21,16 @@ const StepProgress = ({ stepNumber, steps }) => (
   </div>
 );
 
-const ReferralSteps = (props) => {
-  console.log('ActiveSteps props', props);
+const ReferralSteps = ({ matchId, lastStepId, handleDataReload }) => {
+  let currentStepId;
+  const lastStepIndex = config.steps.findIndex(step => step.id == lastStepId);
+  try {
+    currentStepId = config.steps[lastStepIndex + 1].id;
+  } catch (err) {
+    currentStepId = config.steps[0].id;
+  }
+
+  console.log(lastStepId, currentStepId);
 
   const [selectedStepId, selectStep] = useState(currentStepId);
 
@@ -62,14 +68,10 @@ const ReferralSteps = (props) => {
         selectStep={selectStep}
         selectedStepId={selectedStepId}
         matchId={matchId}
+        handleDataReload={handleDataReload}
       />
     </div>
   );
 };
-
-// ActiveSteps.propTypes = {
-
-// };
-
 
 export default ReferralSteps;
