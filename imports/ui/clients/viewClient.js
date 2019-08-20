@@ -621,14 +621,12 @@ Template.viewClient.helpers(
       return Services.find().count() > 0;
     },
     ProjectsAll() {
-      console.log('pp', Projects.find().fetch());
       return Projects.find().fetch();
     },
     serviceTableOptions() {
       return serviceTableOptions;
     },
     serviceTableData() {
-      console.log('xxx', Services.find().fetch());
       return Services.find().fetch();
     },
 

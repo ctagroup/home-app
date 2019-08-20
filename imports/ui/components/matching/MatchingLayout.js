@@ -33,7 +33,6 @@ function MatchingLayout(props) {
 
   return (
     <div className="container">
-      <ReferralSteps />
       <div className="col-md-4">
         <label htmlFor="projectId"> Select Project </label>
         <div className="form-group">

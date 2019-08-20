@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import HomeApiClient from './homeApiClient';
 
@@ -58,8 +59,19 @@ class MatchApiClient extends HomeApiClient {
   }
 
   getClientMatch(clientMatchId) {
+    // TODO: same as getMatch
     const url = this.absoluteUrl(`/api/v1/matching/matches/${clientMatchId}/`);
     return this.doGet(url);
+  }
+
+  getClientMatches(dedupClientId) {
+    const url = this.absoluteUrl(`/api/v1/clients/${dedupClientId}/matches/`);
+    const data = this.doGet(url);
+    return data.map(m => ({
+      // TODO: add history sorting on on API side (latest -> newest)
+      ...m,
+      history: m.history.sort((a, b) => moment(a.created) - moment(b.created)),
+    }));
   }
 
   createNote(clientMatchId, step, note) {
@@ -74,6 +86,15 @@ class MatchApiClient extends HomeApiClient {
   deleteNote(noteId) {
     const url = this.absoluteUrl(`/api/v1/matching/notes/${noteId}/`);
     return this.doDel(url);
+  }
+
+  createMatchHistory(matchId, step, outcome) {
+    const url = this.absoluteUrl('/api/v1/matching/history/');
+    return this.doPost(url, {
+      clientMatch: matchId,
+      step,
+      outcome,
+    });
   }
 }
 
