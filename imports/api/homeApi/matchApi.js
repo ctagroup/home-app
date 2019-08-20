@@ -75,6 +75,11 @@ class MatchApiClient extends HomeApiClient {
     const url = this.absoluteUrl(`/api/v1/matching/notes/${noteId}/`);
     return this.doDel(url);
   }
+
+  getClientMatches(clientId) {
+    const url = this.absoluteUrl(`/api/v1/clients/${clientId}/matches/`);
+    return this.doGet(url);
+  }
 }
 
 export default MatchApiClient;

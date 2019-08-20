@@ -87,7 +87,9 @@ function ClientLayout(props) {
               />
             </ClientTab>
             <ClientTab selectedTab={selectedTab} id={'matching'} >
-              <MatchingContainer />
+              <MatchingContainer
+                helpers={helpers.referrals}
+              />
               {/*
                 // client={client} permissions={{ showEditButton }}
                 // enrollments={data.enrollments()}

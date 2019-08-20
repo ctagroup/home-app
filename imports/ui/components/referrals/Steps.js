@@ -67,7 +67,7 @@ const ReferralSteps = (props) => {
   );
 };
 
-// ActiveSteps.PropTypes = {
+// ActiveSteps.propTypes = {
 
 // };
 

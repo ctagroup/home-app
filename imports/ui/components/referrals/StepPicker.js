@@ -24,6 +24,7 @@ const ReferralStepPicker = (props) => {
               {step.title}
             </a>
             <ReferralStepPicker
+              key={`step-${step.id}`}
               futureStepObj={futureStepObj}
               selectedStepId={selectedStepId}
               selectStep={selectStep}
@@ -37,16 +38,19 @@ const ReferralStepPicker = (props) => {
     </span>
   );
 };
-ReferralStepPicker.PropTypes = {
+ReferralStepPicker.propTypes = {
   selectStep: PropTypes.func,
-  steps: PropTypes.arrayOf({
+  steps: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.oneOfType([
       PropTypes.number,
       PropTypes.string,
     ]),
     title: PropTypes.string,
-  }),
-  isSubstep: PropTypes.boolean,
+  })),
+  isSubstep: PropTypes.oneOfType([
+    PropTypes.boolean,
+    PropTypes.string,
+  ]),
   selectedStepId: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.string,

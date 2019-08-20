@@ -29,11 +29,11 @@ function PastReferralsList() {
         title: 'Edit',
         data: 'id',
       },
-      removeReferralButton((referral) => {
-        console.log('removed', referral);
-        return null;
-        // Referrals._collection.remove(project._id); // eslint-disable-line
-      }),
+      // removeReferralButton((referral) => {
+      //   console.log('removed', referral);
+      //   return null;
+      //   // Referrals._collection.remove(project._id); // eslint-disable-line
+      // }),
     ],
   };
   const data = [];
