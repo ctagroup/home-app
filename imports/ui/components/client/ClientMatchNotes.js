@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import Alert from '/imports/ui/alert';
 
 function CreateNoteForm({ onCreateNote }) {
@@ -127,7 +128,8 @@ export default function ClientMatchNotes({ matchId, step }) {
     }
     const items = notesForThisStep.map(n => (
       <li key={n.id}>
-        {n.note} (<a href="#" onClick={() => handleDeleteNote(n.id)}>Delete</a>)
+        {moment(n.created).format('M/D/Y')}:
+        &nbsp;{n.note} (<a href="#" onClick={() => handleDeleteNote(n.id)}>Delete</a>)
       </li>
     ));
     return <ul>{items}</ul>;

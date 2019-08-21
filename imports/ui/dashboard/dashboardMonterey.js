@@ -26,13 +26,13 @@ const allWidgets = [
     path: 'adminDashboardeligibleClientsView',
     roles: DefaultAdminAccessRoles,
   },
-  {
-    name: 'Match',
-    id: 'housingMatch',
-    icon: 'fa-bed',
-    path: 'adminDashboardhousingMatchView',
-    roles: DefaultAdminAccessRoles,
-  },
+  // {
+  //   name: 'Match',
+  //   id: 'housingMatch',
+  //   icon: 'fa-bed',
+  //   path: 'adminDashboardhousingMatchView',
+  //   roles: DefaultAdminAccessRoles,
+  // },
   {
     name: 'Questions',
     id: 'questions',

@@ -7,6 +7,13 @@ const ReferralStepContainer = ({ matchId, config, currentStepId, selectedStepId,
   const [selectedOption, selectOption] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const getNextStep = (stepId) => {
+    console.log('getNextStep', stepId);
+    const stepIndex = config.steps.findIndex((step) => step.id === stepId);
+    if (stepIndex === config.steps.length) return stepId;
+    return config.steps[stepIndex + 1].id;
+  };
+
   const goToNextStep = (outcome) => {
     setIsSubmitting(true);
     Meteor.call('matching.addMatchHistory', matchId, currentStepId, outcome || 'step completed',
@@ -17,6 +24,7 @@ const ReferralStepContainer = ({ matchId, config, currentStepId, selectedStepId,
         } else {
           Alert.success('Updated history for current match');
           handleDataReload();
+          selectStep(getNextStep(currentStepId));
         }
       });
   };
@@ -48,13 +56,6 @@ const ReferralStepContainer = ({ matchId, config, currentStepId, selectedStepId,
   const canSkip = selectedStep.skip || false;
   const canEnd = selectedStep.end || false;
   const canMoveToNextStep = !selectedStep.lastStep;
-  // console.log('flatten', flattenedSteps, Object.keys(flattenedSteps));
-
-  // config currentStep selectedStepId
-  // const { title, notes, skip, steps } = props;
-  // const renderStepsList = () => {
-
-  // };
 
   const renderOptions = ({ options }) => {
     if (options.length < 4) {

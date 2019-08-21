@@ -9,7 +9,7 @@ const ReferralStepPicker = (props) => {
   return (
     <span>
       {steps.map((step) => {
-        const futureStep = false; //futureStepObj.data[step.id];
+        const futureStep = false; // futureStepObj.data[step.id];
         return (
           <span className="css-tooltip-button-span" key={step.id}>
             <a

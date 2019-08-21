@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import StepPicker from './StepPicker';
 import StepContainer from './StepContainer';
@@ -12,8 +12,6 @@ const StepProgress = ({ stepNumber, steps }) => (
     <div
       className="progress-bar progress-bar-primary progress-bar-striped active"
       role="progressbar"
-      aria-valuenow="1"
-      aria-valuemin="1"
       style={{ width: `${100 * stepNumber / steps}%` }}
     >
       {stepNumber} / {steps}
@@ -23,16 +21,18 @@ const StepProgress = ({ stepNumber, steps }) => (
 
 const ReferralSteps = ({ matchId, lastStepId, handleDataReload }) => {
   let currentStepId;
-  const lastStepIndex = config.steps.findIndex(step => step.id == lastStepId);
+  const lastStepIndex = config.steps.findIndex(step => step.id == lastStepId); // eslint-disable-line eqeqeq, max-len
   try {
     currentStepId = config.steps[lastStepIndex + 1].id;
   } catch (err) {
     currentStepId = config.steps[0].id;
   }
 
-  console.log(lastStepId, currentStepId);
-
   const [selectedStepId, selectStep] = useState(currentStepId);
+
+  useEffect(() => {
+    if (lastStepId === currentStepId) selectStep(currentStepId);
+  });
 
   const getFutureSteps = (allSteps, out) =>
     allSteps.reduce(({ isFuture, data }, step) => {
