@@ -289,6 +289,12 @@ Meteor.injectedMethods({
     return matchApiClient.deleteNote(noteId);
   },
 
+  'matching.createMatch'(clientId, projectId, startDate) {
+    console.log('mmm', clientId, projectId, startDate);
+    const { matchApiClient } = this.context;
+    return matchApiClient.createHousingMatch(clientId, projectId, startDate);
+  },
+
   'matching.addMatchHistory'(matchId, stepId, outcome) {
     const { matchApiClient } = this.context;
     return matchApiClient.createMatchHistory(matchId, stepId, outcome);

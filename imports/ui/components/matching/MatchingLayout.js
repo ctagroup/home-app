@@ -1,15 +1,19 @@
+import moment from 'moment';
 import React, { useState } from 'react';
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
+import Alert from '/imports/ui/alert';
 
-import RecepientsList from './RecepientsList';
+// import RecepientsList from './RecepientsList';
 
-function MatchingLayout(props) {
+function MatchingLayout({ dedupClientId, helpers, handleDataReload }) {
   // TODO: make reactive:
   const projectList =
-    props && props.helpers && props.helpers.getProjects && props.helpers.getProjects() || [];
+    helpers && helpers.getProjects && helpers.getProjects() || [];
   const [values, setValues] = useState({});
-  const [recepients, setRecepients] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // const [recepients, setRecepients] = useState([]);
 
   const handleChange = (key, value) => setValues({ ...values, [key]: value });
 
@@ -26,37 +30,68 @@ function MatchingLayout(props) {
     />);
   };
 
-//   handleChange(key, input) {
-//     this.setState({ [key]: input });
-//   }
-// Referral Status List
-
+  const handleCreateReferral = () => {
+    setIsSubmitting(true);
+    Meteor.call('matching.createMatch',
+      dedupClientId,
+      values.projectId,
+      moment(values.startDate).format('YYYY-MM-DD'),
+      (err) => {
+        setIsSubmitting(false);
+        if (err) {
+          Alert.error(err);
+        } else {
+          Alert.success('Referral created');
+          handleDataReload();
+        }
+      }
+    );
+  };
 
   return (
-    <div className="container">
-      <div className="col-md-4">
-        <label htmlFor="projectId"> Select Project </label>
-        <div className="form-group">
-          <Select
-            // value={newTagId}
-            onChange={(option) => handleChange('projectId', option)}
-            options={projectList}
-            placeholder="Select Project:"
-          />
+    <div className="">
+      <div className="row">
+        <div className="col-md-2">
+          <label htmlFor="projectId"> Select Project </label>
+          <div className="form-group">
+            <Select
+              // value={newTagId}
+              onChange={(option) => handleChange('projectId', option.id)}
+              options={projectList}
+              placeholder="Select Project:"
+            />
+          </div>
+        </div>
+        <div className="col-md-2 col-xs-6">
+          <label htmlFor="startDate-date"> Start Date </label>
+          <div className="form-group">
+            {renderDatePicker('startDate')}
+          </div>
+        </div>
+        {/*
+        <div className="col-md-2 col-xs-6">
+          <label htmlFor="endDate-date"> End Date </label>
+          <div className="form-group">
+            {renderDatePicker('endDate')}
+          </div>
+        </div>
+         */}
+      </div>
+      <div className="row">
+        <div className="col-md-2 col-xs-6">
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleCreateReferral}
+            disabled={isSubmitting}
+          >
+            Create
+          </button>
         </div>
       </div>
-      <div className="col-md-3 col-xs-6">
-        <label htmlFor="startDate-date"> Start Date </label>
-        <div className="form-group">
-          {renderDatePicker('startDate')}
-        </div>
-      </div>
-      <div className="col-md-3 col-xs-6">
-        <label htmlFor="endDate-date"> End Date </label>
-        <div className="form-group">
-          {renderDatePicker('endDate')}
-        </div>
-      </div>
+    </div>
+  );
+  /*
       <div className="col-xs-12">
         <div className="form-group">
           <label htmlFor="subject"> Subject </label>
@@ -92,8 +127,7 @@ function MatchingLayout(props) {
       <div className="col-xs-12 col-md-6">
         <RecepientsList recepients={recepients} setRecepients={setRecepients} />
       </div>
-    </div>
-  );
+  */
 }
 
 export default MatchingLayout;

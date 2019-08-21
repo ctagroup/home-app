@@ -305,6 +305,7 @@ Template.viewClient.helpers(
         },
         referrals: {
           getProjects() {
+            /*
             const allProjects = Agencies.find().fetch()
             .reduce((all, agency) => {
               if (agency.enrollmentSurveys) {
@@ -323,11 +324,17 @@ Template.viewClient.helpers(
               }
               return all;
             }, []);
-
             return allProjects.map(({ agency, project }) => ({
               id: project._id,
               label: `${agency.agencyName}/${project.projectName || project._id}`,
             }));
+            */
+            const items = Projects.find().fetch().map(p => ({
+              id: p._id,
+              label: p.projectName,
+            }));
+            console.log('zzz', Projects.find().fetch(), items);
+            return items;
           },
         },
       };

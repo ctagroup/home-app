@@ -23,15 +23,6 @@ class MatchApiClient extends HomeApiClient {
     return this.doDel(url);
   }
 
-  createMatch({ name, score }) {
-    const url = this.absoluteUrl('/api/v1/matching/');
-    return this.doPost(url, {
-      name,
-      score,
-    });
-  }
-  // TODO: cover with permissions:
-
   getMatches() {
     const url = this.absoluteUrl('/api/v1/matching/matches');
     return this.doGet(url);
@@ -88,10 +79,21 @@ class MatchApiClient extends HomeApiClient {
     return this.doDel(url);
   }
 
+  createHousingMatch(clientId, projectId, startDate) {
+    const url = this.absoluteUrl('/api/v1/matching/matches/');
+    return this.doPost(url, {
+      clientId,
+      projectId,
+      startDate,
+      type: 'housing',
+      matchConfig: 1,
+    });
+  }
+
   createMatchHistory(matchId, step, outcome) {
     const url = this.absoluteUrl('/api/v1/matching/history/');
     return this.doPost(url, {
-      clientMatch: matchId,
+      clientMatchId: matchId,
       step,
       outcome,
     });

@@ -46,19 +46,19 @@ function ClientReferrals(props) {
 
 
   const isActive = !!ongoingReferral;
-  const renderActiveReferral = () => (
-    <div>
-      <span>
-        Referred on: {ongoingReferral.startDate}
-      </span>
-      <span>
-        Referred to: {ongoingReferral.projectId}
-      </span>
-      <span>
-        Referred by: {ongoingReferral.userId}
-      </span>
-    </div>
-  );
+  // const renderActiveReferral = () => (
+  //   <div>
+  //     <span>
+  //       Referred on: {ongoingReferral.startDate}
+  //     </span>
+  //     <span>
+  //       Referred to: {ongoingReferral.projectId}
+  //     </span>
+  //     <span>
+  //       Referred by: {ongoingReferral.userId}
+  //     </span>
+  //   </div>
+  // );
 
   function renderSelectedReferral() {
     if (!ongoingReferral) {
@@ -70,17 +70,17 @@ function ClientReferrals(props) {
       );
     }
 
-    console.log('history', ongoingReferral.history);
-
     const lastStepId = ongoingReferral.history.length ?
       ongoingReferral.history[ongoingReferral.history.length - 1].step
       : null;
 
     return (
       <div>
+        {/*
         <h3>Current Referral</h3>
         {renderActiveReferral()}
-        <h3>Referral Status</h3>
+        */}
+        <h3>Curent Referral Status</h3>
         <ReferralSteps
           matchId={ongoingReferral.id}
           lastStepId={lastStepId}
@@ -93,7 +93,11 @@ function ClientReferrals(props) {
   return (
     <div className="col-xs-12">
       {isActive && renderSelectedReferral()}
-      {!isActive && <MatchingContainer />}
+      {!isActive && <MatchingContainer
+        dedupClientId={dedupClientId}
+        helpers={props.helpers}
+        handleDataReload={updateClientMatches}
+      />}
       <h3>Past Referrals</h3>
       <PastReferralsList referrals={pastReferrals} />
     </div>
