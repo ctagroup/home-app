@@ -329,11 +329,12 @@ Template.viewClient.helpers(
               label: `${agency.agencyName}/${project.projectName || project._id}`,
             }));
             */
-            const items = Projects.find().fetch().map(p => ({
-              id: p._id,
-              label: p.projectName,
-            }));
-            console.log('zzz', Projects.find().fetch(), items);
+            const items = Projects.find().fetch()
+              .filter(p => p.schema === 'v2017')
+              .map(p => ({
+                id: p._id,
+                label: p.projectName,
+              }));
             return items;
           },
         },

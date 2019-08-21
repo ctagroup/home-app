@@ -27,14 +27,16 @@
 
     {{#unless isGlobalHousehold}}
 
-      <p class="lead text-center">or</p>
-
-      <div class="row">
-        <div class="col-xs-6 col-sm-3 my-center-block">
-          <a href="{{pathFor 'adminDashboardclientsNew'}}" class="btn btn-sm btn-block btn-primary text-center">Add New
-            Client</a>
+      {{#unless isMontereyApp}}
+        <p class="lead text-center">or</p>
+        <div class="row">
+          <div class="col-xs-6 col-sm-3 my-center-block">
+            <a href="{{pathFor 'adminDashboardclientsNew'}}" class="btn btn-sm btn-block btn-primary text-center">
+              Add New Client
+            </a>
+          </div>
         </div>
-      </div>
+      {{/unless}}
 
       {{#if getRecentClients}}
         <hr />

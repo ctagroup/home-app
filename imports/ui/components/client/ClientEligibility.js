@@ -43,7 +43,6 @@ function ClientEligibility(props) {
       <div className="col-xs-12">
         {eligibleClient.ignoreMatchProcess &&
           <div className="form-group">
-            <h3>Matching Eligibility Status</h3>
             <p><strong>Removal notes: </strong>{eligibleClient.remarks}</p>
           </div>
         }

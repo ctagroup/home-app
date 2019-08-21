@@ -46,13 +46,22 @@ function ClientLayout(props) {
 
   // console.log('selectedTab', selectedTab);
 
+  const isRemovedFromMatching = eligibleClient && eligibleClient.ignoreMatchProcess;
+
   return (
     <div id="viewClient_content" className="col-xs-12">
 
-      {eligibleClient && eligibleClient.ignoreMatchProcess &&
+      {eligibleClient && isRemovedFromMatching &&
         <div className="col-xs-12">
           <div className="alert alert-danger">
             Client has been Removed from Matching
+          </div>
+        </div>
+      }
+      {eligibleClient && !isRemovedFromMatching &&
+        <div className="col-xs-12">
+          <div className="alert alert-success">
+            Client is on the Active list
           </div>
         </div>
       }

@@ -15,6 +15,10 @@ export default class FeatureDecisions {
     return this.features.appProfile === 'skidrow';
   }
 
+  isMontereyApp() {
+    return this.features.appProfile === 'monterey';
+  }
+
   static createFromMeteorSettings() {
     return new FeatureDecisions(Meteor.settings.public.features || []);
   }
