@@ -293,4 +293,12 @@ Meteor.injectedMethods({
     const { matchApiClient } = this.context;
     return matchApiClient.createMatchHistory(matchId, stepId, outcome);
   },
+
+  'matching.endMatch'(matchId, stepId, outcome) {
+    const { matchApiClient } = this.context;
+    matchApiClient.createMatchHistory(matchId, stepId, outcome);
+    matchApiClient.matchPartialUpdate(matchId, {
+      endDate: moment().format('YYYY-MM-DD'),
+    });
+  },
 });

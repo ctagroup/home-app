@@ -28,7 +28,7 @@ const ReferralStepContainer = ({ matchId, config, currentStepId, selectedStepId,
         if (err) {
           Alert.error(err);
         } else {
-          Alert.success('Updated history for current match');
+          Alert.success('Client match ended');
           handleDataReload();
         }
       });

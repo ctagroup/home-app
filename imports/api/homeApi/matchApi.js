@@ -96,6 +96,11 @@ class MatchApiClient extends HomeApiClient {
       outcome,
     });
   }
+
+  matchPartialUpdate(matchId, data) {
+    const url = this.absoluteUrl(`/api/v1/matching/matches/${matchId}/`);
+    return this.doPatch(url, data);
+  }
 }
 
 export default MatchApiClient;
