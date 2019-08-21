@@ -12,32 +12,33 @@ function ClientLayout(props) {
   const { client, permissions, eligibleClient, data, helpers } = props;
   const {
     showReferralStatus,
-    showEnrollments,
-    updateEnrollment,
-    annualEnrollment,
-    exitEnrollment,
+    // showEnrollments,
+    // updateEnrollment,
+    // annualEnrollment,
+    // exitEnrollment,
     isSkidrowApp,
     showEditButton,
   } = permissions;
 
+  // TODO: feature decisions
   const tabsList = [
     { id: 'overview', enabled: true, title: 'Overview' },
     { id: 'eligibility', enabled: true, title: 'History' },
     { id: 'rois', enabled: !isSkidrowApp, title: 'ROIs' },
     { id: 'referrals', enabled: showReferralStatus, title: 'Referrals' },
-    { id: 'enrollments', enabled: showEnrollments, title: 'Enrollments' },
-    { id: 'create-enrollment', enabled: showEnrollments, title: 'Create Enrollment' },
-    { id: 'update-enrollment', enabled:
-      showEnrollments && updateEnrollment, title: 'Update Enrollment' },
-    { id: 'annual-enrollment', enabled:
-      showEnrollments && annualEnrollment, title: 'Annual Enrollment' },
-    { id: 'exit-enrollment', enabled:
-      showEnrollments && exitEnrollment, title: 'Exit Enrollment' },
+    // { id: 'enrollments', enabled: showEnrollments, title: 'Enrollments' },
+    // { id: 'create-enrollment', enabled: showEnrollments, title: 'Create Enrollment' },
+    // { id: 'update-enrollment', enabled:
+    //   showEnrollments && updateEnrollment, title: 'Update Enrollment' },
+    // { id: 'annual-enrollment', enabled:
+    //   showEnrollments && annualEnrollment, title: 'Annual Enrollment' },
+    // { id: 'exit-enrollment', enabled:
+    //   showEnrollments && exitEnrollment, title: 'Exit Enrollment' },
     { id: 'client-tags', enabled: !isSkidrowApp, title: 'Tags' },
-    { id: 'services', enabled: !isSkidrowApp, title: 'Services' },
+    // { id: 'services', enabled: !isSkidrowApp, title: 'Services' },
     // { id: 'case-management', enabled: false, title: 'Case Management' },
     // { id: 'responses', enabled: false, title: 'Responses' },
-    { id: 'matching', enabled: showReferralStatus, title: 'New Referral' },
+    // { id: 'matching', enabled: showReferralStatus, title: 'New Referral' },
 
   ].filter((t) => t.enabled);
 
