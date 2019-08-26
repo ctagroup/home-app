@@ -5,6 +5,7 @@ import ClientOverview from './ClientOverview';
 import ClientTab from './ClientTab';
 import ClientEnrollments from './ClientEnrollments';
 import ClientEligibility from './ClientEligibility';
+import CaseNotes from './CaseNotes';
 
 function ClientLayout(props) {
   const { client, permissions, eligibleClient, data, helpers } = props;
@@ -35,6 +36,8 @@ function ClientLayout(props) {
     { id: 'services', enabled: !isSkidrowApp, title: 'Services' },
     // { id: 'case-management', enabled: false, title: 'Case Management' },
     // { id: 'responses', enabled: false, title: 'Responses' },
+    // { id: 'matching', enabled: showReferralStatus, title: 'New Referral' },
+    { id: 'case-notes', enabled: true, title: 'Case Notes' },
   ].filter((t) => t.enabled);
 
   const [selectedTab, selectTab] = useState(props.selectedTab || tabsList[0].id);
@@ -43,6 +46,7 @@ function ClientLayout(props) {
 
   return (
     <div id="viewClient_content" className="col-xs-12">
+      <CaseNotes client={client} />
       {eligibleClient && eligibleClient.ignoreMatchProcess &&
         <div className="col-xs-12">
           <div className="alert alert-danger">
@@ -74,6 +78,9 @@ function ClientLayout(props) {
                 enrollments={data.enrollments()}
                 helpers={helpers.enrollments}
               />
+            </ClientTab>
+            <ClientTab selectedTab={selectedTab} id={'case-notes'} >
+              <CaseNotes client={client} />
             </ClientTab>
           </div>
         </div>

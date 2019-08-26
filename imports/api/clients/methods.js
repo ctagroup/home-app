@@ -250,3 +250,31 @@ Meteor.methods({
     ClientsCache.rawCollection().insertMany(clientBasics, { ordered: false });
   },
 });
+
+
+Meteor.injectedMethods({
+  'caseNotes.list'(clientId) {
+    check(clientId, String);
+    const { noteApiClient } = this.context;
+    return noteApiClient.getNotesForEntity(clientId, 'general');
+  },
+  'caseNotes.create'({ clientId, title, description }) {
+    const { noteApiClient } = this.context;
+    return noteApiClient.createNote({
+      objectUuid: clientId,
+      objectType: 'client',
+      title,
+      description,
+    });
+  },
+  'caseNotes.update'({ id, title, description }) {
+    const { noteApiClient } = this.context;
+    return noteApiClient.updateNote(id, { title, description });
+  },
+  'caseNotes.delete'(id) {
+    check(id, Number);
+    const { noteApiClient } = this.context;
+    return noteApiClient.deleteNote(id);
+  },
+
+});
