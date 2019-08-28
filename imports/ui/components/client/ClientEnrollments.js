@@ -59,12 +59,12 @@ function ClientEnrollments(props) {
           <table className="table table-hover table-striped">
             <thead>
               <tr>
-                {columnNames.map((name) => (<th>{name}</th>))}
+                {columnNames.map((name) => (<th key={`column-${name}`}>{name}</th>))}
               </tr>
             </thead>
             <tbody>
               {enrollments.map((enrollment) => (
-                <tr>
+                <tr key={`row-${enrollment.enrollmentId}`}>
                   <td>{formatDate99(enrollment.entryDate)}</td>
 
                   <td>
