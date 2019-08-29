@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import Projects from '/imports/api/projects/projects';
+// import Users from '/imports/api/users/users';
 import ReferralSteps from '/imports/ui/components/referrals/Steps';
 import PastReferralsList from '/imports/ui/components/referrals/PastReferralsList';
 import MatchingContainer from '/imports/ui/components/matching/MatchingContainer';
@@ -31,24 +33,37 @@ function ClientReferrals(props) {
         console.error('Failed to load client matches', err);
       } else {
         setClientMatches(res);
-        console.log('new data', res);
+        // console.log('new data', res);
       }
     });
   }, [lastDataFetch]);
 
 
   const isActive = !!ongoingReferral;
+  const getProjectName = (projectId) => {
+    const project = Projects.findOne(projectId);
+    return project ? project.projectName : projectId;
+  };
+  // const getUserName = (userId) => {
+  //   const user = Users.findOne(userId);
+  //   if (!user) return userId;
+  //   if (user.username) return user.username;
+  //   return user.emails && user.emails.length && user.emails[0].address || userId;
+  // };
   const renderActiveReferral = () => (
     <div>
       <span>
-        Referred on: {ongoingReferral.startDate}
+        Referred on:&nbsp;{ongoingReferral.startDate}
       </span>
+      <br />
       <span>
-        Referred to: {ongoingReferral.projectId}
+        Referred to:&nbsp;{getProjectName(ongoingReferral.projectId)}
       </span>
+      {/* <br />
       <span>
-        Referred by: {ongoingReferral.userId}
+        Referred by:&nbsp;{getUserName(ongoingReferral.userId)}
       </span>
+      */}
     </div>
   );
 
