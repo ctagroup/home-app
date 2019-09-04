@@ -280,7 +280,7 @@ Template.viewClient.helpers(
               return;
             }
             let removeReasons = reason.text;
-            if (reason.required) removeReasons = `${removeReasons} | ${remarks}`;
+            if (remarks) removeReasons = `${removeReasons} | ${remarks}`;
             removeReasons = `${removeReasons} | ${dateString}`;
 
             // Optimistic UI approach:
