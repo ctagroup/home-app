@@ -59,11 +59,12 @@ function ClientReferrals(props) {
       <span>
         Referred to:&nbsp;{getProjectName(ongoingReferral.projectId)}
       </span>
-      {/* <br />
-      <span>
-        Referred by:&nbsp;{getUserName(ongoingReferral.userId)}
-      </span>
-      */}
+      <br />
+      {ongoingReferral.createdBy &&
+        <span>
+          Referred by:&nbsp;{ongoingReferral.createdBy.fullName}
+        </span>
+      }
     </div>
   );
 
