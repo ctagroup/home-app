@@ -80,18 +80,19 @@ function ClientEligibility(props) {
             </div>
             {/** {#if showRemovalDetails} */}
             {/* if details required for selected option: */}
-            {reasonsHash[removalReason] && reasonsHash[removalReason].required &&
-              <div className="form-group">
-                <label htmlFor="removalRemarks"> Additional notes </label>
-                <input
-                  id="removalRemarks"
-                  className="form-control"
-                  type="text"
-                  name="removalRemarks"
-                  placeholder="Removal notes"
-                  onChange={(e) => changeRemarks(e.target.value)}
-                />
-              </div>}
+            {/* {reasonsHash[removalReason] && reasonsHash[removalReason].required && */}
+            <div className="form-group">
+              <label htmlFor="removalRemarks"> Additional notes </label>
+              <input
+                id="removalRemarks"
+                className="form-control"
+                type="text"
+                name="removalRemarks"
+                placeholder="Removal notes"
+                onChange={(e) => changeRemarks(e.target.value)}
+              />
+            </div>
+            {/* } */}
             <input
               className="btn btn-danger removeFromHousingList"
               value="Remove client from active list"
