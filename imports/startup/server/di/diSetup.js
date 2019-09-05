@@ -9,6 +9,7 @@ import EnrollmentsTranslationService from '/imports/api/enrollments/enrollmentsT
 import Responses from '/imports/api/responses/responses';
 import ResponsesRepository from '/imports/api/responses/ResponsesRepository';
 import NoteApiClient from '/imports/api/homeApi/noteApi';
+import MatchApiClient from '../../../api/homeApi/matchApi';
 
 
 function createHmisClient({ userId }) {
@@ -56,6 +57,12 @@ export function setupEndpointDependencies(endpointName, container) {
   if (endpointName.startsWith('method.caseNotes')) {
     container.register({
       noteApiClient: awilix.asClass(NoteApiClient),
+    });
+  }
+
+  if (endpointName.startsWith('method.matching')) {
+    container.register({
+      matchApiClient: awilix.asClass(MatchApiClient),
     });
   }
 }

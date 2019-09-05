@@ -24,6 +24,7 @@ import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 import { getActiveTagNamesForDate } from '/imports/api/tags/tags';
 import { dataCollectionStages, formatDate } from '/imports/both/helpers';
 
+// import './clientHouseMatching.js';
 import './enrollmentsListView.js';
 import './clientDeleteReason.js';
 import './clientTagList.js';
@@ -300,6 +301,41 @@ Template.viewClient.helpers(
                 Clients._collection.update(client._id, { $set: changes }); // eslint-disable-line
               }
             });
+          },
+        },
+        referrals: {
+          getProjects() {
+            /*
+            const allProjects = Agencies.find().fetch()
+            .reduce((all, agency) => {
+              if (agency.enrollmentSurveys) {
+                const projectsIds = agency.projectsOfUser(Meteor.userId());
+                const agencyProjects = projectsIds.map(projectId => {
+                  // Getting only agencies with surveys:
+                  if (agency.getProjectSurveyId(projectId, 'entry')) {
+                    return {
+                      agency,
+                      project: Projects.findOne(projectId) || { _id: projectId },
+                    };
+                  }
+                  return null;
+                }).filter(i => i);
+                return [...all, ...agencyProjects];
+              }
+              return all;
+            }, []);
+            return allProjects.map(({ agency, project }) => ({
+              id: project._id,
+              label: `${agency.agencyName}/${project.projectName || project._id}`,
+            }));
+            */
+            const items = Projects.find().fetch()
+              .filter(p => p.schema === 'v2017')
+              .map(p => ({
+                id: p._id,
+                label: p.projectName,
+              }));
+            return items;
           },
         },
       };
@@ -620,14 +656,12 @@ Template.viewClient.helpers(
       return Services.find().count() > 0;
     },
     ProjectsAll() {
-      console.log('pp', Projects.find().fetch());
       return Projects.find().fetch();
     },
     serviceTableOptions() {
       return serviceTableOptions;
     },
     serviceTableData() {
-      console.log('xxx', Services.find().fetch());
       return Services.find().fetch();
     },
 

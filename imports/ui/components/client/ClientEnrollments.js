@@ -41,8 +41,8 @@ function ClientEnrollments(props) {
           <i className="fa fa-eye"></i> View
         </a></li>
         {enrollmentResponses(enrollment.enrollmentId, stage)
-          .map((enrollmentResponse) => (
-            <li>
+          .map((enrollmentResponse, i) => (
+            <li key={i}>
               <i className="fal fa-poll-h"></i>&nbsp;
               <a href="{{pathFor 'adminDashboardresponsesEdit'}}">{
                 formatDateTime(enrollmentResponse.createdAt)}</a>
@@ -59,12 +59,12 @@ function ClientEnrollments(props) {
           <table className="table table-hover table-striped">
             <thead>
               <tr>
-                {columnNames.map((name) => (<th>{name}</th>))}
+                {columnNames.map((name, i) => (<th key={`column-${i}-${name}`}>{name}</th>))}
               </tr>
             </thead>
             <tbody>
-              {enrollments.map((enrollment) => (
-                <tr>
+              {enrollments.map((enrollment, i) => (
+                <tr key={`row-${i}-${enrollment.enrollmentId}`}>
                   <td>{formatDate99(enrollment.entryDate)}</td>
 
                   <td>

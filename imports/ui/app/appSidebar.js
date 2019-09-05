@@ -107,8 +107,13 @@ const mc211MenuItems = [
 ];
 
 const featureDecisions = FeatureDecisions.createFromMeteorSettings();
-const collectionsMenuItems = featureDecisions.isMc211App() ?
-  mc211MenuItems : homeMenuItems;
+let collectionsMenuItems = homeMenuItems;
+
+if (featureDecisions.isMc211App()) {
+  collectionsMenuItems = mc211MenuItems;
+} else if (featureDecisions.isMontereyApp()) {
+  collectionsMenuItems = homeMenuItems.filter(i => i.name !== 'Match' && i.name !== 'Households');
+}
 
 const adminMenuItems = [
   {

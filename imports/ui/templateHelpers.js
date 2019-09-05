@@ -32,6 +32,10 @@ UI.registerHelper('isCordova', () => Meteor.isCordova);
 UI.registerHelper('isSkidrowApp', () =>
   FeatureDecisions.createFromMeteorSettings().isSkidrowApp()
 );
+UI.registerHelper('isMontereyApp', () =>
+  FeatureDecisions.createFromMeteorSettings().isMontereyApp()
+);
+
 
 UI.registerHelper('isUndefined', (v) => v === undefined);
 
