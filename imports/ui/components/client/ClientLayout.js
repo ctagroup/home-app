@@ -46,7 +46,6 @@ function ClientLayout(props) {
 
   return (
     <div id="viewClient_content" className="col-xs-12">
-      <CaseNotes client={client} />
       {eligibleClient && eligibleClient.ignoreMatchProcess &&
         <div className="col-xs-12">
           <div className="alert alert-danger">
