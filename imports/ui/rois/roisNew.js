@@ -1,8 +1,12 @@
 import Alert from '/imports/ui/alert';
+import OpeningScript from '/imports/api/openingScript/openingScript';
 import './roisForm';
 import './roisNew.html';
 
 Template.roisNew.helpers({
+  releaseOfInformation() {
+    return OpeningScript.releaseOfInformation();
+  },
   errors() {
     return Template.instance().errors.get();
   },
