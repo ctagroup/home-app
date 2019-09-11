@@ -1,16 +1,7 @@
 import AWS from 'aws-sdk';
-import { logger } from '/imports/utils/logger';
 
-const s3 = new AWS.S3({
-  accessKeyId: Meteor.settings.s3config.key,
-  secretAccessKey: Meteor.settings.s3config.secret,
-  params: { Bucket: Meteor.settings.s3config.bucket },
-  logger,
-});
 
-const SIGNATURES_PREFIX = 'consent signatures';
-
-function utf8ArrayToStr(array) {
+export function utf8ArrayToStr(array) {
   const len = array.length;
   let out = '';
   let i = 0;
@@ -46,13 +37,53 @@ function utf8ArrayToStr(array) {
   return out;
 }
 
-Meteor.methods({
-  's3bucket.get'(clientId, resource) {
-    logger.info(`METHOD[${this.userId}]: s3bucket.get`, clientId, resource);
-    // TODO: permission check
+
+class S3StorageService {
+  constructor({ meteorSettings, logger }) {
+    this.s3 = new AWS.S3({
+      accessKeyId: meteorSettings.s3config.key,
+      secretAccessKey: meteorSettings.s3config.secret,
+      params: {
+        Bucket: meteorSettings.s3config.bucket,
+      },
+      logger,
+    });
+    this.logger = logger;
+  }
+
+  getObjectAsync(filePath) {
     return new Promise((resolve, reject) => {
-      s3.getObject({
-        Key: `${SIGNATURES_PREFIX}/${clientId}/${resource}`,
+      this.s3.getObject({
+        Key: filePath,
+      }, (err, data) => {
+        if (err) {
+          reject(err);
+        } else {
+          // resolve(utf8ArrayToStr(data.Body));
+          resolve(data.Body);
+        }
+      });
+    });
+  }
+
+  deleteObjectAsync(filePath) {
+    return new Promise((resolve, reject) => {
+      this.s3.deleteObject({
+        Key: filePath,
+      }, (err, data) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  }
+
+  getObjectAsUtfStringAsync(filePath) {
+    return new Promise((resolve, reject) => {
+      this.s3.getObject({
+        Key: filePath,
       }, (err, data) => {
         if (err) {
           reject(err);
@@ -60,29 +91,30 @@ Meteor.methods({
           resolve(utf8ArrayToStr(data.Body));
         }
       });
-    })
-    .await();
-  },
-  's3bucket.put'(clientId, resource, data) {
-    logger.info(`METHOD[${this.userId}]: s3bucket.put`, clientId, resource, data.length);
-    // TODO: permission check
+    });
+  }
+
+  uploadAsync(filePath, data) {
+    this.logger.debug('upload started', filePath);
     return new Promise((resolve, reject) => {
-      s3.upload({
-        Key: `${SIGNATURES_PREFIX}/${clientId}/${resource}`,
+      this.s3.upload({
+        Key: filePath,
         Body: data,
       }, (err, res) => {
+        this.logger.debug('upload completed', !!err);
         if (err) {
           reject(err);
         } else {
           resolve(res);
         }
       });
-    }).await();
-  },
-  's3bucket.list'(clientId) {
+    });
+  }
+
+  listObjectsAsync(prefix) {
     return new Promise((resolve, reject) => {
-      s3.listObjects({
-        Prefix: `${SIGNATURES_PREFIX}/${clientId}`,
+      this.s3.listObjects({
+        Prefix: prefix,
       }, (err, res) => {
         if (err) {
           reject(err);
@@ -90,6 +122,8 @@ Meteor.methods({
           resolve(res);
         }
       });
-    }).await();
-  },
-});
+    });
+  }
+}
+
+export default S3StorageService;

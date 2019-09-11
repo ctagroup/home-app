@@ -19,7 +19,7 @@ const StepProgress = ({ stepNumber, steps }) => (
   </div>
 );
 
-const ReferralSteps = ({ matchId, lastStepId, handleDataReload }) => {
+const ReferralSteps = ({ dedupClientId, matchId, lastStepId, handleDataReload }) => {
   let currentStepId;
   const lastStepIndex = config.steps.findIndex(step => step.id == lastStepId); // eslint-disable-line eqeqeq, max-len
   try {
@@ -67,6 +67,7 @@ const ReferralSteps = ({ matchId, lastStepId, handleDataReload }) => {
         currentStepId={currentStepId}
         selectStep={selectStep}
         selectedStepId={selectedStepId}
+        dedupClientId={dedupClientId}
         matchId={matchId}
         handleDataReload={handleDataReload}
       />

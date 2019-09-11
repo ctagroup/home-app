@@ -31,6 +31,11 @@ const defaultConfig = {
       //     skip: true,
       //   },
       ], // [] by default
+      files: {
+        photo: {
+          label: 'Client photo',
+        },
+      },
     },
     {
       id: 2,
@@ -39,6 +44,14 @@ const defaultConfig = {
       notes: true,
       skip: false,
       steps: [],
+      files: {
+        document1: {
+          label: 'Document 1',
+        },
+        document2: {
+          label: 'Document 2',
+        },
+      },
     },
     {
       id: 3,
