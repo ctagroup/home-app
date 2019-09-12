@@ -84,6 +84,7 @@ function ClientReferrals(props) {
         {renderActiveReferral()}
         <h3>Curent Referral Status</h3>
         <ReferralSteps
+          dedupClientId={dedupClientId}
           matchId={ongoingReferral.id}
           lastStepId={lastStepId}
           handleDataReload={updateClientMatches}
