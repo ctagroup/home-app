@@ -66,6 +66,21 @@ class S3StorageService {
     });
   }
 
+  getObjectLinkAsync(filePath, expiryInSeconds) {
+    return new Promise((resolve, reject) => {
+      this.s3.getSignedUrl('getObject', {
+        Key: filePath,
+        Expires: expiryInSeconds,
+      }, (err, data) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  }
+
   deleteObjectAsync(filePath) {
     return new Promise((resolve, reject) => {
       this.s3.deleteObject({

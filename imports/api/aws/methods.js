@@ -52,6 +52,15 @@ Meteor.injectedMethods({
     return base64data; // return binary data? buffer.toString('binary')
   },
 
+  's3bucket.getClientFileDownloadLink'(dedupClientId, resourcePath) {
+    const { logger, s3storageService } = this.context;
+    const path = `clients/${dedupClientId}/${resourcePath}`;
+    logger.debug('getting client file', path);
+    // TODO: permission check
+    const expiryInSeconds = 60;
+    return s3storageService.getObjectLinkAsync(path, expiryInSeconds).await();
+  },
+
   's3bucket.uploadClientFile'(dedupClientId, resourcePath, base64data) {
     const { logger, s3storageService } = this.context;
     const path = `clients/${dedupClientId}/${resourcePath}`;

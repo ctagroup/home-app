@@ -112,29 +112,14 @@ export default function ClientMatchFiles({ dedupClientId, matchId, step, files }
   }
 
   function handleFileDownload(id) {
-    setDownloading({
-      ...downloading,
-      [id]: true,
-    });
     const name = uploadedFiles[id].file.name;
     const resourcePath = `matching/${matchId}/${step}/${name}`;
-    Meteor.call('s3bucket.getClientFile', dedupClientId, resourcePath,
-    (err, base64data) => {
-      console.log('got file. size: ', base64data.length);
-      setDownloading({
-        ...downloading,
-        [id]: false,
-      });
+    Meteor.call('s3bucket.getClientFileDownloadLink', dedupClientId, resourcePath,
+    (err, downloadLink) => {
       if (err) {
         Alert.error(err);
       } else {
-        const uriContent = `data:application/octet-stream;base64,${base64data}`;
-        const link = document.createElement('a');
-        link.download = uploadedFiles[id].file.name;
-        link.href = uriContent;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        window.location = downloadLink;
       }
     });
   }
