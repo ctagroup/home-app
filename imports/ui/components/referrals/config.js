@@ -31,11 +31,6 @@ const defaultConfig = {
       //     skip: true,
       //   },
       ], // [] by default
-      files: {
-        photo: {
-          label: 'Client photo',
-        },
-      },
     },
     {
       id: 2,
@@ -45,11 +40,11 @@ const defaultConfig = {
       skip: false,
       steps: [],
       files: {
-        document1: {
-          label: 'Document 1',
+        checklistForm: {
+          label: 'Checklist Form',
         },
-        document2: {
-          label: 'Document 2',
+        accteptanceDenialForm: {
+          label: 'Acceptance/Denial Form',
         },
       },
     },
@@ -81,6 +76,11 @@ const defaultConfig = {
       end: true,
       lastStep: true,
       steps: [],
+      files: {
+        accteptanceDenialForm: {
+          label: 'Acceptance/Denial Form',
+        },
+      },
     },
   ],
 };

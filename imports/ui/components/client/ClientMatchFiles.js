@@ -252,11 +252,15 @@ export default function ClientMatchFiles({ dedupClientId, matchId, step, files }
                         >Cancel</button>
                       </React.Fragment>
                       :
-                      <input
-                        type="file"
-                        name={id}
-                        onChange={event => handleFileChange(event, id)}
-                      />
+                      <label className="btn btn-default btn-file">
+                        Browse
+                        <input
+                          type="file"
+                          style={{ display: 'none' }}
+                          name={id}
+                          onChange={event => handleFileChange(event, id)}
+                        />
+                      </label>
                     }
 
                   </React.Fragment>
