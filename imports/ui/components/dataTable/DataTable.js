@@ -74,6 +74,7 @@ class DataTable extends Component {
           </label>
         </div>}
         <ReactTable
+          {...this.props}
           resizable={false}
           data={filteredData}
           columns={columns}
