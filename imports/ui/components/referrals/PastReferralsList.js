@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import DataTable from '/imports/ui/components/dataTable/DataTable';
 import { formatDateTime } from '/imports/both/helpers';
 import Projects from '/imports/api/projects/projects';
@@ -65,6 +66,32 @@ function PastReferralsList({ referrals }) {
           desc: true,
         },
       ]}
+      SubComponent={(row) => {
+        const historyData = row.original.history;
+        const referralNotes = row.original.notes;
+        const stepNotes = referralNotes.reduce((acc, note) => {
+          const currentStepNotes = acc[note.step] || [];
+          currentStepNotes.push(note);
+          return { ...acc, [note.step]: currentStepNotes };
+        }, {});
+        return (
+          <div>
+            <h4>&nbsp;History:</h4>
+            <ul>
+              {historyData.map(({ id, step, outcome, created }) =>
+                (<li key={`${row.original.id}-${id}`}>
+                  <strong>Step {step} {moment(created).format('MM/DD/YYYY')}:</strong>
+                  &nbsp;{outcome} &nbsp;
+                  <strong>Number of notes: {stepNotes[step] && stepNotes[step].length || 0}</strong>
+                  {stepNotes[step] && <ul>
+                    {stepNotes[step].map((note) =>
+                      (<li>NOTE {moment(note.created).format('MM/DD/YYYY')}: {note.note}</li>))}
+                  </ul>}
+                </li>))}
+            </ul>
+          </div>
+        );
+      }}
     />
   );
 }
