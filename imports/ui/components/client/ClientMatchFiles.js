@@ -1,78 +1,7 @@
+import { Slingshot } from 'meteor/edgee:slingshot';
 import React, { useState, useEffect } from 'react';
-import moment from 'moment';
 import Alert from '/imports/ui/alert';
-import { read } from 'fs';
 
-// function CreateNoteForm({ onCreateNote }) {
-//   const [note, setNote] = useState('');
-//   const [emailTitle, setEmailTitle] = useState('');
-//   const [emailRecipients, setEmailRecipients] = useState('');
-//   const [sendByEmail, setSendByEmail] = useState(false);
-
-//   function handleSendByEmail() {
-//     setSendByEmail(!sendByEmail);
-//   }
-
-//   return (
-//     <form>
-//       <p><strong>New Note</strong></p>
-//       <div className="form-group">
-//         <textarea
-//           className="form-control"
-//           onChange={e => setNote(e.target.value)}
-//           value={note}
-//         />
-//         <div className="checkbox">
-//           <label>
-//             <input
-//               type="checkbox"
-//               checked={sendByEmail}
-//               onChange={() => handleSendByEmail()}
-//             /> Send note by email
-//           </label>
-//         </div>
-//           {
-//             sendByEmail ?
-//               <div>
-//                 <label>Email title</label>
-//                 <input
-//                   type="text"
-//                   className="form-control"
-//                   value={emailTitle}
-//                   onChange={e => setEmailTitle(e.target.value)}
-//                 />
-//                 <label>Recipients</label>
-//                 <input
-//                   type="text"
-//                   className="form-control"
-//                   placeholder="separate emails by comma"
-//                   value={emailRecipients}
-//                   onChange={e => setEmailRecipients(e.target.value)}
-//                 />
-//               </div>
-//             :
-//             null
-//           }
-//       </div>
-//       <button
-//         type="submit"
-//         className="btn btn-default"
-//         onClick={e => {
-//           e.preventDefault();
-//           onCreateNote({
-//             note,
-//             sendByEmail,
-//             emailTitle: sendByEmail ? emailTitle : '',
-//             emailRecipients: sendByEmail ? emailRecipients.split(',') : [],
-//           });
-//           setNote('');
-//           setEmailTitle('');
-//           setEmailRecipients('');
-//         }}
-//       >Create Note</button>
-//     </form>
-//   );
-// }
 
 export default function ClientMatchFiles({ dedupClientId, matchId, step, files }) {
   const [lastDataFetch, setLastDataFetch] = useState(new Date());
@@ -124,7 +53,9 @@ export default function ClientMatchFiles({ dedupClientId, matchId, step, files }
     });
   }
 
-  function handleFileUpload(id) {
+  function handleFileUpload(event, id) {
+    event.preventDefault();
+
     setUploading({
       ...uploading,
       [id]: true,
@@ -137,27 +68,27 @@ export default function ClientMatchFiles({ dedupClientId, matchId, step, files }
       ext = '';
     }
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      const resourcePath = `matching/${matchId}/${step}/${id}${ext}`;
-      const base64data = reader.result.split(',')[1];
-      console.log('file loaded, uploading');
-      Meteor.call('s3bucket.uploadClientFile', dedupClientId, resourcePath, base64data,
-        (err) => {
-          console.log('upload complete');
-          setUploading({
-            ...uploading,
-            [id]: false,
-          });
-          if (err) {
-            Alert.error(err);
-          } else {
-            Alert.success(`${files[id].label} uploaded`);
-            setLastDataFetch(new Date());
-          }
-        });
+    const metaContext = {
+      dedupClientId,
+      matchId,
+      step,
+      fileId: id,
+      ext,
     };
-    reader.readAsDataURL(uploadedFiles[id].file); // readAsBinaryString
+    const uploader = new Slingshot.Upload('referrals', metaContext);
+    uploader.send(uploadedFiles[id].file, err => {
+      setUploading({
+        ...uploading,
+        [id]: false,
+      });
+
+      if (err) {
+        Alert.error(err);
+      } else {
+        Alert.success(`${files[id].label} uploaded`);
+        setLastDataFetch(new Date());
+      }
+    });
   }
 
   function handleFileRemove(id) {
@@ -228,7 +159,7 @@ export default function ClientMatchFiles({ dedupClientId, matchId, step, files }
                         <button
                           disabled={uploading[id]}
                           className="btn btn-primary"
-                          onClick={() => handleFileUpload(id)}
+                          onClick={(event) => handleFileUpload(event, id)}
                         >Upload</button>
                         <button
                           disabled={uploading[id]}

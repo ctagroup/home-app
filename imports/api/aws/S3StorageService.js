@@ -66,7 +66,7 @@ class S3StorageService {
     });
   }
 
-  getObjectLinkAsync(filePath, expiryInSeconds) {
+  getObjectDownloadLinkAsync(filePath, expiryInSeconds) {
     return new Promise((resolve, reject) => {
       this.s3.getSignedUrl('getObject', {
         Key: filePath,
