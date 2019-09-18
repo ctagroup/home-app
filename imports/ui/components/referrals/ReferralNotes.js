@@ -208,8 +208,6 @@ const ReferralNotes = ({ matchId, step, notes, config, handleDataReload, permiss
     currentStepTitle = `Step ${step}`;
   }
 
-  console.log(permissions);
-
   return (
     <React.Fragment>
       <div className="d-flex justify-content-between">

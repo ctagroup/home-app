@@ -10,6 +10,7 @@ import Responses from '/imports/api/responses/responses';
 import ResponsesRepository from '/imports/api/responses/ResponsesRepository';
 import NoteApiClient from '/imports/api/homeApi/noteApi';
 import MatchApiClient from '../../../api/homeApi/matchApi';
+import S3StorageService from '/imports/api/aws/S3StorageService';
 
 
 function createHmisClient({ userId }) {
@@ -44,6 +45,7 @@ export function setupEndpointDependencies(endpointName, container) {
       loggerName: awilix.asValue(endpointName),
       logger: awilix.asClass(SentryLogger),
       responsesRepository: awilix.asClass(ResponsesRepository),
+      s3storageService: awilix.asClass(S3StorageService),
     });
   }
 

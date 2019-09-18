@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import Alert from '/imports/ui/alert';
-import ClientMatchNotes from '/imports/ui/components/client/ClientMatchNotes';
+import ClientMatchFiles from '/imports/ui/components/client/ClientMatchFiles';
 
-const ReferralStepContainer = ({ matchId, config, currentStepId, selectedStepId, selectStep,
-  handleDataReload, permissions }) => {
+const ReferralStepContainer = ({ dedupClientId, matchId, config, currentStepId,
+  selectedStepId, selectStep, handleDataReload, permissions }) => {
   const [selectedOption, selectOption] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const getNextStep = (stepId) => {
-    console.log('getNextStep', stepId);
     const stepIndex = config.steps.findIndex((step) => step.id === stepId);
     if (stepIndex === config.steps.length) return stepId;
     return config.steps[stepIndex + 1].id;
@@ -116,6 +115,19 @@ const ReferralStepContainer = ({ matchId, config, currentStepId, selectedStepId,
             )}
           </div>
         </div>
+      </div>
+      <div className="row">
+        {selectedStep.files &&
+          <div className="col-md-6">
+            <ClientMatchFiles
+              dedupClientId={dedupClientId}
+              matchId={matchId}
+              step={selectedStepId}
+              files={selectedStep.files}
+              permissions={permissions}
+            />
+          </div>
+        }
       </div>
     </div>
   );
