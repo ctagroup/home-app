@@ -1,5 +1,7 @@
+import moment from 'moment';
 import Alert from '/imports/ui/alert';
 import OpeningScript from '/imports/api/openingScript/openingScript';
+import '/imports/ui/rois/roisForm';
 import './signaturePad.js';
 import './preliminarySurvey.html';
 
@@ -54,6 +56,12 @@ Template.preliminarySurvey.helpers({
   showRoiStep() {
     return Template.instance().activeStep.get() === 1;
   },
+  roiData() {
+    return {
+      startDate: moment().format('YYYY-MM-DD'),
+      endDate: moment().add(3, 'Y').format('YYYY-MM-DD'),
+    };
+  },
 });
 
 Template.preliminarySurvey.events(
@@ -69,14 +77,33 @@ Template.preliminarySurvey.events(
 
       const signaturePad = Router.current().params.signaturePad;
       if (currentStep === ROI_STEP) {
+        const startDate = $('#startDate').val();
+        const endDate = $('#endDate').val();
+        const notes = $('#notes').val();
+
+        if (!startDate) {
+          Alert.error('You must provide ROI start date');
+          return;
+        }
+        if (!endDate) {
+          Alert.error('You must provide ROI end date');
+          return;
+        }
         if (signaturePad.isEmpty()) {
           Alert.error('Please provide signature first');
           return;
         }
-        if (!$('#roiCheckbox')[0].checked) {
+        if ($('#roiAgreement').length && !$('#roiAgreement')[0].checked) {
           Alert.error('You must agree');
           return;
         }
+
+        // set values in client form (see "createClient" template)
+        $('#create-client-form #roiStartDate').val(startDate);
+        $('#create-client-form #roiEndDate').val(endDate);
+        $('#create-client-form #roiNotes').val(notes);
+        $('#create-client-form .signature').val(signaturePad.toDataURL());
+        $('#create-client-form .signature-img').attr('src', signaturePad.toDataURL());
       }
 
       Template.instance().activeStep.set(nextStep(currentStep));
@@ -90,12 +117,6 @@ Template.preliminarySurvey.onCreated(function onCreated() {
   this.autorun(() => {
     if (this.activeStep.get() === ENDED_STEP) {
       $('#preliminarySurveyModal').modal('hide');
-
-      const signaturePad = Router.current().params.signaturePad;
-      if (signaturePad) {
-        $('#create-client-form .signature').val(signaturePad.toDataURL());
-        $('#create-client-form .signature-img').attr('src', signaturePad.toDataURL());
-      }
     }
   });
 });
