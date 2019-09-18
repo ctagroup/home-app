@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-
+import ReferralNotes from '/imports/ui/components/referrals/ReferralNotes';
 import StepPicker from './StepPicker';
 import StepContainer from './StepContainer';
-
-
 import config from './config';
 
 
@@ -19,9 +17,9 @@ const StepProgress = ({ stepNumber, steps }) => (
   </div>
 );
 
-const ReferralSteps = ({ matchId, lastStepId, handleDataReload }) => {
-  let currentStepId;
+const ReferralSteps = ({ referral, lastStepId, handleDataReload, permissions }) => {
   const lastStepIndex = config.steps.findIndex(step => step.id == lastStepId); // eslint-disable-line eqeqeq, max-len
+  let currentStepId;
   try {
     currentStepId = config.steps[lastStepIndex + 1].id;
   } catch (err) {
@@ -50,27 +48,38 @@ const ReferralSteps = ({ matchId, lastStepId, handleDataReload }) => {
   const passedSteps = stepsNumbers.filter(step => !futureStepObj.data[step]).length;
 
   return (
-    <div id="referral-timeline" className="col-xs-9 my-center-block">
-      <div className="navigation">
-        <StepPicker
-          selectStep={selectStep}
-          steps={config.steps}
-          selectedStepId={selectedStepId}
+    <React.Fragment>
+      <div id="referral-timeline" className="col-xs-9 my-center-block">
+        <div className="navigation">
+          <StepPicker
+            selectStep={selectStep}
+            steps={config.steps}
+            selectedStepId={selectedStepId}
+            currentStepId={currentStepId}
+            matchId={referral.id}
+            futureStepObj={futureStepObj}
+          />
+          <StepProgress steps={stepsNumbers.length} stepNumber={passedSteps} />
+        </div>
+        <StepContainer
+          config={config}
           currentStepId={currentStepId}
-          matchId={matchId}
-          futureStepObj={futureStepObj}
+          selectStep={selectStep}
+          selectedStepId={selectedStepId}
+          matchId={referral.id}
+          handleDataReload={handleDataReload}
+          permissions={permissions}
         />
-        <StepProgress steps={stepsNumbers.length} stepNumber={passedSteps} />
       </div>
-      <StepContainer
+      <ReferralNotes
+        matchId={referral.id}
+        step={selectedStepId}
+        notes={referral.notes}
         config={config}
-        currentStepId={currentStepId}
-        selectStep={selectStep}
-        selectedStepId={selectedStepId}
-        matchId={matchId}
         handleDataReload={handleDataReload}
+        permissions={permissions}
       />
-    </div>
+    </React.Fragment>
   );
 };
 

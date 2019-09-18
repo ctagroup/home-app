@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import Alert from '/imports/ui/alert';
 
-function CreateNoteForm({ onCreateNote }) {
+
+export function CreateNoteForm({ onCreateNote, permissions }) {
   const [note, setNote] = useState('');
   const [emailTitle, setEmailTitle] = useState('');
   const [emailRecipients, setEmailRecipients] = useState('');
@@ -18,6 +19,7 @@ function CreateNoteForm({ onCreateNote }) {
       <div className="form-group">
         <textarea
           className="form-control"
+          disabled={!permissions.canUpdateReferrals}
           onChange={e => setNote(e.target.value)}
           value={note}
         />
@@ -25,6 +27,7 @@ function CreateNoteForm({ onCreateNote }) {
           <label>
             <input
               type="checkbox"
+              disabled={!permissions.canUpdateReferrals}
               checked={sendByEmail}
               onChange={() => handleSendByEmail()}
             /> Send note by email
@@ -36,6 +39,7 @@ function CreateNoteForm({ onCreateNote }) {
                 <label>Email title</label>
                 <input
                   type="text"
+                  disabled={!permissions.canUpdateReferrals}
                   className="form-control"
                   value={emailTitle}
                   onChange={e => setEmailTitle(e.target.value)}
@@ -43,6 +47,7 @@ function CreateNoteForm({ onCreateNote }) {
                 <label>Recipients</label>
                 <input
                   type="text"
+                  disabled={!permissions.canUpdateReferrals}
                   className="form-control"
                   placeholder="separate emails by comma"
                   value={emailRecipients}
@@ -56,6 +61,7 @@ function CreateNoteForm({ onCreateNote }) {
       <button
         type="submit"
         className="btn btn-default"
+        disabled={!permissions.canUpdateReferrals}
         onClick={e => {
           e.preventDefault();
           onCreateNote({
@@ -73,7 +79,7 @@ function CreateNoteForm({ onCreateNote }) {
   );
 }
 
-export default function ClientMatchNotes({ matchId, step }) {
+export default function ClientMatchNotes({ matchId, step, handleDataReload, permissions }) {
   const [lastDataFetch, setLastDataFetch] = useState(new Date());
   const [notes, setNotes] = useState([]);
 
@@ -91,6 +97,7 @@ export default function ClientMatchNotes({ matchId, step }) {
   }, [lastDataFetch]);
 
   function handleCreateNote({ note, sendByEmail, emailTitle, emailRecipients }) {
+    handleDataReload();
     Meteor.call('matching.createNote', matchId, step, note, err => {
       if (err) {
         Alert.error(err);
@@ -111,6 +118,7 @@ export default function ClientMatchNotes({ matchId, step }) {
   }
 
   function handleDeleteNote(noteId) {
+    handleDataReload();
     Meteor.call('matching.deleteNote', noteId, err => {
       if (err) {
         Alert.error(err);
@@ -140,7 +148,7 @@ export default function ClientMatchNotes({ matchId, step }) {
       <div><strong>Notes</strong></div>
       {renderNotes()}
       <br />
-      <CreateNoteForm onCreateNote={handleCreateNote} />
+      <CreateNoteForm onCreateNote={handleCreateNote} permissions={permissions} />
     </div>
   );
 }

@@ -18,7 +18,13 @@ import { TableDom } from '/imports/ui/dataTable/helpers';
 import FeatureDecisions from '/imports/both/featureDecisions';
 import ClientContainer from '/imports/ui/components/client/ClientContainer';
 
-import { FilesAccessRoles, GlobalHouseholdsAccessRoles } from '/imports/config/permissions';
+import {
+  ClientCaseNotesAccessRoles,
+  FilesAccessRoles,
+  GlobalHouseholdsAccessRoles,
+  CreateReferralsPermission,
+  UpdateReferralsPermission,
+} from '/imports/config/permissions';
 
 import { getRace, getGender, getEthnicity, getYesNo } from './textHelpers.js';
 import { getActiveTagNamesForDate } from '/imports/api/tags/tags';
@@ -145,6 +151,7 @@ Template.viewClient.helpers(
       const hasPermission = Roles.userIsInRole(Meteor.userId(), FilesAccessRoles);
 
       const showEnrollments = this && this.clientId;
+      const showCaseNotes = Roles.userIsInRole(Meteor.userId(), ClientCaseNotesAccessRoles);
 
       const getEnrollmentType = (stage) => {
         const enrollmentId = Template.instance().selectedEnrollment.get();
@@ -154,11 +161,14 @@ Template.viewClient.helpers(
       return {
         showReferralStatus: hasPermission && this && this.clientId,
         showEnrollments,
+        showCaseNotes,
         updateEnrollment: getEnrollmentType('UPDATE'),
         annualEnrollment: getEnrollmentType('ANNUAL'),
         exitEnrollment: getEnrollmentType('EXIT'),
         showEditButton: Template.instance() && Template.instance().data.showEditButton,
         isSkidrowApp: FeatureDecisions.createFromMeteorSettings().isSkidrowApp(),
+        canCreateReferrals: Roles.userIsInRole(Meteor.userId(), CreateReferralsPermission),
+        canUpdateReferrals: Roles.userIsInRole(Meteor.userId(), UpdateReferralsPermission),
       };
     },
     data() {

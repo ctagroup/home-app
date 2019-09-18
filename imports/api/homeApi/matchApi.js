@@ -74,6 +74,11 @@ class MatchApiClient extends HomeApiClient {
     });
   }
 
+  updateNote(noteId, note) {
+    const url = this.absoluteUrl(`/api/v1/matching/notes/${noteId}/`);
+    return this.doPatch(url, { note });
+  }
+
   deleteNote(noteId) {
     const url = this.absoluteUrl(`/api/v1/matching/notes/${noteId}/`);
     return this.doDel(url);

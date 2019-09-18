@@ -302,6 +302,10 @@ Meteor.injectedMethods({
     const { matchApiClient } = this.context;
     return matchApiClient.createNote(matchId, step, note);
   },
+  'matching.updateNote'(noteId, note) {
+    const { matchApiClient } = this.context;
+    return matchApiClient.updateNote(noteId, note);
+  },
   'matching.deleteNote'(noteId) {
     const { matchApiClient } = this.context;
     return matchApiClient.deleteNote(noteId);
