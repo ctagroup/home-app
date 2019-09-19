@@ -11,7 +11,7 @@ Meteor.injectedMethods({
   },
 
   's3bucket.put'(clientId, resource, data) {
-    // legacy method, use s3bucket.uploadClientFile instead
+    // legacy method, use slingshot instead
     const { logger, s3storageService } = this.context;
     logger.info(`METHOD[${this.userId}]: s3bucket.put`, clientId, resource, data.length);
     const path = `${SIGNATURES_PREFIX}/${clientId}/${resource}`;
@@ -32,6 +32,7 @@ Meteor.injectedMethods({
   },
 
   's3bucket.getClientFile'(dedupClientId, resourcePath) {
+    // using s3bucket.getClientFileDownloadLink is preferred
     const { logger, s3storageService } = this.context;
     const path = `clients/${dedupClientId}/${resourcePath}`;
     logger.debug('getting client file', path);
@@ -52,22 +53,13 @@ Meteor.injectedMethods({
     return base64data; // return binary data? buffer.toString('binary')
   },
 
-  's3bucket.uploadClientFile'(dedupClientId, resourcePath, base64data) {
+  's3bucket.getClientFileDownloadLink'(dedupClientId, resourcePath) {
     const { logger, s3storageService } = this.context;
     const path = `clients/${dedupClientId}/${resourcePath}`;
-    logger.debug('uploading client file', path);
-
-    const buffer = new Buffer(base64data, 'base64');
-    const binaryBuffer = Buffer.from(buffer, 'binary');
-
-    // uncomment to verify that the file is passed correcty from client to server
-    // var fs = require('fs');
-    // const xx = `/tmp/uploaded_${resourcePath.split('/').pop()}`;
-    // console.log(xx);
-    // fs.writeFileSync(xx, buffer);
-
+    logger.debug('getting client file', path);
     // TODO: permission check
-    return s3storageService.uploadAsync(path, binaryBuffer).await();
+    const expiryInSeconds = 60;
+    return s3storageService.getObjectDownloadLinkAsync(path, expiryInSeconds).await();
   },
 
   's3bucket.deleteClientFile'(dedupClientId, resourcePath) {

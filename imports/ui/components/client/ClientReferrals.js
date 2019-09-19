@@ -84,7 +84,6 @@ function ClientReferrals({ permissions, ...props }) {
         <ReferralSteps
           referral={ongoingReferral}
           dedupClientId={dedupClientId}
-          matchId={ongoingReferral.id}
           lastStepId={lastStepId}
           handleDataReload={updateClientMatches}
           permissions={permissions}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Alert from '/imports/ui/alert';
 import ClientMatchFiles from '/imports/ui/components/client/ClientMatchFiles';
 
-const ReferralStepContainer = ({ dedupClientId, matchId, config, currentStepId,
+const StepContainer = ({ dedupClientId, matchId, config, currentStepId,
   selectedStepId, selectStep, handleDataReload, permissions }) => {
   const [selectedOption, selectOption] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -133,4 +133,4 @@ const ReferralStepContainer = ({ dedupClientId, matchId, config, currentStepId,
   );
 };
 
-export default ReferralStepContainer;
+export default StepContainer;

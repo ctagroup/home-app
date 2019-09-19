@@ -78,6 +78,7 @@ import '/imports/startup/server/admins';
 import '/imports/startup/server/mergeAccountsPatch';
 
 import '/imports/api/mc211/methods';
+import '/imports/both/slingshot';
 
 Meteor.startup(() => {
   eventPublisher.publish(new ServerStartedEvent());

@@ -1,3 +1,4 @@
+import { Slingshot } from 'meteor/edgee:slingshot';
 import React, { useState, useEffect } from 'react';
 import Alert from '/imports/ui/alert';
 
@@ -5,7 +6,6 @@ import Alert from '/imports/ui/alert';
 export default function ClientMatchFiles({ dedupClientId, matchId, step, files, permissions }) {
   const [lastDataFetch, setLastDataFetch] = useState(new Date());
   const [uploadedFiles, setUploadedFiles] = useState({});
-  const [downloading, setDownloading] = useState({});
   const [uploading, setUploading] = useState({});
 
   useEffect(() => {
@@ -40,33 +40,21 @@ export default function ClientMatchFiles({ dedupClientId, matchId, step, files, 
   }
 
   function handleFileDownload(id) {
-    setDownloading({
-      ...downloading,
-      [id]: true,
-    });
     const name = uploadedFiles[id].file.name;
     const resourcePath = `matching/${matchId}/${step}/${name}`;
-    Meteor.call('s3bucket.getClientFile', dedupClientId, resourcePath,
-    (err, base64data) => {
-      setDownloading({
-        ...downloading,
-        [id]: false,
-      });
+    Meteor.call('s3bucket.getClientFileDownloadLink', dedupClientId, resourcePath,
+    (err, downloadLink) => {
       if (err) {
         Alert.error(err);
       } else {
-        const uriContent = `data:application/octet-stream;base64,${base64data}`;
-        const link = document.createElement('a');
-        link.download = uploadedFiles[id].file.name;
-        link.href = uriContent;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        window.location = downloadLink;
       }
     });
   }
 
-  function handleFileUpload(id) {
+  function handleFileUpload(event, id) {
+    event.preventDefault();
+
     setUploading({
       ...uploading,
       [id]: true,
@@ -79,25 +67,27 @@ export default function ClientMatchFiles({ dedupClientId, matchId, step, files, 
       ext = '';
     }
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      const resourcePath = `matching/${matchId}/${step}/${id}${ext}`;
-      const base64data = reader.result.split(',')[1];
-      Meteor.call('s3bucket.uploadClientFile', dedupClientId, resourcePath, base64data,
-        (err) => {
-          setUploading({
-            ...uploading,
-            [id]: false,
-          });
-          if (err) {
-            Alert.error(err);
-          } else {
-            Alert.success(`${files[id].label} uploaded`);
-            setLastDataFetch(new Date());
-          }
-        });
+    const metaContext = {
+      dedupClientId,
+      matchId,
+      step,
+      fileId: id,
+      ext,
     };
-    reader.readAsDataURL(uploadedFiles[id].file); // readAsBinaryString
+    const uploader = new Slingshot.Upload('referrals', metaContext);
+    uploader.send(uploadedFiles[id].file, err => {
+      setUploading({
+        ...uploading,
+        [id]: false,
+      });
+
+      if (err) {
+        Alert.error(err);
+      } else {
+        Alert.success(`${files[id].label} uploaded`);
+        setLastDataFetch(new Date());
+      }
+    });
   }
 
   function handleFileRemove(id) {
@@ -146,13 +136,10 @@ export default function ClientMatchFiles({ dedupClientId, matchId, step, files, 
                     <a
                       href="#"
                       title={uploadedFiles[id].file.name}
-                      onClick={() => !downloading[id] && handleFileDownload(id)}
+                      onClick={() => handleFileDownload(id)}
                     >
                       {files[id].label}
                     </a>
-                    {downloading[id] &&
-                      <i style={{ paddingLeft: 8 }} className="fa fa-cloud-download"></i>
-                    }
                   </React.Fragment>
                   :
                   files[id].label
@@ -174,7 +161,7 @@ export default function ClientMatchFiles({ dedupClientId, matchId, step, files, 
                         <button
                           disabled={uploading[id] || !permissions.canUpdateReferrals}
                           className="btn btn-primary"
-                          onClick={() => handleFileUpload(id)}
+                          onClick={(event) => handleFileUpload(event, id)}
                         >Upload</button>
                         <button
                           disabled={uploading[id]}

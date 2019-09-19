@@ -86,3 +86,4 @@ meteortesting:mocha
 littledata:synced-cron
 practicalmeteor:chai
 okgrow:analytics
+edgee:slingshot
