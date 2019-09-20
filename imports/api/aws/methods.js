@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const SIGNATURES_PREFIX = 'consent signatures';
 
 Meteor.injectedMethods({
@@ -21,7 +23,8 @@ Meteor.injectedMethods({
 
   's3bucket.list'(rootDir = '') {
     const { s3storageService } = this.context;
-    return s3storageService.listObjectsAsync(rootDir).await();
+    const result = s3storageService.listObjectsAsync(rootDir).await();
+    return result;
   },
 
   's3bucket.getObject'(resourcePath) {
@@ -76,4 +79,60 @@ Meteor.injectedMethods({
     return s3storageService.listObjectsAsync(path).await();
   },
 
+  's3bucket.importSignatures'(first = '0') {
+    const { hmisClient, logger } = this.context;
+    const allowed = '0123456789abcdef';
+    for (let i = allowed.indexOf(first); i < allowed.length; i++) {
+      const key = `consent signatures/${allowed.charAt(i)}`;
+      const files = Meteor.call('s3bucket.list', key).Contents;
+      return files.reduce((result, file) => {
+        const [, clientId, type] = file.Key.split('/');
+        if (type === 'signature') {
+          if (file.Size === 0) {
+            logger.warn(clientId, 'Empty signature');
+            return {
+              ...result,
+              emptySignature: result.emptySignature + 1,
+            };
+          }
+
+          const searchResults = hmisClient.api('client').searchClient(clientId);
+          if (searchResults.length === 0) {
+            logger.warn(clientId, 'Client not found');
+            return {
+              ...result,
+              notFound: result.notFound + 1,
+            };
+          }
+
+          const dedupClientId = searchResults[0].dedupClientId;
+
+          const existingRois = Meteor.call('roiApi', 'getRoisForClient', dedupClientId);
+          if (existingRois.length) {
+            logger.warn(clientId, 'ROI already exists');
+            return {
+              ...result,
+              roiExists: result.roiExists + 1,
+            };
+          }
+
+          const roiData = {
+            clientId: dedupClientId,
+            startDate: moment(file.LastModified).format('YYYY-MM-DD'),
+            endDate: moment(file.LastModified).add(3, 'Y').format('YYYY-MM-DD'),
+            notes: 'ROI migrated from legacy HOME',
+            signature: Meteor.call('s3bucket.get', clientId, 'signature'),
+          };
+
+          Meteor.call('roiApi', 'createRoi', roiData);
+          logger.info('ROI created');
+          return {
+            ...result,
+            success: result.success + 1,
+          };
+        }
+        return result;
+      }, { notFound: 0, emptySignature: 0, roiExists: 0, success: 0 });
+    }
+  },
 });
