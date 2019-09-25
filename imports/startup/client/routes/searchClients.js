@@ -1,5 +1,5 @@
 import { AppController } from './controllers';
-import { DefaultAdminAccessRoles } from '/imports/config/permissions';
+import { ClientsAccessRoles } from '/imports/config/permissions';
 
 Router.route('adminDashboardsearchClientsView', {
   path: '/clients/searchClientsView/:searchKey',
@@ -7,7 +7,7 @@ Router.route('adminDashboardsearchClientsView', {
   controller: AppController,
   authorize: {
     allow() {
-      return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+      return Roles.userIsInRole(Meteor.userId(), ClientsAccessRoles);
     },
   },
   data() {
