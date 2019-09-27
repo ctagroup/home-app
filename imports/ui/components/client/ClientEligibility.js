@@ -22,7 +22,7 @@ const reasonsList = reasons;
 function ClientEligibility(props) {
   const [removalDate, changeDate] = useState(new Date());
   const [removalRemarks, changeRemarks] = useState('');
-  const [removalReason, changeReason] = useState('');
+  const [removalReason, changeReason] = useState(reasons[0].id);
 
   let { eligibleClient } = props;
   const { helpers: { removeFromActiveList } } = props;
