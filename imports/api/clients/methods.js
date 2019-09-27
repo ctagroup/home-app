@@ -27,25 +27,14 @@ Meteor.methods({
     if (clientVersion) return result;
 
     try {
-      Meteor.call('s3bucket.put', result.dedupClientId, 'photo', client.photo);
-      Meteor.call('s3bucket.put', result.dedupClientId, 'signature', client.signature);
+      if (client.photo) {
+        Meteor.call('s3bucket.put', result.dedupClientId, 'photo', client.photo);
+      }
+      if (client.signature) {
+        Meteor.call('s3bucket.put', result.dedupClientId, 'signature', client.signature);
+      }
     } catch (err) {
       logger.error('Failed to upload photo/signature to s3', err);
-    }
-
-    if (client.signature) {
-      try {
-        const data = {
-          clientId: result.dedupClientId,
-          startDate: moment().format('YYYY-MM-DD'),
-          endDate: moment().add(1, 'years').format('YYYY-MM-DD'),
-          notes: 'client created',
-          signature: client.signature,
-        };
-        Meteor.call('roiApi', 'createRoi', data);
-      } catch (err) {
-        logger.error('Failed to create ROI for client', err);
-      }
     }
 
     eventPublisher.publish(new ClientCreatedEvent(result, { userId: this.userId }));
@@ -301,6 +290,10 @@ Meteor.injectedMethods({
   'matching.createNote'(matchId, step, note) {
     const { matchApiClient } = this.context;
     return matchApiClient.createNote(matchId, step, note);
+  },
+  'matching.updateNote'(noteId, note) {
+    const { matchApiClient } = this.context;
+    return matchApiClient.updateNote(noteId, note);
   },
   'matching.deleteNote'(noteId) {
     const { matchApiClient } = this.context;

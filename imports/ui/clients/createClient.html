@@ -3,13 +3,16 @@
     <div class="col-md-8 col-sm-6 col-xs-12 personal-info">
       <form id="create-client-form" class="form-horizontal" role="form">
         {{> clientForm}}
-          <div class="form-group">
-            <label class="col-md-3 control-label"></label>
-            <div class="col-md-8">
-              <input class="btn btn-primary save" value="Submit" type="button">
-              <input class="btn btn-default cancel-client-creation" value="Cancel" type="button">
-            </div>
+        <input id="roiStartDate" type="hidden" />
+        <input id="roiEndDate" type="hidden" />
+        <input id="roiNotes" type="hidden" />
+        <div class="form-group">
+          <label class="col-md-3 control-label"></label>
+          <div class="col-md-8">
+            <input class="btn btn-primary save" value="Submit" type="button">
+            <input class="btn btn-default cancel-client-creation" value="Cancel" type="button">
           </div>
+        </div>
       </form>
     </div>
   </div>

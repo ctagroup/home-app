@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import Alert from '/imports/ui/alert';
-import ClientMatchNotes from '/imports/ui/components/client/ClientMatchNotes';
+import ClientMatchFiles from '/imports/ui/components/client/ClientMatchFiles';
 
-const ReferralStepContainer = ({ matchId, config, currentStepId, selectedStepId, selectStep,
-  handleDataReload }) => {
+const StepContainer = ({ dedupClientId, matchId, config, currentStepId,
+  selectedStepId, selectStep, handleDataReload, permissions }) => {
   const [selectedOption, selectOption] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const getNextStep = (stepId) => {
-    console.log('getNextStep', stepId);
     const stepIndex = config.steps.findIndex((step) => step.id === stepId);
     if (stepIndex === config.steps.length) return stepId;
     return config.steps[stepIndex + 1].id;
@@ -68,6 +67,7 @@ const ReferralStepContainer = ({ matchId, config, currentStepId, selectedStepId,
               <button
                 key={i}
                 type="button"
+                disabled={!permissions.canUpdateReferrals}
                 className={`btn ${selectedOption === option && 'btn-primary' || 'btn-secondary'}`}
                 onClick={() => selectOption(option)}
               >{option}</button>
@@ -96,7 +96,7 @@ const ReferralStepContainer = ({ matchId, config, currentStepId, selectedStepId,
             {currentStepId === selectedStepId ? (
               canMoveToNextStep && <button
                 className="btn btn-primary"
-                disabled={stepIncomplete || isSubmitting}
+                disabled={stepIncomplete || isSubmitting || !permissions.canUpdateReferrals}
                 onClick={() => goToNextStep(selectedOption)}
               >Go to next step</button>
             ) : (
@@ -108,19 +108,29 @@ const ReferralStepContainer = ({ matchId, config, currentStepId, selectedStepId,
               <button
                 className="btn btn-primary"
                 onClick={() => endReferral(selectedOption)}
-                disabled={stepIncomplete || isSubmitting}
+                disabled={stepIncomplete || isSubmitting || !permissions.canUpdateReferrals}
               >
                 End referral
               </button>
             )}
           </div>
         </div>
-        <div className="col-md-6">
-          <ClientMatchNotes matchId={matchId} step={selectedStepId} />
-        </div>
+      </div>
+      <div className="row">
+        {selectedStep.files &&
+          <div className="col-md-6">
+            <ClientMatchFiles
+              dedupClientId={dedupClientId}
+              matchId={matchId}
+              step={selectedStepId}
+              files={selectedStep.files}
+              permissions={permissions}
+            />
+          </div>
+        }
       </div>
     </div>
   );
 };
 
-export default ReferralStepContainer;
+export default StepContainer;

@@ -1,4 +1,4 @@
-import { DefaultAdminAccessRoles } from '/imports/config/permissions';
+import { ClientsAccessRoles } from '/imports/config/permissions';
 import { AppController } from './controllers';
 import '/imports/ui/rois/roisNew';
 import '/imports/ui/rois/roisEdit';
@@ -11,7 +11,7 @@ Router.route(
     controller: AppController,
     authorize: {
       allow() {
-        return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+        return Roles.userIsInRole(Meteor.userId(), ClientsAccessRoles);
       },
     },
     data() {
@@ -31,7 +31,7 @@ Router.route(
     controller: AppController,
     authorize: {
       allow() {
-        return Roles.userIsInRole(Meteor.userId(), DefaultAdminAccessRoles);
+        return Roles.userIsInRole(Meteor.userId(), ClientsAccessRoles);
       },
     },
     data() {

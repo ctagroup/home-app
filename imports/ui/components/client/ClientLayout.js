@@ -14,6 +14,7 @@ function ClientLayout(props) {
   const { client, permissions, eligibleClient, data, helpers } = props;
   const {
     showReferralStatus,
+    showCaseNotes,
     // showEnrollments,
     // updateEnrollment,
     // annualEnrollment,
@@ -41,7 +42,7 @@ function ClientLayout(props) {
     // { id: 'case-management', enabled: false, title: 'Case Management' },
     // { id: 'responses', enabled: false, title: 'Responses' },
     // { id: 'matching', enabled: showReferralStatus, title: 'New Referral' },
-    { id: 'case-notes', enabled: true, title: 'Case Notes' },
+    { id: 'case-notes', enabled: showCaseNotes, title: 'Case Notes' },
   ].filter((t) => t.enabled);
 
   const [selectedTab, selectTab] = useState(props.selectedTab || tabsList[0].id);
@@ -83,7 +84,9 @@ function ClientLayout(props) {
             <ClientTab selectedTab={selectedTab} id={'referrals'} >
               <ClientReferrals
                 eligibleClient={data.eligibleClient()}
-                client={client} permissions={{ showEditButton }} helpers={helpers.referrals}
+                client={client}
+                permissions={permissions}
+                helpers={helpers.referrals}
               />
             </ClientTab>
             <ClientTab selectedTab={selectedTab} id={'eligibility'} >
@@ -99,9 +102,9 @@ function ClientLayout(props) {
                 helpers={helpers.enrollments}
               />
             </ClientTab>
-            <ClientTab selectedTab={selectedTab} id={'case-notes'} >
+            {showCaseNotes && <ClientTab selectedTab={selectedTab} id={'case-notes'} >
               <CaseNotes client={client} />
-            </ClientTab>
+            </ClientTab>}
             <ClientTab selectedTab={selectedTab} id={'matching'} >
               <MatchingContainer
                 helpers={helpers.referrals}

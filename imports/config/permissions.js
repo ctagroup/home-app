@@ -7,6 +7,11 @@ export const ClientsAccessRoles = [
   'External Surveyor',
 ];
 
+export const ClientCaseNotesAccessRoles = [
+  'Developer',
+  'System Admin',
+];
+
 export const FilesAccessRoles = [
   'Developer',
   'System Admin',
@@ -22,7 +27,6 @@ export const GlobalHouseholdsAccessRoles = [
   'Developer',
   'System Admin',
   'Program Manager',
-  'Case Manager',
   'Surveyor',
 ];
 
@@ -38,4 +42,20 @@ export const ResponsesAccessRoles = [
   'Program Manager',
   'Case Manager',
   'Surveyor',
+];
+
+export const CreateReferralsPermission = [
+  'Developer',
+  'System Admin',
+];
+
+export const UpdateReferralsPermission = [
+  'Developer',
+  'System Admin',
+  'Program Manager',
+];
+
+export const ManageClientNotesPermission = [
+  'Developer',
+  'System Admin',
 ];

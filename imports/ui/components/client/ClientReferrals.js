@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import Projects from '/imports/api/projects/projects';
-// import Users from '/imports/api/users/users';
-import ReferralSteps from '/imports/ui/components/referrals/Steps';
-import PastReferralsList from '/imports/ui/components/referrals/PastReferralsList';
+import ReferralSteps from '/imports/ui/components/referrals/ReferralSteps';
 import MatchingContainer from '/imports/ui/components/matching/MatchingContainer';
+
 
 function isMatchCompleted(match) {
   // for now lets assume that completed match has end date set
   return !!match.endDate;
 }
 
-function ClientReferrals(props) {
+function ClientReferrals({ permissions, ...props }) {
   const { client: { dedupClientId } } = props;
   const [lastDataFetch, setLastDataFetch] = useState(new Date());
   const [clientMatches, setClientMatches] = useState([]);
 
   const ongoingReferral = clientMatches.find(m => !isMatchCompleted(m));
-  const pastReferrals = clientMatches.filter(isMatchCompleted);
   const getLastStepId = (referral) => (referral && referral.history && referral.history.length ?
     referral.history[referral.history.length - 1].step
     : null);
@@ -84,9 +82,11 @@ function ClientReferrals(props) {
         {renderActiveReferral()}
         <h3>Curent Referral Status</h3>
         <ReferralSteps
-          matchId={ongoingReferral.id}
+          referral={ongoingReferral}
+          dedupClientId={dedupClientId}
           lastStepId={lastStepId}
           handleDataReload={updateClientMatches}
+          permissions={permissions}
         />
       </div>
     );
@@ -99,9 +99,12 @@ function ClientReferrals(props) {
         dedupClientId={dedupClientId}
         helpers={props.helpers}
         handleDataReload={updateClientMatches}
+        permissions={permissions}
       />}
+      {/*
       <h3>Past Referrals</h3>
       <PastReferralsList referrals={pastReferrals} />
+      */}
     </div>
   );
 }

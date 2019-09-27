@@ -39,6 +39,14 @@ const defaultConfig = {
       notes: true,
       skip: false,
       steps: [],
+      files: {
+        checklistForm: {
+          label: 'Checklist Form',
+        },
+        accteptanceDenialForm: {
+          label: 'Acceptance/Denial Form',
+        },
+      },
     },
     {
       id: 3,
@@ -68,6 +76,11 @@ const defaultConfig = {
       end: true,
       lastStep: true,
       steps: [],
+      files: {
+        accteptanceDenialForm: {
+          label: 'Acceptance/Denial Form',
+        },
+      },
     },
   ],
 };

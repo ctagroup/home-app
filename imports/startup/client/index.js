@@ -19,3 +19,5 @@ import '/imports/ui/dataTable/controlledTable';
 import '/imports/ui/clients/viewAllClients';
 
 import '/imports/startup/client/routes';
+
+import '/imports/both/slingshot';

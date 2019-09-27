@@ -42,6 +42,7 @@ Template.createClient.events({
     .then(
       result => ({
         id: result.clientId,
+        dedupClientId: result.dedupClientId,
         schema: result.schema,
         message: 'Client created in HMIS',
       }),
@@ -56,6 +57,17 @@ Template.createClient.events({
           }));
       }
     )
+    .then(async result => {
+      const roiData = {
+        clientId: result.dedupClientId,
+        startDate: $('#roiStartDate').val(),
+        endDate: $('#roiEndDate').val(),
+        notes: $('#roiNotes').val(),
+        signature: $('#create-client-form .signature').val(),
+      };
+      await Meteor.callPromise('roiApi', 'createRoi', roiData); // eslint-disable-line
+      return result;
+    })
     .then(result => {
       const { id, schema, message } = result;
       Alert.success(message);

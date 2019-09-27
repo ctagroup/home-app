@@ -66,7 +66,7 @@ import '/imports/api/diExample/server/publications';
 
 import '/imports/api/openingScript/methods';
 import '/imports/api/logger/methods';
-import '/imports/api/aws/server/aws';
+import '/imports/api/aws/methods';
 
 import '/imports/api/homeApi/methods';
 import '/imports/api/tags/methods';
@@ -78,6 +78,7 @@ import '/imports/startup/server/admins';
 import '/imports/startup/server/mergeAccountsPatch';
 
 import '/imports/api/mc211/methods';
+import '/imports/both/slingshot';
 
 Meteor.startup(() => {
   eventPublisher.publish(new ServerStartedEvent());

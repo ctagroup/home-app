@@ -1,5 +1,8 @@
 <template name="viewAllClients">
     {{#if hasData}}
     {{> ReactiveDatatable tableData=tableData options=tableOptions class="table dataTable"}}
+      <a href="{{pathFor 'adminDashboardclientsNew'}}" class="btn btn-primary">
+        Add New Client
+      </a>
 	{{/if}}
 </template>
