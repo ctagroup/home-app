@@ -101,10 +101,6 @@ function ClientReferrals({ permissions, ...props }) {
         handleDataReload={updateClientMatches}
         permissions={permissions}
       />}
-      {/*
-      <h3>Past Referrals</h3>
-      <PastReferralsList referrals={pastReferrals} />
-      */}
     </div>
   );
 }

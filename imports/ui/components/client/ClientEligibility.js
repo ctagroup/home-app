@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import DatePicker from 'react-datepicker';
+
+import PastReferralsList from '/imports/ui/components/referrals/PastReferralsList';
+
+function isMatchCompleted(match) {
+  // for now lets assume that completed match has end date set
+  return !!match.endDate;
+}
 
 const reasons = [
   { required: true, text: 'Housed by CARS (include agency/program)' },
@@ -20,10 +27,17 @@ const reasonsHash = reasons.reduce((acc, reason) => ({ ...acc, [reason.id]: reas
 const reasonsList = reasons;
 
 function ClientEligibility(props) {
+  const { client: { dedupClientId } } = props;
   const [removalDate, changeDate] = useState(new Date());
   const [removalRemarks, changeRemarks] = useState('');
+  const [loaded, setLoaded] = useState(false);
   const [removalReason, changeReason] = useState(reasons[0].id);
+  // const [lastDataFetch, setLastDataFetch] = useState(new Date());
+  const [clientMatches, setClientMatches] = useState([]);
 
+  // function updateClientMatches() {
+  //   setLastDataFetch(new Date());
+  // }
   let { eligibleClient } = props;
   const { helpers: { removeFromActiveList } } = props;
   if (!eligibleClient) eligibleClient = {};
@@ -38,6 +52,24 @@ function ClientEligibility(props) {
   // console.log('eligibleClient', eligibleClient);
   if (eligibleClient && eligibleClient.error) return null;
   // return (<div className="row margin-top-35">{client.id}</div>);
+
+
+  useEffect(() => {
+    if (loaded) return;
+    Meteor.call('matchApi', 'getClientMatches', dedupClientId, (err, res) => {
+      if (err) {
+        setClientMatches([]);
+        console.error('Failed to load client matches', err);
+      } else {
+        setClientMatches(res);
+        // console.log('new data', res);
+      }
+      setLoaded(true);
+    });
+  }, [loaded]);
+  // , [lastDataFetch]);
+
+  const pastReferrals = clientMatches.filter(isMatchCompleted);
   return (
     <div className="row margin-top-35">
       <div className="col-xs-12">
@@ -100,7 +132,10 @@ function ClientEligibility(props) {
               onClick={removeFromActiveListHandler}
             />
           </div>
-        }
+        }  
+        <h3>Past Referrals</h3>
+        <PastReferralsList referrals={pastReferrals} />
+      
       </div>
     </div>
   );
