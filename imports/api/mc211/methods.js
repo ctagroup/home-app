@@ -56,7 +56,7 @@ Meteor.methods({
           <p>Dear Customer ${fullName(client)},<br>
           After reviewing your application, we regret that it does not meet the criteria
           for approval. If you would like to review this decision, please contact United Way
-          Monterey County at <strong>(831) 372-8026 extension 114</strong>.  We have notified
+          Monterey County at <strong>(831) 372-8026 extension 107</strong>.  We have notified
           California American Water regarding the rejection of your application.  You should
           reach out to their Customer Service immediately to discuss a different payment
           arrangement or options. Customer Service contact number is
