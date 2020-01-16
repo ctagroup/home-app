@@ -39,15 +39,9 @@ const defaultConfig = {
       notes: true,
       skip: false,
       steps: [],
-      files: {
-        checklistForm: {
-          label: 'Checklist Form',
-        },
-        accteptanceDenialForm: {
-          label: 'Acceptance/Denial Form',
-        },
-      },
+
     },
+
     {
       id: 3,
       title: 'Sent to Agency',
@@ -77,6 +71,9 @@ const defaultConfig = {
       lastStep: true,
       steps: [],
       files: {
+        checklistForm: {
+          label: 'Checklist Form',
+        },
         accteptanceDenialForm: {
           label: 'Acceptance/Denial Form',
         },
