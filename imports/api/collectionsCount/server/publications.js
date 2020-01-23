@@ -1,6 +1,7 @@
 import HmisCounts from './hmisCounts';
 import Responses from '/imports/api/responses/responses';
 import { HmisCache } from '/imports/api/cache/hmisCache';
+//import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 
 
 Meteor.publish('collectionsCount', function publishCollectionCount(forceReload = true) {
@@ -12,6 +13,7 @@ Meteor.publish('collectionsCount', function publishCollectionCount(forceReload =
   const counter = new HmisCounts(this.userId);
 
   _.map({
+   // PendingClients: counter.PendingClients,
     clients: counter.getClientsCount,
     eligibleClients: counter.getEligibleClientsCount,
     housingMatch: counter.getHousingMatchCount,

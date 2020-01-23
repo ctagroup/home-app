@@ -3,7 +3,7 @@ import { logger as globalLogger } from '/imports/utils/logger';
 import { HmisClient } from '/imports/api/hmisApi';
 
 const ERROR_EXPIRY_IN_MINUTES = 10;
-const EXPIRY_IN_MINUTES = 60 * 24;
+const EXPIRY_IN_MINUTES = 5;
 
 export const HmisCacheCollection = new Mongo.Collection('cache');
 

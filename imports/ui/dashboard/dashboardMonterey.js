@@ -6,12 +6,20 @@ import {
   HousingUnitsAccessRoles,
   ClientsAccessRoles,
   ResponsesAccessRoles,
+ // PendingClientsAccessRoles,
 } from '/imports/config/permissions';
 import './widget.html';
 import './dashboardMonterey.html';
 
 
 const allWidgets = [
+ /* {
+    name: 'Pending Clients',
+    id: 'clients',
+    icon: 'fa-user',
+    path: 'adminDashboardclientsView',
+    roles: PendingClientsAccessRoles,
+  },*/
   {
     name: 'Clients',
     id: 'clients',
