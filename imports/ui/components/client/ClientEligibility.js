@@ -49,11 +49,6 @@ function ClientEligibility(props) {
     removeFromActiveList(reasonsHash[removalReason], removalDate, removalRemarks);
   };
 
-  // console.log('eligibleClient', eligibleClient);
-  if (eligibleClient && eligibleClient.error) return null;
-  // return (<div className="row margin-top-35">{client.id}</div>);
-
-
   useEffect(() => {
     if (loaded) return;
     Meteor.call('matchApi', 'getClientMatches', dedupClientId, (err, res) => {
@@ -68,6 +63,10 @@ function ClientEligibility(props) {
     });
   }, [loaded]);
   // , [lastDataFetch]);
+
+  // console.log('eligibleClient', eligibleClient);
+  if (eligibleClient && eligibleClient.error) return null;
+  // return (<div className="row margin-top-35">{client.id}</div>);
 
   const pastReferrals = clientMatches.filter(isMatchCompleted);
   return (
@@ -132,10 +131,10 @@ function ClientEligibility(props) {
               onClick={removeFromActiveListHandler}
             />
           </div>
-        }  
+        }
         <h3>Past Referrals</h3>
         <PastReferralsList referrals={pastReferrals} />
-      
+
       </div>
     </div>
   );

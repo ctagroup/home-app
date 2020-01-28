@@ -2,6 +2,7 @@ import moment from 'moment';
 import React, { useState } from 'react';
 import Alert from '/imports/ui/alert';
 import { formatDateTime } from '/imports/both/helpers';
+import { referralNoteEmail } from '/imports/both/emailTemplates';
 
 
 const ReferralNote = ({
@@ -121,7 +122,8 @@ const ReferralNoteInlineEdit = ({ original = {}, onSave, onCancel, isSubmitting 
 };
 
 
-const ReferralNotes = ({ matchId, step, notes, config, handleDataReload, permissions }) => {
+const ReferralNotes = ({ matchId, step, dedupClientId, notes, config,
+  handleDataReload, permissions }) => {
   const [editedNoteId, setEditedNoteId] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [sortOrder, setSortOrder] = useState('desc');
@@ -136,6 +138,13 @@ const ReferralNotes = ({ matchId, step, notes, config, handleDataReload, permiss
   }
 
   function handleNoteCreate({ note, sendByEmail, emailTitle, emailRecipients }) {
+    const emailBody = referralNoteEmail({
+      dedupClientId,
+      step: config.steps.find(s => s.id === step),
+      note,
+      user: Meteor.user().services.HMIS,
+    });
+
     setIsSubmitting(true);
     Meteor.call('matching.createNote', matchId, step, note, err => {
       setIsSubmitting(false);
@@ -146,7 +155,7 @@ const ReferralNotes = ({ matchId, step, notes, config, handleDataReload, permiss
         setEditedNoteId(null);
         handleDataReload();
         if (sendByEmail) {
-          Meteor.call('matching.sendNoteByEmail', emailTitle, note, emailRecipients, err2 => {
+          Meteor.call('matching.sendNoteByEmail', emailTitle, emailBody, emailRecipients, err2 => {
             if (err2) {
               Alert.error(err2);
             } else {
@@ -160,6 +169,13 @@ const ReferralNotes = ({ matchId, step, notes, config, handleDataReload, permiss
 
 
   function handleNoteUpdate({ id, note, sendByEmail, emailTitle, emailRecipients }) {
+    const emailBody = referralNoteEmail({
+      dedupClientId,
+      step: config.steps.find(s => s.id === step),
+      note,
+      user: Meteor.user().services.HMIS,
+    });
+
     setIsSubmitting(true);
     Meteor.call('matching.updateNote', id, note, err => {
       setIsSubmitting(false);
@@ -170,7 +186,7 @@ const ReferralNotes = ({ matchId, step, notes, config, handleDataReload, permiss
         setEditedNoteId(null);
         handleDataReload();
         if (sendByEmail) {
-          Meteor.call('matching.sendNoteByEmail', emailTitle, note, emailRecipients, err2 => {
+          Meteor.call('matching.sendNoteByEmail', emailTitle, emailBody, emailRecipients, err2 => {
             if (err2) {
               Alert.error(err2);
             } else {

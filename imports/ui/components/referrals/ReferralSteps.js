@@ -73,6 +73,7 @@ const ReferralSteps = ({ dedupClientId, lastStepId, referral, handleDataReload, 
         />
       </div>
       <ReferralNotes
+        dedupClientId={dedupClientId}
         matchId={referral.id}
         step={selectedStepId}
         notes={referral.notes}
