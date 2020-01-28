@@ -1,8 +1,9 @@
 import HmisCounts from './hmisCounts';
 import Responses from '/imports/api/responses/responses';
-import { HmisCache } from '/imports/api/cache/hmisCache';
+// import { HmisCache } from '/imports/api/cache/hmisCache';
 
 
+// eslint-disable-next-line no-unused-vars
 Meteor.publish('collectionsCount', function publishCollectionCount(forceReload = true) {
   if (!this.userId) {
     return [];
@@ -23,10 +24,10 @@ Meteor.publish('collectionsCount', function publishCollectionCount(forceReload =
   }, (fn, name) => {
     self.added('collectionsCount', name, { count: 0, loading: true });
     Meteor.defer(() => {
-      const count = HmisCache.create(this.userId).getData(
-        `collectionsCount.${name}`, fn.bind(counter), forceReload
-      );
-      self.changed('collectionsCount', name, { count, loading: false });
+      // const count = HmisCache.create(this.userId).getData(
+      //   `collectionsCount.${name}`, fn.bind(counter), forceReload ||
+      // );
+      self.changed('collectionsCount', name, { count: fn.bind(counter)(), loading: false });
     });
   });
   self.ready();
