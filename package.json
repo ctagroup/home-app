@@ -15,6 +15,7 @@
     "js-yaml": "^3.13.1",
     "meteor-node-stubs": "^0.2.11",
     "moment": "https://registry.npmjs.org/moment/-/moment-2.16.0.tgz",
+    "moment-timezone": "^0.5.27",
     "nock": "^10.0.2",
     "papaparse": "^4.6.2",
     "prop-types": "^15.7.2",

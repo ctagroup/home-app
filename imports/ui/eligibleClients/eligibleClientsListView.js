@@ -1,6 +1,7 @@
 import EligibleClients from '/imports/api/eligibleClients/eligibleClients';
 import { fullName, getClientSchemaFromLinks } from '/imports/api/utils';
 import { TableDom } from '/imports/ui/dataTable/helpers';
+import { utcDateTimeToLocal } from '/imports/both/helpers';
 import './eligibleClientsListView.html';
 
 
@@ -60,6 +61,9 @@ const tableOptions = {
     {
       title: 'Survey Date',
       data: 'surveyDate',
+      render(value) {
+        return utcDateTimeToLocal(value);
+      }
     },
     {
       title: 'Match Status',

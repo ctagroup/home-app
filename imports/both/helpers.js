@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 
 export function translateString(str, translations) {
@@ -24,3 +24,9 @@ export const getStageId = (name) => dataCollectionStages[name.toUpperCase()];
 export const getStageName = (id) => dataCollectionStageNames[id];
 export const formatDate = (date) => (date ? moment(date).format('MM/DD/YYYY') : '');
 export const formatDateTime = (date) => moment(date).format('MM/DD/YYYY h:mm A');
+
+export const utcDateTimeToLocal = (utcDateTime) => {
+  const siteTimezone = Meteor.settings.timezone || 'America/Los_Angeles';
+  const localDate = moment.tz(utcDateTime, 'UTC').tz(siteTimezone).format();
+  return formatDateTime(localDate);
+};
