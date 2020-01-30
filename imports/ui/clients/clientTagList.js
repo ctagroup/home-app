@@ -3,6 +3,7 @@ import ClientTagList from '/imports/ui/components/tags/ClientTagList.js';
 import { Tags } from '/imports/api/tags/tags.js';
 import { ClientTags } from '/imports/api/tags/clientTags.js';
 import { setAppContext } from '/imports/ui/app/appContext';
+import { getBonusScore } from '/imports/api/tags/helpers';
 
 
 Template.clientTagListView.helpers({
