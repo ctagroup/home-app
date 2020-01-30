@@ -6,7 +6,13 @@
             {{#if loading}}
               <h3><i class="fa fa-spinner fa-pulse fa-fw" aria-hidden="true"></i></h3>
             {{else}}
-              <h3>{{count}}</h3>
+              <h3>
+                {{#unless isUndefined count}}
+                  {{count}}
+                {{else}}
+                  &nbsp;
+                {{/unless}}
+              </h3>
             {{/if}}
             <p>{{name}}</p>
           </div>
