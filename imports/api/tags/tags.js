@@ -15,36 +15,28 @@ export function getActiveTagsForDate(clientTags, dateStr) {
   return clientTags
     .map(cTag => ({ appliedOnMs: dateOnly(cTag.appliedOn).valueOf(), ...cTag }))
     .filter(({ appliedOnMs }) => appliedOnMs <= activeDateInMs)
-    .sort((a, b) => b.appliedOnMs - a.appliedOnMs);
+    .sort((a, b) => moment(b) - moment(a));
+}
 
-  // const tagsActivityMap = clientTags
-  //   .map(cTag => ({ appliedOnMs: dateOnly(cTag.appliedOn).valueOf(), ...cTag }))
-  //   .filter(({ appliedOnMs }) => appliedOnMs <= activeDateInMs)
-  //   .sort((a, b) => a.appliedOnMs - b.appliedOnMs)
-  //   .reduce((all, cTag) => ({
-  //     ...all,
-  //     [cTag.tag.name]: cTag.operation,
-  //   }), {})
-  //   ;
-
-  // const activeTagNames = Object.keys(tagsActivityMap).filter(key => tagsActivityMap[key]);
-  // return activeTagNames;
+export function getClientTagsSummary(clientTags, dateStr) {
+  const active = getActiveTagsForDate(clientTags, dateStr);
+  const summary = active.reduce((all, cTag) => ({
+    ...all,
+    [cTag.tag.id]: {
+      operation: cTag.operation,
+      tag: cTag.tag,
+    },
+  }), {})
+  ;
+  return Object.values(summary);
 }
 
 
 export function getActiveTagNamesForDate(clientTags, dateStr) {
-  const activeDateInMs = moment(dateStr).valueOf();
+  const summary = getClientTagsSummary(clientTags, dateStr);
 
-  const tagsActivityMap = clientTags
-    .map(cTag => ({ appliedOnMs: dateOnly(cTag.appliedOn).valueOf(), ...cTag }))
-    .filter(({ appliedOnMs }) => appliedOnMs <= activeDateInMs)
-    .sort((a, b) => a.appliedOnMs - b.appliedOnMs)
-    .reduce((all, cTag) => ({
-      ...all,
-      [cTag.tag.name]: cTag.operation,
-    }), {})
+  return summary
+    .filter(tag => tag.operation)
+    .map(tag => tag.tag.name)
     ;
-
-  const activeTagNames = Object.keys(tagsActivityMap).filter(key => tagsActivityMap[key]);
-  return activeTagNames;
 }

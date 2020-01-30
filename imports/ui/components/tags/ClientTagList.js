@@ -6,6 +6,8 @@ import DatePicker from 'react-datepicker';
 import DataTable from '/imports/ui/components/dataTable/DataTable';
 import { blazeData, removeClientTagButton } from '/imports/ui/dataTable/helpers.js';
 import { getActiveTagsForDate, getActiveTagNamesForDate, dateOnly } from '/imports/api/tags/tags';
+import { formatDateTime } from '/imports/both/helpers';
+import { getBonusScore } from '/imports/api/tags/helpers';
 
 
 class ClientTagList extends Component {
@@ -53,7 +55,7 @@ class ClientTagList extends Component {
       args: ['createClientTag', rowData],
       onSuccess(result) {
         newClientTagHandler(result);
-        // if (onSuccessCallback) onSuccessCallback(result);
+        console.warn('TODO: refresh client score!');
       },
     };
     return data;
@@ -152,15 +154,25 @@ class ClientTagList extends Component {
 
   render() {
     // TODO: needed columns: tagId, action, appliedOn, appliedBy, remove
-
     const { clientTags } = this.props;
     const selectedDate = this.getDate();
     const activeTagNames = getActiveTagNamesForDate(clientTags, selectedDate);
 
-    const filteredTags = _.uniq(getActiveTagsForDate(clientTags, selectedDate),
-      ({ tagId }) => tagId);
+    const clientActiveTags = getActiveTagsForDate(clientTags, selectedDate);
+
+    const latestClientTags = clientActiveTags.reduce((all, cTag) => ({
+      ...all,
+      [cTag.tag.id]: {
+        operation: cTag.operation,
+        cTag,
+      },
+    }), {})
+    ;
+
+
     // FIXME: remove data extension workaround
-    const extendedTags = filteredTags.map((tag) => ({ ...tag, date: this.state.date }));
+    const extendedTags = Object.values(latestClientTags)
+      .map((tag) => ({ ...tag.cTag, date: this.state.date }));
 
     const tableOptions = {
       columns: [
@@ -186,12 +198,13 @@ class ClientTagList extends Component {
           title: 'Applied On',
           data: 'appliedOn',
           render(value) {
-            return moment(value).format('MM/DD/YYYY');
+            return formatDateTime(value);
           },
         },
         removeClientTagButton((clientTag) => {
           if (this.props.removeClientTagHandler) {
             this.props.removeClientTagHandler(clientTag);
+            console.warn('TODO: refresh client score!');
           }
         }),
       ],
@@ -208,6 +221,13 @@ class ClientTagList extends Component {
     const listOfActiveTags = activeTagNames.length > 0 ?
       activeTagNames.join(', ') : 'none';
 
+    const ec = this.props.eligibleClient || {
+      surveyScore: '',
+      bonusScore: '',
+      totalScore: '',
+    };
+    const bonusScoreFromCurrentTags = getBonusScore();
+
     return (
       <div className="tag-list-wrapper">
         <div className="tag-filter" style={{ padding: '10px' }}>
@@ -216,6 +236,23 @@ class ClientTagList extends Component {
           <strong>{listOfActiveTags}</strong>
         </div>
         <br />
+        <h4>Current Score (HSLYNK)</h4>
+        <ul>
+          <li>Survey: {ec.surveyScore}</li>
+          <li>Bonus: {ec.bonusScore}</li>
+          <li>Total: {ec.totalScore}</li>
+        </ul>
+        {
+          ec.bonusScore !== bonusScoreFromCurrentTags &&
+            <div className="alert alert-danger">
+              <strong>Bonus score out of sync!</strong>
+              <p>
+                HSLYNK bonus score ({ec.bonusScore}) differs fom Bonus score for active
+                tags ({bonusScoreFromCurrentTags})!
+              </p>
+            </div>
+        }
+
         <h4>Tags History</h4>
         {this.renderNewClientTag()}
         <div className="tag-list">

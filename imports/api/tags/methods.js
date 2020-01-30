@@ -3,6 +3,9 @@
 import { logger } from '/imports/utils/logger';
 // import { HmisClient } from '/imports/api/hmisApi';
 
+import { getActiveTagsForDate } from './tags';
+import { ClientTags } from './clientTags';
+
 Meteor.methods({
   'tags.create'(name, score) {
     logger.info(`METHOD[${this.userId}]: tags.create`, name, score);
@@ -37,6 +40,11 @@ Meteor.methods({
       if (err) console.log('deleteTag error');
       return true;
     });
+  },
+
+  'tags.active'(dedupClientId) {
+    const clientTags = Meteor.call('tagApi', 'getTagsForClient', dedupClientId);
+    return clientTags;
   },
 
 });

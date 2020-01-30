@@ -5,6 +5,7 @@ import './globalHouseholdApi';
 import './globalHouseholdApi2';
 import './houseMatchingApi';
 import './houseMatchingApi2';
+import './houseMatchingApi3';
 import './housingApi';
 import './globalApi';
 import './surveyApi';

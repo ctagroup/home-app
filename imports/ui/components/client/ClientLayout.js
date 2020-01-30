@@ -97,7 +97,8 @@ function ClientLayout(props) {
             </ClientTab>
             <ClientTab selectedTab={selectedTab} id={'enrollments'} >
               <ClientEnrollments
-                client={client} permissions={{ showEditButton }}
+                client={client}
+                permissions={{ showEditButton }}
                 enrollments={data.enrollments()}
                 helpers={helpers.enrollments}
               />
