@@ -36,7 +36,7 @@ export default class Grid extends Item {
     const gridValue = this.getGridValue();
     const row = gridValue[rowIdx] || {};
     if (cellCategory === 'date') {
-      row[columnId] = value ? value.format('YYYY-MM-DD') : '';
+      row[columnId] = value ? moment(value).format('YYYY-MM-DD') : '';
     } else {
       row[columnId] = value;
     }
@@ -67,7 +67,7 @@ export default class Grid extends Item {
       case 'date':
         return (
           <DatePicker
-            selected={cellValue ? moment(cellValue) : ''}
+            selected={cellValue ? moment(cellValue).toDate() : ''}
             onChange={(value) => this.handleChange(r, item.id, value, item.category)}
             placeholderText="MM/DD/YYYY"
             disabled={disabled}
