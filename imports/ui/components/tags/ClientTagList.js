@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import moment from 'moment';
 import React, { Component } from 'react';
 import Select from 'react-select';
@@ -7,7 +8,7 @@ import DataTable from '/imports/ui/components/dataTable/DataTable';
 import { blazeData, removeClientTagButton } from '/imports/ui/dataTable/helpers.js';
 import { getActiveTagsForDate, getActiveTagNamesForDate, dateOnly } from '/imports/api/tags/tags';
 import { formatDateTime } from '/imports/both/helpers';
-import { getBonusScore } from '/imports/api/tags/helpers';
+import Alert from '/imports/ui/alert';
 
 
 class ClientTagList extends Component {
@@ -17,6 +18,8 @@ class ClientTagList extends Component {
       newTagId: {},
       newTagAction: {},
       date: new Date,
+      currentBonusScore: null,
+      eligibleClient: {}, // this entry holds client side updates
     };
     this.handleChange = this.handleChange.bind(this);
     this.renderDatePicker = this.renderDatePicker.bind(this);
@@ -26,8 +29,23 @@ class ClientTagList extends Component {
     this.getDate = this.getDate.bind(this);
   }
 
+  componentDidMount() {
+    this.refreshCurrentBonusScore();
+  }
+
   getDate() {
     return dateOnly(this.state.date);
+  }
+
+  refreshCurrentBonusScore() {
+    this.setState({ currentBonusScore: null });
+    Meteor.call('eligibleClients.getClientBonusScoreDetails', this.props.clientId, (err, res) => {
+      if (err) {
+        Alert.error(err);
+      } else {
+        this.setState({ currentBonusScore: res });
+      }
+    });
   }
 
   createNewTag() {
@@ -54,8 +72,11 @@ class ClientTagList extends Component {
       method: 'tagApi',
       args: ['createClientTag', rowData],
       onSuccess(result) {
-        newClientTagHandler(result);
-        console.warn('TODO: refresh client score!');
+        const promise = newClientTagHandler(result);
+        promise.then(res => {
+          this.setState({ eligibleClient: res });
+          this.refreshCurrentBonusScore();
+        });
       },
     };
     return data;
@@ -73,6 +94,13 @@ class ClientTagList extends Component {
   handleInputChange(key, event) {
     const input = event.target.value;
     this.setState({ [key]: input });
+  }
+
+  handleUploadBonusScore() {
+    this.setState({ currentBonusScore: null });
+    Meteor.call('eligibleClients.updateBonusScore', this.props.clientId, (err, res) => {
+      this.refreshCurrentBonusScore();
+    });
   }
 
   renderDatePicker(key) {
@@ -203,8 +231,11 @@ class ClientTagList extends Component {
         },
         removeClientTagButton((clientTag) => {
           if (this.props.removeClientTagHandler) {
-            this.props.removeClientTagHandler(clientTag);
-            console.warn('TODO: refresh client score!');
+            const promise = this.props.removeClientTagHandler(clientTag);
+            promise.then(res => {
+              this.setState({ eligibleClient: res });
+              this.refreshCurrentBonusScore();
+            });
           }
         }),
       ],
@@ -221,12 +252,13 @@ class ClientTagList extends Component {
     const listOfActiveTags = activeTagNames.length > 0 ?
       activeTagNames.join(', ') : 'none';
 
-    const ec = this.props.eligibleClient || {
+    // merge eligible client from props and state
+    // because we cannot refresh client data directly from server
+    const ec = _.merge(this.props.eligibleClient, this.state.eligibleClient) || {
       surveyScore: '',
       bonusScore: '',
       totalScore: '',
     };
-    const bonusScoreFromCurrentTags = getBonusScore();
 
     return (
       <div className="tag-list-wrapper">
@@ -243,12 +275,13 @@ class ClientTagList extends Component {
           <li>Total: {ec.totalScore}</li>
         </ul>
         {
-          ec.bonusScore !== bonusScoreFromCurrentTags &&
+          this.state.currentBonusScore && this.state.currentBonusScore.total !== ec.bonusScore &&
             <div className="alert alert-danger">
               <strong>Bonus score out of sync!</strong>
               <p>
-                HSLYNK bonus score ({ec.bonusScore}) differs fom Bonus score for active
-                tags ({bonusScoreFromCurrentTags})!
+                HSLYNK bonus score ({ec.bonusScore}) differs fom current bonus score ({this.state.currentBonusScore.total})!
+                <br />
+                <a href="#" onClick={() => this.handleUploadBonusScore()}>Upload Bonus Score</a>
               </p>
             </div>
         }

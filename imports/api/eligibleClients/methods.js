@@ -2,6 +2,8 @@ import { eachLimit } from 'async';
 import { logger } from '/imports/utils/logger';
 import { ClientsAccessRoles } from '/imports/config/permissions';
 import { HmisClient } from '../hmisApi';
+import BonusScoreCalculator from '/imports/api/eligibleClients/BonusScoreCalculator';
+import TagApiClient from '/imports/api/homeApi/tagApi';
 
 Meteor.methods({
   getEligibleClients() {
@@ -88,20 +90,37 @@ Meteor.injectedMethods({
   },
 
 
-  'eligibleClients.updateBonusScore'(dedupClientId, bonusScore) {
-    logger.info(`METHOD[${this.userId}]: eligibleClients.updateBonusScore`, dedupClientId, bonusScore); // eslint-disable-line max-len
+  'eligibleClients.updateBonusScore'(dedupClientId) {
+    logger.info(`METHOD[${this.userId}]: eligibleClients.updateBonusScore`, dedupClientId); // eslint-disable-line max-len
     check(dedupClientId, String);
+
     if (!Roles.userIsInRole(this.userId, ClientsAccessRoles)) {
       throw new Meteor.Error(403, 'Forbidden');
     }
 
+    const bsc = new BonusScoreCalculator({
+      dedupClientId,
+      tagApi: TagApiClient.create(this.userId),
+    });
+    const bonusScore = bsc.getBonusScoreDetails().total;
+
     const { hmisClient } = this.context;
     const eligibleClient = hmisClient.api('house-matching-v3').getEligibleClient(dedupClientId);
-
-    return hmisClient.api('house-matching-v3').updateEligibleClient(dedupClientId, {
+    hmisClient.api('house-matching-v3').updateEligibleClient(dedupClientId, {
       ...eligibleClient,
       bonusScore,
     });
+    // since HSLYNK updateEligibleClient endpoint returns garbage
+    // we need to query the endpoint one more time
+    return hmisClient.api('house-matching-v3').getEligibleClient(dedupClientId);
+  },
+
+  'eligibleClients.getClientBonusScoreDetails'(dedupClientId) {
+    const bsc = new BonusScoreCalculator({
+      dedupClientId,
+      tagApi: TagApiClient.create(this.userId),
+    });
+    return bsc.getBonusScoreDetails();
   },
 
 });

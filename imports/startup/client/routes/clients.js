@@ -19,7 +19,6 @@ import '/imports/ui/clients/viewSurveyedClients';
 
 import { AppController } from './controllers';
 
-
 const featureDecisions = FeatureDecisions.createFromMeteorSettings();
 
 const clientProfileTemplate = featureDecisions.isMc211App() ?

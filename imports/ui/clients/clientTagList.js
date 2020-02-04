@@ -3,7 +3,6 @@ import ClientTagList from '/imports/ui/components/tags/ClientTagList.js';
 import { Tags } from '/imports/api/tags/tags.js';
 import { ClientTags } from '/imports/api/tags/clientTags.js';
 import { setAppContext } from '/imports/ui/app/appContext';
-import { getBonusScore } from '/imports/api/tags/helpers';
 
 
 Template.clientTagListView.helpers({
@@ -20,7 +19,12 @@ Template.clientTagListView.helpers({
     return (res) => {
       ClientTags._collection.insert({ _id: res.id, ...res }); // eslint-disable-line
       const dedupClientId = res.clientId;
-      Meteor.call('eligibleClients.updateBonusScore', dedupClientId, getBonusScore());
+      return new Promise((resolve, reject) => {
+        Meteor.call('eligibleClients.updateBonusScore', dedupClientId, (err, res2) => {
+          if (err) reject(err);
+          else resolve(res2);
+        });
+      });
     };
     // return (data) =>
     //   Meteor.call('tagApi', 'createClientTag', { operation: 1, ...data }, (err, res) => {
@@ -31,7 +35,12 @@ Template.clientTagListView.helpers({
     return (res) => {
       ClientTags._collection.insert({ _id: res.id, ...res }); // eslint-disable-line
       const dedupClientId = res.clientId;
-      Meteor.call('eligibleClients.updateBonusScore', dedupClientId, getBonusScore());
+      return new Promise((resolve, reject) => {
+        Meteor.call('eligibleClients.updateBonusScore', dedupClientId, (err, res2) => {
+          if (err) reject(err);
+          else resolve(res2);
+        });
+      });
     };
   },
   setAppContext() {
