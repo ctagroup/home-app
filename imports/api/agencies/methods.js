@@ -3,6 +3,7 @@ import { DefaultAdminAccessRoles } from '/imports/config/permissions';
 import Agencies from '/imports/api/agencies/agencies';
 import Users from '/imports/api/users/users';
 import { userProjectGroupId } from '/imports/api/users/helpers';
+import eventPublisher, { UserEvent } from '/imports/api/eventLog/events';
 // import { HmisClient } from '/imports/api/hmisApi';
 
 Meteor.methods({
@@ -17,6 +18,13 @@ Meteor.methods({
       projectGroupId: userProjectGroupId(user),
     };
     check(agency, Agencies.schema);
+
+    eventPublisher.publish(new UserEvent(
+      'agencies.create',
+      `${agency.agencyName}`,
+      { userId: this.userId }
+    ));
+
     return Agencies.insert(agency);
   },
 
@@ -26,6 +34,13 @@ Meteor.methods({
       throw new Meteor.Error(403, 'Forbidden');
     }
     check(doc, Agencies.schema);
+
+    eventPublisher.publish(new UserEvent(
+      'agencies.update',
+      `${id}`,
+      { userId: this.userId }
+    ));
+
     return Agencies.update(id, doc);
   },
 

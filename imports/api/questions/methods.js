@@ -1,6 +1,8 @@
 import Questions from '/imports/api/questions/questions';
 import { logger } from '/imports/utils/logger';
 import { HmisClient } from '/imports/api/hmisApi';
+import eventPublisher, { UserEvent } from '/imports/api/eventLog/events';
+
 
 Meteor.methods({
   'questions.create'(doc) {
@@ -22,7 +24,13 @@ Meteor.methods({
     check(questionId, String);
 
     const hc = HmisClient.create(this.userId);
-    return hc.api('survey').deleteQuestion(groupId, questionId);
+    const result = hc.api('survey').deleteQuestion(groupId, questionId);
+    eventPublisher.publish(new UserEvent(
+      'questions.delete',
+      `${groupId} ${questionId}`,
+      { userId: this.userId }
+    ));
+    return result;
   },
 
   'questions.categories'() {

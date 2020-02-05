@@ -4,6 +4,7 @@ import { ClientsAccessRoles } from '/imports/config/permissions';
 import { HmisClient } from '../hmisApi';
 import BonusScoreCalculator from '/imports/api/eligibleClients/BonusScoreCalculator';
 import TagApiClient from '/imports/api/homeApi/tagApi';
+import eventPublisher, { UserEvent } from '/imports/api/eventLog/events';
 
 Meteor.methods({
   getEligibleClients() {
@@ -62,6 +63,12 @@ Meteor.methods({
         });
       });
 
+    eventPublisher.publish(new UserEvent(
+      'eligibleClient.ignoreMatchProcess',
+      `match process flag changed for ${inputClientId} to ${ignoreMatchProcess} ${remarks}`,
+      { userId: this.userId }
+    ));
+
     return eligibleClientOutput;
   },
 
@@ -110,6 +117,13 @@ Meteor.injectedMethods({
       ...eligibleClient,
       bonusScore,
     });
+
+    eventPublisher.publish(new UserEvent(
+      'eligibleClients.updateBonusScore',
+      `updated bonus score for ${dedupClientId} to ${bonusScore}`,
+      { userId: this.userId }
+    ));
+
     // since HSLYNK updateEligibleClient endpoint returns garbage
     // we need to query the endpoint one more time
     return hmisClient.api('house-matching-v3').getEligibleClient(dedupClientId);

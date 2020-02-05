@@ -10,7 +10,7 @@ import {
   updateDocFromDefinition,
 } from '/imports/api/surveys/helpers';
 import eventPublisher, {
-  SurveyUpdatedEvent,
+  UserEvent,
 } from '/imports/api/eventLog/events';
 
 Meteor.methods({
@@ -31,6 +31,11 @@ Meteor.methods({
       logger.error(`Failed to upload survey ${e}`);
       throw new Meteor.Error('hmis.api', `Survey created, failed to upload! ${e}`);
     }
+    eventPublisher.publish(new UserEvent(
+      'surveys.create',
+      '',
+      { userId: this.userId, doc }
+    ));
     return id;
   },
 
@@ -84,7 +89,11 @@ Meteor.methods({
       Meteor.call('surveys.uploadQuestions', tempId);
       const hmisSurveyId = Meteor.call('surveys.upload', tempId);
       Surveys.remove(id);
-      eventPublisher.publish(new SurveyUpdatedEvent(hmisSurveyId, { userId: this.userId }));
+      eventPublisher.publish(new UserEvent(
+        'surveys.update',
+        `${hmisSurveyId}`,
+        { userId: this.userId }
+      ));
     } catch (e) {
       logger.error(`Failed to upload survey ${e}`);
       throw new Meteor.Error('hmis.api', `Survey created, failed to upload! ${e}`);
@@ -107,6 +116,11 @@ Meteor.methods({
       const hc = HmisClient.create(this.userId);
       return hc.api('survey2').deleteSurvey(id);
     }
+    eventPublisher.publish(new UserEvent(
+      'surveys.delete',
+      `${id}`,
+      { userId: this.userId }
+    ));
     return numRemoved;
   },
 
@@ -238,6 +252,11 @@ Meteor.methods({
     hmis.status = 'uploaded';
     logger.debug('updating survey HMIS data', hmis);
     Surveys.update(id, { $set: { hmis } });
+    eventPublisher.publish(new UserEvent(
+      'surveys.upload',
+      `${id}`,
+      { userId: this.userId }
+    ));
     return surveyId;
   },
 

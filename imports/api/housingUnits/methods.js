@@ -1,6 +1,7 @@
 import { logger } from '/imports/utils/logger';
 import { HmisClient } from '/imports/api/hmisApi';
 import { HousingUnitsAccessRoles } from '/imports/config/permissions';
+import eventPublisher, { UserEvent } from '/imports/api/eventLog/events';
 
 Meteor.methods({
   'housingUnits.create'(housingObject) {
@@ -10,9 +11,17 @@ Meteor.methods({
     }
 
     const hc = HmisClient.create(this.userId);
-    return hc.api('housing').createHousingUnit(_.extend(housingObject, {
+    const result = hc.api('housing').createHousingUnit(_.extend(housingObject, {
       userId: Meteor.users.findOne(this.userId).services.HMIS.accountId,
     }));
+
+    eventPublisher.publish(new UserEvent(
+      'housingUnits.create',
+      '',
+      { userId: this.userId, result }
+    ));
+
+    return result;
   },
 
   'housingUnits.update'(id, housingObject) {
@@ -23,9 +32,17 @@ Meteor.methods({
     }
 
     const hc = HmisClient.create(this.userId);
-    return hc.api('housing').updateHousingUnit(id, _.extend(housingObject, {
+    const result = hc.api('housing').updateHousingUnit(id, _.extend(housingObject, {
       userId: Meteor.users.findOne(this.userId).services.HMIS.accountId,
     }));
+
+    eventPublisher.publish(new UserEvent(
+      'housingUnits.update',
+      `${id}`,
+      { userId: this.userId, housingObject }
+    ));
+
+    return result;
   },
 
   'housingUnits.delete'(id) {
@@ -36,6 +53,14 @@ Meteor.methods({
     }
 
     const hc = HmisClient.create(this.userId);
-    return hc.api('housing').deleteHousingUnit(id);
+    const result = hc.api('housing').deleteHousingUnit(id);
+
+    eventPublisher.publish(new UserEvent(
+      'housingUnits.delete',
+      `${id}`,
+      { userId: this.userId }
+    ));
+
+    return result;
   },
 });

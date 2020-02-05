@@ -17,6 +17,24 @@ export class SystemEvent {
   }
 }
 
+export class UserEvent extends SystemEvent {
+  constructor(type, message, context) {
+    const { userId, ...data } = context;
+    super({ userId });
+    this.type = type;
+    this.message = message;
+    this.data = data;
+  }
+
+  getType() {
+    return this.type;
+  }
+
+  getMessage() {
+    return this.message;
+  }
+}
+
 export class SurveyUpdatedEvent extends SystemEvent {
   constructor(surveyId, context) {
     super(context);
@@ -53,6 +71,7 @@ export class ClientUpdatedEvent extends DataEvent {
 
 class EventPublisher extends EventEmitter2 {
   publish(event) {
+    console.log('publishing', event.getType());
     this.emit(event.getType(), event);
   }
 
@@ -70,13 +89,8 @@ const eventPublisher = new EventPublisher({
   delimiter: '.',
 });
 
-eventPublisher.addListener(ServerStartedEvent, (event) => {
-  EventLog.addEvent(event);
-});
-eventPublisher.addListener(ClientCreatedEvent, (event) => {
-  EventLog.addEvent(event);
-});
-eventPublisher.addListener(ClientUpdatedEvent, (event) => {
+// catch any event
+eventPublisher.on('**', (event) => {
   EventLog.addEvent(event);
 });
 

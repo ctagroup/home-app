@@ -5,6 +5,7 @@ import Users, { ChangePasswordSchema, UserCreateFormSchema } from '/imports/api/
 import Agencies from '/imports/api/agencies/agencies';
 import { HmisClient } from '/imports/api/hmisApi';
 import { ensureRolesFormat } from './helpers';
+import eventPublisher, { UserEvent } from '/imports/api/eventLog/events';
 
 
 Meteor.methods({
@@ -51,6 +52,11 @@ Meteor.methods({
         }
       );
       Roles.setUserRoles(userId, insertDoc.roles || [], Roles.GLOBAL_GROUP);
+      eventPublisher.publish(new UserEvent(
+        'users.create',
+        `${userId}`,
+        { userId: this.userId, insertDoc }
+      ));
       return userId;
     } catch (e) {
       throw new Meteor.Error(e.details.code, e.reason);
@@ -101,7 +107,11 @@ Meteor.methods({
     const removedRoleIds = oldRoleIds.filter(e => !newRoleIds.includes(e));
     removedRoleIds.map(roleId => api.deleteUserRole(hmisId, roleId));
 
-    // TODO: change HMIS password
+    eventPublisher.publish(new UserEvent(
+      'users.update',
+      `${userId}`,
+      { userId: this.userId, doc }
+    ));
   },
 
   'users.delete'(userId) {
@@ -117,6 +127,11 @@ Meteor.methods({
       HmisClient.create(this.userId).api('user-service').deleteUser(hmisId);
     }
     Users.remove(userId);
+    eventPublisher.publish(new UserEvent(
+      'users.delete',
+      `${userId}`,
+      { userId: this.userId }
+    ));
   },
 
   'users.changeOwnPassword'(passwordChange) {
@@ -129,6 +144,11 @@ Meteor.methods({
     const { currentPassword, newPassword, confirmNewPassword } = passwordChange;
     const api = HmisClient.create(this.userId).api('user-service');
     const result = api.changeOwnPassword(currentPassword, newPassword, confirmNewPassword);
+    eventPublisher.publish(new UserEvent(
+      'users.changeOwnPassword',
+      '',
+      { userId: this.userId }
+    ));
     return result;
   },
 

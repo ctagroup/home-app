@@ -12,6 +12,8 @@ import Users from '/imports/api/users/users';
 import { HmisCache } from '/imports/api/cache/hmisCache';
 import { prepareEmails } from '../surveys/computations';
 import ResponseImporter from './ResponseImporter';
+import eventPublisher, { UserEvent } from '/imports/api/eventLog/events';
+
 
 function prepareValuesToUpload(values, definition, defaultSectionId) {
   const questionIds = Object.keys(values);
@@ -45,7 +47,13 @@ Meteor.methods({
     });
 
     check(response, Responses.schema);
-    return Responses.insert(response);
+    const result = Responses.insert(response);
+    eventPublisher.publish(new UserEvent(
+      'responses.create',
+      '',
+      { userId: this.userId, doc }
+    ));
+    return result;
   },
 
   'responses.update'(id, doc) {
@@ -65,7 +73,13 @@ Meteor.methods({
     });
     check(response, Responses.schema);
     // TODO: check permissions
-    return Responses.update(id, { $set: response });
+    const result = Responses.update(id, { $set: response });
+    eventPublisher.publish(new UserEvent(
+      'responses.update',
+      `${id}`,
+      { userId: this.userId, doc }
+    ));
+    return result;
   },
 
   'responses.delete'(id) {
@@ -88,6 +102,11 @@ Meteor.methods({
         globalLogger.warn('Failed to delete response', err);
       } finally {
         Responses.remove(id);
+        eventPublisher.publish(new UserEvent(
+          'responses.delete',
+          `${id}`,
+          { userId: this.userId }
+        ));
       }
     } else {
       // remote response
@@ -128,6 +147,11 @@ Meteor.methods({
         globalLogger.error(e);
       }
     });
+    eventPublisher.publish(new UserEvent(
+      'responses.sendEmails',
+      `${responseId}`,
+      { userId: this.userId }
+    ));
   },
 
   'responses.uploadEnrollment'(id) {
@@ -189,6 +213,12 @@ Meteor.methods({
         },
       });
     }
+
+    eventPublisher.publish(new UserEvent(
+      'responses.uploadEnrollment',
+      `${id}`,
+      { userId: this.userId }
+    ));
 
     return result;
   },
@@ -314,6 +344,12 @@ Meteor.methods({
       throw new Meteor.Error('responses', `Response submitted but failed to upload scores: ${e}`);
     }
 
+    eventPublisher.publish(new UserEvent(
+      'responses.uploadToHmis',
+      `${id}`,
+      { userId: this.userId }
+    ));
+
     const invalidQuestionValues = allQuestionValues.filter(v => !v.questionId);
     return invalidQuestionValues;
   },
@@ -377,6 +413,13 @@ Meteor.methods({
     }, { bypassCollection2: true });
 
     globalLogger.info('DONE!', submissionId);
+
+    eventPublisher.publish(new UserEvent(
+      'responses.uploadV1ToHmis',
+      `${id}`,
+      { userId: this.userId }
+    ));
+
     return submissionId;
   },
 

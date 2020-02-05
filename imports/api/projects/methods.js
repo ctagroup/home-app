@@ -2,7 +2,7 @@ import { logger } from '/imports/utils/logger';
 import { HmisClient } from '/imports/api/hmisApi';
 import AppSettings from '/imports/api/appSettings/appSettings';
 import { DefaultAdminAccessRoles } from '/imports/config/permissions';
-
+import eventPublisher, { UserEvent } from '/imports/api/eventLog/events';
 
 Meteor.methods({
   'projects.create'(data) {
@@ -12,7 +12,13 @@ Meteor.methods({
     }
 
     const hc = HmisClient.create(this.userId);
-    return hc.api('client').createProject(data);
+    const result = hc.api('client').createProject(data);
+    eventPublisher.publish(new UserEvent(
+      'projects.create',
+      '',
+      { userId: this.userId, result }
+    ));
+    return result;
   },
 
   'projects.update'(data, projectId, schema) {
@@ -22,7 +28,13 @@ Meteor.methods({
     }
 
     const hc = HmisClient.create(this.userId);
-    return hc.api('client').updateProject(projectId, data, schema);
+    const result = hc.api('client').updateProject(projectId, data, schema);
+    eventPublisher.publish(new UserEvent(
+      'projects.update',
+      `${projectId} ${schema}`,
+      { userId: this.userId, result }
+    ));
+    return result;
   },
 
   'projects.delete'(projectId, schema) {
@@ -32,7 +44,13 @@ Meteor.methods({
     }
 
     const hc = HmisClient.create(this.userId);
-    return hc.api('client').deleteProject(projectId, schema);
+    const result = hc.api('client').deleteProject(projectId, schema);
+    eventPublisher.publish(new UserEvent(
+      'projects.delete',
+      `${projectId} ${schema}`,
+      { userId: this.userId, result }
+    ));
+    return result;
   },
 
   createProjectSetup(projectName, projectCommonName) {
@@ -44,6 +62,12 @@ Meteor.methods({
     const hc = HmisClient.create(this.userId);
     const projectId = hc.api('client').createProjectSetup(projectName, projectCommonName);
     AppSettings.set('appProjectId', projectId);
+    eventPublisher.publish(new UserEvent(
+      'projects.createProjectSetup',
+      `${projectName}`,
+      { userId: this.userId }
+    ));
+
     return projectId;
   },
 
@@ -62,5 +86,10 @@ Meteor.methods({
       throw new Meteor.Error(403, 'Forbidden');
     }
     AppSettings.remove('appProjectId');
+    eventPublisher.publish(new UserEvent(
+      'projects.removeProjectSetup',
+      '',
+      { userId: this.userId }
+    ));
   },
 });

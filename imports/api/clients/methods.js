@@ -6,8 +6,7 @@ import { ClientsCache } from '/imports/api/clients/clientsCache';
 import { HmisClient } from '/imports/api/hmisApi';
 import { mergeByDedupId, filterClientForCache } from '/imports/api/clients/helpers';
 import eventPublisher, {
-  ClientCreatedEvent,
-  ClientUpdatedEvent,
+  UserEvent,
 } from '/imports/api/eventLog/events';
 
 
@@ -37,7 +36,11 @@ Meteor.methods({
       logger.error('Failed to upload photo/signature to s3', err);
     }
 
-    eventPublisher.publish(new ClientCreatedEvent(result, { userId: this.userId }));
+    eventPublisher.publish(new UserEvent(
+      'clients.create',
+      `id=${result.clientId} schema=${result.schema} dedupClientId=${result.dedupClientId}`,
+      { userId: this.userId }
+    ));
 
     return result;
   },
@@ -67,11 +70,11 @@ Meteor.methods({
       logger.error('Failed to upload photo/signature to s3', err);
     }
 
-    eventPublisher.publish(new ClientUpdatedEvent({
-      ...clientData,
-      clientId,
-      schema,
-    }, { userId: this.userId }));
+    eventPublisher.publish(new UserEvent(
+      'clients.update',
+      `id=${clientId} schema=${schema}`,
+      { userId: this.userId, clientData, clientId, schema }
+    ));
 
     return client;
   },
@@ -84,12 +87,11 @@ Meteor.methods({
     // TODO: security add role check
     hc.api('client').updateClient(clientId, data, schema);
 
-    eventPublisher.publish(new ClientUpdatedEvent({
-      ...data,
-      clientId,
-      schema,
-    }, { userId: this.userId }));
-
+    eventPublisher.publish(new UserEvent(
+      'clients.service',
+      `id=${clientId} schema=${schema}`,
+      { userId: this.userId, data, clientId, schema }
+    ));
     return data;
   },
 
@@ -104,6 +106,12 @@ Meteor.methods({
 
     const hc = HmisClient.create(this.userId);
     hc.api('client').deleteClient(clientId, schema);
+
+    eventPublisher.publish(new UserEvent(
+      'clients.delete',
+      `id=${clientId} schema=${schema}`,
+      { userId: this.userId, clientId, schema }
+    ));
   },
 
   'clients.updateMatchStatus'(clientId, statusCode, comments, recipients) {
@@ -117,9 +125,17 @@ Meteor.methods({
     }
 
     const hc = HmisClient.create(this.userId);
-    return hc.api('house-matching').updateClientMatchStatus(
+    const result = hc.api('house-matching').updateClientMatchStatus(
       clientId, statusCode, comments, recipients
     );
+
+    eventPublisher.publish(new UserEvent(
+      'clients.updateMatchStatus',
+      `id=${clientId} statusCode=${statusCode}`,
+      { userId: this.userId, comments, recipients }
+    ));
+
+    return result;
   },
 
   async searchClient(query, options = {}) {
@@ -248,21 +264,46 @@ Meteor.injectedMethods({
   },
   'caseNotes.create'({ clientId, title, description }) {
     const { noteApiClient } = this.context;
-    return noteApiClient.createNote({
+    const result = noteApiClient.createNote({
       objectUuid: clientId,
       objectType: 'client',
       title,
       description,
     });
+
+    eventPublisher.publish(new UserEvent(
+      'caseNotes.create',
+      `${clientId} ${title}`,
+      { userId: this.userId, result }
+    ));
+
+    return result;
   },
   'caseNotes.update'({ id, title, description }) {
     const { noteApiClient } = this.context;
-    return noteApiClient.updateNote(id, { title, description });
+    const result = noteApiClient.updateNote(id, { title, description });
+
+    eventPublisher.publish(new UserEvent(
+      'caseNotes.update',
+      `${id} ${title}`,
+      { userId: this.userId, result }
+    ));
+
+    return result;
   },
+
   'caseNotes.delete'(id) {
     check(id, Number);
     const { noteApiClient } = this.context;
-    return noteApiClient.deleteNote(id);
+    const result = noteApiClient.deleteNote(id);
+
+    eventPublisher.publish(new UserEvent(
+      'caseNotes.delete',
+      `${id}`,
+      { userId: this.userId }
+    ));
+
+    return result;
   },
 
   'matching.sendNoteByEmail'(title, body, recipients) {
@@ -286,32 +327,78 @@ Meteor.injectedMethods({
       };
       hmisClient.api('global').sendEmailNotification(email, additionalInfo);
     });
+    eventPublisher.publish(new UserEvent(
+      'matching.sendNoteByEmail',
+      `${title}`,
+      { userId: this.userId, body, recipients }
+    ));
   },
+
   'matching.createNote'(matchId, step, note) {
     const { matchApiClient } = this.context;
-    return matchApiClient.createNote(matchId, step, note);
+    const result = matchApiClient.createNote(matchId, step, note);
+    eventPublisher.publish(new UserEvent(
+      'matching.createNote',
+      `${matchId} ${step} ${note}`,
+      { userId: this.userId }
+    ));
+    return result;
   },
+
   'matching.updateNote'(noteId, note) {
     const { matchApiClient } = this.context;
-    return matchApiClient.updateNote(noteId, note);
+    const result = matchApiClient.updateNote(noteId, note);
+    eventPublisher.publish(new UserEvent(
+      'matching.updateNote',
+      `${noteId} ${note}`,
+      { userId: this.userId }
+    ));
+    return result;
   },
+
   'matching.deleteNote'(noteId) {
     const { matchApiClient } = this.context;
-    return matchApiClient.deleteNote(noteId);
+    const result = matchApiClient.deleteNote(noteId);
+    eventPublisher.publish(new UserEvent(
+      'matching.deleteNote',
+      `${noteId}`,
+      { userId: this.userId }
+    ));
+    return result;
   },
+
   'matching.createMatch'(clientId, projectId, startDate) {
     const { matchApiClient } = this.context;
-    return matchApiClient.createHousingMatch(clientId, projectId, startDate);
+    const result = matchApiClient.createHousingMatch(clientId, projectId, startDate);
+    eventPublisher.publish(new UserEvent(
+      'matching.createMatch',
+      `clientId=${clientId} projectId=${projectId} ${startDate}`,
+      { userId: this.userId }
+    ));
+    return result;
   },
+
   'matching.addMatchHistory'(matchId, stepId, outcome) {
     const { matchApiClient } = this.context;
-    return matchApiClient.createMatchHistory(matchId, stepId, outcome);
+    const result = matchApiClient.createMatchHistory(matchId, stepId, outcome);
+    eventPublisher.publish(new UserEvent(
+      'matching.addMatchHistory',
+      `${matchId} ${stepId} ${outcome}`,
+      { userId: this.userId }
+    ));
+    return result;
   },
+
   'matching.endMatch'(matchId, stepId, outcome) {
     const { matchApiClient } = this.context;
     matchApiClient.createMatchHistory(matchId, stepId, outcome);
     matchApiClient.matchPartialUpdate(matchId, {
       endDate: moment().format('YYYY-MM-DD'),
     });
+    eventPublisher.publish(new UserEvent(
+      'matching.endMatch',
+      `${matchId} ${stepId} ${outcome}`,
+      { userId: this.userId }
+    ));
   },
 });

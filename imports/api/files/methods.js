@@ -1,6 +1,7 @@
 import Files from '/imports/api/files/files';
 import { logger } from '/imports/utils/logger';
 import { FilesAccessRoles } from '/imports/config/permissions';
+import eventPublisher, { UserEvent } from '/imports/api/eventLog/events';
 
 Meteor.methods({
   'files.create'(doc) {
@@ -9,7 +10,13 @@ Meteor.methods({
     if (!Roles.userIsInRole(this.userId, FilesAccessRoles)) {
       throw new Meteor.Error(403, 'Forbidden');
     }
-    return Files.insert(doc);
+    const result = Files.insert(doc);
+    eventPublisher.publish(new UserEvent(
+      'files.create',
+      `${result._id}`,
+      { userId: this.userId, doc }
+    ));
+    return result;
   },
 
   'files.delete'(id) {
@@ -21,6 +28,11 @@ Meteor.methods({
     const currentFile = Files.findOne(id);
     Files.Uploads.remove(currentFile.fileId);
     Files.remove(id);
+    eventPublisher.publish(new UserEvent(
+      'files.delete',
+      `${id}`,
+      { userId: this.userId }
+    ));
     return;
   },
 });

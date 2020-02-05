@@ -1,6 +1,7 @@
 import { logger } from '/imports/utils/logger';
 import { HmisClient } from '/imports/api/hmisApi';
 import { GlobalHouseholdsAccessRoles } from '/imports/config/permissions';
+import eventPublisher, { UserEvent } from '/imports/api/eventLog/events';
 
 Meteor.methods({
   createGlobalHousehold(globalHouseholdMembers, globalHouseholdObject) {
@@ -11,10 +12,18 @@ Meteor.methods({
     }
 
     const hc = HmisClient.create(this.userId);
-    return hc.api('global-household').createGlobalHousehold(
+    const result = hc.api('global-household').createGlobalHousehold(
       globalHouseholdMembers,
       globalHouseholdObject
     );
+
+    eventPublisher.publish(new UserEvent(
+      'globalHouseholds.createGlobalHousehold',
+      '',
+      { userId: this.userId, globalHouseholdMembers, globalHouseholdObject }
+    ));
+
+    return result;
   },
 
   updateGlobalHousehold(householdId, oldMembers, newMembers, doc) {
@@ -72,6 +81,12 @@ Meteor.methods({
     if (membersToAdd.length > 0) {
       hc.api('global-household').addMembersToHousehold(householdId, membersToAdd);
     }
+
+    eventPublisher.publish(new UserEvent(
+      'globalHouseholds.updateGlobalHousehold',
+      `${householdId}`,
+      { userId: this.userId, oldMembers, newMembers, doc }
+    ));
   },
 
   deleteHousehold(genericHouseholdId) {
@@ -83,7 +98,15 @@ Meteor.methods({
     }
 
     const hc = HmisClient.create(this.userId);
-    return hc.api('global-household').deleteGlobalHousehold(genericHouseholdId);
+    const result = hc.api('global-household').deleteGlobalHousehold(genericHouseholdId);
+
+    eventPublisher.publish(new UserEvent(
+      'globalHouseholds.deleteHousehold',
+      `${genericHouseholdId}`,
+      { userId: this.userId }
+    ));
+
+    return result;
   },
 
 });
