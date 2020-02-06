@@ -15,6 +15,7 @@ export default class Grid extends Item {
     try {
       return JSON.parse(str);
     } catch (e) {
+      console.error(e);
       return [];
     }
   }
@@ -59,10 +60,13 @@ export default class Grid extends Item {
 
   renderCell(r, c, disabled) {
     const gridValue = this.getGridValue();
-    const { columns } = this.props.item;
+    const { id, columns } = this.props.item;
     const item = columns[c];
     const cellId = `${item.id}[${r}]`;
-    const cellValue = gridValue[r] && gridValue[r][item.id];
+    const rowData = gridValue[r];
+    // change cloumn name (i.e. children.age) to data key (i.e. age)
+    const rowKey = item.id.substring(id.length + 1);
+    const cellValue = rowData && rowData[rowKey];
     switch (item.category) {
       case 'date':
         return (

@@ -47,6 +47,8 @@ export default function ClientFiles({ client }) {
     });
   }, []);
 
+  console.log(uploadedFiles);
+
   return (
     <React.Fragment>
       <div className="d-flex justify-content-between">
