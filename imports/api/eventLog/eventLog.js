@@ -1,5 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import { logger } from '/imports/utils/logger';
+import { escapeKeys } from '/imports/api/utils';
+
 
 
 class EventLogClass extends Mongo.Collection {
@@ -9,7 +11,7 @@ class EventLogClass extends Mongo.Collection {
       message: event.getMessage(),
       createdAt: event.createdAt,
       createdBy: event.userId,
-      data: event.data,
+      data: escapeKeys(event.data),
     };
     logger.info('New event', doc);
     super.insert(doc);
