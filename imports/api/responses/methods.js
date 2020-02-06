@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { HmisClient } from '/imports/api/hmisApi';
 import Surveys from '/imports/api/surveys/surveys';
 import Questions from '/imports/api/questions/questions';
@@ -305,8 +306,12 @@ Meteor.methods({
       } else {
         globalLogger.info(`Sending new submission, response doc ${id}`);
         // create new submission - send all question values in one call
+        const questionVaulesWithEffectiveDate = questionVaules.map(v => ({
+          ...v,
+          effectiveDate: moment().utc().format('YYYY-MM-DD HH:mm'),
+        }));
         submissionId = hc.api('survey').createSubmission(
-          clientId, surveyId, questionVaules
+          clientId, surveyId, questionVaulesWithEffectiveDate,
         ).submissionId;
 
         Responses.update(id, { $set: {

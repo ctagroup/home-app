@@ -61,9 +61,10 @@ const ResponsesList = ({ data }) => (
       {data.clientId &&
         <Link
           style={{ marginBottom: 20 }}
-          route="adminDashboardresponsesNew"
+          route="selectSurvey"
           className="btn btn-primary"
-          query={{ clientId: data.clientId, schema: data.client.schema }}
+          params={{ _id: data.clientId }}
+          query={{ schema: data.client.schema }}
         >
           Survey client
         </Link>

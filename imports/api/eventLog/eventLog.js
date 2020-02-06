@@ -28,6 +28,7 @@ const EventSchema = new SimpleSchema({
   },
   message: {
     type: String,
+    optional: true,
   },
   createdAt: {
     type: Date,
