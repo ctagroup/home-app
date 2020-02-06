@@ -7,6 +7,7 @@ import { HmisApiRegistry } from '/imports/api/hmisApi/apiRegistry';
 import EnrollmentsRepository from '/imports/api/enrollments/enrollmentsRepository';
 import EnrollmentsTranslationService from '/imports/api/enrollments/enrollmentsTranslationService';
 import Responses from '/imports/api/responses/responses';
+import ProjectsRepository from '/imports/api/projects/ProjectsRepository';
 import ResponsesRepository from '/imports/api/responses/ResponsesRepository';
 import NoteApiClient from '/imports/api/homeApi/noteApi';
 import MatchApiClient from '../../../api/homeApi/matchApi';
@@ -44,6 +45,7 @@ export function setupEndpointDependencies(endpointName, container) {
       hmisClient: awilix.asClass(HmisClient),
       loggerName: awilix.asValue(endpointName),
       logger: awilix.asClass(SentryLogger),
+      projectsRepository: awilix.asClass(ProjectsRepository),
       responsesRepository: awilix.asClass(ResponsesRepository),
       s3storageService: awilix.asClass(S3StorageService),
     });

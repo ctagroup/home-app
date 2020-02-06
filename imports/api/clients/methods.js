@@ -5,6 +5,7 @@ import { PendingClients } from '/imports/api/pendingClients/pendingClients';
 import { ClientsCache } from '/imports/api/clients/clientsCache';
 import { HmisClient } from '/imports/api/hmisApi';
 import { mergeByDedupId, filterClientForCache } from '/imports/api/clients/helpers';
+import Lookup from '/imports/both/Lookup';
 import eventPublisher, {
   UserEvent,
 } from '/imports/api/eventLog/events';
@@ -400,5 +401,40 @@ Meteor.injectedMethods({
       `${matchId} ${stepId} ${outcome}`,
       { userId: this.userId }
     ));
+  },
+
+  'matching.clientFiles'(dedupClientId) {
+    const matchingCache = new Lookup();
+    const projectCache = new Lookup();
+    const { matchApiClient, projectsRepository } = this.context;
+    const files = Meteor.call('s3bucket.listClientFiles', dedupClientId, 'matching');
+    return files.Contents
+      .map(file => {
+        const path = file.Key.substring(files.Prefix.length);
+        const regMatch = path.match(/(.+)\.(.+)/);
+        const id = regMatch ? regMatch[1] : path.split('/').pop();
+        const name = id.split('/').pop();
+        const lastModified = file.LastModified;
+
+        const parts = file.Key.split('/');
+
+        const matchId = parts[3];
+        const match = matchingCache.get(matchId, () => matchApiClient.getMatch(matchId));
+
+        const projectId = match.projectId;
+        const project = projectCache.get(projectId, () => projectsRepository.findById(projectId));
+
+        return {
+          file: {
+            id,
+            name,
+            path: `matching${path}`,
+            lastModified,
+          },
+          match,
+          project,
+        };
+      })
+      .sort((a, b) => moment(a.file.lastModified) < moment(b.file.lastModified));
   },
 });
