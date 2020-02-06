@@ -76,7 +76,8 @@ class ClientTagList extends Component {
         promise.then(res => {
           this.setState({ eligibleClient: res });
           this.refreshCurrentBonusScore();
-        });
+        })
+        .catch(err => Alert.error(err));
       },
     };
     return data;
@@ -98,8 +99,14 @@ class ClientTagList extends Component {
 
   handleUploadBonusScore() {
     this.setState({ currentBonusScore: null });
-    Meteor.call('eligibleClients.updateBonusScore', this.props.clientId, (err, res) => {
-      this.refreshCurrentBonusScore();
+    const dedupClientId = this.props.clientId;
+    Meteor.call('eligibleClients.updateBonusScore', dedupClientId, (err, res) => {
+      if (err) {
+        Alert.error(err);
+      } else {
+        console.log(res);
+        this.refreshCurrentBonusScore();
+      }
     });
   }
 
@@ -235,7 +242,8 @@ class ClientTagList extends Component {
             promise.then(res => {
               this.setState({ eligibleClient: res });
               this.refreshCurrentBonusScore();
-            });
+            })
+            .catch(err => Alert.error(err));
           }
         }),
       ],
