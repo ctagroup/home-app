@@ -8,6 +8,7 @@ import ClientEligibility from './ClientEligibility';
 import CaseNotes from './CaseNotes';
 import ClientReferrals from './ClientReferrals';
 import MatchingContainer from '/imports/ui/components/matching/MatchingContainer';
+import ClientFiles from './ClientFiles';
 
 
 function ClientLayout(props) {
@@ -43,6 +44,7 @@ function ClientLayout(props) {
     // { id: 'responses', enabled: false, title: 'Responses' },
     // { id: 'matching', enabled: showReferralStatus, title: 'New Referral' },
     { id: 'case-notes', enabled: showCaseNotes, title: 'Case Notes' },
+    { id: 'files', enabled: true, title: 'Files' },
   ].filter((t) => t.enabled);
 
   const [selectedTab, selectTab] = useState(props.selectedTab || tabsList[0].id);
@@ -103,9 +105,15 @@ function ClientLayout(props) {
                 helpers={helpers.enrollments}
               />
             </ClientTab>
+
             {showCaseNotes && <ClientTab selectedTab={selectedTab} id={'case-notes'} >
               <CaseNotes client={client} />
             </ClientTab>}
+
+            <ClientTab selectedTab={selectedTab} id={'files'} >
+              <ClientFiles client={client} />
+            </ClientTab>
+
             <ClientTab selectedTab={selectedTab} id={'matching'} >
               <MatchingContainer
                 helpers={helpers.referrals}
