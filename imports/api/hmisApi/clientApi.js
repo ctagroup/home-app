@@ -3,10 +3,9 @@ import querystring from 'querystring';
 import { HmisApiRegistry } from './apiRegistry';
 import { ApiEndpoint } from './apiEndpoint';
 
-const BASE_URL = 'https://www.hmislynk.com/hmis-clientapi/rest';
+const BASE_URL = 'https://api.hslynk.com/hmis-clientapi/rest';
 
 export class ClientApi extends ApiEndpoint {
-
   getClient(clientId, schema = 'v2015') {
     const url = `${BASE_URL}/${schema}/clients/${clientId}`;
     const client = this.doGet(url).client;
@@ -96,7 +95,7 @@ export class ClientApi extends ApiEndpoint {
   }
 
   getClientFromUrl(apiUrl) {
-    return this.doGet(`https://www.hmislynk.com${apiUrl}`).client;
+    return this.doGet(`https://api.hslynk.com${apiUrl}`).client;
   }
 
   searchClient(query, limit = 10) {
@@ -129,7 +128,7 @@ export class ClientApi extends ApiEndpoint {
         continuumProject: 0,
         projectType: 14, // Coordinated Assessment
         residentialAffiliation: 0,
-        targetPopulation: 4,  // NA - Not Applicable
+        targetPopulation: 4, // NA - Not Applicable
         trackingMethod: 0,
       },
     };

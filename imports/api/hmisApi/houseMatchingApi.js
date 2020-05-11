@@ -2,7 +2,7 @@ import { logger } from '/imports/utils/logger';
 import { HmisApiRegistry } from './apiRegistry';
 import { ApiEndpoint } from './apiEndpoint';
 
-const BASE_URL = 'https://www.hmislynk.com/house-matching-api';
+const BASE_URL = 'https://api.hslynk.com/house-matching-api';
 
 class HouseMatchingApi extends ApiEndpoint {
   getEligibleClients(pageNumber = 0, size = 9999) {
@@ -38,7 +38,10 @@ class HouseMatchingApi extends ApiEndpoint {
     const response = this.doGet(url);
     if (!response) {
       // see https://github.com/servinglynk/hmis-lynk-open-source-docs/issues/337
-      logger.warn('HouseMatchingApi.getHousingMatches returned null response', response);
+      logger.warn(
+        'HouseMatchingApi.getHousingMatches returned null response',
+        response
+      );
       return [];
     }
     let housingMatches = response.content;

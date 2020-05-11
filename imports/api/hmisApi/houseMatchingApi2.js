@@ -1,7 +1,7 @@
 import { HmisApiRegistry } from './apiRegistry';
 import { ApiEndpoint } from './apiEndpoint';
 
-const BASE_URL = 'https://www.hmislynk.com/house-matching-api';
+const BASE_URL = 'https://api.hslynk.com/house-matching-api';
 
 class HouseMatchingApi extends ApiEndpoint {
   getEligibleClients(pageNumber = 0, size = 9999) {

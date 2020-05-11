@@ -1,7 +1,7 @@
 import { HmisApiRegistry } from './apiRegistry';
 import { ApiEndpoint } from './apiEndpoint';
 
-const BASE_URL = 'https://www.hmislynk.com/hmis-globalapi/rest';
+const BASE_URL = 'https://api.hslynk.com/hmis-globalapi/rest';
 
 export class GlobalApi extends ApiEndpoint {
   getNotifications() {

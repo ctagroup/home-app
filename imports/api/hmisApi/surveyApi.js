@@ -1,11 +1,10 @@
 import { HmisApiRegistry } from './apiRegistry';
 import { ApiEndpoint } from './apiEndpoint';
 
-const BASE_URL = 'https://www.hmislynk.com/survey-api/rest';
+const BASE_URL = 'https://api.hslynk.com/survey-api/rest';
 const DEFAULT_GROUP_ID = '95bdca23-5135-4552-9f11-819cab1aaa45';
 
 export class SurveyApi extends ApiEndpoint {
-
   createSurvey(survey) {
     const url = `${BASE_URL}/surveys`;
     const body = { survey };
@@ -105,7 +104,9 @@ export class SurveyApi extends ApiEndpoint {
   }
 
   deleteQuestionMappings(surveyId, sectionId, questionIds) {
-    questionIds.forEach(id => this.deleteQuestionMapping(surveyId, sectionId, id));
+    questionIds.forEach((id) =>
+      this.deleteQuestionMapping(surveyId, sectionId, id)
+    );
     return true;
   }
 
@@ -146,7 +147,6 @@ export class SurveyApi extends ApiEndpoint {
     const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/sections/${sectionId}/scores`;
     return this.doGet(url);
   }
-
 }
 
 HmisApiRegistry.addApi('survey', SurveyApi);

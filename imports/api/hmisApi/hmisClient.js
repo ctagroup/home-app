@@ -2,7 +2,7 @@ import querystring from 'querystring';
 
 import { HmisApiRegistry } from './apiRegistry';
 
-const OAUTH_BASE_URL = 'https://www.hmislynk.com/hmis-authorization-service/rest';
+const OAUTH_BASE_URL = 'https://api.hslynk.com/hmis-authorization-service/rest';
 
 export class HmisClient {
   constructor(userId, serviceConfig, registry, usersCollection) {
@@ -67,13 +67,19 @@ export class HmisClient {
       }).content;
     } catch (err) {
       throw _.extend(
-        new Error(`Failed to complete OAuth handshake with HMIS. ${err.message}`),
+        new Error(
+          `Failed to complete OAuth handshake with HMIS. ${err.message}`
+        ),
         { response: err.response }
       );
     }
 
     const parsedResponse = JSON.parse(responseContent);
-    const { accessToken, expiresIn, refreshToken } = parsedResponse.oAuthAuthorization;
+    const {
+      accessToken,
+      expiresIn,
+      refreshToken,
+    } = parsedResponse.oAuthAuthorization;
 
     this.authData.accessToken = accessToken;
     this.authData.refreshToken = refreshToken;
@@ -107,11 +113,12 @@ export class HmisClient {
   }
 
   static create(userId) {
-    const serviceConfig = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    const serviceConfig = ServiceConfiguration.configurations.findOne({
+      service: 'HMIS',
+    });
     if (!serviceConfig.appId || !serviceConfig.appSecret) {
       throw new ServiceConfiguration.ConfigError();
     }
     return new HmisClient(userId, serviceConfig, HmisApiRegistry, Meteor.users);
   }
 }
-

@@ -1,7 +1,7 @@
 import { HmisApiRegistry } from './apiRegistry';
 import { ApiEndpoint } from './apiEndpoint';
 
-const BASE_URL = 'https://www.hmislynk.com/survey-api/rest/v2';
+const BASE_URL = 'https://api.hslynk.com/survey-api/rest/v2';
 
 export class SurveyApi2 extends ApiEndpoint {
   getSurveys(start = 0, limit = 9999) {
@@ -45,7 +45,11 @@ export class SurveyApi2 extends ApiEndpoint {
     if (remaining > 0 && pagination.returned > 0) {
       return [
         ...questions,
-        ...this.getQuestions(groupId, pagination.from + pagination.returned, remaining),
+        ...this.getQuestions(
+          groupId,
+          pagination.from + pagination.returned,
+          remaining
+        ),
       ];
     }
     return questions;
@@ -62,8 +66,6 @@ export class SurveyApi2 extends ApiEndpoint {
     const body = { question };
     return this.doPost(url, body).question;
   }
-
 }
-
 
 HmisApiRegistry.addApi('survey2', SurveyApi2);
