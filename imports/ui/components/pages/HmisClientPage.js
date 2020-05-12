@@ -1,7 +1,6 @@
 import JSONTree from 'react-json-tree';
 import React, { useState } from 'react';
 
-
 const clientEndpoints = [
   '/clients',
   '/clients/{clientId}/enrollments',
@@ -15,27 +14,27 @@ const clientEndpoints = [
 
 const apis = {
   '': [],
-  'https://www.hslynk.com/hmis-clientapi/rest/v2017': clientEndpoints,
-  'https://www.hslynk.com/hmis-clientapi/rest/v2016': clientEndpoints,
-  'https://www.hslynk.com/hmis-clientapi/rest/v2015': clientEndpoints,
-  'https://www.hslynk.com/hmis-clientapi/rest/v2014': clientEndpoints,
-  'https://www.hslynk.com/hmis-developer-service/rest': [
+  'https://api.hslynk.com/hmis-clientapi/rest/v2017': clientEndpoints,
+  'https://api.hslynk.com/hmis-clientapi/rest/v2016': clientEndpoints,
+  'https://api.hslynk.com/hmis-clientapi/rest/v2015': clientEndpoints,
+  'https://api.hslynk.com/hmis-clientapi/rest/v2014': clientEndpoints,
+  'https://api.hslynk.com/hmis-developer-service/rest': [
     '/developercompanies',
     '/developercompanies/{serviceid}',
     '/services/{trustedappid}',
   ],
-  'https://www.hslynk.com/inventory-api/rest': [
+  'https://api.hslynk.com/inventory-api/rest': [
     '/housing-units',
     '/housing-units/{housing_unit_uuid}',
     '/projects/{projectid}/eligibilityrequirements',
   ],
-  'https://www.hslynk.com/house-matching-api/rest': [
+  'https://api.hslynk.com/house-matching-api/rest': [
     '/v3/matches',
     '/v3/matches/client/{dedupClientId}',
     '/eligibleclients/{clientId}',
     '/matches/client/{dedupClientId}/status',
   ],
-  'https://www.hslynk.com/survey-api/rest': [
+  'https://api.hslynk.com/survey-api/rest': [
     '/questiongroups',
     '/v2/questiongroups/{questiongroupid}/questions',
     '/v2/surveys',
@@ -51,7 +50,7 @@ const apis = {
     '/clientsurveysubmissions?q=',
     '/questions',
   ],
-  'https://www.hslynk.com/hmis-globalapi/rest': [
+  'https://api.hslynk.com/hmis-globalapi/rest': [
     '/search/{searchentity}',
     '/global-projects',
     '/global-projects/${globalProjectId}/users',
@@ -61,11 +60,11 @@ const apis = {
     '/generic-enrollments',
     '/global-Households',
   ],
-  'https://www.hslynk.com/global-household-api/rest': [
+  'https://api.hslynk.com/global-household-api/rest': [
     '/generic-households',
     '/members',
   ],
-  'https://www.hslynk.com/hmis-user-service/rest': [
+  'https://api.hslynk.com/hmis-user-service/rest': [
     '/accounts',
     '/accounts/{uuid}',
     '/profiles',
@@ -73,7 +72,6 @@ const apis = {
     '/projectgroups',
   ],
 };
-
 
 export const HmisClientPage = () => {
   const [currentApi, setCurrentApi] = useState(Object.keys(apis)[0]);
@@ -110,16 +108,23 @@ export const HmisClientPage = () => {
   function renderApiSelect() {
     return (
       <div>
-        <select className="form-control" onChange={(evt) => setCurrentApi(evt.target.value)}>
-          {Object.keys(apis).map(api => <option key={api}>{api}</option>)}
+        <select
+          className="form-control"
+          onChange={(evt) => setCurrentApi(evt.target.value)}
+        >
+          {Object.keys(apis).map((api) => (
+            <option key={api}>{api}</option>
+          ))}
         </select>
         <div>
-          {apis[currentApi].map(endpoint => (
+          {apis[currentApi].map((endpoint) => (
             <button
               key={endpoint}
               className="btn btn-default"
               onClick={() => setCurrentEndpoint(endpoint)}
-            >{endpoint}</button>
+            >
+              {endpoint}
+            </button>
           ))}
         </div>
       </div>
@@ -151,14 +156,17 @@ export const HmisClientPage = () => {
       const request = (
         <div>
           #{i + 1}) {c.request}
-        </div>);
+        </div>
+      );
 
       const response = c.response ? (
         <div>
           <div>{c.response.statusCode}</div>
           <JSONTree data={c.response.body} theme={theme} hideRoot />
         </div>
-      ) : '...';
+      ) : (
+        '...'
+      );
 
       return (
         <div key={c.id}>
@@ -182,7 +190,9 @@ export const HmisClientPage = () => {
           onChange={(evt) => setCurrentEndpoint(evt.target.value)}
         />
       </div>
-      <button onClick={handleSendRequest} className="btn btn-default">Send</button>
+      <button onClick={handleSendRequest} className="btn btn-default">
+        Send
+      </button>
     </div>
   );
 };

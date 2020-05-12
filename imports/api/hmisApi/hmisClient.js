@@ -2,10 +2,16 @@ import querystring from 'querystring';
 import { logger as globalLogger } from '/imports/utils/logger';
 import { HmisApiRegistry } from './apiRegistry';
 
-const OAUTH_BASE_URL = 'https://www.hmislynk.com/hmis-authorization-service/rest';
+const OAUTH_BASE_URL = 'https://api.hslynk.com/hmis-authorization-service/rest';
 
 export class HmisClient {
-  constructor({ userId, serviceConfig, hmisApiRegistry, usersCollection, logger }) {
+  constructor({
+    userId,
+    serviceConfig,
+    hmisApiRegistry,
+    usersCollection,
+    logger,
+  }) {
     this.userId = userId;
     this.serviceConfig = serviceConfig;
     this.registry = hmisApiRegistry;
@@ -19,7 +25,11 @@ export class HmisClient {
     if (!this.hasValidAccessToken()) {
       this.renewAccessToken();
     }
-    return new Cls(this.serviceConfig.appId, this.getAccessToken(), this.logger);
+    return new Cls(
+      this.serviceConfig.appId,
+      this.getAccessToken(),
+      this.logger
+    );
   }
 
   getAccessToken() {
@@ -68,13 +78,19 @@ export class HmisClient {
       }).content;
     } catch (err) {
       throw _.extend(
-        new Error(`Failed to complete OAuth handshake with HMIS. ${err.message}`),
+        new Error(
+          `Failed to complete OAuth handshake with HMIS. ${err.message}`
+        ),
         { response: err.response }
       );
     }
 
     const parsedResponse = JSON.parse(responseContent);
-    const { accessToken, expiresIn, refreshToken } = parsedResponse.oAuthAuthorization;
+    const {
+      accessToken,
+      expiresIn,
+      refreshToken,
+    } = parsedResponse.oAuthAuthorization;
 
     this.authData.accessToken = accessToken;
     this.authData.refreshToken = refreshToken;
@@ -112,7 +128,9 @@ export class HmisClient {
     //   creating HMIS client via create() is deprecated.
     //   Use method/publication context instead
     // `);
-    const serviceConfig = ServiceConfiguration.configurations.findOne({ service: 'HMIS' });
+    const serviceConfig = ServiceConfiguration.configurations.findOne({
+      service: 'HMIS',
+    });
     if (!serviceConfig.appId || !serviceConfig.appSecret) {
       throw new ServiceConfiguration.ConfigError();
     }
