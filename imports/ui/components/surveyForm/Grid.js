@@ -15,6 +15,7 @@ export default class Grid extends Item {
     try {
       return JSON.parse(str);
     } catch (e) {
+      console.error(e);
       return [];
     }
   }
@@ -62,7 +63,9 @@ export default class Grid extends Item {
     const { columns } = this.props.item;
     const item = columns[c];
     const cellId = `${item.id}[${r}]`;
-    const cellValue = gridValue[r] && gridValue[r][item.id];
+    const rowData = gridValue[r];
+    const rowKey = item.id;
+    const cellValue = rowData && rowData[rowKey];
     switch (item.category) {
       case 'date':
         return (

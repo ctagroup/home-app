@@ -6,7 +6,6 @@ export default class Score extends Text {
   render() {
     const { score, text } = this.props.item;
     let value = evaluateOperand(score, this.props.formState) || 0;
-    console.log(this.props.debugMode);
 
     return this.props.debugMode ? (
       <div className="score item">

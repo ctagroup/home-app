@@ -155,7 +155,10 @@ export function evaluateCondition(operator, operand1, operand2) {
 
 export function evaluateOperand(operand, formState = {}, defaultValue = undefined) {
   let args;
-  if (typeof(operand) === 'string') {
+  const isString = typeof(operand) === 'string';
+  const isGridData = isString && operand.startsWith('[{"');
+
+  if (isString && !isGridData) {
     args = operand.split(':');
   } else {
     args = [operand];
