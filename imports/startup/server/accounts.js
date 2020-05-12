@@ -2,7 +2,6 @@ import { logger } from '/imports/utils/logger';
 import { userEmails } from '/imports/api/users/helpers';
 import HomeApiClient from '/imports/api/homeApi/homeApiClient';
 
-
 function sendUserHmisCredentialsToApi(userId) {
   try {
     const client = HomeApiClient.create(userId);
@@ -12,14 +11,16 @@ function sendUserHmisCredentialsToApi(userId) {
   }
 }
 
-const sendUserHmisCredentialsToApiDebounced = _.debounce(Meteor.bindEnvironment(
-  userId => sendUserHmisCredentialsToApi(userId)
-), 100);
-
+const sendUserHmisCredentialsToApiDebounced = _.debounce(
+  Meteor.bindEnvironment((userId) => sendUserHmisCredentialsToApi(userId)),
+  100
+);
 
 Accounts.onLogin(({ user }) => {
   const adminEmails = Meteor.settings.admins || [];
-  const result = userEmails(user).filter(email => adminEmails.includes(email));
+  const result = userEmails(user).filter((email) =>
+    adminEmails.includes(email)
+  );
   if (result.length > 0 && !Roles.userIsInRole(user._id, 'Developer')) {
     logger.info(`User ${user._id} promoted to Developer ROLE`);
     Roles.addUsersToRoles(user._id, 'Developer', Roles.GLOBAL_GROUP);
@@ -49,11 +50,13 @@ Meteor.startup(() => {
     ServiceConfiguration.configurations.update(
       {
         service: 'HMIS',
-      }, {
+      },
+      {
         $set: {
           hmisAPIEndpoints: {
-            oauthBaseUrl: 'https://www.hmislynk.com/hmis-authorization-service/rest',
-            userServiceBaseUrl: 'https://www.hmislynk.com/hmis-user-service/rest',
+            oauthBaseUrl:
+              'https://api.hslynk.com/hmis-authorization-service/rest',
+            userServiceBaseUrl: 'https://api.hslynk.com/hmis-user-service/rest',
             authorize: '/authorize/',
             token: '/token/',
             selfBasicInfo: '/accounts/self/basicinfo',
@@ -61,14 +64,16 @@ Meteor.startup(() => {
           appId: Meteor.settings.appId,
           appSecret: Meteor.settings.appSecret,
         },
-      }, {
+      },
+      {
         upsert: true,
       }
     );
   } else {
-    throw new Error('Configuration error: appId and appSecret must exist in Meteor.settings');
+    throw new Error(
+      'Configuration error: appId and appSecret must exist in Meteor.settings'
+    );
   }
-
 
   if (Meteor.settings.homeApi) {
     Meteor.users.find().observeChanges({

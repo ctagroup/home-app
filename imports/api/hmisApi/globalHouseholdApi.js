@@ -1,15 +1,13 @@
 import { HmisApiRegistry } from './apiRegistry';
 import { ApiEndpoint } from './apiEndpoint';
 
-const BASE_URL = 'https://www.hmislynk.com/global-household-api';
+const BASE_URL = 'https://api.hslynk.com/global-household-api';
 
 class GlobalHouseHoldApi extends ApiEndpoint {
   createGlobalHousehold(householdMembers, householdObject) {
     const url = `${BASE_URL}/global-households`;
     const body = {
-      globalHouseholds: [
-        householdObject,
-      ],
+      globalHouseholds: [householdObject],
     };
     const household = this.doPost(url, body)[0];
     this.addMembersToHousehold(household.genericHouseholdId, householdMembers);
@@ -73,7 +71,11 @@ class GlobalHouseHoldApi extends ApiEndpoint {
     if (response.page.number < response.page.totalPages - 1) {
       householdMembers = _.union(
         householdMembers,
-        this.getHouseholdMembers(householdId, response.page.number + 1, response.page.size)
+        this.getHouseholdMembers(
+          householdId,
+          response.page.number + 1,
+          response.page.size
+        )
       );
     }
     return householdMembers;
@@ -83,7 +85,6 @@ class GlobalHouseHoldApi extends ApiEndpoint {
     const url = `${BASE_URL}/members?clientid=${clientId}&page=${page}&size=${limit}`; // eslint-disable-line max-len
     return this.doGet(url);
   }
-
 }
 
 HmisApiRegistry.addApi('global-household-old', GlobalHouseHoldApi);

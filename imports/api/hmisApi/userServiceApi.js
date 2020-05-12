@@ -2,9 +2,7 @@ import { HmisApiRegistry } from './apiRegistry';
 import { ApiEndpoint } from './apiEndpoint';
 import { logger } from '/imports/utils/logger';
 
-
-const BASE_URL = 'https://www.hmislynk.com/hmis-user-service/rest';
-
+const BASE_URL = 'https://api.hslynk.com/hmis-user-service/rest';
 
 class UserServiceApi extends ApiEndpoint {
   getUser(userId) {
@@ -43,7 +41,7 @@ class UserServiceApi extends ApiEndpoint {
   }
 
   getProjectGroups() {
-    // https://www.hmislynk.com/hmis-user-service/rest/projectgroups
+    // https://api.hslynk.com/hmis-user-service/rest/projectgroups
     throw new Error('Not yet implemented');
   }
 
@@ -66,7 +64,6 @@ class UserServiceApi extends ApiEndpoint {
     };
     return this.doPut(url, { passwordChange });
   }
-
 
   deleteUserRole(userId, roleId) {
     const url = `${BASE_URL}/accounts/${userId}/roles/${roleId}`;

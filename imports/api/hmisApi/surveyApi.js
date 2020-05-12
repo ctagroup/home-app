@@ -1,7 +1,7 @@
 import { HmisApiRegistry } from './apiRegistry';
 import { ApiEndpoint } from './apiEndpoint';
 
-const BASE_URL = 'https://www.hmislynk.com/survey-api/rest';
+const BASE_URL = 'https://api.hslynk.com/survey-api/rest';
 const DEFAULT_GROUP_ID = '95bdca23-5135-4552-9f11-819cab1aaa45';
 
 export class SurveyApi extends ApiEndpoint {
@@ -117,7 +117,9 @@ export class SurveyApi extends ApiEndpoint {
   }
 
   deleteQuestionMappings(surveyId, sectionId, questionIds) {
-    questionIds.forEach(id => this.deleteQuestionMapping(surveyId, sectionId, id));
+    questionIds.forEach((id) =>
+      this.deleteQuestionMapping(surveyId, sectionId, id)
+    );
     return true;
   }
 
@@ -139,15 +141,29 @@ export class SurveyApi extends ApiEndpoint {
     return this.doPost(url, body).response;
   }
 
-  getSubmissionResponses(clientId, surveyId, submissionId, start = 0, limit = 9999) {
+  getSubmissionResponses(
+    clientId,
+    surveyId,
+    submissionId,
+    start = 0,
+    limit = 9999
+  ) {
     const url = `${BASE_URL}/clients/${clientId}/surveys/${surveyId}/submissions/${submissionId}?startIndex=${start}&limit=${limit}`; // eslint-disable-line
     const { pagination, responses } = this.doGet(url).responses;
     const remaining = limit - pagination.returned;
-    if (remaining > 0 && pagination.returned > 0 && pagination.returned === pagination.maximum) {
+    if (
+      remaining > 0 &&
+      pagination.returned > 0 &&
+      pagination.returned === pagination.maximum
+    ) {
       return [
         ...responses,
-        ...this.getSubmissionResponses(clientId,
-          surveyId, submissionId, pagination.from + pagination.returned, remaining
+        ...this.getSubmissionResponses(
+          clientId,
+          surveyId,
+          submissionId,
+          pagination.from + pagination.returned,
+          remaining
         ),
       ];
     }
@@ -174,12 +190,18 @@ export class SurveyApi extends ApiEndpoint {
 
   getClientSurveySubmissions(clientId, start = 0, limit = 9999) {
     const url = `${BASE_URL}/clientsurveysubmissions/${clientId}?startIndex=${start}&limit=${limit}`; // eslint-disable-line max-len
-    const { pagination, clientSurveySubmissions } = this.doGet(url).clientSurveySubmissions;
+    const { pagination, clientSurveySubmissions } = this.doGet(
+      url
+    ).clientSurveySubmissions;
     const remaining = limit - pagination.returned;
     if (remaining > 0 && pagination.returned > 0) {
       return [
         ...clientSurveySubmissions,
-        ...this.getClientSurveySubmissions(clientId, pagination.from + pagination.returned, remaining), // eslint-disable-line max-len
+        ...this.getClientSurveySubmissions(
+          clientId,
+          pagination.from + pagination.returned,
+          remaining
+        ), // eslint-disable-line max-len
       ];
     }
     return clientSurveySubmissions;
@@ -208,7 +230,6 @@ export class SurveyApi extends ApiEndpoint {
     // TODO: add pagination
     return this.doGet(url).clientSurveySubmissions.clientSurveySubmissions;
   }
-
 }
 
 HmisApiRegistry.addApi('survey', SurveyApi);

@@ -25,16 +25,19 @@ const fakeCollection = {
 describe('hmisApi', function () {
   describe('client', function () {
     it('can use dummy api', function () {
-      nock('https://www.hmislynk.com')
+      nock('https://api.hslynk.com')
         .post('/hmis-authorization-service/rest/token/')
         .query(() => true)
-        .reply(200, JSON.stringify({
-          oAuthAuthorization: {
-            accessToken: 'test-access-token',
-            expiresIn: 1000000,
-            refreshToken: 'test-refresh-token',
-          },
-        }));
+        .reply(
+          200,
+          JSON.stringify({
+            oAuthAuthorization: {
+              accessToken: 'test-access-token',
+              expiresIn: 1000000,
+              refreshToken: 'test-refresh-token',
+            },
+          })
+        );
 
       const registry = new ApiRegistry();
       registry.addApi('dummy', DummyApi);
