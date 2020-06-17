@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import curr from 'currency.js';
 
-
 const formatCurrency = (value = 0, code = 'USD', displayOptions = {}) => {
   const config = {
     symbol: '$',
@@ -11,7 +10,9 @@ const formatCurrency = (value = 0, code = 'USD', displayOptions = {}) => {
   };
 
   if (!config) {
-    throw new Error(`You need to provide a currencyConfiguration for currency code ${code}.`);
+    throw new Error(
+      `You need to provide a currencyConfiguration for currency code ${code}.`
+    );
   }
 
   const { showSymbol, spaceSymbol } = displayOptions;
@@ -21,7 +22,6 @@ const formatCurrency = (value = 0, code = 'USD', displayOptions = {}) => {
   }
   return curr(value, config).format(showSymbol);
 };
-
 
 class CurrencyInput extends Component {
   constructor(props) {
@@ -42,6 +42,14 @@ class CurrencyInput extends Component {
 
   componentDidMount() {
     this.setInitialValues();
+
+    Meteor.setTimeout(() => {
+      // wait for value to load....
+      // ...and propate initial value (0) to form state
+      if (this.state.value === '0') {
+        this.props.onChange(0, '0.00');
+      }
+    }, 1);
   }
 
   componentDidUpdate(prevProps) {
@@ -56,7 +64,8 @@ class CurrencyInput extends Component {
     const valueFromState = parseFloat(this.state.value);
 
     if (valueFromProps !== valueFromState) {
-      this.setState({ // eslint-disable-line
+      this.setState({
+        // eslint-disable-line
         value: valueFromProps,
         maskedValue: this.maskValue(valueFromProps),
       });
@@ -91,16 +100,11 @@ class CurrencyInput extends Component {
     if (!onChange || typeof onChange !== 'function') {
       return false;
     }
-
     return onChange(event, value, maskedValue);
   }
 
   maskValue(value = 0) {
-    const {
-      currency,
-      showSymbol,
-      spaceSymbol,
-    } = this.props;
+    const { currency, showSymbol, spaceSymbol } = this.props;
 
     return formatCurrency(value, currency, {
       showSymbol,
