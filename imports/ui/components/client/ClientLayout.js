@@ -10,13 +10,12 @@ import ClientReferrals from './ClientReferrals';
 import MatchingContainer from '/imports/ui/components/matching/MatchingContainer';
 import ClientFiles from './ClientFiles';
 
-
 function ClientLayout(props) {
   const { client, permissions, eligibleClient, data, helpers } = props;
   const {
     showReferralStatus,
     showCaseNotes,
-    // showEnrollments,
+    showEnrollments,
     // updateEnrollment,
     // annualEnrollment,
     // exitEnrollment,
@@ -30,7 +29,7 @@ function ClientLayout(props) {
     { id: 'eligibility', enabled: true, title: 'History' },
     { id: 'rois', enabled: !isSkidrowApp, title: 'ROIs' },
     { id: 'referrals', enabled: showReferralStatus, title: 'Referrals' },
-    // { id: 'enrollments', enabled: showEnrollments, title: 'Enrollments' },
+    { id: 'enrollments', enabled: showEnrollments, title: 'Enrollments' },
     // { id: 'create-enrollment', enabled: showEnrollments, title: 'Create Enrollment' },
     // { id: 'update-enrollment', enabled:
     //   showEnrollments && updateEnrollment, title: 'Update Enrollment' },
@@ -47,43 +46,52 @@ function ClientLayout(props) {
     { id: 'files', enabled: true, title: 'Files' },
   ].filter((t) => t.enabled);
 
-  const [selectedTab, selectTab] = useState(props.selectedTab || tabsList[0].id);
+  const [selectedTab, selectTab] = useState(
+    props.selectedTab || tabsList[0].id
+  );
 
   // console.log('selectedTab', selectedTab);
 
-  const isRemovedFromMatching = eligibleClient && eligibleClient.ignoreMatchProcess;
-  const isInActiveList = eligibleClient && eligibleClient.ignoreMatchProcess === false;
+  const isRemovedFromMatching =
+    eligibleClient && eligibleClient.ignoreMatchProcess;
+  const isInActiveList =
+    eligibleClient && eligibleClient.ignoreMatchProcess === false;
 
   return (
     <div id="viewClient_content" className="col-xs-12">
-
-      {eligibleClient && isRemovedFromMatching &&
+      {eligibleClient && isRemovedFromMatching && (
         <div className="col-xs-12">
           <div className="alert alert-danger">
             Client has been Removed from Matching
           </div>
         </div>
-      }
-      {eligibleClient && isInActiveList &&
+      )}
+      {eligibleClient && isInActiveList && (
         <div className="col-xs-12">
           <div className="alert alert-success">
             Client is on the Active list
           </div>
         </div>
-      }
+      )}
       <div className="row client-profile-container">
         <ClientGeneralInfo client={client} helpers={helpers.generalInfo} />
 
         <div className="tab-section">
-          <ClientTabSelector tabs={tabsList} tab={selectedTab} selectTab={selectTab} />
+          <ClientTabSelector
+            tabs={tabsList}
+            tab={selectedTab}
+            selectTab={selectTab}
+          />
 
           <div className="tab-content card">
-            <ClientTab selectedTab={selectedTab} id={'overview'} >
+            <ClientTab selectedTab={selectedTab} id={'overview'}>
               <ClientOverview
-                client={client} permissions={{ showEditButton }} helpers={helpers.overview}
+                client={client}
+                permissions={{ showEditButton }}
+                helpers={helpers.overview}
               />
             </ClientTab>
-            <ClientTab selectedTab={selectedTab} id={'referrals'} >
+            <ClientTab selectedTab={selectedTab} id={'referrals'}>
               <ClientReferrals
                 eligibleClient={data.eligibleClient()}
                 client={client}
@@ -91,13 +99,15 @@ function ClientLayout(props) {
                 helpers={helpers.referrals}
               />
             </ClientTab>
-            <ClientTab selectedTab={selectedTab} id={'eligibility'} >
+            <ClientTab selectedTab={selectedTab} id={'eligibility'}>
               <ClientEligibility
                 eligibleClient={data.eligibleClient()}
-                client={client} permissions={{ showEditButton }} helpers={helpers.eligibility}
+                client={client}
+                permissions={{ showEditButton }}
+                helpers={helpers.eligibility}
               />
             </ClientTab>
-            <ClientTab selectedTab={selectedTab} id={'enrollments'} >
+            <ClientTab selectedTab={selectedTab} id={'enrollments'}>
               <ClientEnrollments
                 client={client}
                 permissions={{ showEditButton }}
@@ -106,18 +116,18 @@ function ClientLayout(props) {
               />
             </ClientTab>
 
-            {showCaseNotes && <ClientTab selectedTab={selectedTab} id={'case-notes'} >
-              <CaseNotes client={client} />
-            </ClientTab>}
+            {showCaseNotes && (
+              <ClientTab selectedTab={selectedTab} id={'case-notes'}>
+                <CaseNotes client={client} />
+              </ClientTab>
+            )}
 
-            <ClientTab selectedTab={selectedTab} id={'files'} >
+            <ClientTab selectedTab={selectedTab} id={'files'}>
               <ClientFiles client={client} />
             </ClientTab>
 
-            <ClientTab selectedTab={selectedTab} id={'matching'} >
-              <MatchingContainer
-                helpers={helpers.referrals}
-              />
+            <ClientTab selectedTab={selectedTab} id={'matching'}>
+              <MatchingContainer helpers={helpers.referrals} />
             </ClientTab>
           </div>
         </div>
