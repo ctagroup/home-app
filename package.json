@@ -29,7 +29,7 @@
     "react-select": "^2.3.0",
     "react-sortable-tree": "^1.8.1",
     "react-table": "^6.9.2",
-    "underscore": "^1.9.1",
+    "underscore": "^1.12.1",
     "uniforms": "^1.23.2",
     "uniforms-bootstrap3": "^1.23.2",
     "winston": "^2.4.1"
