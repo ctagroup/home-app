@@ -4,7 +4,7 @@
     "@sentry/node": "^5.1.0",
     "async": "http://registry.npmjs.org/async/-/async-1.0.0.tgz",
     "awilix": "^4.0.1",
-    "aws-sdk": "^2.471.0",
+    "aws-sdk": "^2.814.0",
     "babel-runtime": "^6.26.0",
     "better-queue": "^3.8.10",
     "currency.js": "^1.1.1",
